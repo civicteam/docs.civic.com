@@ -12,7 +12,7 @@ dApp developers, liquidity providers and institutional participants can manage r
 
 As Civic Pass is an **on-chain solution**, your dApp users can interact your dApp through both a User Interface or an API, safe in the knowledge that all the other dApp users have been vetted.&#x20;
 
-This guide describes how to integrate your dApp with Civic Pass on Solana (other chain implementations use similar integrations with chain-specific functionality contained in [publicly available client libraries](https://github.com/identity-com/on-chain-identity-gateway)).
+This guide describes how to integrate your dApp with Civic Pass on Solana and Ethereum.
 
 {% embed url="https://www.youtube.com/watch?v=k5AbYcKlBKo" %}
 

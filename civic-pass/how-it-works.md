@@ -42,6 +42,6 @@ Users without a valid Civic Pass associated with their connected wallet can requ
 
 #### 3. Use the dApp
 
-Once the user has an associated valid Civic Pass for their wallet, your dApp UI can re-enable all controls. Your on-chain program, making use of identity.com's[ Rust integration library](https://github.com/identity-com/on-chain-identity-gateway/tree/develop/solana/integration-lib), can check for a valid Civic Pass during program execution and reject non-compliant users' requested transactions.
+Once the user has an associated valid Civic Pass for their wallet, your dApp UI can re-enable all controls. Your on-chain program, making use of identity.com's [integration libraries](https://github.com/identity-com/on-chain-identity-gateway), can check for a valid Civic Pass during program execution and reject non-compliant users' requested transactions.
 
 See  [on-chain-integration.md](on-chain-integration.md "mention") for more details.

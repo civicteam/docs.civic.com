@@ -1,6 +1,10 @@
 # Token Guard - Advanced gating using tokens
 
-TokenGuard is a composable [gateway](https://docs.civic.com/) program for Solana dApps written in [Anchor](https://github.com/project-serum/anchor) and using CIvic Pass ([overview.md](overview.md "mention")).
+{% hint style="info" %}
+**Note**: Solana Only
+{% endhint %}
+
+TokenGuard is a composable [gateway](https://docs.civic.com/) program for Solana dApps written in [Anchor](https://github.com/project-serum/anchor) and using CIvic Pass ([overview.md](../overview.md "mention")).
 
 With TokenGuard, dApp developers can protect access to any dApp that accepts tokens as payment, such as a Metaplex CandyMachine mint, without requiring any on-chain smart-contract changes.
 

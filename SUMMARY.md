@@ -7,15 +7,17 @@
 * [Overview](civic-pass/overview.md)
 * [How it works](civic-pass/how-it-works.md)
 * [On-chain Integration](civic-pass/on-chain-integration.md)
-* [UI integration: React component](civic-pass/ui-integration-react-component/README.md)
+* [UI integration](civic-pass/ui-integration-react-component/README.md)
   * [The Identity Button](civic-pass/ui-integration-react-component/the-identity-buitton.md)
   * [The Gateway Provider](civic-pass/ui-integration-react-component/the-gateway-provider.md)
-  * [Client Sent Transactions](civic-pass/ui-integration-react-component/client-sent-transactions.md)
-* [Sample React Project](civic-pass/sample-react-project.md)
+  * [Client-Sent Transactions](civic-pass/ui-integration-react-component/client-sent-transactions.md)
+  * [Sample React Project](civic-pass/ui-integration-react-component/sample-react-project.md)
 * [Testing against different environments](civic-pass/testing-against-different-environments.md)
 * [Civic Captcha Pass](civic-pass/civic-captcha-pass.md)
-* [Token Guard - Advanced gating using tokens](civic-pass/token-guard-advanced-gating-using-tokens.md)
 * [Selecting a Pass](civic-pass/selecting-a-pass.md)
+* [Advanced](civic-pass/advanced/README.md)
+  * [API Documentation](civic-pass/advanced/api-documentation.md)
+  * [Token Guard - Advanced gating using tokens](civic-pass/advanced/token-guard-advanced-gating-using-tokens.md)
 
 ## Candy Machine Integration
 

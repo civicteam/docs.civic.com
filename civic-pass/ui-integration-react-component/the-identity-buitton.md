@@ -11,7 +11,26 @@ Once the user has gone through KYC and submitted their Gateway Token request via
 | **mode**      | The default setting of the button is dark. We also provide a `light mode`.      | DARK \| LIGHT |
 | **animation** | The button provides a neat animation on hover. The default value is `dark mode` | true \| false |
 
-```typescript
+<details>
+
+<summary>Ethereum</summary>
+
+```javascript
+import {
+  IdentityButton,
+  ButtonMode,
+} from '@civic/ethereum-gateway-react';
+
+<IdentityButton mode={ButtonMode.LIGHT} animation={true} />
+```
+
+</details>
+
+<details>
+
+<summary>Solana</summary>
+
+```javascript
 import {
   IdentityButton,
   ButtonMode,
@@ -19,6 +38,8 @@ import {
 
 <IdentityButton mode={ButtonMode.LIGHT} animation={true} />
 ```
+
+</details>
 
 Here's an example of the status information the user will see when they mouse over the Identity Button:
 

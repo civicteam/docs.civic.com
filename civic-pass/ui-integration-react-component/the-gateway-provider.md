@@ -2,6 +2,77 @@
 
 The **GatewayProvider** is a React component that gives children access to the GatewayContext through the **useGateway** function. This component holds the state for a given Gateway Token or Gateway Token request.
 
+Available for [Ethereum](the-gateway-provider.md#ethereum) and [Solana](the-gateway-provider.md#solana)
+
+## Ethereum
+
+{% hint style="warning" %}
+**Warning:** The Ethereum integration is in _alpha_ and is subject to change.
+{% endhint %}
+
+{% hint style="info" %}
+**Note:** The React component uses [ethers.js](https://www.npmjs.com/package/ethers)
+{% endhint %}
+
+```typescript
+import { GatewayProvider } from "@civic/ethereum-gateway-react";
+
+<GatewayProvider
+  signer={signer}
+  provider={provider}
+  gatekeeperNetwork={gatekeeperNetwork}
+  >
+</GatewayProvider>
+```
+
+| **Property**          | Description                                                                                                              | Type                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| **signer**            | An [ethers.js](https://www.npmjs.com/package/ethers) object representing the user's wallet.                              | `Signer` from `ethers`                                                 |
+| **provider**          | An [ethers.js](https://www.npmjs.com/package/ethers) connection to the network. Can be undefined if not yet connected    | `Provider` from `ethers`                                               |
+| **gatekeeperNetwork** | The address of the gatekeeper network. This needs to match the network within which the Civic gatekeeper issues tokens.  | `string` (see [selecting-a-pass.md](../selecting-a-pass.md "mention")) |
+
+### The useGateway hook
+
+The React component exposes the process status of a gateway token request, as well as the token status itself. It also provides a function to request a new gateway token. These can be accessed through the `useGateway` hook:
+
+```typescript
+import { useGateway } from "@civic/ethereum-gateway-react";
+```
+
+#### Requesting a gateway token
+
+A function is provided to initiate a request for a new gateway token:
+
+```typescript
+const { requestGatewayToken } = useGateway()
+```
+
+This could be triggered by a button, for example:
+
+```jsx
+<button onclick={requestGatewayToken}>Validate your wallet</button> 
+```
+
+Calling this function should open an iframe connected to the Civic Gatekeeper, which will guide the user through a flow to verify their identity and other prerequisites:
+
+![](../../.gitbook/assets/intro-overlay.png)
+
+#### Reading the gateway state
+
+Besides the `refreshGatewayToken` function, the `useGateway` hook also exposes some state variables to indicate the status of the Civic Pass request flows and the state of the token itself.
+
+```typescript
+const { gatewayStatus, gatewayToken } = useGateway();
+```
+
+| **gatewayStatus** | Indicates the overall status of the Civic Pass. This should ideally displayed to the user. Some states are linked to an on-chain gateway token, while others indicate progress or error conditions during which a gateway token might not exist.                                                                                                                                                                                                                                         | `GatewayStatus` from `@civic/ethereum-gateway-react` |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **gatewayToken**  | <p>Represents the on-chain Ethereum structure for the gateway token. This will only be defined if the on-chain token is ACTIVE and dApp usage should be allowed.</p><p>If the token does not exist or is in a non-active state (e.g. Frozen), this state variable will be <code>undefined</code> . The dApp could disable certain parts of the UI when gatewayToken is undefined to prevent dApp usage.</p><p>This complements the on-chain Rust check, but should not replace it.  </p> | `GatewayToken` from `@identity.com/gateway-eth-ts`   |
+
+## Solana
+
+
+
 ```typescript
 import { GatewayProvider } from "@civic/solana-gateway-react";
 
@@ -58,12 +129,13 @@ Besides the `refreshGatewayToken` function, the `useGateway` hook also exposes s
 const { gatewayStatus, gatewayToken } = useGateway();
 ```
 
-| Property          | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Type                                                  |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
 | **gatewayStatus** | Indicates the overall status of the Civic Pass. This should ideally displayed to the user. Some states are linked to an on-chain gateway token, while others indicate progress or error conditions during which a gateway token might not exist.                                                                                                                                                                                                                                       | `GatewayStatus` from `@civic/solana-gateway-react`    |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
 | **gatewayToken**  | <p>Represents the on-chain Solana structure for the gateway token. This will only be defined if the on-chain token is ACTIVE and dApp usage should be allowed.</p><p>If the token does not exist or is in a non-active state (e.g. Frozen), this state variable will be <code>undefined</code> . The dApp could disable certain parts of the UI when gatewayToken is undefined to prevent dApp usage.</p><p>This complements the on-chain Rust check, but should not replace it.  </p> | `GatewayToken` from `@identity.com/solana-gateway-ts` |
 
-**The Gateway Status**
+
+
+## The Gateway Status
 
 The following is a list of all the possible states of the Civic Pass
 

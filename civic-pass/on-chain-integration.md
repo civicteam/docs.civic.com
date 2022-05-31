@@ -1,8 +1,37 @@
 # On-chain Integration
 
-Checking for a valid Civic Pass during on-chain program execution is very straight-forward.&#x20;
+## Ethereum
 
-Import the `solana_gateway` Rust crate from [crates.io](https://crates.io/crates/solana-gateway) and call it when a presence of valid token is required. For example, before minting an NFT, adding a new order to an order-book or granting access to a gated section.&#x20;
+{% hint style="warning" %}
+**Warning:** The Ethereum integration is in _alpha_ and is subject to change.
+{% endhint %}
+
+1. Copy the `IGatewayTokenVerifier.sol` ([github](https://github.com/identity-com/on-chain-identity-gateway/blob/develop/ethereum/smart-contract/contracts/interfaces/IGatewayTokenVerifier.sol)) into your contract deployment
+2.  In your contract, implement an instance of the verifier:
+
+    ```
+    import "./IGatewayTokenVerifier.sol";
+
+    // Your contract
+    contract MyContract {
+        IGatewayTokenVerifier verifier;
+
+        constructor (address gatekeeperNetwork) {
+            verifier = IGatewayTokenVerifier(gatekeeperNetwork);
+        }
+    }
+    ```
+
+    Get the `gatekeeperNetwork` key the [selecting-a-pass.md](selecting-a-pass.md "mention") section or by contacting Civic
+3.  Check that your user has a Civic Pass by calling verifyToken
+
+    ```
+    bool verificationResult = verifier.verifyToken(userAddress);
+    ```
+
+## Solana
+
+Import the `solana_gateway` Rust crate from [crates.io](https://crates.io/crates/solana-gateway) and call     `Gateway::verify_gateway_token_account_info`
 
 For your program to be able to call the integration library, the following parameters must be passed as inputs to your dApp's transaction:
 
@@ -11,7 +40,7 @@ For your program to be able to call the integration library, the following param
 * `gatekeeper_network` The gatekeeper network on which the Civic Pass has been issued. For more information about Gatekeeper Networks, see [[#the-gatekeeper-network](how-it-works.md#the-gatekeeper-network "mention")](https://app.gitbook.com/@civic-1/s/gateway/\~/drafts/-MkIXrKS63CteWYs62ME/civic-gateway-dapp-integration-guide/@comments/4423b1d5ed6d47a5b47d93a6998dbe86#the-gatekeeper-network).
 
 {% hint style="info" %}
-Get the `gatekeeper_network` address in the [**Getting Access**](selecting-a-pass.md) section
+Get the `gatekeeper_network` address in the [selecting-a-pass.md](selecting-a-pass.md "mention") section
 {% endhint %}
 
 ```rust
