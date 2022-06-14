@@ -13,15 +13,16 @@
   * [Client-Sent Transactions](civic-pass/ui-integration-react-component/client-sent-transactions.md)
   * [Sample React Project](civic-pass/ui-integration-react-component/sample-react-project.md)
 * [Testing against different environments](civic-pass/testing-against-different-environments.md)
-* [Civic Captcha Pass](civic-pass/civic-captcha-pass.md)
-* [Selecting a Pass](civic-pass/selecting-a-pass.md)
+* [Captcha Verification](civic-pass/civic-captcha-pass.md)
+* [Selecting a Pass Verification](civic-pass/selecting-a-pass.md)
 * [Advanced](civic-pass/advanced/README.md)
   * [API Documentation](civic-pass/advanced/api-documentation.md)
   * [Token Guard - Advanced gating using tokens](civic-pass/advanced/token-guard-advanced-gating-using-tokens.md)
 
-## Candy Machine Integration
+## Integrations
 
-* [Adding Captcha to Candy Machine v2](candy-machine-integration/adding-captcha-to-candy-machine-v2.md)
+* [Adding Captcha to Candy Machine v2](integrations/adding-captcha-to-candy-machine-v2.md)
+* [Realms (DAO Governance)](integrations/realms-dao-governance.md)
 
 ## Legacy APIs (SIP)
 

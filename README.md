@@ -16,6 +16,6 @@ Integrate Civic Pass into your platform and create an identity layer that allows
 
 ### Candy Machine Bot Protection
 
-Protect your Candy Machine mints with our **FREE** Civic Captcha Pass. We provide all the libraries and sample code you need.
+Protect your Candy Machine mints with our **FREE** Civic Pass Captcha Verification. We provide all the libraries and sample code you need.
 
-[Get Started ->](candy-machine-integration/adding-captcha-to-candy-machine-v2.md)
+[Get Started ->](integrations/adding-captcha-to-candy-machine-v2.md)

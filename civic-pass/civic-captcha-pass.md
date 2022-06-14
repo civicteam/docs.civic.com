@@ -1,13 +1,13 @@
-# Civic Captcha Pass
+# Captcha Verification
 
-Civic has integrated its Captcha Pass into Metaplex's Candy Machine to add bot protection by requiring users to complete a captcha before minting.
+Civic has integrated its Civic Pass Captcha Verification into Metaplex's Candy Machine to add bot protection by requiring users to complete a captcha before minting.
 
-#### Civic Captcha Pass anti-bot real person verification
+#### Civic Pass Captcha Verification anti-bot real person verification
 
 To confirm the wallet holder is a real person, users will be required to complete a captcha to verify their liveness and get issued a pass.
 
 {% hint style="info" %}
-Try out the Civic Captcha Pass experience yourself by visiting the [**Pass Portal ->**](https://getpass.civic.com/)\
+Try out the Civic Pass Captcha Verification experience yourself by visiting the [**Pass Portal ->**](https://getpass.civic.com/)\
 \
 **NOTE:**
 
