@@ -22,7 +22,8 @@
 ## Integrations
 
 * [Adding Captcha to Candy Machine v2](integrations/adding-captcha-to-candy-machine-v2.md)
-* [Realms (DAO Governance)](integrations/realms-dao-governance.md)
+* [DAO Governance](integrations/dao-governance/README.md)
+  * [Realms Integration](integrations/dao-governance/realms-integration.md)
 
 ## Legacy APIs (SIP)
 

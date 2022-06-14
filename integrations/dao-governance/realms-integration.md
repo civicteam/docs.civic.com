@@ -2,7 +2,7 @@
 description: Adding Civic Pass to DAOs on Solana
 ---
 
-# Realms (DAO Governance)
+# Realms Integration
 
 [Realms](https://realms.today) is the DAO governance platform on Solana, using the [spl-governance](https://github.com/solana-labs/solana-program-library/tree/master/governance) program.
 
@@ -16,7 +16,7 @@ Below are the Civic Pass verifications available via the Realms UI. To add a pas
 
 |                          |                                                                                                                                                                                                                    |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Bot-Resistance           | See [civic-captcha-pass.md](../civic-pass/civic-captcha-pass.md "mention")                                                                                                                                         |
+| Bot-Resistance           | See [civic-captcha-pass.md](../../civic-pass/civic-captcha-pass.md "mention")                                                                                                                                      |
 | Uniqueness               | A pass that links a user's identity to a single wallet, bringing sybil-attack resistance and non-plutocratic voting systems to Solana DAOs.                                                                        |
 | ID Verification          | ID Document-based full KYC. [Contact us](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a) for access or join our [Discord Server](https://discord.gg/8H5Kdtr5Wn).                                           |
 | ID Verification for DeFi | ID Document-based full KYC with "DeFi-friendly" region restrictions. [Contact us ](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a)for access or join our [Discord Server](https://discord.gg/8H5Kdtr5Wn).  |
