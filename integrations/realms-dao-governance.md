@@ -8,7 +8,7 @@ description: Adding Civic Pass to DAOs on Solana
 
 Civic Pass can be added to a DAO on Realms using the "[plugin](https://github.com/solana-labs/governance-program-library)" system.
 
-When using the [Realms](https://realms.today) UI, no coding is required to integrate Civic Pass into your DAO. Simply follow the steps in the [Realms docs page](https://docs.realms.today/creating-DAOs/gated-DAO).
+When using the [Realms](https://realms.today) UI, no coding is required to integrate Civic Pass into your DAO. Simply follow the steps in the [Realms docs page](https://docs.realms.today/DAO-Management/createing-DAOs/gated-DAO).
 
 #### Choosing a Civic Pass Verification
 
