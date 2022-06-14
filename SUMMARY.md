@@ -8,7 +8,7 @@
 * [How it works](civic-pass/how-it-works.md)
 * [On-chain Integration](civic-pass/on-chain-integration.md)
 * [UI integration](civic-pass/ui-integration-react-component/README.md)
-  * [The Identity Button](civic-pass/ui-integration-react-component/the-identity-buitton.md)
+  * [The Identity Button](civic-pass/ui-integration-react-component/the-identity-button.md)
   * [The Gateway Provider](civic-pass/ui-integration-react-component/the-gateway-provider.md)
   * [Client-Sent Transactions](civic-pass/ui-integration-react-component/client-sent-transactions.md)
   * [Sample React Project](civic-pass/ui-integration-react-component/sample-react-project.md)
