@@ -81,11 +81,11 @@ npm i @civic/solana-gateway-react@latest
 
 You can access the Gateway token by using the Gateway Provider that is part of the library.&#x20;
 
-For a list of required and optional properties, please review the detailed section on the [Gateway Context Provider.](the-gateway-provider.md)
+For a list of required and optional properties, please review the detailed section on the [**Gateway Context Provider.**](the-gateway-provider.md)****
 
 
 
-**Note:** The [useGateway hook ](the-gateway-provider.md#the-usegateway-hook)will only work in components wrapped by `<GatewayProvider>` . The Civic Pass state cannot be used outside of the `<GatewayProvider>` context. It's suggested to place the `<GatewayProvider>` as high up in the component tree as possible, to ensure the Civic Pass state is available throughout the dApp.
+**Note:** The [**useGateway hook** ](the-gateway-provider.md#the-usegateway-hook)will only work in components wrapped by `<GatewayProvider>` . The Civic Pass state cannot be used outside of the `<GatewayProvider>` context. It's suggested to place the `<GatewayProvider>` as high up in the component tree as possible, to ensure the Civic Pass state is available throughout the dApp.
 
 ```jsx
 import { GatewayProvider } from "@civic/solana-gateway-react";
@@ -110,7 +110,7 @@ import IdentityButton from '@civic/solana-gateway-react';
 
 ### Advanced Setup
 
-It is also possible to use a custom button and/or iframe wrapper. See the [documentation on npm](https://www.npmjs.com/package/@civic/solana-gateway-react) for more details.
+It is also possible to use a custom button and/or iframe wrapper. See the [**documentation on npm**](https://www.npmjs.com/package/@civic/solana-gateway-react) for more details.
 
 </details>
 
