@@ -40,6 +40,8 @@ Additionally, we strongly recommend that your dApp always display the current st
 
 Users without a valid Civic Pass associated with their connected wallet can request one at any time. The information that needs to be gathered depends on the gatekeeper network requirements for the network you choose to use with your dApp. For example, a decentralized exchange might use a network that requires the user to go thorough full identity verification and AML checks, while an NFT mint might use a network that only requires the user go through a bot-detection routine before issuing the Civic Pass. Regardless of the concrete use-case, the collection and verification of the information is encapsulated by the Civic Pass react component. Your dApp only needs to keep informed of the current status, i.e. `collecting, in_review, active` . (For an exhaustive list of status refer to the [React component documentation](ui-integration-react-component/the-gateway-provider.md)).
 
+Once a pass has been successfully requested, the user is required to sign the transaction that confirms the pass on chain. For more information please refer to the [client sent transactions](ui-integration-react-component/client-sent-transactions.md) section.
+
 #### 3. Use the dApp
 
 Once the user has an associated valid Civic Pass for their wallet, your dApp UI can re-enable all controls. Your on-chain program, making use of identity.com's [integration libraries](https://github.com/identity-com/on-chain-identity-gateway), can check for a valid Civic Pass during program execution and reject non-compliant users' requested transactions.
