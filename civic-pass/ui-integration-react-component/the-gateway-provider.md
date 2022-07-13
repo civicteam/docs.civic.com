@@ -50,7 +50,7 @@ const { requestGatewayToken } = useGateway()
 This could be triggered by a button, for example:
 
 ```jsx
-<button onclick={requestGatewayToken}>Validate your wallet</button> 
+<button onclick={requestGatewayToken}>Validate your wallet</button>
 ```
 
 Calling this function should open an iframe connected to the Civic Gatekeeper, which will guide the user through a flow to verify their identity and other prerequisites:
@@ -94,6 +94,8 @@ const clusterUrl = // Solana RPC endpoint;
 | **gatekeeperNetwork**       | The public key of the gatekeeper network. This needs to match the network within which the Civic gatekeeper issues tokens.                                                                                                    | `PublicKey` from `@solana/web3.js`                                                                                                                    |
 | **clusterUrl**              | The React Component requires you to pass in a Solana RPC endpoint.                                                                                                                                                            | `string`                                                                                                                                              |
 | **cluster**                 | If the RPC endpoint passed as clusterUrl is not pointing to mainnet-beta, you must specify the cluster. Supported are "devnet" and "testnet". This is so that Civic's servers generate a transaction for the correct cluster. | `string`                                                                                                                                              |
+| **gatekeeperSendsTransaction**                 | The gatekeeper will send the transaction to the blockchain. Defaults to `false`.  When `false`, the user will be prompted to sign and send the transaction. This is handled internally by the React Component. To customize this behavior the `handleTransaction` callback function needs to be provided | `string`                                                                                                                                              |
+| **handleTransaction**                 | An optional callback function that will invoked with a partially signed transaction for the user to sign and send to the blockchain when the property gatekeeperSendsTransaction is false. | `(transaction: Transaction) => Promise<void>`                                                                                                                                              |
 
 ### The useGateway hook
 
@@ -114,7 +116,7 @@ const { requestGatewayToken } = useGateway()
 This could be triggered by a button, for example:
 
 ```jsx
-<button onclick={requestGatewayToken}>Validate your wallet</button> 
+<button onclick={requestGatewayToken}>Validate your wallet</button>
 ```
 
 Calling this function should open an iframe connected to the Civic Gatekeeper, which will guide the user through a flow to verify their identity and other prerequisites:
