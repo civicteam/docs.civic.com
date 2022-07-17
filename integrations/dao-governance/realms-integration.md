@@ -20,3 +20,7 @@ Below are the Civic Pass verifications available via the Realms UI. To add a pas
 | Uniqueness               | A pass that links a user's identity to a single wallet, bringing sybil-attack resistance and non-plutocratic voting systems to Solana DAOs.                                                                        |
 | ID Verification          | ID Document-based full KYC. [Contact us](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a) for access or join our [Discord Server](https://discord.gg/8H5Kdtr5Wn).                                           |
 | ID Verification for DeFi | ID Document-based full KYC with "DeFi-friendly" region restrictions. [Contact us ](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a)for access or join our [Discord Server](https://discord.gg/8H5Kdtr5Wn).  |
+
+{% hint style="success" %}
+Quick Reference: If you are looking for the "Community Voter Weight Add-in" to enter into the DAO Parameters, it is `GgathUhdrCWRHowoRKACjgWhYHfxCEdBi5ViqYN6HVxk`
+{% endhint %}
