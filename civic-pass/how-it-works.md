@@ -2,9 +2,9 @@
 
 ### The On-Chain Civic Pass
 
-A Civic Pass (also referred to as a "token") is an on-chain structure representing the compliance of a wallet owner to a specific set of rules.  The rules to be checked can range from simple bot-detection (e.g. for minting NFTs) to end-to-end identity verification (e.g. for decentralized exchanges). As a dApp developer you can select the rules that users must adhere to for access to your platform.&#x20;
+A Civic Pass (also referred to as a "token") is an on-chain structure representing the compliance of a wallet owner to a specific set of rules. The rules to be checked can range from simple bot-detection (e.g. for minting NFTs) to end-to-end identity verification (e.g. for decentralized exchanges). As a dApp developer you can select the rules that users must adhere to for access to your platform.
 
-The presence of an active Civic Pass proves that a user's wallet was verified according your dApp's requirements. Now, your dApp can verify the state of a wallet's Civic Pass before allowing transactions through, thus blocking non-compliant users.&#x20;
+The presence of an active Civic Pass proves that a user's wallet was verified according your dApp's requirements. Now, your dApp can verify the state of a wallet's Civic Pass before allowing transactions through, thus blocking non-compliant users.
 
 {% hint style="info" %}
 **Your dApp doesn't have to handle or store any user PII (Personal Identifiable Information).**
@@ -18,7 +18,7 @@ A Civic Pass is always issued for a specific _Gatekeeper Network._ For the purpo
 
 In general, your user's wallet can be associated with multiple Civic Passes (1:N), however, a Civic Pass is only ever issued for a single specific Gatekeeper Network (1:1).
 
-![](<../.gitbook/assets/image (1) (1).png>)
+![](<../.gitbook/assets/image (1) (1) (1).png>)
 
 When integrating Civic Pass in your dApp, you define which particular Gatekeeper Network you "trust". Should the user already have a valid Civic Pass for this trusted network, they can already proceed. If a Civic Pass for the network is not present, then your dApp can trigger the process for the user to request a new Civic Pass.
 
@@ -28,7 +28,7 @@ You can find more details on the available networks and their rulesets here: [se
 
 To get a holistic understanding of Civic Pass, let's break down the journey a new user of your dApp will take.
 
-![Sequence diagram of a user connecting and issuing a Civic Pass.](<../.gitbook/assets/image (4).png>)
+![Sequence diagram of a user connecting and issuing a Civic Pass.](<../.gitbook/assets/image (4) (1).png>)
 
 #### 1. Check for a valid Civic Pass
 
@@ -46,4 +46,4 @@ Once a pass has been successfully requested, the user is required to sign the tr
 
 Once the user has an associated valid Civic Pass for their wallet, your dApp UI can re-enable all controls. Your on-chain program, making use of identity.com's [integration libraries](https://github.com/identity-com/on-chain-identity-gateway), can check for a valid Civic Pass during program execution and reject non-compliant users' requested transactions.
 
-See  [on-chain-integration.md](on-chain-integration.md "mention") for more details.
+See [on-chain-integration.md](on-chain-integration.md "mention") for more details.
