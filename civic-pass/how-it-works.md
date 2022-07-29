@@ -28,7 +28,7 @@ You can find more details on the available networks and their rulesets here: [se
 
 To get a holistic understanding of Civic Pass, let's break down the journey a new user of your dApp will take.
 
-![Sequence diagram of a user connecting and issuing a Civic Pass.](<../.gitbook/assets/image (4) (1).png>)
+![Sequence diagram of a user connecting and issuing a Civic Pass.](<../.gitbook/assets/image (4).png>)
 
 #### 1. Check for a valid Civic Pass
 
@@ -44,6 +44,6 @@ Once a pass has been successfully requested, the user is required to sign the tr
 
 #### 3. Use the dApp
 
-Once the user has an associated valid Civic Pass for their wallet, your dApp UI can re-enable all controls. Your on-chain program, making use of identity.com's [integration libraries](https://github.com/identity-com/on-chain-identity-gateway), can check for a valid Civic Pass during program execution and reject non-compliant users' requested transactions.
+Once the user has an associated valid Civic Pass for their wallet, your dApp UI can re-enable all controls. Your on-chain program, making use of identity.com's [integration libraries](https://github.com/identity-com/on-chain-identity-gateway) (or learn more on [The Gateway Protocol whitepaper](https://github.com/identity-com/gateway-whitepaper/blob/main/gateway-whitepaper.pdf)), can check for a valid Civic Pass during program execution and reject non-compliant users' requested transactions.
 
 See [on-chain-integration.md](on-chain-integration.md "mention") for more details.
