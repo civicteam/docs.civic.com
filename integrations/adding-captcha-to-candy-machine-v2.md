@@ -4,7 +4,7 @@ Want to keep bots out your next NFT drop?&#x20;
 
 We are fully integrated into MetaPlex's Candy Machine v2 to enable captcha verification prior to minting.
 
-[Go to Candy Machine Repo ->](https://github.com/metaplex-foundation/metaplex/tree/master/js/packages/cli)&#x20;
+[<mark style="color:orange;">Go to Candy Machine Repo -></mark>](https://github.com/metaplex-foundation/metaplex/tree/master/js/packages/cli) <mark style="color:orange;"></mark>&#x20;
 
 Enabling captcha requires the gatekeeperNetwork values below to your candy machine settings:
 

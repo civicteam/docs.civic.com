@@ -6,7 +6,7 @@
 **Warning:** The Ethereum integration is in _alpha_ and is subject to change.
 {% endhint %}
 
-1. Copy the `IGatewayTokenVerifier.sol` ([github](https://github.com/identity-com/on-chain-identity-gateway/blob/develop/ethereum/smart-contract/contracts/interfaces/IGatewayTokenVerifier.sol)) into your contract deployment
+1. Copy the `IGatewayTokenVerifier.sol` (<mark style="color:orange;">github</mark>) into your contract deployment
 2.  In your contract, implement an instance of the verifier:
 
     ```
@@ -22,7 +22,7 @@
     }
     ```
 
-    Get the `gatekeeperNetwork` key the [selecting-a-pass.md](selecting-a-pass.md "mention") section or by contacting Civic
+    Get the `gatekeeperNetwork` key the [selecting-a-pass.md](selecting-a-pass.md "mention") <mark style="color:orange;"></mark> section or by contacting Civic
 3.  Check that your user has a Civic Pass by calling verifyToken
 
     ```

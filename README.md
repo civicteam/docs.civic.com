@@ -12,10 +12,10 @@ Civic Pass enables dApps to allow vetted users to participate in their offerings
 
 Integrate Civic Pass into your platform and create an identity layer that allows for a permissioned dApp platform, be it an NFT mint or marketplace, a metaverse, or any other projects you might come up with.
 
-[Get Started ->](civic-pass/overview.md)&#x20;
+[<mark style="color:orange;">Get Started -></mark>](civic-pass/overview.md) <mark style="color:orange;"></mark>&#x20;
 
 ### Candy Machine Bot Protection
 
 Protect your Candy Machine mints with our **FREE** Civic Pass Captcha Verification. We provide all the libraries and sample code you need.
 
-[Get Started ->](integrations/adding-captcha-to-candy-machine-v2.md)
+[<mark style="color:orange;">Get Started -></mark>](integrations/adding-captcha-to-candy-machine-v2.md)<mark style="color:orange;"></mark>
