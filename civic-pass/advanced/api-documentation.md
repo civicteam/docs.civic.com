@@ -1,7 +1,7 @@
 # API Documentation
 
 {% hint style="warning" %}
-Note: The preferred way to integrate with the Civic Pass API is via the [React Component](../ui-integration-react-component/). Use this if you are an advanced customer.
+Note: The preferred way to integrate with the Civic Pass API is via the [<mark style="color:orange;">React Component</mark>](../ui-integration-react-component/). Use this if you are an advanced customer.
 {% endhint %}
 
 {% swagger src="../../.gitbook/assets/doc (2).yml" path="undefined" method="undefined" %}

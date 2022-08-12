@@ -7,7 +7,7 @@ Civic has integrated its Civic Pass Captcha Verification into Metaplex's Candy M
 To confirm the wallet holder is a real person, users will be required to complete a captcha to verify their liveness and get issued a pass.
 
 {% hint style="info" %}
-Try out the Civic Pass Captcha Verification experience yourself by visiting the [**Pass Portal ->**](https://getpass.civic.com/)\
+Try out the Civic Pass Captcha Verification experience yourself by visiting the [<mark style="color:orange;">**Pass Portal ->**</mark>](https://getpass.civic.com/)\
 \
 **NOTE:**
 
