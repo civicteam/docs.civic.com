@@ -4,6 +4,12 @@ Want to keep bots out your next NFT drop?&#x20;
 
 We are fully integrated into MetaPlex's Candy Machine v2 to enable captcha verification prior to minting.
 
+{% hint style="info" %}
+Please review the [Civic Pass Terms of Service](https://www.civic.com/legal/terms-of-service-civic-pass-v1/) carefully before continuing. By installing or integrating the Civic Pass (or Captcha) plugin, you agree to Civic Pass Terms of Service on behalf of the organization, company or other legal entity for which you act; and represent that you have the authority to bind the same.
+
+If you do not have such authority, or if you do not agree with this the Civic Pass Terms of Service, you must not continue and may not use the Services.
+{% endhint %}
+
 [Go to Candy Machine Repo ->](https://github.com/metaplex-foundation/metaplex/tree/master/js/packages/cli)&#x20;
 
 Enabling captcha requires the gatekeeperNetwork values below to your candy machine settings:

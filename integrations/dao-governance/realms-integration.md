@@ -16,6 +16,12 @@ See section below for Civic Pass verifications available via the Realms UI. To a
 Quick Reference: If you are looking for the "Community Voter Weight Add-in" to enter into the DAO Parameters, it is `GgathUhdrCWRHowoRKACjgWhYHfxCEdBi5ViqYN6HVxk`
 {% endhint %}
 
+{% hint style="info" %}
+Please review the [Civic Pass Terms of Service](https://www.civic.com/legal/terms-of-service-civic-pass-v1/) carefully before continuing. By installing or integrating the Civic Pass (or Captcha) plugin, you agree to Civic Pass Terms of Service on behalf of the organization, company or other legal entity for which you act; and represent that you have the authority to bind the same.
+
+If you do not have such authority, or if you do not agree with this the Civic Pass Terms of Service, you must not continue and may not use the Services.
+{% endhint %}
+
 #### Step-by-Step Tutorial: Setting up a DAO on Realms and protecting it with Civic Pass
 
 {% embed url="https://www.youtube.com/watch?ab_channel=Civic&v=vNqeCZ7YBIE" %}
