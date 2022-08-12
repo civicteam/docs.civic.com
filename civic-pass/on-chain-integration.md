@@ -6,7 +6,7 @@
 **Warning:** The Ethereum integration is in _alpha_ and is subject to change.
 {% endhint %}
 
-1. Copy the `IGatewayTokenVerifier.sol` (<mark style="color:orange;">github</mark>) into your contract deployment
+1. Copy the `IGatewayTokenVerifier.sol` ([<mark style="color:orange;">github</mark>](https://github.com/identity-com/on-chain-identity-gateway/blob/develop/ethereum/smart-contract/contracts/interfaces/IGatewayTokenVerifier.sol)) into your contract deployment
 2.  In your contract, implement an instance of the verifier:
 
     ```
