@@ -2,9 +2,9 @@
 
 Want to keep bots out your next NFT drop?&#x20;
 
-We are fully integrated into MetaPlex's Candy Machine v2 to enable captcha verification prior to minting.
+We are fully integrated into MetaPlex's Candy Machine v2 to enable captcha verification prior to minting.&#x20;
 
-[<mark style="color:orange;">Go to Candy Machine Repo -></mark>](https://github.com/metaplex-foundation/metaplex/tree/master/js/packages/cli) <mark style="color:orange;"></mark>&#x20;
+[<mark style="color:orange;">Visit the reference Candy Machine with integrated CivicPass -></mark>](https://github.com/metaplex-foundation/candy-machine-ui)
 
 Enabling captcha requires the gatekeeperNetwork values below to your candy machine settings:
 
@@ -14,6 +14,8 @@ Enabling captcha requires the gatekeeperNetwork values below to your candy machi
     "expireOnUse": true
   },
 ```
+
+For detailed configuration instructions on how to configure and deplo your mint, please refer to MetaPlex's [Sugar repository](https://github.com/metaplex-foundation/sugar).
 
 When captcha is enabled, a user will be issued a Civic Captcha Pass after successfully completing the captcha challenge and automatically checked by the Candy Machine prior to minting.&#x20;
 
