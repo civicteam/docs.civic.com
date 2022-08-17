@@ -1,6 +1,6 @@
 # Sample React Project
 
-We have created an example React project that shows how you would go about integrating the different features provided by our example project on [Github](https://github.com/civicteam/civic-pass-template).&#x20;
+We have created an example React project that shows how you would go about integrating the different features provided by our example project on [<mark style="color:orange;">Github</mark>](https://github.com/civicteam/civic-pass-template).&#x20;
 
 We have broken down the project into the following examples, split into Ethereum and Solana examples:
 

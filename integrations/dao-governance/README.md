@@ -13,7 +13,7 @@ Civic Pass may be integrated into DAO platforms and solves many of the issues yo
 Example use-cases are:
 
 * Sybil-resistance and one-person-one-vote
-* DAOs with [quadratic voting systems](https://en.wikipedia.org/wiki/Quadratic\_voting)
+* DAOs with [<mark style="color:orange;">quadratic voting systems</mark>](https://en.wikipedia.org/wiki/Quadratic\_voting)<mark style="color:orange;"></mark>
 * Location-specific DAOs
 * Bot-resistance
 * Age-gated DAOs

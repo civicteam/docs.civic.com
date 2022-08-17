@@ -10,7 +10,7 @@ description: 'Securely retrieving verified information is a four step process:'
 4. From your back-end, using the Civic server SDK, exchange the JWT token for the requested verified user information.
 
 {% hint style="info" %}
-You will need a free [Civic Integration Portal](https://integrate.civic.com/) account to access Civic services. Basic signup & login requests are enabled by default while access to our KYC/Proof of Identity service requires Civic approval. You can request access to our KYC service through the integration portal.
+You will need a free [<mark style="color:orange;">Civic Integration Portal</mark>](https://integrate.civic.com/) account to access Civic services. Basic signup & login requests are enabled by default while access to our KYC/Proof of Identity service requires Civic approval. You can request access to our KYC service through the integration portal.
 {% endhint %}
 
 ![](../../.gitbook/assets/Civic-Integration-Diagram.jpeg)

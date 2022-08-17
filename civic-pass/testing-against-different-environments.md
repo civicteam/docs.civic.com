@@ -1,6 +1,6 @@
 # Testing against different environments
 
-Please note we have different rules based on the different Gatekeeper networks. Please refer to the [f<mark style="color:orange;">ollowing page</mark>](https://docs.civic.com/civic-pass/selecting-a-pass) <mark style="color:orange;"></mark> for selecting a Pass.
+Please note we have different rules based on the different Gatekeeper networks. Please refer to the [<mark style="color:orange;">following page</mark>](https://docs.civic.com/civic-pass/selecting-a-pass) <mark style="color:orange;"></mark> for selecting a Pass.
 
 You can test using the **Civic Captcha Pass** against **Production**, using the following Gatekeeper network key:
 

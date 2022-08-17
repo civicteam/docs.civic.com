@@ -179,4 +179,4 @@ Note: The `documents.genericId.type` values listed are not exhaustive. It depend
 | Label                       | Possible Values                                                                                                                                                               |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | documents.genericId.type    | <p><code>Passport</code><br><code>Driving License</code><br><code>Visa</code><br><code>ID Card</code><br><code>Biometric Residence Permit</code><br><code>Voter ID</code></p> |
-| documents.genericId.country | Three letter ISO code: [ALPHA-3 Standard](https://en.wikipedia.org/wiki/ISO\_3166-1\_alpha-3) eg: USA                                                                         |
+| documents.genericId.country | Three letter ISO code: [<mark style="color:orange;">ALPHA-3 Standard</mark>](https://en.wikipedia.org/wiki/ISO\_3166-1\_alpha-3) <mark style="color:orange;"></mark> eg: USA  |
