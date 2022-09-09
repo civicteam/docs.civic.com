@@ -1,6 +1,6 @@
 ## civic.me profile library
 
-With [civic.me](https://civic.me) users can publish a public profile, with a custom name, headline and profile image selected from the user's NFTs. The [Civic.me profile](https://www.npmjs.com/package/@civic/profile) library is provided to allow for easy retrieval of this profile data. By supplying a wallet address, [did](https://did.civic.com/) or (SNS name)[https://naming.bonfida.org/], a user's public civic.me profile data can easily be retrieved.
+With [civic.me](https://civic.me) users can publish a public profile with a custom name, headline and profile image selected from their NFTs. The [Civic.me profile](https://www.npmjs.com/package/@civic/profile) library is provided to allow for easy retrieval of this profile data. By supplying a wallet address, [did](https://did.civic.com/) or (.sol domain)[https://naming.bonfida.org/] a user's public civic.me profile data can easily be retrieved.
 
 
 ## Library Usage
@@ -10,7 +10,7 @@ Simply import the library and load a user's profile as follows:
 import { CivicProfile, ProfileResult } from "@civic/profile";
 
 ...
-// Query using a wallet address, did or SNS name
+// Query using a wallet address, did or .sol domain
 const profile: ProfileResult = await CivicProfile.get("query");
 ```
 
