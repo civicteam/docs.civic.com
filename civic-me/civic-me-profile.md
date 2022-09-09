@@ -4,16 +4,18 @@ With [civic.me](https://civic.me), users can publish a public profile with a cus
 
 The [civic.me profile](https://www.npmjs.com/package/@civic/profile) SDK allows for easy retrieval of this profile data, through a wallet address, [did](https://did.civic.com/) or [.sol domain](https://naming.bonfida.org/).
 
-### SDK Usage
+## SDK Usage
+
+### Loading the profile
 
 Simply import the [SDK](https://www.npmjs.com/package/@civic/profile) and load a profile as follows:
 
 ```javascript
-import { CivicProfile, ProfileResult } from "@civic/profile";
+import { CivicProfile, Profile } from "@civic/profile";
 
 ...
 // Query using a wallet address, did or .sol domain
-const profile: ProfileResult = await CivicProfile.get("query");
+const profile: Profile = await CivicProfile.get("query");
 ```
 
 The corresponding profile result will contain the following data:
@@ -34,3 +36,35 @@ profile.image?.url
 // A civic.me profile headline, if available
 profile.headline?.value
 ```
+
+### Getting a list of associated public keys
+```javascript
+const profile: Profile = await CivicProfile.get("query");
+const linkedKeys: PublicKey[] = await profile.getLinkedPublicKeys();
+```
+
+This returns a list of Solana public keys associated with the profile.
+
+### Getting a list of Civic passes
+
+This returns a list of Civic passes owned by the profile's keys.
+
+```javascript
+// A Solana Connection is required in order to query for passes. Public devnet used as an example here:
+import { Connection, clusterApiUrl } from "@solana/web3.js";
+import { CivicProfile, Profile, GatewayToken } from "@civic/profile";
+
+const solanaConnection: Connection =  new Connection(clusterApiUrl("devnet"));
+const profile: Profile = await CivicProfile.get("query", { solana: { connection }});
+
+const passes: GatewayToken[] = await profile.getPasses();
+```
+
+By default, multiple pass types are queried. A blockchain RPC call is made for each combination of public key & pass type.
+The list of pass types to query can be overridden.
+A pass type is represented by its corresponding Gatekeeper Network address on Solana.
+
+```javascript
+const passes: GatewayToken[] = await profile.getPasses(["ni1jXzPTq1yTqo67tUmVgnp22b1qGAAZCtPmHtskqYG"]);
+```
+
