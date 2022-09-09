@@ -19,6 +19,9 @@
   * [API Documentation](civic-pass/advanced/api-documentation.md)
   * [Token Guard - Advanced gating using tokens](civic-pass/advanced/token-guard-advanced-gating-using-tokens.md)
 
+## Civic Me
+* [civic.me profile library](civic-me/civic-me-profile.md)
+
 ## Integrations
 
 * [Adding Captcha to Candy Machine v2](integrations/adding-captcha-to-candy-machine-v2.md)
