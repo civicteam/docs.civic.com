@@ -20,7 +20,8 @@
   * [Token Guard - Advanced gating using tokens](civic-pass/advanced/token-guard-advanced-gating-using-tokens.md)
 
 ## Civic Me
-* [civic.me profile library](civic-me/civic-me-profile.md)
+
+* [Profile SDK](civic-me/civic-me-profile.md)
 
 ## Integrations
 
