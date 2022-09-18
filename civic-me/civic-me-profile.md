@@ -2,6 +2,8 @@
 
 With [<mark style="color:orange;">civic.me</mark>](https://civic.me), users can publish a public profile with a custom name, headline and profile image selected from their NFTs.
 
+![](../.gitbook/assets/Civic-Me-Profile.png)
+
 The [<mark style="color:orange;">civic.me profile</mark>](https://www.npmjs.com/package/@civic/profile) SDK allows for easy retrieval of this profile data, through a wallet address, [<mark style="color:orange;">did</mark>](https://did.civic.com/) or [<mark style="color:orange;">.sol domain</mark>](https://naming.bonfida.org/).
 
 ## SDK Usage
