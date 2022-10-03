@@ -11,7 +11,7 @@ The `auth-code-received` event is emitted as soon as the requested verified info
 
 ### user-cancelled <a href="#user-cancelled" id="user-cancelled"></a>
 
-The `user-cancelled` event is emitted when the user cancels the process on his Civic Wallet app.
+The `user-cancelled` event is emitted when the user cancels the process on their Civic Wallet app.
 
 | Field | Description                                   |
 | ----- | --------------------------------------------- |
