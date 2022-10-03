@@ -21,7 +21,7 @@
 
 ## Civic Me
 
-* [Profile SDK](civic-me/civic-me-profile.md)
+* [Dynamic Web3 Profiles](civic-me/civic-me-profile.md)
 
 ## Integrations
 

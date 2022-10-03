@@ -1,12 +1,29 @@
-# Profile SDK
+# Dynamic Web3 Profiles
 
-With [<mark style="color:orange;">civic.me</mark>](https://civic.me), users can publish a public profile with a custom name, headline and profile image selected from their NFTs.
+A dynamic Web3 profile is a [Civic.me](http://civic.me) profile with a custom name, headline, and PFP NFT image selected by the user from the associated  .sol, did, or wallet address.&#x20;
 
 ![](../.gitbook/assets/Civic-Me-Profile.png)
 
-The [<mark style="color:orange;">civic.me profile</mark>](https://www.npmjs.com/package/@civic/profile) SDK allows for easy retrieval of this profile data, through a wallet address, [<mark style="color:orange;">did</mark>](https://did.civic.com/) or [<mark style="color:orange;">.sol domain</mark>](https://naming.bonfida.org/).
+Use this SDK for easy retrieval of the [civic.me](http://civic.me) profile data and the [Civic passes](../civic-pass/selecting-a-pass.md) associated with it.&#x20;
+
+<div>
+
+<figure><img src="../.gitbook/assets/realms-civic-sdk-sc1 (1).png" alt=""><figcaption><p>Realms implementation of Civic's Dynamic Web3 Proflies</p></figcaption></figure>
+
+ 
+
+<figure><img src="../.gitbook/assets/realms-civic-sdk-sc2.png" alt=""><figcaption></figcaption></figure>
+
+</div>
 
 ## SDK Usage
+
+{% hint style="success" %}
+Use Cases
+
+* Utilize addresses to gain access to rich profile information
+* Check for Civic Passes - Provides verification properties of addresses such as age check, uniqueness, ID document verification, and [KYC](https://www.civic.com/blog/are-you-looking-for-a-kyc-aml-solution-for-your-dapp/).&#x20;
+{% endhint %}
 
 ### Loading the profile
 
@@ -39,16 +56,7 @@ profile.image?.url
 profile.headline?.value
 ```
 
-### Getting a list of associated public keys
-
-```javascript
-const profile: Profile = await CivicProfile.get("query");
-const linkedKeys: PublicKey[] = await profile.getLinkedPublicKeys();
-```
-
-This returns a list of Solana public keys associated with the profile.
-
-### Getting a list of Civic passes
+### Getting a list of Civic Passes
 
 This returns a list of Civic passes owned by the profile's keys.
 
@@ -67,4 +75,27 @@ By default, multiple pass types are queried. A blockchain RPC call is made for e
 
 ```javascript
 const passes: GatewayToken[] = await profile.getPasses(["ni1jXzPTq1yTqo67tUmVgnp22b1qGAAZCtPmHtskqYG"]);
+```
+
+### Getting a list of associated public keys
+
+This returns a list of Solana public keys associated with the profile.
+
+```javascript
+const profile: Profile = await CivicProfile.get("query");
+const linkedKeys: PublicKey[] = await profile.getLinkedPublicKeys();
+```
+
+A queried profile returns the following data:
+
+```javascript
+        GatewayToken {
+        issuingGatekeeper: PublicKey,
+        gatekeeperNetwork: PublicKey,
+        owner: PublicKey,
+        state: 'ACTIVE',
+        publicKey: PublicKey,
+        programId: PublicKey,
+        expiryTime: 1663038793
+      }
 ```
