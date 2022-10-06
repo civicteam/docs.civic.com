@@ -33,8 +33,8 @@ Simply import the [<mark style="color:orange;">SDK</mark>](https://www.npmjs.com
 import { CivicProfile, Profile } from "@civic/profile";
 
 ...
-// Query using a wallet address, did or .sol domain
-const profile: Profile = await CivicProfile.get("query");
+// Query a user's profile using a wallet address, did or .sol domain
+const profile: Profile = await CivicProfile.get(user);
 ```
 
 The corresponding profile result will contain the following data:
@@ -66,7 +66,7 @@ import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { CivicProfile, Profile, GatewayToken } from "@civic/profile";
 
 const solanaConnection: Connection =  new Connection(clusterApiUrl("devnet"));
-const profile: Profile = await CivicProfile.get("query", { solana: { connection }});
+const profile: Profile = await CivicProfile.get(user, { solana: { connection }});
 
 const passes: GatewayToken[] = await profile.getPasses();
 ```
@@ -82,7 +82,7 @@ const passes: GatewayToken[] = await profile.getPasses(["ni1jXzPTq1yTqo67tUmVgnp
 This returns a list of Solana public keys associated with the profile.
 
 ```javascript
-const profile: Profile = await CivicProfile.get("query");
+const profile: Profile = await CivicProfile.get(user);
 const linkedKeys: PublicKey[] = await profile.getLinkedPublicKeys();
 ```
 
