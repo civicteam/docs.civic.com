@@ -16,6 +16,10 @@ By default the React Component will orchestrate the logic for signing and sendin
 
 If the custom `handleTransaction` function is provided it is the responsibility of the integrator to either sign and send the transaction or just send the transaction based on the signatures requirement of the Transaction. The integrator also has the option to extend the transaction before it is signed and sent, in order to minimize the number of separate transactions that the user is required to approve.
 
+## Gatekeeper-Sent Transactions
+
+> :warning: Gatekeeper-Sent Transactions are only available for specific networks and on a per partner basis. Reach out to us on [<mark style="color:orange;">Discord</mark>]([https://github.com/civicteam/civic-pass-template](https://discord.gg/8H5Kdtr5Wn)) if you are interested in enabling this option.
+
 The client sent transaction can be changed by specifying the `gatekeeperSendsTransaction` property to true, as follows:
 
 ```typescript
@@ -28,6 +32,6 @@ The client sent transaction can be changed by specifying the `gatekeeperSendsTra
 </GatewayProvider>
 ```
 
-This changes the behavior so that the gatekeeper signs and sends the transaction to create the token. Please note that this configuration is not supported for all networks.
+This changes the behavior so that the gatekeeper signs and sends the transaction to create the token.
 
 Please refer to the example project on [<mark style="color:orange;">Github</mark>](https://github.com/civicteam/civic-pass-template) for more information.
