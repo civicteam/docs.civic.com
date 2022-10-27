@@ -22,6 +22,7 @@
 ## Civic Me
 
 * [Dynamic Web3 Profiles](civic-me/civic-me-profile.md)
+* [Dialect Civic Profile Integration](civic-me/dialect-civic-profile-integration.md)
 
 ## Integrations
 

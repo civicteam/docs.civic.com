@@ -18,7 +18,7 @@ A Civic Pass is always issued for a specific _Gatekeeper Network._ For the purpo
 
 In general, your user's wallet can be associated with multiple Civic Passes (1:N), however, a Civic Pass is only ever issued for a single specific Gatekeeper Network (1:1).
 
-![](<../.gitbook/assets/image (1) (1) (1).png>)
+![](<../.gitbook/assets/image (1) (1) (1) (1) (1) (1).png>)
 
 When integrating Civic Pass in your dApp, you define which particular Gatekeeper Network you "trust". Should the user already have a valid Civic Pass for this trusted network, they can already proceed. If a Civic Pass for the network is not present, then your dApp can trigger the process for the user to request a new Civic Pass.
 
@@ -40,10 +40,10 @@ Additionally, we strongly recommend that your dApp always display the current st
 
 Users without a valid Civic Pass associated with their connected wallet can request one at any time. The information that needs to be gathered depends on the gatekeeper network requirements for the network you choose to use with your dApp. For example, a decentralized exchange might use a network that requires the user to go thorough full identity verification and AML checks, while an NFT mint might use a network that only requires the user go through a bot-detection routine before issuing the Civic Pass. Regardless of the concrete use-case, the collection and verification of the information is encapsulated by the Civic Pass react component. Your dApp only needs to keep informed of the current status, i.e. `collecting, in_review, active` . (For an exhaustive list of status refer to the [<mark style="color:orange;">React component documentation</mark>](ui-integration-react-component/the-gateway-provider.md).)
 
-Once a pass has been successfully requested, the user is required to sign the transaction that submits the pass on chain. For more information please refer to the <mark style="color:orange;"></mark> [<mark style="color:orange;">client sent transactions</mark>](ui-integration-react-component/client-sent-transactions.md) section.
+Once a pass has been successfully requested, the user is required to sign the transaction that submits the pass on chain. For more information please refer to the [<mark style="color:orange;">client sent transactions</mark>](ui-integration-react-component/client-sent-transactions.md) section.
 
 #### 3. Use the dApp
 
-Once the user has an associated valid Civic Pass for their wallet, your dApp UI can re-enable all controls. Your on-chain program, making use of identity.com's [<mark style="color:orange;">integration libraries</mark>](https://github.com/identity-com/on-chain-identity-gateway) (or learn more on <mark style="color:orange;"></mark> [<mark style="color:orange;">The Gateway Protocol whitepaper</mark>](https://github.com/identity-com/gateway-whitepaper/blob/main/gateway-whitepaper.pdf)), can check for a valid Civic Pass during program execution and reject non-compliant users' requested transactions.
+Once the user has an associated valid Civic Pass for their wallet, your dApp UI can re-enable all controls. Your on-chain program, making use of identity.com's [<mark style="color:orange;">integration libraries</mark>](https://github.com/identity-com/on-chain-identity-gateway) (or learn more on [<mark style="color:orange;">The Gateway Protocol whitepaper</mark>](https://github.com/identity-com/gateway-whitepaper/blob/main/gateway-whitepaper.pdf)), can check for a valid Civic Pass during program execution and reject non-compliant users' requested transactions.
 
 See [on-chain-integration.md](on-chain-integration.md "mention") for more details.
