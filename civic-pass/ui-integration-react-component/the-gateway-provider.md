@@ -2,7 +2,7 @@
 
 The **GatewayProvider** is a React component that gives children access to the GatewayContext through the **useGateway** function. This component holds the state for a given Gateway Token or Gateway Token request.
 
-Available for [<mark style="color:orange;">Ethereum</mark>](the-gateway-provider.md#ethereum) and [<mark style="color:orange;">Solana</mark>](the-gateway-provider.md#solana)<mark style="color:orange;"></mark>
+Available for [<mark style="color:orange;">Ethereum</mark>](the-gateway-provider.md#ethereum) and [<mark style="color:orange;">Solana</mark>](the-gateway-provider.md#solana)
 
 ## Ethereum
 
@@ -11,7 +11,7 @@ Available for [<mark style="color:orange;">Ethereum</mark>](the-gateway-provider
 {% endhint %}
 
 {% hint style="info" %}
-**Note:** The React component uses [<mark style="color:orange;">ethers.js</mark>](https://www.npmjs.com/package/ethers)<mark style="color:orange;"></mark>
+**Note:** The React component uses [<mark style="color:orange;">ethers.js</mark>](https://www.npmjs.com/package/ethers)
 {% endhint %}
 
 ```typescript
@@ -73,14 +73,13 @@ const { gatewayStatus, gatewayToken } = useGateway();
 
 ```typescript
 import { GatewayProvider } from "@civic/solana-gateway-react";
-
-const clusterUrl = // Solana RPC endpoint;
+import { Connection, clusterApiUrl } from '@solana/web3.js';
 
 <GatewayProvider
+  connection={new Connection(clusterApiUrl("mainnet-beta"))}
+  cluster="mainnet-beta"
   wallet={wallet}
-  gatekeeperNetwork={gatekeeperNetwork}
-  clusterUrl={clusterUrl}
-  >
+  gatekeeperNetwork={gatekeeperNetwork}>
 </GatewayProvider>
 ```
 
@@ -90,8 +89,8 @@ const clusterUrl = // Solana RPC endpoint;
 | **wallet.publicKey**           | The user wallet's public key                                                                                                                                                                                                                                                                            | `PublicKey` from `@solana/web3.js`                                                                                                                    |
 | **wallet.signTransaction**     | A function that asks the user's wallet to sign a transaction.                                                                                                                                                                                                                                           | <p><code>(transaction: Transaction) => Promise&#x3C;Transaction></code></p><p>where <code>Transaction</code> is from <code>@solana/web3.js</code></p> |
 | **gatekeeperNetwork**          | The public key of the gatekeeper network. This needs to match the network within which the Civic gatekeeper issues tokens.                                                                                                                                                                              | `PublicKey` from `@solana/web3.js`                                                                                                                    |
-| **clusterUrl**                 | The React Component requires you to pass in a Solana RPC endpoint.                                                                                                                                                                                                                                      | `string`                                                                                                                                              |
-| **cluster**                    | If the RPC endpoint passed as clusterUrl is not pointing to mainnet-beta, you must specify the cluster. Supported are "devnet" and "testnet". This is so that Civic's servers generate a transaction for the correct cluster.                                                                           | `string`                                                                                                                                              |
+| **connection**                 | A solana connection to any solana network, with a recommended commitment of 'processed'                                                                                                                                                                                                                 | `Connection` from `@solana/web3.js`                                                                                                                   |
+| **cluster**                    | the Solana network to use, i.e. devnet, mainnet-beta, testnet. This defaults to mainnet-beta, so should be set if a different connection endpoint is used than mainnet-beta                                                                                                                             | `string`                                                                                                                                              |
 | **gatekeeperSendsTransaction** | The gatekeeper will send the transaction to the blockchain. Defaults to `false`. When `false`, the user will be prompted to sign and send the transaction. This is handled internally by the React Component. To customize this behavior the `handleTransaction` callback function needs to be provided | `string`                                                                                                                                              |
 | **handleTransaction**          | An optional callback function that will invoked with a partially signed transaction for the user to sign and send to the blockchain when the property gatekeeperSendsTransaction is false.                                                                                                              | `(transaction: Transaction) => Promise<void>`                                                                                                         |
 
@@ -149,7 +148,7 @@ The following is a list of all the possible states of the Civic Pass
 **Status where a Civic Pass may not exist yet**
 
 | **Status**                    | Description                                                                                                                                                                                                                                                                                                       | Behaviour when triggered                                                                                        |
-| ----------------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| --------------------------------------------------------------------------------------------------------------- |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
 | `UNKNOWN`                     | No user wallet is connected or no gatekeeper network set                                                                                                                                                                                                                                                          | _None_                                                                                                          |
 | `CHECKING`                    | Checking whether a Pass exists for the connected wallet.                                                                                                                                                                                                                                                          | _None_                                                                                                          |
 | `NOT_REQUESTED`               | The wallet is connected but no Pass has been requested yet.                                                                                                                                                                                                                                                       | Opens the Civic Pass modal dialog and initiates the token request flow                                          |
