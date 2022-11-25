@@ -3,7 +3,7 @@ info:
   title: "Gatekeeper API"
   version: "2022-05-31T08:49:03Z"
 servers:
-  - url: "https://gatekeeper-api.civic.finance/"
+  - url: "https://gatekeeper-api.civic.com"
 paths:
   /v1/token/{chain}:
     post:
@@ -20,6 +20,11 @@ paths:
               - solana
               - casper
               - ethereum
+        - name: "gatekeeperNetwork"
+          in: "query"
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -52,6 +57,11 @@ paths:
           required: true
           schema:
             type: string
+        - name: "gatekeeperNetwork"
+          in: "query"
+          required: true
+          schema:
+            type: string
     head:
       responses:
         '200':
@@ -71,6 +81,11 @@ paths:
           required: true
           schema:
             type: "string"
+        - name: "gatekeeperNetwork"
+          in: "query"
+          required: true
+          schema:
+            type: string
     patch:
       responses:
         '200':
@@ -94,6 +109,11 @@ paths:
           required: true
           schema:
             type: "string"
+        - name: "gatekeeperNetwork"
+          in: "query"
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:

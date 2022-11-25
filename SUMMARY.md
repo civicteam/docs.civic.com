@@ -17,6 +17,7 @@
 * [Selecting a Pass Verification](civic-pass/selecting-a-pass.md)
 * [Advanced](civic-pass/advanced/README.md)
   * [API Documentation](civic-pass/advanced/api-documentation.md)
+  * [Lexi - Simple personal web3 encryption](civic-pass/advanced/lexi-simple-personal-web3-encryption.md)
   * [Token Guard - Advanced gating using tokens](civic-pass/advanced/token-guard-advanced-gating-using-tokens.md)
 
 ## Civic Me

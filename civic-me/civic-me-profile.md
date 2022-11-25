@@ -8,11 +8,11 @@ Use this SDK for easy retrieval of the [civic.me](http://civic.me) profile data 
 
 <div>
 
-<figure><img src="../.gitbook/assets/realms-civic-sdk-sc1.png" alt=""><figcaption><p>Realms implementation of Civic's Dynamic Web3 Proflies</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/realms-civic-sdk-sc1 (1).png" alt=""><figcaption><p>Realms implementation of Civic's Dynamic Web3 Proflies</p></figcaption></figure>
 
  
 
-<figure><img src="../.gitbook/assets/realms-civic-sdk-sc2 (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/realms-civic-sdk-sc2.png" alt=""><figcaption></figcaption></figure>
 
 </div>
 
