@@ -27,6 +27,7 @@
 
 ## Integrations
 
+* [Adding Civic Pass protection to Candy Machine v3](integrations/adding-civic-pass-protection-to-candy-machine-v3.md)
 * [Adding Captcha to Candy Machine v2](integrations/adding-captcha-to-candy-machine-v2.md)
 * [DAO Governance](integrations/dao-governance/README.md)
   * [Realms Integration](integrations/dao-governance/realms-integration.md)

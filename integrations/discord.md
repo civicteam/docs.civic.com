@@ -15,7 +15,7 @@ Users will be asked to connect their wallet to their Discord account.
 
 After which, they will be allocated roles based on their passes.
 
-![](<../.gitbook/assets/image (3).png>)
+![](<../.gitbook/assets/image (3) (1).png>)
 
 Done!
 
@@ -23,5 +23,5 @@ Done!
 
 Create private channels and grant access to the roles you create, in order to allow special access to pass-holders.
 
-![](<../.gitbook/assets/image (6).png>)
+![](<../.gitbook/assets/image (6) (1).png>)
 
