@@ -1,14 +1,20 @@
 # Adding Civic Pass protection to Candy Machine v3
 
-## Adding Civic Pass to Candy Machine v3
-
-Want to keep bots out your next NFT drop?&#x20;
-
 We are fully integrated into MetaPlex's Candy Machine v3 protocol to enable mint protection using [Candy Guard](https://docs.metaplex.com/programs/candy-machine/available-guards/gatekeeper).
 
-<mark style="color:orange;"></mark>[<mark style="color:orange;">Visit a reference implementation UI using Candy Machine V3 with integrated CivicPass -></mark>](https://github.com/civicteam/Candy-Machine-V3-UI)<mark style="color:orange;"></mark>
+Permissioning with Civic Pass & Candy Guard allows you to verify minters in real-time, evaluating every request to mint by your criteria, including:
+
+* conducting a bot check using CAPTCHA
+* checking for liveness and uniqueness
+* checking for a minimum age
+* checking buyers from locations you want to allow
+* checking ID documents and KYC/Sanctions
+
+{% hint style="info" %}
+You can use our [<mark style="color:orange;">reference implementation UI template using Candy Machine V3 with integrated Civic Pass -></mark>](https://github.com/civicteam/Candy-Machine-V3-UI)<mark style="color:orange;"></mark>
 
 We recommend using the [latest sugar command line tool](https://docs.metaplex.com/developer-tools/sugar/guides/sugar-for-cmv3) to create your mint.
+{% endhint %}
 
 #### Creating a protected mint using Sugar CLI
 
@@ -61,9 +67,13 @@ In Candy Machine v3 creation of the token guard is separate from the mint.
      
     ```
 
-#### Captcha-protection
+### Enabling Civic Pass Checks
 
-Use this guards config for captcha protection:
+#### CAPTCHA Check
+
+When CAPTCHA is enabled, a user will be issued a Civic Pass after successfully completing a CAPTCHA challenge and automatically checked by the Candy Machine prior to minting.
+
+Use this guard's config for captcha protection:
 
 ```
 "gatekeeper": {
@@ -72,13 +82,13 @@ Use this guards config for captcha protection:
   },
 ```
 
-When captcha is enabled, a user will be issued a Civic Captcha Pass after successfully completing the captcha challenge and automatically checked by the Candy Machine prior to minting.
-
 A Civic Captcha Pass **remains active only for 10 minutes and for one mint** to limit the options of malicious botters verifying multiple wallets. If a user tries to use an inactive pass, it will automatically prompt them to refresh it.
 
-#### Liveness protection
+#### Liveness Check
 
-Use this guards config for liveness protection:
+When liveness is enabled, a user must do a 3D video selfie to prove they are a real person and not a bot before they can mint.
+
+Use this guard's config for liveness protection:
 
 ```
 "gatekeeper": {
@@ -87,7 +97,39 @@ Use this guards config for liveness protection:
   },
 ```
 
-When liveness is enabled, a user must do a 3D video selfie to prove they are not a bot before they can mint.&#x20;
+****
+
+**Uniqueness Check**
+
+When uniqueness is enabled, the user must do a 3D video selfie to ensure that a real person only uses one wallet to mint. You can decide how many NFTs this unique user can mint.
+
+[Contact us](../civic-pass/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
+
+
+
+**Age Check**
+
+When age check is enabled, the user must provide a government issued ID and complete a 3D video selfie before they they are issued a Civic Pass.&#x20;
+
+[Contact us](../civic-pass/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
+
+****
+
+**Location Check**
+
+When IP-based location check (including VPN detection) is enabled, the user must be in a country that you allow to participate in your mint prior to being issued a Civic Pass.
+
+[Contact us](../civic-pass/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
+
+****
+
+**ID Document & KYC/Sanction Check**
+
+When enabled, the user must provide a government issued ID and complete a 3D video selfie before they they are issued a Civic Pass. Sanction checks can also be performed prior to issuing a Civic Pass.
+
+[Contact us](../civic-pass/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
+
+
 
 For detailed configuration instructions on how to configure and deploy your mint, please refer to MetaPlex's [Sugar repository](https://github.com/metaplex-foundation/sugar).
 
