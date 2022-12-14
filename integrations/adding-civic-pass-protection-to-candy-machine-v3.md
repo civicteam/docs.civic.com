@@ -1,6 +1,6 @@
 # Adding Civic Pass protection to Candy Machine v3
 
-We are fully integrated into MetaPlex's Candy Machine v3 protocol to enable mint protection using [Candy Guard](https://docs.metaplex.com/programs/candy-machine/available-guards/gatekeeper).
+We are fully integrated into MetaPlex's Candy Machine v3 protocol to enable mint protection using [<mark style="color:orange;">Candy Guard</mark>](https://docs.metaplex.com/programs/candy-machine/available-guards/gatekeeper).
 
 Permissioning with Civic Pass & Candy Guard allows you to verify minters in real-time, evaluating every request to mint by your criteria, including:
 
@@ -13,14 +13,14 @@ Permissioning with Civic Pass & Candy Guard allows you to verify minters in real
 {% hint style="info" %}
 You can use our [<mark style="color:orange;">reference implementation UI template using Candy Machine V3 with integrated Civic Pass -></mark>](https://github.com/civicteam/Candy-Machine-V3-UI)<mark style="color:orange;"></mark>
 
-We recommend using the [latest sugar command line tool](https://docs.metaplex.com/developer-tools/sugar/guides/sugar-for-cmv3) to create your mint.
+We recommend using the [<mark style="color:orange;">latest sugar command line tool</mark>](https://docs.metaplex.com/developer-tools/sugar/guides/sugar-for-cmv3) to create your mint.
 {% endhint %}
 
 #### Creating a protected mint using Sugar CLI
 
 In Candy Machine v3 creation of the token guard is separate from the mint.
 
-1. install sugar: currently sugar support for Candy Machine is alpha mode and needs to be downloaded [here](https://github.com/metaplex-foundation/sugar/releases/tag/sugar-cmv3-alpha.2)
+1. install sugar: currently sugar support for Candy Machine is alpha mode and needs to be downloaded [<mark style="color:orange;">here</mark>](https://github.com/metaplex-foundation/sugar/releases/tag/sugar-cmv3-alpha.2)<mark style="color:orange;"></mark>
 2.  Create your mint (with Candy Machine v3 the mint and the token guard are created separately) using. Follow the prompts on the CLI:
 
     ```
