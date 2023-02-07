@@ -126,34 +126,11 @@ const response = await axios({
       },
     }).data;
 
-const { verifiedInformation } = response;
-const { } = response.links; //Alexis: Is there a way to destructure this or do we need a loop?
+const { verifiedInformation } = response; // The information extracted from the user's id document TODO: The walletAddress is not included yet.
+const documentLinks = response.links.; //TODO: Get the links with rel=evidence-document
+const selfie = response.links.; //TODO: Get the link with rel: evidence-selfie
 
- "id": "abcde" // verifiaction / scope request ID
- "type": "proofOfIdentity"  // defaults to proofOfIdentity
- "status": "complete",
-        "reference": "1234",   // if present
-        "collection-status": <CollectionStatus>,
-        "verifiedInformation": {    // Use verifiable-presentations to generate this
- "email": "m.mustermann@test.test",
-         "phoneNumber": "12345",
-         "name": "Max M Mustermann",
-         "documentType": "passport",
-         "documentNumber": "12345",
-         "issueCountry": "DE"
-},
- "links": [{
- "rel": "self",
- "href": "https://api.civic.com/verification/abcde"
-}, {
- "rel": "evidence-document",
- "href": <s3 presigned url>
-},{
- "rel": "evidence-selfie",
-         "href": <s3 presigned url>
-}]
-}
-
+//TODO: Get the binary data by calling the above.
 ```
 
 
