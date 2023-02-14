@@ -6,11 +6,11 @@ By default the React Component will orchestrate the logic for signing and sendin
 
 ```typescript
 <GatewayProvider
+  connection={new Connection(clusterApiUrl("mainnet-beta"))}
+  cluster="mainnet-beta"
   wallet={wallet}
   gatekeeperNetwork={gatekeeperNetwork}
-  clusterUrl={clusterUrl}
-  handleTransaction={handleTransaction={async (transaction) => {...}}
->
+  handleTransaction={handleTransaction={async (transaction) => {...}}>
 </GatewayProvider>
 ```
 
@@ -18,17 +18,17 @@ If the custom `handleTransaction` function is provided it is the responsibility 
 
 ## Gatekeeper-Sent Transactions
 
-> :warning: Gatekeeper-Sent Transactions are only available for specific networks and on a per partner basis. Reach out to us on [<mark style="color:orange;">Discord</mark>]([https://github.com/civicteam/civic-pass-template](https://discord.gg/8H5Kdtr5Wn)) if you are interested in enabling this option.
+> :warning: Gatekeeper-Sent Transactions are only available for specific networks and on a per partner basis. Reach out to us on [<mark style="color:orange;">Discord</mark>](../ui-integration-react-component/\[https:/github.com/civicteam/civic-pass-template]\(https:/discord.gg/8H5Kdtr5Wn\)/) if you are interested in enabling this option.
 
 The client sent transaction can be changed by specifying the `gatekeeperSendsTransaction` property to true, as follows:
 
 ```typescript
 <GatewayProvider
+  connection={new Connection(clusterApiUrl("mainnet-beta"))}
+  cluster="mainnet-beta"
   wallet={wallet}
   gatekeeperNetwork={gatekeeperNetwork}
-  clusterUrl={clusterUrl}
-  gatekeeperSendsTransaction={true}
->
+  gatekeeperSendsTransaction={true}>
 </GatewayProvider>
 ```
 

@@ -10,7 +10,6 @@
 * [UI integration](civic-pass/ui-integration-react-component/README.md)
   * [The Identity Button](civic-pass/ui-integration-react-component/the-identity-button.md)
   * [The Gateway Provider](civic-pass/ui-integration-react-component/the-gateway-provider.md)
-  * [Client-Sent Transactions](civic-pass/ui-integration-react-component/client-sent-transactions.md)
   * [Sample React Project](civic-pass/ui-integration-react-component/sample-react-project.md)
 * [Testing against different environments](civic-pass/testing-against-different-environments.md)
 * [Captcha Verification](civic-pass/civic-captcha-pass.md)
@@ -19,6 +18,7 @@
   * [API Documentation](civic-pass/advanced/api-documentation.md)
   * [Lexi - Simple personal web3 encryption](civic-pass/advanced/lexi-simple-personal-web3-encryption.md)
   * [Token Guard - Advanced gating using tokens](civic-pass/advanced/token-guard-advanced-gating-using-tokens.md)
+  * [Client-Sent Transactions](civic-pass/advanced/client-sent-transactions.md)
 
 ## Civic Me
 
