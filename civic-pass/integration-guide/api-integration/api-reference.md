@@ -4,7 +4,7 @@ In the Customer API, the term `chain` refers to a blockchain programming model a
 
 ### Authentication
 
-Authentication follows the [<mark style="color:orange;">OAuth standard</mark>](https://oauth.net/2/)<mark style="color:orange;">.</mark> The token endpoint is `https://auth.civic.com` and the `grant_type` is `client_credentials`.
+Authentication follows the [<mark style="color:orange;">OAuth standard</mark>](https://oauth.net/2/)<mark style="color:orange;">.</mark> The token endpoint is [`https://auth.civic.com/oauth/token`](https://auth.civic.com/oauth/token) and the `grant_type` to request is `client_credentials`.
 
 To manage API authentication we recommend using one of the available <mark style="color:orange;"></mark> [<mark style="color:orange;">OAuth libraries</mark>](https://oauth.net/code/)<mark style="color:orange;">.</mark>
 
