@@ -25,6 +25,6 @@ In general, your user's wallet can be associated with multiple Civic Passes (1:N
 
 When integrating Civic Pass in your dApp, you define which particular Gatekeeper Network you "trust". Should the user already have a valid Civic Pass for this trusted network, they can already proceed. If a Civic Pass for the network is not present, then your dApp can trigger the process for the user to request a new Civic Pass.
 
-You can find more details on the available pre-configured available networks and their rulesets here: [selecting-a-pass.md](../integrate/turnkey-integration/selecting-a-pass.md "mention").
+You can find more details on the available pre-configured available networks and their rulesets here: [selecting-a-pass.md](../integration-guide/turnkey-integration/selecting-a-pass.md "mention").
 
 Additionally, it is also possible to create your own private Gatekeeper Network.

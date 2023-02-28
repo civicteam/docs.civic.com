@@ -103,7 +103,7 @@ Use this guard's config for liveness protection:
 
 When uniqueness is enabled, the user must do a 3D video selfie to ensure that a real person only uses one wallet to mint. You can decide how many NFTs this unique user can mint.
 
-<mark style="color:orange;"></mark>[<mark style="color:orange;">Contact us</mark>](../../integrate/turnkey-integration/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
+<mark style="color:orange;"></mark>[<mark style="color:orange;">Contact us</mark>](../../integration-guide/turnkey-integration/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
 
 
 
@@ -111,7 +111,7 @@ When uniqueness is enabled, the user must do a 3D video selfie to ensure that a 
 
 When age check is enabled, the user must provide a government issued ID and complete a 3D video selfie before they they are issued a Civic Pass.&#x20;
 
-<mark style="color:orange;"></mark>[<mark style="color:orange;">Contact us</mark>](../../integrate/turnkey-integration/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
+<mark style="color:orange;"></mark>[<mark style="color:orange;">Contact us</mark>](../../integration-guide/turnkey-integration/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
 
 ****
 
@@ -119,7 +119,7 @@ When age check is enabled, the user must provide a government issued ID and comp
 
 When IP-based location check (including VPN detection) is enabled, the user must be in a country that you allow to participate in your mint prior to being issued a Civic Pass.
 
-<mark style="color:orange;"></mark>[<mark style="color:orange;">Contact us</mark>](../../integrate/turnkey-integration/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
+<mark style="color:orange;"></mark>[<mark style="color:orange;">Contact us</mark>](../../integration-guide/turnkey-integration/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
 
 ****
 
@@ -127,7 +127,7 @@ When IP-based location check (including VPN detection) is enabled, the user must
 
 When enabled, the user must provide a government issued ID and complete a 3D video selfie before they they are issued a Civic Pass. Sanction checks can also be performed prior to issuing a Civic Pass.
 
-<mark style="color:orange;"></mark>[<mark style="color:orange;">Contact us</mark>](../../integrate/turnkey-integration/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
+<mark style="color:orange;"></mark>[<mark style="color:orange;">Contact us</mark>](../../integration-guide/turnkey-integration/selecting-a-pass.md) to get the gatekeeper information to setup your guard's config.
 
 
 
