@@ -4,7 +4,9 @@ In the Customer API, the term `chain` refers to a blockchain programming model a
 
 ### Authentication
 
-Authentication follows the [<mark style="color:orange;">OAuth standard</mark>](https://oauth.net/2/)<mark style="color:orange;">.</mark> The token endpoint is `https://auth.civic.com` We recommend using one of the available <mark style="color:orange;"></mark> [<mark style="color:orange;">OAuth libraries</mark>](https://oauth.net/code/) for your platform.
+Authentication follows the [<mark style="color:orange;">OAuth standard</mark>](https://oauth.net/2/)<mark style="color:orange;">.</mark> The token endpoint is `https://auth.civic.com` and the `grant_type` is `client_credentials`.
+
+To manage API authentication we recommend using one of the available <mark style="color:orange;"></mark> [<mark style="color:orange;">OAuth libraries</mark>](https://oauth.net/code/)<mark style="color:orange;">.</mark>
 
 #### Try it out!
 
@@ -13,7 +15,7 @@ You can try out the Civic Pass Customer API by using the following demo credenti
 * `client_id: j5kwZ68j4bM8fdPAYKu7DlGQGr37eNPs`
 * `client_secret: S1qSiacDUDPRVfxiSvwsRASxE0fH47U60eYeNYIt4JKSVSsgo2yy0n6V-Uz1IYBK`
 
-To receive production access to the production / mainnet Customer API please [contact us](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a).
+To receive production access to the production / mainnet Customer API please <mark style="color:orange;"></mark> [<mark style="color:orange;">contact us</mark>](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a).
 
 
 
@@ -25,10 +27,10 @@ To receive production access to the production / mainnet Customer API please [co
 [openapi (17).yaml](<../../../.gitbook/assets/openapi (17).yaml>)
 {% endswagger %}
 
-{% swagger src="../../../.gitbook/assets/openapi (17).yaml" path="/pass/{chain}/{chainNetwork}/{wallet}" method="delete" %}
+{% swagger src="../../../.gitbook/assets/openapi (17).yaml" path="/pass/{chain}/{chainNetwork}/{wallet}" method="patch" %}
 [openapi (17).yaml](<../../../.gitbook/assets/openapi (17).yaml>)
 {% endswagger %}
 
-{% swagger src="../../../.gitbook/assets/openapi (17).yaml" path="/pass/{chain}/{chainNetwork}/{wallet}" method="patch" %}
+{% swagger src="../../../.gitbook/assets/openapi (17).yaml" path="/pass/{chain}/{chainNetwork}/{wallet}" method="delete" %}
 [openapi (17).yaml](<../../../.gitbook/assets/openapi (17).yaml>)
 {% endswagger %}
