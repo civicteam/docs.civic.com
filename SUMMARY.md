@@ -4,34 +4,46 @@
 
 ## Civic Pass
 
-* [Overview](civic-pass/overview.md)
-* [How it works](civic-pass/how-it-works.md)
-* [On-chain Integration](civic-pass/on-chain-integration.md)
-* [UI integration](civic-pass/ui-integration-react-component/README.md)
-  * [The Identity Button](civic-pass/ui-integration-react-component/the-identity-button.md)
-  * [The Gateway Provider](civic-pass/ui-integration-react-component/the-gateway-provider.md)
-  * [Sample React Project](civic-pass/ui-integration-react-component/sample-react-project.md)
-* [Testing against different environments](civic-pass/testing-against-different-environments.md)
-* [Captcha Verification](civic-pass/civic-captcha-pass.md)
-* [Selecting a Pass Verification](civic-pass/selecting-a-pass.md)
-* [Advanced](civic-pass/advanced/README.md)
-  * [API Documentation](civic-pass/advanced/api-documentation.md)
-  * [Lexi - Simple personal web3 encryption](civic-pass/advanced/lexi-simple-personal-web3-encryption.md)
-  * [Token Guard - Advanced gating using tokens](civic-pass/advanced/token-guard-advanced-gating-using-tokens.md)
-  * [Client-Sent Transactions](civic-pass/advanced/client-sent-transactions.md)
+* [Overview](civic-pass/overview/README.md)
+  * [Supported Blockchains](civic-pass/overview/supported-blockchains.md)
+  * [Fundamental Concepts](civic-pass/overview/how-it-works.md)
+* [Integrate](civic-pass/integrate/README.md)
+  * [Turnkey Integration](civic-pass/integrate/turnkey-integration/README.md)
+    * [How it works](civic-pass/integrate/turnkey-integration/how-it-works.md)
+    * [UI Integration](civic-pass/integrate/turnkey-integration/ui-integration/README.md)
+      * [Gateway Provider](civic-pass/integrate/turnkey-integration/ui-integration/gateway-provider/README.md)
+        * [Configuration Parameters](civic-pass/integrate/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/README.md)
+          * [Solana Configuration](civic-pass/integrate/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/solana-configuration.md)
+          * [Ethereum Configuration](civic-pass/integrate/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/ethereum-configuration.md)
+        * [Gateway Status](civic-pass/integrate/turnkey-integration/ui-integration/gateway-provider/gateway-status.md)
+        * [Gateway Token](civic-pass/integrate/turnkey-integration/ui-integration/gateway-provider/gateway-token/README.md)
+          * [Solana](civic-pass/integrate/turnkey-integration/ui-integration/gateway-provider/gateway-token/solana.md)
+      * [Identity Button](civic-pass/integrate/turnkey-integration/ui-integration/identity-button.md)
+      * [Sample Project](civic-pass/integrate/turnkey-integration/ui-integration/sample-project.md)
+    * [On-Chain Integration](civic-pass/integrate/turnkey-integration/on-chain-integration/README.md)
+      * [Solana](civic-pass/integrate/turnkey-integration/on-chain-integration/solana.md)
+      * [Ethereum](civic-pass/integrate/turnkey-integration/on-chain-integration/ethereum.md)
+    * [Available Gatekeeper Networks](civic-pass/integrate/turnkey-integration/selecting-a-pass.md)
+    * [Test your integration](civic-pass/integrate/turnkey-integration/testing-against-different-environments.md)
+  * [Customer API Integration](civic-pass/integrate/customer-api-integration/README.md)
+    * [API Reference](civic-pass/integrate/customer-api-integration/api-reference.md)
+* [Third party integrations](civic-pass/third-party-integrations/README.md)
+  * [Solana](civic-pass/third-party-integrations/solana/README.md)
+    * [Adding Civic Pass protection to Candy Machine v3](civic-pass/third-party-integrations/solana/adding-civic-pass-protection-to-candy-machine-v3.md)
+    * [Adding Captcha Verification to Candy Machine v2](civic-pass/third-party-integrations/solana/adding-captcha-to-candy-machine-v2.md)
+    * [DAO Governance](civic-pass/third-party-integrations/solana/dao-governance/README.md)
+      * [Realms Integration](civic-pass/third-party-integrations/solana/dao-governance/realms-integration.md)
+    * [Discord](civic-pass/third-party-integrations/solana/discord.md)
 
 ## Civic Me
 
 * [Dynamic Web3 Profiles](civic-me/civic-me-profile.md)
 * [Dialect Civic Profile Integration](civic-me/dialect-civic-profile-integration.md)
 
-## Integrations
+## Misc. cool stuff
 
-* [Adding Civic Pass protection to Candy Machine v3](integrations/adding-civic-pass-protection-to-candy-machine-v3.md)
-* [Adding Captcha to Candy Machine v2](integrations/adding-captcha-to-candy-machine-v2.md)
-* [DAO Governance](integrations/dao-governance/README.md)
-  * [Realms Integration](integrations/dao-governance/realms-integration.md)
-* [Discord](integrations/discord.md)
+* [Lexi - Simple personal web3 encryption](misc.-cool-stuff/lexi-simple-personal-web3-encryption.md)
+* [Token Guard - Advanced gating using tokens](misc.-cool-stuff/token-guard-advanced-gating-using-tokens.md)
 
 ## Legacy APIs (SIP)
 

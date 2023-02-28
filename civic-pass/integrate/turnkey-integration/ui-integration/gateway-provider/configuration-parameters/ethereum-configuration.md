@@ -1,0 +1,21 @@
+# Ethereum Configuration
+
+The configuration parameters of the Ethereum implementation of the GatewayProvider. For a full integration guide on integrating the Gateway Provider the parent section, [Gateway Provider](../).
+
+{% hint style="info" %}
+The React component uses [ethers.js](https://www.npmjs.com/package/ethers)
+{% endhint %}
+
+```jsx
+<GatewayProvider
+  wallet={wallet}
+  gatekeeperNetwork={gatekeeperNetwork}>
+  {children}
+</GatewayProvider>
+```
+
+| **Property**          | **Description**                                                                             | **Type**               |
+| --------------------- | ------------------------------------------------------------------------------------------- | ---------------------- |
+| **wallet**            | An [ethers.js](https://www.npmjs.com/package/ethers) object representing the user's wallet. | `Wallet` from `ethers` |
+| **gatekeeperNetwork** | The address of the [Gatekeeper Network](../../../selecting-a-pass.md) are issued for.       | `string`               |
+

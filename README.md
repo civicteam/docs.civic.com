@@ -8,14 +8,16 @@ description: >-
 
 ## Civic Pass
 
-Civic Pass enables dApps to allow vetted users to participate in their offerings without having to store PII. Verify liveness, perform identity verification, and more.
+Civic Pass enables dApps to allow vetted users to participate in their offerings. Verify liveness, perform identity verification, and more.
 
-Integrate Civic Pass into your platform and create an identity layer that allows for a permissioned dApp platform, be it an NFT mint or marketplace, a metaverse, or any other projects you might come up with.
+Integrate Civic Pass into your platform and create an identity layer that allows for a permissioned dApp platform, be it an NFT mint or marketplace, a metaverse, or any other project you might come up with.
 
-[<mark style="color:orange;">Get Started -></mark>](civic-pass/overview.md) <mark style="color:orange;"></mark>&#x20;
+[Get Started -->](civic-pass/overview/)
 
-### Candy Machine Bot Protection
+## Civic.me
 
-Protect your Candy Machine mints with our **FREE** Civic Pass Captcha Verification. We provide all the libraries and sample code you need.
+Civic.me is a dynamic Web3 profile with a custom name, headline, and PFP NFT image selected by the user. Using an SDK you can easily retrieve and display your users profile data and Civic Passes.
 
-[<mark style="color:orange;">Get Started -></mark>](integrations/adding-captcha-to-candy-machine-v2.md)<mark style="color:orange;"></mark>
+[Get Started --> ](civic-me/civic-me-profile.md)
+
+\

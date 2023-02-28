@@ -4,7 +4,7 @@ A dynamic Web3 profile is a [Civic.me](http://civic.me) profile with a custom na
 
 ![](../.gitbook/assets/Civic-Me-Profile.png)
 
-Use this SDK for easy retrieval of the [civic.me](http://civic.me) profile data and the [Civic passes](../civic-pass/selecting-a-pass.md) associated with it.&#x20;
+Use this SDK for easy retrieval of the [civic.me](http://civic.me) profile data and the [Civic passes](../civic-pass/integrate/turnkey-integration/selecting-a-pass.md) associated with it.&#x20;
 
 <div>
 
