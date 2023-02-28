@@ -4,4 +4,4 @@ The existence of a **`gatewayToken`** indicates not only the overall status of t
 
 Since every blockchain has a different programming model, the format of the gatewayToken differs between chain.\
 \
-For information on how to retrieve the status see the parent section [Gateway Provider](../).
+For information on how to retrieve the status see the parent section [<mark style="color:orange;">Gateway Provider</mark>](../).

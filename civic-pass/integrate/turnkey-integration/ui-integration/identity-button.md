@@ -1,6 +1,6 @@
 # Identity Button
 
-The **IdentityButton** is a reference implementation of a UI widget that leverages the [GatewayProvider](gateway-provider/) to communicate to your users [the status of their Civic Pass](gateway-provider/gateway-status.md).
+The **IdentityButton** is a reference implementation of a UI widget that leverages the [<mark style="color:orange;">GatewayProvider</mark>](gateway-provider/) to communicate to your users <mark style="color:orange;"></mark> [<mark style="color:orange;">the status of their Civic Pass</mark>](gateway-provider/gateway-status.md)<mark style="color:orange;">.</mark>
 
 It changes appearance with text and icons to indicate when the user needs to take action and can be clicked by the user at any point in the process. The initial click on the button by a user will initiate the Civic Pass modal which will guide the user through the process of issuing their Civic Pass. If a Civic Pass already exists for the connected wallet, the UI will already have updated to show the 'Active' status.
 

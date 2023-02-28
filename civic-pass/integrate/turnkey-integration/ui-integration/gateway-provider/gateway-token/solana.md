@@ -1,6 +1,6 @@
 # Solana
 
-The **gatewayToken** represents the on-chain structure of the Civic Pass. This will is only defined if the Civic Pass is ACTIVE. For information on how to retrieve the status see the parent section [Gateway Provider](../).
+The **gatewayToken** represents the on-chain structure of the Civic Pass. This will is only defined if the Civic Pass is ACTIVE. For information on how to retrieve the status see the parent section [<mark style="color:orange;">Gateway Provider</mark>](../).
 
 | Property              | Description                                                                                                                            | Type                                    |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |

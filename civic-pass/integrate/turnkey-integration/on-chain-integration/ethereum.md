@@ -20,7 +20,7 @@ contract MyContract {
 ```
 
 {% hint style="info" %}
-You can find the correct `gatekeeperNetwork` key in the list of available [Gatekeeper Networks](../selecting-a-pass.md).
+You can find the correct `gatekeeperNetwork` key in the list of available <mark style="color:orange;"></mark> [<mark style="color:orange;">Gatekeeper Networks</mark>](../selecting-a-pass.md)<mark style="color:orange;">.</mark>
 {% endhint %}
 
 Finally, call the method `verifyToken` check that the user calling your smart contract has an active Civic Pass.

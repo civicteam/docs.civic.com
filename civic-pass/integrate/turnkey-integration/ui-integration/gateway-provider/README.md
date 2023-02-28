@@ -5,7 +5,7 @@ The **GatewayProvider** is a React component that enables your dApp frontend to
 * access all available information of your user's Civic Pass
 * trigger the issuance of a new Civic Pass&#x20;
 
-There are only minimal differences in the way the GatewayProvider is configured for each  [supported chain](../../../../overview/supported-blockchains.md). Once configured, using it is chain-agnostic! In this section we will go through the steps required to integrate the GatewayProvider into your UI, regardless of which chain your dApp supports.&#x20;
+There are only minimal differences in the way the GatewayProvider is configured for each <mark style="color:orange;"></mark> [<mark style="color:orange;">supported chain</mark>](../../../../overview/supported-blockchains.md). <mark style="color:orange;"></mark> Once configured, using it is chain-agnostic! In this section we will go through the steps required to integrate the GatewayProvider into your UI, regardless of which chain your dApp supports.&#x20;
 
 ### 1. Install the React component for your chain
 
@@ -70,7 +70,7 @@ Children wrapped by this `GatewayProvider` will have access to the connected wal
 ### 3. Use the useGateway hook to interact with a Civic Pass
 
 {% hint style="info" %}
-You can also use the provided [Identity Button](../identity-button.md) reference implementation to handle everything described in this section.
+You can also use the provided [<mark style="color:orange;">Identity Button</mark>](../identity-button.md) reference implementation to handle everything described in this section.
 {% endhint %}
 
 Now that you have initialised the GatewayProvider context, you can use the included `useGateway` hook to
@@ -93,7 +93,7 @@ import { useGateway } from "@civic/ethereum-gateway-react";
 
 #### Trigger the issuance of a Civic Pass
 
-Calling the function `requestGatewayToken` opens the modal dialog, which will then guide the user through the flow of collecting and verifying the users information. The information collected varies depending on the configured [Gatekeeper Network](../../selecting-a-pass.md).&#x20;
+Calling the function `requestGatewayToken` opens the modal dialog, which will then guide the user through the flow of collecting and verifying the users information. The information collected varies depending on the configured [<mark style="color:orange;">Gatekeeper Network</mark>](../../selecting-a-pass.md).&#x20;
 
 ```jsx
 const { requestGatewayToken } = useGateway()
@@ -121,12 +121,12 @@ All children of the **GatewayProvider** have access to the user's Civic Pass sta
 const { gatewayStatus, gatewayToken } = useGateway();
 ```
 
-The [**`gatewayStatus`**](gateway-status.md) indicates the overall status of the Civic Pass and should be displayed in your dApp. Either via custom UI or by simply integration the Civic [Identity Button](../identity-button.md) included with the library. Of course you are free to update your UI depending on the status as you see fit.\
+The [<mark style="color:orange;">**`gatewayStatus`**</mark>](gateway-status.md) indicates the overall status of the Civic Pass and should be displayed in your dApp. Either via custom UI or by simply integration the Civic [<mark style="color:orange;">Identity Button</mark>](../identity-button.md) included with the library. Of course you are free to update your UI depending on the status as you see fit.\
 
 
-The [**gatewayToken**](gateway-token/) represents the on-chain structure of the Civic Pass. This will is only defined if the Civic Pass is ACTIVE.
+The [<mark style="color:orange;">**gatewayToken**</mark>](gateway-token/) represents the on-chain structure of the Civic Pass. This will is only defined if the Civic Pass is ACTIVE.
 
-If the token does not exist or is in a non-active state (e.g. Frozen), this state variable will be `undefined` . The dApp should disable certain parts of the UI when gatewayToken is undefined to prevent dApp usage. This only complements the [on-chain check](../../on-chain-integration/) and does not replace it.
+If the token does not exist or is in a non-active state (e.g. Frozen), this state variable will be `undefined` . The dApp should disable certain parts of the UI when gatewayToken is undefined to prevent dApp usage. This only complements the [<mark style="color:orange;">on-chain check</mark>](../../on-chain-integration/) and does not replace it.
 
 #### 3. Add the Identity Button
 
@@ -150,4 +150,4 @@ import IdentityButton from '@civic/ethereum-gateway-react';
 {% endtab %}
 {% endtabs %}
 
-&#x20;Besides just displaying the Civic Pass status, users can also start the issuance of their Civic Pass, should they not already have one. The Identity Button is automatically updated to display the corresponding [Civic Pass status.](gateway-status.md)
+&#x20;Besides just displaying the Civic Pass status, users can also start the issuance of their Civic Pass, should they not already have one. The Identity Button is automatically updated to display the corresponding [<mark style="color:orange;">Civic Pass status.</mark>](gateway-status.md)<mark style="color:orange;"></mark>

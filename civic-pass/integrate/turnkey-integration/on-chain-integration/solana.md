@@ -7,11 +7,11 @@ Import the `solana_gateway` Rust crate from [<mark style="color:orange;">crates.
 For your program to be able to call the integration library, the following parameters must be passed as inputs to your dApp's transaction:
 
 * `userWallet` : The wallet account for the dApp user (e.g. the trader in a defi application) . A Civic Pass must have been already issued to this wallet.
-* `gateway_token` : The address of the Civic Pass (token). This address can be accessed in the dApp through the `useGateway` hook on the [<mark style="color:orange;">Civic React Component</mark>](../../../../#ui-integration-civics-react-component) <mark style="color:orange;"></mark> once the user has passed Gatekeeper verification.
+* `gateway_token` : The address of the Civic Pass (token). This address can be accessed in the dApp through the `useGateway` hook on the [<mark style="color:orange;">Civic React Component</mark>](../ui-integration/gateway-provider/) <mark style="color:orange;"></mark> once the user has passed Gatekeeper verification.
 * `gatekeeper_network` The gatekeeper network on which the Civic Pass has been issued. For more information about Gatekeeper Networks, see [[#the-gatekeeper-network](../../../overview/how-it-works.md#the-gatekeeper-network "mention")](https://app.gitbook.com/@civic-1/s/gateway/\~/drafts/-MkIXrKS63CteWYs62ME/civic-gateway-dapp-integration-guide/@comments/4423b1d5ed6d47a5b47d93a6998dbe86#the-gatekeeper-network).
 
 {% hint style="info" %}
-You can find the correct `gatekeeper_network`in the list of available [Gatekeeper Networks](../selecting-a-pass.md).
+You can find the correct `gatekeeper_network`in the list of available [<mark style="color:orange;">Gatekeeper Networks</mark>](../selecting-a-pass.md)<mark style="color:orange;">.</mark>
 {% endhint %}
 
 ```rust

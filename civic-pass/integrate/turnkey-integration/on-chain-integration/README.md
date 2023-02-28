@@ -4,8 +4,3 @@ Your on-chain smart contract has to check for a valid Civic Pass during program 
 
 For each blockchain supported by Civic Pass, we provide you with a library, that is tailor-made to the programming model of the chain.
 
-The supported chains are
-
-* [Solana](solana.md)
-* [Ethereum](ethereum.md)
-

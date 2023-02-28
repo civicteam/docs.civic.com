@@ -1,6 +1,6 @@
 # Solana Configuration
 
-The configuration parameters of the Solana implementation of the GatewayProvider. For a full integration guide on integrating the Gateway Provider the parent section, [Gateway Provider](../).
+The configuration parameters of the Solana implementation of the GatewayProvider. For a full integration guide on integrating the Gateway Provider the parent section, [<mark style="color:orange;">Gateway Provider</mark>](../).
 
 ```jsx
 <GatewayProvider
@@ -11,14 +11,14 @@ The configuration parameters of the Solana implementation of the GatewayProvider
 </GatewayProvider>
 ```
 
-| **Property**               | **Description**                                                                                                                                            | **Type**                                                                                                                                              |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **wallet**                 | An object representing the user's wallet. This may be `undefined` if a wallet hasn't been connected to the dApp yet.                                       | <p><code>{</code></p><p><code>publicKey, signTransaction</code></p><p><code>}</code> (see definitions below)</p>                                      |
-| **wallet.publicKey**       | The user wallet's public key                                                                                                                               | `PublicKey` from `@solana/web3.js`                                                                                                                    |
-| **wallet.signTransaction** | A function that asks the user's wallet to sign a transaction.                                                                                              | <p><code>(transaction: Transaction) => Promise&#x3C;Transaction></code></p><p>where <code>Transaction</code> is from <code>@solana/web3.js</code></p> |
-| **gatekeeperNetwork**      | The address of the [Gatekeeper Network](../../../selecting-a-pass.md) that your Civic Passes are issued for.                                               | `PublicKey` from `@solana/web3.js`                                                                                                                    |
-| **connection**             | A Solana connection to any Solana network. The recommended commitment level is 'processed'                                                                 | `Connection` from `@solana/web3.js`                                                                                                                   |
-| **cluster**                | The Solana network to use, i.e. `devnet`, `mainnet-beta`, `testnet`. This defaults to `mainnet-beta`, so should be set if a different connection endpoint. | `string`                                                                                                                                              |
+| **Property**               | **Description**                                                                                                                                                          | **Type**                                                                                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **wallet**                 | An object representing the user's wallet. This may be `undefined` if a wallet hasn't been connected to the dApp yet.                                                     | <p><code>{</code></p><p><code>publicKey, signTransaction</code></p><p><code>}</code> (see definitions below)</p>                                      |
+| **wallet.publicKey**       | The user wallet's public key                                                                                                                                             | `PublicKey` from `@solana/web3.js`                                                                                                                    |
+| **wallet.signTransaction** | A function that asks the user's wallet to sign a transaction.                                                                                                            | <p><code>(transaction: Transaction) => Promise&#x3C;Transaction></code></p><p>where <code>Transaction</code> is from <code>@solana/web3.js</code></p> |
+| **gatekeeperNetwork**      | <p>The address of the</p><p><a href="../../../selecting-a-pass.md">Gatekeeper Network</a> <mark style="color:orange;"></mark> that your Civic Passes are issued for.</p> | `PublicKey` from `@solana/web3.js`                                                                                                                    |
+| **connection**             | A Solana connection to any Solana network. The recommended commitment level is 'processed'                                                                               | `Connection` from `@solana/web3.js`                                                                                                                   |
+| **cluster**                | The Solana network to use, i.e. `devnet`, `mainnet-beta`, `testnet`. This defaults to `mainnet-beta`, so should be set if a different connection endpoint.               | `string`                                                                                                                                              |
 
 ### Advanced Configuration
 
@@ -26,7 +26,7 @@ The configuration parameters of the Solana implementation of the GatewayProvider
 
 In the default mode of operation, the transaction required to issue or refresh the Civic Pass will not be broadcast by Civic, only signed by Civic. The user will responsible for broadcasting the transaction incl. any fees. This flow is handled transparently by the Gateway Provider, which also communicates any fees to the user via the Civic Pass modal.
 
-Some [Gatekeeper Networks](../../../selecting-a-pass.md) support an alternative mode, i.e. having the Civic backend (i.e. Gatekeeper) broadcast the transaction. If the gatekeeper network you are using supports this, you can set the `gatekeeperSendsTransaction` property to `true` to turn it on.
+Some [<mark style="color:orange;">Gatekeeper Networks</mark>](../../../selecting-a-pass.md) support an alternative mode, i.e. having the Civic backend (i.e. Gatekeeper) broadcast the transaction. If the gatekeeper network you are using supports this, you can set the `gatekeeperSendsTransaction` property to `true` to turn it on.
 
 |                                |                                                                                               |               |
 | ------------------------------ | --------------------------------------------------------------------------------------------- | ------------- |

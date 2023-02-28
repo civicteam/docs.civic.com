@@ -1,6 +1,6 @@
 # Gateway Status
 
-The **`gatewayStatus`** indicates the overall status of the Civic Pass. For information on how to retrieve the status see the parent section [Gateway Provider](./).
+The **`gatewayStatus`** indicates the overall status of the Civic Pass. For information on how to retrieve the status see the parent section <mark style="color:orange;"></mark> [<mark style="color:orange;">Gateway Provider</mark>](./)<mark style="color:orange;">.</mark>
 
 #### Status before a Civic Pass has been issued&#x20;
 
@@ -31,13 +31,11 @@ After a Civic has been issued on-chain, the following status values apply
 
 #### Status when something goes wrong
 
-Issuing a Civic Pass to a user might fail. Either because they don't fullfill the constraints of the configured [Gatekeeper Network](../../selecting-a-pass.md) or, in very seldom cases, because an unexpected technical error occurred.
+Issuing a Civic Pass to a user might fail. Either because they don't fulfil the constraints of the configured [<mark style="color:orange;">Gatekeeper Network</mark>](../../selecting-a-pass.md) or, in very seldom cases, because an unexpected technical error occurred.
 
 | **Status**               | **Description**                                        | **Behaviour when `requestGatewayToken` is triggered**                             |
 | ------------------------ | ------------------------------------------------------ | --------------------------------------------------------------------------------- |
 | `LOCATION_NOT_SUPPORTED` | The user's location is not currently supported         | Opens the Civic Pass modal dialog with a user-friendly explanation of the status. |
 | `ERROR`                  | There was an unexpected error requesting a Civic Pass. | Opens the Civic Pass modal dialog and the user can restart the process.           |
 | `REJECTED`               | The token requests has been rejected by the Gatekeeper | Opens the Civic Pass modal dialog with a user-friendly explanation of the status. |
-
-![Modal for LOCATION\_NOT\_SUPPORTED](../../../../../.gitbook/assets/location-not-supported.png)
 
