@@ -21,7 +21,7 @@ We recommend using the [<mark style="color:orange;">latest sugar command line to
 In Candy Machine v3 creation of the token guard is separate from the mint.
 
 1. install sugar: currently sugar support for Candy Machine is alpha mode and needs to be downloaded [<mark style="color:orange;">here</mark>](https://github.com/metaplex-foundation/sugar/releases/tag/sugar-cmv3-alpha.2)<mark style="color:orange;"></mark>
-2.  Create your mint (with Candy Machine v3 the mint and the token guard are created separately) using. Follow the prompts on the CLI:
+2.  Create your mint (with Candy Machine v3 the mint and the token guard are created separately). Follow the prompts on the CLI:
 
     ```
     sugar launch

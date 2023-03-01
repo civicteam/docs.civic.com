@@ -1,4 +1,4 @@
-# Adding Captcha to Candy Machine v2
+# Adding Captcha Verification to Candy Machine v2
 
 Want to keep bots out your next NFT drop?
 
@@ -20,7 +20,7 @@ For detailed configuration instructions on how to configure and deploy your mint
 #### Using Sugar to create a protected mint
 
 1. install sugar
-2.  Create your mint (with Candy Machine v3 the mint and the token guard are created separately) using using:
+2.  Create your mint (with Candy Machine v3 the mint and the token guard are created separately) using:
 
     ```
     sugar launch
