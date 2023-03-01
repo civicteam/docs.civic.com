@@ -2,7 +2,7 @@
 
 Civic Pass supports multiple chains, with more chains being added continuously. \
 \
-Follow the link bellow to visit a demo integration of the Captcha Verification Civic Pass.
+Follow the link below to visit a demo integration of the Captcha Verification Civic Pass.
 
 * <mark style="color:orange;"></mark>[<mark style="color:orange;">Solana Demo</mark>](https://getpass.civic.com)<mark style="color:orange;"></mark>
 * <mark style="color:orange;"></mark>[<mark style="color:orange;">Ethereum Demo</mark>](https://demopass.civic.com/#goerli)<mark style="color:orange;"></mark>

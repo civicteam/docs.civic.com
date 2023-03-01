@@ -1,4 +1,4 @@
-# Integrate
+# Integration Guide
 
 Depending on your use-case, there are two ways you can integrate Civic Pass into your dApp: ["Turnkey" Integration](turnkey-integration/) or integrating directly via the [Civic Customer API](api-integration/).&#x20;
 
@@ -17,7 +17,7 @@ The first integration type, which we call "Turnkey" Integration, is the one to c
 * Civic issues and manages the user's Civic Pass
 * (Optional) Civic gives you access to the user's data if compliance requires you to have store it.
 
-All you have to do is integrate one library into your UI and on library into your smart contract.
+All you have to do is integrate one library into your UI and one library into your smart contract.
 
 ### <mark style="color:orange;"></mark>[<mark style="color:orange;">API Integration</mark>](api-integration/)<mark style="color:orange;"></mark>
 
