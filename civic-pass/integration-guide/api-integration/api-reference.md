@@ -20,7 +20,9 @@ _The demo credentials only work for the development networks, i.e._
 * &#x20;`solana/devnet`
 * &#x20;`ethereum/goerli`
 
-To receive production access to the production / mainnet Customer API please <mark style="color:orange;"></mark> [<mark style="color:orange;">contact us</mark>](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a).
+Also, please keep in mind that since these are _shared credentials_, i.e. others have access to the same Civic Passes and can , for example, freeze them.
+
+To receive access to the production / mainnet Customer API please <mark style="color:orange;"></mark> [<mark style="color:orange;">contact us</mark>](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a).
 
 {% swagger src="../../../.gitbook/assets/customer_api.yaml" path="/pass/{chain}/{chainNetwork}" method="post" %}
 [customer_api.yaml](../../../.gitbook/assets/customer_api.yaml)
