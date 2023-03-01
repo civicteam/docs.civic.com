@@ -1,0 +1,377 @@
+openapi: 3.0.3
+info:
+  title: Civic Pass Customer API
+  description: |-
+    The APIs described bellow enable Civic customers to issue and manage the Civic Pass for their dApp. To learn more about Civic Passes and their fundamentals, please refer to the main [documentation](https://docs.civic.com/).
+    
+    # Terminology
+    
+    In the Customer API, the term `chain` refers to a blockchain programming model and the term `chainNetwork` to a network of that chain. For example, a "Layer 2" Ethereum network like Polygon is represented as `/pass/ethereum/polygon`.
+    
+    # Supported Chain
+    
+    The Customer API supports the following chains and chain networks:
+    - `solana/mainnet`
+    - `solana/devnet`
+    - `ethereum/mainnet`
+    - `ethereum/goerli`
+    - `ethereum/polygon`
+    
+    If your blockchain of choice is not listed above, feel free to reach out to us for more info on when support for your chain is planned.
+    
+    # Authentication
+    Authentication follows the [OAuth standard](https://oauth.net/2/). The Civic authentication endpoint is `https://auth.civic.com/oauth/token`. The `grant_type` to request is  `client_credentials`.
+    
+    We recommend using one of the available [OAuth libraries](https://oauth.net/code/) for your platform.
+    
+    # Try it out!
+    You can try out the Civic Pass Customer API by using the following demo credentials to generate an auth token:
+    - `client_id: j5kwZ68j4bM8fdPAYKu7DlGQGr37eNPs`,
+    - `client_secret: S1qSiacDUDPRVfxiSvwsRASxE0fH47U60eYeNYIt4JKSVSsgo2yy0n6V-Uz1IYBK`
+    
+    *Note: The demo credentials only work for the development networks:*
+    - `solana/devnet`
+    - `ethereum/goerli`
+
+  termsOfService: https://www.civic.com/legal/terms-of-service-civic-pass-v1/
+  contact:
+    email: devsupportp@civic.com
+  version: 1.0.0
+servers:
+  - url: https://api.civic.com/partner
+paths:
+  /pass:
+    post:
+      tags:
+        - pass
+      summary: List all Civic Passes
+      description: Returns a list of all Civic Passes you have issued. Optionally filtered by the state.
+      operationId: listPass
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                limit:
+                  type: number
+                  default: 20
+                skip:
+                  type: number
+                  default: 10
+                filter:
+                  type: object
+                  properties:
+                    state:
+                      $ref: '#/components/schemas/State'
+                  required:
+                    - state
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+        - pass_auth:
+            - write:token
+            - read:token
+  /pass/{chain}/{chainNetwork}:
+    post:
+      tags:
+        - pass
+      summary: Issue a Civic Pass
+      description: Issue a Civic Pass to a user's wallet. This action is asynchronous, i.e. it does not wait for the Civic Pass to be confirmed on-chain before returning.
+      operationId: issuePass
+      parameters:
+        - name: chain
+          in: path
+          description: The type of blockchain that the Civic Pass was issued on.
+          required: true
+          example: ethereum
+          schema:
+            $ref: '#/components/schemas/Chain'
+        - name: chainNetwork
+          in: path
+          description: The blockchain network
+          required: true
+          explode: true
+          example: polygon
+          schema:
+            $ref: '#/components/schemas/ChainNetwork'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wallet'
+        required: true
+      responses:
+        '202':
+          description: The issuance of the Civic Pass has been initiated.
+        '401':
+          description: Unauthorized
+        '400':
+          description: Client error
+      security:
+        - pass_auth:
+            - write:token
+            - read:token
+  /pass/{chain}/{chainNetwork}/{wallet}:
+    get:
+      tags:
+        - pass
+      summary: Retrieve a Civic Pass.
+      description: Retrieve the full details about a Civic Pass you issued, including a log of all events associated with the specific pass.
+      operationId: getPass
+      parameters:
+        - name: chain
+          in: path
+          description: The blockchain type that the Civic Pass was issued on.
+          required: true
+          example: ethereum
+          schema:
+            $ref: '#/components/schemas/Chain'
+        - name: wallet
+          in: path
+          description: The user's wallet the Civic Pass was issued to.
+          required: true
+          example: "0xEA5Ce8F9C81b681876DC713d33371c3E262A5888"
+          schema:
+            type: string
+        - name: chainNetwork
+          in: path
+          description: The blockchain network
+          required: true
+          explode: true
+          example: polygon
+          schema:
+            $ref: '#/components/schemas/ChainNetwork'
+      responses:
+        '200':
+          description: The Civic Pass associated with the given wallet.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PassResponse'
+        '404':
+          description: No Civic pass is associatied with the given wallet.
+      security:
+        - pass_auth:
+            - write:token
+            - read:token
+    patch:
+      tags:
+        - pass
+      summary: Update a Civic Pass
+      description: Updates either the status or the expiration timestamp of a Civic Pass. This action is asynchronous, i.e. it does not wait for updates to be confirmed on-chain before returning. To immediately expire a pass, for example to force a user to refresh, set an expiration data a couple of second in the future.
+      operationId: patchPass
+      parameters:
+        - name: chain
+          in: path
+          description: The blockchain type that the Civic Pass was issued on.
+          required: true
+          example: ethereum
+          schema:
+            $ref: '#/components/schemas/Chain'
+        - name: wallet
+          in: path
+          description: The user's wallet the Civic Pass was issued to.
+          required: true
+          example: "0xEA5Ce8F9C81b681876DC713d33371c3E262A5888"
+          schema:
+            type: string
+        - name: chainNetwork
+          in: path
+          description: The blockchain network
+          required: true
+          explode: true
+          example: polygon
+          schema:
+            $ref: '#/components/schemas/ChainNetwork'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateState'
+        required: true
+      responses:
+        '200':
+          description: The list of Civic Passes associated with this wallet.
+      security:
+        - pass_auth:
+            - write:token
+            - read:token
+    delete:
+      tags:
+        - pass
+      summary: Revoke a Civic Pass
+      operationId: deletePass
+      description: Revoking a Civic Pass is **irreversible**. After the Civic Pass has been revoked, it is not possible to issue a new Civic Pass to the same {chain, wallet, network} combination.
+      parameters:
+        - name: chain
+          in: path
+          description: The blockchain type that the Civic Pass was issued on.
+          required: true
+          example: ethereum
+          schema:
+            $ref: '#/components/schemas/Chain'
+        - name: wallet
+          in: path
+          description: The user's wallet the Civic Pass was issued to.
+          required: true
+          example: "0xEA5Ce8F9C81b681876DC713d33371c3E262A5888"
+          schema:
+            type: string
+        - name: chainNetwork
+          in: path
+          description: The blockchain network
+          required: true
+          explode: true
+          example: polygon
+          schema:
+            $ref: '#/components/schemas/ChainNetwork'
+      responses:
+        '200':
+          description: The revocation has been initiated.
+      security:
+        - pass_auth:
+            - write:token
+            - read:token
+tags:
+  - name: pass
+    description: Issue and manage Civic Passes
+components:
+  schemas:
+    Wallet:
+      type: object
+      description: The wallet address to issue this token to
+      properties:
+        walletAddress:
+          type: string
+          example: "0xEA5Ce8F9C81b681876DC713d33371c3E262A5888"
+    ChainNetwork:
+      type: string
+      description: The chain network
+      enum:
+        - devnet
+        - mainnet
+        - goerli
+        - polygon
+    Chain:
+      type: string
+      description: The chain type
+      enum:
+        - solana
+        - ethereum
+    State:
+      type: string
+      description: Available status
+      enum:
+        - ACTIVE
+        - REVOKED
+        - FROZEN
+        - REQUESTED
+        - REJECTED
+    UpdateState:
+      type: object
+      properties:
+        state:
+          $ref: '#/components/schemas/State'
+        expiryTimestamp:
+          description: The new expiration timestamp
+          example: 1677593295
+          type: number
+    PassResponse:
+      type: object
+      properties:
+        chain:
+          type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/Chain'
+            network:
+              $ref: '#/components/schemas/ChainNetwork'
+          required:
+            - type
+            - network
+        gatekeeperNetwork:
+          description: The address of the [Gatekeeper Network](https://docs.civic.com/civic-pass/integrate/turnkey-integration/selecting-a-pass) this Civic Pass was issued for.
+          type: string
+          example: "tgnuXXNMDLK8dy7Xm1TdeGyc95MDym4bvAQCwcW21Bf"
+        walletAddress:
+          description: The wallet address that the Civic Pass is issued for.
+          type: string
+          example: "4v4PL5bMZXXvQB3mvWPXLvqfJpjJmPRnPrmENnUESQQQ"
+        events:
+          description: Any action on a Civic Pass results in an event that is appended to this list.
+          type: array
+          items:
+            type: object
+            properties:
+              eventType:
+                type: string
+                enum:
+                  - "TOKEN_ISSUED_INITIATED"
+                  - "TOKEN_ISSUED"
+                  - "TOKEN_FROZEN_INITIATED"
+                  - "TOKEN_FROZEN"
+                  - "TOKEN_EXPIRY_CHANGED_INITIATED"
+                  - "TOKEN_EXPIRY_CHANGED"
+                  - "TOKEN_UNFROZEN_INITIATED"
+                  - "TOKEN_UNFROZEN"
+                  - "TOKEN_REVOKED_INITIATED"
+                  - "TOKEN_REVOKED"
+              timestamp:
+                type: number
+                example: 1677588899
+              transaction:
+                description: If the event has an associated chain transaction,its details are found here.
+                type: object
+                properties:
+                  identifier:
+                    type: string
+                    example: "4GWazp2AqMmxkE6GKCoYf9rbgFL6eDTuMx9z7719eccSeCEYu9hiCvmcr9cK6ioiTUGZzvcWf6iB7fd3YCg39PT6"
+                  status:
+                    type: string
+                    enum:
+                      - "sent"
+                      - "confirmed"
+                      - "failed"
+                required:
+                  - identifier
+            required:
+              - eventType
+              - timestamp
+        id:
+          description: A unique, Civic-speficic identifier for the Civic Pass.
+          type: string
+          example: "63fdf96c58f1ae40a26a89be"
+        onChainState:
+          type: string
+          enum:
+            - "ACTIVE"
+            - "FROZEN"
+            - "REVOKED"
+        state:
+          type: string
+          enum:
+            - "ACTIVE"
+            - "FROZEN"
+            - "REVOKED"
+            - "REQUESTED"
+      required:
+        - chain
+        - gatekeeperNetwork
+        - walletAddress
+        - events
+        - id
+        - onChainState
+        - state
+  securitySchemes:
+    pass_auth:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://auth.civic.com/oauth/token
+          scopes: {}
