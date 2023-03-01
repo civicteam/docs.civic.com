@@ -63,7 +63,7 @@ paths:
                   type: object
                   properties:
                     state:
-                      $ref: '#/components/schemas/State'
+                      $ref: '#/components/schemas/State' 
                   required:
                     - state
       responses:
@@ -75,8 +75,8 @@ paths:
                 type: object
       security:
         - pass_auth:
-            - write:token
-            - read:token
+          - write:token
+          - read:token
   /pass/{chain}/{chainNetwork}:
     post:
       tags:
@@ -103,8 +103,8 @@ paths:
       requestBody:
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/Wallet'
+            schema: 
+              $ref: '#/components/schemas/Wallet'   
         required: true
       responses:
         '202':
@@ -115,10 +115,10 @@ paths:
           description: Client error
       security:
         - pass_auth:
-            - write:token
-            - read:token
+          - write:token
+          - read:token
   /pass/{chain}/{chainNetwork}/{wallet}:
-    get:
+    get: 
       tags:
         - pass
       summary: Retrieve a Civic Pass.
@@ -149,18 +149,18 @@ paths:
             $ref: '#/components/schemas/ChainNetwork'
       responses:
         '200':
-          description: The Civic Pass associated with the given wallet.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/PassResponse'
+            description: The Civic Pass associated with the given wallet.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/PassResponse'
         '404':
-          description: No Civic pass is associatied with the given wallet.
+            description: No Civic pass is associatied with the given wallet.
       security:
         - pass_auth:
-            - write:token
-            - read:token
-    patch:
+          - write:token
+          - read:token
+    patch: 
       tags:
         - pass
       summary: Update a Civic Pass
@@ -192,16 +192,16 @@ paths:
       requestBody:
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateState'
+            schema: 
+             $ref: '#/components/schemas/UpdateState'
         required: true
       responses:
         '200':
-          description: The list of Civic Passes associated with this wallet.
+            description: The list of Civic Passes associated with this wallet.
       security:
         - pass_auth:
-            - write:token
-            - read:token
+          - write:token
+          - read:token
     delete:
       tags:
         - pass
@@ -233,11 +233,11 @@ paths:
             $ref: '#/components/schemas/ChainNetwork'
       responses:
         '200':
-          description: The revocation has been initiated.
+            description: The revocation has been initiated.
       security:
         - pass_auth:
-            - write:token
-            - read:token
+          - write:token
+          - read:token
 tags:
   - name: pass
     description: Issue and manage Civic Passes
@@ -246,13 +246,13 @@ components:
     Wallet:
       type: object
       description: The wallet address to issue this token to
-      properties:
+      properties: 
         walletAddress:
           type: string
           example: "0xEA5Ce8F9C81b681876DC713d33371c3E262A5888"
     ChainNetwork:
       type: string
-      description: The chain network
+      description: The chain network 
       enum:
         - devnet
         - mainnet
@@ -304,7 +304,7 @@ components:
           type: string
           example: "4v4PL5bMZXXvQB3mvWPXLvqfJpjJmPRnPrmENnUESQQQ"
         events:
-          description: Any action on a Civic Pass results in an event that is appended to this list.
+          description: Any action on a Civic Pass results in an event that is appended to this list. 
           type: array
           items:
             type: object
@@ -326,7 +326,7 @@ components:
                 type: number
                 example: 1677588899
               transaction:
-                description: If the event has an associated chain transaction,its details are found here.
+                description: If the event has an associated chain transaction,its details are found here. 
                 type: object
                 properties:
                   identifier:

@@ -35,7 +35,7 @@ import {
 {% endtab %}
 {% endtabs %}
 
-<figure><img src="../../../../.gitbook/assets/image (14).png" alt=""><figcaption><p>The Identity Button displaying different Civic Pass states</p></figcaption></figure>
+<figure><img src="../../../../.gitbook/assets/image (25).png" alt=""><figcaption><p>The Identity Button displaying different Civic Pass states</p></figcaption></figure>
 
 <mark style="color:red;"></mark>
 
