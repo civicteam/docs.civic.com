@@ -6,32 +6,30 @@ info:
     
     # Terminology
     
-    In the Customer API, the term `chain` refers to a blockchain programming model and the term `chainNetwork` to a network of that chain. For example, a "Layer 2" Ethereum network like Polygon is represented as `/pass/ethereum/polygon`.
+    In the Customer API, the term `chain` refers to a blockchain programming model and the term `chainNetwork` to a network of that chain. For example, a "Layer 2" Ethereum network like Polygon is represented as `/pass/ethereum/matic`.
     
-    # Supported Chain
+    # Supported Chains
     
     The Customer API supports the following chains and chain networks:
-    - `solana/mainnet`
+    - `solana/mainnet-beta`
     - `solana/devnet`
-    - `ethereum/mainnet`
+    - `ethereum/homestead`
     - `ethereum/goerli`
-    - `ethereum/polygon`
+    - `ethereum/matic`
     
     If your blockchain of choice is not listed above, feel free to reach out to us for more info on when support for your chain is planned.
     
     # Authentication
     Authentication follows the [OAuth standard](https://oauth.net/2/). The Civic authentication endpoint is `https://auth.civic.com/oauth/token`. The `grant_type` to request is  `client_credentials`.
     
-    We recommend using one of the available [OAuth libraries](https://oauth.net/code/) for your platform.
+    To manage API authentication we recommend using one of the available [OAuth libraries](https://oauth.net/code/) for your platform.
     
     # Try it out!
     You can try out the Civic Pass Customer API by using the following demo credentials to generate an auth token:
     - `client_id: j5kwZ68j4bM8fdPAYKu7DlGQGr37eNPs`,
     - `client_secret: S1qSiacDUDPRVfxiSvwsRASxE0fH47U60eYeNYIt4JKSVSsgo2yy0n6V-Uz1IYBK`
     
-    *Note: The demo credentials only work for the development networks:*
-    - `solana/devnet`
-    - `ethereum/goerli`
+    The demo credentials only work for the development networks:`solana/devnet` & `ethereum/goerli`. Also, please keep in mind that since these are shared credentials, i.e. others have access to the same Civic Passes and can for example freeze them.
 
   termsOfService: https://www.civic.com/legal/terms-of-service-civic-pass-v1/
   contact:
@@ -63,7 +61,7 @@ paths:
                   type: object
                   properties:
                     state:
-                      $ref: '#/components/schemas/State' 
+                      $ref: '#/components/schemas/State'
                   required:
                     - state
       responses:
@@ -75,8 +73,8 @@ paths:
                 type: object
       security:
         - pass_auth:
-          - write:token
-          - read:token
+            - write:token
+            - read:token
   /pass/{chain}/{chainNetwork}:
     post:
       tags:
@@ -97,14 +95,14 @@ paths:
           description: The blockchain network
           required: true
           explode: true
-          example: polygon
+          example: matic
           schema:
             $ref: '#/components/schemas/ChainNetwork'
       requestBody:
         content:
           application/json:
-            schema: 
-              $ref: '#/components/schemas/Wallet'   
+            schema:
+              $ref: '#/components/schemas/Wallet'
         required: true
       responses:
         '202':
@@ -115,10 +113,10 @@ paths:
           description: Client error
       security:
         - pass_auth:
-          - write:token
-          - read:token
+            - write:token
+            - read:token
   /pass/{chain}/{chainNetwork}/{wallet}:
-    get: 
+    get:
       tags:
         - pass
       summary: Retrieve a Civic Pass.
@@ -144,23 +142,23 @@ paths:
           description: The blockchain network
           required: true
           explode: true
-          example: polygon
+          example: matic
           schema:
             $ref: '#/components/schemas/ChainNetwork'
       responses:
         '200':
-            description: The Civic Pass associated with the given wallet.
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/PassResponse'
+          description: The Civic Pass associated with the given wallet.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PassResponse'
         '404':
-            description: No Civic pass is associatied with the given wallet.
+          description: No Civic pass is associatied with the given wallet.
       security:
         - pass_auth:
-          - write:token
-          - read:token
-    patch: 
+            - write:token
+            - read:token
+    patch:
       tags:
         - pass
       summary: Update a Civic Pass
@@ -186,22 +184,22 @@ paths:
           description: The blockchain network
           required: true
           explode: true
-          example: polygon
+          example: matic
           schema:
             $ref: '#/components/schemas/ChainNetwork'
       requestBody:
         content:
           application/json:
-            schema: 
-             $ref: '#/components/schemas/UpdateState'
+            schema:
+              $ref: '#/components/schemas/UpdateState'
         required: true
       responses:
         '200':
-            description: The list of Civic Passes associated with this wallet.
+          description: The list of Civic Passes associated with this wallet.
       security:
         - pass_auth:
-          - write:token
-          - read:token
+            - write:token
+            - read:token
     delete:
       tags:
         - pass
@@ -228,16 +226,16 @@ paths:
           description: The blockchain network
           required: true
           explode: true
-          example: polygon
+          example: matic
           schema:
             $ref: '#/components/schemas/ChainNetwork'
       responses:
         '200':
-            description: The revocation has been initiated.
+          description: The revocation has been initiated.
       security:
         - pass_auth:
-          - write:token
-          - read:token
+            - write:token
+            - read:token
 tags:
   - name: pass
     description: Issue and manage Civic Passes
@@ -246,18 +244,19 @@ components:
     Wallet:
       type: object
       description: The wallet address to issue this token to
-      properties: 
+      properties:
         walletAddress:
           type: string
           example: "0xEA5Ce8F9C81b681876DC713d33371c3E262A5888"
     ChainNetwork:
       type: string
-      description: The chain network 
+      description: The chain network
       enum:
         - devnet
-        - mainnet
+        - homestead
+        - mainnet-beta
         - goerli
-        - polygon
+        - matic
     Chain:
       type: string
       description: The chain type
@@ -304,7 +303,7 @@ components:
           type: string
           example: "4v4PL5bMZXXvQB3mvWPXLvqfJpjJmPRnPrmENnUESQQQ"
         events:
-          description: Any action on a Civic Pass results in an event that is appended to this list. 
+          description: Any action on a Civic Pass results in an event that is appended to this list.
           type: array
           items:
             type: object
@@ -326,7 +325,7 @@ components:
                 type: number
                 example: 1677588899
               transaction:
-                description: If the event has an associated chain transaction,its details are found here. 
+                description: If the event has an associated chain transaction,its details are found here.
                 type: object
                 properties:
                   identifier:
