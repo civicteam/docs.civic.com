@@ -1,6 +1,6 @@
 # API Reference
 
-In the Customer API, the term `chain` refers to a blockchain programming model and the term `chainNetwork` to a network of the chain. For example, a "Layer 2" network like Polygon, which is using the ethereum (EVM) programming model is represented as `/pass/ethereum/polygon`.
+In the Customer API, the term `chain` refers to a blockchain programming model and the term `chainNetwork` to a network of the chain. For example, a "Layer 2" network like Polygon, which is using the ethereum (EVM) programming model is represented as `/pass/ethereum/matic`.
 
 ### Authentication
 
