@@ -1,4 +1,4 @@
-# Ethereum
+# Ethereum / Polygon
 
 Integrating a Civic Pass check in your Ethereum smart-contract is trivial:
 
@@ -26,5 +26,5 @@ You can find the correct `gatekeeperNetwork` key in the list of available <mark 
 Finally, call the method `verifyToken` check that the user calling your smart contract has an active Civic Pass.
 
 ```
-bool verificationResult = verifier.verifyToken(userAddress);
+bool verificationResult = verifier.verifyToken(userAddress, gatekeeperNetwork);
 ```
