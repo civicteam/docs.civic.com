@@ -13,18 +13,18 @@ import "./IGatewayTokenVerifier.sol";
 contract MyContract {
     IGatewayTokenVerifier verifier;
 
-    constructor (address gatekeeperNetwork) {
-        verifier = IGatewayTokenVerifier(gatekeeperNetwork);
+    constructor () {
+        verifier = IGatewayTokenVerifier();
     }
 }
+```
+
+Finally, call the method `verifyToken` to check that the user calling your smart contract has an active Civic Pass.
+
+```
+bool verificationResult = verifier.verifyToken(userAddress, gatekeeperNetwork);
 ```
 
 {% hint style="info" %}
 You can find the correct `gatekeeperNetwork` key in the list of available <mark style="color:orange;"></mark> [<mark style="color:orange;">Gatekeeper Networks</mark>](../selecting-a-pass.md)<mark style="color:orange;">.</mark>
 {% endhint %}
-
-Finally, call the method `verifyToken` check that the user calling your smart contract has an active Civic Pass.
-
-```
-bool verificationResult = verifier.verifyToken(userAddress, gatekeeperNetwork);
-```
