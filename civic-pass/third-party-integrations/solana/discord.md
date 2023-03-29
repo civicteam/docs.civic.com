@@ -11,7 +11,7 @@ With the [Civic Pass Discord Bot](https://discord.com/api/oauth2/authorize?clien
 
 Users will be asked to connect their wallet to their Discord account.
 
-![](<../../../.gitbook/assets/image (9).png>)
+![](<../../../.gitbook/assets/image (1) (1).png>)
 
 After which, they will be allocated roles based on their passes.
 
@@ -23,5 +23,5 @@ Done!
 
 Create private channels and grant access to the roles you create, in order to allow special access to pass-holders.
 
-![](<../../../.gitbook/assets/image (6) (1) (1).png>)
+![](<../../../.gitbook/assets/image (7) (1).png>)
 

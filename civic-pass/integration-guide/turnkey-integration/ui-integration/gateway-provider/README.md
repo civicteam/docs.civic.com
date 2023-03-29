@@ -109,7 +109,7 @@ Even if the user already has a Civic Pass, you don't have to worry about enablin
 
 For example, if the the user already has a Civic Pass, triggering the modal again via `requestGatewayToken` displays the following screen:
 
-![](<../../../../../.gitbook/assets/image (13).png>)
+![](<../../../../../.gitbook/assets/image (4).png>)
 
 
 
