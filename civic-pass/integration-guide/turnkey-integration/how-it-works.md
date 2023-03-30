@@ -8,9 +8,9 @@ To get a holistic understanding of a Turnkey Pass Integration, let's break down 
 
 As soon as a user connects their wallet to your dApp, the Civic Gateway react component queries the blockchain for a valid associated Civic Pass (for the configured Gatekeeper Network). If no such Civic Pass is found, your dApp UI should update its UI accordingly.&#x20;
 
-If you choose to use the reference Identity button component provided in the same library, these UI updates will happen automatically. For example, a good practice would be to disable any controls that would fail on-chain should they be used prematurely. In other words, a user should not be allowed to press the Mint NFT button if Civic Pass Captcha isn't issued, as that action would fail on-chain.
+If you choose to use the reference Identity Button component provided in the same library, these UI updates will happen automatically. For example, a good practice would be to disable any controls that would fail on-chain should they be used prematurely. In other words, a user should not be allowed to press the Mint NFT Button if Civic Pass Captcha isn't issued, as that action would fail on-chain.
 
-Additionally, we strongly recommend that your dApp always displays the current status of a user's Civic Pass (again, this happens automatically with the Identity button component).&#x20;
+Additionally, we strongly recommend that your dApp always displays the current status of a user's Civic Pass (again, this happens automatically with the Identity Button component).&#x20;
 
 #### 2. Request a new Civic Pass
 
