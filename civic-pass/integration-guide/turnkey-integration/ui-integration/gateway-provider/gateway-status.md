@@ -22,12 +22,12 @@ Even before a Civic Pass has been issued on-chain, the Gateway Provider gives yo
 
 After a Civic has been issued on-chain, the following status values apply
 
-| **Status** | **Description**                                                                                  | **Behaviour when `requestGatewayToken` is triggered**                             |
-| ---------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
-| `ACTIVE`   | The Civic Pass is Active. The user can trade.                                                    | Opens the Civic Pass modal dialog with a user-friendly explanation of the status. |
-| `EXPIRED`  | The Civic Pass has expired An IP check and proof of wallet ownership are required to refresh it. | Proof of wallet ownership is automatically initiated                              |
-| `FROZEN`   | The Pass has been frozen, for example because the user connected from a blocked IP               | Opens the Civic Pass modal dialog with a user-friendly explanation of the status. |
-| `REVOKED`  | The Pass has been revoked, for example because the user connected from a banned IP               | Opens the Civic Pass modal dialog with a user-friendly explanation of the status. |
+| **Status** | **Description**                                                                                                                                      | **Behaviour when `requestGatewayToken` is triggered**                             |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `ACTIVE`   | The Civic Pass is Active. The user can trade.                                                                                                        | Opens the Civic Pass modal dialog with a user-friendly explanation of the status. |
+| `EXPIRED`  | The Civic Pass has expired. Depending on the Gatekeeper Network configured, an IP check and/or proof of wallet ownership are required to refresh it. | Proof of wallet ownership is automatically initiated                              |
+| `FROZEN`   | The Pass has been frozen, for example because the user connected from a blocked IP                                                                   | Opens the Civic Pass modal dialog with a user-friendly explanation of the status. |
+| `REVOKED`  | The Pass has been revoked, for example because the user connected from a banned IP                                                                   | Opens the Civic Pass modal dialog with a user-friendly explanation of the status. |
 
 #### Status when something goes wrong
 
