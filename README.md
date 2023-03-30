@@ -1,6 +1,6 @@
 ---
 description: >-
-  We provide on-chain identity layer creating trust across web3. Explore our
+  We provide an on-chain identity layer creating trust across Web3. Explore our
   guides and examples to integrate Civic into your dApp.
 ---
 
@@ -16,7 +16,7 @@ Integrate Civic Pass into your platform and create an identity layer that allows
 
 ## Civic.me
 
-Civic.me is a dynamic Web3 profile with a custom name, headline, and PFP NFT image selected by the user. Using an SDK you can easily retrieve and display your users profile data and Civic Passes.
+Civic.me is a dynamic Web3 profile with a custom name, headline, and PFP NFT image selected by the user. By using an SDK, you can easily retrieve and display your users' profile data and Civic Passes.
 
 <mark style="color:orange;"></mark>[<mark style="color:orange;">Get Started --></mark> ](civic-me/civic-me-profile.md)<mark style="color:orange;"></mark>
 
