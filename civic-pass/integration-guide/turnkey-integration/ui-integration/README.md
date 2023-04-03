@@ -8,7 +8,7 @@ For even more convenience and less code, simply drop the included [<mark style="
 
 &#x20;
 
-<figure><img src="../../../../.gitbook/assets/image (14).png" alt=""><figcaption><p>The Identity Button displaying different Civic Pass states</p></figcaption></figure>
+<figure><img src="../../../../.gitbook/assets/image (25).png" alt=""><figcaption><p>The Identity Button displaying different Civic Pass states</p></figcaption></figure>
 
 
 

@@ -1,6 +1,6 @@
-# Ethereum
+# Polygon
 
-The configuration parameters of the Ethereum implementation of the GatewayProvider. For a full integration guide on integrating the Gateway Provider the parent section, [<mark style="color:orange;">Gateway Provider</mark>](../).
+The configuration parameters of the Polygon implementation of the GatewayProvider. For a full integration guide on integrating the Gateway Provider the parent section, [<mark style="color:orange;">Gateway Provider</mark>](../).
 
 {% hint style="info" %}
 The React component uses [ethers.js](https://www.npmjs.com/package/ethers)

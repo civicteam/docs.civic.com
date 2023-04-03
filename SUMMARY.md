@@ -4,7 +4,7 @@
 
 ## Civic Pass
 
-* [Overview](civic-pass/overview/README.md)
+* [Introduction](civic-pass/overview/README.md)
   * [Supported Blockchains](civic-pass/overview/supported-blockchains.md)
   * [Fundamental Concepts](civic-pass/overview/how-it-works.md)
 * [Integration Guide](civic-pass/integration-guide/README.md)
@@ -13,8 +13,10 @@
     * [UI Integration](civic-pass/integration-guide/turnkey-integration/ui-integration/README.md)
       * [Gateway Provider](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/README.md)
         * [Configuration Parameters](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/README.md)
-          * [Solana Configuration](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/solana-configuration.md)
-          * [Ethereum/Polygon Configuration](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/ethereum-polygon-configuration.md)
+          * [Solana](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/solana-configuration.md)
+          * [Ethereum](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/ethereum-polygon-configuration.md)
+          * [Polygon](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/ethereum-polygon-configuration-1.md)
+          * [XDC](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/configuration-parameters/ethereum-polygon-configuration-2.md)
         * [Gateway Status](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/gateway-status.md)
         * [Gateway Token](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/gateway-token/README.md)
           * [Solana](civic-pass/integration-guide/turnkey-integration/ui-integration/gateway-provider/gateway-token/solana.md)
@@ -22,7 +24,9 @@
       * [Sample Project](civic-pass/integration-guide/turnkey-integration/ui-integration/sample-project.md)
     * [On-Chain Integration](civic-pass/integration-guide/turnkey-integration/on-chain-integration/README.md)
       * [Solana](civic-pass/integration-guide/turnkey-integration/on-chain-integration/solana.md)
-      * [Ethereum / Polygon](civic-pass/integration-guide/turnkey-integration/on-chain-integration/ethereum-polygon.md)
+      * [Ethereum](civic-pass/integration-guide/turnkey-integration/on-chain-integration/ethereum-polygon.md)
+      * [Polygon](civic-pass/integration-guide/turnkey-integration/on-chain-integration/ethereum-polygon-1.md)
+      * [XDC](civic-pass/integration-guide/turnkey-integration/on-chain-integration/ethereum-polygon-2.md)
     * [Available Gatekeeper Networks](civic-pass/integration-guide/turnkey-integration/selecting-a-pass.md)
     * [Test your integration](civic-pass/integration-guide/turnkey-integration/testing-against-different-environments.md)
   * [Custom Pass Integration](civic-pass/integration-guide/custom-integration/README.md)
