@@ -1,12 +1,13 @@
 # Supported Blockchains
 
-Civic Pass supports multiple chains, with more chains being added continuously. \
+Civic Pass supports multiple chains, with more chains being added continuously.\
 \
 Follow the link below to visit a demo integration of the Captcha Verification Civic Pass.
 
-* <mark style="color:orange;"></mark>[<mark style="color:orange;">Solana Demo</mark>](https://getpass.civic.com)<mark style="color:orange;"></mark>
-* <mark style="color:orange;"></mark>[<mark style="color:orange;">Ethereum Demo</mark>](https://demopass.civic.com/#goerli)<mark style="color:orange;"></mark>
-* <mark style="color:orange;"></mark>[<mark style="color:orange;">Polygon Demo</mark>](https://demopass.civic.com/#polygon)<mark style="color:orange;"></mark>
-* <mark style="color:orange;"></mark>[<mark style="color:orange;">XDC Demo</mark>](https://demopass.civic.com/#xdcmainnet)<mark style="color:orange;"></mark>
+* [<mark style="color:orange;">Solana Demo</mark>](https://getpass.civic.com)
+* [<mark style="color:orange;">Ethereum Demo</mark>](https://demopass.civic.com/#goerli)
+* [<mark style="color:orange;">Polygon Demo</mark>](https://demopass.civic.com/#polygon)
+* [<mark style="color:orange;">XDC Demo</mark>](https://demopass.civic.com/#xdcmainnet)
+* [<mark style="color:orange;">Arbitrum Demo</mark>](https://demopass.civic.com/#arbitrum%20one)
 
 If your blockchain of choice is not listed above, feel free to reach out to us for more info on when support for your chain is planned.

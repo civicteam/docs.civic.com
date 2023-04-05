@@ -1,5 +1,9 @@
 # Polygon
 
+{% hint style="info" %}
+[<mark style="color:orange;">Click here</mark>](https://demopass.civic.com/#polygon) for a demo of Civic Pass on Polygon!&#x20;
+{% endhint %}
+
 The configuration parameters of the Polygon implementation of the GatewayProvider. For a full integration guide on integrating the Gateway Provider the parent section, [<mark style="color:orange;">Gateway Provider</mark>](../).
 
 {% hint style="info" %}

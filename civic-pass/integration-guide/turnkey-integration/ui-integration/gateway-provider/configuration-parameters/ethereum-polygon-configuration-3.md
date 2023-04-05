@@ -1,10 +1,10 @@
-# XDC
+# Arbitrum
 
 {% hint style="info" %}
-&#x20;[Click here](https://demopass.civic.com/#xdcmainnet) for a demo of Civic Pass on XDC!&#x20;
+&#x20;[Click here](https://demopass.civic.com/#arbitrum%20one) for a demo of Civic Pass on Arbitrum!
 {% endhint %}
 
-The configuration parameters of the XDC implementation of the GatewayProvider. For a full integration guide on integrating the Gateway Provider the parent section, [<mark style="color:orange;">Gateway Provider</mark>](../).
+The configuration parameters of the Arbitrum implementation of the GatewayProvider. For a full integration guide on integrating the Gateway Provider the parent section, [<mark style="color:orange;">Gateway Provider</mark>](../).
 
 {% hint style="info" %}
 The React component uses [ethers.js](https://www.npmjs.com/package/ethers)

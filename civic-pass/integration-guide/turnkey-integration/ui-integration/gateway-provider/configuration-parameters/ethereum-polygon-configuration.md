@@ -1,5 +1,9 @@
 # Ethereum
 
+{% hint style="info" %}
+[<mark style="color:orange;">Click here</mark>](https://demopass.civic.com/#ethereum) for a demo of Civic Pass on Ethereum!&#x20;
+{% endhint %}
+
 The configuration parameters of the Ethereum implementation of the GatewayProvider. For a full integration guide on integrating the Gateway Provider the parent section, [<mark style="color:orange;">Gateway Provider</mark>](../).
 
 {% hint style="info" %}
