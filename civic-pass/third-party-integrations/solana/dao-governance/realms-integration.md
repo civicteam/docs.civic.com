@@ -30,7 +30,7 @@ Quick Reference: If you are looking for the "Community Voter Weight Add-in" to e
 | ID Verification for DeFi | ID Document-based full KYC with "DeFi-friendly" region restrictions. [<mark style="color:orange;">Contact us</mark> ](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a)for access or join our [<mark style="color:orange;">Discord Server</mark>](https://discord.gg/8H5Kdtr5Wn).  |
 
 {% hint style="info" %}
-Please review the [Civic Pass Terms of Service](https://www.civic.com/legal/terms-of-service-civic-pass-v1/) carefully before continuing. By installing or integrating the Civic Pass (or Captcha) plugin, you agree to Civic Pass Terms of Service on behalf of the organization, company or other legal entity for which you act; and represent that you have the authority to bind the same.
+Please review the [Civic Pass Terms of Service](https://www.civic.com/legal/terms-of-service-civic-pass-v1/) carefully before continuing. By installing or integrating the Civic Pass (or CAPTCHA) plugin, you agree to Civic Pass Terms of Service on behalf of the organization, company or other legal entity for which you act; and represent that you have the authority to bind the same.
 
 If you do not have such authority, or if you do not agree with this the Civic Pass Terms of Service, you must not continue and may not use the Services.
 {% endhint %}

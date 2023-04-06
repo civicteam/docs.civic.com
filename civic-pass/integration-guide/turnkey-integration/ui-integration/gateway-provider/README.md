@@ -5,7 +5,7 @@ The **GatewayProvider** is a React component that enables your dApp frontend to:
 * access all available information of your user's Civic Pass
 * trigger the issuance of a new Civic Pass&#x20;
 
-These are the only differences in the way the GatewayProvider is configured for each <mark style="color:orange;"></mark> [<mark style="color:orange;">supported chain</mark>](../../../../overview/supported-blockchains.md). <mark style="color:orange;"></mark> Once configured, using it is chain-agnostic. In this section we will go through the steps required to integrate the GatewayProvider into your UI, regardless of which chain your dApp supports.&#x20;
+These are the only differences in the way the GatewayProvider is configured for each [<mark style="color:orange;">supported chain</mark>](../../../../overview/supported-blockchains.md). Once configured, using it is chain-agnostic. In this section we will go through the steps required to integrate the GatewayProvider into your UI, regardless of which chain your dApp supports.&#x20;
 
 ### 1. Install the React component for your chain
 
@@ -30,7 +30,7 @@ npm i @civic/ethereum-gateway-react@latest
 Once the Gateway React library is installed, import and configure the `GatewayProvider` component.&#x20;
 
 {% hint style="warning" %}
-The required configuration properties vary slightly depending on the target chain. You can find the details on the configuration properties of each chain [here](configuration-parameters/).
+The required configuration properties vary slightly depending on the target chain. You can find the details on the configuration properties of each chain [<mark style="color:orange;">here</mark>](configuration-parameters/).
 {% endhint %}
 
 {% tabs %}
@@ -101,7 +101,7 @@ const { requestGatewayToken } = useGateway()
 <button onclick={requestGatewayToken}>Civic Pass</button>
 ```
 
-For example, this is the initial screen your users will see when issuing a Civic Pass Captcha:
+For example, this is the initial screen your users will see when issuing a Civic Pass CAPTCHA:
 
 ![](<../../../../../.gitbook/assets/image (15).png>)
 
@@ -150,4 +150,4 @@ import IdentityButton from '@civic/ethereum-gateway-react';
 {% endtab %}
 {% endtabs %}
 
-&#x20;Besides just displaying the Civic Pass status, users can also start the issuance of their Civic Pass, should they not already have one. The Identity Button is automatically updated to display the corresponding [<mark style="color:orange;">Civic Pass status.</mark>](gateway-status.md)<mark style="color:orange;"></mark>
+&#x20;Besides just displaying the Civic Pass status, users can also start the issuance of their Civic Pass, should they not already have one. The Identity Button is automatically updated to display the corresponding [<mark style="color:orange;">Civic Pass status.</mark>](gateway-status.md)
