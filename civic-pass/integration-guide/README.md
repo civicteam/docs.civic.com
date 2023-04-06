@@ -8,7 +8,7 @@ We're here to help you determine whether a Turnkey Pass Integration or Custom Pa
 In this documentation the term _blockchain_ is always used to reference **a programming model**. For example, "Layer 2" solutions like [<mark style="color:orange;">Polygon</mark>](https://polygon.io/), all fall under the _Ethereum (EVM)_ programming model.
 {% endhint %}
 
-### <mark style="color:orange;"></mark>[<mark style="color:orange;">Turnkey Pass Integration</mark>](turnkey-integration/)
+### [<mark style="color:orange;">Turnkey Pass Integration</mark>](turnkey-integration/)
 
 Choose our Turnkey Pass Integration if you want to let Civic take care of everything:
 
@@ -17,14 +17,14 @@ Choose our Turnkey Pass Integration if you want to let Civic take care of everyt
   * Identity documents
   * Age
   * Liveness
-  * Captcha
+  * CAPTCHA
   * Location
   * OFAC
 * Users control their data, and can choose to share that data if your compliance requires (optional)
 
 This is our easiest integration: All you have to do is integrate one library into your UI and one library into your smart contract.
 
-### <mark style="color:orange;"></mark>[<mark style="color:orange;">Custom Pass Integration</mark>](custom-integration/)<mark style="color:orange;"></mark>
+### [<mark style="color:orange;">Custom Pass Integration</mark>](custom-integration/)
 
 You may also use your own verification process and integrate directly via an API. In this use case:
 
