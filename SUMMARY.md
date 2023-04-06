@@ -36,7 +36,7 @@
 * [Third party integrations](civic-pass/third-party-integrations/README.md)
   * [Solana](civic-pass/third-party-integrations/solana/README.md)
     * [Adding Civic Pass protection to Candy Machine v3](civic-pass/third-party-integrations/solana/adding-civic-pass-protection-to-candy-machine-v3.md)
-    * [Adding Captcha Verification to Candy Machine v2](civic-pass/third-party-integrations/solana/adding-captcha-to-candy-machine-v2.md)
+    * [Adding CAPTCHA Verification to Candy Machine v2](civic-pass/third-party-integrations/solana/adding-captcha-to-candy-machine-v2.md)
     * [DAO Governance](civic-pass/third-party-integrations/solana/dao-governance/README.md)
       * [Realms Integration](civic-pass/third-party-integrations/solana/dao-governance/realms-integration.md)
     * [Discord](civic-pass/third-party-integrations/solana/discord.md)
