@@ -9,7 +9,7 @@ Before getting into the details, it is important to understand two fundamental c
 
 A Civic Pass (also referred to as a "token") is an on-chain, non-transferrable token that dApps can issue, freeze, or revoke for user access control.
 
-The presence of an active Civic Pass proves that a user's wallet was verified according your dApp's requirements. Now, your dApp can verify the state of a wallet's Civic Pass before allowing transactions through, thus blocking non-compliant users.
+The presence of an active Civic Pass proves that a user's wallet was verified according to your dApp's requirements. Now, your dApp can verify the state of a wallet's Civic Pass before allowing transactions through, thus blocking non-compliant users.
 
 Civic provides you with all the tools needed to issue Civic Passes to your users. Fundamentally there are two integration flavours.
 
