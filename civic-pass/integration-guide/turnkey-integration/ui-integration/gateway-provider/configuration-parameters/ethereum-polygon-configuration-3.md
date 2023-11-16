@@ -11,9 +11,7 @@ The React component uses [ethers.js](https://www.npmjs.com/package/ethers)
 {% endhint %}
 
 ```jsx
-<GatewayProvider
-  wallet={wallet}
-  gatekeeperNetwork={gatekeeperNetwork}>
+<GatewayProvider wallet={wallet} gatekeeperNetwork={gatekeeperNetwork}>
   {children}
 </GatewayProvider>
 ```
@@ -22,4 +20,4 @@ The React component uses [ethers.js](https://www.npmjs.com/package/ethers)
 | --------------------- | ------------------------------------------------------------------------------------------- | ---------------------- |
 | **wallet**            | An [ethers.js](https://www.npmjs.com/package/ethers) object representing the user's wallet. | `Wallet` from `ethers` |
 | **gatekeeperNetwork** | The address of the [Gatekeeper Network](../../../selecting-a-pass.md) are issued for.       | `string`               |
-
+| **logo**              | Optional url of your logo that will be shown, if set, during verification.                  | `string`               |
