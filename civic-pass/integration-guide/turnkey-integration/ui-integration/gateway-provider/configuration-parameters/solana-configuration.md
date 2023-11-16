@@ -11,8 +11,8 @@ The configuration parameters of the Solana implementation of the GatewayProvider
   wallet={wallet}
   connection={new Connection(clusterApiUrl("mainnet-beta"))}
   cluster="mainnet-beta"
-  gatekeeperNetwork={gatekeeperNetwork}>
-</GatewayProvider>
+  gatekeeperNetwork={gatekeeperNetwork}
+></GatewayProvider>
 ```
 
 | **Property**               | **Description**                                                                                                                                            | **Type**                                                                                                                                              |
@@ -23,6 +23,7 @@ The configuration parameters of the Solana implementation of the GatewayProvider
 | **gatekeeperNetwork**      | <p>The address of the</p><p><a href="../../../selecting-a-pass.md">Gatekeeper Network</a> that your Civic Passes are issued for.</p>                       | `PublicKey` from `@solana/web3.js`                                                                                                                    |
 | **connection**             | A Solana connection to any Solana network. The recommended commitment level is 'processed'                                                                 | `Connection` from `@solana/web3.js`                                                                                                                   |
 | **cluster**                | The Solana network to use, i.e. `devnet`, `mainnet-beta`, `testnet`. This defaults to `mainnet-beta`, so should be set if a different connection endpoint. | `string`                                                                                                                                              |
+| **logo**                   | Optional url of your logo that will be shown, if set, during verification.                                                                                 | `string`                                                                                                                                              |
 
 ### Advanced Configuration
 
@@ -41,8 +42,8 @@ Some [<mark style="color:orange;">Gatekeeper Networks</mark>](../../../selecting
 
 If the custom `handleTransaction` function is provided it is the responsibility of the integrator to
 
-* either sign and send the transaction or
-* just send the transaction based on the signatures requirement of the transaction.
+- either sign and send the transaction or
+- just send the transaction based on the signatures requirement of the transaction.
 
 The integrator also has the option to extend the transaction before it is signed and sent, in order to minimise the number of separate transactions that the user is required to approve.
 
