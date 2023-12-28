@@ -256,9 +256,74 @@ paths:
         - pass_auth:
             - write:token
             - read:token
+  /piirequest/{scopeRequestId}:
+    get:
+      tags:
+        - piirequest
+      summary: Get the user's PII using a ScopeRequestId provided by Civic
+      operationId: getPii
+      description: After the user's PII has been delivered to Civic, we give you an ID (scopeRequestId) that can be used to retrieve the user's PII before issuing the Civic Pass.
+      parameters:
+        - name: scopeRequestId
+          in: path
+          description: The ID that was provided to you by Civic after the user has submitted their PII
+          required: true
+          example: 9a7a77af-a58e-4e54-83c9-5daa96ccbf11
+          schema:
+            type: string
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPiiResponse'
+  /piirequest/{scopeRequestId}/status:
+    put:
+      tags:
+        - piirequest
+      summary: Approve or Reject receipt of PII, to allow or block issuance of the user's Civic Pass.
+      operationId: updatePiiReceipt
+      description: After you reviewed the user's PII returned by the GET /piirequest/{scopeRequestId} endpoint, you can approve or reject the user's Civic Pass by calling this endpoint.
+      parameters:
+        - name: scopeRequestId
+          in: path
+          description: The ID that was provided to you by Civic after the user has submitted their PII
+          required: true
+          example: 9a7a77af-a58e-4e54-83c9-5daa96ccbf11
+          schema:
+            type: string
+        - name: status
+          in: body
+          description: Set this to 'partner-pass' to approve the issuance of the user's Civic Pass, or 'partner-fail' to reject it.
+          schema:
+            type: string
+            enum:
+              - "partner-pass"
+              - "partner-fail"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - "partner-pass"
+                    - "partner-fail"
+                  description: Whether to approve (pass) or reject (fail) the issuance of the user's Civic Pass.
+              required:
+                - status
+      responses:
+         200:
+          description: "OK"
+
 tags:
   - name: pass
     description: Issue and manage Civic Passes
+  - name: piirequest
+    description: Get user PII and approve / reject receipt of PII
 components:
   schemas:
     Wallet:
@@ -387,6 +452,25 @@ components:
         - id
         - onChainState
         - state
+    GetPiiResponse:
+      type: object
+      properties:
+        status:
+          description: "The status of this PII request. The PII can be retrieved once this has reached 'verification-success'"
+          type: string
+          enum:
+            - "awaiting-user"
+            - "user-acknowledged"
+            - "verification-success"
+            - "verification-failed"
+            - "user-cancelled"
+            - "partner-pass"
+            - "partner-fail"
+        verifiedInformation:
+          type: object
+          description: A set of all the user's PII that Civic could verify. The exact set of fields will differ depending on your pass configuration.
+          example: { "email": "user@example.com", "documentType": "passport", "documentNumber": "ABC123" }
+
   securitySchemes:
     pass_auth:
       type: oauth2
