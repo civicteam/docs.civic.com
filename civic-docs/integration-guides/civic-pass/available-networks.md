@@ -6,7 +6,9 @@ Please review the [<mark style="color:orange;">Civic Pass Terms of Service</mark
 
 
 
-Civic Pass is now available on Solana, Ethereum, Polygon, Arbitrum, XDC, and Fantom.
+Civic Pass is available on:
+
+Arbitrum, Avalanche, Base, Casper, Ethereum, Fantom, Optimism, Polygon, Polygon zkEVM, Solana, and XDC.
 
 To get the Gatekeeper Network address required to configure your dApp, complete the form for the Pass you would like to use from the list below.
 
