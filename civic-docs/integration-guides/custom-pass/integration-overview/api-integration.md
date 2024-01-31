@@ -11,8 +11,9 @@ The Civic Pass API supports the following chains and chain networks:
 * `solana/mainnet-beta`
 * `solana/devnet`
 * `ethereum/homestead`
-* `ethereum/arbitrumMainnet`
 * `ethereum/arbitrumGoerli`
+* `ethereum/arbitrumMainnet`
+* `ethereum/arbitrumSepolia`
 * `ethereum/goerli`
 * `ethereum/avalancheCChain`
 * `ethereum/avalancheCChainFuji`
@@ -20,11 +21,14 @@ The Civic Pass API supports the following chains and chain networks:
 * `ethereum/baseMainnet`
 * `ethereum/fantomMainnet`
 * `ethereum/fantomTestnet`
+* `ethereum/mainnet`
 * `ethereum/optimismGoerli`
 * `ethereum/optimismMainnet`
 * `ethereum/polygonMainnet`
 * `ethereum/polygonMumbai`
-* `ethereum/xdc`
+* `ethereum/polygonZKEVM`
+* `ethereum/polygonZKEVMTestnet`
+* `ethereum/xdcMainnet`
 * `ethereum/xdcApothem`
 
 
