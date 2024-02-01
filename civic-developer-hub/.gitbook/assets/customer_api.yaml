@@ -2,33 +2,34 @@ openapi: 3.0.3
 info:
   title: Civic Pass Customer API
   description: |-
-    The APIs described bellow enable Civic customers to issue and manage the Civic Pass for their dApp. To learn more about Civic Passes and their fundamentals, please refer to the main [documentation](https://docs.civic.com/).
-    
+    The APIs described below enable Civic customers to issue and manage the Civic Pass for their dApp. To learn more about Civic Passes and their fundamentals, please refer to the main [documentation](https://docs.civic.com/).
+
     # Terminology
-    
+
     In the Customer API, the term `chain` refers to a blockchain programming model and the term `chainNetwork` to a network of that chain. For example, a "Layer 2" Ethereum network like Polygon is represented as `/pass/ethereum/matic`.
-    
+
     # Supported Chains
-    
+
     The Customer API supports the following chains and chain networks:
     - `solana/mainnet-beta`
     - `solana/devnet`
     - `ethereum/homestead`
+    - `ethereum/sepolia`
     - `ethereum/goerli`
     - `ethereum/matic`
-    
+
     If your blockchain of choice is not listed above, feel free to reach out to us for more info on when support for your chain is planned.
-    
+
     # Authentication
     Authentication follows the [OAuth standard](https://oauth.net/2/). The Civic authentication endpoint is `https://auth.civic.com/oauth/token`. The `grant_type` to request is  `client_credentials`.
-    
+
     To manage API authentication we recommend using one of the available [OAuth libraries](https://oauth.net/code/) for your platform.
-    
+
     # Try it out!
     You can try out the Civic Pass Customer API by using the following demo credentials to generate an auth token:
     - `client_id: j5kwZ68j4bM8fdPAYKu7DlGQGr37eNPs`,
     - `client_secret: S1qSiacDUDPRVfxiSvwsRASxE0fH47U60eYeNYIt4JKSVSsgo2yy0n6V-Uz1IYBK`
-    
+
     The demo credentials only work for the development networks:`solana/devnet` & `ethereum/goerli`. Also, please keep in mind that since these are shared credentials, i.e. others have access to the same Civic Passes and can for example freeze them.
 
   termsOfService: https://www.civic.com/legal/terms-of-service-civic-pass-v1/
@@ -61,10 +62,10 @@ paths:
                   type: object
                   properties:
                     state:
-                      $ref: '#/components/schemas/State'
+                      $ref: "#/components/schemas/State"
                     walletAddress:
                       type: string
-                      example: '4v4PL5bMZXXvQB3mvWPXLvqfJpjJmPRnPrmENnUESQQQ'
+                      example: "4v4PL5bMZXXvQB3mvWPXLvqfJpjJmPRnPrmENnUESQQQ"
                     issueTimestamp:
                       type: object
                       example: { "$gt": 1677588890 }
@@ -80,7 +81,7 @@ paths:
                     type: array
                     items:
                       type: object
-                      $ref: '#/components/schemas/PassResponse'
+                      $ref: "#/components/schemas/PassResponse"
       security:
         - pass_auth:
             - write:token
@@ -99,7 +100,7 @@ paths:
           required: true
           example: ethereum
           schema:
-            $ref: '#/components/schemas/Chain'
+            $ref: "#/components/schemas/Chain"
         - name: chainNetwork
           in: path
           description: The blockchain network
@@ -107,24 +108,24 @@ paths:
           explode: true
           example: matic
           schema:
-            $ref: '#/components/schemas/ChainNetwork'
+            $ref: "#/components/schemas/ChainNetwork"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Wallet'
+              $ref: "#/components/schemas/Wallet"
         required: true
       responses:
-        '202':
+        "202":
           description: The issuance of the Civic Pass has been initiated.
           content:
             application/json:
               schema:
                 type: object
-                $ref: '#/components/schemas/PassResponse'
-        '401':
+                $ref: "#/components/schemas/PassResponse"
+        "401":
           description: Unauthorized
-        '400':
+        "400":
           description: Client error
       security:
         - pass_auth:
@@ -144,7 +145,7 @@ paths:
           required: true
           example: ethereum
           schema:
-            $ref: '#/components/schemas/Chain'
+            $ref: "#/components/schemas/Chain"
         - name: wallet
           in: path
           description: The user's wallet the Civic Pass was issued to.
@@ -159,15 +160,15 @@ paths:
           explode: true
           example: matic
           schema:
-            $ref: '#/components/schemas/ChainNetwork'
+            $ref: "#/components/schemas/ChainNetwork"
       responses:
-        '200':
+        "200":
           description: The Civic Pass associated with the given wallet.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PassResponse'
-        '404':
+                $ref: "#/components/schemas/PassResponse"
+        "404":
           description: No Civic pass is associatied with the given wallet.
       security:
         - pass_auth:
@@ -186,7 +187,7 @@ paths:
           required: true
           example: ethereum
           schema:
-            $ref: '#/components/schemas/Chain'
+            $ref: "#/components/schemas/Chain"
         - name: wallet
           in: path
           description: The user's wallet the Civic Pass was issued to.
@@ -201,15 +202,15 @@ paths:
           explode: true
           example: matic
           schema:
-            $ref: '#/components/schemas/ChainNetwork'
+            $ref: "#/components/schemas/ChainNetwork"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateState'
+              $ref: "#/components/schemas/UpdateState"
         required: true
       responses:
-        '200':
+        "200":
           description: ok
           content:
             application/json:
@@ -233,7 +234,7 @@ paths:
           required: true
           example: ethereum
           schema:
-            $ref: '#/components/schemas/Chain'
+            $ref: "#/components/schemas/Chain"
         - name: wallet
           in: path
           description: The user's wallet the Civic Pass was issued to.
@@ -248,9 +249,9 @@ paths:
           explode: true
           example: matic
           schema:
-            $ref: '#/components/schemas/ChainNetwork'
+            $ref: "#/components/schemas/ChainNetwork"
       responses:
-        '200':
+        "200":
           description: The revocation has been initiated.
       security:
         - pass_auth:
@@ -277,7 +278,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetPiiResponse'
+                $ref: "#/components/schemas/GetPiiResponse"
   /piirequest/{scopeRequestId}/status:
     put:
       tags:
@@ -316,7 +317,7 @@ paths:
               required:
                 - status
       responses:
-         200:
+        200:
           description: "OK"
 
 tags:
@@ -361,7 +362,7 @@ components:
       type: object
       properties:
         state:
-          $ref: '#/components/schemas/State'
+          $ref: "#/components/schemas/State"
         expiryTimestamp:
           description: The new expiration timestamp
           example: 1677593295
@@ -373,9 +374,9 @@ components:
           type: object
           properties:
             type:
-              $ref: '#/components/schemas/Chain'
+              $ref: "#/components/schemas/Chain"
             network:
-              $ref: '#/components/schemas/ChainNetwork'
+              $ref: "#/components/schemas/ChainNetwork"
           required:
             - type
             - network
@@ -469,7 +470,29 @@ components:
         verifiedInformation:
           type: object
           description: A set of all the user's PII that Civic could verify. The exact set of fields will differ depending on your pass configuration.
-          example: { "email": "user@example.com", "documentType": "passport", "documentNumber": "ABC123" }
+          example:
+            {
+              "email": "user@example.com",
+              "documentType": "passport",
+              "issueCountry": "GBR",
+              "name": "First Middle Last",
+              "dateOfBirth": "1990-01-01",
+              "dateOfExpiry": "2035-05-28",
+              "documentNumber": "0123456789",
+              "address": "0x1234abcd",
+            }
+        links:
+          type: array
+          description: A list of the evidence item URLs collected from the user.
+          items:
+            type: object
+            properties:
+              rel:
+                type: string
+                example: "idDocumentFront"
+              href:
+                type: string
+                example: "https://api.civic.com/partner/piirequest/9a7a77af-a58e-4e54-83c9-5daa96ccbf11"
 
   securitySchemes:
     pass_auth:
