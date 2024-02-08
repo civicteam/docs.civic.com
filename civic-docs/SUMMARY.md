@@ -20,6 +20,7 @@
         * [Civic Pass Structure](integration-guides/civic-pass/integration-overview/ui-integration/ui-modal/civic-pass-structure.md)
       * [Pass Status UI](integration-guides/civic-pass/integration-overview/ui-integration/pass-status-ui.md)
     * [On-Chain Integration](integration-guides/civic-pass/integration-overview/on-chain-integration.md)
+    * [User PII Retrieval](integration-guides/civic-pass/integration-overview/user-pii-retrieval.md)
   * [Testing](integration-guides/civic-pass/testing.md)
   * [Available Networks](integration-guides/civic-pass/available-networks.md)
 * [Custom Pass](integration-guides/custom-pass/README.md)
