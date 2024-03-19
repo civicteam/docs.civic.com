@@ -38,6 +38,7 @@
   * [Candy Machine v3](third-party-integrations/candy-machine/candy-machine-v3.md)
 * [Realms](third-party-integrations/realms.md)
 * [Discord](third-party-integrations/discord.md)
+* [Solana Token Extensions](third-party-integrations/solana-token-extensions.md)
 
 ## Security
 
