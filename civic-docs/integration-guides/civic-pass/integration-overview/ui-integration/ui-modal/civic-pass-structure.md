@@ -1,6 +1,6 @@
 # Civic Pass Structure
 
-The **gatewayToken** represents the on-chain structure of the Civic Pass. This will only be defined if the Civic Pass is active. For information on how to retrieve the status see [<mark style="color:orange;">Gateway Provider</mark>](../).
+The **gatewayToken** represents the on-chain structure of the Civic Pass. This will only be defined if the Civic Pass is active. For information on how to retrieve the status, please see [<mark style="color:orange;">UI Modal</mark>](./).
 
 |                       |                                                                   |                                         |
 | --------------------- | ----------------------------------------------------------------- | --------------------------------------- |

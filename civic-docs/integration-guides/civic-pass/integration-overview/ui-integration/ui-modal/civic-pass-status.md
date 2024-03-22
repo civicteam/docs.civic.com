@@ -2,7 +2,7 @@
 
 ### Gateway Status
 
-The **`gatewayStatus`** indicates the overall status of the Civic Pass. For information on how to retrieve the status see the parent section [<mark style="color:orange;">Gateway Provider</mark>](../)<mark style="color:orange;">.</mark>
+The **`gatewayStatus`** indicates the overall status of the Civic Pass. For information on how to retrieve the status, please see [<mark style="color:orange;">UI Modal</mark>](./).
 
 #### Status before a Civic Pass has been issued&#x20;
 

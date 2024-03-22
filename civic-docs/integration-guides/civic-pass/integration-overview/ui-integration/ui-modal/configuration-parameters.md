@@ -2,7 +2,7 @@
 
 ## Gateway Provider
 
-The configuration parameters of the Gateway Provider vary slightly depending on the blockchain. For a full integration guide on integrating the Gateway Provider the parent section, <mark style="color:orange;">UI Integration</mark>.
+The configuration parameters of the Gateway Provider vary slightly depending on the blockchain. For a full integration guide on integrating the Gateway Provider, please see [<mark style="color:orange;">UI Modal</mark>](./).
 
 {% tabs %}
 {% tab title="Solana" %}
