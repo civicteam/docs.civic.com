@@ -63,12 +63,13 @@ In the default mode of operation, the transaction required to issue or refresh t
 
 Some [<mark style="color:orange;">Gatekeeper Networks</mark>](../../../available-networks.md) support an alternative mode such as having the Civic backend broadcast the transaction. If the Gatekeeper Network you are using supports this, you can set the `gatekeeperSendsTransaction` property to `true` to turn it on.
 
-|                                |                                                                                               |               |
-| ------------------------------ | --------------------------------------------------------------------------------------------- | ------------- |
-| **Property**                   | **Description**                                                                               | **Type**      |
-| **gatekeeperSendsTransaction** | Civic will send the transaction to the blockchain on behalf of the user. Defaults to `false`. | true \| false |
+|                                |                                                                                                                                                     |               |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| **Property**                   | **Description**                                                                                                                                     | **Type**      |
+| **gatekeeperSendsTransaction** | Civic will send the transaction to the blockchain on behalf of the user. Defaults to `false`.                                                       | true \| false |
+| **forceRequireRefresh**        | <p>Setting this flag forces the user to refresh their active pass when set, even if the pass is not expired.<br>Defaults to <code>false</code>.</p> | true \| false |
 
-#### Taking responsibility for the broadcasting the transaction
+#### Taking responsibility for broadcasting the transaction
 
 If the custom `handleTransaction` function is provided it is the responsibility of the integrator to:
 
