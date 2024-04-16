@@ -83,7 +83,7 @@ Sample Project (Next.js) Coming soon...
 {% endtab %}
 {% endtabs %}
 
-#### Broadcasting Transactions via Civic
+#### Broadcasting transactions via Civic
 
 In the default mode of operation, the transaction required to issue or refresh the Civic Pass will be signed, but not broadcasted, by Civic. The user is responsible for broadcasting the transaction, including any fees. This flow is handled transparently by the Gateway Provider, which also communicates any fees to the user via the Civic Pass modal.
 
