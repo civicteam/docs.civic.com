@@ -59,7 +59,7 @@ You can convert a viem/wagmi walletClient to an ethers v6 interface by following
 
 #### Paying for your customers' transactions
 
-If your users do not have crypto wallets, you can subsidise the cost of their passes, including the transaction cost, by signing and sending the transactions yourself.
+If your users do not have crypto wallets, you can subsidize the cost of their passes, including the transaction cost, by signing and sending the transactions yourself.
 
 To do this:
 
