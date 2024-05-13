@@ -6,7 +6,8 @@
 
 * [What is Civic Pass](introduction/what-is-civic-pass.md)
 * [Try it out](introduction/try-it-out.md)
-* [Use cases](introduction/use-cases.md)
+* [Use cases](introduction/use-cases/README.md)
+  * [Player Uniqueness](introduction/use-cases/player-uniqueness.md)
 * [FAQs](introduction/faqs.md)
 
 ## Integration Guides
