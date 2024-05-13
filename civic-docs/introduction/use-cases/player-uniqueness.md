@@ -2,7 +2,7 @@
 
 ## Ensuring Player Uniqueness in Gaming Platforms
 
-Game developers should ensure every player on their platform is unique, especially when rewards or competitive play are involved. The Civic Uniqueness Pass is a powerful solution, preventing the creation of multiple accounts through advanced technologies like video selfies and 1-user-1-wallet verification. This protects the game's integrity and fairness while operating seamlessly on multiple blockchain networks. Discover[ <mark style="color:orange;">all Civic passes</mark>](https://docs.civic.com/integration-guides/civic-pass/available-networks) for tailored security and compliance needs.
+Game developers should ensure every player on their platform is unique, especially when rewards or competitive play are involved. The Civic Uniqueness Pass is a powerful solution, preventing the creation of multiple accounts through advanced technologies like video selfies and 1-user-1-wallet verification. This protects the game's integrity and fairness while operating seamlessly on multiple blockchain networks. Discover[ all Civic passes](https://docs.civic.com/integration-guides/civic-pass/available-networks) for tailored security and compliance needs.
 
 ### Key Benefits of Player Uniqueness
 
@@ -28,7 +28,7 @@ The Civic Uniqueness Pass uses liveness detection and face verification through 
 
 The system's compatibility spans desktop and mobile platforms, making it adaptable to most gaming environments. Integration requires installing Civic's React library to incorporate the Civic Gateway component, but no extra effort on the user side.&#x20;
 
-Frontend adjustments involve using the Identity Button or[ <mark style="color:orange;">UI modal</mark>](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration/ui-modal) to display the[ <mark style="color:orange;">pass status</mark>](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration/pass-status-ui) and facilitate user verification. For more advanced use cases that include smart contracts, developers can implement the [<mark style="color:orange;">Pass requirement in their on-chain logic</mark>](https://docs.civic.com/integration-guides/civic-pass/integration-overview/on-chain-integration).&#x20;
+Frontend adjustments involve using the Identity Button or[ UI modal](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration/ui-modal) to display the[ pass status](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration/pass-status-ui) and facilitate user verification. For more advanced use cases that include smart contracts, developers can implement the [Pass requirement in their on-chain logic](https://docs.civic.com/integration-guides/civic-pass/integration-overview/on-chain-integration).&#x20;
 
 Technical requirements for users getting verified:
 
@@ -47,6 +47,6 @@ Each pass has an expiration date that can be either standard, or customized, as 
 
 ### Get Started with Uniqueness
 
-We encourage all game developers to integrate the Civic Uniqueness Pass into their platforms. Get started [here](https://share.hsforms.com/1NhExhEX0Sf6NLptdGi4cAwbzn0a) by requesting a network key and check out the [<mark style="color:orange;">documentation</mark>](https://docs.civic.com/integration-guides/civic-pass) for your chain of choice.&#x20;
+We encourage all game developers to integrate the Civic Uniqueness Pass into their platforms. Get started [here](https://share.hsforms.com/1NhExhEX0Sf6NLptdGi4cAwbzn0a) by requesting a network key and check out the [documentation](https://docs.civic.com/integration-guides/civic-pass) for your chain of choice.&#x20;
 
 \
