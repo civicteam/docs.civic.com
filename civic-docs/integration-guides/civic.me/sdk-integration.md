@@ -41,76 +41,25 @@ profile.image?.url
 
 // A civic.me profile headline, if available
 profile.headline?.value
+
+// access identifiers like connected social accounts
+// [{ type: "github", value: "githubUsername" }]
+profile.identifiers
 ```
 
-### Getting a list of Civic Passes for a Wallet <a href="#getting-a-list-of-civic-passes" id="getting-a-list-of-civic-passes"></a>
+### Getting a list of Civic Passes for the user <a href="#getting-a-list-of-civic-passes" id="getting-a-list-of-civic-passes"></a>
 
-This returns a list of Civic passes owned by the profile's keys.
-
-{% tabs %}
-{% tab title="Solana" %}
-```
-// A Solana Connection is required in order to query for passes. Public devnet used as an example here:
-import { Connection, clusterApiUrl } from "@solana/web3.js";
-import { CivicProfile, Profile, GatewayToken } from "@civic/profile";
-
-const solanaConnection: Connection =  new Connection(clusterApiUrl("devnet"));
-const profile: Profile = await CivicProfile.get(user, { solana: { connection }});
-
-const passes: GatewayToken[] = await profile.getPasses();
-```
-
-By default, multiple pass types are queried. A blockchain RPC call is made for each combination of public key & pass type. The list of pass types to query can be overridden. A pass type is represented by its corresponding Gatekeeper Network address.
+Returns a list of Civic passes owned by the user. This will include passes owned by the user across all  chains supported by Civic.
 
 ```
-const passes: GatewayToken[] = await profile.getPasses(["ni1jXzPTq1yTqo67tUmVgnp22b1qGAAZCtPmHtskqYG"]);
-```
-{% endtab %}
+import { CivicProfile, GatewayToken } from "@civic/profile";
 
-{% tab title="Ethereum + EVMs" %}
-```
-// An Ethereum Connection is required in order to query for passes. Public devnet used as an example here:
-import { getDefaultProvider } from "@ethersproject/providers";
-import { CivicProfile, Profile, GatewayToken } from "@civic/profile";
+// Query using a wallet address, did or SNS name
+const profile = await CivicProfile.get("query");
 
-const provider = getDefaultProvider();
-const profile: Profile = await CivicProfile.get(user, { ethereum: { connection }});
-
-const passes: GatewayToken[] = await profile.getPasses();
-```
-
-By default, multiple pass types are queried. A blockchain RPC call is made for each combination of pass types. The list of pass types to query can be overridden. A pass type is represented by its corresponding Gatekeeper Network address.
-
-### Supported Gateway Token Types <a href="#getting-a-list-of-associated-public-keys" id="getting-a-list-of-associated-public-keys"></a>
-
-Depending on the Gateway Token it can either be a token from Solana or an EVM supported chain. The token has the following properties which are different between chains.
-
-```
-type BaseGatewayToken = {
-  readonly issuingGatekeeper: string;
-  readonly gatekeeperNetworkAddress: string;
-  readonly owner: string;
-  readonly state: string;
-  readonly expiration?: number;
-  readonly chain: Chain;
+const passOptions: PassOptions = {
+  includeExpired: true,
 };
 
-type EthereumTokenMetadata = {
-  readonly tokenId: number;
-  readonly chainId: number;
-  readonly bitmask: number;
-  readonly tokenURI?: string;
-  readonly contractAddress: string;
-};
-
-type SolanaTokenMetadata = {
-  readonly tokenAddress: string;
-  readonly programId: string;
-};
-
-export type SolanaGatewayToken = BaseGatewayToken & SolanaTokenMetadata;
-export type EthereumGatewayToken = BaseGatewayToken & EthereumTokenMetadata;
-export type GatewayToken = SolanaGatewayToken | EthereumGatewayToken;    
+const passes: GatewayToken[] = await profile.getPasses(passOptions);
 ```
-{% endtab %}
-{% endtabs %}
