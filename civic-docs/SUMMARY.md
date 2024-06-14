@@ -8,6 +8,7 @@
 * [Try it out](introduction/try-it-out.md)
 * [Use cases](introduction/use-cases/README.md)
   * [Player Uniqueness](introduction/use-cases/player-uniqueness.md)
+  * [Quadratic Voting in DAOs](introduction/use-cases/quadratic-voting-in-daos.md)
 * [FAQs](introduction/faqs.md)
 
 ## Integration Guides
