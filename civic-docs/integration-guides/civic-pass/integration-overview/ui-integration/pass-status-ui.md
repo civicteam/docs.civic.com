@@ -1,6 +1,6 @@
 # Pass Status UI
 
-For convenience and less code, simply drop the [<mark style="color:orange;">Identity Button</mark>](pass-status-ui.md#identity-button) widget into your UI.&#x20;
+For convenience and less code, simply drop the [<mark style="color:purple;">Identity Button</mark>](pass-status-ui.md#identity-button) widget into your UI.&#x20;
 
 It will handle both displaying the user's Civic Pass status and triggering the issuance flow for new users, all without them ever leaving your dApp.&#x20;
 

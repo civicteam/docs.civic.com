@@ -6,7 +6,7 @@ As the user reaches the end of the Civic Pass data collection flow, including au
 
 ## Retrieving PII Evidence
 
-The Gatekeeper Context will communicate a new presentation request ID when the user reaches the end of the data collection flow. See [here](ui-integration/ui-modal/) for more detail on the use of `GatewayProvider` and `useGateway` .
+The Gatekeeper Context will communicate a new presentation request ID when the user reaches the end of the data collection flow. See [<mark style="color:purple;">here</mark>](ui-integration/ui-modal/) for more detail on the use of `GatewayProvider` and `useGateway` .
 
 ```typescriptreact
 const { pendingRequests } = useGateway();

@@ -8,4 +8,4 @@ Once a user has been successfully vetted according to your logic, you can then c
 
 <figure><img src="../../.gitbook/assets/image (15).png" alt=""><figcaption><p>On-chain integration</p></figcaption></figure>
 
-Your on-chain smart contract still has to check for a valid Custom Pass during program execution. See [<mark style="color:orange;">On-Chain Integration</mark>](integration-overview/on-chain-integration.md) to learn more.
+Your on-chain smart contract still has to check for a valid Custom Pass during program execution.&#x20;

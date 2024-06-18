@@ -71,7 +71,7 @@ export const DialectProviders: FC = ({ children }) => {
 
 ## How do I add Dialect to my dApp
 
-To add Dialect to your dApp, follow [<mark style="color:orange;">their guide</mark>](https://docs.dialect.to/documentation/getting-started). An easy way to get started is to adapt their reference implementation, for example: [<mark style="color:orange;">inbox example</mark>](https://github.com/dialectlabs/react/blob/c9f6ebcd5fd51611489dc2fe5dee4a9da7d153c6/examples/inbox-multichain/pages/index.tsx).  Dialect provides an SDK with examples on how to integrate Dialect chat into your dApp.&#x20;
+To add Dialect to your dApp, follow [<mark style="color:purple;">their guide</mark>](https://docs.dialect.to/documentation/getting-started). An easy way to get started is to adapt their reference implementation, for example: [<mark style="color:purple;">inbox example</mark>](https://github.com/dialectlabs/react/blob/c9f6ebcd5fd51611489dc2fe5dee4a9da7d153c6/examples/inbox-multichain/pages/index.tsx).  Dialect provides an SDK with examples on how to integrate Dialect chat into your dApp.&#x20;
 
 
 

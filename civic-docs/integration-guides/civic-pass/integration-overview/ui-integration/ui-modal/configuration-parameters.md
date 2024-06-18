@@ -2,7 +2,7 @@
 
 ## Gateway Provider
 
-The configuration parameters of the Gateway Provider vary slightly depending on the blockchain. For a full integration guide on integrating the Gateway Provider, please see [<mark style="color:orange;">UI Modal</mark>](./).
+The configuration parameters of the Gateway Provider vary slightly depending on the blockchain. For a full integration guide on integrating the Gateway Provider, please see [<mark style="color:purple;">UI Modal</mark>](./).
 
 {% tabs %}
 {% tab title="Solana" %}
@@ -71,13 +71,13 @@ For more details, see here:
 
 {% tabs %}
 {% tab title="Solana" %}
-[Docs & Sample Code](https://www.npmjs.com/package/@civic/solana-gateway-react/v/1.0.0-beta.0#paying-for-your-customers-passes)
+[<mark style="color:purple;">Docs & Sample Code</mark>](https://www.npmjs.com/package/@civic/solana-gateway-react/v/1.0.0-beta.0#paying-for-your-customers-passes)
 
-[Sample Project (Next.js)](https://github.com/civicteam/civic-pass-next-app-router-demo/tree/feature/solana-payer)
+[<mark style="color:purple;">Sample Project (Next.js)</mark>](https://github.com/civicteam/civic-pass-next-app-router-demo/tree/feature/solana-payer)
 {% endtab %}
 
 {% tab title="Ethereum + EVMs" %}
-[Docs & Sample Code](https://www.npmjs.com/package/@civic/ethereum-gateway-react/v/1.2.0-beta.0#paying-for-your-customers-passes)
+[<mark style="color:purple;">Docs & Sample Code</mark>](https://www.npmjs.com/package/@civic/ethereum-gateway-react/v/1.2.0-beta.0#paying-for-your-customers-passes)
 
 Sample Project (Next.js) Coming soon...
 {% endtab %}
@@ -87,7 +87,7 @@ Sample Project (Next.js) Coming soon...
 
 In the default mode of operation, the transaction required to issue or refresh the Civic Pass will be signed, but not broadcasted, by Civic. The user is responsible for broadcasting the transaction, including any fees. This flow is handled transparently by the Gateway Provider, which also communicates any fees to the user via the Civic Pass modal.
 
-Some [<mark style="color:orange;">Gatekeeper Networks</mark>](../../../available-networks.md) support an alternative mode such as having the Civic backend broadcast the transaction. If the Gatekeeper Network you are using supports this, you can set the `gatekeeperSendsTransaction` property to `true` to turn it on.
+Some [<mark style="color:purple;">Gatekeeper Networks</mark>](../../../available-networks.md) support an alternative mode such as having the Civic backend broadcast the transaction. If the Gatekeeper Network you are using supports this, you can set the `gatekeeperSendsTransaction` property to `true` to turn it on.
 
 |                                |                                                                                                                                                     |               |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |

@@ -2,7 +2,7 @@
 
 ### Gateway Status
 
-The **`gatewayStatus`** indicates the overall status of the Civic Pass. For information on how to retrieve the status, please see [<mark style="color:orange;">UI Modal</mark>](./).
+The **`gatewayStatus`** indicates the overall status of the Civic Pass.&#x20;
 
 #### Status before a Civic Pass has been issued&#x20;
 
@@ -28,7 +28,7 @@ After a Civic has been issued on-chain, the following status values may apply.
 
 #### Status when something goes wrong
 
-Issuing a Civic Pass might fail because the user did not fulfill the constraints of the configured [<mark style="color:orange;">Gatekeeper Network</mark>](../../../available-networks.md) or, seldomly, because of an unexpected technical error.
+Issuing a Civic Pass might fail because the user did not fulfill the constraints of the configured [<mark style="color:purple;">Gatekeeper Network</mark>](../../../available-networks.md) or, seldomly, because of an unexpected technical error.
 
 | **Status**               | **Description**                                         | **Behavior when `requestGatewayToken` is triggered**                              |
 | ------------------------ | ------------------------------------------------------- | --------------------------------------------------------------------------------- |

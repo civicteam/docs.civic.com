@@ -12,18 +12,18 @@ Our primary focus is on vulnerabilities that:
 
 ## In Scope Assets
 
-| Domain         | [**api.civic.com/ociv-gatekeeper**](http://api.civic.com/ociv-gatekeeper)                                                                                        |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain         | [**api.civic.com/nft-adapter**](http://api.civic.com/nft-adapter)                                                                                                |
-| Domain         | [**api.civic.com/pinning-service**](http://api.civic.com/pinning-service)                                                                                        |
-| Domain         | [**api.civic.com/sip**](http://api.civic.com/sip)                                                                                                                |
-| Domain         | [**idv.civic.com**](http://idv.civic.com/)                                                                                                                       |
-| Domain         | [**github.com/civicteam/lexi**](https://github.com/civicteam/lexi)                                                                                               |
-| Smart Contract | [**https://github.com/identity-com/on-chain-identity-gateway/tree/main/ethereum**](https://github.com/identity-com/on-chain-identity-gateway/tree/main/ethereum) |
-| Smart Contract | [**https://github.com/identity-com/on-chain-identity-gateway/tree/main/solana**](https://github.com/identity-com/on-chain-identity-gateway/tree/main/solana)     |
+| Domain         | [<mark style="color:purple;">**api.civic.com/ociv-gatekeeper**</mark>](http://api.civic.com/ociv-gatekeeper)                                                                                        |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain         | [<mark style="color:purple;">**api.civic.com/nft-adapter**</mark>](http://api.civic.com/nft-adapter)                                                                                                |
+| Domain         | [<mark style="color:purple;">**api.civic.com/pinning-service**</mark>](http://api.civic.com/pinning-service)                                                                                        |
+| Domain         | [<mark style="color:purple;">**api.civic.com/sip**</mark>](http://api.civic.com/sip)                                                                                                                |
+| Domain         | [<mark style="color:purple;">**idv.civic.com**</mark>](http://idv.civic.com/)                                                                                                                       |
+| Domain         | [<mark style="color:purple;">**github.com/civicteam/lexi**</mark>](https://github.com/civicteam/lexi)                                                                                               |
+| Smart Contract | [<mark style="color:purple;">**https://github.com/identity-com/on-chain-identity-gateway/tree/main/ethereum**</mark>](https://github.com/identity-com/on-chain-identity-gateway/tree/main/ethereum) |
+| Smart Contract | [<mark style="color:purple;">**https://github.com/identity-com/on-chain-identity-gateway/tree/main/solana**</mark>](https://github.com/identity-com/on-chain-identity-gateway/tree/main/solana)     |
 
 {% hint style="info" %}
-For smart contract related findings, please review guidelines listed  and submit your report directly on [Civic's Hackenproof page](https://hackenproof.com/civic/civic-smart-contracts).
+For smart contract related findings, please review guidelines listed  and submit your report directly on [<mark style="color:purple;">Civic's Hackenproof page</mark>](https://hackenproof.com/civic/civic-smart-contracts).
 {% endhint %}
 
 ## Out of Scope Vulnerabilities
@@ -60,10 +60,10 @@ When reporting vulnerabilities, please consider (1) attack scenario / exploitabi
 
 ## Disclosure
 
-Please email all submissions to [security@civic.com](mailto:security@civic.com). Your submission should include any steps required to reproduce or exploit the vulnerability. Please allow time for triage and the vulnerability to be fixed before discussing any findings publicly. After receiving a submission, Civic Technologies will make a best effort to provide a timely first response. We’ll try to keep you informed about our progress throughout the process.
+Please email all submissions to [<mark style="color:purple;">security@civic.com</mark>](mailto:security@civic.com). Your submission should include any steps required to reproduce or exploit the vulnerability. Please allow time for triage and the vulnerability to be fixed before discussing any findings publicly. After receiving a submission, Civic Technologies will make a best effort to provide a timely first response. We’ll try to keep you informed about our progress throughout the process.
 
 {% hint style="info" %}
-For smart contract related findings, please review guidelines listed  and submit your report directly on [Civic's Hackenproof page](https://hackenproof.com/civic/civic-smart-contracts).
+For smart contract related findings, please review guidelines listed  and submit your report directly on [<mark style="color:purple;">Civic's Hackenproof page</mark>](https://hackenproof.com/civic/civic-smart-contracts).
 {% endhint %}
 
 ## Safe Harbor

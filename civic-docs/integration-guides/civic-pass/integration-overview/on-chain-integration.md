@@ -10,7 +10,7 @@ For each blockchain supported by Civic Pass, we provide you with a library that 
 How to: Gate a Solana program with Civic Pass
 {% endembed %}
 
-Import the `solana_gateway` Rust crate from [<mark style="color:orange;">crates.io</mark>](https://crates.io/crates/solana-gateway) as follows:
+Import the `solana_gateway` Rust crate from [<mark style="color:purple;">crates.io</mark>](https://crates.io/crates/solana-gateway) as follows:
 
 ```
 [dependencies]
@@ -22,11 +22,11 @@ In your instruction code, call: `Gateway::verify_gateway_token_account_info`&#x2
 For your program to be able to call the integration library, the following parameters must be passed as inputs to your dApp's transaction:
 
 * `userWallet` : The wallet account for the dApp user. A Civic Pass must have already been issued to this wallet.
-* `gateway_token` : The address of the Civic Pass. This address can be accessed in the dApp through the `useGateway` hook on the [<mark style="color:orange;">Civic React Component</mark>](ui-integration/) once the user has passed verification.
+* `gateway_token` : The address of the Civic Pass. This address can be accessed in the dApp through the `useGateway` hook on the [<mark style="color:purple;">Civic React Component</mark>](ui-integration/) once the user has passed verification.
 * `gatekeeper_network` : The Gatekeeper Network on which the Civic Pass has been issued.&#x20;
 
 {% hint style="info" %}
-See [<mark style="color:orange;">Gatekeeper Networks</mark>](../available-networks.md) for the list of available networks.
+See [<mark style="color:purple;">Gatekeeper Networks</mark>](../available-networks.md) for the list of available networks.
 {% endhint %}
 
 ```rust
@@ -53,7 +53,7 @@ fn process() -> ProgramResult {
 
 #### Error handling
 
-If something goes wrong or the token it invalid, the Gateway call will return a `GatewayError`. The possible values can be seen in [<mark style="color:orange;">error.rs</mark>](https://github.com/identity-com/on-chain-identity-gateway/blob/develop/solana/integration-lib/src/error.rs). For error cases, the dApp smart contract should reject the transaction.
+If something goes wrong or the token it invalid, the Gateway call will return a `GatewayError`. The possible values can be seen in [<mark style="color:purple;">error.rs</mark>](https://github.com/identity-com/on-chain-identity-gateway/blob/develop/solana/integration-lib/src/error.rs). For error cases, the dApp smart contract should reject the transaction.
 {% endtab %}
 
 {% tab title="Ethereum + EVMs" %}
@@ -70,7 +70,7 @@ npm install @identity.com/gateway-protocol-eth
 ```
 
 {% hint style="info" %}
-This tutorial assumes Hardhat. If you are using foundry, please see tips [here](https://sooryak.hashnode.dev/adding-dependencies-to-your-contracts-in-foundry) (external link). The steps below can also be followed by copying the contract code directly [here](https://github.com/identity-com/on-chain-identity-gateway/tree/main/ethereum/smart-contract/contracts). Contact us on our [Discord](https://discord.com/invite/8H5Kdtr5Wn) if you have difficulty.
+This tutorial assumes Hardhat. If you are using foundry, please see tips [<mark style="color:purple;">here</mark>](https://sooryak.hashnode.dev/adding-dependencies-to-your-contracts-in-foundry). The steps below can also be followed by copying the contract code directly [<mark style="color:purple;">here</mark>](https://github.com/identity-com/on-chain-identity-gateway/tree/main/ethereum/smart-contract/contracts).
 {% endhint %}
 
 Then, in your smart contract, inherit the Gated contract, and add the 'gated' modifier to any function. The function can only be called by a msg.sender that has a valid gateway token.
@@ -93,7 +93,7 @@ contract MyContract is Gated {
 The gateway token contract address is `0xF65b6396dF6B7e2D8a6270E3AB6c7BB08BAEF22E`
 
 {% hint style="info" %}
-You can find the correct `gatekeeperNetwork`  in the list of available [<mark style="color:orange;">Gatekeeper Networks</mark>](../available-networks.md)<mark style="color:orange;">.</mark>
+You can find the correct `gatekeeperNetwork` in the list of available [<mark style="color:purple;">Gatekeeper Networks</mark>](../available-networks.md).
 {% endhint %}
 
 ## Advanced

@@ -24,4 +24,4 @@ To test your integration on **testnet**, use this Gatekeeper network address:
 
 `gatekeeperNetwork=tgnuXXNMDLK8dy7Xm1TdeGyc95MDym4bvAQCwcW21Bf`
 
-To receive access to the production / mainnet API and set up your own custom Civic Pass, [<mark style="color:orange;">contact us</mark>](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a).
+To receive access to the production / mainnet API and set up your own custom Civic Pass, [<mark style="color:purple;">contact us</mark>](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a).

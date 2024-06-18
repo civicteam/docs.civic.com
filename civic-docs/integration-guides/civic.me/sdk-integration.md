@@ -4,7 +4,7 @@
 Use Cases
 
 * Utilize addresses to gain access to rich profile information
-* Check for Civic Passes - Provides verification properties of addresses such as age check, uniqueness, ID document verification, and [<mark style="color:orange;">KYC</mark>](https://www.civic.com/blog/are-you-looking-for-a-kyc-aml-solution-for-your-dapp/).
+* Check for Civic Passes - Provides verification properties of addresses such as CAPTCHA, liveness, uniqueness, and ID verification.
 {% endhint %}
 
 \
@@ -14,7 +14,7 @@ Use the rich profile information to personalize your user's experience:
 
 ### Loading the Profile Data <a href="#loading-the-profile" id="loading-the-profile"></a>
 
-Import the [<mark style="color:orange;">SDK</mark>](https://www.npmjs.com/package/@civic/profile) and load a profile as follows:
+Import the [<mark style="color:purple;">SDK</mark>](https://www.npmjs.com/package/@civic/profile) and load a profile as follows:
 
 ```javascript
 import { CivicProfile, Profile } from "@civic/profile";

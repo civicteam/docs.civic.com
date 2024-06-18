@@ -2,5 +2,5 @@
 
 For a simple turnkey implementation of Civic Pass, here is what is required:
 
-* **UI integration** using the [<mark style="color:orange;">React library</mark>](ui-integration/) for your front-end
-* **On-Chain integration** using the [<mark style="color:orange;">On-Chain library</mark>](on-chain-integration.md) to enable your smart contract to check for a valid Civic Pass during program execution
+* [<mark style="color:purple;">**UI integration**</mark>](ui-integration/) using the React library for your front-end
+* [<mark style="color:purple;">**On-Chain integration**</mark>](on-chain-integration.md) using the On-Chain library to enable your smart contract to check for a valid Civic Pass during program execution

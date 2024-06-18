@@ -1,6 +1,6 @@
 # What is Civic Pass
 
-Civic Pass is a multi-chain, wallet-agnostic identity and access management solution (IAM) for smart contracts, dApps, and Web2 companies entering blockchain.
+Civic is a tokenized identity solution for the verifiable web, empowering people to privately manage their identities across chains with an on-chain representation of their reusable identity.
 
 <figure><img src="../.gitbook/assets/image (33).png" alt=""><figcaption></figcaption></figure>
 

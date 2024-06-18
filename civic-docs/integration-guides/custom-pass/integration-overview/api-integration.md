@@ -1,7 +1,7 @@
 # API Integration
 
 {% hint style="info" %}
-**See here for the full** [<mark style="color:orange;">**OpenAPI specification**</mark>](https://civicteam.github.io/openapi-docs/)**.**
+**See here for the full** [<mark style="color:purple;">**OpenAPI specification**</mark>](https://civicteam.github.io/openapi-docs/)**.**
 {% endhint %}
 
 ## Supported Chains

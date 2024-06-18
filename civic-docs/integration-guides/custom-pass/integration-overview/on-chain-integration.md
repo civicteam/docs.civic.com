@@ -10,13 +10,13 @@ For each blockchain supported by Civic Pass, we provide you with a library that 
 
 Integrating a Civic Pass check in your Solana on-chain program is very easy.
 
-Import the `solana_gateway` Rust crate from [<mark style="color:orange;">crates.io</mark>](https://crates.io/crates/solana-gateway) and call     `Gateway::verify_gateway_token_account_info`
+Import the `solana_gateway` Rust crate from [<mark style="color:purple;">crates.io</mark>](https://crates.io/crates/solana-gateway) and call     `Gateway::verify_gateway_token_account_info`
 
 For your program to be able to call the integration library, the following parameters must be passed as inputs to your dApp's transaction:
 
 * `userWallet` : The wallet account for the dApp user (e.g. the trader in a defi application). A Civic Pass must have been already issued to this wallet.
-* `gateway_token` : The address of the Civic Pass (token). This address can be accessed in the dApp through the `useGateway` hook on the [<mark style="color:orange;">Civic React Component</mark>](../../civic-pass/integration-overview/ui-integration/) once the user has passed Gatekeeper verification.
-* `gatekeeper_network` The gatekeeper network on which the Civic Pass has been issued. See [<mark style="color:orange;">here</mark>](../testing.md#on-chain) for test keys or [<mark style="color:orange;">contact us</mark>](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a) to discuss.
+* `gateway_token` : The address of the Civic Pass (token). This address can be accessed in the dApp through the `useGateway` hook on the [<mark style="color:purple;">Civic React Component</mark>](../../civic-pass/integration-overview/ui-integration/) once the user has passed Gatekeeper verification.
+* `gatekeeper_network` The gatekeeper network on which the Civic Pass has been issued. See [<mark style="color:purple;">here</mark>](../testing.md#on-chain) for test keys or [<mark style="color:purple;">contact us</mark>](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a).
 
 ```rust
 use solana_gateway::Gateway;
@@ -42,7 +42,7 @@ fn process() -> ProgramResult {
 
 #### Error handling
 
-If something goes wrong or the token is invalid the Gateway call will return a `GatewayError`. The possible values can be seen in [<mark style="color:orange;">error.rs</mark>](https://github.com/identity-com/on-chain-identity-gateway/blob/develop/solana/integration-lib/src/error.rs). For error cases, the dApp smart contract should reject the transaction.
+If something goes wrong or the token is invalid the Gateway call will return a `GatewayError`. The possible values can be seen in [<mark style="color:purple;">error.rs</mark>](https://github.com/identity-com/on-chain-identity-gateway/blob/develop/solana/integration-lib/src/error.rs). For error cases, the dApp smart contract should reject the transaction.
 {% endtab %}
 
 {% tab title="Ethereum + EVMs" %}
@@ -57,7 +57,7 @@ npm install @identity.com/gateway-protocol-eth
 ```
 
 {% hint style="info" %}
-This tutorial assumes Hardhat. If you are using foundry, please see tips [here](https://sooryak.hashnode.dev/adding-dependencies-to-your-contracts-in-foundry) (external link). The steps below can also be followed by copying the contract code directly [here](https://github.com/identity-com/on-chain-identity-gateway/tree/main/ethereum/smart-contract/contracts). Contact us on our [Discord](https://discord.com/invite/8H5Kdtr5Wn) if you have difficulty.
+This tutorial assumes Hardhat. If you are using foundry, please see tips [<mark style="color:purple;">here</mark>](https://sooryak.hashnode.dev/adding-dependencies-to-your-contracts-in-foundry). The steps below can also be followed by copying the contract code directly [<mark style="color:purple;">here</mark>](https://github.com/identity-com/on-chain-identity-gateway/tree/main/ethereum/smart-contract/contracts).
 {% endhint %}
 
 Then, in your smart contract, inherit the Gated contract, and add the 'gated' modifier to any function. The function can only be called by a msg.sender that has a valid gateway token.
@@ -78,7 +78,7 @@ contract MyContract is Gated {
 ```
 
 * The `gatewayTokenContract` address is `0xF65b6396dF6B7e2D8a6270E3AB6c7BB08BAEF22E`
-* You will receive the `gatekeeperNetworkSlotId` when you complete your onboarding with Civic (see [here](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a)).
+* You will receive the `gatekeeperNetworkSlotId` when you complete your onboarding with Civic (see [<mark style="color:purple;">here</mark>](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a)).
 
 ## Advanced
 

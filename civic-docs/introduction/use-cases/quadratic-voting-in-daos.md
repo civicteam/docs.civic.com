@@ -2,15 +2,15 @@
 
 ## Enhancing Democratic Governance in DAOs
 
-Fair and representative voting is a key pillar in the functioning of decentralized autonomous organizations (DAOs), especially for critical decisions and resource allocations. Quadratic voting is an innovative solution that empowers voters to convey the strength of their convictions through a credits-based system, ensuring a more nuanced representation of community sentiment. It combats majority rule and the marginalization of minority opinions, enhancing DAO governance and provides resistance against attacks such as [flash loan exploits](https://www.researchgate.net/figure/Example-flash-loan-attack-against-Maker-DAO-All-steps-can-be-executed-within-one\_fig3\_339374442). Civic provides a suite of passes, as well as an example implementation of the quadratic voting mechanics on Solana, that can address these diverse governance needs with precision and integrity across various blockchain networks.
+Fair and representative voting is a key pillar in the functioning of decentralized autonomous organizations (DAOs), especially for critical decisions and resource allocations. Quadratic voting is an innovative solution that empowers voters to convey the strength of their convictions through a credits-based system, ensuring a more nuanced representation of community sentiment. It combats majority rule and the marginalization of minority opinions, enhancing DAO governance and provides resistance against attacks such as [<mark style="color:purple;">flash loan exploits</mark>](https://www.researchgate.net/figure/Example-flash-loan-attack-against-Maker-DAO-All-steps-can-be-executed-within-one\_fig3\_339374442). Civic provides a suite of passes, as well as an example implementation of the quadratic voting mechanics on Solana, that can address these diverse governance needs with precision and integrity across various blockchain networks.
 
 ### How Quadratic Voting Works
 
-[Quadratic voting](https://www.civic.com/blog/quadratic-voting-and-dao-governance/) aims to revolutionize traditional voting by allowing voters to express not just a choice but also the strength of their preference. There are numerous[ historical examples of quadratic voting implementation](https://en.m.wikipedia.org/wiki/Quadratic\_voting#Applications), but the most common system is that each voter is allocated a set number of credits, which they can distribute among options according to their preferences.&#x20;
+Quadratic voting aims to revolutionize traditional voting by allowing voters to express not just a choice but also the strength of their preference. There are numerous[ <mark style="color:purple;">historical examples of quadratic voting implementation</mark>](https://en.m.wikipedia.org/wiki/Quadratic\_voting#Applications), but the most common system is that each voter is allocated a set number of credits, which they can distribute among options according to their preferences.&#x20;
 
 The unique aspect of quadratic voting lies in the counting of votes: the number of votes each option receives is the square root of the total credits allocated to it. This system encourages balanced and fair decision-making by making it costly to heavily favor one option without genuine strong preference.
 
-In the current Civic implementation of quadratic voting, the ability to distribute preference among multiple options is not available due to platform limitations on [Realms](https://realms.today/), which allows multiple-choice votes but restricts voters to selecting only one option. Our solution addresses this by ensuring that each vote is still 100% committed to a single preference, but with diminishing returns for each subsequent vote. Specifically, if a voter has 100 votes, the first vote is worth 1, the second is worth slightly less, and so on, with the total influence calculated as the square root of the sum of the credits used. This method ensures a balanced representation of voter intensity
+In the current Civic implementation of quadratic voting, the ability to distribute preference among multiple options is not available due to platform limitations on [<mark style="color:purple;">Realms</mark>](https://realms.today/), which allows multiple-choice votes but restricts voters to selecting only one option. Our solution addresses this by ensuring that each vote is still 100% committed to a single preference, but with diminishing returns for each subsequent vote. Specifically, if a voter has 100 votes, the first vote is worth 1, the second is worth slightly less, and so on, with the total influence calculated as the square root of the sum of the credits used. This method ensures a balanced representation of voter intensity
 
 ### How Weights Are Added to Votes on Realms
 
@@ -47,7 +47,7 @@ Civic’s identity verification helps you to foster a more engaged and trustwort
 
 ### Quadratic Voting Use Cases in DAOs
 
-&#x20; 1\. Governance Decisions: Enables members to express the intensity of their preferences on foundational changes within the DAO. Civic’s integration ensures that each vote is securely tied to a [verified identity](https://docs.civic.com/), preventing fraudulent votes.
+&#x20; 1\. Governance Decisions: Enables members to express the intensity of their preferences on foundational changes within the DAO. Civic’s integration ensures that each vote is securely tied to a [<mark style="color:purple;">verified identity</mark>](https://docs.civic.com/), preventing fraudulent votes.
 
 &#x20; 2\. Resource Allocation: Allows members to show varying levels of priority for different projects or resource distribution plans. This technology ensures that allocations are decided by genuine and diverse community input.
 
@@ -69,8 +69,8 @@ Civic’s suite of identity verification solutions enhances the fairness and sec
 
 ### Civic Integration with Realms
 
-Civic Pass is already integrated with Realms, a popular DAO governance platform on Solana. This integration allows DAOs on Realms to quickly implement Civic’s identity verification solutions to enhance the security and fairness of their voting processes. For more information, refer to the[ Realms Integration Documentation](https://docs.civic.com/third-party-integrations/realms).
+Civic Pass is already integrated with Realms, a popular DAO governance platform on Solana. This integration allows DAOs on Realms to quickly implement Civic’s identity verification solutions to enhance the security and fairness of their voting processes. For more information, refer to the[ <mark style="color:purple;">Realms Integration Documentation</mark>](https://docs.civic.com/third-party-integrations/realms)<mark style="color:purple;">.</mark>
 
 ### Get Quadratic Voting for Your DAO
 
-Civic passes can also be integrated into other DAO platforms to provide robust identity verification and secure voting processes. Together, we can enhance the integrity and trust of decentralized governance. If you are interested in bringing Civic’s advanced tools to your platform, please get in touch with us for more information and support, or join our community on[ Discord](https://discord.com/invite/8H5Kdtr5Wn) for further assistance.
+Civic passes can also be integrated into other DAO platforms to provide robust identity verification and secure voting processes. Together, we can enhance the integrity and trust of decentralized governance. If you are interested in bringing Civic’s advanced tools to your platform, please [<mark style="color:purple;">get in touch</mark>](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a).
