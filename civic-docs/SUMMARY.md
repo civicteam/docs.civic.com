@@ -9,6 +9,7 @@
 * [Use cases](introduction/use-cases/README.md)
   * [Player Uniqueness](introduction/use-cases/player-uniqueness.md)
   * [Quadratic Voting in DAOs](introduction/use-cases/quadratic-voting-in-daos.md)
+  * [Preventing Bot Activity](introduction/use-cases/preventing-bot-activity.md)
 * [FAQs](introduction/faqs.md)
 
 ## Integration Guides
