@@ -10,6 +10,7 @@
   * [Player Uniqueness](introduction/use-cases/player-uniqueness.md)
   * [Quadratic Voting in DAOs](introduction/use-cases/quadratic-voting-in-daos.md)
   * [Preventing Bot Activity](introduction/use-cases/preventing-bot-activity.md)
+  * [Rewards Management in Web3 Gaming](introduction/use-cases/rewards-management-in-web3-gaming.md)
 * [FAQs](introduction/faqs.md)
 
 ## Integration Guides
