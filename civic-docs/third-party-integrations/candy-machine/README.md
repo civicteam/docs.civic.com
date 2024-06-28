@@ -1,3 +1,3 @@
 # Candy Machine
 
-Protecting NFT mints with [<mark style="color:orange;">CandyMachine v3</mark>](broken-reference) and [<mark style="color:orange;">CandyMachine v2</mark>](broken-reference)
+Protecting NFT mints with [<mark style="color:purple;">CandyMachine v3</mark>](candy-machine-v3.md) and <mark style="color:purple;">CandyMachine v2 (sunset)</mark>

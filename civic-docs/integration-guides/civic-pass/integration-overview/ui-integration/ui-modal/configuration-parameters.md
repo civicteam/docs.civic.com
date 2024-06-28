@@ -27,7 +27,7 @@ The configuration parameters of the Gateway Provider vary slightly depending on 
 
 {% tab title="Ethereum + EVMs" %}
 {% hint style="info" %}
-The React component uses [ethers.js](https://www.npmjs.com/package/ethers) v6
+The React component uses [<mark style="color:purple;">ethers.js</mark>](https://www.npmjs.com/package/ethers) v6
 {% endhint %}
 
 ```jsx
@@ -38,18 +38,18 @@ The React component uses [ethers.js](https://www.npmjs.com/package/ethers) v6
 </GatewayProvider>
 ```
 
-| **Property**          | **Description**                                                                                                                | **Type**                                                                                                                                 |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| **wallet**            | A object containing a wallet address & an instance of an [ethers v6 signer ](https://docs.ethers.org/v6/api/providers/#Signer) | <pre><code><strong>type EthereumGatewayWallet = {
+| **Property**          | **Description**                                                                                                                                                   | **Type**                                                                                                                                 |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **wallet**            | A object containing a wallet address & an instance of an [<mark style="color:purple;">ethers v6 signer</mark> ](https://docs.ethers.org/v6/api/providers/#Signer) | <pre><code><strong>type EthereumGatewayWallet = {
 </strong>  address: string | undefined;
   signer: Signer | undefined;
 };
 </code></pre> |
-| **gatekeeperNetwork** | The address of the [Gatekeeper Network](broken-reference) are issued for.                                                      | `string`                                                                                                                                 |
+| **gatekeeperNetwork** | The address of the [Gatekeeper Network](broken-reference) are issued for.                                                                                         | `string`                                                                                                                                 |
 
 #### Converting a viem/wagmi walletClient to an ethers v6 signer
 
-You can convert a viem/wagmi walletClient to an ethers v6 interface by following the [README](https://github.com/civicteam/ociv-gatekeeper/blob/ef3e73f0701abd4125839bf83a7ebb3ca3e2f130/packages/gatekeeper-api/etc/scripts/data/util.ts#L89). An example of this pattern in action is available in the [example repository](https://github.com/civicteam/civic-pass-eth-template).
+You can convert a viem/wagmi walletClient to an ethers v6 interface by following the example of this pattern in action is available in the [<mark style="color:purple;">example repository</mark>](https://github.com/civicteam/civic-pass-eth-template)<mark style="color:purple;">.</mark>
 {% endtab %}
 {% endtabs %}
 
