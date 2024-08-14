@@ -14,7 +14,7 @@ Import the `solana_gateway` Rust crate from [<mark style="color:purple;">crates.
 
 ```
 [dependencies]
-solana-gateway = { version = "0.4.0", features = ["no-entrypoint"] }
+solana-gateway = { version = "0.6.0", features = ["no-entrypoint"] }
 ```
 
 In your instruction code, call: `Gateway::verify_gateway_token_account_info`&#x20;
