@@ -28,6 +28,7 @@
     * [User PII Retrieval](integration-guides/civic-pass/integration-overview/user-pii-retrieval.md)
   * [Testing](integration-guides/civic-pass/testing.md)
   * [Available Networks](integration-guides/civic-pass/available-networks.md)
+  * [Examples](integration-guides/civic-pass/examples.md)
 * [Custom Pass](integration-guides/custom-pass/README.md)
   * [Integration Overview](integration-guides/custom-pass/integration-overview/README.md)
     * [API Integration](integration-guides/custom-pass/integration-overview/api-integration.md)
