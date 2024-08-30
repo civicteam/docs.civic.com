@@ -88,7 +88,7 @@ Now that you have initialized the GatewayProvider context, you can use the inclu
 </strong></code></pre>
 {% endtab %}
 
-{% tab title="Ethereum / Polygon / Arbitrum / XDC" %}
+{% tab title="Ethereum + EVMs" %}
 ```jsx
 import { useGateway } from "@civic/ethereum-gateway-react";
 ```
@@ -148,7 +148,7 @@ import IdentityButton from '@civic/solana-gateway-react';
 ```
 {% endtab %}
 
-{% tab title="Ethereum / Polygon / Arbitrum / XDC / Fantom" %}
+{% tab title="Ethereum + EVMs" %}
 ```tsx
 import IdentityButton from '@civic/ethereum-gateway-react';
 ...
