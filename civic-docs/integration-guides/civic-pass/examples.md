@@ -1,6 +1,6 @@
 # Examples
 
-See below for quick and simple integration examples
+See below for quick and simple integration examples using a simulated airdrop protected by Civic Pass.&#x20;
 
 {% tabs %}
 {% tab title="Solana" %}
