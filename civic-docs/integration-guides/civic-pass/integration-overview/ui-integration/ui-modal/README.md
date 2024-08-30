@@ -26,7 +26,7 @@ npm i @civic/solana-gateway-react@latest
 ```
 {% endtab %}
 
-{% tab title="Ethereum / Polygon / Arbitrum / XDC / Fantom" %}
+{% tab title="Ethereum + EVMs" %}
 <pre class="language-bash"><code class="lang-bash"><strong>npm i @civic/ethereum-gateway-react@latest
 </strong></code></pre>
 {% endtab %}
@@ -54,7 +54,7 @@ import { Connection, clusterApiUrl } from '@solana/web3.js';
 ```
 {% endtab %}
 
-{% tab title="Ethereum / Polygon / Arbitrum / XDC / Fantom" %}
+{% tab title="Ethereum + EVMs" %}
 ```jsx
 import { GatewayProvider } from "@civic/ethereum-gateway-react";
 
