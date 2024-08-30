@@ -10,7 +10,7 @@ See below for quick and simple integration examples
 | NextJs       | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/solana/next) | [Demo](https://airdrop-demo.civic.me/next/solana) |
 {% endtab %}
 
-{% tab title="Ethereum / Polygon / Arbitrum / XDC / Fantom" %}
+{% tab title="Ethereum + EVMs" %}
 |              |                                                                                   |                                                |
 | ------------ | --------------------------------------------------------------------------------- | ---------------------------------------------- |
 | Vite & React | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/evm/vite) | [Demo](https://airdrop-demo.civic.me/evm)      |
