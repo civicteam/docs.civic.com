@@ -69,6 +69,7 @@ You can specify some options that affect the display behaviour of the Civic moda
 
 
 Usage example:
+{% tabs %}
 {% tab title="Solana" %}
 ```jsx
 <GatewayProvider
