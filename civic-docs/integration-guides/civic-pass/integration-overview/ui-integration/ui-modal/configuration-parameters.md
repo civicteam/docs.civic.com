@@ -64,7 +64,7 @@ You can specify some options that affect the display behaviour of the Civic moda
 | **Property**                              | **Description**                                                                                                                                    | **Type**                       |
 |-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------|
 | **autoShowModal**                         | Whether the Civic modal should appear automatically if the Civic Pass token state changes.                                                         | true \| false                  |
-| **logLevel**                              | The log level.                                                                                                                                     | debug \| info \| warb \| error |
+| **logLevel**                              | The log level.                                                                                                                                     | debug \| info \| warn \| error |
 | **disableAutoRestartOnValidationFailure** | [Optional] When set to true, prevents the flow to automatically restart on user validation failure (USER_INFORMATION_REJECTED). Defaults to false. | true \| false                  |
 
 
