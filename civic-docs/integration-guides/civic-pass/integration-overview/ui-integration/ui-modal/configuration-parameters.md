@@ -57,6 +57,43 @@ You can convert a viem/wagmi walletClient to an ethers v6 interface by following
 
 ### Advanced Configuration
 
+
+#### Client options
+
+You can specify some options that affect the display behaviour of the Civic modal that the user interacts with:
+| **Property**                              | **Description**                                                                                                                                    | **Type**                       |
+|-------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------|
+| **autoShowModal**                         | Whether the Civic modal should appear automatically if the Civic Pass token state changes.                                                         | true \| false                  |
+| **logLevel**                              | The log level.                                                                                                                                     | debug \| info \| warb \| error |
+| **disableAutoRestartOnValidationFailure** | [Optional] When set to true, prevents the flow to automatically restart on user validation failure (USER_INFORMATION_REJECTED). Defaults to false. | true \| false                  |
+
+
+Usage example:
+{% tab title="Solana" %}
+```jsx
+<GatewayProvider
+  wallet={wallet}
+  connection={new Connection(clusterApiUrl("mainnet-beta"), "confirmed")}
+  cluster="mainnet-beta"
+  gatekeeperNetwork={gatekeeperNetwork}
+  options={{ autoShowModal: true, logLevel: "debug" }}>
+</GatewayProvider>
+```
+{% endtab %}
+
+{% tab title="Ethereum + EVMs" %}
+```jsx
+<GatewayProvider
+  wallet={wallet}
+  gatekeeperNetwork={gatekeeperNetwork}
+  options={{ autoShowModal: true, logLevel: "debug" }}>
+  {children}
+</GatewayProvider>
+```
+{% endtab %}
+{% endtabs %}
+
+
 #### Paying for your customers' transactions
 
 If your users do not have crypto wallets, you can subsidize the cost of their passes, including the transaction cost, by signing and sending the transactions yourself.
