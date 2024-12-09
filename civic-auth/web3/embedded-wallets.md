@@ -42,7 +42,13 @@ bun add @civic/auth-web3
 
 ## **Integration**
 
-See the Embedded Wallet Web3 integration instructions [here](ethereum-evm.md).
+You need to set up a CivicAuthProvider in your application with the integration for the web3 library being identical to the [setup for @civic/auth](../), except that you import from @civic/auth-web3  instead of @civic/auth i.e:
+
+```typescript
+import { CivicAuthProvider, UserButton } from "@civic/auth-web3/react";
+```
+
+Once the basic setup is done, you can access Web3 features by following the Embedded Wallet Web3 integration instructions [here](ethereum-evm.md).
 
 
 
