@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Civic Pass API is a RESTful API that allows [Custom Pass](https://civic-1.gitbook.io/civic-docs-v2/76NqppOMISHaxk958Rod/custom-passes/issue-your-own-custom-pass) holders to manage their passes programmatically from their backends.
+The Civic Pass API is a RESTful API that allows [Custom Pass](issue-your-own-custom-pass.md) holders to manage their passes programmatically from their backends.
 
 {% hint style="info" %}
 See [here](https://github.com/civicteam/civic-pass-demos/blob/feature/backend-examples/packages/evm/exampleScripts/getPassStatusUsingAPI.ts) for a full working example.
