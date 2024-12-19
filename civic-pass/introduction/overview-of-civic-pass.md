@@ -15,6 +15,8 @@ Builders can use standard Civic Passes off-the-shelf and benefit from the reusab
 
 ### CAPTCHA Pass&#x20;
 
+{% embed url="https://youtu.be/B-81DhxhP2U?si=oUCUBXLlROC4jlwE" %}
+
 This pass requires a user to pass a challenge-response test to determine whether they are a human or bot.&#x20;
 
 Expiration and refresh required after 30 days.&#x20;
@@ -23,6 +25,8 @@ Expiration and refresh required after 30 days.&#x20;
 
 ### Liveness Pass
 
+{% embed url="https://youtu.be/zxTAlvwz-BM?si=yeqitamg_EuutC4s" %}
+
 This pass requires a video selfie from a user to determine whether they are a human or bot. The pass will not be issued if VPN software is detected.
 
 Expiration and refresh required after 30 days.
@@ -30,6 +34,8 @@ Expiration and refresh required after 30 days.
 #### [Get Liveness Key](https://civickey.typeform.com/req-liveness)
 
 ### Uniqueness Pass
+
+{% embed url="https://youtu.be/LudqHoCEdXM?si=cLGgPPs81scuMKEx" %}
 
 This pass requires a user to take a video selfie that also compares the face map resulting from the process with existing encrypted maps from the known universe of existing users. The pass will not be issued if VPN software is detected.
 
@@ -41,9 +47,15 @@ Expiration and refresh required after 90 days.
 
 ### ID Verification Pass
 
+{% embed url="https://youtu.be/2WXt7FtmAsk?si=-6D_P97sAv94Pz37" %}
+
 This pass requires a user to pass a government-issued ID check. This check is combined with a liveness check, face comparison with the document, and a point-in-time sanctions check. A Uniqueness check can be added on-demand. The pass will not be issued if VPN software is detected.
 
 This pass is privacy-preserving and does not contain user PII by default. Users can opt to store their data encrypted with a symmetric key for reusability, making the PII inaccessible without their consent. Builders **can** opt to retrieve underlying PII via a Civic-provided API endpoint. This is optional but recommended for projects that need to ensure adherence to KYC regulations.
+
+**Reusable Credentials Demo**
+
+{% embed url="https://youtu.be/YRmQ0g7lkCA?si=aIoqlE-oBo3xPBcd" %}
 
 These credentials are reusable until the earlier of the document expiration or the requirement for a refresh after 30 days.
 
