@@ -32,7 +32,7 @@ Users must meet **all** the above criteria and **additional** criteria below:
 
 1. Completed government-issued ID verification.
 
-**Identity data is collected and stored by Civic** as stated in our [Biometric Policy Notice](https://www.civic.com/legal/biometric-policy-notice/) and in accordance with our [Privacy Policy](https://www.civic.com/legal/privacy-policy).
+**Identity data is collected and stored by Civic** as stated in our [Biometric Policy](https://www.civic.com/legal/biometric-policy-notice/) and in accordance with our [Privacy Policy](https://www.civic.com/legal/privacy-policy).
 
 Civic Pass will only collect and store the following personal data of users requesting a Pass:&#x20;
 

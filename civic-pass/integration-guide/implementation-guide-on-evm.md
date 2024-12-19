@@ -15,8 +15,8 @@ hidden: true
 
 Civic provides two React libraries to manage the issuance and status of your users' Civic Passes directly from your front-end.
 
-* The first one is a [UI modal ](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration/ui-modal)that overlays your existing UI, keeping your users within your experience. This modal will walk the user through the verification process.
-* The second one is an Identity Button to display user's [Pass Status](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration/pass-status-ui), ie. active, expired, revoked, and then trigger the verification process through the UI modal.
+* The first one is a UI modal that overlays your existing UI, keeping your users within your experience. This modal will walk the user through the verification process.
+* The second one is an Identity Button to display user's Pass Status, ie. active, expired, revoked, and then trigger the verification process through the UI modal.
 
 ### Install the React component <a href="#id-1.-install-the-react-component-for-your-chain" id="id-1.-install-the-react-component-for-your-chain"></a>
 
@@ -130,7 +130,7 @@ Some **Passes** support an alternative mode such as having the Civic backend bro
 
 ### Interact with a Civic Pass <a href="#id-2.-use-the-usegateway-hook-to-interact-with-a-civic-pass" id="id-2.-use-the-usegateway-hook-to-interact-with-a-civic-pass"></a>
 
-You can also use the provided [Identity Button](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration/ui-modal/configuration-parameters#identity-button) reference implementation to handle everything described in this section.
+You can also use the provided Identity Button reference implementation to handle everything described in this section.
 
 Now that you have initialized the GatewayProvider context, you can use the included `useGateway` hook to:
 
@@ -143,7 +143,7 @@ import { useGateway } from "@civic/ethereum-gateway-react";
 
 #### **Trigger the issuance of a Civic Pass**
 
-Calling the function `requestGatewayToken` opens the modal dialog, which guides the user through the flow of collecting and verifying their information. The information collected varies depending on the configured [Gatekeeper Network](https://docs.civic.com/integration-guides/civic-pass/available-networks).
+Calling the function `requestGatewayToken` opens the modal dialog, which guides the user through the flow of collecting and verifying their information. The information collected varies depending on the configured [Gatekeeper Network](../introduction/get-network-keys.md).
 
 ```jsx
 const { requestGatewayToken } = useGateway()
@@ -169,11 +169,11 @@ All children of the **GatewayProvider** have access to the user's Civic Pass sta
 const { gatewayStatus, gatewayToken } = useGateway();
 ```
 
-The [**`gatewayStatus`**](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration/ui-modal/civic-pass-status) indicates the overall status of the Civic Pass and should be displayed in your dApp either via custom UI or by integrating the Civic [Identity Button](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration#3.-add-the-identity-button) included with the library.
+The [**`gatewayStatus`**](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#civic-pass-status) indicates the overall status of the Civic Pass and should be displayed in your dApp either via custom UI or by integrating the Civic Identity Button included with the library.
 
-The [**gatewayToken**](https://docs.civic.com/integration-guides/civic-pass/integration-overview/ui-integration/ui-modal/civic-pass-structure) represents the on-chain structure of the Civic Pass. This will is only defined if the Civic Pass is ACTIVE.
+The [**gatewayToken**](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#civic-pass-structure) represents the on-chain structure of the Civic Pass. This will is only defined if the Civic Pass is ACTIVE.
 
-If the token does not exist or is in a inactive state (e.g. frozen), this variable will be `undefined`. The dApp should disable certain parts of the UI when gatewayToken is `undefined` to prevent dApp usage. This only complements the [on-chain check](https://docs.civic.com/integration-guides/civic-pass/integration-overview/on-chain-integration) and does not replace it.
+If the token does not exist or is in a inactive state (e.g. frozen), this variable will be `undefined`. The dApp should disable certain parts of the UI when gatewayToken is `undefined` to prevent dApp usage. This only complements the on-chain check and does not replace it.
 
 ### Add the Identity Button
 
@@ -276,7 +276,7 @@ The **gatewayToken** represents the on-chain structure of the Civic Pass. This w
 
 ## Backend Integration
 
-While the [react library](implementation-guide-on-evm.md#id-1.-install-the-react-component-for-your-chain) is the easiest way to integrate Civic Pass on a frontend, there are many reasons why you may need to check the pass state on your backend. Here are a few ways to do this.
+While the [React library](implementation-guide-on-evm.md#id-1.-install-the-react-component-for-your-chain) is the easiest way to integrate Civic Pass on a frontend, there are many reasons why you may need to check the pass state on your backend. Here are a few ways to do this.
 
 ### Using the API
 
@@ -484,7 +484,7 @@ As the user reaches the end of the Civic Pass data collection flow, including au
 
 ### Retrieving PII Evidence <a href="#retrieving-pii-evidence" id="retrieving-pii-evidence"></a>
 
-The Gatekeeper Context will communicate a new presentation request ID when the user reaches the end of the data collection flow. See [here](implementation-guide-on-evm.md#id-1.-install-the-react-component-for-your-chain) for more detail on the use of `GatewayProvider` and `useGateway` .
+The Gatekeeper Context will communicate a new presentation request ID when the user reaches the end of the data collection flow. See [here](implementation-guide-on-evm.md#id-1.-install-the-react-component-for-your-chain) for more detail on the use of `GatewayProvider` and `useGateway`.
 
 ```jsx
 const { pendingRequests } = useGateway();

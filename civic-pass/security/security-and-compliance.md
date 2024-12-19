@@ -11,7 +11,7 @@ Civic's GDPR compliance is outlined in our [Privacy Policy](https://www.civic.co
 
 ### Data Storage Policy
 
-Our [Data Storage Policy](https://www.civic.com/legal/privacy-policy-civic-pass-v1/) outlines how we store and protect personal data. We use secure data centers and implement robust security measures to prevent unauthorized access, disclosure, alteration, or destruction of personal data.
+Our [Privacy Policy](https://www.civic.com/legal/privacy-policy-civic-pass-v1/) outlines how we store and protect personal data. We use secure data centers and implement robust security measures to prevent unauthorized access, disclosure, alteration, or destruction of personal data.
 
 ### W3C/DID Compatibility
 

@@ -28,7 +28,7 @@ To enable gating logic using a Custom Pass, you will need:
 
 * On-Chain library to enable your smart contract to check for valid Civic Pass during program execution. See the On-Chain section in the integration guide for your chain.&#x20;
 
-Please [reach out to us](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a) to discuss your use case and obtain the key to enable your pass network.&#x20;
+Please [reach out](https://civickey.typeform.com/req-custom) to discuss your use case and obtain the key to enable your pass network.&#x20;
 
 ## Supported Custom Pass Chains
 
