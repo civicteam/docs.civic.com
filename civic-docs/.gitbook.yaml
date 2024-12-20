@@ -1,0 +1,5 @@
+root: ./
+
+redirects:
+  introduction: pass/introduction
+  support/dashboard-faq: pass/resources/faqs.md
