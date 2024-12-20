@@ -109,14 +109,21 @@ The display mode indicates where the Civic  login UI will be displayed. The foll
 
 The full user context object (provided by `useUser`) looks like this:
 
-<pre class="language-typescript"><code class="lang-typescript"><strong>{ 
-</strong>  user: User | null;
+```typescript
+{ 
+  user: User | null;
+  // these are the OAuth tokens created during authentication
+  idToken?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  forwardedTokens?: ForwardedTokens;
+  // functions and flags for UI and signIn/signOut
   isLoading: boolean;
   error: Error | null;
   signIn: (displayMode?: DisplayMode) => Promise&#x3C;void>;
   signOut: () => Promise&#x3C;void>;
 }
-</code></pre>
+```
 
 ### User
 
@@ -132,15 +139,14 @@ The `User` object looks like this:
   updated_at?: Date;
 };
 
-type Tokens = {
-  idToken: string;
-  accessToken: string;
-  refreshToken: string;
-  forwardedTokens: ForwardedTokens;
-};
-
-type User = BaseUser &#x26; Tokens
+type User&#x3C;T> = BaseUser &#x26; T;
 </code></pre>
+
+Where you can pass extra user attributes to the object that you know will be present in user claims, e.g.
+
+```typescript
+const UserWithNickName = User<{ nickname: string }>;
+```
 
 Field descriptions:
 
@@ -171,7 +177,7 @@ const googleAccessToken = user.forwardedTokens?.google?.accessToken;
 
 #### Embedded Login Iframe
 
-If you want to have the Login screen open directly on a page without the user having to click on button, you can import the `CivicAuthIframeContainer` component along with the AuthProvider option `modalIframe={false}`&#x20;
+If you want to have the Login screen open directly on a page without the user having to click on button, you can import the `CivicAuthIframeContainer` component along with the AuthProvider option iframeMode`={"embedded"}`&#x20;
 
 You just need to ensure that the `CivicAuthIframeContainer` is a child under a `CivicAuthProvider`
 
@@ -191,7 +197,7 @@ const App = () => {
   return (
       <CivicAuthProvider
         clientId={"YOUR CLIENT ID"}
-        modalIframe={false}
+        iframeMode={"embedded"}
       >
         <Login />
       </CivicAuthProvider>
