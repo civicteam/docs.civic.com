@@ -37,10 +37,12 @@ Your app will need the following configuration:
 ```typescript
 const config = {
   clientId: // Client ID from auth.civic.com
-  redirectUrl: `http://localhost:3000/auth/callback`, // change to your domain when deploying
-  postLogoutRedirectUrl: '/' // The postLogoutRedirectUrl is the URL where the user will be redirected after successfully logging out from Civic's auth server.
+  redirectUrl: 'http://localhost:3000/auth/callback', // change to your domain when deploying
+  postLogoutRedirectUrl: 'http://localhost:3000/' // The postLogoutRedirectUrl is the URL where the user will be redirected after successfully logging out from Civic's auth server.
 };
 ```
+
+Note: `redirectUrl` and `postLogoutRedirectUrl` must be absolute URLs.
 
 ## 3. Set up Cookies
 
