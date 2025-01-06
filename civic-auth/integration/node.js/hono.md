@@ -37,7 +37,8 @@ Your app will need the following configuration:
 ```typescript
 const config = {
   clientId: // Client ID from auth.civic.com
-  redirectUrl: `http://localhost:3000/auth/callback` // change to your domain when deploying
+  redirectUrl: `http://localhost:3000/auth/callback`, // change to your domain when deploying
+  postLogoutRedirectUrl: '/' // The postLogoutRedirectUrl is the URL where the user will be redirected after successfully logging out from Civic's auth server.
 };
 ```
 
@@ -102,7 +103,20 @@ app.get('/auth/callback', async (c) => {
 });
 ```
 
-## 6. Add Middleware
+## 6. Create a Logout Endpoint
+
+This endpoint will handle logout requests, build the Civic logout URL and redirect the user to it.
+
+```typescript
+import { buildLogoutRedirectUrl } from '@civic/auth/server';
+
+app.get('/auth/logout', async (req: Request, res: Response) => {
+  const url = await buildLogoutRedirectUrl(config, req.storage);
+  res.redirect(url.toString());
+});
+```
+
+## 7. Add Middleware
 
 Middleware protects routes that require login.
 
@@ -117,7 +131,7 @@ app.use('/admin/*', async (c, next) => {
 });
 ```
 
-## 7. Use the Session
+## 8. Use the Session
 
 If needed, get the logged-in user information.
 
