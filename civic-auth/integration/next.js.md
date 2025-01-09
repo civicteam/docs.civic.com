@@ -4,13 +4,17 @@
 
 Integrate Civic Auth into your Next.js application using the following steps (a working example is available in our [github examples repo](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/nextjs)):
 
+{% hint style="info" %}
+This guide assumes you are using Typescript. Please adjust the snippets as needed to remove the types if you are using plain JS.
+{% endhint %}
+
 ### **1. Add the Civic Auth Plugin**
 
 This is where you give your app the Client ID provided when you sign up at [auth.civic.com](https://auth.civic.com).
 
 The defaults should work out of the box for most customers, but if you want to configure your app, see [below](next.js.md#configuration) for details.
 
-<pre class="language-typescript" data-title="next.config.js"><code class="lang-typescript"><strong>import { createCivicAuthPlugin } from "@civic/auth/nextjs"
+<pre class="language-typescript" data-title="next.config.ts"><code class="lang-typescript"><strong>import { createCivicAuthPlugin } from "@civic/auth/nextjs"
 </strong>import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -23,6 +27,10 @@ const withCivicAuth = createCivicAuthPlugin({
 
 export default withCivicAuth(nextConfig)
 </code></pre>
+
+{% hint style="info" %}
+If your config file is a JS file (next.config.js), make sure to change the extension to .ts, or remove the type information.
+{% endhint %}
 
 ### **2. Create an API Route**
 
