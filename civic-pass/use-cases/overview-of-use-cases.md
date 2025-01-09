@@ -8,55 +8,45 @@ We want to help guide those integrating identity in their apps and share some of
 
 Prevent bots, Sybil attackers, and farmers from unfairly accumulating tokens during a token distribution or rewards event.
 
-{% embed url="https://docs.civic.com/introduction/use-cases/airdrops" %}
+{% embed url="https://docs.civic.com/pass/use-cases/airdrops" %}
 
 ## **Communities and DAOs**
 
 Help prevent Sybil attacks, spam, voting fraud and bot manipulation by verifying members.&#x20;
 
-{% content-ref url="communities-and-daos/event-access.md" %}
-[event-access.md](communities-and-daos/event-access.md)
-{% endcontent-ref %}
+{% embed url="https://docs.civic.com/pass/use-cases/communities-and-daos/event-access" %}
 
-{% embed url="https://docs.civic.com/introduction/use-cases/quadratic-voting-in-daos" %}
+{% embed url="https://docs.civic.com/pass/use-cases/communities-and-daos/quadratic-voting" %}
 
-{% content-ref url="communities-and-daos/rewards-management.md" %}
-[rewards-management.md](communities-and-daos/rewards-management.md)
-{% endcontent-ref %}
+{% embed url="https://docs.civic.com/pass/use-cases/communities-and-daos/rewards-management" %}
 
-{% content-ref url="communities-and-daos/sybil-resistant-id-verification.md" %}
-[sybil-resistant-id-verification.md](communities-and-daos/sybil-resistant-id-verification.md)
-{% endcontent-ref %}
-
-
+{% embed url="https://docs.civic.com/pass/use-cases/communities-and-daos/sybil-resistant-id-verification" %}
 
 ## **Decentralized Finance (DeFi)**
 
 Bring compliance rules on-chain to be used in smart contracts. Gate services with ID verification. Prevent rewards abuse with 1-person-1-wallet uniqueness checks.
 
-{% content-ref url="decentralized-finance-defi/accredited-investor-checks.md" %}
-[accredited-investor-checks.md](decentralized-finance-defi/accredited-investor-checks.md)
-{% endcontent-ref %}
+{% embed url="https://docs.civic.com/pass/use-cases/decentralized-finance-defi/accredited-investor-checks" %}
 
 ## **Gaming & GameFi**
 
 Ensure players are real people and unique. Prevent cheating, farming and Sybil attacks.&#x20;
 
-{% embed url="https://docs.civic.com/introduction/use-cases/player-uniqueness" %}
+{% embed url="https://docs.civic.com/pass/use-cases/gaming-and-gamefi/unique-player-management" %}
 
-{% embed url="https://docs.civic.com/introduction/use-cases/rewards-management-in-web3-gaming" %}
+{% embed url="https://docs.civic.com/pass/use-cases/gaming-and-gamefi/rewards-management" %}
 
 ## **Real-World Assets**
 
 Verify user identity on-chain, prevent fraud, and ensure compliance with regulations, enabling secure and transparent asset management.&#x20;
 
-{% embed url="https://docs.civic.com/introduction/use-cases/on-chain-id-verification-for-rwas" %}
+{% embed url="https://docs.civic.com/pass/use-cases/real-world-assets-rwas" %}
 
 ## **Smart Contract Development**
 
 Automate smart contract execution by tying functions to pass requirements to ensure secure and efficient programmatic whitelisting.
 
-{% embed url="https://docs.civic.com/introduction/use-cases/preventing-bot-activity" %}
+{% embed url="https://docs.civic.com/pass/use-cases/smart-contract-development" %}
 
 
 
