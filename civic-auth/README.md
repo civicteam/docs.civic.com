@@ -1,10 +1,16 @@
 # 🔏 Civic Auth
 
-## Introduction
+## What is Civic Auth?
 
-Welcome to the **Civic Auth** developer documentation!
+Civic Auth offers a simple, flexible, and fast way to integrate authentication into your applications. Enable familiar sign-in options while offering optional embedded wallets and unlocking blockchain benefits for your users.
 
-Civic Auth offers a simple, flexible, and fast way to integrate authentication into your applications.
+**Integrated login.** Users sign in using their email, Google account, passkeys, or wallet—no complex setup required.
+
+**Adaptable onboarding.** Auth is a familiar sign-in experience for all users. Supports existing wallets or integrated embedded wallets.
+
+**Embedded wallets.** Automatically create wallets for users that don't bring their own.
+
+**Multichain support.** Supported on Base, Binance Smart Chain (BSC), Polygon, Arbitrum, Ethereum, and other EVM-compatible chains. _Solana coming soon._
 
 ## Quick Start
 
