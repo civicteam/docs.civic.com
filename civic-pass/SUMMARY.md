@@ -48,10 +48,16 @@
   * [Sybil-Resistant ID Verification](use-cases/communities-and-daos/sybil-resistant-id-verification.md)
 * [💸 Decentralized Finance (DeFi)](use-cases/decentralized-finance-defi/README.md)
   * [Accredited Investor Checks](use-cases/decentralized-finance-defi/accredited-investor-checks.md)
+  * [Country Blocking by Residence/Nationality](use-cases/decentralized-finance-defi/country-blocking-by-residence-nationality.md)
+  * [On-Chain ID Verification](use-cases/decentralized-finance-defi/on-chain-id-verification.md)
 * [🎮 Gaming & GameFi](use-cases/gaming-and-gamefi/README.md)
   * [Unique Player Management](use-cases/gaming-and-gamefi/unique-player-management.md)
   * [Rewards Management](use-cases/gaming-and-gamefi/rewards-management.md)
-* [🏡 Real-World Assets (RWAs)](use-cases/real-world-assets-rwas.md)
+* [🐵 NFTs](use-cases/nfts.md)
+* [🏡 Real-World Assets (RWAs)](use-cases/real-world-assets-rwas/README.md)
+  * [Accredited Investor Checks](use-cases/real-world-assets-rwas/accredited-investor-checks.md)
+  * [Country Blocking Based on Residence/Nationality](use-cases/real-world-assets-rwas/country-blocking-based-on-residence-nationality.md)
+  * [Tokenizing RWAs](use-cases/real-world-assets-rwas/tokenizing-rwas.md)
 * [🛠️ Smart Contract Development](use-cases/smart-contract-development.md)
 
 ## Security
