@@ -1,6 +1,6 @@
 # Accredited Investor Checks
 
-### The State of RWAs Today
+### RWAs Today
 
 As tokenized RWAs rise in popularity, platforms must comply with securities laws, verifying that investors meet accredited status. Civic provides a secure, privacy-preserving solution, enabling platforms to issue Custom Passes for Accredited Investors based on trusted third-party verifications.
 
@@ -26,7 +26,7 @@ Renewable Energy Projects: Tokenizing renewable energy infrastructure requires a
 
 High-Value Collectibles & Commodities: Tokenizing valuable assets like art, precious metals, or natural resources may require accredited investor verification.
 
-### Civic Custom Pass for Accredited Investors
+### How Civic Can Help
 
 Civic’s Custom Pass for Accredited Investors provides a seamless, privacy-first solution for verifying accredited investor status and managing access to tokenized offerings. The process integrates smoothly into platforms, ensuring regulatory compliance and simplifying investor onboarding.
 
@@ -46,7 +46,7 @@ Here’s how it works:
 
 A tokenized real estate platform allows accredited investors to purchase fractional ownership of a commercial building. The platform uses verifyInvestor to check the investor’s accreditation. Once verified, Civic issues a Custom Pass for Accredited Investors, allowing the investor to participate in the offering and future opportunities without re-verifying their status.
 
-### How Can Civic Help?
+### Benefits
 
 * Frictionless Onboarding: Civic simplifies the accreditation process by relying on trusted third-party services. Once verified, investors can reuse their Civic Custom Pass across multiple platforms, reducing onboarding time and costs.
 * Regulatory Compliance: Ensure that only accredited investors participate, meeting securities regulations in key jurisdictions.

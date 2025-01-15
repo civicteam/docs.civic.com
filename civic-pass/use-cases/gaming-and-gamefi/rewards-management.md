@@ -11,7 +11,7 @@ Civic Pass allows game developers to implement a force refresh mechanism, ensuri
 * Flexible Integration: Civic Pass can be easily integrated into existing game architectures, allowing developers to implement secure reward claiming without overhauling their entire system.
 * Multichain Support: With support for multiple blockchains, Civic Pass can be used across various gaming platforms and ecosystems.
 
-### Which Civic Pass Should You Use?
+### Pick the Right Civic Pass
 
 1. Liveness Pass: Requires a video selfie to prove that a real person is claiming rewards.
 2. Uniqueness Pass: Combines liveness check with additional measures to prevent one person from creating more than one account.

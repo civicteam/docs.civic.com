@@ -1,6 +1,6 @@
 # Accredited Investor Checks
 
-## Bringing Accredited Investor Verification On-Chain for DeFi
+### On-Chain Accredited Investor Verification for DeFi
 
 DeFi operators face increasing pressure to comply with regulatory requirements. While many platforms allow anyone to participate, certain opportunities—such as private placements or security token offerings—often require investors to be accredited to comply with regulations. Civic addresses this issue with a Custom Pass for Accredited Investors, offering a flexible solution that can be tailored to DeFi platforms' specific needs.
 
@@ -12,7 +12,7 @@ As of 2024, to[ qualify as an accredited investor under U.S. regulations](https:
 * Have a net worth of over $1 million, excluding the value of their primary residence.
 * Hold professional certifications, such as the Series 7, Series 65, or Series 82 licenses, which demonstrate financial expertise.
 
-### &#x20;The Challenge for DeFi Platforms
+### &#x20;The Challenge for DeFi
 
 While many DeFi platforms are open to all types of investors, those offering specific financial products—such as securities or other regulated investments—must verify accredited investor status to comply with regulatory standards. For these platforms, several challenges arise when dealing with accredited investors:
 
@@ -21,7 +21,7 @@ While many DeFi platforms are open to all types of investors, those offering spe
 * Operational Overhead: Manual processes to verify and maintain accredited investor status are resource-intensive.
 * Continuous Verification: Investor accreditation can shift, and DeFi platforms must continuously verify and update these statuses to meet ongoing compliance obligations.
 
-### Civic’s Solution: Custom Pass for Accredited Investors
+### How Civic Can Help
 
 Our Civic Custom Pass for Accredited Investors offers DeFi platforms an efficient and secure way to streamline the accredited investor verification process using blockchain technology. It's important to note that Civic does not perform the initial accredited investor checks. Instead, Civic issues passes based on the results of third-party verifications conducted by the DeFi platforms themselves. DeFi platforms may also freeze and revoke Civic Passes based on their own criteria.
 
@@ -46,7 +46,7 @@ The Civic Custom Pass for Accredited Investors process is designed to integrate 
 5. On-Chain Validation: DeFi platforms can use smart contracts to verify the validity of the pass before granting investors access to specific financial products or services.
 6. Ongoing Compliance: The pass can be updated or refreshed at intervals to ensure the investor's accreditation remains valid over time.
 
-### &#x20;Key Benefits for DeFi Platforms
+### &#x20;Key Benefits
 
 By implementing Civic’s Custom Pass for Accredited Investors, DeFi platforms can benefit from:
 
@@ -56,7 +56,7 @@ By implementing Civic’s Custom Pass for Accredited Investors, DeFi platforms c
 * Support for DeFi Airdrops: Many DeFi airdrops, while open to all, may require participants to be accredited investors to comply with regulatory standards. By using Civic Pass, DeFi platforms can efficiently verify accreditation status.
 * Multi-Chain Support: The solution is designed to work across various blockchain networks, making it highly adaptable to the diverse DeFi ecosystem.
 
-### &#x20;Implementation for DeFi Platforms
+### &#x20;Implementation
 
 Integrating Civic’s Custom Pass for Accredited Investors into a DeFi platform is straightforward:
 
@@ -64,7 +64,7 @@ Integrating Civic’s Custom Pass for Accredited Investors into a DeFi platform 
 * Smart Contract Integration: DeFi platforms can embed the accredited investor pass check within their smart contract logic, ensuring only verified investors gain access to restricted services.
 * Flexible Blockchain Support: The solution's multi-chain compatibility offers adaptability for various use cases and ecosystems within DeFi.
 
-### Get Civic’s Custom Pass for Accredited Investors for Your DeFi Platform
+### Get In Touch
 
 Civic's Custom Pass for Accredited Investors provides DeFi platforms with a streamlined solution for managing compliance and privacy concerns. By integrating Civic Custom Pass into your platform, you can leverage third-party accredited investor verifications while ensuring regulatory compliance and upholding the privacy-first principles of DeFi. If you're looking to enhance your platform's ability to manage accredited investor verification efficiently, we encourage you to [contact us](https://civickey.typeform.com/req-custom) for more information.
 

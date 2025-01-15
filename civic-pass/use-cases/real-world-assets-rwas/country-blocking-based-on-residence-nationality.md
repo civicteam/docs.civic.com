@@ -1,12 +1,10 @@
 # Country Blocking Based on Residence/Nationality
 
-### Country Blocking Based on Residence/Nationality for RWAs
+### Country Blocking for RWAs
 
 Tokenization refers to the process of converting the ownership or rights to a real-world asset, such as real estate or private equity, into a digital token that can be issued and traded on a blockchain. By tokenizing these assets, platforms enable fractional ownership, improved liquidity, and access to a global pool of investors.&#x20;
 
 Tokenized RWAs platforms should manage access based on user nationality or residence to comply with various regulations. Country blocking based on residence or nationality is one approach that helps platforms navigate these regulations effectively when IP blocking is not enough.
-
-&#x20;
 
 ### Why Block By Country?
 
