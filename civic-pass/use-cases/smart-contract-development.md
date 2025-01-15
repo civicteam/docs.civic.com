@@ -1,22 +1,22 @@
 # 🛠️ Smart Contract Development
 
-## Ensuring Fairness and Security in Smart Contracts
+### Ensuring Fairness and Security in Smart Contracts
 
-While bots can serve many beneficial roles, such as automating tasks and providing useful data, malicious bots have become widespread in the Web3 ecosystem. They disrupt fair access and participation in activities such as airdrops, reward distributions, gaming, NFT mints, decentralized governance, and decentralized finance (DeFi) protocols. These harmful automated scripts can exploit vulnerabilities in smart contracts, manipulate markets, and gain unfair advantages over human users. Civic offers a robust solution to address this challenge through Civic Pass.
+While bots can be useful for automating tasks and providing data, malicious bots are a growing issue in Web3. They disrupt fair access and participation in activities like airdrops, reward distributions, gaming, NFT mints, decentralized governance, and DeFi protocols. These harmful bots can exploit vulnerabilities in smart contracts, manipulate markets, and give themselves an unfair advantage over human users. Civic offers a strong solution to tackle this issue with Civic Pass.
 
-### How Civic Pass Works for Bot Prevention
+### How Civic Can Help
 
-As a multi-chain, wallet-agnostic identity and access management solution designed for Web3 applications, Civic Pass allows developers to implement various verification mechanisms to ensure that only legitimate human users can interact with their smart contracts. Civic Passes that are particularly effective in bot prevention are:
+Civic Pass is a multi-chain, wallet-agnostic identity and access management solution for Web3 apps. It lets developers implement various verification methods to ensure that only legitimate human users can interact with their smart contracts:
 
 #### CAPTCHA Pass
 
-This pass requires users to solve a CAPTCHA challenge before they can execute a transaction on a smart contract. CAPTCHAs are a well-established method for distinguishing humans from bots in the Web2 world, and Civic Pass brings this functionality to the blockchain.
+This pass requires users to solve a CAPTCHA challenge before they can execute a transaction on a smart contract. CAPTCHAs are a well established method for distinguishing humans from bots in the Web2 world, and Civic Pass brings this functionality to the blockchain.
 
 #### Liveness Pass
 
 This pass requires users to complete a liveness check, typically involving a video selfie, to prove they are real humans, not bots. This adds an extra layer of security, making it significantly more difficult for bots to impersonate human users.
 
-### Civic Bot Prevention Applications
+### Use Cases
 
 Smart contract developers can use Civic for bot prevention across various Web3 applications, including:
 
@@ -31,7 +31,7 @@ Smart contract developers can use Civic for bot prevention across various Web3 a
 * **Token Sales and Airdrops**.&#x20;
   * Verify the eligibility of participants and prevent bots from hoarding tokens.
 
-### Implementation Process
+### Implementation
 
 Integrating Civic Pass into your smart contract is straightforward. Here's a high-level guide for the process:
 
@@ -40,7 +40,7 @@ Integrating Civic Pass into your smart contract is straightforward. Here's a hig
 3. **Configure Verification**. Set up the verification parameters in your smart contract, specifying the required Civic Pass and any additional criteria.
 4. **Verify On-Chain**. During contract execution, verify the presence and validity of the Civic Pass using the provided on-chain verification functions.
 
-### Additional Bot Prevention Strategies
+### Additional Tools
 
 While CAPTCHA and Liveness checks are effective initial barriers against bots, more sophisticated bots may still attempt to bypass them. Civic Pass offers a flexible framework for implementing additional bot prevention strategies, such as:
 
@@ -49,8 +49,8 @@ While CAPTCHA and Liveness checks are effective initial barriers against bots, m
 
 By combining these strategies with Civic Pass, developers can create a multi-layered defense against bot activity, ensuring the security and integrity of their Web3 applications.
 
-### Get Civic Pass for Your Smart Contracts
+### Get In Touch
 
-Civic Pass empowers smart contract developers with a powerful tool to limit bot activity in Web3. By leveraging CAPTCHA and Liveness checks, along with other advanced strategies, developers can create a more secure and equitable environment for all users. If you're a developer looking to protect your Web3 application from bots, we encourage you to explore all the features of the Civic Pass and [contact us](https://civickey.typeform.com/req-custom) for more information.
+If you're a developer looking to protect your Web3 application from bots, we encourage you to explore all the features of the Civic Pass and [contact us](https://civickey.typeform.com/req-custom).
 
 \

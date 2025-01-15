@@ -1,65 +1,44 @@
 # Quadratic Voting
 
-## Enhancing Democratic Governance in DAOs
+### **Enhancing DAO Governance with Quadratic Voting**
 
-Fair and representative voting is a key pillar in the functioning of decentralized autonomous organizations (DAOs), especially for critical decisions and resource allocations. Quadratic voting is an innovative solution that empowers voters to convey the strength of their convictions through a credits-based system, ensuring a more nuanced representation of community sentiment. It combats majority rule and the marginalization of minority opinions, enhancing DAO governance and provides resistance against attacks such as [flash loan exploits](https://www.researchgate.net/figure/Example-flash-loan-attack-against-Maker-DAO-All-steps-can-be-executed-within-one_fig3_339374442). Civic provides a suite of passes, as well as an example implementation of the quadratic voting mechanics on Solana, that can address these diverse governance needs with precision and integrity across various blockchain networks.
+Fair voting is essential for DAOs, especially for critical decisions and resource allocations. Quadratic voting allows voters to express the strength of their preferences using credits, offering a more nuanced representation of community sentiment. It helps prevent majority rule from silencing minority opinions and strengthens DAO governance. Civic offers passes and an implementation of quadratic voting on Solana, providing precise, trustworthy solutions across blockchain networks.
 
-### How Quadratic Voting Works
+### **What is Quadratic Voting?**
 
-Quadratic voting aims to revolutionize traditional voting by allowing voters to express not just a choice but also the strength of their preference. There are numerous [historical examples of quadratic voting implementation](https://en.m.wikipedia.org/wiki/Quadratic_voting#Applications), but the most common system is that each voter is allocated a set number of credits, which they can distribute among options according to their preferences.&#x20;
+Quadratic voting lets voters not only choose but also indicate the strength of their preferences. Each voter receives credits, which they can distribute among options. The number of votes each option gets is the square root of the credits allocated, making it costly to favor one option without genuine strong support. In Civic's implementation, voters allocate credits to a single preference with diminishing returns for each additional vote, ensuring balanced representation.
 
-The unique aspect of quadratic voting lies in the counting of votes: the number of votes each option receives is the square root of the total credits allocated to it. This system encourages balanced and fair decision-making by making it costly to heavily favor one option without genuine strong preference.
+#### How Votes Are Weighted
 
-In the current Civic implementation of quadratic voting, the ability to distribute preference among multiple options is not available due to platform limitations on [Realms](https://realms.today/), which allows multiple-choice votes but restricts voters to selecting only one option. Our solution addresses this by ensuring that each vote is still 100% committed to a single preference, but with diminishing returns for each subsequent vote. Specifically, if a voter has 100 votes, the first vote is worth 1, the second is worth slightly less, and so on, with the total influence calculated as the square root of the sum of the credits used. This method ensures a balanced representation of voter intensity
-
-### How Weights Are Added to Votes on Realms
-
-By verifying and tokenizing aspects of members’ real-world identities, Civic allows for the possibility of assigning different weights to votes based on verified attributes. Quadratic Voting factors available on Realms:
+By verifying and tokenizing aspects of members’ real-world identities, Civic allows for the possibility of assigning different weights to votes based on verified attributes:
 
 * Adjusting coefficients (a, b, c) can change the sensitivity of voting power relative to token holdings. For instance, setting coefficients a and c to 0 and b to 1 would make the voting power directly proportional to the number of tokens held, while the default setting (a = 1, b = 0, c = 0) makes it proportional to the square root.
-* Circulating token supply is a factor that sets the max voter weight as a fraction of the total circulating supply of governance tokens, ensuring that no single entity can dominate the voting process. This approach adapts to current Realms limitations by manually setting the approval quorum as a percentage of the circulating voter weight, ensuring proposals require sufficient community support to pass without needing every member to vote.
+* Circulating token supply is a factor that sets the max voter weight as a fraction of the total circulating supply of governance tokens, ensuring that no single entity can dominate the voting process.&#x20;
 
-### Best Practices for Quadratic Voting
+### QV Best Practices
 
-1. Start with Default Coefficients
+1. **Start with Default Coefficients**. Begin with the default coefficients (a = 1, b = 0, c = 0) to leverage the basic quadratic voting principle (the voting power is proportional to the square root of tokens held). You can then experiment with adjusting the coefficients to fine-tune the sensitivity of voting power. For example, increasing coefficient a while keeping b and c low can slightly amplify the influence of larger token holders if necessary.
+2. **Set a Realistic Circulating Token Supply Factor.** Analyze your DAO’s token distribution and set the circulating supply factor to a realistic value that prevents any single entity from accumulating excessive voting power. Typically, a value less than 1 is recommended to ensure broader participation.
+3. **Determine an Appropriate Approval Quorum.** Establish an approval quorum that reflects the engagement level of your community. A higher quorum can prevent rash decisions but may also make it harder to pass proposals. Balance it according to the activity and size of your DAO.
+4. **Monitor and Adapt.** Civic helps create a more engaged and trustworthy voting environment. Regularly assess how your quadratic voting settings impact governance and be ready to adjust based on participation, power balance, and community feedback.
 
-Begin with the default coefficients (a = 1, b = 0, c = 0) to leverage the basic quadratic voting principle (the voting power is proportional to the square root of tokens held). You can then experiment with adjusting the coefficients to fine-tune the sensitivity of voting power. For example, increasing coefficient a while keeping b and c low can slightly amplify the influence of larger token holders if necessary.
+### Key Benefits
 
-2. Set a Realistic Circulating Token Supply Factor
+* **Ensure Enhanced Representation**: Quadratic voting gives all voices, especially minorities, a say. Civic ensures each vote is cast by a unique individual and reflects community sentiment.
+* **Reduce Voter Apathy**: Quadratic voting lets voters express stronger preferences, making voting more meaningful and boosting participation.
+* **Maintain Fair Decision-Making**: Quadratic voting balances influence, preventing domination by a few. Civic’s secure framework ensures fair DAO governance.
 
-Analyze your DAO’s token distribution and set the circulating supply factor to a realistic value that prevents any single entity from accumulating excessive voting power. Typically, a value less than 1 is recommended to ensure broader participation.
+### Use Cases in DAOs
 
-3. Determine an Appropriate Approval Quorum
+* **Enable Governance Decisions**: Members can express the strength of their preferences on DAO changes. Civic’s integration ties each vote to a verified identity, preventing fraud.
+* **Streamline Resource Allocation**: Members show varying priorities for projects or resources. Civic ensures genuine, diverse community input in decisions.
+* **Facilitate Officer or Committee Elections**: Candidates are supported based on preference strength. Civic ensures transparency and security, linking each vote to a unique identity.
+* **Manage Controversial Proposals**: Captures support or opposition intensity, leading to fairer resolutions that consider minority views. Civic ensures accurate vote counting and reduces fraud.
+* **Support Conflict Resolution**: Allows members to express the strength of their feelings during disputes, aiding mediation. Civic ensures authenticated votes for fair resolutions.
 
-Establish an approval quorum that reflects the engagement level of your community. A higher quorum can prevent rash decisions but may also make it harder to pass proposals. Balance it according to the activity and size of your DAO.
+### How Civic Can Help
 
-4. Monitor and Adapt
-
-Civic’s identity verification helps you to foster a more engaged and trustworthy voting environment. However, you should regularly review the impact of your quadratic voting settings on governance outcomes. Be prepared to make adjustments based on participation rates, the balance of power, and feedback from community members.
-
-### Key Benefits of Quadratic Voting
-
-• Enhanced Representation: Quadratic voting ensures all voices, especially minorities, are considered. Civic’s technology ensures that each vote is genuinely cast by a unique individual and accurately reflects community sentiments.
-
-• Reduction of Voter Apathy: Quadratic voting engages a broader segment of the community by allowing voters to express varying degrees of preference. The solution Civic proposes makes voting more meaningful, boosting participation rates.
-
-• Fairness in Decision-Making: Quadratic voting balances the influence among participants, preventing dominance by heavily invested parties. Civic’s secure framework ensures the integrity of the electoral process, maintaining fairness in DAO governance.
-
-### Quadratic Voting Use Cases in DAOs
-
-&#x20; 1\. Governance Decisions: Enables members to express the intensity of their preferences on foundational changes within the DAO. Civic’s integration ensures that each vote is securely tied to a verified identity, preventing fraudulent votes.
-
-&#x20; 2\. Resource Allocation: Allows members to show varying levels of priority for different projects or resource distribution plans. This technology ensures that allocations are decided by genuine and diverse community input.
-
-&#x20; 3\. Election of Officers or Committee Members: Supports candidates based on the strength of preference. Civic ensures this process is transparent and secure, with each vote linked to a unique digital identity.
-
-&#x20; 4\. Handling Controversial Proposals: Captures the intensity of support or opposition, leading to more satisfactory resolutions that consider minority views. Civic’s framework ensures accurate vote counting and reduces voting fraud.
-
-&#x20; 5\. Conflict Resolution: Helps in expressing the intensity of feelings about various solutions during disputes, aiding in mediation processes. Civic’s integration ensures authenticated votes, promoting fair resolutions.
-
-### How Civic Can Help with the Quadratic Voting Process
-
-Civic’s suite of identity verification solutions enhances the fairness and security of quadratic voting systems within DAOs.
+Civic’s identity verification tools boost the fairness and security of quadratic voting in DAOs:
 
 * **Sybil Resistance:** The Civic Uniqueness Pass ensures each participant corresponds to a unique individual, preventing the manipulation of quadratic voting constraints by spreading votes across multiple accounts.
 * **Enforcement of One-Person-One-Wallet-One-Vote:** The Civic Uniqueness Pass ensures each participant corresponds to a unique individual.
@@ -67,10 +46,10 @@ Civic’s suite of identity verification solutions enhances the fairness and sec
 * **ID Verification Compliance:** The ID Verification Pass provides thorough government-issued document checks, comparison of the document photo with the person’s face, ensuring participants are legitimate and meet DAO criteria.
 * **Adding Weight to Votes:** Civic allows for assigning different weights to votes based on verified attributes, enhancing the representation in the voting process.
 
-### Civic Integration with Realms
+### Our Integration with Realms
 
-Civic Pass is already integrated with Realms, a popular DAO governance platform on Solana. This integration allows DAOs on Realms to quickly implement Civic’s identity verification solutions to enhance the security and fairness of their voting processes.&#x20;
+Civic Pass is already integrated with [Realms](https://app.realms.today/realms), a DAO governance platform on Solana. This allows DAOs on Realms to quickly adopt Civic’s identity verification solutions, improving the security and fairness of their voting processes.
 
-### Get Quadratic Voting for Your DAO
+### Get In Touch
 
-Civic passes can also be integrated into other DAO platforms to provide robust identity verification and secure voting processes. Together, we can enhance the integrity and trust of decentralized governance. If you are interested in bringing Civic’s advanced tools to your platform, please [get in touch](https://civickey.typeform.com/req-custom).
+If you are interested in bringing Civic’s advanced tools to your DAO, please [get in touch](https://civickey.typeform.com/req-custom).
