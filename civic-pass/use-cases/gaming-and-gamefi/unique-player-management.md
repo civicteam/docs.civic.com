@@ -1,10 +1,10 @@
-# Unique Player Management
+# 1-Player-1-Wallet
 
 ## Ensuring Player Uniqueness in Gaming Platforms
 
 Game developers should ensure every player on their platform is unique, especially when rewards or competitive play are involved. The Civic Uniqueness Pass is a powerful solution, preventing the creation of multiple accounts through advanced technologies like video selfies and 1-user-1-wallet verification. This protects the game's integrity and fairness while operating seamlessly on multiple blockchain networks.&#x20;
 
-### Key Benefits of Player Uniqueness
+### Key Benefits
 
 Developers can significantly improve in-game fair play and fraud prevention measures by ensuring that each player is unique, no matter if that player is using a Web2 or Web3 signup method. Here are a few advantages of integrating versus building your own solution:
 
@@ -12,7 +12,7 @@ Developers can significantly improve in-game fair play and fraud prevention meas
 * Reduction of cheating. Having each player verified curbs the use of multiple accounts for unfair advantages.
 * Community trust. Assures players that they compete in a fair environment, enhancing player satisfaction and engagement.
 
-### Gaming Use Cases for Player Uniqueness
+### Use Cases
 
 Verifying player uniqueness addresses a number of challenges in the game development space:
 
@@ -45,7 +45,7 @@ If you would like to pay on behalf of users that don’t manage their own keys, 
 
 Each pass has an expiration date that can be either standard, or customized, as well as refreshed on demand, based on a trigger inside your app. This ensures it's the same user every time.
 
-### Get Started with Uniqueness
+### Get In Touch
 
 We encourage all game developers to integrate the Civic Uniqueness Pass into their platforms. [Request a network key](../../introduction/get-network-keys.md) or [get in touch](https://civickey.typeform.com/req-custom) to see how Civic can help.&#x20;
 

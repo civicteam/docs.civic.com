@@ -51,7 +51,7 @@
   * [Country Blocking by Residence/Nationality](use-cases/decentralized-finance-defi/country-blocking-by-residence-nationality.md)
   * [On-Chain ID Verification](use-cases/decentralized-finance-defi/on-chain-id-verification.md)
 * [🎮 Gaming & GameFi](use-cases/gaming-and-gamefi/README.md)
-  * [Unique Player Management](use-cases/gaming-and-gamefi/unique-player-management.md)
+  * [1-Player-1-Wallet](use-cases/gaming-and-gamefi/unique-player-management.md)
   * [Rewards Management](use-cases/gaming-and-gamefi/rewards-management.md)
 * [🐵 NFTs](use-cases/nfts.md)
 * [🏡 Real-World Assets (RWAs)](use-cases/real-world-assets-rwas/README.md)

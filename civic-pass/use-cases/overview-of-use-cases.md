@@ -28,6 +28,14 @@ Bring compliance rules on-chain to be used in smart contracts. Gate services wit
 
 {% embed url="https://docs.civic.com/pass/use-cases/decentralized-finance-defi/accredited-investor-checks" %}
 
+{% content-ref url="decentralized-finance-defi/country-blocking-by-residence-nationality.md" %}
+[country-blocking-by-residence-nationality.md](decentralized-finance-defi/country-blocking-by-residence-nationality.md)
+{% endcontent-ref %}
+
+{% content-ref url="decentralized-finance-defi/on-chain-id-verification.md" %}
+[on-chain-id-verification.md](decentralized-finance-defi/on-chain-id-verification.md)
+{% endcontent-ref %}
+
 ## **Gaming & GameFi**
 
 Ensure players are real people and unique. Prevent cheating, farming and Sybil attacks.&#x20;
@@ -36,11 +44,31 @@ Ensure players are real people and unique. Prevent cheating, farming and Sybil a
 
 {% embed url="https://docs.civic.com/pass/use-cases/gaming-and-gamefi/rewards-management" %}
 
+## **NFTs**
+
+Protect your NFT project or drop from botting and Sybil attacks.
+
+{% content-ref url="nfts.md" %}
+[nfts.md](nfts.md)
+{% endcontent-ref %}
+
 ## **Real-World Assets**
 
 Verify user identity on-chain, prevent fraud, and ensure compliance with regulations, enabling secure and transparent asset management.&#x20;
 
-{% embed url="https://docs.civic.com/pass/use-cases/real-world-assets-rwas" %}
+{% content-ref url="real-world-assets-rwas/accredited-investor-checks.md" %}
+[accredited-investor-checks.md](real-world-assets-rwas/accredited-investor-checks.md)
+{% endcontent-ref %}
+
+{% content-ref url="real-world-assets-rwas/country-blocking-based-on-residence-nationality.md" %}
+[country-blocking-based-on-residence-nationality.md](real-world-assets-rwas/country-blocking-based-on-residence-nationality.md)
+{% endcontent-ref %}
+
+{% content-ref url="real-world-assets-rwas/tokenizing-rwas.md" %}
+[tokenizing-rwas.md](real-world-assets-rwas/tokenizing-rwas.md)
+{% endcontent-ref %}
+
+
 
 ## **Smart Contract Development**
 
