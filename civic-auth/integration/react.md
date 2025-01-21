@@ -44,7 +44,7 @@ function App({ children }) {
 }
 ```
 
-This component is context-dependent. If the user is logged in, it will show their profile picture and name. If the user is not logged in, it will show a Log In button.
+This component is context-dependent. If the user is logged in, it will show their profile picture and name. If the user is not logged in, it will show a Log In button. The button will show a loading spinner while the user is in the process of signing in or signing out.
 
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption><p>The user button</p></figcaption></figure>
 
@@ -119,9 +119,22 @@ The full user context object (provided by `useUser`) looks like this:
   forwardedTokens?: ForwardedTokens;
   // functions and flags for UI and signIn/signOut
   isLoading: boolean;
+  authStatus: AuthStatus;
   error: Error | null;
   signIn: (displayMode?: DisplayMode) => Promise&#x3C;void>;
   signOut: () => Promise&#x3C;void>;
+}
+```
+
+#### AuthStatus
+The `authStatus` field exposed in the UserContext can be used to update your UI depending on the user's authentication status, i.e. update the UI to show a loader while the user is in the process of authenticating or signing out.
+```typescript
+export enum AuthStatus {
+  AUTHENTICATED = "authenticated",
+  UNAUTHENTICATED = "unauthenticated",
+  AUTHENTICATING = "authenticating",
+  ERROR = "error",
+  SIGNING_OUT = "signing_out",
 }
 ```
 
