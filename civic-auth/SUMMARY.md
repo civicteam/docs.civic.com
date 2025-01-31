@@ -10,6 +10,7 @@
   * [Express](integration/node.js/express.md)
   * [Hono](integration/node.js/hono.md)
   * [Fastify](integration/node.js/fastify.md)
+* [Error Codes](integration/error-codes.md)
 * [Other](integration/other.md)
 
 ## Web3
