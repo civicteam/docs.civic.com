@@ -8,14 +8,22 @@ Integrate Civic Auth into your Next.js application using the following steps (a 
 This guide assumes you are using Typescript. Please adjust the snippets as needed to remove the types if you are using plain JS.
 {% endhint %}
 
+{% hint style="info" %}
+If you plan to use Web3 features, select "Auth + Web3" from the tabs below.
+{% endhint %}
+
 ### **1. Add the Civic Auth Plugin**
 
 This is where you give your app the Client ID provided when you sign up at [auth.civic.com](https://auth.civic.com).
 
-The defaults should work out of the box for most customers, but if you want to configure your app, see [below](next.js.md#configuration) for details.
+The defaults should work out of the box for most customers, but if you want to configure your app, see [below](next.js.md#advanced-configuration) for details.
 
-<pre class="language-typescript" data-title="next.config.ts"><code class="lang-typescript"><strong>import { createCivicAuthPlugin } from "@civic/auth/nextjs"
-</strong>import type { NextConfig } from "next";
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="next.config.ts" %}
+```typescript
+import { createCivicAuthPlugin } from "@civic/auth/nextjs"
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -26,10 +34,34 @@ const withCivicAuth = createCivicAuthPlugin({
 });
 
 export default withCivicAuth(nextConfig)
-</code></pre>
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Auth + Web3" %}
+{% code title="next.config.ts" %}
+```typescript
+import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs"
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: 'YOUR CLIENT ID'
+});
+
+export default withCivicAuth(nextConfig)
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 {% hint style="info" %}
-If your config file is a JS file (next.config.js), make sure to change the extension to .ts, or remove the type information.
+Typescript support in configuration files was introduced in [Next 15](https://nextjs.org/docs/pages/api-reference/config/typescript#version-changes).
+
+If your config file is a JS file (next.config.mjs), make sure to change the extension to .ts, or remove the type information.
 {% endhint %}
 
 ### **2. Create an API Route**
@@ -40,6 +72,8 @@ Create this file at the following path:
 
 `src/app/api/auth/[...civicauth]/route.ts`
 
+{% tabs %}
+{% tab title="Auth" %}
 {% code title="route.ts" %}
 ```typescript
 import { handler } from '@civic/auth/nextjs'
@@ -47,6 +81,18 @@ import { handler } from '@civic/auth/nextjs'
 export const GET = handler()
 ```
 {% endcode %}
+{% endtab %}
+
+{% tab title="Auth + Web3" %}
+{% code title="route.ts" %}
+```typescript
+import { handler } from '@civic/auth-web3/nextjs'
+
+export const GET = handler()
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 {% hint style="info" %}
 These steps apply to the [App Router](https://nextjs.org/docs/app). If you are using the Pages Router, please [contact us](https://discord.com/invite/MWmhXauJw8/?referrer=home-discord) for integration steps.
@@ -58,6 +104,8 @@ Middleware is used to protect your backend routes, server components and server 
 
 Using the Civic Auth middleware ensures that only logged-in users have access to secure parts of your service.
 
+{% tabs %}
+{% tab title="Auth" %}
 {% code title="src/middleware.ts" %}
 ```typescript
 import { authMiddleware } from '@civic/auth/nextjs/middleware'
@@ -70,11 +118,30 @@ export const config = {
 }
 ```
 {% endcode %}
+{% endtab %}
+
+{% tab title="Auth + Web3" %}
+{% code title="src/middleware.ts" %}
+```typescript
+import { authMiddleware } from '@civic/auth-web3/nextjs/middleware'
+
+export default authMiddleware()
+
+export const config = {
+  // include the paths you wish to secure here
+  matcher: [ '/api/:path*', '/admin/:path*'  ] 
+}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 #### Middleware Chaining
 
 If you are already using middleware in your Next.js app, then you can chain them with Civic Auth as follows:
 
+{% tabs %}
+{% tab title="Auth" %}
 {% code title="src/middleware.ts" %}
 ```typescript
 import { auth } from '@civic/auth/nextjs'
@@ -90,11 +157,33 @@ const otherMiddleware = (request: NextRequest) => {
 export default withCivicAuth(otherMiddleware)
 ```
 {% endcode %}
+{% endtab %}
+
+{% tab title="Auth + Web3" %}
+{% code title="src/middleware.ts" %}
+```typescript
+import { auth } from '@civic/auth-web3/nextjs'
+import { NextRequest, NextResponse } from "next/server";
+
+const withCivicAuth = auth()
+
+const otherMiddleware = (request: NextRequest) => {
+    console.log('my middleware')
+    return NextResponse.next()
+}
+
+export default withCivicAuth(otherMiddleware)
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 ### **4. Frontend Integration**
 
 Add the Civic Auth context to your app to give your frontend access to the logged-in user.
 
+{% tabs %}
+{% tab title="Auth" %}
 ```javascript
 import { CivicAuthProvider } from "@civic/auth/nextjs";
 
@@ -107,6 +196,23 @@ function Layout({ children }) {
   )
 }
 ```
+{% endtab %}
+
+{% tab title="Auth + Web3" %}
+```javascript
+import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
+
+function Layout({ children }) {
+  return (
+    // ... the rest of your app layout
+    <CivicAuthProvider>
+      {children}
+    </CivicAuthProvider>
+  )
+}
+```
+{% endtab %}
+{% endtabs %}
 
 {% hint style="info" %}
 Unlike the pure [React](react.md) integration, you do _not_ have to add your client ID again here!
@@ -122,14 +228,28 @@ Unlike the pure [React](react.md) integration, you do _not_ have to add your cli
 
 Retrieve user information on backend code, such as in React Server Components, React Server Actions, or api routes using `getUser`:
 
+{% tabs %}
+{% tab title="Auth" %}
 ```typescript
 import { getUser } from '@civic/auth/nextjs';
 
 const user = await getUser();
 ```
+{% endtab %}
 
-For example, in a NextJS Server Component:
+{% tab title="Auth + Web3" %}
+```typescript
+import { getUser } from '@civic/auth-web3/nextjs';
 
+const user = await getUser();
+```
+{% endtab %}
+{% endtabs %}
+
+For example, in a Next.js Server Component:
+
+{% tabs %}
+{% tab title="Auth" %}
 ```typescript
 import { getUser } from '@civic/auth/nextjs';
 
@@ -141,6 +261,22 @@ export async function MyServerComponent() {
   return <div>Hello { user.name }!</div>
 }
 ```
+{% endtab %}
+
+{% tab title="Auth + Web3" %}
+```typescript
+import { getUser } from '@civic/auth-web3/nextjs';
+
+export async function MyServerComponent() {
+  const user = await getUser();
+  
+  if (!user) return <div>User not logged in</div>
+  
+  return <div>Hello { user.name }!</div>
+}
+```
+{% endtab %}
+{% endtabs %}
 
 {% hint style="info" %}
 The `name` property is used as an example here, check out the [React Usage page](react.md) to see the entire basic user object structure.&#x20;
@@ -152,14 +288,37 @@ Civic Auth is a "low-code" solution, so most of the configuration takes place vi
 
 The integration also offers the ability customize the library according to the needs of your Next.js app. For example, to restrict authentication checks to specific pages and routes in your app. You can do so inside `next.config.js` as follows:
 
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="next.config.ts" %}
 ```typescript
+import { createCivicAuthPlugin } from "@civic/auth/nextjs"
+
 const withCivicAuth = createCivicAuthPlugin({
-  clientId: 'YOUR CLIENT ID'
-  ...other config
+  clientId: 'YOUR CLIENT ID',
+  ... // other config
 });
 
 export default withCivicAuth(nextConfig) // your next config here
 ```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Auth + Web3" %}
+{% code title="next.config.ts" %}
+```typescript
+import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs"
+
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: 'YOUR CLIENT ID',
+  ... // other config
+});
+
+export default withCivicAuth(nextConfig) // your next config here
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 Here are the available configuration options:
 
