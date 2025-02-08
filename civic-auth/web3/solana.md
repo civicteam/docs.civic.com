@@ -37,8 +37,10 @@ If the user has a wallet,
 
 ```typescript
 type ExistingWeb3UserContext = UserContext & {
-  walletAddress: string // the base58 public key of the embedded wallet
-  wallet: Wallet // a Solana Wallet object
+  sol: {
+    address: string // the base58 public key of the embedded wallet
+    wallet: Wallet // a Solana Wallet object
+  } 
 }
 ```
 
@@ -57,7 +59,7 @@ An easy way to distinguish between the two is to use the `userHasWallet` type gu
 
 ```typescript
 if (userHasWallet(userContext)) {
-  user.wallet; // user has a wallet
+  user.sol.wallet; // user has a wallet
 } else {
   user.createWallet();// user does not have a wallet
 }
@@ -69,7 +71,7 @@ if (userHasWallet(userContext)) {
 
 ```typescript
 const connection = new Connection(/* your rpc endpoint */);  
-const { publicKey, sendTransaction } = wallet;
+const { publicKey, sendTransaction } = user.wallet.solana;
 
 const transaction = new Transaction().add(
   SystemProgram.transfer({
@@ -85,7 +87,7 @@ const signature = await sendTransaction(transaction, connection);
 
 ```typescript
 const connection = new Connection(/* your rpc endpoint */);
-const { publicKey } = wallet;
+const { publicKey } = user.sol.wallet;
 const balance = await connection.getBalance(publicKey);
 ```
 
@@ -170,7 +172,7 @@ const AppContent = () => {
         <div>
           {userHasWallet(userContext) && 
             <>
-              <p>Wallet address: {userContext.walletAddress}</p>
+              <p>Wallet address: {userContext.sol.wallet}</p>
               <p>Balance: {
                 balance
                   ? `${balance / 1e9} SOL`

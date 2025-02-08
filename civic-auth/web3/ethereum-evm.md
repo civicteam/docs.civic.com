@@ -25,8 +25,10 @@ If the user has a wallet,
 
 ```typescript
 type ExistingWeb3UserContext = UserContext & {
-  walletAddress: string // the address of the embedded wallet
-  wallet: WalletClient // a Viem WalletClient
+  eth: {
+      address: string // the address of the embedded wallet
+      wallet: WalletClient // a Viem WalletClient
+  } 
 }
 ```
 
@@ -43,7 +45,7 @@ An easy way to distinguish between the two is to use the `userHasWallet` type gu
 
 ```typescript
 if (userHasWallet(userContext)) {
-  user.wallet; // user has a wallet
+  user.eth.wallet; // user has a wallet
 } else {
   user.createWallet();// user does not have a wallet
 }
@@ -162,7 +164,7 @@ const AppContent = () => {
   const { connect, connectors } = useConnect();
   const { isConnected } = useAccount();
   const balance = useBalance({
-    address: userHasWallet(userContext) ? userContext.walletAddress as `0x${string}`: undefined,
+    address: userHasWallet(userContext) ? userContext.eth.address as `0x${string}`: undefined,
   });
 
   // A function to connect to an existing civic embedded wallet
@@ -188,7 +190,7 @@ const AppContent = () => {
           }
           {userHasWallet(userContext) && 
             <>
-              <p>Wallet address: {userContext.walletAddress}</p>
+              <p>Wallet address: {userContext.eth.address}</p>
               <p>Balance: {
                 balance?.data
                   ? `${(BigInt(balance.data.value) / BigInt(1e18)).toString()} ${balance.data.symbol}`
@@ -216,7 +218,7 @@ If you are not using Wagmi, you may also use [Viem](https://viem.sh) directly to
 const userContext  = useUser();
 
 if (userContext.user && userHasWallet(userContext)) {
-  const { wallet } = userContext;
+  const { wallet } = userContext.eth;
   const hash = await wallet.sendTransaction({ 
     to: '0x...',
     value: 1000n
