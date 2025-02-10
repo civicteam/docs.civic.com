@@ -71,7 +71,7 @@ if (userHasWallet(userContext)) {
 
 ```typescript
 const connection = new Connection(/* your rpc endpoint */);  
-const { publicKey, sendTransaction } = user.wallet.solana;
+const { publicKey, sendTransaction } = user.sol.wallet;
 
 const transaction = new Transaction().add(
   SystemProgram.transfer({
@@ -130,9 +130,8 @@ import { ConnectionProvider, WalletProvider, useWallet, useConnection } from "@s
 import { WalletModalProvider} from "@solana/wallet-adapter-react-ui";
 import { embeddedWallet, userHasWallet } from '@civic/auth-web3';
 import { CivicAuthProvider, UserButton, useUser } from '@civic/auth-web3/react';
-import { mainnet, sepolia } from "Solana Adapter/chains";
 
-// Wrap the content with the necessary providers to give access to hooks: react-query, Solana Adapter & civic auth provider
+// Wrap the content with the necessary providers to give access to hooks: solana wallet adapter & civic auth provider
 const App = () => {
     const endpoint = "YOUR RPC ENDPOINT";
     return (
