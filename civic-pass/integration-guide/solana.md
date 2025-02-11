@@ -651,7 +651,7 @@ For practical implementation, refer to the code examples below, which demonstrat
 
 | Vite & React | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/solana/vite) | [Demo](https://airdrop-demo.civic.me/solana)      |
 | ------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------- |
-| NextJs       | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/solana/next) | [Demo](https://airdrop-demo.civic.me/next/solana) |
+| Next.js       | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/solana/next) | [Demo](https://airdrop-demo.civic.me/next/solana) |
 
 \
 \

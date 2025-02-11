@@ -616,7 +616,7 @@ For practical implementation, refer to the code examples below, which demonstrat
 
 | Vite & React | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/evm/vite) | [Demo](https://airdrop-demo.civic.me/evm)      |
 | ------------ | --------------------------------------------------------------------------------- | ---------------------------------------------- |
-| NextJs       | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/evm/next) | [Demo](https://airdrop-demo.civic.me/next/evm) |
+| Next.js       | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/evm/next) | [Demo](https://airdrop-demo.civic.me/next/evm) |
 
 \
 \

@@ -17,6 +17,5 @@
 ## Web3
 
 * [Embedded Wallets](web3/embedded-wallets.md)
-* [What are Embedded Wallets?](web3/what-are-embedded-wallets.md)
 * [Ethereum / EVM](web3/ethereum-evm.md)
 * [Solana](web3/solana.md)

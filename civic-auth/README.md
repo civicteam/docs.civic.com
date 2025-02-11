@@ -8,7 +8,7 @@ Civic Auth offers a simple, flexible, and fast way to integrate authentication i
 
 **Adaptable onboarding.** Auth is a familiar sign-in experience for all users. Supports existing wallets or integrated embedded wallets.
 
-**Embedded wallets.** Automatically create wallets for users that don't bring their own.
+**Embedded wallets.** Automatically create [Web3 wallets](/web3/what-are-embedded-wallets.md) for your users.
 
 **Multichain support.** Supported on Base, Binance Smart Chain (BSC), Polygon, Arbitrum, Ethereum, and other EVM-compatible chains. _Solana coming soon._
 
@@ -44,7 +44,39 @@ bun add @civic/auth
 {% endtab %}
 {% endtabs %}
 
-## Integration
+# Web3 Wallets
+
+If you plan to offer your users [Web3 wallets](/web3/what-are-embedded-wallets.md), you can use the Civic Auth Web3 SDK.
+
+This SDK extends the functionality of the base Civic Auth SDK to add Web3 features.
+
+{% tabs %}
+{% tab title="npm" %}
+```bash
+npm install @civic/auth-web3
+```
+{% endtab %}
+
+{% tab title="yarn" %}
+```bash
+yarn add @civic/auth-web3
+```
+{% endtab %}
+
+{% tab title="pnpm" %}
+```bash
+pnpm install @civic/auth-web3
+```
+{% endtab %}
+
+{% tab title="bun" %}
+```bash
+bun add @civic/auth-web3
+```
+{% endtab %}
+{% endtabs %}
+
+## Usage
 
 Choose your framework for instructions on how to integrate Civic Auth into your application.
 
