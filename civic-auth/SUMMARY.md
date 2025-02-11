@@ -12,6 +12,7 @@
   * [Fastify](integration/node.js/fastify.md)
 * [Error Codes](integration/error-codes.md)
 * [Other](integration/other.md)
+* [FAQs](integration/faqs.md)
 
 ## Web3
 
