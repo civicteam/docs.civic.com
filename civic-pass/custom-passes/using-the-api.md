@@ -34,6 +34,8 @@ Note this sandbox environment is only available on testnets. These values should
 * `ethereum:xdcApothem`
 * `ethereum:xlayerTestnet`
 * `ethereum:avalancheCChainFuji`
+* `ethereum:unichainSepolia`
+* `ethereum:sonicTestnet`
 
 #### Getting a JWT for the Civic API
 

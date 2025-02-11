@@ -24,6 +24,8 @@
 * [⛓️ Polygon](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#polygon)
 * [⛓️ Polygon zkEVM](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#zkPolygon)
 * [⛓️ Solana](integration-guide/solana.md)
+* [⛓️ Sonic](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#arbitrum)
+* [⛓️ Unichain](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#arbitrum)
 * [⛓️ XDC](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#xdc)
 * [⛓️ X Layer](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#xlayer)
 * [⚠️ Unsupported EVM?](integration-guide/unsupported-evm.md)
