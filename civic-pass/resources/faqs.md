@@ -38,6 +38,8 @@ To update a user’s Civic Pass:
 * Polygon
 * Polygon zkEVM
 * Solana
+* Sonic&#x20;
+* Unichain
 * X Layer
 * XDC
 
