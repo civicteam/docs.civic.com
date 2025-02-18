@@ -191,7 +191,7 @@ const AppContent = () => {
               <p>Balance: {
                 balance?.data
                   ? `${(BigInt(balance.data.value) / BigInt(1e18)).toString()} ${balance.data.symbol}`
-                  : 'Loading...'
+                  : "Loading..."
               }</p>
               {isConnected ? <p>Wallet is connected</p> : (
                 <button onClick={connectExistingWallet}>Connect Wallet</button>
@@ -217,7 +217,7 @@ const userContext  = useUser();
 if (userContext.user && userHasWallet(userContext)) {
   const { wallet } = userContext.ethereum;
   const hash = await wallet.sendTransaction({ 
-    to: '0x...',
+    to: "0x...",
     value: 1000n
   })
 }

@@ -57,7 +57,7 @@ The Civic Auth SDK comes with a multi-purpose styled component called the `UserB
 {% tab title="Auth" %}
 {% code title="TitleBar.ts" %}
 ```typescript
-import { UserButton, CivicAuthProvider } from '@civic/auth/react';
+import { UserButton, CivicAuthProvider } from "@civic/auth/react";
 
 export function TitleBar() {
   return (
@@ -73,7 +73,7 @@ export function TitleBar() {
 {% tab title="Auth + Web3" %}
 {% code title="TitleBar.ts" %}
 ```typescript
-import { UserButton, CivicAuthProvider } from '@civic/auth-web3/react';
+import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
 
 export function TitleBar() {
   return (
@@ -100,7 +100,7 @@ Use the Civic Auth SDK to retrieve user information on the frontend.
 {% tab title="Auth" %}
 {% code title="MyComponent.ts" %}
 ```typescript
-import { useUser } from '@civic/auth/react';
+import { useUser } from "@civic/auth/react";
 
 export function MyComponent() {
   const { user } = useUser();
@@ -115,7 +115,7 @@ export function MyComponent() {
 {% tab title="Auth + Web3" %}
 {% code title="MyComponent.ts" %}
 ```typescript
-import { useUser } from '@civic/auth-web3/react';
+import { useUser } from "@civic/auth-web3/react";
 
 export function MyComponent() {
   const { user } = useUser();
@@ -158,7 +158,7 @@ See below for the list of all configuration options
 </code></pre></td><td>A hook that executes after a sign-in attempt, whether successful or not.</td></tr><tr><td>onSignOut</td><td>No</td><td>-</td><td><pre class="language-typescript"><code class="lang-typescript">() => {
   // handle signout
 }
-</code></pre></td><td>A hook that executes after a user logs out.</td></tr><tr><td>redirectUrl</td><td>No</td><td>currentURL</td><td>/authenticating</td><td>An override for the page that OAuth will redirect to to perform token-exchange. By default Civic will redirect to the current URL and Authentication will be finished by the Civic provider automatically. Only use if you'd like to have some custom display or logic during OAuth token-exchange. The redirect page must have the CivicAuthProvider running in order to finish authentication.</td></tr><tr><td><p></p><p>iframeMode</p></td><td>No</td><td>modal</td><td>iframeMode={'embedded'}</td><td>Set to <code>embedded</code> if you want to embed the login iframe in your app rather than opening the iframe in a modal. See <a href="react.md#embedded-login-iframe">Embedded Login Iframe section</a> below.</td></tr><tr><td>displayMode</td><td>No</td><td>iFrame</td><td>"iframe" | "redirect" | "new_tab"</td><td><p><strong>"iframe"</strong>: Authentication happens in an embedded window within your current page.<br></p><p><strong>"redirect"</strong>: Full page navigation to the auth server and back to your site after completion.<br></p><p><strong>"new_tab"</strong>: Opens auth flow in a new browser tab, returning to original tab after completion.</p></td></tr></tbody></table>
+</code></pre></td><td>A hook that executes after a user logs out.</td></tr><tr><td>redirectUrl</td><td>No</td><td>currentURL</td><td>/authenticating</td><td>An override for the page that OAuth will redirect to to perform token-exchange. By default Civic will redirect to the current URL and Authentication will be finished by the Civic provider automatically. Only use if you'd like to have some custom display or logic during OAuth token-exchange. The redirect page must have the CivicAuthProvider running in order to finish authentication.</td></tr><tr><td><p></p><p>iframeMode</p></td><td>No</td><td>modal</td><td>iframeMode={"embedded"}</td><td>Set to <code>embedded</code> if you want to embed the login iframe in your app rather than opening the iframe in a modal. See <a href="react.md#embedded-login-iframe">Embedded Login Iframe section</a> below.</td></tr><tr><td>displayMode</td><td>No</td><td>iFrame</td><td>"iframe" | "redirect" | "new_tab"</td><td><p><strong>"iframe"</strong>: Authentication happens in an embedded window within your current page.<br></p><p><strong>"redirect"</strong>: Full page navigation to the auth server and back to your site after completion.<br></p><p><strong>"new_tab"</strong>: Opens auth flow in a new browser tab, returning to original tab after completion.</p></td></tr></tbody></table>
 
 ### Display Mode
 

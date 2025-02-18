@@ -170,7 +170,7 @@ const AppContent = () => {
               <p>Balance: {
                 balance
                   ? `${balance / 1e9} SOL`
-                  : 'Loading...'
+                  : "Loading..."
               }</p>
             </>
           }

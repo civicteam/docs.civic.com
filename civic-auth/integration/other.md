@@ -56,51 +56,51 @@ See below for an example of using Civic Auth with a third-party library: [OAuth 
 <!DOCTYPE html>
 <html>
 <body>
-<button id="login" disabled onclick='location.href=authURL'>login</button>
+<button id="login" disabled onclick="location.href=authURL">login</button>
 <div id="information"></div>
 </body>
 
 <script>
 
 const libraryCDN = "https://cdn.jsdelivr.net/npm/oauth4webapi@2.10.3/+esm"
-const openIdConnectUrl = new URL('https://auth.civic.com/oauth');
-const clientId = 'YOUR CLIENT ID';
-const redirectUri = 'https://localhost:3000';
-const scope = 'openid';
+const openIdConnectUrl = new URL("https://auth.civic.com/oauth");
+const clientId = "YOUR CLIENT ID";
+const redirectUri = "https://localhost:3000";
+const scope = "openid";
 
-const buttonEl = document.querySelector('#login')
-const informationEl = document.querySelector('#information')
+const buttonEl = document.querySelector("#login")
+const informationEl = document.querySelector("#information")
 
-var authURL = ''
+var authURL = ""
 let as
 let codeVerified
 
 import(libraryCDN).then((oauth) => {
   const client = {
     client_id: clientId,
-    token_endpoint_auth_method: 'none', 
+    token_endpoint_auth_method: "none", 
   }
   async function discover(){
     as = await oauth
-      .discoveryRequest(openIdConnectUrl, { algorithm: 'oidc' })
+      .discoveryRequest(openIdConnectUrl, { algorithm: "oidc" })
       .then((response) => oauth.processDiscoveryResponse(openIdConnectUrl, response))
-    if (currentURL.searchParams.get('code')) {
+    if (currentURL.searchParams.get("code")) {
       codeVerified = sessionStorage.getItem("code_verifier" )
       getInfo()
     }
 
-    const code_challenge_method = 'S256'
+    const code_challenge_method = "S256"
     const code_verifier = oauth.generateRandomCodeVerifier()
     sessionStorage.setItem("code_verifier", code_verifier)
     const code_challenge = await oauth.calculatePKCECodeChallenge(code_verifier)
 
     const authorizationUrl = new URL(as.authorization_endpoint)
-    authorizationUrl.searchParams.set('client_id', clientId)
-    authorizationUrl.searchParams.set('redirect_uri', redirectUri)
-    authorizationUrl.searchParams.set('response_type', 'code')
-    authorizationUrl.searchParams.set('scope', scope)
-    authorizationUrl.searchParams.set('code_challenge', code_challenge)
-    authorizationUrl.searchParams.set('code_challenge_method', code_challenge_method)
+    authorizationUrl.searchParams.set("client_id", clientId)
+    authorizationUrl.searchParams.set("redirect_uri", redirectUri)
+    authorizationUrl.searchParams.set("response_type", "code")
+    authorizationUrl.searchParams.set("scope", scope)
+    authorizationUrl.searchParams.set("code_challenge", code_challenge)
+    authorizationUrl.searchParams.set("code_challenge_method", code_challenge_method)
     
     authURL = authorizationUrl.href
   }
@@ -131,7 +131,7 @@ import(libraryCDN).then((oauth) => {
     const responseInfo = await oauth.userInfoRequest(as, client, access_token)
 
     const resultInfo = await oauth.processUserInfoResponse(as, client, sub, responseInfo)
-    informationEl.innerText = 'Welcome '+resultInfo.preferred_username+' ('+resultInfo.name+')'
+    informationEl.innerText = "Welcome "+resultInfo.preferred_username+" ("+resultInfo.name+")"
   }
 })
 
@@ -152,16 +152,16 @@ The ID token is produced after completing the login process. A common pattern is
 Here’s an example of how to access user information in vanilla JavaScript by reading the ID token cookie:
 
 ```typescript
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 function getUserFromToken() {
   const cookie = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('id_token='));
+    .split("; ")
+    .find(row => row.startsWith("id_token="));
 
   if (!cookie) return null;
 
-  const token = cookie.split('=')[1];
+  const token = cookie.split("=")[1];
   return jwt.decode(token);
 }
 

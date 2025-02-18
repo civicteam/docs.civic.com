@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
 };
 
 const withCivicAuth = createCivicAuthPlugin({
-  clientId: 'YOUR CLIENT ID'
+  clientId: "YOUR CLIENT ID"
 });
 
 export default withCivicAuth(nextConfig)
@@ -49,7 +49,7 @@ const nextConfig: NextConfig = {
 };
 
 const withCivicAuth = createCivicAuthPlugin({
-  clientId: 'YOUR CLIENT ID'
+  clientId: "YOUR CLIENT ID"
 });
 
 export default withCivicAuth(nextConfig)
@@ -76,7 +76,7 @@ Create this file at the following path:
 {% tab title="Auth" %}
 {% code title="route.ts" %}
 ```typescript
-import { handler } from '@civic/auth/nextjs'
+import { handler } from "@civic/auth/nextjs"
 
 export const GET = handler()
 ```
@@ -86,7 +86,7 @@ export const GET = handler()
 {% tab title="Auth + Web3" %}
 {% code title="route.ts" %}
 ```typescript
-import { handler } from '@civic/auth-web3/nextjs'
+import { handler } from "@civic/auth-web3/nextjs"
 
 export const GET = handler()
 ```
@@ -108,13 +108,13 @@ Using the Civic Auth middleware ensures that only logged-in users have access to
 {% tab title="Auth" %}
 {% code title="src/middleware.ts" %}
 ```typescript
-import { authMiddleware } from '@civic/auth/nextjs/middleware'
+import { authMiddleware } from "@civic/auth/nextjs/middleware"
 
 export default authMiddleware()
 
 export const config = {
   // include the paths you wish to secure here
-  matcher: [ '/api/:path*', '/admin/:path*'  ] 
+  matcher: [ "/api/:path*", "/admin/:path*"  ] 
 }
 ```
 {% endcode %}
@@ -123,13 +123,13 @@ export const config = {
 {% tab title="Auth + Web3" %}
 {% code title="src/middleware.ts" %}
 ```typescript
-import { authMiddleware } from '@civic/auth-web3/nextjs/middleware'
+import { authMiddleware } from "@civic/auth-web3/nextjs/middleware"
 
 export default authMiddleware()
 
 export const config = {
   // include the paths you wish to secure here
-  matcher: [ '/api/:path*', '/admin/:path*'  ] 
+  matcher: [ "/api/:path*", "/admin/:path*"  ] 
 }
 ```
 {% endcode %}
@@ -144,13 +144,13 @@ If you are already using middleware in your Next.js app, then you can chain them
 {% tab title="Auth" %}
 {% code title="src/middleware.ts" %}
 ```typescript
-import { auth } from '@civic/auth/nextjs'
+import { auth } from "@civic/auth/nextjs"
 import { NextRequest, NextResponse } from "next/server";
 
 const withCivicAuth = auth()
 
 const otherMiddleware = (request: NextRequest) => {
-    console.log('my middleware')
+    console.log("my middleware")
     return NextResponse.next()
 }
 
@@ -162,13 +162,13 @@ export default withCivicAuth(otherMiddleware)
 {% tab title="Auth + Web3" %}
 {% code title="src/middleware.ts" %}
 ```typescript
-import { auth } from '@civic/auth-web3/nextjs'
+import { auth } from "@civic/auth-web3/nextjs"
 import { NextRequest, NextResponse } from "next/server";
 
 const withCivicAuth = auth()
 
 const otherMiddleware = (request: NextRequest) => {
-    console.log('my middleware')
+    console.log("my middleware")
     return NextResponse.next()
 }
 
@@ -231,7 +231,7 @@ Retrieve user information on backend code, such as in React Server Components, R
 {% tabs %}
 {% tab title="Auth" %}
 ```typescript
-import { getUser } from '@civic/auth/nextjs';
+import { getUser } from "@civic/auth/nextjs";
 
 const user = await getUser();
 ```
@@ -239,7 +239,7 @@ const user = await getUser();
 
 {% tab title="Auth + Web3" %}
 ```typescript
-import { getUser } from '@civic/auth-web3/nextjs';
+import { getUser } from "@civic/auth-web3/nextjs";
 
 const user = await getUser();
 ```
@@ -251,7 +251,7 @@ For example, in a Next.js Server Component:
 {% tabs %}
 {% tab title="Auth" %}
 ```typescript
-import { getUser } from '@civic/auth/nextjs';
+import { getUser } from "@civic/auth/nextjs";
 
 export async function MyServerComponent() {
   const user = await getUser();
@@ -265,7 +265,7 @@ export async function MyServerComponent() {
 
 {% tab title="Auth + Web3" %}
 ```typescript
-import { getUser } from '@civic/auth-web3/nextjs';
+import { getUser } from "@civic/auth-web3/nextjs";
 
 export async function MyServerComponent() {
   const user = await getUser();
@@ -295,7 +295,7 @@ The integration also offers the ability customize the library according to the n
 import { createCivicAuthPlugin } from "@civic/auth/nextjs"
 
 const withCivicAuth = createCivicAuthPlugin({
-  clientId: 'YOUR CLIENT ID',
+  clientId: "YOUR CLIENT ID",
   ... // other config
 });
 
@@ -310,7 +310,7 @@ export default withCivicAuth(nextConfig) // your next config here
 import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs"
 
 const withCivicAuth = createCivicAuthPlugin({
-  clientId: 'YOUR CLIENT ID',
+  clientId: "YOUR CLIENT ID",
   ... // other config
 });
 
@@ -322,5 +322,5 @@ export default withCivicAuth(nextConfig) // your next config here
 
 Here are the available configuration options:
 
-<table><thead><tr><th width="133">Field</th><th width="100">Required</th><th width="171">Default</th><th>Example</th><th>Description</th></tr></thead><tbody><tr><td>clientId</td><td>Yes</td><td>-</td><td><code>2cc5633d-2c92-48da-86aa-449634f274b9</code></td><td>The key obtained on signup to <a href="https://auth.civic.com">auth.civic.com</a></td></tr><tr><td>callbackUrl</td><td>No</td><td>/api/auth/callback</td><td>/api/myroute/callback</td><td>The path to route the browser to after a succesful login. Set this value if you are hosting your civic auth API route somewhere other than the default recommended <a href="next.js.md#create-an-api-route">above</a>.</td></tr><tr><td>loginUrl</td><td>No</td><td>/</td><td>/admin</td><td>The path your user will be sent to if they access a resource that needs them to be logged in. If you have a dedicated login page, you can set it here.</td></tr><tr><td>logoutUrl</td><td>No</td><td>/</td><td>/goodbye</td><td>The path your user will be sent to after a successful log-out.</td></tr><tr><td>include</td><td>No</td><td>['/*']</td><td><p>[</p><p> '/admin/*', '/api/admin/*'</p><p>]</p></td><td>An array of path <a href="https://man7.org/linux/man-pages/man7/glob.7.html">globs</a> that require a user to be logged-in to access. If not set, will include all paths matched by your Next.js <a href="next.js.md#middleware">middleware</a>.</td></tr><tr><td>exclude</td><td>No</td><td>-</td><td>['public/home']</td><td>An array of path <a href="https://man7.org/linux/man-pages/man7/glob.7.html">globs</a> that are excluded from the Civic Auth <a href="next.js.md#middleware">middleware</a>. In some cases, it might be easier and safer to specify exceptions rather than keep an inclusion list up to date.</td></tr></tbody></table>
+<table><thead><tr><th width="133">Field</th><th width="100">Required</th><th width="171">Default</th><th>Example</th><th>Description</th></tr></thead><tbody><tr><td>clientId</td><td>Yes</td><td>-</td><td><code>2cc5633d-2c92-48da-86aa-449634f274b9</code></td><td>The key obtained on signup to <a href="https://auth.civic.com">auth.civic.com</a></td></tr><tr><td>callbackUrl</td><td>No</td><td>/api/auth/callback</td><td>/api/myroute/callback</td><td>The path to route the browser to after a succesful login. Set this value if you are hosting your civic auth API route somewhere other than the default recommended <a href="next.js.md#create-an-api-route">above</a>.</td></tr><tr><td>loginUrl</td><td>No</td><td>/</td><td>/admin</td><td>The path your user will be sent to if they access a resource that needs them to be logged in. If you have a dedicated login page, you can set it here.</td></tr><tr><td>logoutUrl</td><td>No</td><td>/</td><td>/goodbye</td><td>The path your user will be sent to after a successful log-out.</td></tr><tr><td>include</td><td>No</td><td>["/*"]</td><td><p>[</p><p> "/admin/*", "/api/admin/*"</p><p>]</p></td><td>An array of path <a href="https://man7.org/linux/man-pages/man7/glob.7.html">globs</a> that require a user to be logged-in to access. If not set, will include all paths matched by your Next.js <a href="next.js.md#middleware">middleware</a>.</td></tr><tr><td>exclude</td><td>No</td><td>-</td><td>["public/home"]</td><td>An array of path <a href="https://man7.org/linux/man-pages/man7/glob.7.html">globs</a> that are excluded from the Civic Auth <a href="next.js.md#middleware">middleware</a>. In some cases, it might be easier and safer to specify exceptions rather than keep an inclusion list up to date.</td></tr></tbody></table>
 
