@@ -33,7 +33,7 @@ https://auth.civic.com/oauth
 
 #### **Query Parameters:**
 
-* `client_id`: Your application's unique identifier provided by CivicAuth.
+* `client_id`: Your application's unique identifier provided by Civic Auth.
 * `redirect_uri`: The URL to which users should be redirected after authentication.
 * `scope`: The permissions your application is requesting (e.g., `email`, `profile`, `openid`).
 * `state`: A random string to maintain state between the request and callback.
