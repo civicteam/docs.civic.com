@@ -4,6 +4,17 @@
 
 Integrate Civic Auth into your React application with ease, just wrap your app with the Civic Auth provider and add your Client ID (provided after you [sign up](https://auth.civic.com)). A working example is available in our [github examples repo](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/reactjs).
 
+{% hint style="info" %}
+This guide assumes you are using Typescript. Please adjust the snippets as needed to remove the types if you are using plain JS.
+{% endhint %}
+
+{% hint style="info" %}
+If you plan to use Web3 features, select "Auth + Web3" from the tabs below.
+{% endhint %}
+
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="App.ts" %}
 ```typescript
 import { CivicAuthProvider, UserButton } from "@civic/auth/react";
 
@@ -16,6 +27,25 @@ function App({ children }) {
   )
 }
 ```
+{% endcode %}
+{% endtab %}
+{% tab title="Auth + Web3" %}
+{% code title="App.ts" %}
+```typescript
+import { CivicAuthProvider, UserButton } from "@civic/auth-web3/react";
+
+function App({ children }) {
+  return (
+    <CivicAuthProvider clientId="YOUR CLIENT ID">
+      <UserButton />
+      {children}
+    </CivicAuthProvider>
+  )
+}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 ## Usage
 
@@ -23,6 +53,9 @@ function App({ children }) {
 
 The Civic Auth SDK comes with a multi-purpose styled component called the `UserButton`
 
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="TitleBar.ts" %}
 ```typescript
 import { UserButton, CivicAuthProvider } from '@civic/auth/react';
 
@@ -34,15 +67,26 @@ export function TitleBar() {
     </div>
   );
 };
-
-function App({ children }) {
-  return (
-    <CivicAuthProvider clientId="YOUR CLIENT ID">
-      <TitleBar />
-    </CivicAuthProvider>
-  )
-}
 ```
+{% endcode %}
+{% endtab %}
+{% tab title="Auth + Web3" %}
+{% code title="TitleBar.ts" %}
+```typescript
+import { UserButton, CivicAuthProvider } from '@civic/auth-web3/react';
+
+export function TitleBar() {
+  return (
+    <div className="flex justify-between items-center">
+      <h1>My App</h1>
+      <UserButton />
+    </div>
+  );
+};
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 This component is context-dependent. If the user is logged in, it will show their profile picture and name. If the user is not logged in, it will show a Log In button. The button will show a loading spinner while the user is in the process of signing in or signing out.
 
@@ -52,6 +96,9 @@ This component is context-dependent. If the user is logged in, it will show thei
 
 Use the Civic Auth SDK to retrieve user information on the frontend.
 
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="MyComponent.ts" %}
 ```typescript
 import { useUser } from '@civic/auth/react';
 
@@ -63,6 +110,24 @@ export function MyComponent() {
   return <div>Hello { user.name }!</div>
 }
 ```
+{% endcode %}
+{% endtab %}
+{% tab title="Auth + Web3" %}
+{% code title="MyComponent.ts" %}
+```typescript
+import { useUser } from '@civic/auth-web3/react';
+
+export function MyComponent() {
+  const { user } = useUser();
+  
+  if (!user) return <div>User not logged in</div>
+  
+  return <div>Hello { user.name }!</div>
+}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 {% hint style="info" %}
 We use `name` as an example here, but you can call any user object property from the user fields schema, as shown [below](react.md#base-user-fields).
@@ -194,13 +259,15 @@ If you want to have the Login screen open directly on a page without the user ha
 
 You just need to ensure that the `CivicAuthIframeContainer` is a child under a `CivicAuthProvider`
 
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="App.ts" %}
 ```typescript
 import { CivicAuthIframeContainer } from "@civic/auth/react";
 
-
 const Login = () => {
   return (
-      <div class="login-container">
+      <div className="login-container">
         <CivicAuthIframeContainer />
       </div>
   );
@@ -217,3 +284,32 @@ const App = () => {
   );
 }
 ```
+{% endcode %}
+{% endtab %}
+{% tab title="Auth + Web3" %}
+{% code title="App.ts" %}
+```typescript
+import { CivicAuthIframeContainer } from "@civic/auth-web3/react";
+
+const Login = () => {
+  return (
+      <div className="login-container">
+        <CivicAuthIframeContainer />
+      </div>
+  );
+};
+
+const App = () => {
+  return (
+      <CivicAuthProvider
+        clientId={"YOUR CLIENT ID"}
+        iframeMode={"embedded"}
+      >
+        <Login />
+      </CivicAuthProvider>
+  );
+}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
