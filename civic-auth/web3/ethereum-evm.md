@@ -6,7 +6,7 @@ When a new user logs in, they do not yet have a Web3 wallet by default. You can 
 
 ```javascript
 import { userHasWallet } from "@civic/auth-web3";
-import { useUser } from '@civic/auth-web3/react';
+import { useUser } from "@civic/auth-web3/react";
 
 export const afterLogin = async () => {
   const userContext = await useUser();
@@ -19,13 +19,13 @@ export const afterLogin = async () => {
 
 ## The useUser hook and UserContext Object
 
-The useUser hook returns a user context object that provides access to the base library's [user object](../integration/react.md#user) in the 'user' field, and adds some Web3 specific fields. The returned object has different types depending on these cases:&#x20;
+The useUser hook returns a user context object that provides access to the base library's [user object](../integration/react.md#user) in the 'user' field, and adds some Web3 specific fields. The returned object has different types depending on these cases:
 
 If the user has a wallet,
 
 ```typescript
 type ExistingWeb3UserContext = UserContext & {
-  eth: {
+  ethereum: {
       address: string // the address of the embedded wallet
       wallet: WalletClient // a Viem WalletClient
   } 
@@ -45,7 +45,7 @@ An easy way to distinguish between the two is to use the `userHasWallet` type gu
 
 ```typescript
 if (userHasWallet(userContext)) {
-  user.eth.wallet; // user has a wallet
+  user.ethereum.wallet; // user has a wallet
 } else {
   user.createWallet();// user does not have a wallet
 }
@@ -63,7 +63,6 @@ The Civic Auth Web3 SDK uses [Wagmi](https://wagmi.sh/) and [Viem](https://viem.
 To use the embedded wallet with Wagmi, follow these steps:
 
 {% hint style="info" %}
-
 **Prerequisites**
 
 Follow the [Wagmi documentation](https://wagmi.sh/) to learn how to set up your app with Wagmi.
@@ -123,9 +122,9 @@ See below for a full minimal example of a Wagmi app using Civic Auth for an embe
 
 ```tsx
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider, createConfig, useAccount, useConnect, useBalance, http } from 'wagmi';
-import { embeddedWallet, userHasWallet } from '@civic/auth-web3';
-import { CivicAuthProvider, UserButton, useUser } from '@civic/auth-web3/react';
+import { WagmiProvider, createConfig, useAccount, useConnect, useBalance, http } from "wagmi";
+import { embeddedWallet, userHasWallet } from "@civic/auth-web3";
+import { CivicAuthProvider, UserButton, useUser } from "@civic/auth-web3/react";
 import { mainnet, sepolia } from "wagmi/chains";
 
 const wagmiConfig = createConfig({
@@ -162,10 +161,8 @@ const AppContent = () => {
 
   // Add the wagmi hooks
   const { connect, connectors } = useConnect();
-  const { isConnected } = useAccount();
-  const balance = useBalance({
-    address: userHasWallet(userContext) ? userContext.eth.address as `0x${string}`: undefined,
-  });
+  const { isConnected, address } = useAccount();
+  const balance = useBalance({ address });
 
   // A function to connect to an existing civic embedded wallet
   const connectExistingWallet = () => connect({
@@ -218,7 +215,7 @@ If you are not using Wagmi, you may also use [Viem](https://viem.sh) directly to
 const userContext  = useUser();
 
 if (userContext.user && userHasWallet(userContext)) {
-  const { wallet } = userContext.eth;
+  const { wallet } = userContext.ethereum;
   const hash = await wallet.sendTransaction({ 
     to: '0x...',
     value: 1000n
@@ -234,7 +231,6 @@ Our SDK is currently being adapted to support other frontend frameworks beyond R
 
 [Contact us](https://discord.com/invite/MWmhXauJw8/?referrer=home-discord) if you have questions about integrating Civic Auth Web3 with a different framework.
 
-
 ## Configuration
 
 The library works out of the box without additional configuration.
@@ -243,16 +239,17 @@ If you need to customize the library's behavior, you can pass additional configu
 
 ### Limiting to specific chains
 
-By default, Civic Auth supports all chains supported by viem. If you want to restrict wallet usage
-to specific chains, you can pass an array of chains to the CivicAuthProvider.
+By default, Civic Auth supports all chains supported by viem. If you want to restrict wallet usage to specific chains, you can pass an array of chains to the CivicAuthProvider.
 
 #### Example 1. Using viem chain objects
+
 ```tsx
 import { mainnet, polygon } from "viem/chains";
 <CivicAuthProvider chains={[mainnet, polygon]}>
 ```
 
 #### Example 2. Specifying custom RPCs
+
 ```tsx
 import { mainnet, polygon } from "viem/chains";
 <CivicAuthProvider endpoints={{

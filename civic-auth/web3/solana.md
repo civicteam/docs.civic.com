@@ -1,7 +1,6 @@
 # Solana
 
 {% hint style="warning" %}
-
 **Coming Soon**
 
 The Civic Auth Solana implementation is available only for our early-access customers at present.
@@ -9,7 +8,6 @@ The Civic Auth Solana implementation is available only for our early-access cust
 Furthermore, the below API is subject to change as we continue to develop and refine our solution.
 
 If you’re interested in using Civic Auth Web3 on Solana, please [contact us](https://discord.com/invite/MWmhXauJw8/?referrer=home-discord) and we'll keep you informed.
-
 {% endhint %}
 
 ## Creating a Wallet
@@ -18,7 +16,7 @@ When a new user logs in, they do not yet have a Web3 wallet by default. You can 
 
 ```javascript
 import { userHasWallet } from "@civic/auth-web3";
-import { useUser } from '@civic/auth-web3/react';
+import { useUser } from "@civic/auth-web3/react";
 
 export const afterLogin = async () => {
   const userContext = await useUser();
@@ -31,13 +29,13 @@ export const afterLogin = async () => {
 
 ## **The useUser hook and UserContext Object**
 
-The useUser hook returns a user context object that provides access to the base library's [user object](../integration/react.md#user) in the 'user' field, and adds some Web3 specific fields. The returned object has different types depending on these cases:&#x20;
+The useUser hook returns a user context object that provides access to the base library's [user object](../integration/react.md#user) in the 'user' field, and adds some Web3 specific fields. The returned object has different types depending on these cases:
 
 If the user has a wallet,
 
 ```typescript
 type ExistingWeb3UserContext = UserContext & {
-  sol: {
+  solana: {
     address: string // the base58 public key of the embedded wallet
     wallet: Wallet // a Solana Wallet object
   } 
@@ -59,7 +57,7 @@ An easy way to distinguish between the two is to use the `userHasWallet` type gu
 
 ```typescript
 if (userHasWallet(userContext)) {
-  user.sol.wallet; // user has a wallet
+  user.solana.wallet; // user has a wallet
 } else {
   user.createWallet();// user does not have a wallet
 }
@@ -87,20 +85,17 @@ const signature = await sendTransaction(transaction, connection);
 
 ```typescript
 const connection = new Connection(/* your rpc endpoint */);
-const { publicKey } = user.sol.wallet;
+const { publicKey } = user.solana.wallet;
 const balance = await connection.getBalance(publicKey);
 ```
 
 ## Using the Wallet with the Solana Wallet Adapter
 
-The Civic Auth Web3 SDK uses the [Solana Wallet Adapter](https://www.npmjs.com/package/@solana/wallet-adapter-react) to expose the embedded wallet to React frontends.
-This allows you to use familiar hooks such as `useWallet` and `useConnection` to interact with the wallet.
+The Civic Auth Web3 SDK uses the [Solana Wallet Adapter](https://www.npmjs.com/package/@solana/wallet-adapter-react) to expose the embedded wallet to React frontends. This allows you to use familiar hooks such as `useWallet` and `useConnection` to interact with the wallet.
 
-Make sure to follow the steps described [here](https://solana.com/developers/cookbook/wallets/connect-wallet-react) (React) and [here](https://solana.com/developers/guides/wallets/add-solana-wallet-adapter-to-nextjs) (Next.Js)
-to get started with the Solana Wallet Adapter.
+Make sure to follow the steps described [here](https://solana.com/developers/cookbook/wallets/connect-wallet-react) (React) and [here](https://solana.com/developers/guides/wallets/add-solana-wallet-adapter-to-nextjs) (Next.Js) to get started with the Solana Wallet Adapter.
 
-The Civic Auth Web3 SDK follows the [wallet standard](https://github.com/wallet-standard/wallet-standard?tab=readme-ov-file),
-meaning that the Solana Wallet Adapter will automatically discover the embedded wallet.
+The Civic Auth Web3 SDK follows the [wallet standard](https://github.com/wallet-standard/wallet-standard?tab=readme-ov-file), meaning that the Solana Wallet Adapter will automatically discover the embedded wallet.
 
 Set up the Solana Wallet Adapter as shown below:
 
@@ -123,13 +118,13 @@ export const Providers: FC = () => {
 
 ### A Full Example
 
-See below for a full minimal example of a Solana Adapter app using Civic Auth for an embedded wallet. This is based on [this GitHub repository](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/Solana Adapter) that contains a sample implementation.
+See below for a full minimal example of a Solana Adapter app using Civic Auth for an embedded wallet. This is based on \[this GitHub repository]\(https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/Solana Adapter) that contains a sample implementation.
 
 ```tsx
 import { ConnectionProvider, WalletProvider, useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletModalProvider} from "@solana/wallet-adapter-react-ui";
-import { embeddedWallet, userHasWallet } from '@civic/auth-web3';
-import { CivicAuthProvider, UserButton, useUser } from '@civic/auth-web3/react';
+import { embeddedWallet, userHasWallet } from "@civic/auth-web3";
+import { CivicAuthProvider, UserButton, useUser } from "@civic/auth-web3/react";
 
 // Wrap the content with the necessary providers to give access to hooks: solana wallet adapter & civic auth provider
 const App = () => {
