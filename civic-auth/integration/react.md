@@ -186,8 +186,8 @@ The full user context object (provided by `useUser`) looks like this:
   isLoading: boolean;
   authStatus: AuthStatus;
   error: Error | null;
-  signIn: (displayMode?: DisplayMode) => Promise&#x3C;void>;
-  signOut: () => Promise&#x3C;void>;
+  signIn: (displayMode?: DisplayMode) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 ```
 
@@ -217,7 +217,7 @@ The `User` object looks like this:
   updated_at?: Date;
 };
 
-type User&#x3C;T> = BaseUser &#x26; T;
+type User<T> = BaseUser & T;
 </code></pre>
 
 Where you can pass extra user attributes to the object that you know will be present in user claims, e.g.
