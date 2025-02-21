@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Credential Flow and Verification Guide
 
 ### System Architecture

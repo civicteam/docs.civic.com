@@ -12,11 +12,6 @@
 
 ## Integration Guide
 
-* [Internet Computer (ICP)](integration-guide/internet-computer-icp/README.md)
-  * [Why Use Civic Pass on ICP](integration-guide/internet-computer-icp/why-use-civic-pass-on-icp.md)
-  * [How Civic Pass Works](integration-guide/internet-computer-icp/how-civic-pass-works.md)
-  * [Civic Pass Implementation Guide](integration-guide/internet-computer-icp/civic-pass-implementation-guide.md)
-  * [ICP Civic Credential Check Button](integration-guide/internet-computer-icp/icp-civic-credential-check-button.md)
 * [Implementation Guide on EVM](integration-guide/implementation-guide-on-evm.md)
 * [⛓️ Arbitrum](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#arbitrum)
 * [⛓️ Avalanche](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#avalanche)
@@ -24,6 +19,11 @@
 * [⛓️ Binance Smart Chain (BSC)](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#bsc)
 * [⛓️ Ethereum](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#ethereum)
 * [⛓️ Fantom](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#fantom)
+* [⛓️ Internet Computer (ICP)](integration-guide/internet-computer-icp/README.md)
+  * [Why Use Civic Pass on ICP](integration-guide/internet-computer-icp/why-use-civic-pass-on-icp.md)
+  * [How Civic Pass Works](integration-guide/internet-computer-icp/how-civic-pass-works.md)
+  * [Civic Pass Implementation Guide](integration-guide/internet-computer-icp/civic-pass-implementation-guide.md)
+  * [ICP Civic Credential Check Button](integration-guide/internet-computer-icp/icp-civic-credential-check-button.md)
 * [⛓️ Optimism](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#optimism)
 * [⛓️ Polygon](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#polygon)
 * [⛓️ Polygon zkEVM](https://docs.civic.com/pass/integration-guide/implementation-guide-on-evm#zkPolygon)

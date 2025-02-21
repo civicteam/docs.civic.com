@@ -1,4 +1,4 @@
-# Internet Computer (ICP)
+# ⛓️ Internet Computer (ICP)
 
 This guide explains how to integrate Civic Pass verification into your Internet Computer Protocol (ICP) application using the Civic Pass canister and React component.
 
