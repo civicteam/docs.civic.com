@@ -75,7 +75,7 @@ Ensure you have created the user's wallet first as described [above](ethereum-ev
 Include `embeddedWallet()` in your Wagmi configuration as shown below:
 
 ```javascript
-import { embeddedWallet } from "@civic/auth-web3";
+import { embeddedWallet } from "@civic/auth-web3/wagmi";
 
 import { mainnet } from "viem/chains";
 import { Chain, http } from "viem";
@@ -123,7 +123,8 @@ See below for a full minimal example of a Wagmi app using Civic Auth for an embe
 ```tsx
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, createConfig, useAccount, useConnect, useBalance, http } from "wagmi";
-import { embeddedWallet, userHasWallet } from "@civic/auth-web3";
+import { userHasWallet } from "@civic/auth-web3";
+import { embeddedWallet } from "@civic/auth-web3/wagmi";
 import { CivicAuthProvider, UserButton, useUser } from "@civic/auth-web3/react";
 import { mainnet, sepolia } from "wagmi/chains";
 
