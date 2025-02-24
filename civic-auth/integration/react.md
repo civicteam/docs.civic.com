@@ -92,6 +92,68 @@ This component is context-dependent. If the user is logged in, it will show thei
 
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption><p>The user button</p></figcaption></figure>
 
+#### Customizing the User Button
+You can customize the styling of the user button by adding either a `className` or `style` property to the UserButton component when declaring it e.g.
+Using a className:
+{% code title="CustomUserButtonClassName.ts" %}
+```css
+.my-button-container .login-button {
+  color: red;
+  background-color: blue;
+  border: 3px solid #6b7280;
+}
+```
+```typescript
+import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
+
+export function TitleBar() {
+  return (
+    <div className="flex justify-between items-center">
+      <h1>My App</h1>
+      <div className="my-button-container">
+        <UserButton className="login-button" />
+      </div>
+    </div>
+  );
+};
+```
+Note the use of a _specific_ class name declaration in the .css file. This is necessary to ensure that the styles in the imported css className take precedence over internal styles without the user of the discouraged `!important` directive.
+
+Using styles:
+{% code title="CustomUserButtonStyles.ts" %}
+```typescript
+import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
+
+export function TitleBar() {
+  return (
+    <div className="flex justify-between items-center">
+      <h1>My App</h1>
+      <UserButton style={{ minWidth: "20rem" }} />
+    </div>
+  );
+};
+```
+
+You can also use provide values in both `style` and `className` props, where the value in `style` will always take precedence over the same CSS-defined style.
+
+#### Creating your own Login and Logout buttons
+You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to create your own buttons for user log in and log out
+{% code title="RollYourOwnLogin.ts" %}
+```typescript
+import { CivicAuthProvider } from "@civic/auth-web3/react";
+
+export function TitleBar() {
+  const { signIn, signOut } = useUser();
+  return (
+    <div className="flex justify-between items-center">
+      <h1>My App</h1>
+      {!user && <button onClick={signIn} className="sign-in">Sign into My App</button>}
+      {user && <button onClick={signOut} className="sign-out">Sign out of My App</button>}
+    </div>
+  );
+};
+```
+
 ### Getting User Information on the Frontend
 
 Use the Civic Auth SDK to retrieve user information on the frontend.
