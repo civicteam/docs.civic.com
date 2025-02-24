@@ -61,7 +61,7 @@ import { UserButton, CivicAuthProvider } from "@civic/auth/react";
 
 export function TitleBar() {
   return (
-    <div className="flex justify-between items-center">
+    <div>
       <h1>My App</h1>
       <UserButton />
     </div>
@@ -77,7 +77,7 @@ import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
 
 export function TitleBar() {
   return (
-    <div className="flex justify-between items-center">
+    <div>
       <h1>My App</h1>
       <UserButton />
     </div>
@@ -95,6 +95,32 @@ This component is context-dependent. If the user is logged in, it will show thei
 #### Customizing the User Button
 You can customize the styling of the user button by adding either a `className` or `style` property to the UserButton component when declaring it e.g.
 Using a className:
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="CustomUserButtonClassName.ts" %}
+```css
+.my-button-container .login-button {
+  color: red;
+  background-color: blue;
+  border: 3px solid #6b7280;
+}
+```
+```typescript
+import { UserButton, CivicAuthProvider } from "@civic/auth/react";
+
+export function TitleBar() {
+  return (
+    <div>
+      <div className="my-button-container">
+        <UserButton className="login-button" />
+      </div>
+    </div>
+  );
+};
+```
+{% endcode %}
+{% endtab %}
+{% tab title="Auth + Web3" %}
 {% code title="CustomUserButtonClassName.ts" %}
 ```css
 .my-button-container .login-button {
@@ -108,36 +134,85 @@ import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
 
 export function TitleBar() {
   return (
-    <div className="flex justify-between items-center">
-      <h1>My App</h1>
-      <div className="my-button-container">
-        <UserButton className="login-button" />
-      </div>
+    <div className="my-button-container">
+      <UserButton className="login-button" />
     </div>
   );
 };
 ```
-Note the use of a _specific_ class name declaration in the .css file. This is necessary to ensure that the styles in the imported css className take precedence over internal styles without the use of the discouraged `!important` directive.
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+Note the use of a _specific_ class name declaration in the .css file. This is necessary to ensure that the styles in the imported css className take precedence over internal styles without the use of the discouraged `!important` directive i.e. using just the classname in App.css *would not work*:
+```typescript
+/* this wouldn't override the Civic UserButton styles */
+.login-button {
+  color: red;
+  background-color: blue;
+  border: 3px solid #6b7280;
+}
+```
 
 Using styles:
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="CustomUserButtonStyles.ts" %}
+```typescript
+import { UserButton, CivicAuthProvider } from "@civic/auth/react";
+
+export function TitleBar() {
+  return (
+    <div>
+      <UserButton style={{ minWidth: "20rem" }} />
+    </div>
+  );
+};
+```
+{% endcode %}
+{% endtab %}
+{% tab title="Auth + Web3" %}
 {% code title="CustomUserButtonStyles.ts" %}
 ```typescript
 import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
 
 export function TitleBar() {
   return (
-    <div className="flex justify-between items-center">
-      <h1>My App</h1>
+    <div>
       <UserButton style={{ minWidth: "20rem" }} />
     </div>
   );
 };
 ```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 You can also provide values in both `style` and `className` props, where the value in `style` will always take precedence over the same CSS-defined style.
 
 #### Creating your own Login and Logout buttons
 You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to create your own buttons for user log in and log out
+
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="RollYourOwnLogin.ts" %}
+```typescript
+import { CivicAuthProvider } from "@civic/auth/react";
+
+export function TitleBar() {
+  const { signIn, signOut } = useUser();
+  return (
+    <div className="flex justify-between items-center">
+      <h1>My App</h1>
+      {!user && <button onClick={signIn} className="sign-in">Sign into My App</button>}
+      {user && <button onClick={signOut} className="sign-out">Sign out of My App</button>}
+    </div>
+  );
+};
+```
+{% endcode %}
+{% endtab %}
+{% tab title="Auth + Web3" %}
 {% code title="RollYourOwnLogin.ts" %}
 ```typescript
 import { CivicAuthProvider } from "@civic/auth-web3/react";
@@ -153,6 +228,9 @@ export function TitleBar() {
   );
 };
 ```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
 
 ### Getting User Information on the Frontend
 
