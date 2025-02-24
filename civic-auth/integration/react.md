@@ -117,7 +117,7 @@ export function TitleBar() {
   );
 };
 ```
-Note the use of a _specific_ class name declaration in the .css file. This is necessary to ensure that the styles in the imported css className take precedence over internal styles without the user of the discouraged `!important` directive.
+Note the use of a _specific_ class name declaration in the .css file. This is necessary to ensure that the styles in the imported css className take precedence over internal styles without the use of the discouraged `!important` directive.
 
 Using styles:
 {% code title="CustomUserButtonStyles.ts" %}
