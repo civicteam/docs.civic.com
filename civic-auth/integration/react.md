@@ -134,7 +134,7 @@ export function TitleBar() {
 };
 ```
 
-You can also use provide values in both `style` and `className` props, where the value in `style` will always take precedence over the same CSS-defined style.
+You can also provide values in both `style` and `className` props, where the value in `style` will always take precedence over the same CSS-defined style.
 
 #### Creating your own Login and Logout buttons
 You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to create your own buttons for user log in and log out
