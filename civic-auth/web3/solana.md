@@ -108,7 +108,6 @@ export const Providers: FC = () => {
                 <WalletModalProvider>
                     <CivicAuthProvider clientId="YOUR CLIENT ID">
                         <WalletMultiButton />
-                        <WalletDisconnectButton />
                         { /* Your app's components go here */ }
                     </CivicAuthProvider>
                 </WalletModalProvider>
@@ -129,8 +128,7 @@ See below for a full minimal example of a Solana Adapter app using Civic Auth fo
 ```tsx
 import { ConnectionProvider, WalletProvider, useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletModalProvider} from "@solana/wallet-adapter-react-ui";
-import { embeddedWallet, userHasWallet } from "@civic/auth-web3";
-import { CivicAuthProvider, UserButton, useUser } from "@civic/auth-web3/react";
+import { CivicAuthProvider } from "@civic/auth-web3/react";
 
 // Wrap the content with the necessary providers to give access to hooks: solana wallet adapter & civic auth provider
 const App = () => {
@@ -141,7 +139,6 @@ const App = () => {
                 <WalletModalProvider>
                     <CivicAuthProvider clientId="YOUR CLIENT ID">
                       <WalletMultiButton />
-                      <WalletDisconnectButton />
                       <AppContent/>
                     </CivicAuthProvider>
                 </WalletModalProvider>
@@ -150,40 +147,34 @@ const App = () => {
     );
 };
 
-// A simple hook to get the wallet SOL balance
+// A simple hook to get the wallet's balance in lamports
 const useBalance = (): number | null => {
     const [balance, setBalance] = useState<number | null>(null);
     // The Solana Wallet Adapter hooks
-    const connection = useConnection();
+    const { connection } = useConnection();
     const { publicKey } = useWallet();
+    
+    if (!publicKey) return null;
+    
     connection.getBalance(publicKey).then(setBalance);
     return balance;
 };
 
 // Separate component for the app content that needs access to hooks
 const AppContent = () => {
-  // The civic user hook
-  const userContext = useUser();
   // Get the Solana wallet balance
   const balance = useBalance();
+  // Get the Solana address
+  const { publicKey } = useWallet();
 
   return (
     <>
-      <UserButton />
-      {userContext.user && 
+      {publicKey && (
         <div>
-          {userHasWallet(userContext) && 
-            <>
-              <p>Wallet address: {userContext.sol.wallet}</p>
-              <p>Balance: {
-                balance
-                  ? `${balance / 1e9} SOL`
-                  : "Loading..."
-              }</p>
-            </>
-          }
+          <p>Wallet address: {publicKey.toString()}</p>
+          <p>Balance: {balance ? `${balance / 1e9} SOL` : "Loading..."}</p>
         </div>
-      }
+      )}
     </>
   );
 };
