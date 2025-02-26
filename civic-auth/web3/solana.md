@@ -148,16 +148,17 @@ const App = () => {
 };
 
 // A simple hook to get the wallet's balance in lamports
-const useBalance = (): number | null => {
-    const [balance, setBalance] = useState<number | null>(null);
-    // The Solana Wallet Adapter hooks
-    const { connection } = useConnection();
-    const { publicKey } = useWallet();
-    
-    if (!publicKey) return null;
-    
+const useBalance = () => {
+  const [balance, setBalance] = useState<number>();
+  // The Solana Wallet Adapter hooks
+  const { connection } = useConnection();
+  const { publicKey } = useWallet();
+
+  if (publicKey) {
     connection.getBalance(publicKey).then(setBalance);
-    return balance;
+  }
+
+  return balance;
 };
 
 // Separate component for the app content that needs access to hooks
