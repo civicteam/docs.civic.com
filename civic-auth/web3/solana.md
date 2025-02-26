@@ -106,9 +106,11 @@ export const Providers: FC = () => {
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={[]} autoConnect>
                 <WalletModalProvider>
-                    <WalletMultiButton />
-                    <WalletDisconnectButton />
-                    { /* Your app's components go here */ }
+                    <CivicAuthProvider clientId="YOUR CLIENT ID">
+                        <WalletMultiButton />
+                        <WalletDisconnectButton />
+                        { /* Your app's components go here */ }
+                    </CivicAuthProvider>
                 </WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
@@ -116,9 +118,13 @@ export const Providers: FC = () => {
 };
 ```
 
+{% hint style="info" %}
+The above shows a minimal React example. Follow the integration [steps](broken-reference) to set up the CivicAuthProvider according to your framework.
+{% endhint %}
+
 ### A Full Example
 
-See below for a full minimal example of a Solana Adapter app using Civic Auth for an embedded wallet. This is based on \[this GitHub repository]\(https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/Solana Adapter) that contains a sample implementation.
+See below for a full minimal example of a Solana Adapter app using Civic Auth for an embedded wallet.&#x20;
 
 ```tsx
 import { ConnectionProvider, WalletProvider, useWallet, useConnection } from "@solana/wallet-adapter-react";
@@ -133,9 +139,11 @@ const App = () => {
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={[]} autoConnect>
                 <WalletModalProvider>
-                    <WalletMultiButton />
-                    <WalletDisconnectButton />
-                    <AppContent/>
+                    <CivicAuthProvider clientId="YOUR CLIENT ID">
+                      <WalletMultiButton />
+                      <WalletDisconnectButton />
+                      <AppContent/>
+                    </CivicAuthProvider>
                 </WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
