@@ -14,8 +14,13 @@
 * [FAQs](integration/faqs.md)
 * [Error Codes](integration/error-codes.md)
 
+***
+
+* [Auth Pricing](auth-pricing.md)
+
 ## Web3
 
 * [Embedded Wallets](web3/embedded-wallets.md)
+* [Auth + Embedded Wallets Pricing](web3/auth-+-embedded-wallets-pricing.md)
 * [Ethereum / EVM](web3/ethereum-evm.md)
 * [Solana](web3/solana.md)
