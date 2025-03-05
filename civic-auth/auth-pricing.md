@@ -14,7 +14,7 @@ You only pay for active users that add value to your application, and that's aft
 If you are a Web3 builder, see the [Web3 Pricing](web3/auth-+-embedded-wallets-pricing.md) section for Auth with embedded wallets.
 {% endhint %}
 
-<table><thead><tr><th width="113">Plan</th><th>Free</th><th>Build</th></tr></thead><tbody><tr><td><strong>Cost</strong></td><td>$0</td><td>$25 per month</td></tr><tr><td><strong>Terms</strong></td><td>15,000 Monthly Active Users (MAU)</td><td>$0.025 per MAU (first 15,000 are free!)</td></tr></tbody></table>
+<table><thead><tr><th width="113">Plan</th><th>Free</th><th>Build</th></tr></thead><tbody><tr><td><strong>Cost</strong></td><td>$0</td><td>$25 per month</td></tr><tr><td><strong>Terms</strong></td><td>15,000 Monthly Active Users (MAU)</td><td>$0.025 per additional MAU (first 15,000 are free!)</td></tr></tbody></table>
 
 * 5 SSO Options: Google, Discord, Facebook, X, and Github
 * Customizable Login UI: Drag & drop customization for seamless branding
