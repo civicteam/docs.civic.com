@@ -10,7 +10,7 @@ Civic Auth offers a simple, flexible, and fast way to integrate authentication i
 
 **Adaptable onboarding.** Auth is a familiar sign-in experience for all users. Supports existing wallets or integrated embedded wallets.
 
-**Embedded wallets.** Automatically create [Web3 wallets](../web3/what-are-embedded-wallets.md) for your users.
+**Embedded wallets.** Automatically create [Web3 wallets](web3/embedded-wallets.md) for your users.
 
 **Multichain support.** Supported on Base, Binance Smart Chain (BSC), Polygon, Arbitrum, Ethereum, and other EVM-compatible chains. _Solana coming soon._
 
