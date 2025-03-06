@@ -48,7 +48,7 @@ bun add @civic/auth
 
 ## Web3 Wallets
 
-If you plan to offer your users [Web3 wallets](../web3/what-are-embedded-wallets.md), you can use the Civic Auth Web3 SDK.
+If you plan to offer your users [Web3 wallets](./#web3-wallets), you can use the Civic Auth Web3 SDK.
 
 This SDK extends the functionality of the base Civic Auth SDK to add Web3 features.
 
