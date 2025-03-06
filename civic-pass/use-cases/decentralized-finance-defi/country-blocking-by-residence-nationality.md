@@ -33,7 +33,7 @@ Civic Pass, specifically the Civic ID Verification Pass, can effectively be used
 
 ### &#x20;Get In Touch
 
-Country blocking based on residence or nationality can help your DeFi navigate the regulatory maze while keeping user privacy and decentralization. Civic Pass has the solution for you.[ Get in touch](https://share.hsforms.com/1NvBk0zfyR3aWcMosBxJETQbzn0a) to learn more.
+Country blocking based on residence or nationality can help your DeFi navigate the regulatory maze while keeping user privacy and decentralization. Civic Pass has the solution for you. [Get in touch](https://civickey.typeform.com/req-custom) to learn more.
 
 ### _Legal Disclaimer_
 
