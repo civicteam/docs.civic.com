@@ -12,7 +12,7 @@ Civic Auth offers a simple, flexible, and fast way to integrate authentication i
 
 **Embedded wallets.** Automatically create [Web3 wallets](web3/embedded-wallets.md) for your users.
 
-**Multichain support.** Supported on Base, Binance Smart Chain (BSC), Polygon, Arbitrum, Ethereum, and other EVM-compatible chains. _Solana coming soon._
+**Multichain support.** Supported on Solana, as well as Base, Binance Smart Chain (BSC), Polygon, Arbitrum, Ethereum, and other EVM-compatible chains.&#x20;
 
 ### Quick Start
 

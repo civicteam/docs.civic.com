@@ -110,11 +110,18 @@ Using the Civic Auth middleware ensures that only logged-in users have access to
 ```typescript
 import { authMiddleware } from "@civic/auth/nextjs/middleware"
 
-export default authMiddleware()
+export default authMiddleware();
 
 export const config = {
   // include the paths you wish to secure here
-  matcher: [ "/api/:path*", "/admin/:path*"  ] 
+  matcher: [
+    /*
+     * Match all request paths except those starting with:
+     * - _next (static files)
+     * - favicon.ico, sitemap.xml, robots.txt
+     */
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt).*)',
+  ],
 }
 ```
 {% endcode %}
