@@ -82,7 +82,7 @@ import { Chain, http } from "viem";
 import { createConfig, WagmiProvider } from "wagmi";
 
 const wagmiConfig = createConfig({
-  chains: supportedChains,
+  chains: [mainnet],
   transports: {
       // add your supported chains here
       [mainnet.id]: http()
