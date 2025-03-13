@@ -38,6 +38,8 @@ A video selfie to determine 1-user-1-wallet. [**Try it out ->**](https://getpass
 
 
 
+***
+
 ## **Network Keys That Require a Contract**&#x20;
 
 Our team will be in touch to learn more about your business needs. See our [Pricing](../resources/pricing.md) page for more information on costs.
@@ -53,6 +55,10 @@ Verifies real-world identity using government-issued ID documents. [**Try it out
 Need additional countries, on-chain checks, not yet supported chains, or other verifications?
 
 [**Get in touch ->**](https://civickey.typeform.com/req-custom)
+
+
+
+***
 
 ## What are Network Keys?
 

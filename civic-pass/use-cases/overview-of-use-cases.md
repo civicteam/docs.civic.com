@@ -4,6 +4,14 @@ Civic Pass is designed to be highly composable, so builders can add identity to 
 
 We want to help guide those integrating identity in their apps and share some of the best practices coming from our years of experience in the space with over 500 customers and implementations to date, and millions of verifications processed. Take a look at the ones below and let us know which one fits your architecture.
 
+## **Agentic AI**
+
+Ensure that your AI agents operate securely, transparently, and within Web3 standards.
+
+{% content-ref url="agentic-ai.md" %}
+[agentic-ai.md](agentic-ai.md)
+{% endcontent-ref %}
+
 ## **Airdrops**
 
 Prevent bots, Sybil attackers, and farmers from unfairly accumulating tokens during a token distribution or rewards event.

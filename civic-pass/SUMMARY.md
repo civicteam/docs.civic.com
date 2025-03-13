@@ -46,6 +46,7 @@
 ## USE CASES
 
 * [💡 Overview of Use Cases](use-cases/overview-of-use-cases.md)
+* [🤖 Agentic AI](use-cases/agentic-ai.md)
 * [🎁 Airdrops](use-cases/airdrops.md)
 * [🌐 Communities and DAOs](use-cases/communities-and-daos/README.md)
   * [Event Access](use-cases/communities-and-daos/event-access.md)
