@@ -84,7 +84,6 @@ import { createConfig, WagmiProvider } from "wagmi";
 const wagmiConfig = createConfig({
   chains: [mainnet],
   transports: {
-      // add your supported chains here
       [mainnet.id]: http()
   },
   connectors: [
