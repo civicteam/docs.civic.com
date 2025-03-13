@@ -232,7 +232,81 @@ Make sure to create the [Civic Auth API route](next.js.md#id-2.-create-the-civic
 
 ### Getting User Information on the Frontend
 
-[Next.JS client components](https://nextjs.org/docs/app/building-your-application/rendering/client-components) can use the Civic Auth React tools to obtain user information as well as display convenient login, and logout buttons. See the [React Usage page](react.md) for details.
+The Next.js integration can use all the components described in the [React integration page](react.md), such as the `UserButton` , for showing a Sign-In button and displaying the username:
+
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="TitleBar.ts" %}
+```typescript
+import { UserButton, CivicAuthProvider } from "@civic/auth/react";
+
+export function TitleBar() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <UserButton />
+    </div>
+  );
+};
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Auth + Web3" %}
+{% code title="TitleBar.ts" %}
+```typescript
+import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
+
+export function TitleBar() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <UserButton />
+    </div>
+  );
+};
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+or the useUser hook, for retrieving information about the user in code:
+
+{% tabs %}
+{% tab title="Auth" %}
+{% code title="MyComponent.ts" %}
+```typescript
+import { useUser } from "@civic/auth/react";
+
+export function MyComponent() {
+  const { user } = useUser();
+  
+  if (!user) return <div>User not logged in</div>
+  
+  return <div>Hello { user.name }!</div>
+}
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Auth + Web3" %}
+{% code title="MyComponent.ts" %}
+```typescript
+import { useUser } from "@civic/auth-web3/react";
+
+export function MyComponent() {
+  const { user } = useUser();
+  
+  if (!user) return <div>User not logged in</div>
+  
+  return <div>Hello { user.name }!</div>
+}
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+See the [React Usage page](react.md) for more details.
 
 ### Getting User Information on the Backend
 
