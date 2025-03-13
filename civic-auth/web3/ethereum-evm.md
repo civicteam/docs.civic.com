@@ -93,19 +93,50 @@ const wagmiConfig = createConfig({
 });
 ```
 
-#### Call `connect`
+#### 2. Connect the wallet
 
-Initiate the connection to the embedded wallet using Wagmi’s `connect` method.
+#### Autoconnect
+
+If you want to automatically connect the civic wallet as soon as the user has logged in, you can use the `useAutoConnect()` hook:
+
+```typescript
+import { useAutoConnect } from "@civic/auth-web3/wagmi";
+
+useAutoConnect();
+```
+
+This hook also creates the wallet, if it is a new user.
+
+#### Manual
+
+If you want a little more control, first create the wallet,
+
+```typescript
+import { userHasWallet } from "@civic/auth-web3";
+import { embeddedWallet } from "@civic/auth-web3/wagmi";
+import { CivicAuthProvider, UserButton, useUser } from "@civic/auth-web3/react";
+
+// A function that creates the wallet if the user doesn't have one already
+const createWallet = () => {
+  if (userContext.user && !userHasWallet(userContext)) {
+    // Once the wallet is created, we can connect to it
+    return userContext.createWallet().then(connectWallet)
+  }
+}
+```
+
+then initiate the connection to the embedded wallet using Wagmi’s `connect` method.
 
 ```javascript
 const { connectors, connect } = useConnect();
 
+const connectWallet = () => connect({
 // connect to the "civic" connector
-const connector = connectors[0];
-connect(connector);
+  connector: connectors[0],
+});
 ```
 
-#### Use Wagmi Hooks
+#### 3. Use Wagmi Hooks
 
 Once connected, you can use Wagmi hooks to interact with the embedded wallet. Common hooks include:
 
@@ -157,26 +188,13 @@ const App = () => {
 
 // Separate component for the app content that needs access to hooks
 const AppContent = () => {
-  // The civic user hook
+  // Add the civic hooks
   const userContext = useUser();
+  useAutoConnect();
 
   // Add the wagmi hooks
-  const { connect, connectors } = useConnect();
   const { isConnected, address } = useAccount();
   const balance = useBalance({ address });
-
-  // A function to connect to an existing civic embedded wallet
-  const connectExistingWallet = () => connect({
-    connector: connectors[0],
-  });
-
-  // A function that creates the wallet if the user doesn't have one already
-  const createWallet = () => {
-    if (userContext.user && !userHasWallet(userContext)) {
-      // Once the wallet is created, we can connect it straight away
-      return userContext.createWallet().then(connectExistingWallet)
-    }
-  }
 
   return (
     <>
