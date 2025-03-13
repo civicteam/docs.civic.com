@@ -1,13 +1,9 @@
 # Solana
 
-{% hint style="warning" %}
-**Coming Soon**
+{% hint style="info" %}
+**Early Access**
 
-The Civic Auth Solana implementation is available only for our early-access customers at present.
-
-Furthermore, the below API is subject to change as we continue to develop and refine our solution.
-
-If you’re interested in using Civic Auth Web3 on Solana, please [contact us](https://discord.com/invite/MWmhXauJw8/?referrer=home-discord) and we'll keep you informed.
+The Civic Auth Solana API is subject to change as we continue to develop and refine our solution.
 {% endhint %}
 
 ## Creating a Wallet
