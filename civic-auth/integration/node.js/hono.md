@@ -51,7 +51,7 @@ Civic Auth uses cookies for storing the login state by default
 ```typescript
 import { Context } from 'hono';
 import { getCookie, setCookie } from 'hono/cookie';
-import { CookieStorage } from '@civic/auth/server';
+import { CookieStorage, CivicAuth } from '@civic/auth/server';
 
 class HonoCookieStorage extends CookieStorage {
   constructor(private c: Context) {
@@ -67,10 +67,11 @@ class HonoCookieStorage extends CookieStorage {
   }
 }
 
-// Middleware to attach CookieStorage to each request
+// Middleware to attach CookieStorage and civicAuth API to each request
 app.use('*', async (c, next) => {
   const storage = new HonoCookieStorage(c)
   c.set('storage', storage);
+  c.set('civicAuth', new CivicAuth(storage, config));
   return next();
 });
 ```
@@ -83,7 +84,7 @@ This endpoint will handle login requests,  build the Civic login URL and redirec
 import { buildLoginUrl } from '@civic/auth/server';
 
 app.get('/', async (c) => {
-  const url = await buildLoginUrl(config, c.get('storage'));
+  const url = await c.get('civicAuth').buildLoginUrl();
 
   return c.redirect(url.toString());
 });
@@ -100,7 +101,7 @@ app.get('/auth/callback', async (c) => {
   const code = c.req.query('code') as string
   const state = c.req.query('state') as string
 
-  await resolveOAuthAccessCode(code, state, c.get('storage'), config);
+  await c.get('civicAuth').resolveOAuthAccessCode(code, state);
   return c.redirect('/admin/hello');
 });
 ```
@@ -113,7 +114,7 @@ This endpoint will handle logout requests, build the Civic logout URL and redire
 import { buildLogoutRedirectUrl } from '@civic/auth/server';
 
 app.get('/auth/logout', async (req: Request, res: Response) => {
-  const url = await buildLogoutRedirectUrl(config, req.storage);
+  const url = await c.get('civicAuth').buildLogoutRedirectUrl();
   res.redirect(url.toString());
 });
 ```
@@ -127,7 +128,7 @@ import { isLoggedIn } from '@civic/auth/server';
 
 // Apply authentication middleware to any routes that need it
 app.use('/admin/*', async (c, next) => {
-  if (!isLoggedIn(c.get('storage'))) return c.text('Unauthorized', 401);
+  if (!c.get('civicAuth').isLoggedIn()) return c.text('Unauthorized', 401);
 
   return next();
 });
@@ -141,7 +142,7 @@ If needed, get the logged-in user information.
 import { user } from '@civic/auth/server';
 
 app.get('/admin/hello', async (c) => {
-  const user = await getUser(c.get('storage'));
+  const user = await c.get('civicAuth').getUser();
   return c.text(`Hello, ${user?.name}!`);
 });
 ```

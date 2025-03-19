@@ -51,7 +51,7 @@ Civic Auth uses cookies for storing the login state by default
 ```typescript
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
 import fastifyCookie from '@fastify/cookie';
-import { CookieStorage } from '@civic/auth/server';
+import { CookieStorage, CivicAuth } from '@civic/auth/server';
 
 const fastify = Fastify().register(fastifyCookie, {
   secret: "my-secret", // should be changed in production
@@ -72,10 +72,13 @@ class FastifyCookieStorage extends CookieStorage {
   }
 }
 
-// attach an instance of the cookie storage to each request
+// attach an instance of the cookie storage and civicApi to each request
 fastify.decorateRequest('storage', null);
+fastify.decorateRequest('civicAuth', null);
+
 fastify.addHook('preHandler', async (request, reply) => {
   request.storage = new FastifyCookieStorage(request, reply);
+  request.civicAuth = new CivicAuth(request.storage, config);
 });
 ```
 
@@ -87,7 +90,7 @@ This endpoint will handle login requests,  build the Civic login URL and redirec
 import { buildLoginUrl } from '@civic/auth/server';
 
 fastify.get('/', async (request, reply) => {
-  const url = await buildLoginUrl(config, request.storage);
+  const url = await request.civicAuth.buildLoginUrl();
 
   return reply.redirect(url.toString());
 });
@@ -103,7 +106,7 @@ import { resolveOAuthAccessCode } from '@civic/auth/server';
 fastify.get<{
   Querystring: { code: string, state: string }
 }>('/auth/callback', async (request, reply) => {
-  await resolveOAuthAccessCode(request.query.code, request.query.state, request.storage, config);
+  await request.civicAuth.resolveOAuthAccessCode(request.query.code, request.query.state);
   reply.redirect('/admin/hello');
 });
 ```
@@ -116,7 +119,7 @@ This endpoint will handle logout requests, build the Civic logout URL and redire
 import { buildLogoutRedirectUrl } from '@civic/auth/server';
 
 app.get('/auth/logout', async (req: Request, res: Response) => {
-  const url = await buildLogoutRedirectUrl(config, req.storage);
+  const url = await request.civicAuth.buildLogoutRedirectUrl();
   res.redirect(url.toString());
 });
 ```
@@ -132,7 +135,7 @@ fastify.addHook('preHandler', async (request, reply) => {
   // apply to whichever routes need it
   if (!request.url.includes('/admin')) return;
 
-  const loggedIn = await isLoggedIn(request.storage);
+  const loggedIn = await request.civicAuth.isLoggedIn();
   if (!loggedIn) return reply.status(401).send({ error: 'Unauthorized' });
 });
 ```
@@ -145,7 +148,7 @@ If needed, get the logged-in user information.
 import { user } from '@civic/auth/server';
 
 fastify.get('/admin/hello', async (request, reply) => {
-  const user = await getUser(request.storage);
+  const user = await request.civicAuth.getUser();
   return `Hello, ${user?.name}!`;
 });
 ```
