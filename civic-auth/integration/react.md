@@ -29,6 +29,7 @@ function App({ children }) {
 ```
 {% endcode %}
 {% endtab %}
+
 {% tab title="Auth + Web3" %}
 {% code title="App.ts" %}
 ```typescript
@@ -70,6 +71,7 @@ export function TitleBar() {
 ```
 {% endcode %}
 {% endtab %}
+
 {% tab title="Auth + Web3" %}
 {% code title="TitleBar.ts" %}
 ```typescript
@@ -93,8 +95,9 @@ This component is context-dependent. If the user is logged in, it will show thei
 <figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption><p>The user button</p></figcaption></figure>
 
 #### Customizing the User Button
-You can customize the styling of the user button by adding either a `className` or `style` property to the UserButton component when declaring it e.g.
-Using a className:
+
+You can customize the styling of the user button by adding either a `className` or `style` property to the UserButton component when declaring it e.g. Using a className:
+
 {% tabs %}
 {% tab title="Auth" %}
 {% code title="CustomUserButtonClassName.ts" %}
@@ -105,21 +108,9 @@ Using a className:
   border: 3px solid #6b7280;
 }
 ```
-```typescript
-import { UserButton, CivicAuthProvider } from "@civic/auth/react";
-
-export function TitleBar() {
-  return (
-    <div>
-      <div className="my-button-container">
-        <UserButton className="login-button" />
-      </div>
-    </div>
-  );
-};
-```
 {% endcode %}
 {% endtab %}
+
 {% tab title="Auth + Web3" %}
 {% code title="CustomUserButtonClassName.ts" %}
 ```css
@@ -129,22 +120,12 @@ export function TitleBar() {
   border: 3px solid #6b7280;
 }
 ```
-```typescript
-import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
-
-export function TitleBar() {
-  return (
-    <div className="my-button-container">
-      <UserButton className="login-button" />
-    </div>
-  );
-};
-```
 {% endcode %}
 {% endtab %}
 {% endtabs %}
 
-Note the use of a _specific_ class name declaration in the .css file. This is necessary to ensure that the styles in the imported css className take precedence over internal styles without the use of the discouraged `!important` directive i.e. using just the classname in App.css *would not work*:
+Note the use of a _specific_ class name declaration in the .css file. This is necessary to ensure that the styles in the imported css className take precedence over internal styles without the use of the discouraged `!important` directive i.e. using just the classname in App.css _would not work_:
+
 ```typescript
 /* this wouldn't override the Civic UserButton styles */
 .login-button {
@@ -155,6 +136,7 @@ Note the use of a _specific_ class name declaration in the .css file. This is ne
 ```
 
 Using styles:
+
 {% tabs %}
 {% tab title="Auth" %}
 {% code title="CustomUserButtonStyles.ts" %}
@@ -171,6 +153,7 @@ export function TitleBar() {
 ```
 {% endcode %}
 {% endtab %}
+
 {% tab title="Auth + Web3" %}
 {% code title="CustomUserButtonStyles.ts" %}
 ```typescript
@@ -191,6 +174,7 @@ export function TitleBar() {
 You can also provide values in both `style` and `className` props, where the value in `style` will always take precedence over the same CSS-defined style.
 
 #### Creating your own Login and Logout buttons
+
 You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to create your own buttons for user log in and log out
 
 {% tabs %}
@@ -212,6 +196,7 @@ export function TitleBar() {
 ```
 {% endcode %}
 {% endtab %}
+
 {% tab title="Auth + Web3" %}
 {% code title="RollYourOwnLogin.ts" %}
 ```typescript
@@ -252,6 +237,7 @@ export function MyComponent() {
 ```
 {% endcode %}
 {% endtab %}
+
 {% tab title="Auth + Web3" %}
 {% code title="MyComponent.ts" %}
 ```typescript
@@ -288,7 +274,7 @@ The integration provides additional run-time settings and hooks that you can use
 
 See below for the list of all configuration options
 
-<table><thead><tr><th width="115">Field</th><th width="70">Required</th><th width="96">Default</th><th width="251">Example</th><th>Description</th></tr></thead><tbody><tr><td>clientId</td><td>Yes</td><td>-</td><td><code>2cc5633d-2c92-48da-86aa-449634f274b9</code></td><td>The key obtained on signup to <a href="https://auth.civic.com">auth.civic.com</a></td></tr><tr><td>nonce</td><td>No</td><td>-</td><td>1234</td><td>A single-use ID used during login, binding a login token with a given client. Needed in advanced authentication processes only</td></tr><tr><td>onSignIn</td><td>No</td><td>-</td><td><p></p><pre class="language-typescript"><code class="lang-typescript">(error?: Error) => {
+<table><thead><tr><th width="115">Field</th><th width="70">Required</th><th width="96">Default</th><th width="251">Example</th><th>Description</th></tr></thead><tbody><tr><td>clientId</td><td>Yes</td><td>-</td><td><code>2cc5633d-2c92-48da-86aa-449634f274b9</code></td><td>The key obtained on signup to <a href="https://auth.civic.com">auth.civic.com</a></td></tr><tr><td>nonce</td><td>No</td><td>-</td><td>1234</td><td>A single-use ID used during login, binding a login token with a given client. Needed in advanced authentication processes only</td></tr><tr><td>onSignIn</td><td>No</td><td>-</td><td><pre class="language-typescript"><code class="lang-typescript">(error?: Error) => {
   if (error) { 
     // handle error
   } else {
@@ -298,11 +284,11 @@ See below for the list of all configuration options
 </code></pre></td><td>A hook that executes after a sign-in attempt, whether successful or not.</td></tr><tr><td>onSignOut</td><td>No</td><td>-</td><td><pre class="language-typescript"><code class="lang-typescript">() => {
   // handle signout
 }
-</code></pre></td><td>A hook that executes after a user logs out.</td></tr><tr><td>redirectUrl</td><td>No</td><td>currentURL</td><td>/authenticating</td><td>An override for the page that OAuth will redirect to to perform token-exchange. By default Civic will redirect to the current URL and Authentication will be finished by the Civic provider automatically. Only use if you'd like to have some custom display or logic during OAuth token-exchange. The redirect page must have the CivicAuthProvider running in order to finish authentication.</td></tr><tr><td><p></p><p>iframeMode</p></td><td>No</td><td>modal</td><td>iframeMode={"embedded"}</td><td>Set to <code>embedded</code> if you want to embed the login iframe in your app rather than opening the iframe in a modal. See <a href="react.md#embedded-login-iframe">Embedded Login Iframe section</a> below.</td></tr><tr><td>displayMode</td><td>No</td><td>iFrame</td><td>"iframe" | "redirect" | "new_tab"</td><td><p><strong>"iframe"</strong>: Authentication happens in an embedded window within your current page.<br></p><p><strong>"redirect"</strong>: Full page navigation to the auth server and back to your site after completion.<br></p><p><strong>"new_tab"</strong>: Opens auth flow in a new browser tab, returning to original tab after completion.</p></td></tr></tbody></table>
+</code></pre></td><td>A hook that executes after a user logs out.</td></tr><tr><td>redirectUrl</td><td>No</td><td>currentURL</td><td>/authenticating</td><td>An override for the page that OAuth will redirect to to perform token-exchange. By default Civic will redirect to the current URL and Authentication will be finished by the Civic provider automatically. Only use if you'd like to have some custom display or logic during OAuth token-exchange. The redirect page must have the CivicAuthProvider running in order to finish authentication.</td></tr><tr><td>iframeMode</td><td>No</td><td>modal</td><td>iframeMode={"embedded"}</td><td>Set to <code>embedded</code> if you want to embed the login iframe in your app rather than opening the iframe in a modal. See <a href="react.md#embedded-login-iframe">Embedded Login Iframe section</a> below.</td></tr><tr><td>displayMode</td><td>No</td><td>iFrame</td><td>"iframe" | "redirect" | "new_tab"</td><td><p><strong>"iframe"</strong>: Authentication happens in an embedded window within your current page.<br></p><p><strong>"redirect"</strong>: Full page navigation to the auth server and back to your site after completion.<br></p><p><strong>"new_tab"</strong>: Opens auth flow in a new browser tab, returning to original tab after completion.</p></td></tr></tbody></table>
 
 ### Display Mode
 
-The display mode indicates where the Civic  login UI will be displayed. The following display modes are supported:
+The display mode indicates where the Civic login UI will be displayed. The following display modes are supported:
 
 * `iframe` (default): the UI loads in an iframe that shows in an overlay on top of the existing page content
 * `redirect`: the UI redirects the current URL to a Civic login screen, then redirects back to your site when login is complete
@@ -332,7 +318,9 @@ The full user context object (provided by `useUser`) looks like this:
 ```
 
 #### AuthStatus
+
 The `authStatus` field exposed in the UserContext can be used to update your UI depending on the user's authentication status, i.e. update the UI to show a loader while the user is in the process of authenticating or signing out.
+
 ```typescript
 export enum AuthStatus {
   AUTHENTICATED = "authenticated",
@@ -357,7 +345,7 @@ The `User` object looks like this:
   updated_at?: Date;
 };
 
-type User<T> = BaseUser & T;
+type User = BaseUser &#x26; T;
 </code></pre>
 
 Where you can pass extra user attributes to the object that you know will be present in user claims, e.g.
@@ -378,7 +366,7 @@ Field descriptions:
 Typically developers will not need to interact with the token fields, which are used only for advanced use cases.
 {% endhint %}
 
-<table><thead><tr><th width="185">Field</th><th></th></tr></thead><tbody><tr><td>idToken</td><td>The OIDC id token, used to request identity information about the user</td></tr><tr><td>accessToken</td><td>The OAuth 2.0 access token, allowing a client to make API calls to Civic Auth on behalf of the user.</td></tr><tr><td>refreshToken</td><td>The OAuth 2.0 refresh token, allowing a login session to be extended automatically without requiring user interaction. <br>The Civic Auth SDK handles refresh automatically, so you do not need to do this.</td></tr><tr><td>forwardedTokens</td><td>If the user authenticated using SSO (single-sign-on login) with a federated OAuth provider such as Google, this contains the OIDC and OAuth 2.0 tokens from that provider.<br><br></td></tr></tbody></table>
+<table><thead><tr><th width="185">Field</th><th></th></tr></thead><tbody><tr><td>idToken</td><td>The OIDC id token, used to request identity information about the user</td></tr><tr><td>accessToken</td><td>The OAuth 2.0 access token, allowing a client to make API calls to Civic Auth on behalf of the user.</td></tr><tr><td>refreshToken</td><td>The OAuth 2.0 refresh token, allowing a login session to be extended automatically without requiring user interaction.<br>The Civic Auth SDK handles refresh automatically, so you do not need to do this.</td></tr><tr><td>forwardedTokens</td><td>If the user authenticated using SSO (single-sign-on login) with a federated OAuth provider such as Google, this contains the OIDC and OAuth 2.0 tokens from that provider.<br><br></td></tr></tbody></table>
 
 #### Forwarded Tokens
 
@@ -395,7 +383,7 @@ const googleAccessToken = user.forwardedTokens?.google?.accessToken;
 
 #### Embedded Login Iframe
 
-If you want to have the Login screen open directly on a page without the user having to click on button, you can import the `CivicAuthIframeContainer` component along with the AuthProvider option iframeMode`={"embedded"}`&#x20;
+If you want to have the Login screen open directly on a page without the user having to click on button, you can import the `CivicAuthIframeContainer` component along with the AuthProvider option iframeMode`={"embedded"}`
 
 You just need to ensure that the `CivicAuthIframeContainer` is a child under a `CivicAuthProvider`
 
@@ -426,6 +414,7 @@ const App = () => {
 ```
 {% endcode %}
 {% endtab %}
+
 {% tab title="Auth + Web3" %}
 {% code title="App.ts" %}
 ```typescript
