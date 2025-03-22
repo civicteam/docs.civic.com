@@ -1,8 +1,10 @@
 # 🔏 Civic Auth
 
-🔏 Civic Auth
-
 ### What is Civic Auth?
+
+{% hint style="info" %}
+**Note:** Civic Auth is currently in **beta**. Please expect occasional changes or updates as we continue to refine the experience.
+{% endhint %}
 
 Civic Auth offers a simple, flexible, and fast way to integrate authentication into your applications. Enable familiar sign-in options while offering optional embedded wallets and unlocking blockchain benefits for your users.
 
