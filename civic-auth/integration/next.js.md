@@ -4,6 +4,11 @@
 
 Integrate Civic Auth into your Next.js application using the following steps (a working example is available in our [github examples repo](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/nextjs)):
 
+{% hint style="warning" %}
+**Important**: Make sure your application is using Next.js version ^14.2.25 or ^15.2.3 (or higher).\
+Earlier versions are affected by a security vulnerability ([CVE-2025-29927](https://nextjs.org/blog/cve-2025-29927)) that may allow middleware to be bypassed.
+{% endhint %}
+
 {% hint style="info" %}
 This guide assumes you are using Typescript. Please adjust the snippets as needed to remove the types if you are using plain JS.
 {% endhint %}
