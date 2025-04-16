@@ -13,6 +13,7 @@
 * [Other OIDC / OAuth 2.0-Compliant Environments](integration/other.md)
 * [FAQs](integration/faqs.md)
 * [Error Codes](integration/error-codes.md)
+* [Bringing your App to production](integration/bringing-your-app-to-production.md)
 
 ***
 
