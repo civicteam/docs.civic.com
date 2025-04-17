@@ -8,7 +8,7 @@
 
 Civic Auth offers a simple, flexible, and fast way to integrate authentication into your applications. Enable familiar sign-in options while offering optional embedded wallets and unlocking blockchain benefits for your users.
 
-<figure><img src=".gitbook/assets/SSO labels OFF, Crypto labels ON (1).png" alt="" width="375"><figcaption><p>Civic Auth: User-Facing View</p></figcaption></figure>
+<figure><img src=".gitbook/assets/current.png" alt="" width="360"><figcaption><p>Civic Auth: User-Facing View</p></figcaption></figure>
 
 **Integrated login.** Users sign in using their email, Google account, passkeys, or wallet—no complex setup required.
 
