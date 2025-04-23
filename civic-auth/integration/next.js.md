@@ -138,11 +138,19 @@ export const config = {
 ```typescript
 import { authMiddleware } from "@civic/auth-web3/nextjs/middleware"
 
-export default authMiddleware()
+export default authMiddleware();
 
 export const config = {
   // include the paths you wish to secure here
-  matcher: [ "/api/:path*", "/admin/:path*"  ] 
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - _next directory (Next.js static files)
+     * - favicon.ico, sitemap.xml, robots.txt
+     * - image files
+     */
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
+  ], 
 }
 ```
 {% endcode %}
@@ -160,14 +168,14 @@ If you are already using middleware in your Next.js app, then you can chain them
 import { auth } from "@civic/auth/nextjs"
 import { NextRequest, NextResponse } from "next/server";
 
-const withCivicAuth = auth()
+const withCivicAuth = auth();
 
 const otherMiddleware = (request: NextRequest) => {
-    console.log("my middleware")
-    return NextResponse.next()
+    console.log("my middleware");
+    return NextResponse.next();
 }
 
-export default withCivicAuth(otherMiddleware)
+export default withCivicAuth(otherMiddleware);
 ```
 {% endcode %}
 {% endtab %}
@@ -178,14 +186,14 @@ export default withCivicAuth(otherMiddleware)
 import { auth } from "@civic/auth-web3/nextjs"
 import { NextRequest, NextResponse } from "next/server";
 
-const withCivicAuth = auth()
+const withCivicAuth = auth();
 
 const otherMiddleware = (request: NextRequest) => {
-    console.log("my middleware")
-    return NextResponse.next()
+    console.log("my middleware");
+    return NextResponse.next();
 }
 
-export default withCivicAuth(otherMiddleware)
+export default withCivicAuth(otherMiddleware);
 ```
 {% endcode %}
 {% endtab %}
@@ -243,7 +251,7 @@ The Next.js integration can use all the components described in the [React integ
 {% tab title="Auth" %}
 {% code title="TitleBar.ts" %}
 ```typescript
-import { UserButton, CivicAuthProvider } from "@civic/auth/react";
+import { UserButton } from "@civic/auth/react";
 
 export function TitleBar() {
   return (
@@ -260,7 +268,7 @@ export function TitleBar() {
 {% tab title="Auth + Web3" %}
 {% code title="TitleBar.ts" %}
 ```typescript
-import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
+import { UserButton } from "@civic/auth-web3/react";
 
 export function TitleBar() {
   return (
