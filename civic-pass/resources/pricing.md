@@ -21,19 +21,7 @@ All pricing is in USD unless otherwise stated. This does not include blockchain 
 
 ### What blockchains do you support?&#x20;
 
-* Arbitrum
-* Avalanche
-* Base
-* BNB Smart Chain (BSC) -- Scale tier onl&#x79;_._
-* Ethereum -- Scale tier onl&#x79;_._
-* Fantom
-* Internet Computer (ICP)
-* Optimism
-* Polygon
-* Polygon zkEVM
-* Solana
-* X Layer
-* XDC
+Arbitrum, Avalanche, Base, BNB Smart Chain (BSC), Ethereum, Fantom, Internet Computer (ICP), Optimism, Polygon, Polygon zkEVM, Solana, Sonic, Unichain, XDC, and X Layer.
 
 ### What’s the difference between a Civic vs. Custom pass?
 
