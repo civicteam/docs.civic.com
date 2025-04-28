@@ -2,6 +2,7 @@
 description: >-
   Powerful Authentication for Web3 Builders that Require Embedded Wallets for
   their Users
+hidden: true
 ---
 
 # Auth + Embedded Wallets Pricing

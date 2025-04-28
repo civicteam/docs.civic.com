@@ -1,5 +1,6 @@
 ---
 description: Seamless Authentication with Just a Few Lines of Code
+hidden: true
 ---
 
 # Auth Pricing

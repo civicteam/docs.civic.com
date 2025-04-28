@@ -2,7 +2,7 @@
 description: The steps you need to follow to use your App in a live environment
 ---
 
-# Bringing your App to production
+# Bring Your App to Production
 
 Once you've configured your App using the [Civic Auth Dashboard](https://auth.civic.com/dashboard), here are the steps you need to take to promote your app to production.
 
@@ -30,7 +30,7 @@ Note that you can add localhost domains while testing but it's recommended that 
 
 ### Add payment information
 
-You need to add payment information using our Billing page. Click here for more details on [Auth Pricing](../auth-pricing.md).
+You need to add payment information using our Billing page. Click here for more details on [Auth Pricing](https://www.civic.com/pricing/civic-auth-pricing).
 
 ### Converting or duplicating your app
 
