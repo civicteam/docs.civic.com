@@ -1,11 +1,12 @@
 ---
-description: 'Last Updated: December 2024'
 hidden: true
 ---
 
 # 💰 Pricing
 
-
+{% hint style="info" %}
+This is a legacy pricing page. Visit the [Pricing page on Civic](https://www.civic.com/pricing/pass-pricing) for the most updated information on pricing.
+{% endhint %}
 
 ## Pricing Tiers
 
