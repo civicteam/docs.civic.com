@@ -1,11 +1,12 @@
 ---
-description: >-
-  Powerful Authentication for Web3 Builders that Require Embedded Wallets for
-  their Users
 hidden: true
 ---
 
 # Auth + Embedded Wallets Pricing
+
+{% hint style="info" %}
+This is a legacy pricing page. Visit the [Pricing page on Civic](https://www.civic.com/pricing/auth-pricing) for the most updated information on pricing.
+{% endhint %}
 
 You won't see any surprises when building with Civic Auth.&#x20;
 

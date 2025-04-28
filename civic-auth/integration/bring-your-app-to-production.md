@@ -30,7 +30,7 @@ Note that you can add localhost domains while testing but it's recommended that 
 
 ### Add payment information
 
-You need to add payment information using our Billing page. Click here for more details on [Auth Pricing](https://www.civic.com/pricing/civic-auth-pricing).
+You need to add payment information using our Billing page. Click here for more details on [Auth Pricing](https://www.civic.com/pricing/auth-pricing).
 
 ### Converting or duplicating your app
 
