@@ -27,21 +27,7 @@ To update a user’s Civic Pass:
 
 ### Q: Which blockchains does Civic Pass support?
 
-* Arbitrum
-* Avalanche
-* Base
-* BNB Smart Chain (BSC)
-* Ethereum
-* Fantom
-* Internet Computer (ICP)
-* Optimism
-* Polygon
-* Polygon zkEVM
-* Solana
-* Sonic&#x20;
-* Unichain
-* X Layer
-* XDC
+Arbitrum, Avalanche, Base, BNB Smart Chain (BSC), Ethereum, Fantom, Internet Computer (ICP), Optimism, Polygon, Polygon zkEVM, Solana, Sonic, Unichain, XDC, and X Layer.
 
 ## Using the Dashboard
 

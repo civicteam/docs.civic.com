@@ -16,7 +16,7 @@ layout:
 
 ## Self-Serve Network Keys
 
-This is the fastest way to start integrating Civic Pass. Request network keys for CAPTCHA, Liveness or Uniqueness Passes by filling out the appropriate form below. You will receive an automated email from Civic with a key to get started. See our [Pricing](../resources/pricing.md) page for more information on costs.
+This is the fastest way to start integrating Civic Pass. Request network keys for CAPTCHA, Liveness or Uniqueness Passes by filling out the appropriate form below. You will receive an automated email from Civic with a key to get started. See [Pricing](https://www.civic.com/pricing/civic-pass-pricing) for more information on costs.
 
 ### **CAPTCHA Pass**&#x20;
 
@@ -42,7 +42,7 @@ A video selfie to determine 1-user-1-wallet. [**Try it out ->**](https://getpass
 
 ## **Network Keys That Require a Contract**&#x20;
 
-Our team will be in touch to learn more about your business needs. See our [Pricing](../resources/pricing.md) page for more information on costs.
+Our team will be in touch to learn more about your business needs. See [Pricing](https://www.civic.com/pricing/civic-pass-pricing) for more information on costs.
 
 ### **ID Verification Pass**&#x20;
 

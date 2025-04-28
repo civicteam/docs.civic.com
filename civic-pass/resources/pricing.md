@@ -1,5 +1,6 @@
 ---
 description: 'Last Updated: December 2024'
+hidden: true
 ---
 
 # 💰 Pricing

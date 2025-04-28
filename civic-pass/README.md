@@ -16,7 +16,7 @@ layout:
 
 ## Getting Started
 
-1. **Supported Blockchains:** Arbitrum, Avalanche, Base, BNB Smart Chain (BSC), Ethereum, Fantom, Optimism, Polygon, Polygon zkEVM, Solana, Sonic, Unichain, XDC, X Layer. Other chains can be added [on request](integration-guide/unsupported-evm.md).
+1. **Supported Blockchains:** Arbitrum, Avalanche, Base, BNB Smart Chain (BSC), Ethereum, Fantom, Internet Computer (ICP), Optimism, Polygon, Polygon zkEVM, Solana, Sonic, Unichain, XDC, and X Layer. Other chains can be added [on request](integration-guide/unsupported-evm.md).
 2. **Civic Pass Overview**: The Civic Pass is the easiest way to integrate Civic's verification services. Civic handles the verification, issuance, and lifecycle management of the user's pass, including checks for identity documents, location, and humanness.&#x20;
 3. **See How It Works**: [Get a Civic Pass to see how it works](https://getpass.civic.com/?scope=liveness,uniqueness,captcha). We recommend using testnet/devnet and starting with CAPTCHA Pass or Liveness Pass. You’ll need to have some testnet/devnet funds in your wallet to complete the process.&#x20;
 4. **Integration Guide**: refer to the Integration Guide for your chosen blockchain to get started.
