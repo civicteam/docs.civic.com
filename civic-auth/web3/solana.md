@@ -89,6 +89,20 @@ const balance = await connection.getBalance(publicKey);
 
 The Civic Auth Web3 SDK uses the [Solana Wallet Adapter](https://www.npmjs.com/package/@solana/wallet-adapter-react) to expose the embedded wallet to React frontends. This allows you to use familiar hooks such as `useWallet` and `useConnection` to interact with the wallet.
 
+{% hint style="info" %}
+**Use with Webpack in NextJS**
+
+When using the Solana Wallet Adapter with Webpack (default in NextJS <15.3), add the following flag in your next.config.ts or next.config.mjs file, passed into the createCIvicAuthPlugin function:
+
+```
+createCivicAuthPlugin({
+  clientId: '<your civic auth client ID>',
+  // ensures Civic's Wallet Adapter integration works with Webpack:
+  enableSolanaWalletAdapter: true, 
+});
+```
+{% endhint %}
+
 Make sure to follow the steps described [here](https://solana.com/developers/cookbook/wallets/connect-wallet-react) (React) and [here](https://solana.com/developers/guides/wallets/add-solana-wallet-adapter-to-nextjs) (Next.Js) to get started with the Solana Wallet Adapter.
 
 The Civic Auth Web3 SDK follows the [wallet standard](https://github.com/wallet-standard/wallet-standard?tab=readme-ov-file), meaning that the Solana Wallet Adapter will automatically discover the embedded wallet.
@@ -178,3 +192,4 @@ const AppContent = () => {
 
 export default App;
 ```
+
