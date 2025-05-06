@@ -28,6 +28,7 @@ This is where you give your app the Client ID provided when you sign up at [auth
 {% tabs %}
 {% tab title="Auth" %}
 {% code title="app/root.tsx" %}
+
 ```typescript
 import { createRootAuthLoader } from "@civic/auth/remix";
 
@@ -36,11 +37,13 @@ export const loader = createRootAuthLoader({
   // ... other config options
 });
 ```
+
 {% endcode %}
 {% endtab %}
 
 {% tab title="Auth + Web3" %}
 {% code title="app/root.tsx" %}
+
 ```typescript
 import { createRootAuthLoader } from "@civic/auth-web3/remix";
 
@@ -49,6 +52,7 @@ export const loader = createRootAuthLoader({
   // ... other config options
 });
 ```
+
 {% endcode %}
 {% endtab %}
 {% endtabs %}
@@ -60,6 +64,7 @@ Create a catch-all route to handle authentication flows:
 {% tabs %}
 {% tab title="Auth" %}
 {% code title="app/routes/auth.$.tsx" %}
+
 ```typescript
 import { createRouteHandlers } from "@civic/auth/remix";
 
@@ -70,7 +75,7 @@ const handlers = createRouteHandlers({
 
 export async function loader({ request, params }) {
   const authPath = params["*"];
-  
+
   switch (authPath) {
     case "challenge":
       return handlers.loginLoader({ request });
@@ -85,11 +90,13 @@ export async function loader({ request, params }) {
   }
 }
 ```
+
 {% endcode %}
 {% endtab %}
 
 {% tab title="Auth + Web3" %}
 {% code title="app/routes/auth.$.tsx" %}
+
 ```typescript
 import { createRouteHandlers } from "@civic/auth-web3/remix";
 
@@ -100,7 +107,7 @@ const handlers = createRouteHandlers({
 
 export async function loader({ request, params }) {
   const authPath = params["*"];
-  
+
   switch (authPath) {
     case "challenge":
       return handlers.loginLoader({ request });
@@ -115,6 +122,7 @@ export async function loader({ request, params }) {
   }
 }
 ```
+
 {% endcode %}
 {% endtab %}
 {% endtabs %}
@@ -126,6 +134,7 @@ Use the auth middleware to protect routes that require authentication:
 {% tabs %}
 {% tab title="Auth" %}
 {% code title="app/routes/protected.tsx" %}
+
 ```typescript
 import { createAuthMiddleware } from "@civic/auth/remix";
 
@@ -139,11 +148,13 @@ export default function ProtectedRoute() {
   return <div>Welcome, {user.name}!</div>;
 }
 ```
+
 {% endcode %}
 {% endtab %}
 
 {% tab title="Auth + Web3" %}
 {% code title="app/routes/protected.tsx" %}
+
 ```typescript
 import { createAuthMiddleware } from "@civic/auth-web3/remix";
 
@@ -157,6 +168,7 @@ export default function ProtectedRoute() {
   return <div>Welcome, {user.name}!</div>;
 }
 ```
+
 {% endcode %}
 {% endtab %}
 {% endtabs %}
@@ -170,6 +182,7 @@ Use the `useAuth` hook and `AuthButton` component in your React components:
 {% tabs %}
 {% tab title="Auth" %}
 {% code title="app/components/SomeComponent.tsx" %}
+
 ```typescript
 import { useAuth, AuthButton } from "@civic/auth/remix";
 
@@ -178,21 +191,19 @@ export function SomeComponent() {
 
   return (
     <div>
-      {isLoggedIn ? (
-        <p>Welcome, {user.name}!</p>
-      ) : (
-        <p>Please sign in</p>
-      )}
+      {isLoggedIn ? <p>Welcome, {user.name}!</p> : <p>Please sign in</p>}
       <AuthButton />
     </div>
   );
 }
 ```
+
 {% endcode %}
 {% endtab %}
 
 {% tab title="Auth + Web3" %}
 {% code title="app/components/SomeComponent.tsx" %}
+
 ```typescript
 import { useAuth, AuthButton } from "@civic/auth-web3/remix";
 
@@ -201,16 +212,13 @@ export function SomeComponent() {
 
   return (
     <div>
-      {isLoggedIn ? (
-        <p>Welcome, {user.name}!</p>
-      ) : (
-        <p>Please sign in</p>
-      )}
+      {isLoggedIn ? <p>Welcome, {user.name}!</p> : <p>Please sign in</p>}
       <AuthButton />
     </div>
   );
 }
 ```
+
 {% endcode %}
 {% endtab %}
 {% endtabs %}
@@ -221,35 +229,39 @@ Retrieve user information in your route loaders using the `getUser` function:
 
 {% tabs %}
 {% tab title="Auth" %}
+
 ```typescript
 import { getUser } from "@civic/auth/remix";
 
 export async function loader({ request }) {
   const user = await getUser(request);
-  
+
   if (!user) {
     return redirect("/login");
   }
-  
+
   return json({ user });
 }
 ```
+
 {% endtab %}
 
 {% tab title="Auth + Web3" %}
+
 ```typescript
 import { getUser } from "@civic/auth-web3/remix";
 
 export async function loader({ request }) {
   const user = await getUser(request);
-  
+
   if (!user) {
     return redirect("/login");
   }
-  
+
   return json({ user });
 }
 ```
+
 {% endtab %}
 {% endtabs %}
 
@@ -262,6 +274,7 @@ The integration also offers the ability to customize the library according to th
 {% tabs %}
 {% tab title="Auth" %}
 {% code title="auth.config.ts" %}
+
 ```typescript
 import type { AuthConfig } from "@civic/auth/remix";
 
@@ -275,15 +288,17 @@ export const authConfig: AuthConfig = {
   logoutCallbackUrl: "/",
   scope: "openid profile email",
   logging: {
-    level: "info"
-  }
+    level: "info",
+  },
 };
 ```
+
 {% endcode %}
 {% endtab %}
 
 {% tab title="Auth + Web3" %}
 {% code title="auth.config.ts" %}
+
 ```typescript
 import type { AuthConfig } from "@civic/auth-web3/remix";
 
@@ -297,10 +312,11 @@ export const authConfig: AuthConfig = {
   logoutCallbackUrl: "/",
   scope: "openid profile email",
   logging: {
-    level: "info"
-  }
+    level: "info",
+  },
 };
 ```
+
 {% endcode %}
 {% endtab %}
 {% endtabs %}
