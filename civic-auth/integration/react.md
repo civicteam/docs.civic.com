@@ -96,29 +96,73 @@ This component is context-dependent. If the user is logged in, it will show thei
 
 #### Customizing the User Button
 
-You can customize the styling of the user button by adding either a `className` or `style` property to the UserButton component when declaring it e.g. Using a className:
+You can customize the styling of the user button by adding either a `className` or `style` property to the UserButton component when declaring it. These styling properties affect both the sign-in button and the user information display when logged in. \
+\
+For further customization, you can also style the buttons that appear in the dropdown menu (which displays when clicking on the user information button) by using the `dropdownButtonClassName` or `dropdownButtonStyle` properties. This gives you granular control over both the main user button and its associated dropdown menu items.\
+\
+Using a className:
 
 {% tabs %}
 {% tab title="Auth" %}
-{% code title="CustomUserButtonClassName.ts" %}
+{% code title="style.css" %}
 ```css
 .my-button-container .login-button {
   color: red;
   background-color: blue;
   border: 3px solid #6b7280;
 }
+
+.my-button-container .internal-button {
+  background-color: red;
+  color: blue;
+  border: 3px solid #6b7280;
+}
+```
+{% endcode %}
+
+{% code title="CustomUserButtonClassName.ts" %}
+```typescript
+import { UserButton, CivicAuthProvider } from "@civic/auth/react";
+
+export function TitleBar() {
+  return (
+    <div className="my-button-container">
+      <UserButton className="login-button" dropdownButtonClassName="internal-button" />
+    </div>
+  );
+};
 ```
 {% endcode %}
 {% endtab %}
 
 {% tab title="Auth + Web3" %}
-{% code title="CustomUserButtonClassName.ts" %}
+{% code title="style.css" %}
 ```css
 .my-button-container .login-button {
   color: red;
   background-color: blue;
   border: 3px solid #6b7280;
 }
+
+.my-button-container .internal-button {
+  background-color: red;
+  color: blue;
+  border: 3px solid #6b7280;
+}
+```
+{% endcode %}
+
+{% code title="CustomUserButtonClassName.ts" %}
+```typescript
+import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
+
+export function TitleBar() {
+  return (
+    <div className="my-button-container">
+      <UserButton className="login-button" dropdownButtonClassName="internal-button" />
+    </div>
+  );
+};
 ```
 {% endcode %}
 {% endtab %}
@@ -146,7 +190,7 @@ import { UserButton, CivicAuthProvider } from "@civic/auth/react";
 export function TitleBar() {
   return (
     <div>
-      <UserButton style={{ minWidth: "20rem" }} />
+      <UserButton style={{ minWidth: "20rem" }} dropdownButtonStyle={{ backgroundColor: "red" }} />
     </div>
   );
 };
@@ -162,7 +206,7 @@ import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
 export function TitleBar() {
   return (
     <div>
-      <UserButton style={{ minWidth: "20rem" }} />
+      <UserButton style={{ minWidth: "20rem" }} dropdownButtonStyle={{ backgroundColor: "red" }} />
     </div>
   );
 };
