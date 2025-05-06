@@ -1,4 +1,4 @@
-# Remix
+# Remix Docs
 
 ## Quick Start
 
