@@ -25,19 +25,13 @@ https://getpass.civic.com/
   ?scope=<scopes>          # Pass scopes, comma‑separated
   &chain=<chains>          # Allowed blockchains, comma‑separated
   &referrer=<your‑slug>    # Partner identifier (lowercase, URL‑safe)
-  [&lang=<iso‑code>]       # (Optional) Localizes the UI
-  [&redirect_uri=<url>]    # (Optional) Post‑verification callback
-  [&state=<opaque‑value>]  # (Optional) CSRF / deep‑link helper
 ```
 
-| Parameter      | Required | Example value(s)                   | Purpose                                               |
-| -------------- | -------- | ---------------------------------- | ----------------------------------------------------- |
-| `scope`        | ✅        | `uniqueness,captcha`               | Select one or more Civic Pass scopes.                 |
-| `chain`        | ✅        | `base,ethereum`                    | Restricts issuance to the listed networks.            |
-| `referrer`     | ✅        | `partner‑xyz`                      | Tags verifications for analytics & billing.           |
-| `lang`         | 🔄       | `es`                               | Optional interface language (ISO‑639‑1).              |
-| `redirect_uri` | 🔄       | `https://app.example.com/callback` | Where to send the user (OAuth‑style) after success.   |
-| `state`        | 🔄       | `abc123`                           | Any opaque value you want returned to `redirect_uri`. |
+| Parameter  | Required | Example value(s)     | Purpose                                     |
+| ---------- | -------- | -------------------- | ------------------------------------------- |
+| `scope`    | ✅        | `uniqueness,captcha` | Select one or more Civic Pass scopes.       |
+| `chain`    | ✅        | `base,ethereum`      | Restricts issuance to the listed networks.  |
+| `referrer` | ✅        | `partner‑xyz`        | Tags verifications for analytics & billing. |
 
 > **Tip:** Spaces in chain names must be URL‑encoded (`%20`). For example, `arbitrum one` → `arbitrum%20one`.
 
@@ -69,7 +63,7 @@ Feel free to experiment in a browser; the link is self‑validating.
 **4.1 Static HTML ‑ simplest**
 
 ```html
-<a href="https://getpass.civic.com/?scope=uniqueness&chain=base&referrer=partner-xyz"
+<a href="https://getpass.civic.com/?scope=uniqueness&chain=xdc&referrer=partner-xyz"
    target="_blank" rel="noopener noreferrer">
   Verify with Civic Pass
 </a>
@@ -97,7 +91,7 @@ import Link from 'next/link';
 
 export default function CivicPassLink() {
   const url =
-    'https://getpass.civic.com/?scope=uniqueness&chain=base&referrer=partner-xyz';
+    'https://getpass.civic.com/?scope=uniqueness&chain=solana&referrer=partner-xyz';
   return (
     <Link href={url} target="_blank" rel="noopener noreferrer">
       Verify with Civic Pass
@@ -122,12 +116,11 @@ If using `redirect_uri`, verify the `state` value is echoed back unchanged.
 
 **6. Troubleshooting guide**
 
-| Symptom                                | Likely cause                 | Fix                             |
-| -------------------------------------- | ---------------------------- | ------------------------------- |
-| Extra scopes showing                   | Wrong `scope=` list          | Keep only the scopes you need   |
-| Users not restricted to a single chain | Multiple chain slugs present | Limit `chain=` to one entry     |
-| Analytics show “unknown” referrer      | Typo or missing `referrer=`  | Confirm slug with Civic team    |
-| Localisation not working               | Missing/incorrect `lang=`    | Use a two‑letter ISO‑639‑1 code |
+| Symptom                                | Likely cause                 | Fix                           |
+| -------------------------------------- | ---------------------------- | ----------------------------- |
+| Extra scopes showing                   | Wrong `scope=` list          | Keep only the scopes you need |
+| Users not restricted to a single chain | Multiple chain slugs present | Limit `chain=` to one entry   |
+| Analytics show “unknown” referrer      | Typo or missing `referrer=`  | Confirm slug with Civic team  |
 
 ***
 
@@ -141,6 +134,3 @@ Use the same URL; Civic follows the wallet network. Just ensure your dApp is on 
 
 **Q. What if I add CAPTCHA later?**\
 Update the link to `scope=uniqueness,captcha`. No code changes beyond that.
-
-**Q. Can I embed the flow in an iframe?**\
-For security, the Civic Pass page enforces sandboxing. Use a popup or new tab instead.
