@@ -9,6 +9,7 @@
 * [🔄 Civic Pass Behavior](introduction/civic-pass-behavior.md)
 * [🔑 Get Network Keys](introduction/get-network-keys.md)
 * [📺 Demo Videos](https://www.youtube.com/playlist?list=PLAYyliYf-NkkF9ltWX9Xmd4_KjNOf-6Vs)
+* [🔗 Referral Link Guide](introduction/referral-link-guide.md)
 
 ## Integration Guide
 
