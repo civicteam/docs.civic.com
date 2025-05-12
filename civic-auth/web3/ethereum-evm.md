@@ -150,8 +150,7 @@ For more detailed documentation on how to use these hooks, see the [Wagmi docs](
 
 See below for a full minimal example of a Wagmi app using Civic Auth for an embedded wallet. This is based on [this GitHub repository](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/wagmi) that contains a sample implementation.
 
-```tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+<pre class="language-tsx"><code class="lang-tsx">import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiProvider, createConfig, useAccount, useConnect, useBalance, http } from "wagmi";
 import { userHasWallet } from "@civic/auth-web3";
 import { embeddedWallet } from "@civic/auth-web3/wagmi";
@@ -172,16 +171,18 @@ const wagmiConfig = createConfig({
 // Wagmi requires react-query
 const queryClient = new QueryClient();
 
-// Wrap the content with the necessary providers to give access to hooks: react-query, wagmi & civic auth provider
-const App = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <WagmiProvider config={wagmiConfig}>
-        <CivicAuthProvider clientId="< YOUR CLIENT ID >">
-          <AppContent />
-        </CivicAuthProvider>
-      </WagmiProvider>
-    </QueryClientProvider>
+// Wrap the content with the necessary providers to give access to hooks: react-query, wagmi &#x26; civic auth provider
+<strong>// initialChain is passed into &#x3C;CivicAuthProvider /> to indicate the first chain you want to use.
+</strong><strong>// The chain can be switched later using wagmi's useSwitchChain() hook.
+</strong><strong>const App = () => {
+</strong>  return (
+    &#x3C;QueryClientProvider client={queryClient}>
+      &#x3C;WagmiProvider config={wagmiConfig}>
+        &#x3C;CivicAuthProvider clientId="&#x3C; YOUR CLIENT ID >" initialChain={mainnet}>
+          &#x3C;AppContent />
+        &#x3C;/CivicAuthProvider>
+      &#x3C;/WagmiProvider>
+    &#x3C;/QueryClientProvider>
   );
 };
 
@@ -196,34 +197,34 @@ const AppContent = () => {
   const balance = useBalance({ address });
 
   return (
-    <>
-      <UserButton />
-      {userContext.user && 
-        <div>
-          {!userHasWallet(userContext) &&
-            <p><button onClick={createWallet}>Create Wallet</button></p>
+    &#x3C;>
+      &#x3C;UserButton />
+      {userContext.user &#x26;&#x26; 
+        &#x3C;div>
+          {!userHasWallet(userContext) &#x26;&#x26;
+            &#x3C;p>&#x3C;button onClick={createWallet}>Create Wallet&#x3C;/button>&#x3C;/p>
           }
-          {userHasWallet(userContext) && 
-            <>
-              <p>Wallet address: {userContext.eth.address}</p>
-              <p>Balance: {
+          {userHasWallet(userContext) &#x26;&#x26; 
+            &#x3C;>
+              &#x3C;p>Wallet address: {userContext.eth.address}&#x3C;/p>
+              &#x3C;p>Balance: {
                 balance?.data
                   ? `${(BigInt(balance.data.value) / BigInt(1e18)).toString()} ${balance.data.symbol}`
                   : "Loading..."
-              }</p>
-              {isConnected ? <p>Wallet is connected</p> : (
-                <button onClick={connectExistingWallet}>Connect Wallet</button>
+              }&#x3C;/p>
+              {isConnected ? &#x3C;p>Wallet is connected&#x3C;/p> : (
+                &#x3C;button onClick={connectExistingWallet}>Connect Wallet&#x3C;/button>
               )}
-            </>
+            &#x3C;/>
           }
-        </div>
+        &#x3C;/div>
       }
-    </>
+    &#x3C;/>
   );
 };
 
 export default App;
-```
+</code></pre>
 
 ### Using the Wallet with Viem
 
@@ -257,13 +258,24 @@ If you need to customize the library's behavior, you can pass additional configu
 
 ### Limiting to specific chains
 
-By default, Civic Auth supports all chains supported by viem. If you want to restrict wallet usage to specific chains, you can pass an array of chains to the CivicAuthProvider.
+By default, Civic Auth supports all chains supported by viem. If you want to restrict wallet usage to specific chains, you can pass an array of chains to the CivicAuthProvider. Pass the `initialChain` property to define the chain you want to start using.
 
 #### Example 1. Using viem chain objects
 
 ```tsx
 import { mainnet, polygon } from "viem/chains";
-<CivicAuthProvider chains={[mainnet, polygon]}>
+<CivicAuthProvider chains={[mainnet, polygon]} initialChain={mainnet}>
+```
+
+#### The chain can be switched using wagmi's useSwitchChain hook:
+
+```
+import { useSwitchChain } from "wagmi";
+
+// Switch chain to polygon
+switchChain({
+   chainId: polygon.id,
+});
 ```
 
 #### Example 2. Specifying custom RPCs
