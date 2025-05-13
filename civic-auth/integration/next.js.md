@@ -283,6 +283,39 @@ export function TitleBar() {
 {% endtab %}
 {% endtabs %}
 
+or if you need to rollout your own button:
+
+{% tabs %}
+{% tab title="Auth + Web3" %}
+{% code title="TitleBar.ts" %}
+```typescript
+export function TitleBar() {
+  const doSignIn = useCallback(() => {
+    console.log("Starting sign-in process");
+    signIn()
+      .then(() => {
+        console.log("Sign-in completed successfully");
+      })
+      .catch((error) => {
+        console.error("Sign-in failed:", error);
+      });
+  }, [signIn]);
+
+  return (
+    <div>
+      <h1>My App</h1>
+      <button onClick={doSignIn}>
+        Sign in
+      </button>
+    </div>
+  );
+}
+
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
 or the useUser hook, for retrieving information about the user in code:
 
 {% tabs %}
