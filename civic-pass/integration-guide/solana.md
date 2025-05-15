@@ -34,7 +34,7 @@ The **GatewayProvider** is a React component that enables your dApp frontend to:
 * access all available information of your user's Civic Pass
 * trigger the issuance and refresh of a new Civic Pass
 
-The required configuration properties vary slightly depending on the chain.&#x20;
+The required configuration properties vary slightly depending on the chain.
 
 **Implementation**
 
@@ -51,23 +51,22 @@ import { Connection, clusterApiUrl } from '@solana/web3.js';
 </GatewayProvider>
 ```
 
-Children wrapped by this `GatewayProvider` will have access to the connected wallet's Civic Pass. This is where you want to add the **Identity Button** and any of the gated features in your app.&#x20;
+Children wrapped by this `GatewayProvider` will have access to the connected wallet's Civic Pass. This is where you want to add the **Identity Button** and any of the gated features in your app.
 
 We suggest placing the `<GatewayProvider>` as high up in the component tree as possible, to ensure you have access to the Civic Pass state throughout your dApp.
 
 #### Configuration Parameters
 
-The configuration parameters of the Gateway Provider vary slightly depending on the blockchain. \
+The configuration parameters of the Gateway Provider vary slightly depending on the blockchain. \\
 
-
-| **Property**               | **Description**                                                                                                                                                                                                                                                                                                                                                   | **Type**                                                                                                                                              |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **wallet**                 | An object representing the user's wallet. This may be `undefined` if a wallet hasn't been connected to the dApp yet.                                                                                                                                                                                                                                              | <p><code>{</code></p><p><code>publicKey, signTransaction</code></p><p><code>}</code> (see definitions below)</p>                                      |
-| **wallet.publicKey**       | The user wallet's public key.                                                                                                                                                                                                                                                                                                                                     | `PublicKey` from `@solana/web3.js`                                                                                                                    |
-| **wallet.signTransaction** | A function that asks the user's wallet to sign a transaction.                                                                                                                                                                                                                                                                                                     | <p><code>(transaction: Transaction) => Promise<Transaction></code></p><p>where <code>Transaction</code> is from <code>@solana/web3.js</code></p> |
-| **gatekeeperNetwork**      | The address of the Gatekeeper Network for which your Civic Passes are issued. To get started you can use the address of the CAPTCHA Verification: `ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6` . In the [Available Networks](https://docs.civic.com/integration-guides/civic-pass/available-networks) page you can request access to the more advanced networks. | `PublicKey` from `@solana/web3.js`                                                                                                                    |
-| **connection**             | A Solana connection to any Solana network. The recommended commitment level is `confirmed`.                                                                                                                                                                                                                                                                       | `Connection` from `@solana/web3.js`                                                                                                                   |
-| **cluster**                | The Solana network to use (i.e. `devnet`, `mainnet-beta`, `testnet)`. This defaults to `mainnet-beta`, so should be set if a different connection endpoint.                                                                                                                                                                                                       | `string`                                                                                                                                              |
+| **Property**               | **Description**                                                                                                                                                                                                                                                                                                                                                   | **Type**                                                                                                                            |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **wallet**                 | An object representing the user's wallet. This may be `undefined` if a wallet hasn't been connected to the dApp yet.                                                                                                                                                                                                                                              | <p><code>{</code></p><p><code>publicKey, signTransaction</code></p><p><code>}</code> (see definitions below)</p>                    |
+| **wallet.publicKey**       | The user wallet's public key.                                                                                                                                                                                                                                                                                                                                     | `PublicKey` from `@solana/web3.js`                                                                                                  |
+| **wallet.signTransaction** | A function that asks the user's wallet to sign a transaction.                                                                                                                                                                                                                                                                                                     | <p><code>(transaction: Transaction) => Promise</code></p><p>where <code>Transaction</code> is from <code>@solana/web3.js</code></p> |
+| **gatekeeperNetwork**      | The address of the Gatekeeper Network for which your Civic Passes are issued. To get started you can use the address of the CAPTCHA Verification: `ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6` . In the [Available Networks](https://docs.civic.com/integration-guides/civic-pass/available-networks) page you can request access to the more advanced networks. | `PublicKey` from `@solana/web3.js`                                                                                                  |
+| **connection**             | A Solana connection to any Solana network. The recommended commitment level is `confirmed`.                                                                                                                                                                                                                                                                       | `Connection` from `@solana/web3.js`                                                                                                 |
+| **cluster**                | The Solana network to use (i.e. `devnet`, `mainnet-beta`, `testnet)`. This defaults to `mainnet-beta`, so should be set if a different connection endpoint.                                                                                                                                                                                                       | `string`                                                                                                                            |
 
 **Advanced Configuration**
 
@@ -100,7 +99,7 @@ If your users do not have crypto wallets, you can subsidize the cost of their pa
 To do this:
 
 * Set the `payer` field on the front-end
-* Create a back-end service to sign and send the transaction&#x20;
+* Create a back-end service to sign and send the transaction
 * Call that back-end service from the front-end via the `handleTransaction` callback.
 
 {% hint style="warning" %}
@@ -259,7 +258,7 @@ Issuing a Civic Pass might fail because the user did not fulfill the constraints
 
 ## Civic Pass Structure
 
-The **gatewayToken** represents the on-chain structure of the Civic Pass. This will only be defined if the Civic Pass is active.&#x20;
+The **gatewayToken** represents the on-chain structure of the Civic Pass. This will only be defined if the Civic Pass is active.
 
 | **Property**          | **Description**                                                   | **Type**                                |
 | --------------------- | ----------------------------------------------------------------- | --------------------------------------- |
@@ -408,6 +407,10 @@ For your program to be able to call the integration library, the following param
     Ok(())
 }
 </code></pre>
+
+### **Solana Attestation Service (SAS)**
+
+Civic is part of the Solana Attestation Service (SAS), an open-source protocol on Solana that enables developers to issue and verify attestations. If you're interested in integrating SAS into your project, please [get in touch](https://civickey.typeform.com/solana-sas).
 
 ### **Error handling**
 
@@ -651,9 +654,7 @@ For practical implementation, refer to the code examples below, which demonstrat
 
 | Vite & React | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/solana/vite) | [Demo](https://airdrop-demo.civic.me/solana)      |
 | ------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------- |
-| Next.js       | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/solana/next) | [Demo](https://airdrop-demo.civic.me/next/solana) |
+| Next.js      | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/solana/next) | [Demo](https://airdrop-demo.civic.me/next/solana) |
 
 \
-\
-
-
+\\
