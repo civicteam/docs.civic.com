@@ -8,7 +8,16 @@ The Civic Auth Solana API is subject to change as we continue to develop and ref
 
 ## Creating a Wallet
 
-When a new user logs in, they do not yet have a Web3 wallet by default. You can create a wallet for them by calling the `createWallet` function on the user object. Here’s a basic example:
+When a new user logs in, they do not yet have a Web3 wallet by default. You can create a wallet for them by calling the `createWallet` function on the user object.&#x20;
+
+{% hint style="info" %}
+Currently, we don't support connecting users' existing self-custodial wallets. This is coming soon.
+
+Right now, we only support embedded wallets, which are generated on behalf of the user by our non-custodial wallet partner.\
+Neither Civic nor your app ever has access to the wallets' private keys.
+{% endhint %}
+
+Here’s a basic example:
 
 ```javascript
 import { userHasWallet } from "@civic/auth-web3";

@@ -16,6 +16,11 @@ Civic Auth supports Google as an authentication provider. However, Civic is work
 
 Contact our team via [Discord](https://discord.com/invite/MWmhXauJw8/) and let us know which provider you’d like to see added.&#x20;
 
+### **Can my users connect their existing self-managed wallets?**
+
+No, but this is coming soon.  Currently, we don't support connecting users' existing self-custodial wallets. We only support embedded wallets, which are generated on behalf of the user by our non-custodial wallet partner.\
+Neither Civic nor your app ever has access to the wallets' private keys.
+
 ### **How are these wallets managed?**
 
 Civic Auth wallets are provided through a partnership with metakeep.xyz. These wallets are Externally Owned Accounts (EOAs), which are authenticated by a private key that is held by the Metakeep infrastructure. They are linked to a user’s email address. Users verify ownership of their email by entering a unique email code. Wallet management occurs securely through client-side encryption using keys from our wallet provider.

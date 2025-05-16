@@ -2,6 +2,13 @@
 
 The **Civic Auth Web3 SDK** ([@civic/auth-web3](https://www.npmjs.com/package/@civic/auth-web3)) extends the functionality of the base **Civic Auth SDK** by including the ability to provision a Web3 wallet for users. This allows Civic Auth apps to provide their users with access to the world of Cryptocurrencies and Web3 without any hassle or prior knowledge.
 
+{% hint style="info" %}
+Currently, we don't support connecting users' existing self-custodial wallets. This is coming soon.
+
+Right now, we only support embedded wallets, which are generated on behalf of the user by our non-custodial wallet partner.\
+Neither Civic nor your app ever has access to the wallets' private keys.
+{% endhint %}
+
 ## Quick Start
 
 Sign up for Civic Auth at [auth.civic.com](https://auth.civic.com) and make sure to select the "Web3 wallet" option.
