@@ -1,4 +1,4 @@
-# Other
+# Other OIDC / OAuth 2.0-Compliant Environments
 
 Civic Auth can be integrated into other environments using any OIDC or OAuth 2.0-compliant client libraries.
 
@@ -10,7 +10,7 @@ The information you will need:
 
 ## **The Civic Auth Server**
 
-At its core, Civic Auth is an [OAuth 2.0 auth server](https://oauth.net/2/). It supports the [authorization code](https://oauth.net/2/grant-types/authorization-code/) grant type with [PKCE](https://oauth.net/2/pkce/).&#x20;
+At its core, Civic Auth is an [OAuth 2.0 auth server](https://oauth.net/2/). It supports the [authorization code](https://oauth.net/2/grant-types/authorization-code/) grant type with [PKCE](https://oauth.net/2/pkce/).
 
 {% hint style="info" %}
 If you are looking for other OAuth 2 grant types, we'd like to [hear from you](https://discord.com/invite/MWmhXauJw8/?referrer=home-discord).
@@ -142,6 +142,34 @@ import(libraryCDN).then((oauth) => {
 {% endcode %}
 
 </details>
+
+### Refreshing a session
+
+The Civic OAuth server supports the token refresh flow by calling the oauth server as follows:
+
+```
+https://auth.civic.com/oauth/token
+    ?refresh_token={refreshToken}
+    &client_id={clientId}
+    &grant_type=refresh_token
+```
+
+#### **Query Parameters:**
+
+* `client_id`: Your application's unique identifier provided by Civic Auth.
+* `refresh_token`: The refresh token from the user's existing session
+* `grant_type`: a string 'refresh\_token'
+
+If the refresh token is valid this will return a JSON response containing updated tokens e.g.
+
+```
+{
+    "access_token": <JWT with sub=userId>
+    "id_token": <JWT with sub=userId, profile info & forwardedTokens>
+    "refresh_token": <string>
+    "expires_in": <how many seconds until the token expires>\
+}
+```
 
 ## Usage
 
