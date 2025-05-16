@@ -11,7 +11,16 @@ Right now, we only support embedded wallets, which are generated on behalf of th
 Neither Civic nor your app ever has access to the wallets' private keys.
 {% endhint %}
 
+
+
 Here’s a basic example:
+
+{% hint style="success" %}
+Complete examples can be found on github:
+
+* [Vite + Wagmi](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/wagmi)
+* [NextJS + Wagmi](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/wagmi-nextjs)
+{% endhint %}
 
 ```javascript
 import { userHasWallet } from "@civic/auth-web3";

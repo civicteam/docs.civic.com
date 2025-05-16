@@ -19,6 +19,14 @@ Neither Civic nor your app ever has access to the wallets' private keys.
 
 Here’s a basic example:
 
+{% hint style="success" %}
+Complete examples can be found on Github:
+
+* Vite: [with Solana wallet adapter ](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/solana/vite-wallet-adapter)and [without Solana wallet adapter](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/solana/vite-no-wallet-adapter)
+* NextJS [with Solana wallet adapter](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/solana/next15-wallet-adapter) and [without Solana wallet adapter](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/solana/next15-no-wallet-adapter)
+* If you're using the Solana wallet adapter with NextJS <15.3 and webpack, see [this example](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3/solana/next14-wallet-adapter)
+{% endhint %}
+
 ```javascript
 import { userHasWallet } from "@civic/auth-web3";
 import { useUser } from "@civic/auth-web3/react";

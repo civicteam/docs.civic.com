@@ -17,6 +17,18 @@ Sign up for Civic Auth at [auth.civic.com](https://auth.civic.com) and make sure
 If you already have an account, just log in and select the Web3 wallet option in the configuration to enable Web3 wallets.
 {% endhint %}
 
+
+
+{% hint style="success" %}
+**Code Examples**
+
+Some complete examples for Solana and EVM can be found on Github [here](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3).&#x20;
+
+The Ethereum and Solana pages have links to specific examples.
+
+Also see the code examples in this documentation.
+{% endhint %}
+
 ## Installation
 
 Install the Civic Auth Web3 SDK:
