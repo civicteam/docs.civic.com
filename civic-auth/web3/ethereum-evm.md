@@ -7,11 +7,13 @@ When a new user logs in, they do not yet have a Web3 wallet by default. You can 
 {% hint style="info" %}
 Currently, we don't support connecting users' existing self-custodial wallets. This is coming soon.
 
-Right now, we only support embedded wallets, which are generated on behalf of the user by our non-custodial wallet partner.\
+Right now, we only support embedded wallets, which are generated on behalf of the user by our non-custodial wallet partner.
+
+You could use Civic's `embeddedWallet()` wagmi connector alongside other connectors like Metamask, so your code can switch between Civic embedded wallets and the user's other installed wallets. Currently those wallets cannot be linked to the Civic account, they are separate.
+
+\
 Neither Civic nor your app ever has access to the wallets' private keys.
 {% endhint %}
-
-
 
 Here’s a basic example:
 
