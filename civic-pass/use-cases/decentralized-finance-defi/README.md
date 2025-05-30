@@ -1,2 +1,0 @@
-# 💸 Decentralized Finance (DeFi)
-

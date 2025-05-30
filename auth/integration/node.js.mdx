@@ -1,0 +1,63 @@
+---
+title: "Node.JS"
+description: "The Civic Auth SDK also works with any Node.js backend."
+sidebarTitle: Overview
+icon: circle-info
+---
+
+The core integration points here are as follows:
+
+* Direct users to the Civic Auth login page
+
+* Set up an endpoint that the auth server should redirect to once complete
+
+* Set up middleware to ensure only logged-in users can access protected parts of your app.
+
+Use these guides to set up Civic Auth with any of the most common Node.js server libraries.
+
+<CardGroup cols={3}>
+  <Card title="Express" href="/auth/integration/node.js/express" img="/images/auth/integration/express.png"/>
+  <Card title="Hono" href="/auth/integration/node.js/hono" img="/images/auth/integration/hono.png"/>
+  <Card title="Fastify" href="/auth/integration/node.js/fastify" img="/images/auth/integration/fastify.png"/>
+</CardGroup>
+
+## Usage
+
+Civic Auth SDK is optimized for React and Next.js. However, some features are usable in other JS environments. For example, the `getUser` function verifies and parses the user information stored in the id\_token cookie and makes it available to your app.
+
+### Getting User Information on the Backend
+
+Here are some examples of using the getUser function in popular Node.JS server environments. Note - this snippet assumes you have followed the steps to integrate login with your app as described [here](/auth/integration/node.js).
+
+<CodeGroup>
+  ```express Express
+  import { getUser } from '@civic/auth/server';
+
+  app.get('/admin/hello', async (req, res) => {
+    const user = await getUser(req.storage);
+    res.send(`hello ${user.name}!`);
+  });
+  ```
+
+  ```hono Hono
+  import { getUser } from '@civic/auth/server';
+
+  app.get('/admin/hello', async (c) => {
+    const user = await getUser(c.storage);
+    return c.text(`hello ${user.name}!`);
+  });
+  ```
+
+  ```fastify Fastify
+  import { getUser } from '@civic/auth/server';
+
+  fastify.get('/admin/hello', async (request, reply) => {
+    const user = await getUser(request.storage);
+    reply.send(`hello ${user.name}!`);
+  });
+  ```
+</CodeGroup>
+
+<Info>
+  The `name` property is used as an example here, check out the [React Usage page](/auth/integration/react#usage) to see the entire basic user object structure.
+</Info>

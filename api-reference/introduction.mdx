@@ -1,0 +1,85 @@
+---
+title: "Civic Pass Customer API"
+description: "The APIs described below enable Civic customers to issue and manage the Civic Pass for their dApp. To learn more about Civic Passes and their fundamentals, please refer to the main [documentation](/)."
+icon: "code"
+---
+
+<CardGroup>
+  <Card title="Swagger.yml" href="https://civicteam.github.io/openapi-docs/swagger.yaml" icon="link" horizontal />
+</CardGroup>
+
+## Terminology
+
+In the Customer API, the term `chain` refers to a blockchain programming model and the term `chainNetwork` to a network of that chain. For example, a "Layer 2" Ethereum network like Polygon is represented as `/pass/ethereum/polygonMainnet`.
+
+## Supported Chains
+
+The Customer API supports the following chains and chain networks:
+
+- `solana:mainnet-beta`
+- `solana:devnet`
+- `ethereum:mainnet`
+- `ethereum:sepolia`
+- `ethereum:polygonAmoy`
+- `ethereum:polygonMainnet`
+- `ethereum:polygonZKEVM`
+- `ethereum:polygonZKEVMTestnet`
+- `ethereum:optimismSepolia`
+- `ethereum:optimismMainnet`
+- `ethereum:arbitrumSepolia`
+- `ethereum:arbitrumMainnet`
+- `ethereum:avalancheCChain`
+- `ethereum:avalancheCChainFuji`
+- `ethereum:xdcMainnet`
+- `ethereum:xdcApothem`
+- `ethereum:fantomMainnet`
+- `ethereum:fantomTestnet`
+- `ethereum:baseSepolia`
+- `ethereum:baseMainnet`
+- `ethereum:bscMainnet`
+- `ethereum:bscTestnet`
+- `ethereum:xlayerMainnet`
+- `ethereum:xlayerTestnet`
+- `ethereum:unichainMainnet`
+- `ethereum:unichainSepolia`
+- `ethereum:sonicMainnet`
+- `ethereum:sonicTestnet`
+
+If your blockchain of choice is not listed above, feel free to reach out to us for more info on when support for your chain is planned.
+
+## Authentication
+
+Authentication follows the [OAuth standard](https://oauth.net/2/). The Civic authentication endpoint is `https://auth0.civic.com/oauth/token`. The `grant_type` to request is `client_credentials`.
+
+To manage API authentication we recommend using one of the available [OAuth libraries](https://oauth.net/code/) for your platform.
+
+## Try it out!
+
+You can try out the Civic Pass Customer API by using the following demo credentials to generate an auth token:
+
+- `client_id: dtVTGsKUlkPQ8UXKqSskS1HqNI3hERHT`,
+- `client_secret: 7DT722BjNlXUp8HVaV_ZjHzopq2Tr12doGB8sBYC-vhPo3Eh0HoidLVATFbxmwZ1`
+
+Please keep in mind that these are shared credentials, i.e. others have access to the same Civic Passes and can for example freeze them.
+
+The `gatekeeperNetwork` : `tgnuXXNMDLK8dy7Xm1TdeGyc95MDym4bvAQCwcW21Bf` should be used with these credentials. That is Civic's sandbox pass.
+
+The demo pass is only supported on testnets. The current list is:
+
+- `solana:devnet`
+- `ethereum:polygonAmoy`
+- `ethereum:sepolia`
+- `ethereum:baseSepolia`
+- `ethereum:arbitrumSepolia`
+- `ethereum:optimismSepolia`
+- `ethereum:bscTestnet`
+- `ethereum:xdcApothem`
+- `ethereum:xlayerTestnet`
+- `ethereum:avalancheCChainFuji`
+- `ethereum:unichainSepolia`
+- `ethereum:sonicTestnet`
+
+<CardGroup>
+  <Card title="Terms of service" href="https://www.civic.com/legal/terms-of-service-civic-pass-v1/" icon="file-lines" horizontal />
+  <Card title="Contact the developer" href="/api-reference/introduction" icon="comment-dots"horizontal />
+</CardGroup>
