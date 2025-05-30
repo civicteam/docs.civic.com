@@ -1,2 +1,0 @@
-# 🏡 Real-World Assets (RWAs)
-
