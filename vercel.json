@@ -1,0 +1,12 @@
+{
+    "rewrites": [
+      {
+        "source": "/docs",
+        "destination": "https://civic.mintlify.dev/docs"
+      },
+      {
+        "source": "/docs/:match*",
+        "destination": "https://civic.mintlify.dev/docs/:match*"
+      }
+    ]
+  }
