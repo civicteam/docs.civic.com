@@ -2,11 +2,11 @@
     "rewrites": [
       {
         "source": "/docs",
-        "destination": "https://docs-civic-com.vercel.app"
+        "destination": "https://civic.mintlify.app/docs"
       },
       {
         "source": "/docs/:match*",
-        "destination": "https://docs-civic-com.vercel.app/:match*"
+        "destination": "https://civic.mintlify.app/docs/:match*"
       }
     ]
   }
