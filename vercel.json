@@ -1,12 +1,5 @@
 {
-    "rewrites": [
-      {
-        "source": "/docs",
-        "destination": "https://civic.mintlify.app/docs"
-      },
-      {
-        "source": "/docs/:match*",
-        "destination": "https://civic.mintlify.app/docs/:match*"
-      }
-    ]
+    "buildCommand": "npx mintlify build",
+    "outputDirectory": ".mintlify"
   }
+  
