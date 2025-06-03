@@ -1,0 +1,57 @@
+# Lychee configuration file
+# https://github.com/lycheeverse/lychee#configuration-file
+
+# Maximum number of concurrent network requests
+max_concurrency = 10
+
+# User agent string
+user_agent = "Mozilla/5.0 (compatible; lychee/0.15.1; +https://github.com/lycheeverse/lychee)"
+
+# Accept these status codes
+accept = [200, 204, 206, 301, 302, 307, 308]
+
+# Exclude these patterns
+exclude = [
+  # Localhost
+  '^https?://localhost',
+  '^https?://127\.0\.0\.1',
+  
+  # GitHub line numbers
+  'github\.com.*#L[0-9]+',
+  
+  # Social media
+  '^https?://(www\.)?(twitter|x|linkedin)\.com',
+  
+  # Email addresses
+  '^mailto:',
+  
+  # Tel links
+  '^tel:',
+]
+
+# Exclude all private IPs
+exclude_all_private = true
+
+# Exclude loopback IPs
+exclude_loopback = true
+
+# Maximum number of retries
+max_retries = 3
+
+# Timeout for network requests (in seconds)
+timeout = 30
+
+# Check external links
+skip_missing = false
+
+# Method to use for requests
+method = "get"
+
+# Follow redirects
+max_redirects = 10
+
+# Cache results for 1 day
+cache = true
+
+# Verbose output
+verbose = true

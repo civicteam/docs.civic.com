@@ -1,0 +1,45 @@
+name: Link Check
+
+on:
+  push:
+    branches: [mintlify-migration]
+  pull_request:
+    branches: [mintlify-migration]
+  workflow_dispatch:
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # Check all Markdown and MDX files
+          args: >
+            --verbose
+            --no-progress
+            --accept 200,204,206,301,302,307,308
+            --exclude-loopback
+            --exclude 'localhost'
+            --exclude '127.0.0.1'
+            --exclude 'github\.com.*#L[0-9]+'
+            --exclude 'linkedin\.com'
+            --max-retries 3
+            --user-agent 'Mozilla/5.0 (compatible; lychee/0.15.1; +https://github.com/lycheeverse/lychee)'
+            './**/*.md'
+            './**/*.mdx'
+          fail: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Issue From File
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: 'Link Checker Report: Broken Links Found'
+          content-filepath: ./lychee/out.md
+          labels: |
+            documentation
+            automated

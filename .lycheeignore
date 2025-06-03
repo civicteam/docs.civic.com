@@ -1,0 +1,20 @@
+# Ignore patterns for Lychee link checker
+
+# Social media (often rate-limited or require auth)
+https://twitter.com/.*
+https://x.com/.*
+https://linkedin.com/.*
+https://www.linkedin.com/.*
+
+# Local development
+http://localhost:*
+http://127.0.0.1:*
+
+# GitHub line numbers (these change frequently)
+https://github.com/.*#L[0-9]+
+
+# Known problematic domains that may block automated requests
+https://medium.com/.*
+
+# Civic-specific patterns (adjust as needed)
+# Add any internal/staging URLs that shouldn't be checked in CI
