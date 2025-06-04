@@ -57,7 +57,7 @@ const authClient = await CivicAuth.create({
 // Sign in
 document.getElementById("loginButton").addEventListener("click", async () => {
     try {
-        const user = await authClient.startAuthentication();
+        const { user } = await authClient.startAuthentication();
     } catch (error) {
         console.error("Authentication failed:", error);
     }
