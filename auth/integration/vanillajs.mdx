@@ -46,8 +46,6 @@ npm install @civic/auth
 
 2. **JavaScript** (`main.js`):
 
-<Tabs>
-<Tab title="Auth">
 ```javascript
 import { CivicAuth } from "@civic/auth/vanillajs";
 
@@ -71,34 +69,6 @@ document.getElementById("logoutButton").addEventListener("click", async () => {
 });
 
 ````
-</Tab>
-
-<Tab title="Auth + Web3">
-```javascript
-import { CivicAuth } from "@civic/auth-web3/vanillajs";
-
-// Initialize auth directly with top-level await
-const authClient = await CivicAuth.create({
-    clientId: "YOUR_CLIENT_ID",
-});
-
-// Sign in
-document.getElementById("loginButton").addEventListener("click", async () => {
-    try {
-        const user = await authClient.startAuthentication();
-    } catch (error) {
-        console.error("Authentication failed:", error);
-    }
-});
-
-// Sign out
-document.getElementById("logoutButton").addEventListener("click", async () => {
-    await authClient?.logout();
-});
-````
-
-</Tab>
-</Tabs>
 
 That's it! Replace `YOUR_CLIENT_ID` with your actual client ID and you're done.
 
