@@ -2,9 +2,9 @@ name: Link Check
 
 on:
   push:
-    branches: [mintlify-migration]
+    branches: [lint-checker]
   pull_request:
-    branches: [mintlify-migration]
+    branches: [lint-checker]
   workflow_dispatch:
 
 jobs:
