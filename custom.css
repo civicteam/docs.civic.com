@@ -1,0 +1,51 @@
+/* Custom styles for image width and border radius control */
+/* Use these classes on Frame components for selective styling */
+
+/* Width control classes (no border radius) */
+.image-50 img {
+  width: 50% !important;
+  max-width: 50% !important;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.image-60 img {
+  width: 60% !important;
+  max-width: 60% !important;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.image-70 img {
+  width: 70% !important;
+  max-width: 70% !important;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+.image-80 img {
+  width: 80% !important;
+  max-width: 80% !important;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* Border radius class (separate) */
+.image-rounded img {
+  border-radius: 8px;
+}
+
+/* For responsive behavior */
+@media (max-width: 768px) {
+  .image-50 img,
+  .image-60 img,
+  .image-70 img,
+  .image-80 img {
+    width: 90% !important;
+    max-width: 90% !important;
+  }
+} 

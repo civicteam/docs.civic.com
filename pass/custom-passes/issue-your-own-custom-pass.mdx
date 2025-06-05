@@ -1,0 +1,115 @@
+---
+title: "Issue Your Own Custom Pass"
+description: "A Custom Pass is designed for dApps that wish to restrict access but do not want to use Civic IDV Services and UI components."
+icon: pen-field
+---
+
+
+
+With Custom Pass, builders can write their own rules, bring in other verification services or customize/bundle several of the Civic Pass functions into a single pass that lives on-chain.
+
+## Custom Pass Architecture
+
+<Frame caption="API integration">
+  <img src="/images/pass/custom-passes/image-1.png" />
+</Frame>
+
+Once a user has been successfully vetted according to your logic, you can then call the Civic API to issue a Custom Pass to your user's wallet. The API also enables you to manage the complete lifecycle of any Custom Pass you issued (refresh, revocation, expiry, burning).
+
+<Frame caption="On-chain integration">
+  <img src="/images/pass/custom-passes/image-1.png" />
+</Frame>
+
+As you are integrating, remember that your on-chain smart contract or app still has to check for a valid Custom Pass during program execution.
+
+To enable gating logic using a Custom Pass, you will need:
+
+* Civic Pass API integration to enable issuing and managing the Custom Pass for your dApp
+
+<Info>
+**See here for the full** [**OpenAPI specification**](/api-reference/introduction).
+</Info>
+
+* On-Chain library to enable your smart contract to check for valid Civic Pass during program execution. See the On-Chain section in the integration guide for your chain.
+
+Please [reach out](https://civickey.typeform.com/req-custom) to discuss your use case and obtain the key to enable your pass network.
+
+## Supported Custom Pass Chains
+
+The Civic Pass API supports the following chains and chain networks:
+
+* `solana/mainnet-beta`
+
+* `solana/devnet`
+
+* `ethereum/homestead`
+
+* `ethereum/arbitrumGoerli`
+
+* `ethereum/arbitrumMainnet`
+
+* `ethereum/arbitrumSepolia`
+
+* `ethereum/goerli`
+
+* `ethereum/avalancheCChain`
+
+* `ethereum/avalancheCChainFuji`
+
+* `ethereum/baseSepolia`
+
+* `ethereum/baseMainnet`
+
+* `ethereum/fantomMainnet`
+
+* `ethereum/fantomTestnet`
+
+* `ethereum/mainnet`
+
+* `ethereum/optimismGoerli`
+
+* `ethereum/optimismMainnet`
+
+* `ethereum/polygonMainnet`
+
+* `ethereum/polygonMumbai`
+
+* `ethereum/polygonZKEVM`
+
+* `ethereum/polygonZKEVMTestnet`
+
+* `ethereum/xdcMainnet`
+
+* `ethereum/xdcApothem`
+
+## Testing
+
+### API Functionality
+
+You can try out the Civic Pass API by using the following demo credentials to generate an OAuth token:
+
+* `client_id: j5kwZ68j4bM8fdPAYKu7DlGQGr37eNPs`
+
+* `client_secret: S1qSiacDUDPRVfxiSvwsRASxE0fH47U60eYeNYIt4JKSVSsgo2yy0n6V-Uz1IYBK`
+
+Keep in mind that since these are *shared credentials*, others have access to the same Civic Passes and can, for example, freeze them.
+
+*The demo credentials only work for these development networks:*
+
+* `solana/devnet`
+
+* `ethereum/goerli`
+
+* `ethereum/polygonMumbai`
+
+* `ethereum/xdcApothem`
+
+* `ethereum/arbitrumGoerli`
+
+* `ethereum/fantomTestnet`
+
+### On-Chain Integration
+
+To test your integration on **testnet**, use this Gatekeeper network address:
+
+`gatekeeperNetwork=tgnuXXNMDLK8dy7Xm1TdeGyc95MDym4bvAQCwcW21Bf`
