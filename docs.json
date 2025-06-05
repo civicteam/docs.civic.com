@@ -47,7 +47,6 @@
             "pages": [
               "auth/integration/react",
               "auth/integration/next.js",
-              "auth/integration/vanillajs",
               {
                 "group": "Node.JS",
                 "icon": "node-js",
