@@ -29,18 +29,14 @@
     "tabs": [
       {
         "tab": "Home",
-        "pages": [
-          "index"
-        ]
+        "pages": ["index"]
       },
       {
         "tab": "Civic Auth",
         "groups": [
           {
             "group": " ",
-            "pages": [
-              "auth"
-            ]
+            "pages": ["auth"]
           },
           {
             "group": "Integration",
@@ -57,6 +53,7 @@
                   "auth/integration/node.js/fastify"
                 ]
               },
+              "auth/integration/react-native",
               "auth/integration/other",
               "auth/integration/faqs",
               "auth/integration/error-codes",
@@ -79,9 +76,7 @@
         "groups": [
           {
             "group": " ",
-            "pages": [
-              "pass"
-            ]
+            "pages": ["pass"]
           },
           {
             "group": "Introduction",
@@ -134,9 +129,7 @@
           },
           {
             "group": "Gating Options",
-            "pages": [
-              "pass/gating-options/choosing-how-to-implement-gating"
-            ]
+            "pages": ["pass/gating-options/choosing-how-to-implement-gating"]
           },
           {
             "group": "Use Cases",
@@ -212,9 +205,7 @@
         "groups": [
           {
             "group": " ",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "pages": ["api-reference/introduction"]
           }
         ]
       }
