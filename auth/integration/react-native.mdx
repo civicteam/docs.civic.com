@@ -1,0 +1,78 @@
+---
+title: "React-native"
+description: "Integrate react-native with civic-auth OAuth2 services."
+---
+
+## Overview
+
+\
+React Native applications can integrate with Civic Auth using any OAuth2/OIDC-compatible library. Popular options include:
+
+- [**Expo AuthSession**](https://docs.expo.dev/versions/latest/sdk/auth-session/)
+- [**react-native-app-auth**](https://github.com/FormidableLabs/react-native-app-auth)
+
+For a complete OAuth2/OIDC integration details, see the [Civic Auth Integration Guide](https://docs.civic.com/auth/integration/other).
+
+## Reference Implementation
+
+A complete working example is available in the [civic-auth-examples](https://github.com/civicteam/civic-auth-examples/tree/main/packages/mobile/react-native-expo) repository, which demonstrates:
+
+- OAuth2 authorization code flow with PKCE
+- Login flow
+- Logout flow
+
+### Implementation Approach
+
+#### 1. Configure OAuth2 Endpoints
+
+Civic Auth uses standard OAuth2/OIDC endpoints:
+
+- **Authorization**: `https://auth.civic.com/oauth/auth`
+- **Token**: `https://auth.civic.com/oauth/token`
+- **UserInfo**: `https://auth.civic.com/oauth/userinfo`
+- **Scopes**: `openid profile email`
+
+#### 2. Authentication Flow
+
+The reference implementation follows a standard OAuth2 authorization code flow with PKCE:
+
+1. User initiates sign-in
+2. App opens Civic Auth on a WebView
+3. User authenticates
+4. App receives authorization code through redirect
+5. App exchanges code for tokens
+6. App fetches user information
+
+#### 3. Example AuthContext
+
+The reference project's `AuthContext` demonstrates how to use Expo AuthSession:
+
+```typescript
+// Uses expo-auth-session for OAuth2 flow
+const [request, response, promptAsync] = useAuthRequest(
+  {
+    clientId: config.clientId,
+    scopes: ["openid", "profile", "email"],
+    redirectUri: config.redirectUri,
+    usePKCE: true, // Required by Civic Auth
+  },
+  {
+    authorizationEndpoint: config.authorizationEndpoint,
+    tokenEndpoint: config.tokenEndpoint,
+  },
+);
+
+// Authentication methods
+const authContext = {
+  signIn: () => promptAsync(),
+  signOut: async () => {
+    // Clear tokens and end remote session
+  },
+  state: { isAuthenticated, user, accessToken },
+};
+```
+
+## Resources
+
+- [Civic Auth OAuth2/OIDC Integration](https://docs.civic.com/auth/integration/other)
+- [Complete React Native Example](https://github.com/civicteam/civic-auth-examples/tree/main/packages/mobile/react-native-expo)
