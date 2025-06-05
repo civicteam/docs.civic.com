@@ -2,9 +2,9 @@ name: Link Check
 
 on:
   push:
-    branches: [lint-checker]
+    branches: [main]
   pull_request:
-    branches: [lint-checker]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
