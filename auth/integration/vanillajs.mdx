@@ -9,6 +9,7 @@ description: "Integrate Civic Auth into your Vanilla JavaScript application with
 ### Prerequisites
 
 - A Civic Auth Client ID (get it from [auth.civic.com](https://auth.civic.com))
+- Configure your redirect URL in the Civic Auth dashboard (typically `http://localhost:3000` for development)
 
 ### Installation
 
@@ -17,6 +18,17 @@ description: "Integrate Civic Auth into your Vanilla JavaScript application with
 ```bash
 npm install @civic/auth
 ```
+
+<Tip>
+We highly recommend using [Vite](https://vitejs.dev/) for the best development experience with modern JavaScript features, fast hot reloading, and seamless ES module support.
+
+```bash
+npm create vite@latest my-civic-app -- --template vanilla
+cd my-civic-app
+npm install
+npm install @civic/auth
+```
+</Tip>
 
 ### Simple Setup
 
@@ -78,7 +90,7 @@ That's it\! Replace `YOUR_CLIENT_ID` with your actual client ID and you're done.
 | `clientId`               | Yes      | -                                | Your Civic Auth client ID from [auth.civic.com](https://auth.civic.com)     |
 | `targetContainerElement` | No       | -                                | DOM element where embedded iframe will be rendered                          |
 | `redirectUrl`            | No       | Current URL                      | OAuth redirect URL after authentication                                     |
-| `displayMode`            | No       | `embedded`                       | How the auth UI is displayed: `embedded`, `modal`, `redirect`, or `new_tab` |
+| `displayMode`            | No       | `modal`                          | How the auth UI is displayed: `embedded`, `modal`, `redirect`, or `new_tab` |
 | `scopes`                 | No       | `['openid', 'profile', 'email']` | OAuth scopes to request                                                     |
 
 ### Display Modes
@@ -105,6 +117,34 @@ const logout = async () => {
 
 - Use `authClient.getCurrentUser()` to retrieve current user information before logout
 - Use `authClient.isAuthenticated()` to check if user is currently logged in
+
+## Troubleshooting
+
+### Module Resolution Error
+
+If you encounter an error like `Failed to resolve module specifier "@civic/auth/vanillajs"`, this is typically caused by a corrupted module cache or installation issue.
+
+**Solution:**
+```bash
+# Clear node_modules and package-lock.json, then reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**For Vite users:**
+```bash
+# Also clear Vite's cache
+rm -rf node_modules package-lock.json .vite
+npm install
+```
+
+This issue can occur when switching between different versions of the `@civic/auth` package or when the package installation is interrupted.
+
+### Common Issues
+
+- **CORS errors**: Ensure your redirect URL in the Civic Auth dashboard exactly matches your development server URL
+- **Authentication not starting**: Verify your client ID is correct and your redirect URL is properly configured
+- **Container element not found**: Make sure the target container element exists in the DOM before initializing Civic Auth
 
 ## API Reference
 
