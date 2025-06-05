@@ -61,7 +61,8 @@
               "auth/integration/other",
               "auth/integration/faqs",
               "auth/integration/error-codes",
-              "auth/integration/bring-your-app-to-production"
+              "auth/integration/bring-your-app-to-production",
+              "auth/integration/changelog"
             ]
           },
           {
