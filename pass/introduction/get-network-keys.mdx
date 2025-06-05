@@ -1,36 +1,41 @@
 ---
 title: "Get Network Keys"
-icon: key
+icon: "key"
 ---
 
 ## Self-Serve Network Keys
 
-This is the fastest way to start integrating Civic Pass. Request network keys for CAPTCHA, Liveness or Uniqueness Passes by filling out the appropriate form below. You will receive an automated email from Civic with a key to get started. See [Pricing](https://www.civic.com/pricing/pass-pricing) for more information on costs.
+This is the fastest way to start integrating Civic Pass. Request network keys for CAPTCHA, Liveness or Uniqueness Passes by filling out the appropriate form below. You will receive an automated email from Civic with a key to get started. 
 
 ### CAPTCHA Pass
 
-A challenge-response test to determine human or bot. [**Try it out <Icon icon ="arrow-right" />**](https://getpass.civic.com/?scope=captcha,uniqueness,liveness)
+A challenge-response test to determine human or bot. [**Try it out **](https://getpass.civic.com/?scope=captcha,uniqueness,liveness)
 
-<CardGroup>
-  <Card title ="Get CAPTCHA key" href ="https://civickey.typeform.com/req-captcha" icon="arrow-right" horizontal />
+<CardGroup cols={2}>
+  <Card title="Get CAPTCHA key" icon="arrow-right" horizontal href="https://civickey.typeform.com/req-captcha">
+    
+  </Card>
 </CardGroup>
 
 ### Liveness Pass
 
-A video selfie to determine human or bot. [**Try it out <Icon icon ="arrow-right" />**](https://getpass.civic.com/?scope=liveness,uniqueness,captcha)
+A video selfie to determine human or bot. [**Try it out **](https://getpass.civic.com/?scope=liveness,uniqueness,captcha)
 
-<CardGroup>
-  <Card title="Get Liveness key" href="https://civickey.typeform.com/req-liveness" icon="arrow-right" horizontal />
+<CardGroup cols={2}>
+  <Card title="Get Liveness key" icon="arrow-right" horizontal href="https://civickey.typeform.com/req-liveness">
+    
+  </Card>
 </CardGroup>
 
 ### Uniqueness Pass
 
-A video selfie to determine 1-user-1-wallet. [**Try it out <Icon icon ="arrow-right" />**](https://getpass.civic.com/?scope=liveness,uniqueness,captcha)
+A video selfie to determine 1-user-1-wallet. [**Try it out **](https://getpass.civic.com/?scope=liveness,uniqueness,captcha)
 
-<CardGroup>
-  <Card title="Get Uniqueness key" href="https://civickey.typeform.com/req-uniqueness" icon="arrow-right" horizontal />
+<CardGroup cols={2}>
+  <Card title="Get Uniqueness key" icon="arrow-right" horizontal href="https://civickey.typeform.com/req-uniqueness">
+    
+  </Card>
 </CardGroup>
-
 
 ## Network Keys That Require a Contract
 
@@ -38,18 +43,22 @@ Our team will be in touch to learn more about your business needs. See [Pricing]
 
 ### ID Verification Pass
 
-Verifies real-world identity using government-issued ID documents. [**Try it out <Icon icon ="arrow-right" />**](https://getpass.civic.com/?pass=identity)
+Verifies real-world identity using government-issued ID documents. [**Try it out **](https://getpass.civic.com/?pass=identity)
 
-<CardGroup>
-  <Card title="Get in touch" href="https://civickey.typeform.com/req-id" icon="arrow-right" horizontal />
+<CardGroup cols={2}>
+  <Card title="Get in touch" icon="arrow-right" horizontal href="https://civickey.typeform.com/req-id">
+    
+  </Card>
 </CardGroup>
 
 ### Custom Pass
 
 Need additional countries, on-chain checks, not yet supported chains, or other verifications?
 
-<CardGroup>
-  <Card title="Get in touch" href="https://civickey.typeform.com/req-custom" icon="arrow-right" horizontal />
+<CardGroup cols={2}>
+  <Card title="Get in touch" icon="arrow-right" horizontal href="https://civickey.typeform.com/req-custom">
+    
+  </Card>
 </CardGroup>
 
 ## What are Network Keys?
@@ -65,18 +74,19 @@ For example, builders that want to ensure user uniqueness can rely on the Unique
 You can use a network key on testnet/devnet to test your integration with Civic Pass. This allows you to simulate real-world scenarios and verify that your application is correctly configured.
 
 ## Key Points
-<CardGroup>
-  <Card title ="Not application-specific" icon ="square-1" >
-   Network Keys are tied to pass types, not specific applications.
+
+<CardGroup cols={2}>
+  <Card title="Not application-specific" icon="square-1">
+    Network Keys are tied to pass types, not specific applications.
   </Card>
-  <Card title="No secure communication implication" icon="square-2" >
+  <Card title="No secure communication implication" icon="square-2">
     Network Keys do not imply or facilitate secure communication through encryption. They simply allow on-chain identification of the pass being used.
   </Card>
-  <Card title ="No authentication role" icon ="square-3" >
-  They do not authenticate applications to the Civic system; front-end applications do not require authentication to use them.
+  <Card title="No authentication role" icon="square-3">
+    They do not authenticate applications to the Civic system; front-end applications do not require authentication to use them.
   </Card>
   <Card title="No data encryption" icon="square-4">
-  Network Keys do not encrypt or decrypt data transmitted between applications and the Civic Pass system.
+    Network Keys do not encrypt or decrypt data transmitted between applications and the Civic Pass system.
   </Card>
 </CardGroup>
 
@@ -84,11 +94,11 @@ You can use a network key on testnet/devnet to test your integration with Civic 
 
 If you encounter issues such as authentication errors or invalid key messages:
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Verify key accuracy" icon="square-1">
-  Double-check that you have entered the correct Network Key and that it matches the one provided by Civic Pass.
+    Double-check that you have entered the correct Network Key and that it matches the one provided by Civic Pass.
   </Card>
   <Card title="Contact support" icon="square-2">
-   [Reach out to the Civic team on Discord](https://discord.com/invite/8H5Kdtr5Wn).
+    [Reach out to the Civic team on Discord](https://discord.com/invite/8H5Kdtr5Wn).
   </Card>
 </CardGroup>
