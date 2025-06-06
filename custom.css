@@ -2,7 +2,7 @@
 /* Use these classes on Frame components for selective styling */
 
 /* Width control classes (no border radius) */
-.image-50 img {
+.image-50 {
   width: 50% !important;
   max-width: 50% !important;
   height: auto;
@@ -10,7 +10,7 @@
   display: block;
 }
 
-.image-60 img {
+.image-60 {
   width: 60% !important;
   max-width: 60% !important;
   height: auto;
@@ -18,7 +18,7 @@
   display: block;
 }
 
-.image-70 img {
+.image-70 {
   width: 70% !important;
   max-width: 70% !important;
   height: auto;
@@ -26,7 +26,7 @@
   display: block;
 }
 
-.image-80 img {
+.image-80 {
   width: 80% !important;
   max-width: 80% !important;
   height: auto;
@@ -35,16 +35,16 @@
 }
 
 /* Border radius class (separate) */
-.image-rounded img {
+.image-rounded {
   border-radius: 8px;
 }
 
 /* For responsive behavior */
 @media (max-width: 768px) {
-  .image-50 img,
-  .image-60 img,
-  .image-70 img,
-  .image-80 img {
+  .image-50,
+  .image-60,
+  .image-70,
+  .image-80 {
     width: 90% !important;
     max-width: 90% !important;
   }

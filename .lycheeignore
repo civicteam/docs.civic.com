@@ -1,0 +1,27 @@
+# Ignore patterns for Lychee link checker
+
+# Social media (often rate-limited or require auth)
+https://twitter.com/.*
+https://x.com/.*
+https://linkedin.com/.*
+https://www.linkedin.com/.*
+
+# Local development
+http://localhost:*
+http://127.0.0.1:*
+
+# GitHub line numbers (these change frequently)
+https://github.com/.*#L[0-9]+
+
+# Known problematic domains that may block automated requests
+https://medium.com/.*
+
+# Civic-specific patterns (adjust as needed)
+# SEC links disallow redirects
+https://www.sec.gov/.*
+# Civic API links are not intended for public access
+https://api.civic.com/.*
+# ICP link not intended to be called directly:
+https://73ncn-4qaaa-aaaag-alddq-cai.icp0.io
+# Civic Support url that is returning 403 to lychee
+https://support.civic.com/hc/en-us/requests/new

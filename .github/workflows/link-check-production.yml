@@ -1,0 +1,73 @@
+name: Link Check (Production)
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Run daily at 9 AM UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Link Checker (Deployed Site)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # Check against deployed site using base URL
+          args: >
+            --config lychee.toml
+            --base-url 'https://docs.civic.com'
+            --no-progress
+            '**/*.md'
+            '**/*.mdx'
+          fail: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Issue From File
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: 'Link Checker Report: Broken Links Found'
+          content-filepath: ./lychee/out.md
+          labels: |
+            documentation
+            automated
+
+      - name: Slack Notification
+        if: failure() && github.event_name == 'schedule'
+        uses: slackapi/slack-github-action@v2.1.0
+        with:
+          payload: |
+            {
+              "text": "🔴 Scheduled link check failed for docs.civic.com",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "🔴 Docs Link Check Failed"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Repository:* ${{ github.repository }}\n*Workflow:* ${{ github.workflow }}\n*Run:* <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View Details>"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "The scheduled link check found broken links in the documentation. Please check the GitHub issue for details."
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,6 +1,6 @@
 ---
 title: "Civic Auth"
-icon: lock
+icon: "lock"
 description: "Civic Auth is a simple, flexible, and fast way to integrate authentication into your applications. Enable familiar sign-in options while offering optional embedded wallets and unlocking blockchain benefits for your users."
 ---
 
@@ -10,12 +10,15 @@ description: "Civic Auth is a simple, flexible, and fast way to integrate authen
   Civic Auth is currently in **beta**. Please expect occasional changes or updates as we continue to refine the experience.
 </Info>
 
-
-<Frame className="image-60 image-rounded" caption="Civic Auth: User-Facing View">
-  <img src="/images/image-1.png" align="center" />
+<Frame caption="Civic Auth: User-Facing View">
+  <img
+    src="/images/image-1.png"
+    align="center"
+    className="image-60 image-rounded"
+  />
 </Frame>
 
-<CardGroup>
+<CardGroup cols={2}>
   <Card title="Integrated login." icon="user">
     Users sign in using their email, Google account, passkeys, or wallet—no complex setup required.
   </Card>
@@ -35,27 +38,32 @@ description: "Civic Auth is a simple, flexible, and fast way to integrate authen
 Sign up for Civic Auth in less than a minute at [auth.civic.com](https://auth.civic.com) to get your Client ID.
 
 <Frame caption="Civic Auth: Admin Dashboard - Integration Steps">
-  <img src="/images/image-2.png" />
+  ![](/images/image-2.png)
 </Frame>
 
 Install the library in your app.
 
 <CodeGroup>
-  ```npm npm
-  npm install @civic/auth
-  ```
 
-  ```yarn yarn
-  yarn add @civic/auth
-  ```
+```npm npm
+npm install @civic/auth
+```
 
-  ```pnpm pnpm
-  pnpm install @civic/auth
-  ```
 
-  ```bun bun
-  bun add @civic/auth
-  ```
+```yarn yarn
+yarn add @civic/auth
+```
+
+
+```pnpm pnpm
+pnpm install @civic/auth
+```
+
+
+```bun bun
+bun add @civic/auth
+```
+
 </CodeGroup>
 
 ## Web3 Wallets
@@ -63,45 +71,52 @@ Install the library in your app.
 If you plan to offer your users [Web3 wallets](/auth#web3-wallets), you can use the Civic Auth Web3 SDK.
 
 <Frame caption="Civic Auth: Admin Dashboard - Web3 Wallets Support">
-  <img src="/images/image-3.png" />
+  ![](/images/image-3.png)
 </Frame>
 
 This SDK extends the functionality of the base Civic Auth SDK to add Web3 features.
 
 <CodeGroup>
-  ```npm-1 npm
-  npm install @civic/auth-web3
-  ```
 
-  ```yarn-1 yarn
-  yarn add @civic/auth-web3
-  ```
+```npm-1 npm
+npm install @civic/auth-web3
+```
 
-  ```pnpm-1 pnpm
-  pnpm install @civic/auth-web3
-  ```
 
-  ```bun-1 bun
-  bun add @civic/auth-web3
-  ```
+```yarn-1 yarn
+yarn add @civic/auth-web3
+```
+
+
+```pnpm-1 pnpm
+pnpm install @civic/auth-web3
+```
+
+
+```bun-1 bun
+bun add @civic/auth-web3
+```
+
 </CodeGroup>
 
 ### Usage
 
 Choose your framework for instructions on how to integrate Civic Auth into your application.
 
-<CardGroup cols={3}>
-  <Card img="/images/image-4.png" href="/auth/integration/react">
+<CardGroup cols={4}>
+  <Card href="/auth/integration/react" img="/images/image-4.png">
     React
   </Card>
-  <Card img="/images/image-5.jpeg" href="/auth/integration/next.js">
+  <Card href="/auth/integration/nextjs" img="/images/image-5.jpeg">
     Next.JS
   </Card>
-  <Card img="/images/image-6.png" href="/auth/integration/node.js">
+  <Card href="/auth/integration/nodejs" img="/images/image-6.png">
     Node.JS
   </Card>
+  <Card href="/auth/integration/react-native" img="/images/image-4.png">
+    React Native
+  </Card>
 </CardGroup>
-
 
 For integrating in other environments using any OIDC or OAuth 2.0-compliant client libraries, see [here](/auth/integration/other).
 
@@ -110,6 +125,5 @@ For integrating in other environments using any OIDC or OAuth 2.0-compliant clie
 Don't take our word for it. See Civic Auth in action:
 
 <Frame>
-  <iframe width="100%" height="420" src="https://www.youtube.com/embed/vk01H9cB7fQ" title="Demo - Civic Auth for seamless user management" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe width="100%" height="420" src="https://www.youtube.com/embed/vk01H9cB7fQ" title="Demo - Civic Auth for seamless user management" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 </Frame>
-
