@@ -37,185 +37,35 @@
         "tab": "Civic Auth",
         "groups": [
           {
-            "group": " ",
-            "pages": [
-              "auth"
-            ]
-          },
-          {
             "group": "Integration",
             "pages": [
-              "auth/integration/react",
-              "auth/integration/nextjs",
-              "auth/integration/vanillajs",
+              "integration/react",
+              "integration/nextjs",
+              "integration/vanillajs",
               {
                 "group": "Node.JS",
                 "icon": "node-js",
                 "pages": [
-                  "auth/integration/nodejs",
-                  "auth/integration/nodejs/express",
-                  "auth/integration/nodejs/hono",
-                  "auth/integration/nodejs/fastify"
+                  "integration/nodejs",
+                  "integration/nodejs/express",
+                  "integration/nodejs/hono",
+                  "integration/nodejs/fastify"
                 ]
               },
-              "auth/integration/react-native",
-              "auth/integration/other",
-              "auth/integration/faqs",
-              "auth/integration/error-codes",
-              "auth/integration/bring-your-app-to-production",
-              "auth/integration/changelog"
+              "integration/react-native",
+              "integration/other",
+              "integration/faqs",
+              "integration/error-codes",
+              "integration/bring-your-app-to-production",
+              "integration/changelog"
             ]
           },
           {
             "group": "Web3",
             "pages": [
-              "auth/web3/embedded-wallets",
-              "auth/web3/ethereum-evm",
-              "auth/web3/solana"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Civic Pass",
-        "groups": [
-          {
-            "group": " ",
-            "pages": [
-              "pass"
-            ]
-          },
-          {
-            "group": "Introduction",
-            "pages": [
-              "pass/introduction/overview-of-civic-pass",
-              "pass/introduction/key-terms-and-definitions",
-              "pass/introduction/civic-pass-behavior",
-              "pass/introduction/get-network-keys",
-              "pass/introduction/demo-videos",
-              "pass/introduction/referral-link-guide"
-            ]
-          },
-          {
-            "group": "Integration Guide",
-            "pages": [
-              "pass/integration-guide/implementation-guide-on-evm",
-              "pass/integration-guide/avalanche",
-              "pass/integration-guide/base",
-              "pass/integration-guide/bsc",
-              "pass/integration-guide/ethereum",
-              "pass/integration-guide/fantom",
-              {
-                "group": "Internet Computer (ICP)",
-                "icon": "link",
-                "pages": [
-                  "pass/integration-guide/internet-computer-icp",
-                  "pass/integration-guide/internet-computer-icp/why-use-civic-pass-on-icp",
-                  "pass/integration-guide/internet-computer-icp/how-civic-pass-works",
-                  "pass/integration-guide/internet-computer-icp/civic-pass-implementation-guide",
-                  "pass/integration-guide/internet-computer-icp/icp-civic-credential-check-button"
-                ]
-              },
-              "pass/integration-guide/optimism",
-              "pass/integration-guide/polygon",
-              "pass/integration-guide/polygon-zkevm",
-              "pass/integration-guide/solana",
-              "pass/integration-guide/sonic",
-              "pass/integration-guide/unichain",
-              "pass/integration-guide/xdc",
-              "pass/integration-guide/xlayer",
-              "pass/integration-guide/unsupported-evm"
-            ]
-          },
-          {
-            "group": "Custom Passes",
-            "pages": [
-              "pass/custom-passes/issue-your-own-custom-pass",
-              "pass/custom-passes/using-the-api"
-            ]
-          },
-          {
-            "group": "Gating Options",
-            "pages": [
-              "pass/gating-options/choosing-how-to-implement-gating"
-            ]
-          },
-          {
-            "group": "Use Cases",
-            "pages": [
-              "pass/use-cases/overview-of-use-cases",
-              "pass/use-cases/agentic-ai",
-              "pass/use-cases/airdrops",
-              {
-                "group": "Communities & DAOs",
-                "icon": "globe",
-                "pages": [
-                  "pass/use-cases/communities-and-daos",
-                  "pass/use-cases/communities-and-daos/event-access",
-                  "pass/use-cases/communities-and-daos/quadratic-voting",
-                  "pass/use-cases/communities-and-daos/rewards-management",
-                  "pass/use-cases/communities-and-daos/sybil-resistant-id-verification"
-                ]
-              },
-              {
-                "group": "Decentralized Finance (DeFi)",
-                "icon": "money-bill",
-                "pages": [
-                  "pass/use-cases/decentralized-finance-defi",
-                  "pass/use-cases/decentralized-finance-defi/accredited-investor-checks",
-                  "pass/use-cases/decentralized-finance-defi/country-blocking-by-residence-nationality",
-                  "pass/use-cases/decentralized-finance-defi/on-chain-id-verification"
-                ]
-              },
-              {
-                "group": "Gaming & GameFi",
-                "icon": "gamepad-modern",
-                "pages": [
-                  "pass/use-cases/gaming-and-gamefi",
-                  "pass/use-cases/gaming-and-gamefi/unique-player-management",
-                  "pass/use-cases/gaming-and-gamefi/rewards-management"
-                ]
-              },
-              "pass/use-cases/nfts",
-              {
-                "group": "Real-World Assets (RWAs)",
-                "icon": "house",
-                "pages": [
-                  "pass/use-cases/real-world-assets-rwas",
-                  "pass/use-cases/real-world-assets-rwas/accredited-investor-checks",
-                  "pass/use-cases/real-world-assets-rwas/country-blocking-based-on-residence-nationality",
-                  "pass/use-cases/real-world-assets-rwas/tokenizing-rwas"
-                ]
-              },
-              "pass/use-cases/smart-contract-development"
-            ]
-          },
-          {
-            "group": "Security",
-            "pages": [
-              "pass/security/bug-bounty-program",
-              "pass/security/security-and-compliance",
-              "pass/security/audit-reports"
-            ]
-          },
-          {
-            "group": "Resources",
-            "pages": [
-              "pass/resources/faqs",
-              "pass/resources/supported-countries-and-docs",
-              "pass/resources/find-us-on-discord"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "openapi": "openapi.yml",
-        "groups": [
-          {
-            "group": " ",
-            "pages": [
-              "api-reference/introduction"
+              "web3/embedded-wallets",
+              "web3/ethereum-evm",
+              "web3/solana"
             ]
           }
         ]
