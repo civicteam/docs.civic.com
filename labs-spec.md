@@ -209,3 +209,12 @@ Update Project File Structure
 ├── bodyguard.md
 ├── passthrough-proxy.md
 └── civic-knowledge.md   <-- Add this
+
+# NOTES
+
+Two titles on each page. Remove the one in text, keep the one in the frontmatter.
+Too many test tube emojis. Let's remove them from Civic Labs. Keep them in the sidebar view, which I think is populated by docs.json, but put them on the left as opposed to the right of each project.
+The sidebar should call the projects FASCs rather than projects.
+Replace any em dashes with commas in general.
+Let's move the Getting Started and Feedback and Contributions sections above the Projects / Flasks.
+Check Civic.com for the correct Discord URL.

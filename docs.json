@@ -217,7 +217,7 @@
             ]
           },
           {
-            "group": "Projects",
+            "group": "Flasks",
             "pages": [
               "labs/projects/mcp-hub",
               "labs/projects/guardrail-proxy",
