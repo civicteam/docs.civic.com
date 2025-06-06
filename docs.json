@@ -213,7 +213,10 @@
           {
             "group": " ",
             "pages": [
-              "labs"
+              "labs",
+              "labs/flask-status",
+              "labs/getting-started",
+              "labs/feedback"
             ]
           },
           {
@@ -236,10 +239,9 @@
             ]
           },
           {
-            "group": " ",
+            "group": "Other Resources",
             "pages": [
-              "labs/getting-started",
-              "labs/feedback"
+              "labs/flask-status"
             ]
           }
         ]
