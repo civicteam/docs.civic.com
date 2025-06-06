@@ -67,7 +67,7 @@ The configuration parameters of the Gateway Provider vary slightly depending on 
 
 |Property|Description|Type|
 |-----|----|-----------|
-|`wallet`|A object containing a wallet address & an instance of an [ethers v6 signer](https://docs.ethers.org/v6/api/providers/#Signer)|`EthereumGatewayWallet`|
+|`wallet`|A object containing a wallet address & an instance of an [ethers v6 signer](https://docs.ethers.org/v6/api/providers#Signer)|`EthereumGatewayWallet`|
 |address: string|undefined;| |
 |signer: Signer|undefined;|  |
 |};|  |  |
@@ -300,7 +300,7 @@ The **gatewayToken** represents the on-chain structure of the Civic Pass. This w
 
 ## Backend Integration
 
-While the [React library](/pass/integration-guide/implementation-guide-on-evm#id-1.-install-the-react-component-for-your-chain) is the easiest way to integrate Civic Pass on a frontend, there are many reasons why you may need to check the pass state on your backend. Here are a few ways to do this.
+While the [React library](/pass/integration-guide/implementation-guide-on-evm#install-the-react-component) is the easiest way to integrate Civic Pass on a frontend, there are many reasons why you may need to check the pass state on your backend. Here are a few ways to do this.
 
 ### Using the API
 
@@ -508,7 +508,7 @@ As the user reaches the end of the Civic Pass data collection flow, including au
 
 ### Retrieving PII Evidence
 
-The Gatekeeper Context will communicate a new presentation request ID when the user reaches the end of the data collection flow. See [here](/pass/integration-guide/implementation-guide-on-evm#id-1.-install-the-react-component-for-your-chain) for more detail on the use of `GatewayProvider` and `useGateway`.
+The Gatekeeper Context will communicate a new presentation request ID when the user reaches the end of the data collection flow. See [here](/pass/integration-guide/implementation-guide-on-evm#install-the-react-component) for more detail on the use of `GatewayProvider` and `useGateway`.
 
 ```bash
 const { pendingRequests } = useGateway();

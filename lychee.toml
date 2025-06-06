@@ -19,16 +19,16 @@ exclude = [
   # Localhost
   '^https?://localhost',
   '^https?://127\.0\.0\.1',
-  
+
   # GitHub line numbers
   'github\.com.*#L[0-9]+',
-  
+
   # Social media (often rate-limited)
   '^https?://(www\.)?(twitter|x|linkedin)\.com',
-  
+
   # Email addresses
   '^mailto:',
-  
+
   # Tel links
   '^tel:',
 ]

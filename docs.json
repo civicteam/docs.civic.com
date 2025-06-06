@@ -46,15 +46,15 @@
             "group": "Integration",
             "pages": [
               "auth/integration/react",
-              "auth/integration/next.js",
+              "auth/integration/nextjs",
               {
                 "group": "Node.JS",
                 "icon": "node-js",
                 "pages": [
-                  "auth/integration/node.js",
-                  "auth/integration/node.js/express",
-                  "auth/integration/node.js/hono",
-                  "auth/integration/node.js/fastify"
+                  "auth/integration/nodejs",
+                  "auth/integration/nodejs/express",
+                  "auth/integration/nodejs/hono",
+                  "auth/integration/nodejs/fastify"
                 ]
               },
               "auth/integration/other",
