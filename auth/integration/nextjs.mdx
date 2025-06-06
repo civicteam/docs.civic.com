@@ -24,7 +24,7 @@ Integrate Civic Auth into your Next.js application using the following steps (a 
 
 This is where you give your app the Client ID provided when you sign up at [auth.civic.com](https://auth.civic.com).
 
-The defaults should work out of the box for most customers, but if you want to configure your app, see [below](/auth/integration/next.js#advanced-configuration) for details.
+The defaults should work out of the box for most customers, but if you want to configure your app, see [below](/auth/integration/nextjs#advanced-configuration) for details.
 
 <Tabs>
   <Tab title="Auth">
@@ -77,18 +77,18 @@ Create this file at the following path:
 
 <Tabs>
   <Tab title="Auth">
-    ```ts route.ts
-    import { handler } from "@civic/auth/nextjs"
+```ts route.ts
+import { handler } from "@civic/auth/nextjs"
 
-    export const GET = handler()
-    ```
+export const GET = handler()
+```
   </Tab>
   <Tab title="Auth + Web3">
-    ```ts route.ts
-    import { handler } from "@civic/auth-web3/nextjs"
+```ts route.ts
+import { handler } from "@civic/auth-web3/nextjs"
 
-    export const GET = handler()
-    ```
+export const GET = handler()
+```
   </Tab>
 </Tabs>
 
@@ -104,44 +104,44 @@ Using the Civic Auth middleware ensures that only logged-in users have access to
 
 <Tabs>
   <Tab title="Auth">
-    ```ts src/middleware.ts
-    import { authMiddleware } from "@civic/auth/nextjs/middleware"
+```ts src/middleware.ts
+import { authMiddleware } from "@civic/auth/nextjs/middleware"
 
-    export default authMiddleware();
+export default authMiddleware();
 
-    export const config = {
-      // include the paths you wish to secure here
-      matcher: [
-        /*
-        * Match all request paths except:
-        * - _next directory (Next.js static files)
-        * - favicon.ico, sitemap.xml, robots.txt
-        * - image files
-        */
-        '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
-      ],
-    }
-    ```
+export const config = {
+  // include the paths you wish to secure here
+  matcher: [
+    /*
+    * Match all request paths except:
+    * - _next directory (Next.js static files)
+    * - favicon.ico, sitemap.xml, robots.txt
+    * - image files
+    */
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
+  ],
+}
+```
   </Tab>
   <Tab title="Auth + Web3">
-    ```ts src/middleware.ts
-    import { authMiddleware } from "@civic/auth-web3/nextjs/middleware"
+```ts src/middleware.ts
+import { authMiddleware } from "@civic/auth-web3/nextjs/middleware"
 
-    export default authMiddleware();
+export default authMiddleware();
 
-    export const config = {
-      // include the paths you wish to secure here
-      matcher: [
-        /*
-        * Match all request paths except:
-        * - _next directory (Next.js static files)
-        * - favicon.ico, sitemap.xml, robots.txt
-        * - image files
-        */
-        '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
-      ],
-    }
-    ```
+export const config = {
+  // include the paths you wish to secure here
+  matcher: [
+    /*
+    * Match all request paths except:
+    * - _next directory (Next.js static files)
+    * - favicon.ico, sitemap.xml, robots.txt
+    * - image files
+    */
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
+  ],
+}
+```
   </Tab>
 </Tabs>
 
@@ -151,34 +151,34 @@ If you are already using middleware in your Next.js app, then you can chain them
 
 <Tabs>
   <Tab title="Auth">
-    ```ts src/middleware.ts
-    import { auth } from "@civic/auth/nextjs"
-    import { NextRequest, NextResponse } from "next/server";
+```ts src/middleware.ts
+import { auth } from "@civic/auth/nextjs"
+import { NextRequest, NextResponse } from "next/server";
 
-    const withCivicAuth = auth();
+const withCivicAuth = auth();
 
-    const otherMiddleware = (request: NextRequest) => {
-        console.log("my middleware");
-        return NextResponse.next();
-    }
+const otherMiddleware = (request: NextRequest) => {
+    console.log("my middleware");
+    return NextResponse.next();
+}
 
-    export default withCivicAuth(otherMiddleware);
-    ```
+export default withCivicAuth(otherMiddleware);
+```
   </Tab>
   <Tab title="Auth + Web3">
-    ```ts src/middleware.ts
-    import { auth } from "@civic/auth-web3/nextjs"
-    import { NextRequest, NextResponse } from "next/server";
+```ts src/middleware.ts
+import { auth } from "@civic/auth-web3/nextjs"
+import { NextRequest, NextResponse } from "next/server";
 
-    const withCivicAuth = auth();
+const withCivicAuth = auth();
 
-    const otherMiddleware = (request: NextRequest) => {
-        console.log("my middleware");
-        return NextResponse.next();
-    }
+const otherMiddleware = (request: NextRequest) => {
+    console.log("my middleware");
+    return NextResponse.next();
+}
 
-    export default withCivicAuth(otherMiddleware);
-    ```
+export default withCivicAuth(otherMiddleware);
+```
   </Tab>
 </Tabs>
 
@@ -187,37 +187,36 @@ If you are already using middleware in your Next.js app, then you can chain them
 Add the Civic Auth context to your app to give your frontend access to the logged-in user.
 
 <CodeGroup>
-  ```js Auth
-  import { CivicAuthProvider } from "@civic/auth/nextjs";
+```js Auth
+import { CivicAuthProvider } from "@civic/auth/nextjs";
 
-  function Layout({ children }) {
-    return (
-      // ... the rest of your app layout
-      <CivicAuthProvider>
+function Layout({ children }) {
+  return (
+  // ... the rest of your app layout
+  <CivicAuthProvider>
+    {children}
+  </CivicAuthProvider>
+  )
+}
+```
+```js Auth + Web3
+import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
+
+function Layout({ children }) {
+return (
+    // ... the rest of your app layout
+    <CivicAuthProvider>
         {children}
-      </CivicAuthProvider>
-    )
-  }
-  ```
-
-  ```js Auth + Web3
-  import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
-
-  function Layout({ children }) {
-    return (
-      // ... the rest of your app layout
-      <CivicAuthProvider>
-        {children}
-      </CivicAuthProvider>
-    )
-  }
-  ```
+    </CivicAuthProvider>
+)
+}
+```
 </CodeGroup>
 
 <Info>
   Unlike the pure [React](/auth/integration/react) integration, you do *not* have to add your client ID again here!
 
-  Make sure to create the [Civic Auth API route](/auth/integration/next.js#id-2.-create-the-civic-auth-api-route), as it serves the essential PKCE code challenge.
+  Make sure to create the [Civic Auth API route](/auth/integration/nextjs#2-create-the-civic-auth-api-route), as it serves the essential PKCE code challenge.
 </Info>
 
 ## Usage
@@ -228,93 +227,89 @@ The Next.js integration can use all the components described in the [React integ
 
 <Tabs>
   <Tab title="Auth">
-    ```ts TitleBar.ts
-    import { UserButton } from "@civic/auth/react";
+```ts TitleBar.ts
+import { UserButton } from "@civic/auth/react";
 
-    export function TitleBar() {
-      return (
-        <div>
-          <h1>My App</h1>
-          <UserButton />
-        </div>
-      );
-    };
-    ```
+export function TitleBar() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <UserButton />
+    </div>
+  );
+};
+```
   </Tab>
   <Tab title="Auth + Web3">
-    ```ts TitleBar.ts
-    import { UserButton } from "@civic/auth-web3/react";
+```ts TitleBar.ts
+import { UserButton } from "@civic/auth-web3/react";
 
-    export function TitleBar() {
-      return (
-        <div>
-          <h1>My App</h1>
-          <UserButton />
-        </div>
-      );
-    };
-    ```
+export function TitleBar() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <UserButton />
+    </div>
+  );
+};
+```
   </Tab>
 </Tabs>
 
 or if you need to rollout your own button:
 
-<Tabs>
-  <Tab title="Auth + Web3">
-  ```ts TitleBar.ts
-      export function TitleBar() {
-      const doSignIn = useCallback(() => {
-        console.log("Starting sign-in process");
-        signIn()
-          .then(() => {
-            console.log("Sign-in completed successfully");
-          })
-          .catch((error) => {
-            console.error("Sign-in failed:", error);
-          });
-      }, [signIn]);
+```ts TitleBar.ts
+export function TitleBar() {
+    const doSignIn = useCallback(() => {
+      console.log("Starting sign-in process");
+      signIn()
+        .then(() => {
+          console.log("Sign-in completed successfully");
+        })
+        .catch((error) => {
+          console.error("Sign-in failed:", error);
+        });
+    }, [signIn]);
 
-      return (
-        <div>
-          <h1>My App</h1>
-          <button onClick={doSignIn}>
-            Sign in
-          </button>
-        </div>
-      );
-    }
-  ```
-  </Tab>
-</Tabs>
+    return (
+      <div>
+        <h1>My App</h1>
+        <button onClick={doSignIn}>
+          Sign in
+        </button>
+      </div>
+    );
+}
+```
 
 or the useUser hook, for retrieving information about the user in code:
 
 <Tabs>
   <Tab title="Auth">
-    ```ts MyComponent.ts
-    import { useUser } from "@civic/auth/react";
+```ts MyComponent.ts
+import { useUser } from "@civic/auth/react";
 
-    export function MyComponent() {
-      const { user } = useUser();
+export function MyComponent() {
+  const { user } = useUser();
 
-      if (!user) return <div>User not logged in</div>
+  if (!user) return <div>User not logged in</div>
 
-      return <div>Hello { user.name }!</div>
-    }
-    ```
+  return <div>Hello { user.name }!</div>
+}
+```
   </Tab>
   <Tab title="Auth + Web3">
-    ```ts MyComponent.ts
-    import { useUser } from "@civic/auth-web3/react";
+```ts MyComponent.ts
+import { useUser } from "@civic/auth-web3/react";
 
-    export function MyComponent() {
-      const { user } = useUser();
+export function MyComponent() {
+  const { user } = useUser();
 
-      if (!user) return <div>User not logged in</div>
+  if (!user) return <div>User not logged in</div>
 
-      return <div>Hello { user.name }!</div>
-    }
-    ```
+  return <div>Hello { user.name }!</div>
+}
+```
   </Tab>
 </Tabs>
 
@@ -326,18 +321,18 @@ Retrieve user information on backend code, such as in React Server Components, R
 
 <Tabs>
   <Tab title="Auth">
-    ```ts
-    import { getUser } from "@civic/auth/nextjs";
+```ts
+import { getUser } from "@civic/auth/nextjs";
 
-    const user = await getUser();
-    ```
+const user = await getUser();
+```
   </Tab>
   <Tab title="Auth + Web3">
-    ```ts
-    import { getUser } from "@civic/auth-web3/nextjs";
+```ts
+import { getUser } from "@civic/auth-web3/nextjs";
 
-    const user = await getUser();
-    ```
+const user = await getUser();
+```
   </Tab>
 </Tabs>
 
@@ -345,30 +340,30 @@ For example, in a Next.js Server Component:
 
 <Tabs>
   <Tab title="Auth">
-    ```ts
-    import { getUser } from "@civic/auth/nextjs";
+```ts
+import { getUser } from "@civic/auth/nextjs";
 
-    export async function MyServerComponent() {
-      const user = await getUser();
+export async function MyServerComponent() {
+  const user = await getUser();
 
-      if (!user) return <div>User not logged in</div>
+  if (!user) return <div>User not logged in</div>
 
-      return <div>Hello { user.name }!</div>
-    }
-    ```
+  return <div>Hello { user.name }!</div>
+}
+```
   </Tab>
   <Tab title="Auth + Web3">
-    ```ts
-    import { getUser } from "@civic/auth-web3/nextjs";
+```ts
+import { getUser } from "@civic/auth-web3/nextjs";
 
-    export async function MyServerComponent() {
-      const user = await getUser();
+export async function MyServerComponent() {
+  const user = await getUser();
 
-      if (!user) return <div>User not logged in</div>
+  if (!user) return <div>User not logged in</div>
 
-      return <div>Hello { user.name }!</div>
-    }
-    ```
+  return <div>Hello { user.name }!</div>
+}
+```
   </Tab>
 </Tabs>
 
@@ -384,28 +379,28 @@ The integration also offers the ability customize the library according to the n
 
 <Tabs>
   <Tab title="Auth">
-    ```ts next.config.ts
-    import { createCivicAuthPlugin } from "@civic/auth/nextjs"
+```ts next.config.ts
+import { createCivicAuthPlugin } from "@civic/auth/nextjs"
 
-    const withCivicAuth = createCivicAuthPlugin({
-      clientId: "YOUR CLIENT ID",
-      ... // other config
-    });
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: "YOUR CLIENT ID",
+  ... // other config
+});
 
-    export default withCivicAuth(nextConfig) // your next config here
-    ```
+export default withCivicAuth(nextConfig) // your next config here
+```
   </Tab>
   <Tab title="Auth + Web3">
-    ```ts next.config.ts
-    import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs"
+```ts next.config.ts
+import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs"
 
-    const withCivicAuth = createCivicAuthPlugin({
-      clientId: "YOUR CLIENT ID",
-      ... // other config
-    });
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: "YOUR CLIENT ID",
+  ... // other config
+});
 
-    export default withCivicAuth(nextConfig) // your next config here
-    ```
+export default withCivicAuth(nextConfig) // your next config here
+```
   </Tab>
 </Tabs>
 
@@ -413,9 +408,9 @@ The integration also offers the ability customize the library according to the n
 |-------------------|----------|----------------------|----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `clientId`        | Yes      | -                    | `2cc5633d-2c92-48da-86aa-449634f274b9` | The key obtained on signup to [auth.civic.com](https://auth.civic.com/)                                                                                                                                                                                                                                                                               |
 | `loginSuccessUrl` | No       | -                    | `/myCustomSuccessEndpoint`             | In a NextJS app, we will redirect your user to this page once the login is finished. If not set, users will be sent back to the root of your app.                                                                                                                                                                                                     |
-| `callbackUrl`     | No       | `/api/auth/callback` | `/api/myroute/callback`                | If you cannot host Civic’s SDK handlers in the default location, you can specify a custom callback route here. This is where you must attach Civic’s GET handler as described [here](/auth/integration/next.js#id-2.-create-the-civic-auth-api-route), so Civic can complete the OAuth token exchange. Use `loginSuccessUrl` to redirect after login. |
+| `callbackUrl`     | No       | `/api/auth/callback` | `/api/myroute/callback`                | If you cannot host Civic’s SDK handlers in the default location, you can specify a custom callback route here. This is where you must attach Civic’s GET handler as described [here](/auth/integration/nextjs#2-create-the-civic-auth-api-route), so Civic can complete the OAuth token exchange. Use `loginSuccessUrl` to redirect after login. |
 | `loginUrl`        | No       | `/`                  | `/admin`                               | The path your user will be sent to if they access a resource that needs them to be logged in. If you have a dedicated login page, you can set it here.                                                                                                                                                                                                |
 | `logoutUrl`       | No       | `/`                  | `/goodbye`                             | The path your user will be sent to after a successful log-out.                                                                                                                                                                                                                                                                                        |
-| `include`         | No       | `["/*"]`             | `["/admin/*", "/api/admin/*"]`         | An array of path [globs](https://man7.org/linux/man-pages/man7/glob.7.html) that require a user to be logged-in to access. If not set, will include all paths matched by your Next.js [middleware](/auth/integration/next.js#middleware).                                                                                                             |
-| `exclude`         | No       | -                    | `["public/home"]`                      | An array of path [globs](https://man7.org/linux/man-pages/man7/glob.7.html) that are excluded from Civic Auth [middleware](/auth/integration/next.js#middleware). In some cases, it might be easier and safer to specify exceptions rather than keep an inclusion list up to date.                                                                    |
+| `include`         | No       | `["/*"]`             | `["/admin/*", "/api/admin/*"]`         | An array of path [globs](https://man7.org/linux/man-pages/man7/glob.7.html) that require a user to be logged-in to access. If not set, will include all paths matched by your Next.js [middleware](/auth/integration/nextjs#3-middleware).                                                                                                             |
+| `exclude`         | No       | -                    | `["public/home"]`                      | An array of path [globs](https://man7.org/linux/man-pages/man7/glob.7.html) that are excluded from Civic Auth [middleware](/auth/integration/nextjs#3-middleware). In some cases, it might be easier and safer to specify exceptions rather than keep an inclusion list up to date.                                                                    |
 | `basePath`        | No       | `/`                  | `/my-app`                              | Allows applications to be served from custom subpaths instead of the root domain. This enables seamless authentication integration when deploying your Next.js application within subdirectories, ensuring all auth-related routes and assets maintain proper functionality regardless of the URL structure.                                          |

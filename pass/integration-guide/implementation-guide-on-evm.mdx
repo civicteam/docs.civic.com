@@ -67,7 +67,7 @@ The configuration parameters of the Gateway Provider vary slightly depending on 
 
 |Property|Description|Type|
 |-----|----|-----------|
-|`wallet`|A object containing a wallet address & an instance of an [ethers v6 signer](https://docs.ethers.org/v6/api/providers/#Signer)|`EthereumGatewayWallet`|
+|`wallet`|A object containing a wallet address & an instance of an [ethers v6 signer](https://docs.ethers.org/v6/api/providers#Signer)|`EthereumGatewayWallet`|
 |address: string|undefined;| |
 |signer: Signer|undefined;|  |
 |};|  |  |
@@ -300,11 +300,11 @@ The **gatewayToken** represents the on-chain structure of the Civic Pass. This w
 
 ## Backend Integration
 
-While the [React library](/pass/integration-guide/implementation-guide-on-evm#id-1.-install-the-react-component-for-your-chain) is the easiest way to integrate Civic Pass on a frontend, there are many reasons why you may need to check the pass state on your backend. Here are a few ways to do this.
+While the [React library](/pass/integration-guide/implementation-guide-on-evm#install-the-react-component) is the easiest way to integrate Civic Pass on a frontend, there are many reasons why you may need to check the pass state on your backend. Here are a few ways to do this.
 
 ### Using the API
 
-[Custom Pass](https://github.com/civicteam/docs.civic.com/blob/main/civic-pass/integration-guide/broken-reference/README.md) holders can use the API to manage their passes. See [here](/pass/custom-passes/using-the-api) for details.
+[Custom Pass](/pass/custom-passes/issue-your-own-custom-pass) holders can use the API to manage their passes. See [here](/pass/custom-passes/using-the-api) for details.
 
 ### Using the Contract ABI
 
@@ -456,18 +456,18 @@ Civic's on-chain integration allows developers to leverage smart contracts to ve
 You can use Civic's provided libraries tailored to each blockchain's programming model for a straightforward integration. First, import the contract dependencies:
 
 ```bash
-npm install @identity.com/gateway-protocol-eth
+npm install @civic/gateway-protocol-eth
 ```
 
 <Info>
-  This tutorial assumes Hardhat. If you are using foundry, please see tips [here](https://sooryak.hashnode.dev/adding-dependencies-to-your-contracts-in-foundry). The steps below can also be followed by copying the contract code directly [here](https://github.com/identity-com/on-chain-identity-gateway/tree/main/ethereum/smart-contract/contracts).
+  This tutorial assumes Hardhat. If you are using foundry, please see tips [here](https://sooryak.hashnode.dev/adding-dependencies-to-your-contracts-in-foundry). The steps below can also be followed by copying the contract code directly [here](https://github.com/civicteam/on-chain-identity-gateway/tree/main/ethereum/smart-contract/contracts).
 </Info>
 
 ### Inherited Smart Contract
 
 The easiest way to integrate Civic Pass on chain is to inherit the `Gated` contract, giving you access to the `gated` modifier. Functions with the `gated` modifier can only be called by a msg.sender that has a valid Civic Pass.
 
-```tsx
+```solidity
 import "@civic/gateway-protocol-eth/contracts/Gated.sol";
 
 contract MyContract is Gated {
@@ -488,7 +488,7 @@ The [networkKey](/pass/introduction/get-network-keys) is provided by Civic on re
 
 If you want more control over the verification process on-chain, you can use the following code instead of the Gated contract:
 
-```tsx
+```solidity
 import "@civic/gateway-protocol-eth/contracts/interfaces/IGatewayTokenVerifier.sol";
 
 address public constant GATEWAY_TOKEN_CONTRACT = 0xF65b6396dF6B7e2D8a6270E3AB6c7BB08BAEF22E;
@@ -508,7 +508,7 @@ As the user reaches the end of the Civic Pass data collection flow, including au
 
 ### Retrieving PII Evidence
 
-The Gatekeeper Context will communicate a new presentation request ID when the user reaches the end of the data collection flow. See [here](/pass/integration-guide/implementation-guide-on-evm#id-1.-install-the-react-component-for-your-chain) for more detail on the use of `GatewayProvider` and `useGateway`.
+The Gatekeeper Context will communicate a new presentation request ID when the user reaches the end of the data collection flow. See [here](/pass/integration-guide/implementation-guide-on-evm#install-the-react-component) for more detail on the use of `GatewayProvider` and `useGateway`.
 
 ```bash
 const { pendingRequests } = useGateway();
@@ -641,7 +641,7 @@ Body:
 
 For practical implementation, refer to the code examples below, which demonstrate how to use Civic's libraries for EVM chains. These examples can be extended to incorporate composability with passes:
 
-|      |        |      |
-|------|--------|------|
-|Vite & React|[Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/evm/vite)|[Demo](https://airdrop-demo.civic.me/evm)|
-|Next.js|[Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/evm/next)|[Demo](https://airdrop-demo.civic.me/next/evm)|
+|              |                                                                                   |                                                |
+|--------------|-----------------------------------------------------------------------------------|------------------------------------------------|
+| Vite & React | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/evm/vite) | [Demo](https://airdrop-demo.civic.me/evm)      |
+| Next.js      | [Code](https://github.com/civicteam/civic-pass-demos/tree/main/packages/evm/next) | [Demo](https://airdrop-demo.civic.me/next/evm) |

@@ -1,0 +1,64 @@
+# Lychee configuration file
+# https://github.com/lycheeverse/lychee#configuration-file
+
+# Base URL for resolving relative links
+# Set via command line for different environments
+# base = "https://docs.civic.com"
+
+# Maximum number of concurrent network requests
+max_concurrency = 10
+
+# User agent string - browser-like to avoid bot detection
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+# Accept these status codes
+accept = [200, 204, 206, 301, 302, 307, 308]
+
+# Exclude these patterns
+exclude = [
+  # Localhost
+  '^https?://localhost',
+  '^https?://127\.0\.0\.1',
+
+  # GitHub line numbers
+  'github\.com.*#L[0-9]+',
+
+  # Social media (often rate-limited)
+  '^https?://(www\.)?(twitter|x|linkedin)\.com',
+
+  # Email addresses
+  '^mailto:',
+
+  # Tel links
+  '^tel:',
+]
+
+# Exclude all private IPs
+exclude_all_private = true
+
+# Exclude loopback IPs
+exclude_loopback = true
+
+# Maximum number of retries
+max_retries = 3
+
+# Timeout for network requests (in seconds)
+timeout = 30
+
+# Check external links
+skip_missing = false
+
+# Method to use for requests
+method = "get"
+
+# Follow redirects
+max_redirects = 10
+
+# Cache results for 1 day
+cache = true
+
+# Include fragment checking (anchors)
+include_fragments = true
+
+# Fallback extensions for checking files without extensions
+fallback_extensions = ["mdx", "md"]
