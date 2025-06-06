@@ -1,0 +1,50 @@
+---
+title: MCP Hub 🧪
+description: UI/LLM interface for creating and managing MCP servers with built-in auth
+---
+
+# MCP Hub 🧪
+
+**Flask Status: Distilling**
+
+## Overview
+
+The MCP Hub is the core of Civic's Model Context Protocol platform. It enables secure, on-demand execution of third-party MCP tools from an LLM or other agent. By abstracting away container management, authorization workflows, and tool discovery, it makes it simple to connect AI assistants to external tools while maintaining security and control.
+
+The platform consists of three modular services: Directory (for MCP server discovery), Hub (for container orchestration), and AuthZ (for authorization and token management).
+
+## Key Features
+
+- **Container Orchestration**: Automatically manages Docker containers for MCP servers
+- **OAuth Integration**: Built-in support for OAuth2 authorization flows
+- **Tool Discovery**: Registry for finding and connecting to MCP servers
+- **Token Management**: Secure handling of authentication tokens
+- **Multiple Transport Support**: Works with HTTP streaming, SSE, and stdio transports
+- **Desktop Bridge**: Connect desktop LLM apps to cloud-hosted MCP servers
+
+## Usage
+
+The MCP Hub can be integrated in several ways:
+
+1. **Direct API Integration**: Connect your application directly to the Hub API
+2. **Desktop Bridge**: Use the hub-bridge package to connect desktop LLM apps
+3. **CLI Testing**: Use the mcp-client CLI tool for development and testing
+4. **Container Sidecar**: Deploy MCP servers with the stdio transport adapter
+5. **Authorization Manager**: Use the MCP server for managing auth tokens
+
+## Integration Notes
+
+The MCP Hub works seamlessly with other Civic Labs tools:
+- **Guardrail Proxy** can be deployed between the Hub and MCP servers for additional security
+- **BodyGuard** can analyze prompts before they reach MCP tools
+- **Pass-through Proxy** provides the middleware layer for adding custom logic
+
+## Status
+
+This flask is currently **distilling**: The core platform is functional with active development on additional features. The system is being used internally and with select partners. Contact us if you'd like to try it out or provide feedback.
+
+## Resources
+
+- [GitHub Repository](https://github.com/civicteam/civic-mcp) (private)
+- [MCP Protocol Documentation](https://modelcontextprotocol.io)
+- API Documentation (coming soon)

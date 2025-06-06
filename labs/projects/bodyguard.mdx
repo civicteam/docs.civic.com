@@ -1,0 +1,72 @@
+---
+title: BodyGuard 🧪
+description: LLM-based threat scoring layer for prompts and responses
+---
+
+# BodyGuard 🧪
+
+**Flask Status: Distilling**
+
+## Overview
+
+BodyGuard is a security analysis service that detects malicious prompts and potential attacks in LLM inputs. Using advanced AI analysis, it identifies prompt injection attacks, social engineering attempts, and other security threats before they can reach your AI systems or tools. Each prompt receives a threat score from 0 to 1, where 1 indicates extreme danger.
+
+Unlike rule-based security systems, BodyGuard uses an LLM to understand the semantic intent behind prompts, catching sophisticated attacks that might bypass traditional filters.
+
+## Key Features
+
+- **Prompt Injection Detection**: Identifies attempts to override system prompts or instructions
+- **Information Extraction Prevention**: Catches attempts to extract sensitive data or system information
+- **Malicious Function Call Detection**: Recognizes dangerous tool-calling patterns
+- **Social Engineering Defense**: Detects manipulation tactics and deceptive requests
+- **Threat Scoring**: Provides numerical threat scores (0-1) for risk assessment
+- **Multiple Deployment Options**: Available as CLI tool, HTTP server, and client library
+
+## Usage
+
+BodyGuard can be integrated in three ways:
+
+### 1. HTTP Server
+Deploy BodyGuard as a standalone service that other applications can query:
+```bash
+# GET request
+curl "http://bodyguard-api/check?prompt=Your%20prompt%20here"
+
+# POST request
+curl -X POST http://bodyguard-api/check \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"Your prompt here"}'
+```
+
+### 2. Client Library
+Integrate directly into your application:
+```typescript
+import { check } from '@civic/bodyguard';
+
+const result = await check('User prompt here', {
+  threshold: 0.5 // Fail if threat score > 0.5
+});
+```
+
+### 3. CLI Tool
+Test prompts during development:
+```bash
+bodyguard "Analyze this prompt for threats"
+```
+
+## Integration Notes
+
+BodyGuard works as a complementary layer with other Civic Labs tools:
+- Use with **Guardrail Proxy** for defense in depth - BodyGuard analyzes prompts while Guardrail enforces rules
+- Deploy before **MCP Hub** to pre-screen all requests to your MCP tools
+- Combine with **Pass-through Proxy** to add threat analysis to any MCP server
+
+## Status
+
+This flask is currently **distilling**: BodyGuard is actively deployed in test environments and showing strong detection rates for common attack patterns. We're expanding the threat detection capabilities and optimizing response times. Docker images are available for easy deployment. Contact us if you'd like to test it with your specific use cases.
+
+## Resources
+
+- [Technical Specification](/labs/bodyguard-spec-tmp) (temporary location)
+- Docker Image: Available on AWS ECR (contact for access)
+- API Documentation (coming soon)

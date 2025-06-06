@@ -208,6 +208,43 @@
         ]
       },
       {
+        "tab": "Civic Labs",
+        "groups": [
+          {
+            "group": " ",
+            "pages": [
+              "labs"
+            ]
+          },
+          {
+            "group": "Projects",
+            "pages": [
+              "labs/projects/mcp-hub",
+              "labs/projects/guardrail-proxy",
+              "labs/projects/bodyguard",
+              "labs/projects/passthrough-proxy",
+              "labs/projects/civic-knowledge"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "labs/concepts/mcp",
+              "labs/concepts/guardrails",
+              "labs/concepts/prompt-injection",
+              "labs/concepts/auth-strategies"
+            ]
+          },
+          {
+            "group": " ",
+            "pages": [
+              "labs/getting-started",
+              "labs/feedback"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API Reference",
         "openapi": "openapi.yml",
         "groups": [

@@ -1,0 +1,160 @@
+---
+title: Auth Strategies
+description: OAuth, RAR, pre-consent, and reusable auth patterns for AI systems
+---
+
+# Auth Strategies
+
+## Overview
+
+Authentication and authorization for AI systems presents unique challenges. Unlike traditional applications where a human user directly interacts with services, AI assistants act as intermediaries, requiring new approaches to maintain security while enabling useful functionality.
+
+## The AI Auth Challenge
+
+Traditional auth assumes:
+- Direct user interaction with services
+- Users understand what they're authorizing
+- Sessions are short-lived and contextual
+
+AI systems break these assumptions:
+- The AI makes requests on behalf of users
+- Users may not understand what the AI will do
+- Sessions span multiple conversations and contexts
+- The AI might combine multiple services unexpectedly
+
+## Auth Strategies for AI
+
+### 1. OAuth 2.0 with AI Extensions
+
+Standard OAuth works but needs adaptations:
+- **Scope Clarity**: Make scopes human-readable since users authorize AI access
+- **Time Limits**: Add temporal bounds to permissions
+- **Audit Trails**: Log what the AI actually did with the access
+
+Example flow:
+```
+User → "AI, check my GitHub PRs"
+AI → "I need GitHub access, please authorize: [OAuth Link]"
+User → Authorizes specific repos
+AI → Uses token to check PRs
+```
+
+### 2. Rich Authorization Requests (RAR)
+
+RAR (RFC 9396) enables fine-grained, contextual permissions:
+
+```json
+{
+  "type": "file_access",
+  "locations": ["/project/docs"],
+  "actions": ["read"],
+  "purpose": "Summarize documentation",
+  "max_duration": "1h"
+}
+```
+
+Benefits:
+- Context-aware permissions
+- Purpose-bound access
+- Granular control
+
+### 3. Pre-Consent Patterns
+
+Users pre-approve certain AI actions:
+- **Template-Based**: "AI can always read my calendar for scheduling"
+- **Conditional**: "AI can send emails if I explicitly say 'send'"
+- **Bounded**: "AI can make API calls up to 100/day"
+
+Implementation approaches:
+- Store consent rules in user profiles
+- Check consent before each action
+- Provide clear consent management UI
+
+### 4. Reusable Authentication
+
+Minimize auth friction while maintaining security:
+
+#### Token Vaulting
+Store user tokens securely for reuse:
+- Encrypt tokens at rest
+- Implement token refresh logic
+- Provide clear token inventory UI
+
+#### Delegated Auth
+The AI platform handles auth on behalf of users:
+- Platform maintains service connections
+- Users authorize the platform once
+- Platform manages token lifecycle
+
+#### Session-Based Auth
+Maintain auth context within AI conversations:
+- Auth persists for conversation duration
+- Clear session boundaries
+- Explicit session termination
+
+## Security Considerations
+
+### Token Leakage
+- Never expose tokens in AI responses
+- Implement token redaction in logs
+- Use short-lived tokens when possible
+
+### Scope Creep
+- Regularly audit AI permission usage
+- Implement least-privilege defaults
+- Provide usage analytics to users
+
+### Confused Deputy
+- Validate the AI is acting for the right user
+- Implement request signing/verification
+- Maintain clear auth context
+
+## Best Practices
+
+1. **Transparency First**: Users should always know what the AI can access
+2. **Explicit Consent**: Never assume permission for sensitive actions
+3. **Granular Control**: Allow users to grant/revoke specific permissions
+4. **Time Boundaries**: Implement automatic permission expiration
+5. **Audit Everything**: Maintain detailed logs of AI actions
+
+## In Civic Labs
+
+Our MCP Hub implements several auth strategies:
+- **OAuth Integration**: Built-in OAuth flow handling
+- **Token Management**: Secure storage and refresh
+- **Auth Context**: Maintains user context across MCP calls
+- **Permission UI**: Clear visualization of granted permissions
+
+## Implementation Patterns
+
+### Pattern 1: Just-In-Time Auth
+```typescript
+async function callTool(tool: string, params: any) {
+  const token = await getTokenOrPromptAuth(tool);
+  return await executeWithToken(tool, params, token);
+}
+```
+
+### Pattern 2: Batch Pre-Auth
+```typescript
+// At conversation start
+const requiredScopes = analyzeConversationNeeds();
+const tokens = await requestBatchAuthorization(requiredScopes);
+```
+
+### Pattern 3: Progressive Auth
+```typescript
+// Start with read-only
+let permissions = ['read'];
+
+// Escalate as needed
+if (userRequests.includes('modify')) {
+  permissions = await requestAdditionalScopes(['write']);
+}
+```
+
+## Next Steps
+
+- Explore [MCP Hub](/labs/projects/mcp-hub) auth implementation
+- Learn about [Guardrails](/labs/concepts/guardrails) for auth policies
+- Understand the [Model Context Protocol](/labs/concepts/mcp)

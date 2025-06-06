@@ -1,0 +1,67 @@
+---
+title: Model Context Protocol (MCP)
+description: What is MCP and why it matters for AI applications
+---
+
+# Model Context Protocol (MCP)
+
+## Overview
+
+The Model Context Protocol (MCP) is an open standard that enables AI assistants to securely connect with external data sources and tools. Developed by Anthropic, MCP provides a universal way for AI models to interact with your systems while maintaining security and control.
+
+## Why MCP Matters
+
+Traditional AI assistants are limited to their training data and built-in capabilities. MCP changes this by allowing AI to:
+
+- **Access Real-Time Data**: Connect to databases, APIs, and live systems
+- **Use External Tools**: Execute code, manage files, or interact with third-party services
+- **Maintain Context**: Share relevant information across conversations and sessions
+- **Preserve Security**: Control exactly what the AI can access and do
+
+## How It Works
+
+MCP defines a standard protocol for communication between three components:
+
+1. **MCP Client**: The AI assistant (like Claude) that wants to use tools
+2. **MCP Server**: A service that provides specific tools or data access
+3. **Transport Layer**: The communication method (HTTP, stdio, etc.)
+
+```
+AI Assistant (Client) ←→ MCP Protocol ←→ Your Tools (Server)
+```
+
+## Key Concepts
+
+### Tools
+Functions that the AI can call, like "search_database" or "send_email". Each tool has:
+- A name and description
+- Input parameters
+- Expected output format
+
+### Resources
+Data sources the AI can read from, like files or API endpoints.
+
+### Prompts
+Pre-configured templates that help the AI use tools effectively.
+
+## Security Model
+
+MCP includes built-in security features:
+- **Authentication**: Verify the AI's identity before granting access
+- **Authorization**: Control which tools each AI can use
+- **Audit Logging**: Track all AI-tool interactions
+- **Rate Limiting**: Prevent abuse or excessive usage
+
+## In Civic Labs
+
+We're extending MCP with additional security and management capabilities:
+- **MCP Hub**: Centralized management and discovery of MCP servers
+- **Guardrail Proxy**: Add security policies without modifying servers
+- **BodyGuard**: Detect malicious prompts before they reach tools
+- **Pass-through Proxy**: Insert custom logic into the MCP flow
+
+## Learn More
+
+- [Official MCP Documentation](https://modelcontextprotocol.io)
+- [MCP GitHub Repository](https://github.com/modelcontextprotocol/servers)
+- [Building MCP Servers Guide](https://modelcontextprotocol.io/docs/guides/building-servers)
