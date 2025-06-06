@@ -1,0 +1,37 @@
+name: Link Check (Branch)
+
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Link Checker (Local Files)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          # Check relative links as file paths using root-dir
+          args: >
+            --config lychee.toml
+            --root-dir ${{ github.workspace }}
+            --no-progress
+            '**/*.md'
+            '**/*.mdx'
+          fail: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Issue From File
+        if: failure()
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: 'Link Checker Report: Broken Links Found'
+          content-filepath: ./lychee/out.md
+          labels: |
+            documentation
+            automated

@@ -442,7 +442,7 @@ Civic is part of the Solana Attestation Service (SAS), an open-source protocol o
 
 ### **Error handling**
 
-If something goes wrong or the token it invalid, the Gateway call will return a `GatewayError`. The possible values can be seen in [error.rs](https://github.com/identity-com/on-chain-identity-gateway/blob/develop/solana/integration-lib/src/error.rs). For error cases, the dApp smart contract should reject the transaction.
+If something goes wrong or the token it invalid, the Gateway call will return a `GatewayError`. The possible values can be seen in [error.rs](https://github.com/civicteam/on-chain-identity-gateway/blob/develop/solana/program/src/error.rs). For error cases, the dApp smart contract should reject the transaction.
 
 ## User PII Retrieval
 
@@ -595,7 +595,7 @@ For details on setting up your token, see the details in the [transfer hook repo
 
 [Realms](https://realms.today/) is the DAO governance platform on Solana, using the [spl-governance](https://github.com/solana-labs/solana-program-library/tree/master/governance) program. Civic Pass can be added to a DAO on Realms using the "[plugin](https://github.com/solana-labs/governance-program-library)" system.
 
-When using the Realms UI, no coding is required to integrate Civic Pass into your DAO. Simply follow the steps in the [Realms docs page](https://docs.realms.today/Extra%20Guides/civic).
+When using the Realms UI, no coding is required to integrate Civic Pass into your DAO. Simply follow the steps in the [Realms docs page](https://docs.realms.today/civicpass).
 
 See section below for Civic Pass verifications available via the Realms UI. To add a pass not included in the UI dropdown, choose "Other" and enter the address manually.
 

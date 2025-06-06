@@ -17,4 +17,4 @@ https://github.com/.*#L[0-9]+
 https://medium.com/.*
 
 # Civic-specific patterns (adjust as needed)
-# Add any internal/staging URLs that shouldn't be checked in CI
+https://www.sec.gov/.*  # SEC links disallow
