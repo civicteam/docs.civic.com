@@ -78,16 +78,16 @@ Create this file at the following path:
 <Tabs>
   <Tab title="Auth">
 ```ts route.ts
-    import { handler } from "@civic/auth/nextjs"
+import { handler } from "@civic/auth/nextjs"
 
-    export const GET = handler()
+export const GET = handler()
 ```
   </Tab>
   <Tab title="Auth + Web3">
 ```ts route.ts
-    import { handler } from "@civic/auth-web3/nextjs"
+import { handler } from "@civic/auth-web3/nextjs"
 
-    export const GET = handler()
+export const GET = handler()
 ```
   </Tab>
 </Tabs>
@@ -105,42 +105,42 @@ Using the Civic Auth middleware ensures that only logged-in users have access to
 <Tabs>
   <Tab title="Auth">
 ```ts src/middleware.ts
-    import { authMiddleware } from "@civic/auth/nextjs/middleware"
+import { authMiddleware } from "@civic/auth/nextjs/middleware"
 
-    export default authMiddleware();
+export default authMiddleware();
 
-    export const config = {
-      // include the paths you wish to secure here
-      matcher: [
-        /*
-        * Match all request paths except:
-        * - _next directory (Next.js static files)
-        * - favicon.ico, sitemap.xml, robots.txt
-        * - image files
-        */
-        '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
-      ],
-    }
+export const config = {
+  // include the paths you wish to secure here
+  matcher: [
+    /*
+    * Match all request paths except:
+    * - _next directory (Next.js static files)
+    * - favicon.ico, sitemap.xml, robots.txt
+    * - image files
+    */
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
+  ],
+}
 ```
   </Tab>
   <Tab title="Auth + Web3">
 ```ts src/middleware.ts
-    import { authMiddleware } from "@civic/auth-web3/nextjs/middleware"
+import { authMiddleware } from "@civic/auth-web3/nextjs/middleware"
 
-    export default authMiddleware();
+export default authMiddleware();
 
-    export const config = {
-      // include the paths you wish to secure here
-      matcher: [
-        /*
-        * Match all request paths except:
-        * - _next directory (Next.js static files)
-        * - favicon.ico, sitemap.xml, robots.txt
-        * - image files
-        */
-        '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
-      ],
-    }
+export const config = {
+  // include the paths you wish to secure here
+  matcher: [
+    /*
+    * Match all request paths except:
+    * - _next directory (Next.js static files)
+    * - favicon.ico, sitemap.xml, robots.txt
+    * - image files
+    */
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
+  ],
+}
 ```
   </Tab>
 </Tabs>
@@ -152,32 +152,32 @@ If you are already using middleware in your Next.js app, then you can chain them
 <Tabs>
   <Tab title="Auth">
 ```ts src/middleware.ts
-    import { auth } from "@civic/auth/nextjs"
-    import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@civic/auth/nextjs"
+import { NextRequest, NextResponse } from "next/server";
 
-    const withCivicAuth = auth();
+const withCivicAuth = auth();
 
-    const otherMiddleware = (request: NextRequest) => {
-        console.log("my middleware");
-        return NextResponse.next();
-    }
+const otherMiddleware = (request: NextRequest) => {
+    console.log("my middleware");
+    return NextResponse.next();
+}
 
-    export default withCivicAuth(otherMiddleware);
+export default withCivicAuth(otherMiddleware);
 ```
   </Tab>
   <Tab title="Auth + Web3">
 ```ts src/middleware.ts
-    import { auth } from "@civic/auth-web3/nextjs"
-    import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@civic/auth-web3/nextjs"
+import { NextRequest, NextResponse } from "next/server";
 
-    const withCivicAuth = auth();
+const withCivicAuth = auth();
 
-    const otherMiddleware = (request: NextRequest) => {
-        console.log("my middleware");
-        return NextResponse.next();
-    }
+const otherMiddleware = (request: NextRequest) => {
+    console.log("my middleware");
+    return NextResponse.next();
+}
 
-    export default withCivicAuth(otherMiddleware);
+export default withCivicAuth(otherMiddleware);
 ```
   </Tab>
 </Tabs>
@@ -191,24 +191,24 @@ Add the Civic Auth context to your app to give your frontend access to the logge
   import { CivicAuthProvider } from "@civic/auth/nextjs";
 
   function Layout({ children }) {
-    return (
-      // ... the rest of your app layout
-      <CivicAuthProvider>
-        {children}
-      </CivicAuthProvider>
-    )
+return (
+  // ... the rest of your app layout
+  <CivicAuthProvider>
+    {children}
+  </CivicAuthProvider>
+)
   }
 ```
 ```js Auth + Web3
   import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
 
   function Layout({ children }) {
-    return (
-      // ... the rest of your app layout
-      <CivicAuthProvider>
-        {children}
-      </CivicAuthProvider>
-    )
+return (
+  // ... the rest of your app layout
+  <CivicAuthProvider>
+    {children}
+  </CivicAuthProvider>
+)
   }
 ```
 </CodeGroup>
@@ -228,30 +228,30 @@ The Next.js integration can use all the components described in the [React integ
 <Tabs>
   <Tab title="Auth">
 ```ts TitleBar.ts
-    import { UserButton } from "@civic/auth/react";
+import { UserButton } from "@civic/auth/react";
 
-    export function TitleBar() {
-      return (
-        <div>
-          <h1>My App</h1>
-          <UserButton />
-        </div>
-      );
-    };
+export function TitleBar() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <UserButton />
+    </div>
+  );
+};
 ```
   </Tab>
   <Tab title="Auth + Web3">
 ```ts TitleBar.ts
-    import { UserButton } from "@civic/auth-web3/react";
+import { UserButton } from "@civic/auth-web3/react";
 
-    export function TitleBar() {
-      return (
-        <div>
-          <h1>My App</h1>
-          <UserButton />
-        </div>
-      );
-    };
+export function TitleBar() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <UserButton />
+    </div>
+  );
+};
 ```
   </Tab>
 </Tabs>
@@ -287,28 +287,28 @@ or the useUser hook, for retrieving information about the user in code:
 <Tabs>
   <Tab title="Auth">
 ```ts MyComponent.ts
-    import { useUser } from "@civic/auth/react";
+import { useUser } from "@civic/auth/react";
 
-    export function MyComponent() {
-      const { user } = useUser();
+export function MyComponent() {
+  const { user } = useUser();
 
-      if (!user) return <div>User not logged in</div>
+  if (!user) return <div>User not logged in</div>
 
-      return <div>Hello { user.name }!</div>
-    }
+  return <div>Hello { user.name }!</div>
+}
 ```
   </Tab>
   <Tab title="Auth + Web3">
 ```ts MyComponent.ts
-    import { useUser } from "@civic/auth-web3/react";
+import { useUser } from "@civic/auth-web3/react";
 
-    export function MyComponent() {
-      const { user } = useUser();
+export function MyComponent() {
+  const { user } = useUser();
 
-      if (!user) return <div>User not logged in</div>
+  if (!user) return <div>User not logged in</div>
 
-      return <div>Hello { user.name }!</div>
-    }
+  return <div>Hello { user.name }!</div>
+}
 ```
   </Tab>
 </Tabs>
@@ -322,16 +322,16 @@ Retrieve user information on backend code, such as in React Server Components, R
 <Tabs>
   <Tab title="Auth">
 ```ts
-    import { getUser } from "@civic/auth/nextjs";
+import { getUser } from "@civic/auth/nextjs";
 
-    const user = await getUser();
+const user = await getUser();
 ```
   </Tab>
   <Tab title="Auth + Web3">
 ```ts
-    import { getUser } from "@civic/auth-web3/nextjs";
+import { getUser } from "@civic/auth-web3/nextjs";
 
-    const user = await getUser();
+const user = await getUser();
 ```
   </Tab>
 </Tabs>
@@ -341,28 +341,28 @@ For example, in a Next.js Server Component:
 <Tabs>
   <Tab title="Auth">
 ```ts
-    import { getUser } from "@civic/auth/nextjs";
+import { getUser } from "@civic/auth/nextjs";
 
-    export async function MyServerComponent() {
-      const user = await getUser();
+export async function MyServerComponent() {
+  const user = await getUser();
 
-      if (!user) return <div>User not logged in</div>
+  if (!user) return <div>User not logged in</div>
 
-      return <div>Hello { user.name }!</div>
-    }
+  return <div>Hello { user.name }!</div>
+}
 ```
   </Tab>
   <Tab title="Auth + Web3">
 ```ts
-    import { getUser } from "@civic/auth-web3/nextjs";
+import { getUser } from "@civic/auth-web3/nextjs";
 
-    export async function MyServerComponent() {
-      const user = await getUser();
+export async function MyServerComponent() {
+  const user = await getUser();
 
-      if (!user) return <div>User not logged in</div>
+  if (!user) return <div>User not logged in</div>
 
-      return <div>Hello { user.name }!</div>
-    }
+  return <div>Hello { user.name }!</div>
+}
 ```
   </Tab>
 </Tabs>
@@ -380,26 +380,26 @@ The integration also offers the ability customize the library according to the n
 <Tabs>
   <Tab title="Auth">
 ```ts next.config.ts
-    import { createCivicAuthPlugin } from "@civic/auth/nextjs"
+import { createCivicAuthPlugin } from "@civic/auth/nextjs"
 
-    const withCivicAuth = createCivicAuthPlugin({
-      clientId: "YOUR CLIENT ID",
-      ... // other config
-    });
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: "YOUR CLIENT ID",
+  ... // other config
+});
 
-    export default withCivicAuth(nextConfig) // your next config here
+export default withCivicAuth(nextConfig) // your next config here
 ```
   </Tab>
   <Tab title="Auth + Web3">
 ```ts next.config.ts
-    import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs"
+import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs"
 
-    const withCivicAuth = createCivicAuthPlugin({
-      clientId: "YOUR CLIENT ID",
-      ... // other config
-    });
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: "YOUR CLIENT ID",
+  ... // other config
+});
 
-    export default withCivicAuth(nextConfig) // your next config here
+export default withCivicAuth(nextConfig) // your next config here
 ```
   </Tab>
 </Tabs>
