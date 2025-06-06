@@ -188,28 +188,28 @@ Add the Civic Auth context to your app to give your frontend access to the logge
 
 <CodeGroup>
 ```js Auth
-  import { CivicAuthProvider } from "@civic/auth/nextjs";
+import { CivicAuthProvider } from "@civic/auth/nextjs";
 
-  function Layout({ children }) {
-return (
+function Layout({ children }) {
+  return (
   // ... the rest of your app layout
   <CivicAuthProvider>
     {children}
   </CivicAuthProvider>
-)
-  }
+  )
+}
 ```
 ```js Auth + Web3
-  import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
+import { CivicAuthProvider } from "@civic/auth-web3/nextjs";
 
-  function Layout({ children }) {
+function Layout({ children }) {
 return (
-  // ... the rest of your app layout
-  <CivicAuthProvider>
-    {children}
-  </CivicAuthProvider>
+    // ... the rest of your app layout
+    <CivicAuthProvider>
+        {children}
+    </CivicAuthProvider>
 )
-  }
+}
 ```
 </CodeGroup>
 
