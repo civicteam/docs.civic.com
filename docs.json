@@ -208,7 +208,19 @@
         ]
       },
       {
-        "tab": "Civic Labs",
+        "tab": "API Reference",
+        "openapi": "openapi.yml",
+        "groups": [
+          {
+            "group": " ",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": " ",
         "groups": [
           {
             "group": " ",
@@ -242,18 +254,6 @@
             "group": "Other Resources",
             "pages": [
               "labs/flask-status"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "openapi": "openapi.yml",
-        "groups": [
-          {
-            "group": " ",
-            "pages": [
-              "api-reference/introduction"
             ]
           }
         ]
