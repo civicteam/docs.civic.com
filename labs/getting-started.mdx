@@ -6,6 +6,78 @@ description: How to access and experiment with Civic Labs tools
 
 Welcome to Civic Labs! Here's how to start experimenting with our tools.
 
+## What are you interested in?
+
+<AccordionGroup>
+  <Accordion title="I'm interested in MCP hosting and unified auth management">
+    The MCP Hub provides hosted MCP server management with centralized authentication and authorization across all your tools.
+    
+    - Host and manage multiple MCP servers
+    - Single sign-on for all tools
+    - OAuth flow abstraction
+    - Token lifecycle management
+    
+    [Get started with MCP Hub →](/labs/projects/mcp-hub#getting-started)
+  </Accordion>
+
+  <Accordion title="I'm interested in MCP middleware and custom logic">
+    The Pass-through Proxy lets you add custom processing to any MCP server without modifying it.
+    
+    - Add hooks to intercept requests/responses
+    - Transform data on the fly
+    - Implement custom business logic
+    - Chain multiple processing steps
+    
+    [Get started with Pass-through Proxy →](/labs/projects/passthrough-proxy#getting-started)
+  </Accordion>
+
+  <Accordion title="I'm interested in automating and optimizing my company's operations">
+    Civic Knowledge provides an AI assistant that connects to all your internal systems.
+    
+    - Query logs, databases, and dashboards conversationally
+    - Integrate with Jira, GitHub, and other tools
+    - Built-in security and access controls
+    - Customizable for your organization
+    
+    [Get started with Civic Knowledge →](/labs/projects/civic-knowledge#getting-started)
+  </Accordion>
+
+  <Accordion title="I'm interested in protection from AI threats">
+    BodyGuard analyzes prompts to detect and prevent malicious attacks on your AI systems.
+    
+    - Detect prompt injection attempts
+    - Prevent data exfiltration
+    - Score threat levels in real-time
+    - Easy integration with existing systems
+    
+    [Get started with BodyGuard →](/labs/projects/bodyguard#getting-started)
+  </Accordion>
+
+  <Accordion title="I'm interested in rules around LLM tool access">
+    Guardrail Proxy adds security policies to any MCP server without code changes.
+    
+    - Domain filtering and access control
+    - Content size and type restrictions
+    - Custom validation rules
+    - LLM-specific safety controls
+    
+    [Get started with Guardrail Proxy →](/labs/projects/guardrail-proxy#getting-started)
+  </Accordion>
+
+  <Accordion title="I want all the things at once">
+    The MCP Hub integrates all Civic Labs tools into a unified platform.
+    
+    Start with the Hub to get:
+    - Hosted MCP servers with built-in security
+    - BodyGuard protection on all prompts
+    - Guardrail policies applied automatically
+    - Pass-through proxy for customization
+    - Single dashboard for management
+    
+    [Get started with the complete platform →](/labs/projects/mcp-hub#getting-started)
+  </Accordion>
+</AccordionGroup>
+
 ## Current Access Options
 
 ### 🧪 Request Early Access
@@ -16,20 +88,20 @@ Most Civic Labs projects are in active development. To get access:
 2. **Fill out the access form**: Tell us about your use case
 3. **Schedule a demo**: We'll walk you through the tools
 
-[Request Access →](https://civicteam.com/contact)
+[Request Access →](https://civic.com/contact)
 
 ### 🎯 Try Our Demos
 
 Some projects have public demos available:
 
-- **BodyGuard Demo**: Test prompt security analysis *(coming soon)*
+- **Bodyguard Demo**: Test prompt security analysis *(coming soon)*
 - **MCP Hub Sandbox**: Explore MCP server management *(coming soon)*
 
 ### 🛠️ For Developers
 
 If you're ready to integrate our tools:
 
-#### BodyGuard
+#### Bodyguard
 ```bash
 # Use our hosted API (contact for API key)
 curl -X POST https://api.civic.com/labs/bodyguard/check \
@@ -50,14 +122,14 @@ npm install @civic/guardrail-hook
 
 Depending on which tools you want to use:
 
-- **For BodyGuard**: OpenAI API key or access to our hosted service
+- **For Bodyguard**: OpenAI API key or access to our hosted service
 - **For MCP Tools**: Docker environment or Node.js 18+
 - **For Integration**: Basic familiarity with APIs and async programming
 
 ## Quick Start Guides
 
 <CardGroup cols={2}>
-  <Card title="BodyGuard Quick Start" icon="shield" href="#bodyguard-quick-start">
+  <Card title="Bodyguard Quick Start" icon="shield" href="#bodyguard-quick-start">
     Set up prompt security in 5 minutes
   </Card>
   <Card title="MCP Hub Quick Start" icon="server" href="#mcp-hub-quick-start">
@@ -84,7 +156,7 @@ Depending on which tools you want to use:
 
 - **Discord**: Real-time help from the team and community
 - **GitHub Issues**: Report bugs or request features
-- **Email**: labs@civicteam.com for partnership inquiries
+- **Email**: labs@civic.com for partnership inquiries
 
 ## What's Next?
 

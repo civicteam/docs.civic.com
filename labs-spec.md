@@ -87,7 +87,7 @@ Project Assignments
 Project	File	Flask Status	Notes
 MCP Hub	mcp-hub.md	Distilling	UI/LLM interface for creating/managing MCP servers and auth
 Guardrail Proxy	guardrail-proxy.md	Distilling	Enforces request/response constraints on any MCP server
-BodyGuard	bodyguard.md	Distilling	LLM-based threat scoring layer for prompts or responses
+Bodyguard	bodyguard.md	Distilling	LLM-based threat scoring layer for prompts or responses
 Pass-through Proxy	passthrough-proxy.md	Distilling	Middleware hook system for MCP servers, powers guardrails
 
 
@@ -133,7 +133,7 @@ Short page with:
 
 ✅ Deliverables Checklist for Assistant
 •	Create /civic-labs/index.md landing page with overview + project links
-•	Create 4 markdown files in /projects/ for MCP Hub, Guardrail Proxy, BodyGuard, Pass-through Proxy
+•	Create 4 markdown files in /projects/ for MCP Hub, Guardrail Proxy, Bodyguard, Pass-through Proxy
 •	Add frontmatter for each file if using Docusaurus or MDX
 •	Add placeholders in /concepts/ folder
 •	Add getting-started.md with temporary notes
