@@ -5,6 +5,14 @@ description: A hosted MCP Manager unifying and orchstrating multiple MCP servers
 
 **Flask Status: Distilling** 🧪
 
+<Frame caption="MCP Hub Directory">
+    <img
+        src="/images/labs/projects/mcp-hub/directory-all.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
+
 ## Overview
 
 The MCP Hub is the core of Civic's Model Context Protocol platform.
@@ -19,51 +27,62 @@ The platform consists of three modular services: Directory (for MCP server disco
 Choose your integration path:
 
 <AccordionGroup>
-  <Accordion title="I want to integrate with a local AI agent, such as Claude Desktop">
+  <Accordion title="I want to integrate with a local AI agent, such as Claude Desktop (Recommended)">
     Connect your desktop AI assistant to cloud-hosted MCP servers using our Hub Bridge:
-    
-    1. Install the hub-bridge package
 
-<Tabs>
-    <Tab title="npm">
-        You're good! Skip to step 2
-    </Tab>
-    <Tab title="homebrew (Mac)">
-        <Note>ARM (M1, M2...) infrastructure supported only. For x86 builds, [contact us](/labs/feedback)</Note>
-        ```shell
-        brew tap civicteam/hub-bridge
-        brew install hub-bridge
-        ```
-    </Tab>
-    <Tab title="Other">
-        If you need other builds, [contact us](/labs/feedback).
-    </Tab>
-</Tabs>
+      <Frame caption="Claude Desktop with Civic MCP Hub">
+          <img
+              src="/images/labs/projects/mcp-hub/claude-desktop.png"
+              align="center"
+              className="image-60 image-rounded"
+          />
+      </Frame>
 
-    2. Configure your AI assistant to use the bridge
+      <Steps>
+          <Step title="Install the hub-bridge package">
+            <Tabs>
+                <Tab title="npm">
+                    If you have node.js installed, you're good! Skip to step 2
+                </Tab>
+                <Tab title="homebrew (Mac)">
+                    <Note>ARM (M1, M2...) infrastructure supported only. For x86 builds, [contact us](/labs/feedback)</Note>
+                    ```shell
+                    brew tap civicteam/hub-bridge
+                    brew install hub-bridge
+                    ```
+                </Tab>
+                <Tab title="Other">
+                    If you need other builds, [contact us](/labs/feedback).
+                </Tab>
+            </Tabs>
+          </Step>
+          <Step title="Configure your AI assistant to use the bridge">
+            <Tabs>
+                <Tab title="npm">
 
-<Tabs>
-    <Tab title="npm">
-
-        ```shell
-        npx @civic/hub-bridge install claude-desktop
-        ```
-    </Tab>
-    <Tab title="homebrew (Mac)">
-        ```shell
-        hub-bridge install claude-desktop
-        ```
-    </Tab>
-    <Tab title="Other">
-        If you need other builds, [contact us](/labs/feedback).
-    </Tab>
-</Tabs>
-
+                    ```shell
+                    npx @civic/hub-bridge install claude-desktop
+                    ```
+                </Tab>
+                <Tab title="homebrew (Mac)">
+                    ```shell
+                    hub-bridge install claude-desktop
+                    ```
+                </Tab>
+                <Tab title="Other">
+                    If you need other builds, [contact us](/labs/feedback).
+                </Tab>
+            </Tabs>
+          </Step>
+          <Step title="Fire up the assistant and log into Civic">
+              You should see "Civic" tools
+          </Step>
     3. Fire up the assistant and log into Civic:
 
     4. Try the following prompt:
 
 > "What can I do with my Civic account?"
+      </Steps>
 
   </Accordion>
 
