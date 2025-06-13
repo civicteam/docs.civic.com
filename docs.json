@@ -31,48 +31,43 @@
     }
   },
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Home",
+        "group": "Getting Started",
         "pages": [
           "index"
         ]
       },
       {
-        "tab": "Civic Auth",
-        "groups": [
+        "group": "Integration",
+        "pages": [
+          "integration/react",
+          "integration/nextjs",
+          "integration/vanillajs",
           {
-            "group": "Integration",
+            "group": "Node.JS",
+            "icon": "node-js",
             "pages": [
-              "integration/react",
-              "integration/nextjs",
-              "integration/vanillajs",
-              {
-                "group": "Node.JS",
-                "icon": "node-js",
-                "pages": [
-                  "integration/nodejs",
-                  "integration/nodejs/express",
-                  "integration/nodejs/hono",
-                  "integration/nodejs/fastify"
-                ]
-              },
-              "integration/react-native",
-              "integration/other",
-              "integration/faqs",
-              "integration/error-codes",
-              "integration/bring-your-app-to-production",
-              "integration/changelog"
+              "integration/nodejs",
+              "integration/nodejs/express",
+              "integration/nodejs/hono",
+              "integration/nodejs/fastify"
             ]
           },
-          {
-            "group": "Web3",
-            "pages": [
-              "web3/embedded-wallets",
-              "web3/ethereum-evm",
-              "web3/solana"
-            ]
-          }
+          "integration/react-native",
+          "integration/other",
+          "integration/faqs",
+          "integration/error-codes",
+          "integration/bring-your-app-to-production",
+          "integration/changelog"
+        ]
+      },
+      {
+        "group": "Web3",
+        "pages": [
+          "web3/embedded-wallets",
+          "web3/ethereum-evm",
+          "web3/solana"
         ]
       }
     ],
