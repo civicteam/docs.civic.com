@@ -1,0 +1,39 @@
+---
+title: "Login Options"
+description: "The login options you can set up for users to log in to your app."
+icon: log-in
+---
+
+
+
+
+You can choose different Login Options for your App using the [Civic Auth Dashboard](https://auth.civic.com/dashboard). You can choose which providers you'd like to support, and the order you'd like to present them to your users.
+
+Just click on a provider icon to enable or disable it, and drag the option above or below existing options to change the ordering. As soon as you make an update, you'll see a preview of what your users will see.
+
+<Frame>
+    <img src="/images/login-options-dashboard-sso-email.png"/>
+</Frame>
+
+## Social Providers (OAuth)
+
+We currently support the following social providers:
+- Google
+- Discord
+- Github
+- Facebook
+- X
+- Apple
+- Microsoft (coming soon)
+
+Don't see your preferred provider? [Let us know](https://civickey.typeform.com/req-custom) and we'll see what we can do!
+
+## Email
+
+Users login by proving ownership of their email address by entering an OTP (One-Time PIN) sent to their email.
+
+## Account linking
+
+When a user logs in using an email address, once the OTP code is verified, we check if the email has already been used in a social provider that verifies email addresses (currently Google, Apple and Microsoft).
+
+If the email address associated with one of these providers matches the email address used to login, we automatically link the accounts. This means that the returned user id will be the same for both login methods, and the user's profile information will be merged, i.e. their name, profile picture, and any other relevant information.
