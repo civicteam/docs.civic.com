@@ -10,11 +10,11 @@
   "background": {
     "color": {
       "dark": "#11111b"
-        },
-        "integrations": {
-            "ga4": {
-                "measurementId": "G-3GN3S4G1EY"
-            }
+    }        
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-3GN3S4G1EY"
     }
   },
   "favicon": "/favicon.svg",
