@@ -1,0 +1,80 @@
+---
+title: "Python"
+description: "The Civic Auth SDK also works with any Python backend."
+sidebarTitle: Overview
+icon: circle-info
+---
+
+The core integration points here are as follows:
+
+* Direct users to the Civic Auth login page
+
+* Set up an endpoint that the auth server should redirect to once complete
+
+* Set up middleware to ensure only logged-in users can access protected parts of your app.
+
+Use these guides to set up Civic Auth with any of the most common Python web frameworks.
+
+<CardGroup cols={3}>
+  <Card title="FastAPI" href="/integration/python/fastapi" img="/images/auth/integration/fastapi.png"/>
+  <Card title="Flask" href="/integration/python/flask" img="/images/auth/integration/flask.png"/>
+  <Card title="Django" href="/integration/python/django" img="/images/auth/integration/django.png"/>
+</CardGroup>
+
+## Installation
+
+Install the Civic Auth Python SDK using pip:
+
+```bash
+pip install civic-auth
+```
+
+For framework-specific integrations:
+
+```bash
+# FastAPI
+pip install "civic-auth[fastapi]"
+
+# Flask
+pip install "civic-auth[flask]"
+
+# Django
+pip install "civic-auth[django]"
+```
+
+## Usage
+
+The Civic Auth Python SDK provides a flexible API that works with any Python web framework. For framework-specific integrations, see the guides above.
+
+### Getting User Information on the Backend
+
+Here are some examples of using the get_user function in popular Python server environments. Note - this snippet assumes you have followed the steps to integrate login with your app as described [here](/integration/python).
+
+<CodeGroup>
+  ```fastapi FastAPI
+  from fastapi import Depends
+  from civic_auth.integrations.fastapi import get_current_user
+
+  @app.get("/admin/hello")
+  async def hello(user = Depends(get_current_user)):
+      return f"hello {user.name}!"
+  ```
+
+  ```flask Flask
+  from civic_auth.integrations.flask import get_civic_user
+
+  @app.route("/admin/hello")
+  async def hello():
+      user = await get_civic_user()
+      return f"hello {user.name}!"
+  ```
+
+  ```django Django
+  from civic_auth.integrations.django import civic_auth_required
+
+  @civic_auth_required
+  def hello(request):
+      user = request.civic_user
+      return HttpResponse(f"hello {user.name}!")
+  ```
+</CodeGroup>
