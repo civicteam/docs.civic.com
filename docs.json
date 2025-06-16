@@ -54,6 +54,16 @@
               "integration/nodejs/fastify"
             ]
           },
+          {
+            "group": "Python",
+            "icon": "python",
+            "pages": [
+              "integration/python",
+              "integration/python/fastapi",
+              "integration/python/flask",
+              "integration/python/django"
+            ]
+          },
           "integration/react-native",
           "integration/other",
           "integration/faqs",
