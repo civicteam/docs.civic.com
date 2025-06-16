@@ -34,6 +34,6 @@ Users login by proving ownership of their email address by entering an OTP (One-
 
 ## Account linking
 
-When a user logs in using an email address, once the OTP code is verified, we check if the email has already been used in a social provider that verifies email addresses (currently Google, Apple and Microsoft).
+When a user logs in using an email address, once the OTP code is verified, we check if the email has already been used with a Google or Apple account.
 
 If the email address associated with one of these providers matches the email address used to login, we automatically link the accounts. This means that the returned user id will be the same for both login methods, and the user's profile information will be merged, i.e. their name, profile picture, and any other relevant information.
