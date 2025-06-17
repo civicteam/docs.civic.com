@@ -21,7 +21,7 @@ jobs:
           # Check against deployed site using base URL
           args: >
             --config lychee.toml
-            --base-url 'https://docs.civic.com'
+            --base 'https://docs.civic.com'
             --no-progress
             '**/*.md'
             '**/*.mdx'
