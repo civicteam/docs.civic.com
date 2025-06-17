@@ -10,7 +10,7 @@
   "background": {
     "color": {
       "dark": "#11111b"
-    }        
+    }
   },
   "integrations": {
     "ga4": {
@@ -78,6 +78,12 @@
           "web3/embedded-wallets",
           "web3/ethereum-evm",
           "web3/solana"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": [
+          "guides/add-auth-to-mcp"
         ]
       }
     ],
