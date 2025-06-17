@@ -1,28 +1,11 @@
 ---
-title: "Add Civic Auth to Your MCP Server in 15 Minutes"
+title: "Create a secure MCP server in 15 Minutes"
 description: "A Practical Guide for Startups"
----
-
-## Table of Contents
-
-- [Summary](#summary)
-- [Background](#background)
-- [Setup](#setup)
-- [Step 1: Install Dependencies](#step-1-install-dependencies)
-- [Step 2: Set Up the MCP Server](#step-2-set-up-the-mcp-server)
-- [Step 3: Register an MCP Tool](#step-3-register-an-mcp-tool)
-- [Step 4: Expose Your Server with a Transport Layer](#step-4-expose-your-server-with-a-transport-layer)
-- [Adding the transport to your app](#adding-the-transport-to-your-app)
-- [Step 4: Time for Auth](#step-4-time-for-auth)
-- [Advanced Features and Configuration](#advanced-features-and-configuration)
-- [What if I'm not using Express?](#what-if-im-not-using-express)
-- [What's next?](#whats-next)
-
 ---
 
 ## Summary
 
-This guide walks through how to add Civic Auth to your MCP server with the [@civic/auth-mcp](https://www.npmjs.com/package/@civic/auth-mcp) library.
+This guide walks through how to expose a service securely as an [MCP server](https://modelcontextprotocol.io/), using Civic Auth via the [@civic/auth-mcp](https://www.npmjs.com/package/@civic/auth-mcp) library.
 
 ---
 
@@ -141,7 +124,7 @@ mcpServer.tool(
 This tool demonstrates how to define typed input parameters and use them in your handler.
 
 <Note>
-    **A note on names and descriptions**
+    **A note on names and descriptions**<br/>
     The names and descriptions that you give to your tool and its parameters are important!
     This helps the LLM to understand when and how to call your tool.
     The clearer and more descriptive the better. Think of this as a part of the prompt that you send to the LLM.
