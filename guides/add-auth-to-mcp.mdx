@@ -130,17 +130,11 @@ mcpServer.tool(
 This tool demonstrates how to define typed input parameters and use them in your handler.
 
 <Note>
-  **A note on names and descriptions**\
-  \
-  
-  The names and descriptions that you give to your tool and its parameters are important\!\
-  
-  This helps the LLM to understand when and how to call your tool.\
-  
-  The clearer and more descriptive the better. Think of this as a part of the prompt that you send to the LLM.\
-  
-  However, just like with a prompt, more is not always better.\
-  
+  **A note on names and descriptions**<br/><br/>
+  The names and descriptions that you give to your tool and its parameters are important!<br/>
+  This helps the LLM to understand when and how to call your tool.<br/>
+  The clearer and more descriptive the better. Think of this as a part of the prompt that you send to the LLM.<br/>
+  However, just like with a prompt, more is not always better.<br/>
   Avoid piling huge amounts of information into the descriptions, but keep things concise and clear, with plenty of examples.
 </Note>
 
@@ -167,11 +161,8 @@ const transport = new StreamableHTTPServerTransport({
 ```
 
 <Note>
-  **What is Streamable HTTP?**\
-  \
-  
-  Streamable HTTP allows responses to be sent progressively, as they're generated.\
-  
+  **What is Streamable HTTP?**<br/><br/>
+  Streamable HTTP allows responses to be sent progressively, as they're generated.<br/>
   Unlike WebSockets, it's a request-response pattern. Great for tools where streaming is useful, but persistent bidirectional connections aren't needed.
 </Note>
 
@@ -213,17 +204,13 @@ app.post("/mcp", async (req, res) => {
 ```
 
 <Note>
-  **Why create a new server on each request?**\
-  \
-  
-  The [MCP SDK documentation](https://www.npmjs.com/package/@modelcontextprotocol/sdk#streamable-http) recommends keeping transports and servers isolated between sessions.\
-  
-  Since our endpoints are stateless, this means creating (and destroying) a server for each request.\
-  
+  **Why create a new server on each request?**<br/><br/>
+  The [MCP SDK documentation](https://www.npmjs.com/package/@modelcontextprotocol/sdk#streamable-http) recommends keeping transports and servers isolated between sessions.<br/>
+  Since our endpoints are stateless, this means creating (and destroying) a server for each request.<br/>
   Don't worry, this is not an expensive operation.
 </Note>
 
-Your Express app is now an MCP server\! You can already give it a whirl...
+Your Express app is now an MCP server! You can already give it a whirl...
 
 A common tool to test MCP servers is the [MCP Inspector](https://github.com/modelcontextprotocol/inspector).
 
@@ -273,11 +260,8 @@ This is doing a few things:
 - Finally, it adds information about the caller to the request, so that your service layer knows who is calling it.
 
 <Note>
-  **What is Civic Auth?**\
-  \
-  
-  Civic Auth is a developer-friendly OAuth2/OIDC-based solution for AI-ready, privacy-preserving authentication.\
-  
+  **What is Civic Auth?**<br/><br/>
+  Civic Auth is a developer-friendly OAuth2/OIDC-based solution for AI-ready, privacy-preserving authentication.<br/>
   Learn more: [civic.com/auth](https://www.civic.com/auth) | [docs.civic.com/auth](https://docs.civic.com/auth)
 </Note>
 
