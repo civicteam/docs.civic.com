@@ -69,6 +69,7 @@
           "integration/faqs",
           "integration/error-codes",
           "integration/bring-your-app-to-production",
+          "integration/login-options",
           "integration/changelog"
         ]
       },
