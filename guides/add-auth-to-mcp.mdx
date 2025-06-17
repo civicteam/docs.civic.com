@@ -140,11 +140,10 @@ mcpServer.tool(
 
 This tool demonstrates how to define typed input parameters and use them in your handler.
 
-<Note> **A note on names and descriptions**
+<Note>
+    **A note on names and descriptions**
     The names and descriptions that you give to your tool and its parameters are important!
-
     This helps the LLM to understand when and how to call your tool.
-
     The clearer and more descriptive the better. Think of this as a part of the prompt that you send to the LLM.
     However, just like with a prompt, more is not always better.
     Avoid piling huge amounts of information into the descriptions, but keep things concise and clear, with plenty of examples.
@@ -174,13 +173,12 @@ const transport = new StreamableHTTPServerTransport({
 
 <Note>
     **What is Streamable HTTP?**
-
     Streamable HTTP allows responses to be sent progressively, as they're generated.
     Unlike WebSockets, it's a one-shot request-response pattern. Great for tools where streaming is useful, but persistent connections aren't needed.
 </Note>
 ---
 
-## Adding the transport to your app
+## Step 5: Adding the transport to your app
 
 It's time to add this transport to your Express app.
 
@@ -218,9 +216,7 @@ app.post("/mcp", async (req, res) => {
 
 <Note>
     **Why create a new server on each request?**
-
     The [MCP SDK documentation](https://www.npmjs.com/package/@modelcontextprotocol/sdk#streamable-http) recommends keeping transports and servers isolated between sessions.
-
     Since our endpoints are stateless, this means creating (and destroying) a server for each request.
     Don't worry, this is not an expensive operation.
 </Note>
@@ -241,7 +237,7 @@ Add your app's url, make sure you choose "Streamable HTTP" as the transport, cli
 
 ---
 
-## Step 4: Time for Auth
+## Step 6: Time for Auth
 
 Remember this line added back when we were defining the tools?
 
@@ -277,9 +273,7 @@ This is doing a few things:
 
 <Note>
     **What is Civic Auth?**
-
     Civic Auth is a developer-friendly OAuth2/OIDC-based solution for AI-ready, privacy-preserving authentication.
-
     Learn more: [civic.com/auth](https://www.civic.com/auth) | [docs.civic.com/auth](https://docs.civic.com/auth)
 </Note>
 ---
