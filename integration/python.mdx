@@ -35,16 +35,19 @@ pip install civic-auth
 
 For framework-specific integrations:
 
-```bash
-# FastAPI
+<CodeGroup>
+```bash FastAPI
 pip install "civic-auth[fastapi]"
+```
 
-# Flask
+```bash Flask
 pip install "civic-auth[flask]"
+```
 
-# Django
+```bash Django
 pip install "civic-auth[django]"
 ```
+</CodeGroup>
 
 ## Usage
 
@@ -64,7 +67,6 @@ from civic_auth.integrations.fastapi import get_current_user
 async def hello(user = Depends(get_current_user)):
     return f"hello {user.name}!"
 ```
-
 
 
 ```flask Flask
