@@ -48,26 +48,10 @@
             "group": "Node.JS",
             "icon": "node-js",
             "pages": [
-              "integration/react",
-              "integration/nextjs",
-              "integration/vanillajs",
-              {
-                "group": "Node.JS",
-                "icon": "node-js",
-                "pages": [
-                  "integration/nodejs",
-                  "integration/nodejs/express",
-                  "integration/nodejs/hono",
-                  "integration/nodejs/fastify"
-                ]
-              },
-              "integration/react-native",
-              "integration/other",
-              "integration/faqs",
-              "integration/error-codes",
-              "integration/bring-your-app-to-production",
-              "integration/login-options",
-              "integration/changelog"
+              "integration/nodejs",
+              "integration/nodejs/express",
+              "integration/nodejs/hono",
+              "integration/nodejs/fastify"
             ]
           },
           {
@@ -85,6 +69,7 @@
           "integration/faqs",
           "integration/error-codes",
           "integration/bring-your-app-to-production",
+          "integration/login-options",
           "integration/changelog"
         ]
       },
