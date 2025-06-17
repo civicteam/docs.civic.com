@@ -93,37 +93,6 @@ async def profile():
     }
 ```
 
-## 7. Custom Error Handling
-
-Handle authentication errors gracefully:
-
-```python
-from flask import jsonify
-
-@app.errorhandler(401)
-def unauthorized(e):
-    return jsonify({"error": "Unauthorized"}), 401
-
-@app.route("/api/protected")
-@civic_auth_required
-async def api_protected():
-    user = await get_civic_user()
-    return jsonify({"message": f"Hello, {user.name}!"})
-```
-
-## 8. Session Configuration
-
-Flask integration uses secure sessions by default. Customize session behavior:
-
-```python
-app.config.update(
-    SESSION_COOKIE_SECURE=True,  # Use HTTPS in production
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SAMESITE='Lax',
-    PERMANENT_SESSION_LIFETIME=timedelta(hours=24)
-)
-```
-
 ## PKCE and Client Secrets
 
 Civic Auth uses [**PKCE** (Proof Key for Code Exchange)](https://oauth.net/2/pkce/), to protect users and clients from unauthorized access to user information. This, alongside domain registration for apps in production environments, mean that you don't need to provide a client secret in your backend.

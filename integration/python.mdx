@@ -55,15 +55,16 @@ Here are some examples of using the get_user function in popular Python server e
   from fastapi import Depends
   from civic_auth.integrations.fastapi import get_current_user
 
-  @app.get("/admin/hello")
+  @app.get("/admin/hello", dependencies=[Depends(require_auth)])
   async def hello(user = Depends(get_current_user)):
       return f"hello {user.name}!"
   ```
 
   ```flask Flask
-  from civic_auth.integrations.flask import get_civic_user
+  from civic_auth.integrations.flask import get_civic_user, civic_auth_required
 
   @app.route("/admin/hello")
+  @civic_auth_required
   async def hello():
       user = await get_civic_user()
       return f"hello {user.name}!"

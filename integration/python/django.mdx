@@ -36,13 +36,6 @@ Add the Civic Auth middleware to your Django middleware stack:
 # settings.py
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Add Civic Auth middleware
     'civic_auth.integrations.django.CivicAuthMiddleware',
 ]
@@ -59,7 +52,6 @@ from django.urls import path, include
 from civic_auth.integrations.django import get_auth_urls
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     # Add Civic Auth URLs
     path('', include(get_auth_urls())),
     # Your other URLs...
@@ -105,23 +97,7 @@ def profile(request):
     })
 ```
 
-## 7. Class-Based Views
-
-Civic Auth works with Django's class-based views:
-
-```python
-from django.views import View
-from django.utils.decorators import method_decorator
-from civic_auth.integrations.django import civic_auth_required
-
-@method_decorator(civic_auth_required, name='dispatch')
-class ProtectedView(View):
-    def get(self, request):
-        user = request.civic_user
-        return HttpResponse(f"Hello, {user.name}!")
-```
-
-## 8. Template Context
+## 7. Template Context
 
 Access the user in templates:
 
@@ -145,7 +121,7 @@ def dashboard(request):
 {% endif %}
 ```
 
-## 9. API Views
+## 8. API Views
 
 For Django REST Framework compatibility:
 

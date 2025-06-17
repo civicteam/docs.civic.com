@@ -87,30 +87,6 @@ async def profile(user: BaseUser = Depends(get_current_user)):
     }
 ```
 
-## 7. Custom Session Storage
-
-By default, FastAPI integration uses secure cookies. You can customize the storage:
-
-```python
-from civic_auth.storage import CookieStorage
-
-class CustomCookieStorage(CookieStorage):
-    def __init__(self, request: Request, response: Response):
-        super().__init__(request, response, settings={
-            "secure": True,  # Use HTTPS in production
-            "httponly": True,
-            "samesite": "lax"
-        })
-
-# Use custom storage in your routes
-@app.get("/auth/callback")
-async def callback(request: Request, response: Response, code: str, state: str):
-    storage = CustomCookieStorage(request, response)
-    civic_auth = CivicAuth(storage, config)
-    await civic_auth.resolve_oauth_access_code(code, state)
-    return RedirectResponse(url="/admin/hello")
-```
-
 ## PKCE and Client Secrets
 
 Civic Auth uses [**PKCE** (Proof Key for Code Exchange)](https://oauth.net/2/pkce/), to protect users and clients from unauthorized access to user information. This, alongside domain registration for apps in production environments, mean that you don't need to provide a client secret in your backend.
