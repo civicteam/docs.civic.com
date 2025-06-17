@@ -1,6 +1,6 @@
 # Civic Documentation
 
-Welcome to the Civic documentation repository! This site powers our customer-facing documentation at [docs.civic.com](https://docs.civic.com/) using [Mintlify](https://mintlify.com/docs).
+Welcome to the Civic documentation repository\! This site powers our customer-facing documentation at [docs.civic.com](https://docs.civic.com/) using [Mintlify](https://mintlify.com/docs).
 
 ## 🚀 Quick Start
 
@@ -12,13 +12,11 @@ Welcome to the Civic documentation repository! This site powers our customer-fac
    git clone <repository-url>
    cd docs.civic.com
    ```
-
 2. **Install Mintlify CLI**
 
    ```bash
    npm install -g mintlify
    ```
-
 3. **Start local development server**
 
    ```bash
@@ -26,9 +24,7 @@ Welcome to the Civic documentation repository! This site powers our customer-fac
    ```
 
    This will start a local preview at `http://localhost:3000`
-
 4. **Make your changes** and preview them locally
-
 5. **Create a branch and push**
 
    ```bash
@@ -37,7 +33,6 @@ Welcome to the Civic documentation repository! This site powers our customer-fac
    git commit -m "Update documentation"
    git push origin feature/your-update
    ```
-
 6. **Open a Pull Request** - Mintlify will automatically create a preview deployment for your branch
 
 ### For Non-Developers (Quick edits)
@@ -189,4 +184,4 @@ Every branch automatically gets a preview deployment:
 - 👩‍💻 **Developer?** Use the branch workflow with local preview
 - 🖊️ **Quick edit?** Use the Mintlify web editor
 
-Happy documenting! 🚀
+Happy documenting\! 🚀 Thanks\!
