@@ -33,6 +33,36 @@
   "navigation": {
     "groups": [
       {
+        "group":  " ",
+        "global": {
+          "anchors": [
+            {
+              "anchor": "About us",
+              "href": "https://www.civic.com/about",
+              "icon": "circle-info"
+            },
+            {
+              "anchor": "Blog",
+              "href": "https://www.civic.com/blog",
+              "icon": "newspaper"
+            },
+            {
+              "anchor": "Help Center",
+              "href": "https://support.civic.com/hc/en-us?_gl=1*v97ps0*_gcl_au*MjEyNjQ5MTAzMi4xNzQ4MDA2MTU0",
+              "icon": "circle-question"
+            },
+            {
+              "anchor": "Pricing",
+              "href": "/pricing",
+              "icon": "badge-dollar-sign"
+            }
+          ]
+        },
+        "pages": [
+          "pricing"
+        ]
+      },
+      {
         "group": "Getting Started",
         "pages": [
           "index"
@@ -87,26 +117,7 @@
           "guides/add-auth-to-mcp"
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "About us",
-          "href": "https://www.civic.com/about",
-          "icon": "circle-info"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://www.civic.com/blog",
-          "icon": "newspaper"
-        },
-        {
-          "anchor": "Help Center",
-          "href": "https://support.civic.com/hc/en-us?_gl=1*v97ps0*_gcl_au*MjEyNjQ5MTAzMi4xNzQ4MDA2MTU0",
-          "icon": "circle-question"
-        }
-      ]
-    }
+    ]
   },
   "logo": {
     "light": "/logo/light.png",
