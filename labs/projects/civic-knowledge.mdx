@@ -1,0 +1,63 @@
+---
+title: Civic Knowledge
+description: AI assistant for the optimisation of internal operations and processes
+---
+
+**Flask Status: Distilling** 🧪
+
+## Overview
+
+Civic Knowledge is an integrated AI assistant designed for internal teams, such as operations, engineering, support, and compliance, to query and understand organizational systems in real time. It bridges the gap between raw systems data and conversational insights.
+
+This flask pulls together multiple Civic Labs components (like MCP, guardrails, and pass-through proxy) to provide a unified, secure chatbot interface that connects to:
+
+- Logs and diagnostics (Loggly)
+- BI dashboards and databases (Redshift)
+- Ticketing systems (Jira)
+- Internal wikis and docs
+- Source code & repositories (GitHub)
+- Civic Pass verification services
+
+## Getting Started
+
+Getting started guide coming soon. For now, [contact us](/labs/feedback) for early access and setup assistance.
+
+## Key Features
+
+- **Conversational Access**: Natural language interface to internal systems via MCP
+- **Multi-Provider AI Support**: Works with OpenAI, Anthropic, and AWS Bedrock
+- **Enterprise Auth Integration**: Secure access via Civic Auth with role-based controls
+- **Voice Input**: Optional voice transcription for hands-free operation
+- **Progressive Web App**: Installable with offline capabilities and deep linking
+- **Built-in Guardrails**: Policy controls and audit logging through pass-through proxy
+- **Mobile Optimized**: Responsive design with mobile-specific auth flows
+
+## Usage
+
+Civic Knowledge can be deployed internally as a private assistant, embedded in developer workflows, or accessed as a progressive web app. It's designed for security-aware, compliance-sensitive environments where teams need quick access to organizational data without navigating multiple systems.
+
+Example use cases:
+- "Show me errors for user X in the last 24 hours"
+- "What's the status of civic pass Y?"
+- "Find all Jira tickets related to authentication"
+- "Search our codebase for implementations of Z"
+
+## Integration Notes
+
+Civic Knowledge showcases how multiple Civic Labs flasks work together:
+- **MCP Hub** manages connections to various data sources
+- **Guardrail Proxy** enforces fine-grained access controls
+- **Pass-through Proxy** provides audit logging and authorization hooks
+- **Bodyguard** could be integrated for additional prompt security
+
+The system supports organization-wide or per-user authorization policies and can be extended with custom MCP tools for additional data sources.
+
+## Status
+
+This flask is currently **distilling**: Early versions exist and are being piloted internally at Civic. The architecture has proven stable for internal use cases, and we're refining the user experience based on team feedback. A whitelabel version is also available for organizations wanting to build their own internal AI assistants. Contact us if you'd like to help test it or shape its roadmap.
+
+## Resources
+
+- [GitHub Repository](https://github.com/civicteam/civic-kb-chatbot) (private - [request access](/labs/feedback))
+- Whitelabel Version (available for custom deployments)
+- Integration Guide (coming soon)

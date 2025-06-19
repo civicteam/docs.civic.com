@@ -1,0 +1,70 @@
+---
+title: Pass-through Proxy
+description: Middleware hook system for MCP servers that powers guardrails and more
+---
+
+**Flask Status: Distilling** 🧪
+
+## Overview
+
+The Pass-through Proxy is the foundational middleware layer that sits between AI assistants and MCP tools. It intercepts all communication, processes it through a configurable chain of hooks, and enables you to add custom logic without modifying the underlying MCP servers. This architecture powers our Guardrail Proxy and enables endless customization possibilities.
+
+Think of it as a smart router that can inspect, modify, filter, or enrich every request and response flowing between your AI and its tools.
+
+## Getting Started
+
+Getting started guide coming soon. For now, [contact us](/labs/feedback) for early access and setup assistance.
+
+## Key Features
+
+- **Hook Chain Architecture**: Process requests through multiple hooks in sequence
+- **Request Interception**: Capture and modify requests before they reach MCP servers
+- **Response Processing**: Transform or filter responses before returning to the AI
+- **Transport Agnostic**: Works with HTTP streaming, SSE, and stdio transports
+- **Stateless Design**: Each request is processed independently for reliability
+- **Extensible Framework**: Easy to add custom hooks for your specific needs
+
+## Usage
+
+The Pass-through Proxy acts as a transparent layer:
+
+```
+AI Assistant ←→ Pass-through Proxy ←→ Target MCP Server
+                       ↓↑
+                  [Hook Chain]
+```
+
+Configure it with:
+- `TARGET_SERVER_URL`: The MCP server to forward requests to
+- `HOOKS`: Comma-separated list of hook URLs to process requests through
+
+Hook responses can:
+- **continue**: Forward the (possibly modified) request
+- **reject**: Stop processing and return an error
+- **respond**: Return a response without calling the target server
+
+Example applications:
+- Add authentication headers to requests
+- Log all AI-tool interactions for compliance
+- Implement rate limiting or quotas
+- Transform data formats between AI and tools
+- Add caching layers for expensive operations
+
+## Integration Notes
+
+The Pass-through Proxy is the foundation for:
+- **Guardrail Proxy**: Our security-focused hook implementation
+- **Custom Hooks**: Build your own processing logic
+- **MCP Hub Integration**: Can be deployed between Hub and individual MCP servers
+
+Multiple proxies can be chained together for complex processing pipelines.
+
+## Status
+
+This flask is currently **distilling**: The core proxy infrastructure is stable and powers our Guardrail system. We're developing additional hook templates and improving the developer experience for creating custom hooks. The system handles thousands of requests in production environments. Contact us if you need help building custom middleware for your MCP tools.
+
+## Resources
+
+- [GitHub Repository](https://github.com/civicteam/mcp-tools) (private)
+- Hook Development Guide (coming soon)
+- Example Hook Implementations (coming soon)
