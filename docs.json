@@ -33,9 +33,14 @@
   "navigation": {
     "groups": [
       {
-        "group": "Getting Started",
+        "group":  "Overview",
         "pages": [
-          "index"
+          "index",
+          "overview/pricing",
+          "overview/bring-your-app-to-production",
+          "overview/login-options",
+          "overview/faqs",
+          "overview/changelog"
         ]
       },
       {
@@ -64,13 +69,15 @@
               "integration/python/django"
             ]
           },
-          "integration/react-native",
+          {
+            "group": "Mobile",
+            "icon": "mobile-screen-button",
+            "pages": [
+              "integration/mobile/react-native"
+            ]
+          },
           "integration/other",
-          "integration/faqs",
-          "integration/error-codes",
-          "integration/bring-your-app-to-production",
-          "integration/login-options",
-          "integration/changelog"
+          "integration/error-codes"
         ]
       },
       {
