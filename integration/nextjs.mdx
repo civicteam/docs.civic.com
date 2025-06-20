@@ -415,3 +415,48 @@ export default withCivicAuth(nextConfig) // your next config here
 | `include`         | No       | `["/*"]`             | `["/admin/*", "/api/admin/*"]`         | An array of path [globs](https://man7.org/linux/man-pages/man7/glob.7.html) that require a user to be logged-in to access. If not set, will include all paths matched by your Next.js [middleware](/integration/nextjs#3-middleware).                                                                                                             |
 | `exclude`         | No       | -                    | `["public/home"]`                      | An array of path [globs](https://man7.org/linux/man-pages/man7/glob.7.html) that are excluded from Civic Auth [middleware](/integration/nextjs#3-middleware). In some cases, it might be easier and safer to specify exceptions rather than keep an inclusion list up to date.                                                                    |
 | `basePath`        | No       | `/`                  | `/my-app`                              | Allows applications to be served from custom subpaths instead of the root domain. This enables seamless authentication integration when deploying your Next.js application within subdirectories, ensuring all auth-related routes and assets maintain proper functionality regardless of the URL structure.                                          |
+| `baseUrl`         | No       | -                    | `https://myapp.com`                    | The public-facing base URL for your application. Required when deploying behind reverse proxies (Cloudfront + Vercel, AWS ALB, nginx, etc.) to ensure authentication redirects use the correct public domain instead of internal origins.                                                                                                        |
+
+### Deploying Behind Reverse Proxies
+
+When deploying your Next.js application behind reverse proxies (such as Cloudfront + Vercel, AWS Application Load Balancer, or nginx), you may encounter authentication issues where redirects fail because the middleware detects internal origins instead of your public domain.
+
+**Common symptoms:**
+- Authentication works locally but fails in production
+- Users cannot log in after deployment
+- Redirect loops during the authentication process
+- Error messages about invalid redirect URLs
+
+**Solution:**
+Set the `baseUrl` parameter in your Next.js configuration to specify your public-facing domain:
+
+<Tabs>
+  <Tab title="Auth">
+```ts next.config.ts
+import { createCivicAuthPlugin } from "@civic/auth/nextjs"
+
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: "YOUR CLIENT ID",
+  baseUrl: "https://myapp.com" // Your public domain
+});
+
+export default withCivicAuth(nextConfig)
+```
+  </Tab>
+  <Tab title="Auth + Web3">
+```ts next.config.ts
+import { createCivicAuthPlugin } from "@civic/auth-web3/nextjs"
+
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: "YOUR CLIENT ID",
+  baseUrl: "https://myapp.com" // Your public domain
+});
+
+export default withCivicAuth(nextConfig)
+```
+  </Tab>
+</Tabs>
+
+<Info>
+  The `baseUrl` parameter is only needed for reverse proxy deployments. Standard deployments (like direct Vercel hosting) work without this configuration.
+</Info>
