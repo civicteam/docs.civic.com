@@ -1,0 +1,90 @@
+---
+title: Guardrails
+description: Understanding prompt injection attacks & LLM safety
+---
+
+## Overview
+
+Guardrails are security policies that control how AI assistants interact with tools and data. Unlike traditional access controls that simply grant or deny access, guardrails provide nuanced, context-aware rules that make AI systems safer and more predictable.
+
+## Why Guardrails Matter
+
+When AI assistants use tools, they need different constraints than human users:
+
+- **Content Limits**: An AI shouldn't read 10GB files that would overwhelm its context
+- **Semantic Filtering**: Block prompts trying to access sensitive data patterns
+- **Behavioral Rules**: Prevent actions that make sense for humans but not for AI
+- **Dynamic Policies**: Adjust permissions based on the conversation context
+
+## Types of Guardrails
+
+### Input Guardrails
+Control what goes into the AI system:
+- **Domain Filtering**: Limit which websites can be accessed
+- **File Type Restrictions**: Block binary files or specific formats
+- **Size Limits**: Cap file sizes and directory traversal depth
+- **Pattern Matching**: Detect and block sensitive data patterns
+
+### Output Guardrails
+Control what comes out of tools:
+- **Data Sanitization**: Remove sensitive information from responses
+- **Format Enforcement**: Ensure outputs match expected schemas
+- **Content Filtering**: Block inappropriate or harmful content
+- **Response Limits**: Prevent overwhelming the AI with data
+
+### Behavioral Guardrails
+Control how the AI uses tools:
+- **Rate Limiting**: Prevent excessive API calls
+- **Sequence Controls**: Enforce proper tool usage order
+- **State Validation**: Ensure operations happen in valid states
+- **Audit Requirements**: Force logging of certain operations
+
+## Implementation Approaches
+
+### 1. Proxy-Based
+Insert guardrails between the AI and tools:
+```
+AI → Guardrail Proxy → Tool
+```
+Benefits: No tool modification needed, centralized control
+
+### 2. SDK-Based
+Build guardrails into tool implementations:
+```typescript
+@guardrail({ maxFileSize: '10MB' })
+async function readFile(path: string) { ... }
+```
+Benefits: Fine-grained control, better performance
+
+### 3. Policy Engine
+Define rules in a central policy system:
+```yaml
+policies:
+  - resource: "filesystem"
+    rules:
+      - deny: { path_prefix: "/etc" }
+      - allow: { file_size: { max: "10MB" } }
+```
+Benefits: Declarative, auditable, version-controlled
+
+## Best Practices
+
+1. **Start Restrictive**: Begin with tight controls and loosen as needed
+2. **Layer Defense**: Combine multiple guardrail types for robust protection
+3. **Monitor and Adapt**: Track guardrail triggers to refine policies
+4. **Document Policies**: Make it clear why each guardrail exists
+5. **Test Thoroughly**: Verify guardrails work without breaking functionality
+
+## In Civic Labs
+
+Our Guardrail Proxy implements these concepts for MCP servers, allowing you to:
+- Add LLM-specific safety rules to any MCP tool
+- Chain multiple guardrails for defense in depth
+- Customize policies without modifying tools
+- Monitor and audit all AI-tool interactions
+
+## Next Steps
+
+- Explore our [Guardrail Proxy](/labs/projects/guardrail-proxy) implementation
+- Learn about [Prompt Injection](/labs/concepts/prompt-injection) attacks
+- Understand [Auth Strategies](/labs/concepts/auth-strategies) for AI systems

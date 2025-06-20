@@ -25,3 +25,12 @@ https://api.civic.com/.*
 https://73ncn-4qaaa-aaaag-alddq-cai.icp0.io
 # Civic Support url that is returning 403 to lychee
 https://support.civic.com/hc/en-us/requests/new
+
+# Private github links (give 404 when not in civicteam org)
+https://github.com/civicteam/civic-kb-chatbot
+https://github.com/civicteam/civic-mcp
+https://github.com/civicteam/mcp-tools
+https://github.com/civicteam/bodyguard
+# Private labs links
+# not deployed yet
+https://ai.civic.com/bodyguard/ui

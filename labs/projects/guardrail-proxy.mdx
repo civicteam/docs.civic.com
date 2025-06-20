@@ -1,0 +1,58 @@
+---
+title: Guardrail Proxy
+description: Wrap any MCP server in a configurable and flexible security layer
+---
+
+**Flask Status: Distilling** 🧪
+
+## Overview
+
+The Guardrail Proxy implements security rules to filter and validate requests between AI assistants and MCP tools. It's designed to add LLM-specific safety controls without modifying the underlying MCP servers. This allows you to enforce policies like domain blocking, file size limits, and custom validation logic at the proxy layer.
+
+Think of it as a security checkpoint that all AI requests must pass through before reaching your tools. It can inspect, modify, or reject requests based on configurable rules.
+
+## Getting Started
+
+Getting started guide coming soon. For now, [contact us](/labs/feedback) for early access and setup assistance.
+
+## Key Features
+
+- **Domain Filtering**: Block or allow access to specific domains
+- **Request Validation**: Validate parameters before forwarding to tools
+- **Content Limits**: Cap file sizes and directory traversal depth for LLM consumption
+- **Binary File Protection**: Prevent reading of binary files that could confuse LLMs
+- **Custom Security Rules**: Implement your own validation logic via hooks
+- **Response Processing**: Filter or modify responses before they reach the AI
+
+## Usage
+
+The Guardrail Proxy works as a hook within the Pass-through Proxy system:
+
+1. Configure your security rules in the guardrail hook
+2. Point the Pass-through Proxy at your target MCP server
+3. Configure the Pass-through Proxy to use the guardrail hook
+4. Connect your AI assistant to the Pass-through Proxy instead of directly to the MCP server
+
+Example use cases:
+- Limiting which websites an AI can fetch content from
+- Preventing directory traversal attacks
+- Blocking access to sensitive file types
+- Rate-limiting based on content type or size
+- Adding corporate security policies to public MCP tools
+
+## Integration Notes
+
+The Guardrail Proxy is powered by the Pass-through Proxy infrastructure and can be combined with:
+- **MCP Hub** for centralized management of multiple guarded MCP servers
+- **Bodyguard** for additional prompt-level threat detection
+- Custom hooks for organization-specific security requirements
+
+## Status
+
+This flask is currently **distilling**: The guardrail system is functional and being tested with various security rule configurations. We're actively developing additional rule types and improving the configuration interface. Contact us if you'd like to implement custom security policies for your MCP tools.
+
+## Resources
+
+- [GitHub Repository](https://github.com/civicteam/mcp-tools) (private - [request access](/labs/feedback))
+- [GitHub Repository - Guardrail Library](https://github.com/civicteam/civic-mcp) (private - [request access](/labs/feedback))
+- Security Rule Examples (coming soon)
