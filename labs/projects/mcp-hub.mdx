@@ -28,7 +28,7 @@ Choose your integration path:
 
 <AccordionGroup>
   <Accordion title="I want to integrate with a local AI agent, such as Claude Desktop (Recommended)">
-    Connect your desktop AI assistant to cloud-hosted MCP servers using our Hub Bridge:
+    Connect your desktop AI assistant to cloud-hosted MCP servers using our Hub Bridge.
 
       <Frame caption="Claude Desktop with Civic MCP Hub">
           <img
@@ -38,186 +38,61 @@ Choose your integration path:
           />
       </Frame>
 
-      <Steps>
-          <Step title="Install the hub-bridge package">
-            <Tabs>
-                <Tab title="npm">
-                    If you have node.js installed, you're good! Skip to step 2
-                </Tab>
-                <Tab title="homebrew (Mac)">
-                    <Note>ARM (M1, M2...) infrastructure supported only. For x86 builds, [contact us](/labs/feedback)</Note>
-                    ```shell
-                    brew tap civicteam/hub-bridge
-                    brew install hub-bridge
-                    ```
-                </Tab>
-                <Tab title="Other">
-                    If you need other builds, [contact us](/labs/feedback).
-                </Tab>
-            </Tabs>
-          </Step>
-          <Step title="Configure your AI assistant to use the bridge">
-            <Tabs>
-                <Tab title="npm">
-
-                    ```shell
-                    npx @civic/hub-bridge install claude-desktop
-                    ```
-                </Tab>
-                <Tab title="homebrew (Mac)">
-                    ```shell
-                    hub-bridge install claude-desktop
-                    ```
-                </Tab>
-                <Tab title="Other">
-                    If you need other builds, [contact us](/labs/feedback).
-                </Tab>
-            </Tabs>
-          </Step>
-          <Step title="Fire up the assistant and log into Civic">
-              You should see "Civic" tools
-          </Step>
-    3. Fire up the assistant and log into Civic:
-
-    4. Try the following prompt:
-
-> "What can I do with my Civic account?"
-      </Steps>
-
+    The Hub Bridge provides:
+    - Seamless integration between desktop AI assistants and cloud MCP servers
+    - Secure authentication flow
+    - Automatic tool discovery
+    - Support for multiple platforms (npm, homebrew, and more)
+    
+    [Contact us](/labs/feedback) for installation instructions and early access.
   </Accordion>
 
   <Accordion title="I want to build into an agent or backend service">
-      Since Civic's MCP Hub is just an MCP server, it is easy to add it into an agent.
+      Civic's MCP Hub works as a standard MCP server, making it easy to integrate into any AI agent or backend service.
 
-      Here is an example using [Civic Auth](https://civic.com/auth) and the [Vercel AI SDK](https://vercel.com/docs/ai):
-
-      <Steps>
-          <Step title="Install Civic Auth and the Vercel AI SDK">
-              ```bash
-              npm install @civic/auth ai @ai-sdk/anthropic
-              ```
-          </Step>
-          <Step title="Set up Civic Auth">
-              Follow the instructions at [Civic Auth Docs](https://docs.civic.com/auth) or direct your LLM to them.
-          </Step>
-          <Step title="Set up Vercel AI">
-              Try this code snippet as an example:
-
-              ```ts
-              import { streamText } from 'ai';
-              import { createAnthropic } from '@ai-sdk/anthropic';
-
-              const tools = await getTools(); // We'll add this next
-
-              const result = streamText({
-                model: anthropicProvider("claude-3-7-sonnet-20250219"),
-                prompt: "What can I do with my Civic account?",
-                system: "You are a helpful AI assistant",
-                tools
-              });
-          </Step>
-          <Step title="Add the MCP Hub as a tool">
-              Use the following code to connect to the MCP Hub:
-
-              ```ts
-              import { experimental_createMCPClient as createMCPClient } from 'ai';
-
-              // See our docs for non-nextjs options
-              import { getTokens } from "@civic/auth/nextjs";
-
-              function getTools() {
-                // Assuming the user is logged in, get their access token
-                const { accessToken } = await getTokens();
-
-                const transport = new StreamableHTTPClientTransport(
-                  new URL("https://ai.civic.com/hub/mcp"),
-                  {
-                    requestInit: {
-                      headers: {
-                        'Authorization': `Bearer ${accessToken}`
-                      }
-                    }
-                  }
-                );
-
-                const clientConfig = {
-                  transport
-                }
-
-                const client = await createMCPClient(clientConfig);
-                return client.getTools();
-              }
-              ```
-          </Step>
-      </Steps>
-
-      ```ts
-      import { experimental_createMCPClient as createMCPClient } from 'ai';
-
-      const transport = new StreamableHTTPClientTransport(
-        new URL("https://ai.civic.com/hub/mcp"),
-        {
-          requestInit: {
-          headers: {
-          'Authorization': `Bearer ${idToken ?? process.env.MCP_API_KEY!}`
-      }
-      }
-      }
-      );
-
-      const clientConfig = {
-      transport
-  }
-
-      return createMCPClient(clientConfig);
-      ```
-
+      Integration supports:
+      - **[Civic Auth](https://civic.com/auth)**: Seamless authentication for your users
+      - **[Vercel AI SDK](https://vercel.com/docs/ai)**: Quick integration with popular AI frameworks
+      - **Direct API Integration**: For custom implementations
+      - **Multiple Auth Methods**: Bearer tokens, API keys, and OAuth2
+      
+      The integration process involves:
+      1. Setting up authentication (Civic Auth or API keys)
+      2. Configuring your AI framework
+      3. Connecting to the MCP Hub
+      4. Accessing available tools
+      
+      [Contact us](/labs/feedback) for detailed integration guides and code examples.
   </Accordion>
 
-  <Accordion title="I know what I'm doing, just give me the link">
-      Here you go! [https://ai.civic.com/hub/mcp](https://ai.civic.com/hub/mcp)
+  <Accordion title="I know what I'm doing, just give me the endpoint">
+      [Contact us](/labs/feedback) for API endpoint access and documentation.
   </Accordion>
 
   <Accordion title="I want to integrate with N8N">
-      Since the MCP Hub is an MCP server, it can be integrated with N8N to create no-code workflows that use AI tools.
+      The MCP Hub integrates seamlessly with N8N to create no-code workflows powered by AI tools.
 
-      Here's how to get started:
+      <Frame caption="N8N Integration">
+          <img
+              src="/images/labs/projects/mcp-hub/n8n-import.png"
+              align="center"
+              className="image-60 image-rounded"
+          />
+      </Frame>
 
-      <Steps>
-        <Step title="Import the MCP Hub N8N example workflow">
-          In N8N, import the [example workflow](https://github.com/civicteam/docs.civic.com/labs/n8n_sample_api-key-flow.json) from the MCP Hub repository:
-
-            <Frame caption="Import N8N Workflow">
-                <img
-                    src="/images/labs/projects/mcp-hub/n8n-import.png"
-                    align="center"
-                    className="image-60 image-rounded"
-                />
-            </Frame>
-        </Step>
-        <Step title="Add model credentials">
-            Add an "AWS Account" credential in N8N with your AWS Bedrock credentials.
-
-            <Info>
-                The example uses AWS Bedrock, but you can use any model that supports the MCP protocol.
-            </Info>
-        </Step>
-        <Step title="Add your Civic API Key">
-            [Contact us](/labs/feedback) to obtain an API key for the MCP Hub, then add it as a Header Auth credential in N8N:
-
-            <Frame caption="Add Civic API Key">
-                <img
-                    src="/images/labs/projects/mcp-hub/n8n-civic-api-key.png"
-                    align="center"
-                    className="image-60 image-rounded"
-                />
-            </Frame>
-
-            <Info>
-                Coming Soon: OAuth2 support for the MCP Hub in N8N.
-            </Info>
-        </Step>
-      </Steps>
+      Key features:
+      - Pre-built workflow templates
+      - Support for multiple AI models (AWS Bedrock, OpenAI, Anthropic)
+      - Visual workflow builder integration
+      - API key authentication (OAuth2 coming soon)
+      
+      Getting started involves:
+      1. Importing example workflows
+      2. Configuring AI model credentials
+      3. Setting up MCP Hub authentication
+      4. Building your custom workflows
+      
+      [Contact us](/labs/feedback) for workflow templates and API access.
   </Accordion>
 
   <Accordion title="I want to integrate with Crew.ai, Make, etc (coming soon)">
@@ -262,6 +137,6 @@ This flask is currently **distilling**: The core platform is functional with act
 
 ## Resources
 
-- [GitHub Repository](https://github.com/civicteam/civic-mcp) (private - [request access](/labs/feedback))
+- GitHub Repository (private - [request access](/labs/feedback))
 - [MCP Protocol Documentation](https://modelcontextprotocol.io)
-- API Documentation (coming soon)
+- [API Documentation](/labs/feedback) (request access)

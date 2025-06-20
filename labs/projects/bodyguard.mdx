@@ -18,7 +18,7 @@ catching sophisticated attacks that might bypass traditional filters.
 
 ## Getting Started
 
-Try it out [here](https://ai.civic.com/bodyguard/ui) (COMING SOON) or see [below](/labs/projects/bodyguard#usage) for detailed instructions.
+Bodyguard is available as a hosted service, client library, or CLI tool. [Contact us](/labs/feedback) for early access.
 
 ## Use Cases
 
@@ -40,54 +40,21 @@ Try it out [here](https://ai.civic.com/bodyguard/ui) (COMING SOON) or see [below
 
 ## Usage
 
-Bodyguard can be integrated in three ways:
+Bodyguard can be integrated in multiple ways:
 
 ### 1. HTTP Server
-Deploy Bodyguard as a standalone service that other applications can query:
-```bash
-# GET request
-curl "https://ai.civic.com/bodyguard/check?prompt=Your%20prompt%20here"
-
-# POST request
-curl -X POST https://ai.civic.com/bodyguard/check \
-  -H "Content-Type: application/json" \
-  -d '{"prompt":"Your prompt here"}'
-```
+Deploy Bodyguard as a standalone service that other applications can query. Supports both GET and POST requests with configurable threat thresholds.
 
 ### 2. Client Library
-Integrate directly into your application:
-
-```typescript
-import { check } from '@civic/bodyguard';
-
-const { result, threatScore, findings } = await check('User prompt here', {
-  threshold: 0.5 // Fail if threat score > 0.5
-});
-```
+Integrate directly into your application with our TypeScript/JavaScript SDK. Set custom threat thresholds and handle responses programmatically.
 
 ### 3. CLI Tool
-
-```bash
-bodyguard "Analyze this prompt for threats"
-```
+Quick command-line analysis for testing and development workflows.
 
 ### 4. MCP Hooks
+Use Bodyguard as middleware for MCP servers, analyzing prompts before they reach your LLM. Works seamlessly with the Pass-through Proxy system.
 
-Bodyguard can be used as a middleware for MCP servers, analyzing prompts before they reach the LLM:
-
-```json
-"mcpServers": {
-    "passthrough-mcp-server": {
-      "type": "stdio",
-      "command": "npx @civic/passthrough-mcp-server",
-      "args": [],
-      "env": {
-        "TARGET_SERVER_URL": "https://your-mcp-server/mcp",
-        "HOOKS": "https://ai.civic.com/bodyguard/hook?threshold=0.5"
-      }
-    }
-  }
-```
+[Contact us](/labs/feedback) for integration guides and API access.
 
 ## Integration Notes
 
@@ -110,6 +77,6 @@ Docker images are available for easy deployment. [Contact us](/labs/feedback) if
 
 ## Resources
 
-- [Github](https://github.com/civicteam/bodyguard) (private - [request access](/labs/feedback))
-- Docker Image: Available on AWS ECR (contact for access)
-- API Documentation (coming soon)
+- GitHub Repository (private - [request access](/labs/feedback))
+- Docker Image (contact for access)
+- [API Documentation](/labs/feedback) (request access)
