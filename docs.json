@@ -124,7 +124,7 @@
           "pages": [
             "labs",
             "labs/flask-status",
-            "labs/getting-started",
+            "labs/architecture",
             "labs/feedback"
           ]
         },
@@ -148,9 +148,23 @@
           ]
         },
         {
-          "group": "Other Resources",
+          "group": "Integration Guides",
           "pages": [
-            "labs/flask-status"
+            "labs/integration/getting-started",
+            "labs/integration/authentication",
+            "labs/integration/api-reference",
+            "labs/integration/claude-desktop",
+            "labs/integration/n8n-workflows",
+            "labs/integration/vercel-ai"
+          ]
+        },
+        {
+          "group": "Developer Resources",
+          "pages": [
+            "labs/dev/endpoints",
+            "labs/dev/sdk-reference",
+            "labs/dev/deployment",
+            "labs/dev/troubleshooting"
           ]
         }
       ]

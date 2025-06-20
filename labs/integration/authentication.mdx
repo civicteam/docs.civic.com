@@ -1,0 +1,171 @@
+---
+title: Authentication Guide
+description: Complete guide to authenticating with Civic Labs services
+---
+
+## Overview
+
+Civic Labs supports multiple authentication methods to suit different integration scenarios. This guide covers all available options and best practices.
+
+## Authentication Methods
+
+### 1. API Keys
+
+The simplest method for server-to-server communication.
+
+```bash
+# Set your API key
+export CIVIC_LABS_API_KEY="your-api-key-here"
+```
+
+```javascript
+const client = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY
+});
+```
+
+### 2. OAuth2 Flow
+
+For user-facing applications requiring delegated access.
+
+```javascript
+// Initialize OAuth client
+const auth = new CivicAuth({
+  clientId: 'your-client-id',
+  redirectUri: 'https://your-app.com/callback',
+  scope: 'mcp:read mcp:execute'
+});
+
+// Redirect user to authorization
+const authUrl = auth.getAuthorizationUrl();
+window.location.href = authUrl;
+
+// Handle callback
+const tokens = await auth.handleCallback(code);
+```
+
+### 3. JWT Bearer Tokens
+
+For advanced integrations with custom token management.
+
+```javascript
+// Exchange credentials for JWT
+const response = await fetch('https://api.civic-labs.com/auth/token', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    grant_type: 'client_credentials',
+    client_id: 'your-client-id',
+    client_secret: 'your-client-secret'
+  })
+});
+
+const { access_token } = await response.json();
+
+// Use token in requests
+const mcpResponse = await fetch('https://api.civic-labs.com/mcp/v1/tools', {
+  headers: {
+    'Authorization': `Bearer ${access_token}`
+  }
+});
+```
+
+## Environment Configuration
+
+### Development
+```env
+CIVIC_LABS_API_URL=https://dev-api.civic-labs.com
+CIVIC_LABS_API_KEY=dev_key_xxxxx
+CIVIC_LABS_DEBUG=true
+```
+
+### Production
+```env
+CIVIC_LABS_API_URL=https://api.civic-labs.com
+CIVIC_LABS_API_KEY=prod_key_xxxxx
+CIVIC_LABS_TIMEOUT=30000
+```
+
+## Token Management
+
+### Token Lifecycle
+- Access tokens expire after 1 hour
+- Refresh tokens expire after 30 days
+- API keys don't expire but can be revoked
+
+### Automatic Refresh
+```javascript
+const client = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  autoRefresh: true,
+  onTokenRefresh: (newToken) => {
+    // Store new token
+    saveToken(newToken);
+  }
+});
+```
+
+## Security Best Practices
+
+1. **Never expose credentials in client code**
+   ```javascript
+   // ❌ Bad
+   const apiKey = 'sk_live_abc123';
+   
+   // ✅ Good
+   const apiKey = process.env.CIVIC_LABS_API_KEY;
+   ```
+
+2. **Use environment-specific keys**
+   - Development keys for testing
+   - Production keys with restricted permissions
+   - Rotate keys regularly
+
+3. **Implement proper error handling**
+   ```javascript
+   try {
+     const result = await client.execute(tool, params);
+   } catch (error) {
+     if (error.code === 'AUTH_EXPIRED') {
+       // Refresh token and retry
+     } else if (error.code === 'AUTH_INVALID') {
+       // Re-authenticate user
+     }
+   }
+   ```
+
+## Troubleshooting
+
+### Common Issues
+
+**401 Unauthorized**
+- Check API key is valid and not revoked
+- Ensure Bearer token format is correct
+- Verify token hasn't expired
+
+**403 Forbidden**
+- Check permissions for the requested resource
+- Verify OAuth scopes include required permissions
+- Ensure IP allowlist includes your server
+
+**429 Rate Limited**
+- Implement exponential backoff
+- Check rate limit headers for reset time
+- Consider upgrading plan for higher limits
+
+### Debug Mode
+```javascript
+const client = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  debug: true, // Logs all requests/responses
+  logger: customLogger // Optional custom logger
+});
+```
+
+## Next Steps
+
+- [API Reference](/labs/integration/api-reference) - Complete API documentation
+- [Claude Desktop Integration](/labs/integration/claude-desktop) - Desktop AI setup
+- [SDK Reference](/labs/dev/sdk-reference) - Language-specific SDKs

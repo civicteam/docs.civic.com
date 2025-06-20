@@ -1,0 +1,292 @@
+---
+title: MCP Server Directory
+description: Complete list of available MCP servers and their endpoints
+---
+
+## Overview
+
+This directory lists all MCP servers available through Civic Labs Hub, their capabilities, and connection details.
+
+## Core Services
+
+### MCP Hub API
+- **Endpoint**: `https://api.civic-labs.com/mcp/v1`
+- **Transport**: HTTP/REST
+- **Authentication**: Bearer token / API key
+
+### MCP Bridge (for Claude Desktop)
+- **Endpoint**: `stdio://civic-hub-bridge`
+- **Transport**: stdio
+- **Authentication**: API key via args
+
+## Available MCP Servers
+
+### Developer Tools
+
+#### GitHub (`mcp-github`)
+- **Description**: Full GitHub API access via MCP
+- **Authentication**: OAuth2 (GitHub)
+- **Tools**:
+  - `search_code` - Search code across repositories
+  - `search_issues` - Search issues and PRs
+  - `create_issue` - Create new issues
+  - `get_pr` - Get pull request details
+  - `create_pr_comment` - Comment on PRs
+  - `merge_pr` - Merge pull requests
+- **Required Scopes**: `repo`, `issues`, `pull_requests`
+
+#### Jira (`mcp-jira`)
+- **Description**: Atlassian Jira integration
+- **Authentication**: OAuth2 (Atlassian)
+- **Tools**:
+  - `search_issues` - JQL search
+  - `create_issue` - Create tickets
+  - `update_issue` - Update tickets
+  - `add_comment` - Add comments
+  - `get_transitions` - Get workflow transitions
+- **Required Scopes**: `read:jira-work`, `write:jira-work`
+
+#### PostgreSQL (`mcp-postgres`)
+- **Description**: Direct PostgreSQL database access
+- **Authentication**: Connection string
+- **Tools**:
+  - `query` - Execute SELECT queries
+  - `schema` - Get database schema
+  - `tables` - List tables
+  - `explain` - Query execution plan
+- **Security**: Read-only by default
+
+### AI & Knowledge
+
+#### Civic Knowledge (`civic-knowledge`)
+- **Description**: Internal knowledge base and documentation
+- **Authentication**: Civic Labs API key
+- **Tools**:
+  - `search` - Semantic search
+  - `ask` - Q&A with context
+  - `summarize` - Document summarization
+  - `extract` - Information extraction
+
+#### Web Search (`mcp-search`)
+- **Description**: Web search capabilities
+- **Authentication**: API key
+- **Tools**:
+  - `web_search` - General web search
+  - `news_search` - News articles
+  - `image_search` - Image search
+  - `scholar_search` - Academic papers
+
+### File & Data Management
+
+#### S3 Storage (`mcp-s3`)
+- **Description**: AWS S3 operations
+- **Authentication**: AWS credentials
+- **Tools**:
+  - `list_buckets` - List S3 buckets
+  - `list_objects` - List bucket contents
+  - `get_object` - Download files
+  - `put_object` - Upload files
+  - `generate_presigned_url` - Create signed URLs
+
+#### Google Drive (`mcp-gdrive`)
+- **Description**: Google Drive access
+- **Authentication**: OAuth2 (Google)
+- **Tools**:
+  - `list_files` - List drive contents
+  - `read_file` - Read file contents
+  - `create_file` - Create new files
+  - `update_file` - Update existing files
+  - `share_file` - Manage sharing
+
+### Communication
+
+#### Slack (`mcp-slack`)
+- **Description**: Slack workspace integration
+- **Authentication**: OAuth2 (Slack)
+- **Tools**:
+  - `send_message` - Post messages
+  - `search_messages` - Search conversations
+  - `list_channels` - Get channels
+  - `get_user` - User information
+  - `upload_file` - Share files
+
+#### Email (`mcp-email`)
+- **Description**: Email operations
+- **Authentication**: SMTP/IMAP credentials
+- **Tools**:
+  - `send_email` - Send emails
+  - `search_inbox` - Search emails
+  - `get_attachments` - Download attachments
+  - `create_draft` - Create email drafts
+
+### Analytics & Monitoring
+
+#### Datadog (`mcp-datadog`)
+- **Description**: Datadog metrics and logs
+- **Authentication**: API key
+- **Tools**:
+  - `query_metrics` - Get metrics
+  - `search_logs` - Search log data
+  - `get_monitors` - List monitors
+  - `create_event` - Post events
+
+#### Google Analytics (`mcp-analytics`)
+- **Description**: GA4 data access
+- **Authentication**: OAuth2 (Google)
+- **Tools**:
+  - `get_reports` - Analytics reports
+  - `realtime_data` - Real-time metrics
+  - `user_activity` - User behavior
+
+## Connection Examples
+
+### Direct HTTP Connection
+```bash
+curl -X POST https://api.civic-labs.com/mcp/v1/tools/github-search/execute \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "parameters": {
+      "query": "civic labs"
+    }
+  }'
+```
+
+### Via SDK
+```javascript
+const hub = new CivicLabsHub({
+  apiKey: process.env.CIVIC_LABS_API_KEY
+});
+
+const result = await hub.execute('mcp-github', 'search_code', {
+  query: 'function authenticate',
+  language: 'typescript'
+});
+```
+
+### Via Claude Desktop
+```json
+{
+  "mcpServers": {
+    "civic-hub": {
+      "command": "civic-hub-bridge",
+      "args": ["--api-key", "YOUR_KEY"]
+    }
+  }
+}
+```
+
+## Server Status
+
+Check real-time server status:
+
+```bash
+curl https://api.civic-labs.com/mcp/v1/servers/status \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Response:
+```json
+{
+  "servers": {
+    "mcp-github": {
+      "status": "healthy",
+      "latency": 45,
+      "version": "1.2.3"
+    },
+    "mcp-jira": {
+      "status": "healthy",
+      "latency": 67,
+      "version": "2.0.1"
+    }
+  }
+}
+```
+
+## Rate Limits by Server
+
+| Server | Requests/min | Burst | Notes |
+|--------|--------------|-------|-------|
+| mcp-github | 60 | 100 | GitHub API limits apply |
+| mcp-jira | 100 | 200 | Per workspace |
+| mcp-postgres | 120 | 300 | Query complexity considered |
+| civic-knowledge | 200 | 500 | Cached responses available |
+| mcp-search | 60 | 100 | Results cached for 1hr |
+| mcp-slack | 60 | 120 | Slack rate limits apply |
+
+## Custom MCP Servers
+
+Deploy your own MCP server to Civic Labs:
+
+```yaml
+# civic-mcp.yaml
+name: my-custom-tool
+version: 1.0.0
+runtime: node20
+endpoints:
+  - name: process_data
+    description: Process custom data
+    parameters:
+      input:
+        type: string
+        required: true
+    handler: src/process.handler
+authentication:
+  type: api_key
+  header: X-API-Key
+```
+
+Deploy:
+```bash
+civic-labs deploy civic-mcp.yaml
+```
+
+## Security Policies
+
+All MCP servers are protected by:
+1. **Bodyguard** - Threat detection on all inputs
+2. **Guardrails** - Policy enforcement
+3. **Audit Logging** - Complete activity logs
+4. **Rate Limiting** - Prevent abuse
+5. **Sandboxing** - Isolated execution
+
+## WebSocket Connections
+
+For real-time tools:
+
+```javascript
+const ws = new WebSocket('wss://ws.civic-labs.com/mcp/v1');
+
+ws.on('open', () => {
+  ws.send(JSON.stringify({
+    type: 'auth',
+    token: 'YOUR_API_KEY'
+  }));
+});
+
+ws.on('message', (data) => {
+  const event = JSON.parse(data);
+  console.log('Tool event:', event);
+});
+```
+
+## Health Monitoring
+
+Monitor your MCP server usage:
+
+```bash
+# Get usage stats
+curl https://api.civic-labs.com/mcp/v1/usage \
+  -H "Authorization: Bearer YOUR_API_KEY"
+
+# Get detailed logs
+curl https://api.civic-labs.com/mcp/v1/logs?server=mcp-github \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Support
+
+- **Status Page**: [status.civic-labs.com](https://status.civic-labs.com)
+- **API Docs**: [API Reference](/labs/integration/api-reference)
+- **Discord**: [Join our community](https://discord.gg/civic-labs)
+- **Email**: support@civic-labs.com

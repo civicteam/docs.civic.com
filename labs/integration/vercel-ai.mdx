@@ -1,0 +1,457 @@
+---
+title: Vercel AI SDK Integration
+description: Build AI applications with Vercel AI SDK and Civic Labs
+---
+
+## Overview
+
+Integrate Civic Labs MCP tools seamlessly with the Vercel AI SDK to build secure, tool-enabled AI applications with React, Next.js, and other frameworks.
+
+## Installation
+
+```bash
+npm install ai @civic/vercel-ai-provider
+```
+
+## Quick Start
+
+### 1. Configure Provider
+
+```typescript
+// app/api/chat/route.ts
+import { StreamingTextResponse } from 'ai';
+import { CivicLabsProvider } from '@civic/vercel-ai-provider';
+
+const provider = new CivicLabsProvider({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  defaultModel: 'claude-3-opus',
+  security: {
+    bodyguard: true,
+    threatThreshold: 0.7
+  }
+});
+```
+
+### 2. Create Chat Endpoint
+
+```typescript
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+
+  // Automatic security check on all messages
+  const response = await provider.chat({
+    messages,
+    tools: {
+      // MCP tools are automatically available
+      github_search: {
+        description: 'Search GitHub repositories',
+        parameters: z.object({
+          query: z.string()
+        })
+      }
+    },
+    onToolCall: async ({ toolName, args }) => {
+      // Tools are automatically routed through MCP Hub
+      return provider.executeTool(toolName, args);
+    }
+  });
+
+  return new StreamingTextResponse(response);
+}
+```
+
+### 3. React Component
+
+```tsx
+// app/chat.tsx
+'use client';
+
+import { useChat } from 'ai/react';
+
+export function Chat() {
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: '/api/chat',
+    headers: {
+      'X-Civic-Session': sessionId
+    }
+  });
+
+  return (
+    <div>
+      {messages.map(m => (
+        <div key={m.id}>
+          <strong>{m.role}:</strong> {m.content}
+          {m.toolInvocations?.map((tool, i) => (
+            <div key={i}>
+              Tool: {tool.toolName}
+              Result: {JSON.stringify(tool.result)}
+            </div>
+          ))}
+        </div>
+      ))}
+      
+      <form onSubmit={handleSubmit}>
+        <input value={input} onChange={handleInputChange} />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  );
+}
+```
+
+## Advanced Features
+
+### Tool Discovery
+
+Automatically discover available MCP tools:
+
+```typescript
+const tools = await provider.discoverTools({
+  filter: 'github,jira,database',
+  includeAuth: true
+});
+
+// Returns tool definitions compatible with Vercel AI SDK
+console.log(tools);
+// {
+//   github_search: { ... },
+//   jira_create_issue: { ... },
+//   database_query: { ... }
+// }
+```
+
+### Security Middleware
+
+Apply security checks automatically:
+
+```typescript
+const provider = new CivicLabsProvider({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  middleware: [
+    // Bodyguard checks all prompts
+    bodyguardMiddleware({
+      threshold: 0.8,
+      blockOnThreat: true
+    }),
+    
+    // Guardrail policies for tool calls
+    guardrailMiddleware({
+      policies: ['domain-allowlist', 'rate-limit'],
+      customPolicies: {
+        'sensitive-data': (args) => {
+          return !args.query?.includes('password');
+        }
+      }
+    }),
+    
+    // Audit logging
+    auditMiddleware({
+      logTo: 'civic-labs',
+      includeResults: false
+    })
+  ]
+});
+```
+
+### Streaming Tool Results
+
+Stream long-running tool executions:
+
+```typescript
+const response = await provider.chat({
+  messages,
+  tools,
+  streamToolResults: true,
+  onToolProgress: ({ toolName, progress }) => {
+    console.log(`${toolName}: ${progress}%`);
+  }
+});
+```
+
+### Multi-Model Support
+
+Use different models for different tasks:
+
+```typescript
+const provider = new CivicLabsProvider({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  models: {
+    chat: 'claude-3-opus',
+    toolSelection: 'gpt-4',
+    security: 'civic-bodyguard-v2'
+  }
+});
+```
+
+## Authentication Flows
+
+### OAuth Tool Authentication
+
+Handle OAuth flows for tools that require it:
+
+```typescript
+// In your auth callback route
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const code = searchParams.get('code');
+  const state = searchParams.get('state');
+  
+  // Exchange code for tokens
+  const result = await provider.completeOAuth({
+    code,
+    state,
+    service: 'github'
+  });
+  
+  // Tokens are stored securely
+  return redirect('/chat?auth=success');
+}
+```
+
+### User Context
+
+Pass user context for personalized tool access:
+
+```typescript
+const response = await provider.chat({
+  messages,
+  context: {
+    userId: session.userId,
+    permissions: session.permissions,
+    metadata: {
+      department: 'engineering',
+      clearanceLevel: 'high'
+    }
+  }
+});
+```
+
+## Error Handling
+
+Comprehensive error handling with retry logic:
+
+```typescript
+try {
+  const response = await provider.chat({
+    messages,
+    maxRetries: 3,
+    retryDelay: 1000,
+    onError: (error, attempt) => {
+      console.error(`Attempt ${attempt} failed:`, error);
+      
+      if (error.code === 'RATE_LIMIT') {
+        // Wait longer before retry
+        return { retry: true, delay: 5000 };
+      }
+      
+      if (error.code === 'AUTH_EXPIRED') {
+        // Trigger reauth
+        return { retry: false, reauth: true };
+      }
+      
+      // Default retry behavior
+      return { retry: attempt < 3 };
+    }
+  });
+} catch (error) {
+  if (error.code === 'SECURITY_THREAT') {
+    // Handle security threats
+    await logSecurityIncident(error);
+  }
+  throw error;
+}
+```
+
+## Performance Optimization
+
+### Response Caching
+
+Cache tool responses for better performance:
+
+```typescript
+const provider = new CivicLabsProvider({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  cache: {
+    enabled: true,
+    ttl: 3600, // 1 hour
+    storage: 'redis', // or 'memory', 'dynamodb'
+    keyPrefix: 'civic:ai:'
+  }
+});
+```
+
+### Parallel Tool Execution
+
+Execute multiple tools in parallel:
+
+```typescript
+const response = await provider.chat({
+  messages,
+  tools,
+  parallelTools: true,
+  maxConcurrency: 5
+});
+```
+
+### Edge Runtime Support
+
+Deploy to Vercel Edge Runtime:
+
+```typescript
+export const runtime = 'edge';
+
+const provider = new CivicLabsProvider({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  edge: {
+    region: 'iad1',
+    timeout: 25 // seconds
+  }
+});
+```
+
+## Monitoring & Analytics
+
+### Built-in Metrics
+
+Track usage and performance:
+
+```typescript
+const metrics = await provider.getMetrics({
+  timeRange: '24h',
+  groupBy: 'tool'
+});
+
+console.log(metrics);
+// {
+//   github_search: { calls: 145, avgDuration: 1234 },
+//   jira_create: { calls: 23, avgDuration: 2341 }
+// }
+```
+
+### Custom Events
+
+Track custom events:
+
+```typescript
+provider.on('toolCall', ({ tool, args, duration, result }) => {
+  analytics.track('ai_tool_used', {
+    tool,
+    duration,
+    success: !result.error
+  });
+});
+```
+
+## TypeScript Support
+
+Full TypeScript support with generated types:
+
+```typescript
+import type { CivicLabsTool, ToolResult } from '@civic/vercel-ai-provider';
+
+// Type-safe tool definitions
+const githubSearch: CivicLabsTool<{
+  query: string;
+  limit?: number;
+}> = {
+  name: 'github_search',
+  description: 'Search GitHub repositories',
+  parameters: {
+    query: { type: 'string', required: true },
+    limit: { type: 'number', default: 10 }
+  },
+  execute: async (args) => {
+    // Implementation
+  }
+};
+```
+
+## Examples
+
+### Full Chat Application
+
+```typescript
+// Complete example with all features
+import { CivicLabsProvider } from '@civic/vercel-ai-provider';
+import { StreamingTextResponse } from 'ai';
+
+export async function POST(req: Request) {
+  const { messages, sessionId } = await req.json();
+  
+  const provider = new CivicLabsProvider({
+    apiKey: process.env.CIVIC_LABS_API_KEY,
+    defaultModel: 'claude-3-opus',
+    security: {
+      bodyguard: true,
+      guardrails: ['domain-allowlist', 'rate-limit']
+    },
+    context: {
+      sessionId,
+      userId: req.headers.get('x-user-id')
+    }
+  });
+  
+  try {
+    const response = await provider.chat({
+      messages,
+      tools: await provider.discoverTools(),
+      temperature: 0.7,
+      maxTokens: 2000,
+      streamToolResults: true,
+      onToolCall: async ({ toolName, args }) => {
+        console.log(`Calling ${toolName}`, args);
+        return provider.executeTool(toolName, args);
+      }
+    });
+    
+    return new StreamingTextResponse(response);
+  } catch (error) {
+    if (error.code === 'SECURITY_THREAT') {
+      return new Response('Security threat detected', { status: 403 });
+    }
+    throw error;
+  }
+}
+```
+
+## Migration Guide
+
+### From OpenAI Functions
+
+```typescript
+// Before (OpenAI)
+const response = await openai.chat.completions.create({
+  model: 'gpt-4',
+  messages,
+  functions: [searchFunction],
+  function_call: 'auto'
+});
+
+// After (Civic Labs)
+const response = await provider.chat({
+  messages,
+  tools: { search: searchFunction },
+  toolChoice: 'auto'
+});
+```
+
+## Best Practices
+
+1. **Always enable security features** in production
+2. **Cache tool discoveries** to reduce latency
+3. **Use streaming** for better UX with long operations
+4. **Implement proper error handling** for all tool calls
+5. **Monitor usage** to optimize performance and costs
+
+## Support
+
+- [GitHub Repository](https://github.com/civic-labs/vercel-ai-provider)
+- [API Reference](/labs/integration/api-reference)
+- [Discord Community](https://discord.gg/civic-labs)
+- [Example Apps](https://github.com/civic-labs/examples)
+
+## Next Steps
+
+- [SDK Reference](/labs/dev/sdk-reference) - Detailed SDK documentation
+- [Deployment Guide](/labs/dev/deployment) - Production deployment
+- [Claude Desktop](/labs/integration/claude-desktop) - Desktop integration

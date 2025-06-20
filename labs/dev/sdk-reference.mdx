@@ -1,0 +1,463 @@
+---
+title: SDK Reference
+description: Language-specific SDK documentation for Civic Labs
+---
+
+## Available SDKs
+
+Official SDKs are available for:
+- **JavaScript/TypeScript** - Full-featured with TypeScript support
+- **Python** - Sync and async support
+- **Go** - High-performance client
+- **Ruby** - Rails integration included
+- **Java** - Spring Boot compatible
+- **C#/.NET** - .NET 6+ support
+
+## JavaScript/TypeScript SDK
+
+### Installation
+```bash
+npm install @civic/labs-sdk
+# or
+yarn add @civic/labs-sdk
+# or
+pnpm add @civic/labs-sdk
+```
+
+### Basic Usage
+```typescript
+import { CivicLabsClient } from '@civic/labs-sdk';
+
+const client = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  // Optional configuration
+  baseUrl: 'https://api.civic-labs.com',
+  timeout: 30000,
+  maxRetries: 3
+});
+```
+
+### Type Definitions
+```typescript
+interface ToolExecutionOptions {
+  timeout?: number;
+  stream?: boolean;
+  context?: Record<string, any>;
+  cache?: boolean;
+}
+
+interface ToolResult<T = any> {
+  data: T;
+  metadata: {
+    executionTime: number;
+    server: string;
+    cached: boolean;
+  };
+}
+```
+
+### Tool Execution
+```typescript
+// Simple execution
+const result = await client.tools.execute('github-search', {
+  query: 'civic labs'
+});
+
+// With options
+const result = await client.tools.execute('jira-create', {
+  project: 'CIVIC',
+  summary: 'New feature request',
+  description: 'Add OAuth support'
+}, {
+  timeout: 60000,
+  context: { priority: 'high' }
+});
+
+// Streaming results
+const stream = await client.tools.stream('analyze-repository', {
+  repo: 'civic-labs/docs'
+});
+
+for await (const chunk of stream) {
+  console.log('Progress:', chunk.progress);
+  console.log('Data:', chunk.data);
+}
+```
+
+### Security Features
+```typescript
+// Enable Bodyguard for all requests
+const secureClient = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  security: {
+    bodyguard: {
+      enabled: true,
+      threshold: 0.8,
+      blockOnThreat: true
+    },
+    guardrails: ['domain-allowlist', 'rate-limit']
+  }
+});
+
+// Manual security check
+const threat = await client.security.analyze('User prompt here');
+if (threat.score < 0.5) {
+  // Safe to proceed
+}
+```
+
+### OAuth Management
+```typescript
+// Start OAuth flow
+const authUrl = await client.auth.getAuthorizationUrl('github', {
+  scopes: ['repo', 'issues'],
+  state: 'random-state-value'
+});
+
+// Complete OAuth flow
+const tokens = await client.auth.exchangeCode('github', {
+  code: 'auth-code-from-callback',
+  state: 'random-state-value'
+});
+
+// List authorizations
+const auths = await client.auth.list();
+
+// Revoke authorization
+await client.auth.revoke('auth_123');
+```
+
+### Error Handling
+```typescript
+import { CivicLabsError, ErrorCode } from '@civic/labs-sdk';
+
+try {
+  await client.tools.execute('github-search', { query: '' });
+} catch (error) {
+  if (error instanceof CivicLabsError) {
+    switch (error.code) {
+      case ErrorCode.INVALID_PARAMETERS:
+        console.error('Invalid parameters:', error.details);
+        break;
+      case ErrorCode.RATE_LIMITED:
+        console.error('Rate limited, retry after:', error.retryAfter);
+        break;
+      case ErrorCode.AUTHENTICATION_REQUIRED:
+        // Trigger OAuth flow
+        break;
+    }
+  }
+}
+```
+
+## Python SDK
+
+### Installation
+```bash
+pip install civic-labs
+```
+
+### Basic Usage
+```python
+from civic_labs import Client
+import os
+
+client = Client(
+    api_key=os.environ['CIVIC_LABS_API_KEY'],
+    # Optional
+    base_url='https://api.civic-labs.com',
+    timeout=30,
+    max_retries=3
+)
+```
+
+### Sync Usage
+```python
+# Execute tool
+result = client.tools.execute('github-search', {
+    'query': 'civic labs'
+})
+
+# With context
+result = client.tools.execute('jira-create', {
+    'project': 'CIVIC',
+    'summary': 'New feature'
+}, context={'priority': 'high'})
+```
+
+### Async Usage
+```python
+import asyncio
+from civic_labs import AsyncClient
+
+async def main():
+    async with AsyncClient(api_key=api_key) as client:
+        # Concurrent execution
+        results = await asyncio.gather(
+            client.tools.execute('github-search', {'query': 'python'}),
+            client.tools.execute('jira-search', {'jql': 'project = CIVIC'})
+        )
+        
+        # Streaming
+        async for chunk in client.tools.stream('analyze-repo', {'repo': 'civic/labs'}):
+            print(f"Progress: {chunk.progress}%")
+```
+
+### Type Hints
+```python
+from typing import Dict, Any, Optional
+from civic_labs.types import ToolResult, SecurityAnalysis
+
+def process_tool_result(result: ToolResult[Dict[str, Any]]) -> None:
+    print(f"Execution time: {result.metadata.execution_time}ms")
+    print(f"Data: {result.data}")
+
+def check_security(prompt: str) -> SecurityAnalysis:
+    analysis = client.security.analyze(prompt)
+    return analysis
+```
+
+### Context Managers
+```python
+# Automatic resource cleanup
+with client.batch() as batch:
+    batch.execute('tool1', params1)
+    batch.execute('tool2', params2)
+    results = batch.commit()  # Execute all at once
+
+# Transaction support
+with client.transaction() as tx:
+    tx.execute('create-issue', params)
+    tx.execute('update-issue', params)
+    # Automatically commits or rolls back
+```
+
+## Go SDK
+
+### Installation
+```bash
+go get github.com/civic-labs/go-sdk
+```
+
+### Basic Usage
+```go
+package main
+
+import (
+    "context"
+    "log"
+    civic "github.com/civic-labs/go-sdk"
+)
+
+func main() {
+    client := civic.NewClient(
+        civic.WithAPIKey(os.Getenv("CIVIC_LABS_API_KEY")),
+        civic.WithTimeout(30 * time.Second),
+    )
+    
+    // Execute tool
+    result, err := client.Tools.Execute(context.Background(), "github-search", map[string]interface{}{
+        "query": "civic labs",
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+}
+```
+
+### Concurrent Execution
+```go
+// Parallel tool execution
+var wg sync.WaitGroup
+results := make(chan *civic.ToolResult, 3)
+
+tools := []string{"github-search", "jira-search", "slack-search"}
+for _, tool := range tools {
+    wg.Add(1)
+    go func(t string) {
+        defer wg.Done()
+        result, _ := client.Tools.Execute(ctx, t, params)
+        results <- result
+    }(tool)
+}
+
+go func() {
+    wg.Wait()
+    close(results)
+}()
+
+for result := range results {
+    fmt.Printf("Result: %+v\n", result)
+}
+```
+
+### Error Handling
+```go
+result, err := client.Tools.Execute(ctx, "github-search", params)
+if err != nil {
+    var civicErr *civic.Error
+    if errors.As(err, &civicErr) {
+        switch civicErr.Code {
+        case civic.ErrCodeRateLimit:
+            time.Sleep(civicErr.RetryAfter)
+            // Retry
+        case civic.ErrCodeAuth:
+            // Handle auth error
+        }
+    }
+}
+```
+
+## Ruby SDK
+
+### Installation
+```ruby
+gem install civic-labs
+# or in Gemfile
+gem 'civic-labs'
+```
+
+### Basic Usage
+```ruby
+require 'civic_labs'
+
+client = CivicLabs::Client.new(
+  api_key: ENV['CIVIC_LABS_API_KEY'],
+  timeout: 30
+)
+
+# Execute tool
+result = client.tools.execute('github-search', query: 'civic labs')
+
+# With block for streaming
+client.tools.stream('analyze-repo', repo: 'civic/labs') do |chunk|
+  puts "Progress: #{chunk.progress}%"
+end
+```
+
+### Rails Integration
+```ruby
+# config/initializers/civic_labs.rb
+Rails.application.config.civic_labs = CivicLabs::Client.new(
+  api_key: Rails.application.credentials.civic_labs[:api_key],
+  logger: Rails.logger
+)
+
+# In controllers
+class ToolsController < ApplicationController
+  def search
+    @results = civic_labs.tools.execute('web-search', 
+      query: params[:q]
+    )
+  end
+  
+  private
+  
+  def civic_labs
+    Rails.application.config.civic_labs
+  end
+end
+```
+
+## Common Patterns
+
+### Retry Logic
+All SDKs include automatic retry with exponential backoff:
+
+```javascript
+// JavaScript
+const client = new CivicLabsClient({
+  apiKey: key,
+  retry: {
+    maxAttempts: 3,
+    initialDelay: 1000,
+    maxDelay: 10000,
+    factor: 2
+  }
+});
+```
+
+```python
+# Python
+client = Client(
+    api_key=key,
+    retry_config={
+        'max_attempts': 3,
+        'backoff_factor': 2
+    }
+)
+```
+
+### Batch Operations
+Execute multiple operations efficiently:
+
+```typescript
+// JavaScript
+const batch = client.createBatch();
+batch.add('tool1', params1);
+batch.add('tool2', params2);
+const results = await batch.execute();
+```
+
+```python
+# Python
+with client.batch() as batch:
+    batch.add('tool1', params1)
+    batch.add('tool2', params2)
+    results = batch.execute()
+```
+
+### Event Handling
+Subscribe to SDK events:
+
+```javascript
+// JavaScript
+client.on('tool:execute', (event) => {
+  console.log(`Executing ${event.tool}`);
+});
+
+client.on('error', (error) => {
+  logger.error('SDK Error:', error);
+});
+```
+
+```python
+# Python
+@client.on('tool:execute')
+def on_execute(event):
+    print(f"Executing {event.tool}")
+```
+
+## SDK Feature Matrix
+
+| Feature | JS/TS | Python | Go | Ruby | Java | C# |
+|---------|-------|--------|----|------|------|----|
+| Basic Operations | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Streaming | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Async/Await | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| Type Safety | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ |
+| Retry Logic | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Batch Ops | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Webhooks | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| OAuth Helpers | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+
+## Performance Tips
+
+1. **Connection Pooling**: All SDKs use connection pooling by default
+2. **Response Caching**: Enable caching for frequently accessed data
+3. **Batch Operations**: Group related operations for efficiency
+4. **Streaming**: Use streaming for large responses
+5. **Timeout Tuning**: Adjust timeouts based on operation complexity
+
+## Migration Guides
+
+- [Migrating from REST API](https://github.com/civic-labs/sdk-docs/migration)
+- [Upgrading SDK Versions](https://github.com/civic-labs/sdk-docs/upgrade)
+- [Framework Integration Guides](https://github.com/civic-labs/sdk-docs/frameworks)
+
+## Support
+
+- **GitHub**: SDK-specific repositories under [github.com/civic-labs](https://github.com/civic-labs)
+- **Discord**: #sdk-help channel
+- **Documentation**: Language-specific guides in each SDK repo
+- **Examples**: Full example applications in `/examples` directories
