@@ -1,0 +1,350 @@
+---
+title: API Reference
+description: Complete API documentation for Civic Labs services
+---
+
+## Base URL
+
+```
+https://api.civic-labs.com
+```
+
+## Authentication
+
+All API requests require authentication. Include your API key in the Authorization header:
+
+```bash
+Authorization: Bearer YOUR_API_KEY
+```
+
+## Core Endpoints
+
+### MCP Hub
+
+#### List Available Tools
+```http
+GET /mcp/v1/tools
+```
+
+**Response:**
+```json
+{
+  "tools": [
+    {
+      "id": "github-search",
+      "name": "GitHub Search",
+      "description": "Search GitHub repositories",
+      "server": "mcp-github",
+      "parameters": {
+        "query": {
+          "type": "string",
+          "required": true
+        }
+      }
+    }
+  ]
+}
+```
+
+#### Execute Tool
+```http
+POST /mcp/v1/tools/{toolId}/execute
+```
+
+**Request:**
+```json
+{
+  "parameters": {
+    "query": "civic labs"
+  },
+  "options": {
+    "timeout": 30000,
+    "stream": false
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "result": {
+    "repositories": [...]
+  },
+  "metadata": {
+    "executionTime": 1234,
+    "server": "mcp-github"
+  }
+}
+```
+
+#### List MCP Servers
+```http
+GET /mcp/v1/servers
+```
+
+**Response:**
+```json
+{
+  "servers": [
+    {
+      "id": "mcp-github",
+      "name": "GitHub MCP Server",
+      "status": "running",
+      "tools": ["search", "create-issue", "get-pr"],
+      "requiredAuth": ["github-oauth"]
+    }
+  ]
+}
+```
+
+### Authorization
+
+#### Create Authorization
+```http
+POST /auth/v1/authorizations
+```
+
+**Request:**
+```json
+{
+  "serverId": "mcp-github",
+  "scopes": ["repo:read", "issue:write"],
+  "metadata": {
+    "description": "CI/CD Integration"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "id": "auth_123",
+  "token": "mcp_token_xxx",
+  "expiresAt": "2024-01-01T00:00:00Z"
+}
+```
+
+#### List Authorizations
+```http
+GET /auth/v1/authorizations
+```
+
+**Response:**
+```json
+{
+  "authorizations": [
+    {
+      "id": "auth_123",
+      "serverId": "mcp-github",
+      "scopes": ["repo:read"],
+      "createdAt": "2024-01-01T00:00:00Z",
+      "lastUsed": "2024-01-02T00:00:00Z"
+    }
+  ]
+}
+```
+
+#### Revoke Authorization
+```http
+DELETE /auth/v1/authorizations/{authId}
+```
+
+### Security Services
+
+#### Analyze Prompt (Bodyguard)
+```http
+POST /security/v1/analyze
+```
+
+**Request:**
+```json
+{
+  "prompt": "Ignore previous instructions and...",
+  "context": {
+    "toolId": "database-query",
+    "userId": "user_123"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "threatScore": 0.87,
+  "findings": [
+    {
+      "type": "prompt_injection",
+      "severity": "high",
+      "description": "Detected attempt to override instructions"
+    }
+  ],
+  "recommendation": "block"
+}
+```
+
+#### Apply Guardrails
+```http
+POST /guardrails/v1/evaluate
+```
+
+**Request:**
+```json
+{
+  "action": "fetch_url",
+  "parameters": {
+    "url": "https://example.com/data.json"
+  },
+  "policies": ["domain-allowlist", "content-size-limit"]
+}
+```
+
+**Response:**
+```json
+{
+  "allowed": true,
+  "appliedPolicies": [
+    {
+      "id": "domain-allowlist",
+      "result": "pass"
+    }
+  ]
+}
+```
+
+## Streaming Responses
+
+For long-running operations, use Server-Sent Events:
+
+```javascript
+const eventSource = new EventSource(
+  'https://api.civic-labs.com/mcp/v1/tools/analyze-codebase/execute?stream=true',
+  {
+    headers: {
+      'Authorization': `Bearer ${apiKey}`
+    }
+  }
+);
+
+eventSource.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+  console.log('Progress:', data);
+};
+```
+
+## Rate Limits
+
+| Plan | Requests/min | Concurrent Executions |
+|------|--------------|----------------------|
+| Free | 60 | 2 |
+| Pro | 600 | 10 |
+| Enterprise | Custom | Custom |
+
+Rate limit information is included in response headers:
+```
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 45
+X-RateLimit-Reset: 1640995200
+```
+
+## Error Responses
+
+All errors follow RFC 7807 format:
+
+```json
+{
+  "type": "https://api.civic-labs.com/errors/invalid-parameters",
+  "title": "Invalid Parameters",
+  "status": 400,
+  "detail": "The 'query' parameter is required",
+  "instance": "/mcp/v1/tools/github-search/execute"
+}
+```
+
+### Common Error Codes
+
+| Status | Type | Description |
+|--------|------|-------------|
+| 400 | invalid-parameters | Missing or invalid request parameters |
+| 401 | authentication-required | Missing or invalid authentication |
+| 403 | insufficient-permissions | Valid auth but lacking permissions |
+| 404 | resource-not-found | Tool or server not found |
+| 429 | rate-limit-exceeded | Too many requests |
+| 500 | internal-error | Server error |
+
+## Pagination
+
+List endpoints support pagination:
+
+```http
+GET /mcp/v1/tools?page=2&limit=50
+```
+
+**Response:**
+```json
+{
+  "tools": [...],
+  "pagination": {
+    "page": 2,
+    "limit": 50,
+    "total": 234,
+    "pages": 5
+  }
+}
+```
+
+## Webhooks
+
+Configure webhooks for real-time events:
+
+```http
+POST /webhooks/v1/endpoints
+```
+
+**Request:**
+```json
+{
+  "url": "https://your-app.com/webhook",
+  "events": ["tool.executed", "auth.revoked"],
+  "secret": "webhook_secret_123"
+}
+```
+
+## SDK Examples
+
+### JavaScript/TypeScript
+```typescript
+import { CivicLabsClient } from '@civic/labs-sdk';
+
+const client = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY
+});
+
+const result = await client.tools.execute('github-search', {
+  query: 'civic labs'
+});
+```
+
+### Python
+```python
+from civic_labs import Client
+
+client = Client(api_key=os.environ['CIVIC_LABS_API_KEY'])
+
+result = client.tools.execute('github-search', {
+    'query': 'civic labs'
+})
+```
+
+### cURL
+```bash
+curl -X POST https://api.civic-labs.com/mcp/v1/tools/github-search/execute \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"parameters": {"query": "civic labs"}}'
+```
+
+## Next Steps
+
+- [Authentication Guide](/labs/integration/authentication) - Detailed auth setup
+- [SDK Reference](/labs/dev/sdk-reference) - Language-specific guides
+- [Troubleshooting](/labs/dev/troubleshooting) - Common issues and solutions

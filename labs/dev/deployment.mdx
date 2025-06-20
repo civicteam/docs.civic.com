@@ -1,0 +1,577 @@
+---
+title: Deployment Guide
+description: Deploy and manage Civic Labs integrations in production
+---
+
+## Overview
+
+This guide covers deployment best practices, configuration management, and production considerations for Civic Labs integrations.
+
+## Environment Setup
+
+### Environment Variables
+
+Required environment variables for all deployments:
+
+```bash
+# Core Configuration
+CIVIC_LABS_API_KEY=your_production_api_key
+CIVIC_LABS_ENDPOINT=https://api.civic-labs.com
+CIVIC_LABS_TIMEOUT=30000
+
+# Security Settings
+CIVIC_LABS_BODYGUARD_ENABLED=true
+CIVIC_LABS_BODYGUARD_THRESHOLD=0.8
+CIVIC_LABS_GUARDRAILS=domain-allowlist,rate-limit,content-filter
+
+# Performance
+CIVIC_LABS_CACHE_TTL=3600
+CIVIC_LABS_MAX_RETRIES=3
+CIVIC_LABS_CONNECTION_POOL_SIZE=10
+
+# Monitoring
+CIVIC_LABS_LOG_LEVEL=info
+CIVIC_LABS_METRICS_ENABLED=true
+CIVIC_LABS_TRACE_ENABLED=true
+```
+
+### Configuration Files
+
+#### Docker Deployment
+```dockerfile
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm ci --only=production
+
+# Copy application
+COPY . .
+
+# Set environment
+ENV NODE_ENV=production
+ENV CIVIC_LABS_ENDPOINT=https://api.civic-labs.com
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
+  CMD node healthcheck.js
+
+EXPOSE 3000
+CMD ["node", "server.js"]
+```
+
+#### Kubernetes Deployment
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: civic-labs-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: civic-labs-app
+  template:
+    metadata:
+      labels:
+        app: civic-labs-app
+    spec:
+      containers:
+      - name: app
+        image: your-registry/civic-labs-app:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: CIVIC_LABS_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: civic-labs-secrets
+              key: api-key
+        - name: CIVIC_LABS_ENDPOINT
+          value: "https://api.civic-labs.com"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+```
+
+## Platform-Specific Deployment
+
+### Vercel
+
+```json
+// vercel.json
+{
+  "env": {
+    "CIVIC_LABS_API_KEY": "@civic-labs-api-key",
+    "CIVIC_LABS_CACHE_TTL": "3600"
+  },
+  "functions": {
+    "api/civic-labs/[...path].ts": {
+      "maxDuration": 30
+    }
+  }
+}
+```
+
+```typescript
+// api/civic-labs/[...path].ts
+import { CivicLabsClient } from '@civic/labs-sdk';
+
+const client = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY!,
+  edge: true // Enable edge runtime optimizations
+});
+
+export const runtime = 'edge';
+
+export default async function handler(req: Request) {
+  // Your handler logic
+}
+```
+
+### AWS Lambda
+
+```yaml
+# serverless.yml
+service: civic-labs-integration
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  environment:
+    CIVIC_LABS_API_KEY: ${ssm:/civic-labs/api-key~true}
+    CIVIC_LABS_ENDPOINT: https://api.civic-labs.com
+
+functions:
+  mcpHandler:
+    handler: src/handler.main
+    timeout: 30
+    memorySize: 512
+    events:
+      - http:
+          path: /mcp/{proxy+}
+          method: ANY
+    vpc:
+      securityGroupIds:
+        - ${self:custom.securityGroupId}
+      subnetIds:
+        - ${self:custom.subnetId1}
+        - ${self:custom.subnetId2}
+```
+
+### Google Cloud Run
+
+```yaml
+# cloudbuild.yaml
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/civic-labs-app', '.']
+  
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/civic-labs-app']
+  
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'civic-labs-app'
+      - '--image=gcr.io/$PROJECT_ID/civic-labs-app'
+      - '--region=us-central1'
+      - '--platform=managed'
+      - '--set-env-vars=CIVIC_LABS_ENDPOINT=https://api.civic-labs.com'
+      - '--set-secrets=CIVIC_LABS_API_KEY=civic-labs-api-key:latest'
+```
+
+## Security Best Practices
+
+### Secret Management
+
+#### HashiCorp Vault
+```javascript
+const vault = require('node-vault')({
+  endpoint: 'https://vault.company.com',
+  token: process.env.VAULT_TOKEN
+});
+
+async function getCivicLabsConfig() {
+  const { data } = await vault.read('secret/civic-labs');
+  return {
+    apiKey: data.api_key,
+    allowedDomains: data.allowed_domains
+  };
+}
+```
+
+#### AWS Secrets Manager
+```javascript
+const AWS = require('aws-sdk');
+const secretsManager = new AWS.SecretsManager();
+
+async function getApiKey() {
+  const secret = await secretsManager.getSecretValue({
+    SecretId: 'civic-labs/api-key'
+  }).promise();
+  
+  return JSON.parse(secret.SecretString).apiKey;
+}
+```
+
+### Network Security
+
+#### IP Allowlisting
+```nginx
+# nginx.conf
+location /api/civic-labs {
+    # Only allow Civic Labs IPs
+    allow 52.234.123.0/24;
+    allow 52.234.124.0/24;
+    deny all;
+    
+    proxy_pass http://localhost:3000;
+}
+```
+
+#### TLS Configuration
+```javascript
+const https = require('https');
+const fs = require('fs');
+
+const server = https.createServer({
+  cert: fs.readFileSync('cert.pem'),
+  key: fs.readFileSync('key.pem'),
+  ciphers: 'TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256',
+  minVersion: 'TLSv1.3'
+}, app);
+```
+
+## Monitoring & Observability
+
+### Health Checks
+
+```javascript
+// healthcheck.js
+const { CivicLabsClient } = require('@civic/labs-sdk');
+
+async function healthCheck() {
+  const client = new CivicLabsClient({
+    apiKey: process.env.CIVIC_LABS_API_KEY
+  });
+  
+  try {
+    // Check API connectivity
+    const status = await client.health.check();
+    
+    // Check OAuth tokens
+    const auths = await client.auth.list();
+    const validAuths = auths.filter(a => !a.expired);
+    
+    return {
+      status: 'healthy',
+      api: status,
+      authorizations: validAuths.length,
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    return {
+      status: 'unhealthy',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    };
+  }
+}
+```
+
+### Metrics Collection
+
+#### Prometheus
+```javascript
+const prometheus = require('prom-client');
+
+// Create metrics
+const toolExecutions = new prometheus.Counter({
+  name: 'civic_labs_tool_executions_total',
+  help: 'Total number of tool executions',
+  labelNames: ['tool', 'status']
+});
+
+const executionDuration = new prometheus.Histogram({
+  name: 'civic_labs_execution_duration_seconds',
+  help: 'Tool execution duration',
+  labelNames: ['tool'],
+  buckets: [0.1, 0.5, 1, 2, 5, 10]
+});
+
+// Track metrics
+client.on('tool:execute', ({ tool, duration, success }) => {
+  toolExecutions.inc({ 
+    tool, 
+    status: success ? 'success' : 'failure' 
+  });
+  executionDuration.observe({ tool }, duration / 1000);
+});
+```
+
+#### OpenTelemetry
+```javascript
+const { trace } = require('@opentelemetry/api');
+const tracer = trace.getTracer('civic-labs');
+
+async function executeWithTracing(tool, params) {
+  const span = tracer.startSpan(`civic-labs.${tool}`);
+  
+  try {
+    span.setAttributes({
+      'civic.tool': tool,
+      'civic.params': JSON.stringify(params)
+    });
+    
+    const result = await client.tools.execute(tool, params);
+    
+    span.setStatus({ code: 1 });
+    return result;
+  } catch (error) {
+    span.recordException(error);
+    span.setStatus({ code: 2, message: error.message });
+    throw error;
+  } finally {
+    span.end();
+  }
+}
+```
+
+### Logging
+
+```javascript
+const winston = require('winston');
+
+const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: winston.format.json(),
+  defaultMeta: { 
+    service: 'civic-labs-integration',
+    environment: process.env.NODE_ENV
+  },
+  transports: [
+    new winston.transports.File({ 
+      filename: 'error.log', 
+      level: 'error' 
+    }),
+    new winston.transports.File({ 
+      filename: 'combined.log' 
+    })
+  ]
+});
+
+// Log all API calls
+client.on('request', ({ method, path, params }) => {
+  logger.info('API Request', { method, path, params });
+});
+
+client.on('response', ({ status, duration }) => {
+  logger.info('API Response', { status, duration });
+});
+```
+
+## Performance Optimization
+
+### Caching Strategy
+
+```javascript
+const Redis = require('ioredis');
+const redis = new Redis(process.env.REDIS_URL);
+
+// Cache tool discoveries
+async function getCachedTools() {
+  const cached = await redis.get('civic:tools');
+  if (cached) return JSON.parse(cached);
+  
+  const tools = await client.tools.list();
+  await redis.set('civic:tools', JSON.stringify(tools), 'EX', 3600);
+  return tools;
+}
+
+// Cache tool results
+async function executeWithCache(tool, params) {
+  const cacheKey = `civic:result:${tool}:${JSON.stringify(params)}`;
+  const cached = await redis.get(cacheKey);
+  
+  if (cached) {
+    return JSON.parse(cached);
+  }
+  
+  const result = await client.tools.execute(tool, params);
+  await redis.set(cacheKey, JSON.stringify(result), 'EX', 300);
+  return result;
+}
+```
+
+### Connection Pooling
+
+```javascript
+// Configure connection pool
+const client = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  http: {
+    agent: new https.Agent({
+      keepAlive: true,
+      maxSockets: 50,
+      maxFreeSockets: 10,
+      timeout: 60000,
+      keepAliveTimeout: 30000
+    })
+  }
+});
+```
+
+### Load Balancing
+
+```nginx
+# nginx load balancer config
+upstream civic_labs_backend {
+    least_conn;
+    server backend1.civic.internal:3000 weight=5;
+    server backend2.civic.internal:3000 weight=5;
+    server backend3.civic.internal:3000 weight=5;
+    
+    keepalive 32;
+}
+
+server {
+    location /api/civic-labs {
+        proxy_pass http://civic_labs_backend;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+    }
+}
+```
+
+## Disaster Recovery
+
+### Backup Strategy
+
+```bash
+#!/bin/bash
+# backup-civic-config.sh
+
+# Backup OAuth tokens
+civic-labs auth export > backups/oauth-tokens-$(date +%Y%m%d).json
+
+# Backup configuration
+kubectl get secret civic-labs-config -o json > backups/config-$(date +%Y%m%d).json
+
+# Upload to S3
+aws s3 sync backups/ s3://civic-labs-backups/
+```
+
+### Failover Configuration
+
+```javascript
+const primaryClient = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  endpoint: 'https://api.civic-labs.com'
+});
+
+const failoverClient = new CivicLabsClient({
+  apiKey: process.env.CIVIC_LABS_API_KEY,
+  endpoint: 'https://api-fallback.civic-labs.com'
+});
+
+async function executeWithFailover(tool, params) {
+  try {
+    return await primaryClient.tools.execute(tool, params);
+  } catch (error) {
+    if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+      console.error('Primary failed, using failover');
+      return await failoverClient.tools.execute(tool, params);
+    }
+    throw error;
+  }
+}
+```
+
+## Compliance & Auditing
+
+### Audit Logging
+
+```javascript
+// Audit all tool executions
+client.on('tool:execute', async (event) => {
+  await auditLog.create({
+    timestamp: new Date(),
+    user: event.context.userId,
+    action: 'tool.execute',
+    tool: event.tool,
+    parameters: event.params,
+    ip: event.context.ip,
+    userAgent: event.context.userAgent
+  });
+});
+```
+
+### Data Retention
+
+```javascript
+// Implement data retention policies
+const cleanupOldData = async () => {
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  
+  // Remove old audit logs
+  await AuditLog.deleteMany({
+    timestamp: { $lt: thirtyDaysAgo }
+  });
+  
+  // Clean up cached results
+  const keys = await redis.keys('civic:result:*');
+  for (const key of keys) {
+    const ttl = await redis.ttl(key);
+    if (ttl === -1) { // No expiry set
+      await redis.expire(key, 86400); // 24 hours
+    }
+  }
+};
+
+// Run daily
+cron.schedule('0 0 * * *', cleanupOldData);
+```
+
+## Production Checklist
+
+- [ ] API keys stored in secure secret management
+- [ ] TLS 1.3 enabled for all connections
+- [ ] Health checks implemented and monitored
+- [ ] Metrics collection configured
+- [ ] Logging to centralized system
+- [ ] Rate limiting configured
+- [ ] Caching strategy implemented
+- [ ] Backup and recovery procedures tested
+- [ ] Security scanning integrated in CI/CD
+- [ ] Load testing completed
+- [ ] Incident response plan documented
+- [ ] Compliance requirements verified
+
+## Support
+
+- [Status Page](https://status.civic-labs.com)
+- [Enterprise Support](mailto:enterprise@civic-labs.com)
+- [Discord Community](https://discord.gg/civic-labs)
+- [Deployment Examples](https://github.com/civic-labs/deployment-examples)

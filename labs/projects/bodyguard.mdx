@@ -1,6 +1,7 @@
 ---
 title: Bodyguard
 description: LLM-based threat detection for prompts and tool calls
+public: true
 ---
 
 **Flask Status: Distilling** 🧪
@@ -16,9 +17,12 @@ and a set of findings, that can aid decision-making.
 Unlike rule-based security systems, Bodyguard uses an LLM to understand the semantic intent behind prompts,
 catching sophisticated attacks that might bypass traditional filters.
 
-## Getting Started
+## How It Works
 
-Bodyguard is available as a hosted service, client library, or CLI tool. [Contact us](/labs/feedback) for early access.
+Bodyguard uses advanced language models to understand the semantic intent behind prompts, providing threat analysis that goes beyond simple pattern matching. Each analysis returns:
+- A threat score (0-1) indicating risk level
+- Detailed findings explaining detected threats
+- Recommendations for handling the prompt
 
 ## Use Cases
 
@@ -38,23 +42,21 @@ Bodyguard is available as a hosted service, client library, or CLI tool. [Contac
 - **Threat Scoring**: Provides numerical threat scores (0-1) for risk assessment
 - **Multiple Deployment Options**: Available as CLI tool, HTTP server, and client library
 
-## Usage
+## Integration Options
 
-Bodyguard can be integrated in multiple ways:
+Bodyguard is designed for flexible deployment:
 
-### 1. HTTP Server
-Deploy Bodyguard as a standalone service that other applications can query. Supports both GET and POST requests with configurable threat thresholds.
+### Standalone Service
+Run Bodyguard as an independent security service that any application can query for threat analysis.
 
-### 2. Client Library
-Integrate directly into your application with our TypeScript/JavaScript SDK. Set custom threat thresholds and handle responses programmatically.
+### SDK Integration
+Embed threat detection directly into your applications with native language SDKs.
 
-### 3. CLI Tool
-Quick command-line analysis for testing and development workflows.
+### Middleware Layer
+Deploy as a protective barrier between users and your AI systems, automatically filtering malicious inputs.
 
-### 4. MCP Hooks
-Use Bodyguard as middleware for MCP servers, analyzing prompts before they reach your LLM. Works seamlessly with the Pass-through Proxy system.
-
-[Contact us](/labs/feedback) for integration guides and API access.
+### MCP Integration
+Seamlessly integrate with MCP servers to protect tool execution from harmful prompts.
 
 ## Integration Notes
 
@@ -75,8 +77,32 @@ Bodyguard is actively deployed in test environments and showing strong detection
 We're expanding the threat detection capabilities and optimizing response times.
 Docker images are available for easy deployment. [Contact us](/labs/feedback) if you'd like to test it with your specific use cases.
 
-## Resources
+## Technical Approach
 
-- GitHub Repository (private - [request access](/labs/feedback))
-- Docker Image (contact for access)
-- [API Documentation](/labs/feedback) (request access)
+### Threat Detection Engine
+Our detection engine analyzes prompts across multiple dimensions:
+- **Semantic Analysis**: Understanding intent beyond keywords
+- **Context Awareness**: Considering the target system and tools
+- **Pattern Recognition**: Identifying known attack signatures
+- **Behavioral Analysis**: Detecting unusual request patterns
+
+### Security Philosophy
+Bodyguard operates on the principle of defense in depth:
+1. **Preventive**: Block threats before they reach your systems
+2. **Detective**: Identify and log suspicious activities
+3. **Adaptive**: Learn from new attack patterns
+4. **Transparent**: Provide clear explanations for decisions
+
+## Getting Started
+
+Interested in protecting your AI systems with Bodyguard?
+
+<Card title="Request Early Access" icon="shield-virus" href="/labs/feedback">
+  Get access to Bodyguard and start securing your AI applications
+</Card>
+
+## Learn More
+
+- [Prompt Injection Threats](/labs/concepts/prompt-injection) - Understand the risks
+- [Security Architecture](/labs/architecture) - Our security model
+- [Integration Guide](/labs/feedback) - Request detailed documentation

@@ -39,7 +39,6 @@ Keep the Labs tab public, but make specific groups and pages within it private. 
     },
     {
       "group": "Integration Guides",
-      "visibility": "private",
       "pages": [
         "labs/getting-started",
         "labs/integration/authentication",
@@ -51,7 +50,6 @@ Keep the Labs tab public, but make specific groups and pages within it private. 
     },
     {
       "group": "Developer Resources",
-      "visibility": "private",
       "pages": [
         "labs/dev/endpoints",
         "labs/dev/sdk-reference",
@@ -61,6 +59,26 @@ Keep the Labs tab public, but make specific groups and pages within it private. 
     }
   ]
 }
+```
+
+### Making Pages Private
+
+To make any page private, simply omit the `public: true` from the frontmatter (or set it to `false`). For example:
+
+**Public page:**
+```mdx
+---
+title: MCP Hub
+public: true
+---
+```
+
+**Private page:**
+```mdx
+---
+title: MCP Hub Integration Guide
+# No public: true means this page is private
+---
 ```
 
 ## Content Strategy
@@ -144,7 +162,7 @@ Pre-built integrations for n8n, Make, and Zapier (coming soon).
 ```mdx
 ---
 title: Getting Started with MCP Hub
-visibility: private
+# Note: This page is private because it doesn't have public: true
 ---
 
 ## Installation

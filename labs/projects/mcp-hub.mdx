@@ -1,6 +1,7 @@
 ---
 title: MCP Hub
 description: A hosted MCP Manager unifying and orchstrating multiple MCP servers, focusing on auth and security
+public: true
 ---
 
 **Flask Status: Distilling** 🧪
@@ -22,85 +23,33 @@ it makes it simple to connect AI assistants to external tools while maintaining 
 
 The platform consists of three modular services: Directory (for MCP server discovery), Hub (for container orchestration), and AuthZ (for authorization and token management).
 
-## Getting Started
+## Integration Patterns
 
-Choose your integration path:
+The MCP Hub supports multiple integration approaches to fit your use case:
 
-<AccordionGroup>
-  <Accordion title="I want to integrate with a local AI agent, such as Claude Desktop (Recommended)">
-    Connect your desktop AI assistant to cloud-hosted MCP servers using our Hub Bridge.
+### Desktop AI Assistants
+Connect Claude Desktop and other local AI agents to cloud-hosted MCP servers through our secure bridge. This enables:
+- Access to enterprise tools from your desktop
+- Centralized authentication and authorization
+- Automatic tool discovery and updates
+- Cross-platform support
 
-      <Frame caption="Claude Desktop with Civic MCP Hub">
-          <img
-              src="/images/labs/projects/mcp-hub/claude-desktop.png"
-              align="center"
-              className="image-60 image-rounded"
-          />
-      </Frame>
+### Backend Services & Applications
+Build MCP capabilities directly into your applications:
+- RESTful API for standard integrations
+- SDK support for popular languages
+- Compatible with AI frameworks like Vercel AI SDK
+- Flexible authentication options
 
-    The Hub Bridge provides:
-    - Seamless integration between desktop AI assistants and cloud MCP servers
-    - Secure authentication flow
-    - Automatic tool discovery
-    - Support for multiple platforms (npm, homebrew, and more)
-    
-    [Contact us](/labs/feedback) for installation instructions and early access.
-  </Accordion>
+### Workflow Automation
+Create no-code AI workflows with platforms like n8n:
+- Visual workflow builders
+- Pre-built templates and patterns
+- Support for multiple AI models
+- Easy tool orchestration
 
-  <Accordion title="I want to build into an agent or backend service">
-      Civic's MCP Hub works as a standard MCP server, making it easy to integrate into any AI agent or backend service.
-
-      Integration supports:
-      - **[Civic Auth](https://civic.com/auth)**: Seamless authentication for your users
-      - **[Vercel AI SDK](https://vercel.com/docs/ai)**: Quick integration with popular AI frameworks
-      - **Direct API Integration**: For custom implementations
-      - **Multiple Auth Methods**: Bearer tokens, API keys, and OAuth2
-      
-      The integration process involves:
-      1. Setting up authentication (Civic Auth or API keys)
-      2. Configuring your AI framework
-      3. Connecting to the MCP Hub
-      4. Accessing available tools
-      
-      [Contact us](/labs/feedback) for detailed integration guides and code examples.
-  </Accordion>
-
-  <Accordion title="I know what I'm doing, just give me the endpoint">
-      [Contact us](/labs/feedback) for API endpoint access and documentation.
-  </Accordion>
-
-  <Accordion title="I want to integrate with N8N">
-      The MCP Hub integrates seamlessly with N8N to create no-code workflows powered by AI tools.
-
-      <Frame caption="N8N Integration">
-          <img
-              src="/images/labs/projects/mcp-hub/n8n-import.png"
-              align="center"
-              className="image-60 image-rounded"
-          />
-      </Frame>
-
-      Key features:
-      - Pre-built workflow templates
-      - Support for multiple AI models (AWS Bedrock, OpenAI, Anthropic)
-      - Visual workflow builder integration
-      - API key authentication (OAuth2 coming soon)
-      
-      Getting started involves:
-      1. Importing example workflows
-      2. Configuring AI model credentials
-      3. Setting up MCP Hub authentication
-      4. Building your custom workflows
-      
-      [Contact us](/labs/feedback) for workflow templates and API access.
-  </Accordion>
-
-  <Accordion title="I want to integrate with Crew.ai, Make, etc (coming soon)">
-    We're working on integrations for popular AI orchestration platforms.
-
-    [Join the waitlist →](/labs/feedback) to be notified when these integrations are ready, or request a specific integration.
-  </Accordion>
-</AccordionGroup>
+### Coming Soon
+We're expanding support for additional platforms including Crew.ai, Make.com, and Zapier. [Join our waitlist](/labs/feedback) to be notified.
 
 
 ## Key Features
@@ -114,15 +63,21 @@ Choose your integration path:
 - **Manage via LLM**: Full control over MCP servers and tools through LLM interactions
 - **Full visibility and control**: List and revoke authorisations for you or your users
 
-## Usage
+## Architecture
 
-The MCP Hub can be integrated in several ways:
+The MCP Hub provides a unified control plane for MCP servers:
 
-1. **Direct API Integration**: Connect your application directly to the Hub API
-2. **Desktop Bridge**: Use the hub-bridge package to connect desktop LLM apps
-3. **CLI Testing**: Use the mcp-client CLI tool for development and testing
-4. **Container Sidecar**: Deploy MCP servers with the stdio transport adapter
-5. **Authorization Manager**: Use the MCP server for managing auth tokens
+### Core Components
+- **Directory Service**: Discovers and catalogs available MCP servers
+- **Orchestration Engine**: Manages server lifecycles and scaling
+- **Authorization Layer**: Handles OAuth flows and permission management
+- **Security Gateway**: Applies policies and threat detection
+
+### Design Principles
+- **Zero Trust Security**: Every request is authenticated and authorized
+- **Modular Architecture**: Components can be used independently
+- **Cloud-Native**: Built for modern containerized environments
+- **Protocol Compliant**: Full compatibility with MCP specification
 
 ## Integration Notes
 
@@ -135,8 +90,36 @@ The MCP Hub works seamlessly with other Civic Labs tools:
 
 This flask is currently **distilling**: The core platform is functional with active development on additional features. The system is being used internally and with select partners. Contact us if you'd like to try it out or provide feedback.
 
-## Resources
+## Use Cases
 
-- GitHub Repository (private - [request access](/labs/feedback))
-- [MCP Protocol Documentation](https://modelcontextprotocol.io)
-- [API Documentation](/labs/feedback) (request access)
+### Enterprise AI Integration
+- Connect AI assistants to internal databases and APIs
+- Maintain compliance with security policies
+- Centralize tool access across teams
+- Monitor and audit AI tool usage
+
+### Developer Productivity
+- Access GitHub, Jira, and other dev tools from AI
+- Automate repetitive tasks with AI workflows
+- Query logs and metrics conversationally
+- Generate code with real-time context
+
+### Business Automation
+- Connect AI to CRM and business systems
+- Create intelligent document processing workflows
+- Automate customer support responses
+- Generate reports from multiple data sources
+
+## Next Steps
+
+Ready to get started with MCP Hub?
+
+<Card title="Request Early Access" icon="key" href="/labs/feedback">
+  Get access to the MCP Hub and start building secure AI integrations
+</Card>
+
+## Learn More
+
+- [MCP Protocol Overview](/labs/concepts/mcp) - Understand the foundation
+- [Security Architecture](/labs/architecture) - Learn about our security model
+- [Integration Guides](/labs/feedback) - Request detailed documentation
