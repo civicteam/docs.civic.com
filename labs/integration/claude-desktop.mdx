@@ -5,231 +5,70 @@ description: Connect Claude Desktop to Civic Labs MCP servers
 
 ## Overview
 
-The Civic Labs Hub Bridge enables Claude Desktop to access cloud-hosted MCP servers with enterprise authentication and security features.
+Connect your desktop AI assistant to cloud-hosted MCP servers using our Hub Bridge.
+
+<Frame caption="Claude Desktop with Civic MCP Hub">
+    <img
+        src="/images/labs/projects/mcp-hub/claude-desktop.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
 
 ## Installation
 
-### macOS (Homebrew)
-```bash
-brew tap civic/labs
-brew install civic-hub-bridge
-```
+<Steps>
+    <Step title="Install the hub-bridge package">
+      <Tabs>
+          <Tab title="npm">
+              If you have node.js installed, you're good! Skip to step 2
+          </Tab>
+          <Tab title="homebrew (Mac)">
+              <Note>ARM (M1, M2...) infrastructure supported only. For x86 builds, [contact us](/labs/feedback)</Note>
+              ```shell
+              brew tap civicteam/hub-bridge
+              brew install hub-bridge
+              ```
+          </Tab>
+          <Tab title="Other">
+              If you need other builds, [contact us](/labs/feedback).
+          </Tab>
+      </Tabs>
+    </Step>
+    <Step title="Configure your AI assistant to use the bridge">
+      <Tabs>
+          <Tab title="npm">
+              ```shell
+              npx @civic/hub-bridge install claude-desktop
+              ```
+          </Tab>
+          <Tab title="homebrew (Mac)">
+              ```shell
+              hub-bridge install claude-desktop
+              ```
+          </Tab>
+          <Tab title="Other">
+              If you need other builds, [contact us](/labs/feedback).
+          </Tab>
+      </Tabs>
+    </Step>
+    <Step title="Fire up the assistant and log into Civic">
+        You should see "Civic" tools
+    </Step>
+</Steps>
 
-### npm (All platforms)
-```bash
-npm install -g @civic/hub-bridge
-```
+## Getting Started
 
-### Manual Installation
-Download the latest release from our GitHub releases page and add to your PATH.
+Once installed, try the following prompt:
 
-## Configuration
+> "What can I do with my Civic account?"
 
-### 1. Get Your API Key
-
-Request access at [civic-labs.com/access](https://civic-labs.com/access) to receive your API key.
-
-### 2. Configure Claude Desktop
-
-Add the Hub Bridge to your Claude Desktop configuration:
-
-**macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-**Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
-
-```json
-{
-  "mcpServers": {
-    "civic-hub": {
-      "command": "civic-hub-bridge",
-      "args": ["--api-key", "YOUR_API_KEY"],
-      "env": {
-        "CIVIC_LABS_ENDPOINT": "https://hub.civic-labs.com"
-      }
-    }
-  }
-}
-```
-
-### 3. Advanced Configuration
-
-```json
-{
-  "mcpServers": {
-    "civic-hub": {
-      "command": "civic-hub-bridge",
-      "args": [
-        "--api-key", "YOUR_API_KEY",
-        "--filter", "github,jira",
-        "--timeout", "60000",
-        "--log-level", "debug"
-      ],
-      "env": {
-        "CIVIC_LABS_ENDPOINT": "https://hub.civic-labs.com",
-        "CIVIC_LABS_CACHE_DIR": "~/.civic/cache",
-        "HTTPS_PROXY": "http://proxy.company.com:8080"
-      }
-    }
-  }
-}
-```
-
-## Available Options
-
-| Option | Description | Default |
-|--------|-------------|---------|
-| `--api-key` | Your Civic Labs API key | Required |
-| `--filter` | Comma-separated list of servers to include | All servers |
-| `--exclude` | Comma-separated list of servers to exclude | None |
-| `--timeout` | Request timeout in milliseconds | 30000 |
-| `--log-level` | Logging verbosity (error, warn, info, debug) | info |
-| `--cache` | Enable response caching | true |
-| `--retry` | Number of retry attempts | 3 |
-
-## OAuth Flow
-
-When accessing tools that require OAuth (like GitHub, Jira, etc.), the Hub Bridge handles the authentication flow:
-
-1. Claude attempts to use a protected tool
-2. Hub Bridge opens your browser for authorization
-3. You approve access in your browser
-4. Tokens are securely stored and managed
-5. Claude can now use the authorized tools
-
-### Managing Authorizations
-
-View your active authorizations:
-```bash
-civic-hub-bridge auth list
-```
-
-Revoke specific authorizations:
-```bash
-civic-hub-bridge auth revoke github
-```
-
-## Using Tools in Claude
-
-Once configured, you can use any available MCP tool in Claude:
-
-```
-"Search for open issues in the civic-labs/docs repository"
-"Create a Jira ticket for the authentication bug"
-"Query our Postgres database for user metrics"
-```
-
-The Hub Bridge automatically:
-- Routes requests to the correct MCP server
-- Handles authentication and authorization
-- Applies security policies (Bodyguard + Guardrails)
-- Manages token refresh and lifecycle
-
-## Debugging
-
-### Enable Debug Logging
-
-```json
-{
-  "mcpServers": {
-    "civic-hub": {
-      "command": "civic-hub-bridge",
-      "args": ["--api-key", "YOUR_API_KEY", "--log-level", "debug"],
-      "env": {
-        "CIVIC_LABS_DEBUG": "true",
-        "CIVIC_LABS_LOG_FILE": "~/.civic/hub-bridge.log"
-      }
-    }
-  }
-}
-```
-
-### View Logs
-
-```bash
-# Real-time logs
-tail -f ~/.civic/hub-bridge.log
-
-# Check connection status
-civic-hub-bridge status
-
-# Test specific server
-civic-hub-bridge test github
-```
-
-### Common Issues
-
-**"Authentication failed"**
-- Verify your API key is correct
-- Check if your API key has expired
-- Ensure you have internet connectivity
-
-**"No tools available"**
-- Run `civic-hub-bridge list` to see available servers
-- Check if you need to authorize specific services
-- Verify filter/exclude settings aren't too restrictive
-
-**"Tool execution failed"**
-- Check the debug logs for detailed error messages
-- Verify you have permissions for the requested tool
-- Ensure any required OAuth flows are completed
-
-## Security Considerations
-
-The Hub Bridge implements several security measures:
-
-1. **Encrypted Storage**: OAuth tokens are encrypted at rest
-2. **Secure Communication**: All traffic uses TLS 1.3
-3. **Token Isolation**: Each MCP server gets isolated tokens
-4. **Automatic Expiry**: Tokens expire and refresh automatically
-5. **Audit Logging**: All tool usage is logged for security review
-
-## Performance Optimization
-
-### Caching
-The Hub Bridge caches tool discoveries and non-sensitive responses:
-
-```bash
-# Clear cache
-civic-hub-bridge cache clear
-
-# Disable caching
-civic-hub-bridge --no-cache
-```
-
-### Connection Pooling
-Maintains persistent connections to frequently used servers for better performance.
-
-### Parallel Execution
-Supports concurrent tool execution with configurable limits:
-
-```json
-{
-  "args": ["--max-concurrent", "5"]
-}
-```
-
-## Updating
-
-### Homebrew
-```bash
-brew upgrade civic-hub-bridge
-```
-
-### npm
-```bash
-npm update -g @civic/hub-bridge
-```
-
-### Auto-update
-The bridge checks for updates automatically and notifies you when a new version is available.
-
-## Support
-
-- [Discord Community](https://discord.gg/civic-labs)
-- [GitHub Issues](https://github.com/civic-labs/hub-bridge/issues)
-- [Email Support](mailto:support@civic-labs.com)
+The Hub Bridge provides:
+- Seamless integration between desktop AI assistants and cloud MCP servers
+- Secure authentication flow
+- Automatic tool discovery
+- Support for multiple platforms (npm, homebrew, and more)
 
 ## Next Steps
 
-- [Available MCP Servers](/labs/dev/endpoints) - List of all available tools
-- [n8n Integration](/labs/integration/n8n-workflows) - Workflow automation
-- [Troubleshooting Guide](/labs/dev/troubleshooting) - Detailed debugging
+[Contact us](/labs/feedback) for additional installation instructions and early access.

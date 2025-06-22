@@ -124,7 +124,6 @@
           "pages": [
             "labs",
             "labs/flask-status",
-            "labs/architecture",
             "labs/feedback"
           ]
         },
@@ -156,15 +155,6 @@
             "labs/integration/claude-desktop",
             "labs/integration/n8n-workflows",
             "labs/integration/vercel-ai"
-          ]
-        },
-        {
-          "group": "Developer Resources",
-          "pages": [
-            "labs/dev/endpoints",
-            "labs/dev/sdk-reference",
-            "labs/dev/deployment",
-            "labs/dev/troubleshooting"
           ]
         }
       ]

@@ -17,12 +17,9 @@ and a set of findings, that can aid decision-making.
 Unlike rule-based security systems, Bodyguard uses an LLM to understand the semantic intent behind prompts,
 catching sophisticated attacks that might bypass traditional filters.
 
-## How It Works
+## Getting Started
 
-Bodyguard uses advanced language models to understand the semantic intent behind prompts, providing threat analysis that goes beyond simple pattern matching. Each analysis returns:
-- A threat score (0-1) indicating risk level
-- Detailed findings explaining detected threats
-- Recommendations for handling the prompt
+Try it out [here](https://ai.civic.com/bodyguard/ui) (COMING SOON) or see [below](/labs/projects/bodyguard#usage) for detailed instructions.
 
 ## Use Cases
 
@@ -42,21 +39,54 @@ Bodyguard uses advanced language models to understand the semantic intent behind
 - **Threat Scoring**: Provides numerical threat scores (0-1) for risk assessment
 - **Multiple Deployment Options**: Available as CLI tool, HTTP server, and client library
 
-## Integration Options
+## Usage
 
-Bodyguard is designed for flexible deployment:
+Bodyguard can be integrated in three ways:
 
-### Standalone Service
-Run Bodyguard as an independent security service that any application can query for threat analysis.
+### 1. HTTP Server
+Deploy Bodyguard as a standalone service that other applications can query:
 
-### SDK Integration
-Embed threat detection directly into your applications with native language SDKs.
+```bash
+# GET request
+curl "https://ai.civic.com/bodyguard/check?prompt=Your%20prompt%20here"
 
-### Middleware Layer
-Deploy as a protective barrier between users and your AI systems, automatically filtering malicious inputs.
+# POST request
+curl -X POST https://ai.civic.com/bodyguard/check \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"Your prompt here"}'
+```
 
-### MCP Integration
-Seamlessly integrate with MCP servers to protect tool execution from harmful prompts.
+### 2. Client Library
+Integrate directly into your application:
+
+```typescript
+import { check } from '@civic/bodyguard';
+
+const { result, threatScore, findings } = await check('User prompt here', {
+  threshold: 0.5 // Fail if threat score > 0.5
+});
+```
+
+### 3. CLI Tool
+```bash
+bodyguard "Analyze this prompt for threats"
+```
+
+### 4. MCP Hooks
+Bodyguard can be used as a middleware for MCP servers, analyzing prompts before they reach the LLM:
+
+```json
+"mcpServers": {
+  "my-mcp-server": {
+    "command": "passthrough-proxy",
+    "args": [
+      "server", "stdio://./my-mcp-server",
+      "--hooks", "@civic/bodyguard",
+      "--config", "{'threshold': 0.7, 'blockOnThreat': true}"
+    ]
+  }
+}
+```
 
 ## Integration Notes
 
@@ -77,32 +107,8 @@ Bodyguard is actively deployed in test environments and showing strong detection
 We're expanding the threat detection capabilities and optimizing response times.
 Docker images are available for easy deployment. [Contact us](/labs/feedback) if you'd like to test it with your specific use cases.
 
-## Technical Approach
+## Resources
 
-### Threat Detection Engine
-Our detection engine analyzes prompts across multiple dimensions:
-- **Semantic Analysis**: Understanding intent beyond keywords
-- **Context Awareness**: Considering the target system and tools
-- **Pattern Recognition**: Identifying known attack signatures
-- **Behavioral Analysis**: Detecting unusual request patterns
-
-### Security Philosophy
-Bodyguard operates on the principle of defense in depth:
-1. **Preventive**: Block threats before they reach your systems
-2. **Detective**: Identify and log suspicious activities
-3. **Adaptive**: Learn from new attack patterns
-4. **Transparent**: Provide clear explanations for decisions
-
-## Getting Started
-
-Interested in protecting your AI systems with Bodyguard?
-
-<Card title="Request Early Access" icon="shield-virus" href="/labs/feedback">
-  Get access to Bodyguard and start securing your AI applications
-</Card>
-
-## Learn More
-
-- [Prompt Injection Threats](/labs/concepts/prompt-injection) - Understand the risks
-- [Security Architecture](/labs/architecture) - Our security model
-- [Integration Guide](/labs/feedback) - Request detailed documentation
+- GitHub Repository (private - [request access](/labs/feedback))
+- Docker Image (contact for access)
+- [API Documentation](/labs/feedback) (request access)
