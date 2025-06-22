@@ -19,7 +19,7 @@ catching sophisticated attacks that might bypass traditional filters.
 
 ## Getting Started
 
-Try it out [here](https://ai.civic.com/bodyguard/ui) (COMING SOON) or see [below](/labs/projects/bodyguard#usage) for detailed instructions.
+Try it out [here](https://ai.civic.com/bodyguard/ui) (COMING SOON). For detailed usage instructions, see the [implementation guide](/labs/private/bodyguard).
 
 ## Use Cases
 
@@ -39,54 +39,6 @@ Try it out [here](https://ai.civic.com/bodyguard/ui) (COMING SOON) or see [below
 - **Threat Scoring**: Provides numerical threat scores (0-1) for risk assessment
 - **Multiple Deployment Options**: Available as CLI tool, HTTP server, and client library
 
-## Usage
-
-Bodyguard can be integrated in three ways:
-
-### 1. HTTP Server
-Deploy Bodyguard as a standalone service that other applications can query:
-
-```bash
-# GET request
-curl "https://ai.civic.com/bodyguard/check?prompt=Your%20prompt%20here"
-
-# POST request
-curl -X POST https://ai.civic.com/bodyguard/check \
-  -H "Content-Type: application/json" \
-  -d '{"prompt":"Your prompt here"}'
-```
-
-### 2. Client Library
-Integrate directly into your application:
-
-```typescript
-import { check } from '@civic/bodyguard';
-
-const { result, threatScore, findings } = await check('User prompt here', {
-  threshold: 0.5 // Fail if threat score > 0.5
-});
-```
-
-### 3. CLI Tool
-```bash
-bodyguard "Analyze this prompt for threats"
-```
-
-### 4. MCP Hooks
-Bodyguard can be used as a middleware for MCP servers, analyzing prompts before they reach the LLM:
-
-```json
-"mcpServers": {
-  "my-mcp-server": {
-    "command": "passthrough-proxy",
-    "args": [
-      "server", "stdio://./my-mcp-server",
-      "--hooks", "@civic/bodyguard",
-      "--config", "{'threshold': 0.7, 'blockOnThreat': true}"
-    ]
-  }
-}
-```
 
 ## Integration Notes
 
@@ -112,4 +64,4 @@ Docker images are available for easy deployment. [Contact us](https://civickey.t
 - [Implementation Guide](/labs/private/bodyguard) - Deployment and API documentation (requires access)
 - GitHub Repository (private - [request access](https://civickey.typeform.com/to/uVH7CWJ5))
 - Docker Image (contact for access)
-- [API Documentation](https://civickey.typeform.com/to/uVH7CWJ5) (request access)
+- [API Documentation](https://civickey.typeform.com/to/uVH7CWJ5
