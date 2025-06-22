@@ -16,6 +16,7 @@ curl "https://ai.civic.com/bodyguard/check?prompt=Your%20prompt%20here"
 
 # POST request
 curl -X POST https://ai.civic.com/bodyguard/check \
+  -H "X-API-Key: your_api_key_here"
   -H "Content-Type: application/json" \
   -d '{"prompt":"Your prompt here"}'
 ```
@@ -37,7 +38,7 @@ bodyguard "Analyze this prompt for threats"
 ```
 
 ### 4. MCP Hooks
-Bodyguard can be used as a middleware for MCP servers, analyzing prompts before they reach the LLM:
+Bodyguard can be used as a middleware hook for MCP servers, analyzing prompts before they reach the LLM:
 
 ```json
 "mcpServers": {
@@ -51,6 +52,8 @@ Bodyguard can be used as a middleware for MCP servers, analyzing prompts before 
   }
 }
 ```
+
+For more details on the passthrough proxy, see the [Pass-through Proxy documentation](/labs/private/passthrough-proxy).
 
 ## Docker Deployment
 

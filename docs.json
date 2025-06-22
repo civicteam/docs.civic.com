@@ -149,14 +149,14 @@
           ]
         },
         {
-          "group": "Integration Guides",
+          "group": "🔓Integration",
           "pages": [
-            "labs/integration/getting-started",
-            "labs/integration/authentication",
-            "labs/integration/mcp-hub-usage",
-            "labs/integration/claude-desktop",
-            "labs/integration/n8n-workflows",
-            "labs/integration/vercel-ai"
+            "labs/private/getting-started",
+            "labs/private/mcp-hub",
+            "labs/private/guardrail-proxy",
+            "labs/private/bodyguard",
+            "labs/private/passthrough-proxy",
+            "labs/private/civic-knowledge"
           ]
         }
       ]

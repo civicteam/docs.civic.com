@@ -104,10 +104,8 @@ Deploy hooks as separate microservices for scalability and independent updates.
 ## Architecture
 
 The proxy uses:
-- **fastMCP** for the server implementation
+- **@modelcontextprotocol/sdk** for the server implementation
 - **tRPC** for type-safe hook communication
-- **Modular design** with single-responsibility modules
-
 
 Hook processing follows a pipeline pattern:
 - Requests flow through hooks in order
