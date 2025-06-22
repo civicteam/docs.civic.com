@@ -1,9 +1,19 @@
 ---
-title: API Reference
-description: API documentation for Civic Labs MCP Hub
+title: MCP Hub Usage
+description: Integration methods for the MCP Hub
 ---
 
-## Endpoint
+## Usage
+
+The MCP Hub can be integrated in several ways:
+
+1. **Direct API Integration**: Connect your application directly to the Hub API
+2. **Desktop Bridge**: Use the hub-bridge package to connect desktop LLM apps
+3. **CLI Testing**: Use the mcp-client CLI tool for development and testing
+4. **Container Sidecar**: Deploy MCP servers with the stdio transport adapter
+5. **Authorization Manager**: Use the MCP server for managing auth tokens
+
+## API Endpoint
 
 The MCP Hub endpoint is:
 
@@ -32,23 +42,6 @@ headers: {
   'Authorization': `Bearer ${process.env.MCP_API_KEY}`
 }
 ```
-
-## Integration Examples
-
-### Direct API Integration
-Connect your application directly to the Hub API.
-
-### Desktop Bridge
-Use the hub-bridge package to connect desktop LLM apps.
-
-### CLI Testing
-Use the mcp-client CLI tool for development and testing.
-
-### Container Sidecar
-Deploy MCP servers with the stdio transport adapter.
-
-### Authorization Manager
-Use the MCP server for managing auth tokens.
 
 ## MCP Protocol
 

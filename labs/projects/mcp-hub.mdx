@@ -63,22 +63,6 @@ We're expanding support for additional platforms including Crew.ai, Make.com, an
 - **Manage via LLM**: Full control over MCP servers and tools through LLM interactions
 - **Full visibility and control**: List and revoke authorisations for you or your users
 
-## Architecture
-
-The MCP Hub provides a unified control plane for MCP servers:
-
-### Core Components
-- **Directory Service**: Discovers and catalogs available MCP servers
-- **Orchestration Engine**: Manages server lifecycles and scaling
-- **Authorization Layer**: Handles OAuth flows and permission management
-- **Security Gateway**: Applies policies and threat detection
-
-### Design Principles
-- **Zero Trust Security**: Every request is authenticated and authorized
-- **Modular Architecture**: Components can be used independently
-- **Cloud-Native**: Built for modern containerized environments
-- **Protocol Compliant**: Full compatibility with MCP specification
-
 ## Integration Notes
 
 The MCP Hub works seamlessly with other Civic Labs tools:
@@ -89,26 +73,6 @@ The MCP Hub works seamlessly with other Civic Labs tools:
 ## Status
 
 This flask is currently **distilling**: The core platform is functional with active development on additional features. The system is being used internally and with select partners. Contact us if you'd like to try it out or provide feedback.
-
-## Use Cases
-
-### Enterprise AI Integration
-- Connect AI assistants to internal databases and APIs
-- Maintain compliance with security policies
-- Centralize tool access across teams
-- Monitor and audit AI tool usage
-
-### Developer Productivity
-- Access GitHub, Jira, and other dev tools from AI
-- Automate repetitive tasks with AI workflows
-- Query logs and metrics conversationally
-- Generate code with real-time context
-
-### Business Automation
-- Connect AI to CRM and business systems
-- Create intelligent document processing workflows
-- Automate customer support responses
-- Generate reports from multiple data sources
 
 ## Next Steps
 
@@ -121,5 +85,5 @@ Ready to get started with MCP Hub?
 ## Learn More
 
 - [MCP Protocol Overview](/labs/concepts/mcp) - Understand the foundation
-- [Security Architecture](/labs/architecture) - Learn about our security model
-- [Integration Guides](/labs/feedback) - Request detailed documentation
+- [Integration Guides](/labs/integration/getting-started) - Get started with implementation
+- [Request Access](/labs/feedback) - Get early access and support
