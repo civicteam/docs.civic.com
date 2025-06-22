@@ -1,0 +1,259 @@
+---
+title: MCP Hub - Private Documentation
+description: Implementation details and integration guides for MCP Hub
+---
+
+## API Endpoint
+
+The MCP Hub endpoint is:
+
+```
+https://ai.civic.com/hub/mcp
+```
+
+## Authentication
+
+The MCP Hub supports multiple authentication methods:
+
+### Bearer Token (Civic Auth)
+For user-facing applications using Civic Auth OAuth2 flow:
+
+```javascript
+headers: {
+  'Authorization': `Bearer ${accessToken}`
+}
+```
+
+### API Key
+For server-to-server communication:
+
+```javascript
+headers: {
+  'Authorization': `Bearer ${process.env.MCP_API_KEY}`
+}
+```
+
+[Contact us](https://civickey.typeform.com/to/uVH7CWJ5) to obtain an API key.
+
+## Integration Methods
+
+### 1. Claude Desktop Integration
+
+Connect Claude Desktop to Civic Labs MCP servers using the Hub Bridge.
+
+#### Installation
+
+<Tabs>
+  <Tab title="npm">
+    ```bash
+    npm install -g @civic/hub-bridge
+    ```
+  </Tab>
+  <Tab title="homebrew">
+    <Steps>
+      <Step title="Add the tap">
+        ```bash
+        brew tap civicteam/tap
+        ```
+      </Step>
+      <Step title="Install hub-bridge">
+        ```bash
+        brew install hub-bridge
+        ```
+      </Step>
+    </Steps>
+    <Note>ARM (M1, M2...) infrastructure supported only. For x86 builds, [contact us](https://civickey.typeform.com/to/uVH7CWJ5)</Note>
+  </Tab>
+</Tabs>
+
+#### Configuration
+
+Add the following to your Claude Desktop configuration:
+
+<Tabs>
+  <Tab title="macOS">
+    ```bash
+    open ~/Library/Application\ Support/Claude/claude_desktop_config.json
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```powershell
+    notepad %APPDATA%\Claude\claude_desktop_config.json
+    ```
+    If you need other builds, [contact us](https://civickey.typeform.com/to/uVH7CWJ5).
+  </Tab>
+  <Tab title="Linux">
+    ```bash
+    open ~/.config/Claude/claude_desktop_config.json
+    ```
+    If you need other builds, [contact us](https://civickey.typeform.com/to/uVH7CWJ5).
+  </Tab>
+</Tabs>
+
+Add this configuration:
+
+```json
+{
+  "mcpServers": {
+    "civic-labs": {
+      "command": "hub-bridge",
+      "args": [],
+      "env": {}
+    }
+  }
+}
+```
+
+### 2. Vercel AI SDK Integration
+
+Use the MCP Hub with Vercel AI SDK for building AI applications.
+
+```typescript
+import { tool } from 'ai';
+import { CivicAuth } from '@civic/auth';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/http-stream.js';
+import { Client } from '@modelcontextprotocol/client';
+
+// Initialize Civic Auth
+const auth = new CivicAuth({
+  clientId: process.env.CIVIC_CLIENT_ID!,
+  redirectUri: process.env.CIVIC_REDIRECT_URI!,
+});
+
+// Get access token
+const accessToken = await auth.getAccessToken();
+
+// Create MCP client
+const createMCPClient = async (token: string) => {
+  const clientConfig = {
+    name: 'vercel-ai-example',
+    version: '1.0.0',
+  };
+
+  const transport = new StreamableHTTPClientTransport({
+    uri: 'https://ai.civic.com/hub/mcp',
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const client = new Client(clientConfig);
+  await client.connectToTransport(transport);
+  await client.initialize();
+
+  return client;
+};
+
+// Use with Vercel AI SDK
+const mcpClient = await createMCPClient(accessToken);
+const tools = await mcpClient.getTools();
+
+// Convert MCP tools to Vercel AI tools
+const vercelTools = tools.map(mcpTool => 
+  tool({
+    name: mcpTool.name,
+    description: mcpTool.description,
+    parameters: mcpTool.inputSchema,
+    execute: async (args) => {
+      const result = await mcpClient.callTool({
+        name: mcpTool.name,
+        arguments: args,
+      });
+      return result;
+    },
+  })
+);
+```
+
+### 3. n8n Workflow Integration
+
+Build AI-powered workflows with n8n and Civic Labs.
+
+#### Prerequisites
+
+1. [Import the example workflow](https://github.com/civicteam/hub/tree/main/examples/n8n) into your n8n instance
+2. Configure your AWS Bedrock credentials in n8n (or use another AI model)
+3. [Contact us](https://civickey.typeform.com/to/uVH7CWJ5) to obtain an API key for the MCP Hub
+
+#### Setup
+
+Add your MCP Hub API key as a Header Auth credential in n8n:
+
+```json
+{
+  "name": "Authorization",
+  "value": "Bearer YOUR_API_KEY"
+}
+```
+
+The workflow demonstrates:
+- Calling MCP Hub API endpoints
+- Integrating with AI models
+- Building conversational agents with MCP tools
+- Error handling and retries
+
+### 4. Direct API Integration
+
+For custom integrations, use the MCP Hub API directly:
+
+```javascript
+// List available MCP servers
+const response = await fetch('https://ai.civic.com/hub/mcp', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    jsonrpc: '2.0',
+    method: 'tools/list',
+    params: {},
+    id: 1,
+  }),
+});
+
+const result = await response.json();
+console.log('Available tools:', result.result.tools);
+```
+
+### 5. Container Sidecar Pattern
+
+Deploy MCP servers with the stdio transport adapter for maximum flexibility:
+
+```yaml
+version: '3.8'
+services:
+  mcp-server:
+    image: your-mcp-server:latest
+    environment:
+      - MCP_TRANSPORT=stdio
+  
+  hub-adapter:
+    image: civic/mcp-stdio-adapter:latest
+    environment:
+      - MCP_HUB_URL=https://ai.civic.com/hub
+      - MCP_API_KEY=${MCP_API_KEY}
+    depends_on:
+      - mcp-server
+```
+
+## MCP Protocol Compliance
+
+The MCP Hub is compliant with the [MCP Protocol](https://modelcontextprotocol.io) specification. All standard MCP methods are supported:
+- `initialize`
+- `tools/list`
+- `tools/call`
+- `resources/list`
+- `resources/read`
+- `prompts/list`
+- `prompts/get`
+
+## Additional Resources
+
+- [MCP Protocol Documentation](https://modelcontextprotocol.io)
+- [Example Implementations](https://github.com/civicteam/hub/tree/main/examples)
+- [API Reference](https://civickey.typeform.com/to/uVH7CWJ5) (request access)
+
+[Contact us](https://civickey.typeform.com/to/uVH7CWJ5) for detailed API documentation and support.

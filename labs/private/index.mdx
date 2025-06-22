@@ -1,0 +1,179 @@
+---
+title: Private Documentation
+description: Implementation guides and technical documentation for Civic Labs
+---
+
+Welcome to the private documentation section for Civic Labs. This area contains detailed implementation guides, API documentation, and deployment instructions for our various flasks.
+
+## What are you interested in?
+
+<AccordionGroup>
+  <Accordion title="I'm interested in MCP hosting and unified auth management">
+    The MCP Hub provides hosted MCP server management with centralized authentication and authorization across all your tools.
+    
+    - Host and manage multiple MCP servers
+    - Single sign-on for all tools
+    - OAuth flow abstraction
+    - Token lifecycle management
+    
+    [Learn more about MCP Hub →](/labs/projects/mcp-hub)
+    [View implementation guide →](/labs/private/mcp-hub)
+  </Accordion>
+
+  <Accordion title="I'm interested in MCP middleware and custom logic">
+    The Pass-through Proxy lets you add custom processing to any MCP server without modifying it.
+    
+    - Add hooks to intercept requests/responses
+    - Transform data on the fly
+    - Implement custom business logic
+    - Chain multiple processing steps
+    
+    [Learn about Pass-through Proxy →](/labs/projects/passthrough-proxy)
+    [View hook development guide →](/labs/private/passthrough-proxy)
+  </Accordion>
+
+  <Accordion title="I'm interested in automating and optimizing my company's operations">
+    Civic Knowledge provides an AI assistant that connects to all your internal systems.
+    
+    - Query logs, databases, and dashboards conversationally
+    - Integrate with Jira, GitHub, and other tools
+    - Built-in security and access controls
+    - Customizable for your organization
+    
+    [Discover Civic Knowledge →](/labs/projects/civic-knowledge)
+    [View deployment options →](/labs/private/civic-knowledge)
+  </Accordion>
+
+  <Accordion title="I'm interested in protection from AI threats">
+    Bodyguard analyzes prompts to detect and prevent malicious attacks on your AI systems.
+    
+    - Detect prompt injection attempts
+    - Prevent data exfiltration
+    - Score threat levels in real-time
+    - Easy integration with existing systems
+    
+    [Learn about Bodyguard →](/labs/projects/bodyguard)
+    [View API documentation →](/labs/private/bodyguard)
+  </Accordion>
+
+  <Accordion title="I'm interested in rules around LLM tool access">
+    Guardrail Proxy adds security policies to any MCP server without code changes.
+    
+    - Domain filtering and access control
+    - Content size and type restrictions
+    - Custom validation rules
+    - LLM-specific safety controls
+    
+    [Explore Guardrail Proxy →](/labs/projects/guardrail-proxy)
+    [View configuration guide →](/labs/private/guardrail-proxy)
+  </Accordion>
+
+  <Accordion title="I want all the things at once">
+    The MCP Hub integrates all Civic Labs tools into a unified platform.
+    
+    Start with the Hub to get:
+    - Hosted MCP servers with built-in security
+    - Bodyguard protection on all prompts
+    - Guardrail policies applied automatically
+    - Pass-through proxy for customization
+    - Single dashboard for management
+    
+    [Get started with the complete platform →](/labs/projects/mcp-hub)
+  </Accordion>
+</AccordionGroup>
+
+## Available Documentation
+
+<CardGroup cols={2}>
+  <Card title="MCP Hub" icon="server" href="/labs/private/mcp-hub">
+    Complete integration guide for the MCP Hub including API endpoints, authentication, and client libraries
+  </Card>
+  
+  <Card title="Bodyguard" icon="shield" href="/labs/private/bodyguard">
+    Deployment guide and API documentation for the prompt security scanner
+  </Card>
+  
+  <Card title="Civic Knowledge" icon="brain" href="/labs/private/civic-knowledge">
+    Configuration guide and whitelabel deployment options for the RAG platform
+  </Card>
+  
+  <Card title="Guardrail Proxy" icon="lock" href="/labs/private/guardrail-proxy">
+    Security rule configuration and deployment patterns
+  </Card>
+  
+  <Card title="Pass-through Proxy" icon="arrows-alt" href="/labs/private/passthrough-proxy">
+    Hook development guide and implementation examples
+  </Card>
+</CardGroup>
+
+## Current Access Options
+
+### 🧪 Request Early Access
+
+Most Civic Labs projects are in active development. To get behind-the-scenes access:
+
+1. **[Join our Discord](https://discord.com/invite/MWmhXauJw8)**: Connect with the team and community
+2. **[Fill out the access form](https://civickey.typeform.com/to/uVH7CWJ5)**: Let's collaborate!
+3. **[Schedule a demo](https://calendly.com/danbk/30-minute-meeting-clone)**: We'll walk you through the tools
+
+[More details →](https://civickey.typeform.com/to/uVH7CWJ5)
+
+### 🎯 Try Our Demos
+
+Some projects have public demos available:
+
+- **MCP Hub**: [Try our example MCP servers](https://hub.civic.com)
+- **Civic Knowledge**: Coming soon
+- **Guardrail Proxy**: Interactive playground coming soon
+
+## Integration Guide
+
+For those with access, here's the typical integration flow:
+
+<Steps>
+  <Step title="Authentication">
+    Set up Civic Auth or obtain API keys for server-to-server communication
+  </Step>
+  
+  <Step title="Choose Your Tools">
+    Select which Civic Labs tools fit your use case - start with one or combine multiple
+  </Step>
+  
+  <Step title="Configure">
+    Use our private documentation to configure each tool for your environment
+  </Step>
+  
+  <Step title="Test">
+    Use our testing environments and sandboxes before production deployment
+  </Step>
+  
+  <Step title="Deploy">
+    Deploy to your infrastructure or use our hosted solutions
+  </Step>
+</Steps>
+
+## Need Help?
+
+### Support Channels
+
+- **Discord**: Best for quick questions and community help
+- **Email**: labs@civic.com for detailed inquiries
+- **GitHub**: Report issues in the respective repositories (after gaining access)
+
+### Documentation
+
+Each flask has its own private documentation page with:
+
+- **API Documentation** - Endpoints, authentication, and response formats
+- **Deployment Guides** - Docker, Kubernetes, and cloud deployment options
+- **Configuration Examples** - Real-world configuration patterns
+- **Integration Patterns** - How to connect with other Civic Labs tools
+- **Code Samples** - Implementation examples in multiple languages
+
+## Stay Updated
+
+Join our community to stay informed about new features and releases:
+
+- [Discord Community](https://discord.com/invite/MWmhXauJw8)
+- [Newsletter Signup](https://civickey.typeform.com/to/uVH7CWJ5)
+- [Follow us on Twitter](https://twitter.com/civickey)

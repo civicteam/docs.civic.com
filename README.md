@@ -147,7 +147,15 @@ We have a `custom.css` file that provides additional styling classes, particular
 
 These classes automatically adjust to 90% width on mobile devices for responsive design.
 
-## 🔗 Preview Deployments
+## 🔗 Link Checker
+
+To ensure all links are valid and working:
+
+```bash
+lychee --verbose --root-dir $(pwd) --fallback-extensions mdx,md --include-fragments **/*.mdx
+```
+
+## 📦 Preview Deployments
 
 Every branch automatically gets a preview deployment:
 
