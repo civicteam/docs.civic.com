@@ -43,11 +43,10 @@ Bodyguard can be used as a middleware hook for MCP servers, analyzing prompts be
 ```json
 "mcpServers": {
   "my-mcp-server": {
-    "command": "passthrough-proxy",
-    "args": [
-      "server", "stdio://./my-mcp-server",
-      "--hooks", "@civic/bodyguard",
-      "--config", "{'threshold': 0.7, 'blockOnThreat': true}"
+    "command": "passthrough-mcp-server",
+    "env": [
+      "TARGET_SERVER_URL", "https://my-mcp-server",
+      "HOOKS", "https://ai.civic.com/bodyguard/hook?threshold=0.7"
     ]
   }
 }
