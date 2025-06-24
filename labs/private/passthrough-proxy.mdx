@@ -1,0 +1,106 @@
+---
+title: Pass-through Proxy
+description: Implementation details for Pass-through Proxy
+---
+
+## Overview
+
+The Pass-through Proxy is a Model Context Protocol (MCP) server that acts as a middleware layer between AI assistants and MCP tools. It enables you to intercept, validate, modify, and monitor all tool interactions through a flexible hook system.
+
+## Why Use Pass-through Proxy?
+
+For a detailed explanation of why MCP needs hooks, see the repository [README](https://github.com/civicteam/mcp-tools) which explains the core concepts.
+
+## Getting Started
+
+### Installation
+
+The Pass-through Proxy is available as an npm package:
+
+```bash
+npm install -g @civic/passthrough-mcp-server
+```
+
+### Basic Setup
+
+1. **Identify your target MCP server** - The server you want to add middleware to
+2. **Choose or create hooks** - Pre-built hooks are available, or create custom ones
+3. **Configure and run** - Set environment variables and start the proxy
+
+For a complete getting started guide, see [Getting Started](https://github.com/civicteam/mcp-tools#getting-started) in the repository.
+
+### Configuration
+
+Configure via environment variables:
+
+- `PORT` - Where the proxy listens (default: 34000)
+- `TARGET_SERVER_URL` - The MCP server to forward requests to
+- `HOOKS` - Comma-separated URLs of hook servers
+
+
+Example:
+```bash
+export TARGET_SERVER_URL="http://localhost:3000"
+export HOOKS="http://localhost:33004,http://localhost:33005"
+pnpm start
+```
+
+## Available Hooks
+
+The monorepo includes several pre-built hooks. See [Available Packages](https://github.com/civicteam/mcp-tools#available-packages) for the complete list:
+
+### Audit Hook
+Logs every request and response for debugging and compliance. Perfect for understanding what your AI is doing.
+
+### Guardrail Hook
+Implements security rules to filter and validate requests. Includes domain filtering and content restrictions.
+
+### Rate Limit Hook
+Enforces usage limits per user with configurable windows and clear retry-after responses.
+
+### Explain Hook
+Adds a "reason" parameter to all tools, encouraging transparency in AI tool usage.
+
+### Custom Description Hook
+Modifies tool descriptions based on context, useful for environment-specific guidance.
+
+## Creating Custom Hooks
+
+Hooks implement a simple interface with three possible responses:
+
+1. **Continue** - Allow the request (possibly modified)
+2. **Reject** - Block the request with an error
+3. **Respond** - Return a response without calling the target
+
+For detailed implementation examples, see [Creating Your Own Hook](https://github.com/civicteam/mcp-tools#creating-your-own-hook) in the repository.
+
+## Integration Patterns
+
+### With MCP Hub
+Use Pass-through Proxy as middleware in the MCP Hub to apply consistent policies across all tools.
+
+### With Claude Desktop
+Add hooks to any MCP server used by Claude Desktop by configuring the proxy as an intermediary.
+
+### In Production
+Deploy hooks as separate microservices for scalability and independent updates.
+
+## Architecture
+
+The proxy uses:
+- **@modelcontextprotocol/sdk** for the server implementation
+- **tRPC** for type-safe hook communication
+
+Hook processing follows a pipeline pattern:
+- Requests flow through hooks in order
+- Responses flow back in reverse order
+- Any hook can short-circuit the pipeline
+
+## Resources
+
+- GitHub Repository: https://github.com/civicteam/mcp-tools
+- [Quick Start](https://github.com/civicteam/mcp-tools#quick-start)
+- [Example Hooks](https://github.com/civicteam/mcp-hooks/tree/main/packages)
+- [Hook Interface](https://github.com/civicteam/mcp-tools#hook-interface)
+
+[Contact us](https://civickey.typeform.com/to/uVH7CWJ5) if you need help building custom middleware for your MCP tools.

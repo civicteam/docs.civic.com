@@ -1,4 +1,71 @@
 ---
 title: RAG
-description: Retrieval strategies for LLMs
+description: Retrieval-Augmented Generation for LLMs
+public: true
 ---
+
+## Overview
+
+Retrieval-Augmented Generation (RAG) is a technique that enhances LLM responses by providing relevant context from external knowledge sources. Instead of relying solely on training data, RAG systems retrieve and incorporate up-to-date information at inference time.
+
+## Core Components
+
+### 1. Document Processing
+- **Chunking**: Breaking documents into semantically meaningful segments
+- **Preprocessing**: Cleaning and normalizing text for optimal retrieval
+- **Metadata Extraction**: Preserving source, date, and structural information
+
+### 2. Embedding Generation
+- **Vector Representations**: Converting text chunks into high-dimensional vectors
+- **Embedding Models**: Using specialized models (e.g., text-embedding-ada-002, all-MiniLM-L6-v2)
+- **Dimensionality**: Balancing between representation quality and computational efficiency
+
+### 3. Vector Storage
+- **Vector Databases**: Purpose-built stores like Pinecone, Weaviate, or Qdrant
+- **Indexing Strategies**: HNSW, IVF, or LSH for efficient similarity search
+- **Hybrid Search**: Combining vector similarity with keyword matching
+
+### 4. Retrieval Strategies
+- **Similarity Search**: Finding the most relevant chunks based on cosine similarity
+- **Reranking**: Using cross-encoder models to refine initial results
+- **Query Expansion**: Enhancing user queries for better retrieval
+
+### 5. Context Integration
+- **Prompt Engineering**: Effectively presenting retrieved context to the LLM
+- **Context Window Management**: Optimizing the amount of context within token limits
+- **Source Attribution**: Maintaining references to original documents
+
+## Common RAG Patterns
+
+### Basic RAG
+1. Embed user query
+2. Search vector database for similar chunks
+3. Inject top-k results into LLM prompt
+4. Generate response with retrieved context
+
+### Advanced Techniques
+- **Multi-hop Retrieval**: Iterative retrieval based on intermediate results
+- **Dense-Sparse Hybrid**: Combining embedding search with BM25 keyword search
+- **Query Decomposition**: Breaking complex queries into sub-questions
+- **Contextual Compression**: Summarizing retrieved chunks to fit more information
+
+## In Civic Labs
+
+RAG principles power our Civic Knowledge system, enabling AI assistants to access and reason over organizational data while maintaining security and access controls. Our implementation focuses on:
+
+- **Secure Retrieval**: Respecting document permissions and access controls
+- **Multi-source Integration**: Unified search across diverse data sources
+- **Real-time Updates**: Keeping knowledge bases current without retraining
+
+## Best Practices
+
+1. **Chunk Size Optimization**: Balance between context and relevance
+2. **Embedding Model Selection**: Match model to your domain and use case
+3. **Metadata Filtering**: Use structured data to improve retrieval precision
+4. **Evaluation Metrics**: Monitor retrieval quality and generation accuracy
+5. **Fallback Strategies**: Handle cases when retrieval returns no relevant results
+
+## Learn More
+
+- [Civic Knowledge](/labs/projects/civic-knowledge) - Our RAG-powered AI assistant
+- [MCP Integration](/labs/concepts/mcp) - How MCP enables secure data access for RAG

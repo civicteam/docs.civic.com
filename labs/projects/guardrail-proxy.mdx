@@ -1,6 +1,7 @@
 ---
 title: Guardrail Proxy
 description: Wrap any MCP server in a configurable and flexible security layer
+public: true
 ---
 
 **Flask Status: Distilling** 🧪
@@ -13,16 +14,23 @@ Think of it as a security checkpoint that all AI requests must pass through befo
 
 ## Getting Started
 
-Getting started guide coming soon. For now, [contact us](/labs/feedback) for early access and setup assistance.
+[Contact us](https://civickey.typeform.com/to/uVH7CWJ5) for early access and setup assistance.
 
 ## Key Features
 
 - **Domain Filtering**: Block or allow access to specific domains
 - **Request Validation**: Validate parameters before forwarding to tools
 - **Content Limits**: Cap file sizes and directory traversal depth for LLM consumption
-- **Binary File Protection**: Prevent reading of binary files that could confuse LLMs
 - **Custom Security Rules**: Implement your own validation logic via hooks
 - **Response Processing**: Filter or modify responses before they reach the AI
+
+<Frame caption="Guardrail in Action - Protecting against prompt injection attempts">
+    <img
+        src="/images/labs/projects/mcp-hub/guardrail-example.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
 
 ## Usage
 
@@ -40,6 +48,8 @@ Example use cases:
 - Rate-limiting based on content type or size
 - Adding corporate security policies to public MCP tools
 
+[Contact us](https://civickey.typeform.com/to/uVH7CWJ5) for configuration examples and implementation guides.
+
 ## Integration Notes
 
 The Guardrail Proxy is powered by the Pass-through Proxy infrastructure and can be combined with:
@@ -53,6 +63,6 @@ This flask is currently **distilling**: The guardrail system is functional and b
 
 ## Resources
 
-- [GitHub Repository](https://github.com/civicteam/mcp-tools) (private - [request access](/labs/feedback))
-- [GitHub Repository - Guardrail Library](https://github.com/civicteam/civic-mcp) (private - [request access](/labs/feedback))
-- Security Rule Examples (coming soon)
+- [Configuration Guide](/labs/private/guardrail-proxy) - Security rules and deployment
+- GitHub Repository (private - [request access](https://civickey.typeform.com/to/uVH7CWJ5))
+- Guardrail Library (private - [request access](https://civickey.typeform.com/to/uVH7CWJ5))
