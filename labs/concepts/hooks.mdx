@@ -1,4 +1,43 @@
 ---
 title: Hooks
-description: A middleware layer around MCP APIs
+description: Middleware pattern for MCP request processing
+public: true
 ---
+
+## Overview
+
+Hooks provide a middleware layer for intercepting and processing MCP requests and responses. They enable you to add custom logic, security rules, or transformations without modifying the underlying MCP servers.
+
+## How Hooks Work
+
+```
+AI Assistant → [Request Hook] → MCP Server
+                                     ↓
+AI Assistant ← [Response Hook] ← MCP Server
+```
+
+Each hook in the chain can:
+- **Inspect** the request/response data
+- **Modify** parameters or results
+- **Block** requests based on custom rules
+- **Enrich** data with additional context
+
+## Common Hook Patterns
+
+- **Security Filtering**: Validate requests against security policies
+- **Rate Limiting**: Control request frequency and volume
+- **Data Transformation**: Modify request/response formats
+- **Audit Logging**: Record all tool interactions
+- **Content Filtering**: Remove or redact sensitive information
+
+## In Civic Labs
+
+Hooks power several of our security tools:
+- The [Pass-through Proxy](/labs/projects/passthrough-proxy) provides the core hook infrastructure
+- The [Guardrail Proxy](/labs/projects/guardrail-proxy) implements security rules as hooks
+- [Bodyguard](/labs/projects/bodyguard) can be deployed as a hook for threat detection
+
+## Learn More
+
+- [Pass-through Proxy](/labs/projects/passthrough-proxy) - The middleware system that enables hooks
+- [Guardrail Proxy](/labs/projects/guardrail-proxy) - Security implementation using hooks

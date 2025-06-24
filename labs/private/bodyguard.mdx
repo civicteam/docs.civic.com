@@ -1,0 +1,67 @@
+---
+title: Bodyguard
+description: Implementation details for Bodyguard
+---
+
+## Usage
+
+Bodyguard can be integrated in three ways:
+
+### 1. HTTP Server
+Deploy Bodyguard as a standalone service that other applications can query:
+
+```bash
+# GET request
+curl "https://ai.civic.com/bodyguard/check?prompt=Your%20prompt%20here"
+
+# POST request
+curl -X POST https://ai.civic.com/bodyguard/check \
+  -H "X-API-Key: your_api_key_here"
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"Your prompt here"}'
+```
+
+### 2. Client Library
+Integrate directly into your application:
+
+```typescript
+import { check } from '@civic/bodyguard';
+
+const { result, threatScore, findings } = await check('User prompt here', {
+  threshold: 0.5 // Fail if threat score > 0.5
+});
+```
+
+### 3. CLI Tool
+```bash
+bodyguard "Analyze this prompt for threats"
+```
+
+### 4. MCP Hooks
+Bodyguard can be used as a middleware hook for MCP servers, analyzing prompts before they reach the LLM:
+
+```json
+"mcpServers": {
+  "my-mcp-server": {
+    "command": "passthrough-mcp-server",
+    "env": [
+      "TARGET_SERVER_URL", "https://my-mcp-server",
+      "HOOKS", "https://ai.civic.com/bodyguard/hook?threshold=0.7"
+    ]
+  }
+}
+```
+
+For more details on the passthrough proxy, see the [Pass-through Proxy documentation](/labs/private/passthrough-proxy).
+
+## Docker Deployment
+
+Docker images are available for easy deployment. [Contact us](https://civickey.typeform.com/to/uVH7CWJ5) to get access to the Docker images on AWS ECR.
+
+## Resources
+
+- GitHub Repository: https://github.com/civicteam/bodyguard (private - [request access](https://civickey.typeform.com/to/uVH7CWJ5))
+- Docker Image: Available on AWS ECR (contact for access)
+- API Documentation: Coming soon
+
+For more information and access, please [contact us](https://civickey.typeform.com/to/uVH7CWJ5).

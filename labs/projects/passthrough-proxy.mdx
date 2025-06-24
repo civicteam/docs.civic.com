@@ -1,6 +1,7 @@
 ---
 title: Pass-through Proxy
 description: Middleware hook system for MCP servers that powers guardrails and more
+public: true
 ---
 
 **Flask Status: Distilling** 🧪
@@ -13,7 +14,7 @@ Think of it as a smart router that can inspect, modify, filter, or enrich every 
 
 ## Getting Started
 
-Getting started guide coming soon. For now, [contact us](/labs/feedback) for early access and setup assistance.
+[Contact us](https://civickey.typeform.com/to/uVH7CWJ5) for early access and setup assistance.
 
 ## Key Features
 
@@ -23,6 +24,14 @@ Getting started guide coming soon. For now, [contact us](/labs/feedback) for ear
 - **Transport Agnostic**: Works with HTTP streaming, SSE, and stdio transports
 - **Stateless Design**: Each request is processed independently for reliability
 - **Extensible Framework**: Easy to add custom hooks for your specific needs
+
+# Use Cases
+
+- **Security & Compliance**: Add validation, logging, and filtering to tool interactions
+- **Data Transformation**: Modify request/response formats to match AI expectations
+- **Rate Limiting**: Control how often tools can be accessed by AI assistants
+- **A/B Testing**: Route requests to different tool versions based on rules
+- **Context-Aware Modifications** - Transform requests based on user context or environment
 
 ## Usage
 
@@ -34,9 +43,10 @@ AI Assistant ←→ Pass-through Proxy ←→ Target MCP Server
                   [Hook Chain]
 ```
 
-Configure it with:
-- `TARGET_SERVER_URL`: The MCP server to forward requests to
-- `HOOKS`: Comma-separated list of hook URLs to process requests through
+Configuration involves:
+- Setting the target MCP server
+- Defining hook URLs for processing
+- Configuring authentication and security rules
 
 Hook responses can:
 - **continue**: Forward the (possibly modified) request
@@ -65,6 +75,7 @@ This flask is currently **distilling**: The core proxy infrastructure is stable 
 
 ## Resources
 
-- [GitHub Repository](https://github.com/civicteam/mcp-tools) (private)
-- Hook Development Guide (coming soon)
-- Example Hook Implementations (coming soon)
+- [Hook Development Guide](/labs/private/passthrough-proxy) - Complete implementation guide (requires access)
+- GitHub Repository (private - [request access](https://civickey.typeform.com/to/uVH7CWJ5))
+- [Hook Development Guide](https://civickey.typeform.com/to/uVH7CWJ5) (request access)
+- [Example Hook Implementations](https://civickey.typeform.com/to/uVH7CWJ5) (request access)

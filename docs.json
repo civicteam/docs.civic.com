@@ -124,7 +124,6 @@
           "pages": [
             "labs",
             "labs/flask-status",
-            "labs/getting-started",
             "labs/feedback"
           ]
         },
@@ -144,13 +143,20 @@
             "labs/concepts/mcp",
             "labs/concepts/guardrails",
             "labs/concepts/prompt-injection",
-            "labs/concepts/auth-strategies"
+            "labs/concepts/auth-strategies",
+            "labs/concepts/hooks",
+            "labs/concepts/rag"
           ]
         },
         {
-          "group": "Other Resources",
+          "group": "🔓Integration",
           "pages": [
-            "labs/flask-status"
+            "labs/private/getting-started",
+            "labs/private/mcp-hub",
+            "labs/private/guardrail-proxy",
+            "labs/private/bodyguard",
+            "labs/private/passthrough-proxy",
+            "labs/private/civic-knowledge"
           ]
         }
       ]
