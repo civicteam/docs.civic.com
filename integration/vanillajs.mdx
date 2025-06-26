@@ -29,6 +29,7 @@ cd my-civic-app
 npm install
 npm install @civic/auth
 ```
+
 </Tip>
 
 ### Simple Setup
@@ -64,25 +65,58 @@ import { CivicAuth } from "@civic/auth/vanillajs";
 
 // Initialize auth directly with top-level await
 const authClient = await CivicAuth.create({
-    clientId: "YOUR_CLIENT_ID",
+  clientId: "YOUR_CLIENT_ID",
 });
 
 // Sign in
 document.getElementById("loginButton").addEventListener("click", async () => {
-    try {
-        const { user } = await authClient.startAuthentication();
-    } catch (error) {
-        console.error("Authentication failed:", error);
-    }
+  try {
+    const { user } = await authClient.startAuthentication();
+  } catch (error) {
+    console.error("Authentication failed:", error);
+  }
 });
 
 // Sign out
 document.getElementById("logoutButton").addEventListener("click", async () => {
-    await authClient?.logout();
+  await authClient?.logout();
 });
 ```
 
 That's it\! Replace `YOUR_CLIENT_ID` with your actual client ID and you're done.
+
+## Alternative: Backend Integration
+
+If you prefer to handle authentication through your backend (useful for server-side session management), you can integrate with an Express backend instead of using the client-side approach above.
+
+With this approach, your vanilla JavaScript frontend makes HTTP calls to your backend's auth endpoints:
+
+```javascript
+// Instead of using @civic/auth/vanillajs, use fetch to your backend
+const API_BASE = "http://localhost:3020"; // Your Express server URL
+
+async function login() {
+  // Redirect to your backend's login endpoint
+  window.location.href = `${API_BASE}/auth/login`;
+}
+
+async function checkAuthStatus() {
+  try {
+    const response = await fetch(`${API_BASE}/auth/user`, {
+      credentials: "include", // Important: Include cookies
+    });
+
+    if (response.ok) {
+      const user = await response.json();
+      // Handle logged-in user
+    }
+  } catch (error) {
+    // Handle not logged in
+  }
+}
+```
+
+See the [Express integration guide](/express#frontend-integration-vanilla-javascript) for complete setup instructions.
 
 ### Configuration Options
 
@@ -126,6 +160,7 @@ const logout = async () => {
 If you encounter an error like `Failed to resolve module specifier "@civic/auth/vanillajs"`, this is typically caused by a corrupted module cache or installation issue.
 
 **Solution:**
+
 ```bash
 # Clear node_modules and package-lock.json, then reinstall
 rm -rf node_modules package-lock.json
@@ -133,6 +168,7 @@ npm install
 ```
 
 **For Vite users:**
+
 ```bash
 # Also clear Vite's cache
 rm -rf node_modules package-lock.json .vite
