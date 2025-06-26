@@ -34,124 +34,52 @@ npm install @civic/auth
 
 ### Simple Setup
 
-1. **HTML**:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My App with Civic Auth</title>
-  </head>
-  <body>
-    <h1>My App</h1>
-
-    <button id="loginButton">Sign In</button>
-    <button id="logoutButton">Sign Out</button>
-
-    <!-- Only needed for embedded display mode -->
-    <div id="authContainer"></div>
-
-    <script type="module" src="main.js"></script>
-  </body>
-</html>
-```
-
-2. **JavaScript** (`main.js`):
-
 ```javascript
 import { CivicAuth } from "@civic/auth/vanillajs";
 
-// Initialize auth directly with top-level await
+// Initialize and start authentication
 const authClient = await CivicAuth.create({
   clientId: "YOUR_CLIENT_ID",
 });
 
 // Sign in
-document.getElementById("loginButton").addEventListener("click", async () => {
-  try {
-    const { user } = await authClient.startAuthentication();
-  } catch (error) {
-    console.error("Authentication failed:", error);
-  }
-});
+const { user } = await authClient.startAuthentication();
 
 // Sign out
-document.getElementById("logoutButton").addEventListener("click", async () => {
-  await authClient?.logout();
-});
+await authClient.logout();
 ```
 
 That's it\! Replace `YOUR_CLIENT_ID` with your actual client ID and you're done.
 
 ## Alternative: Backend Integration
 
-If you prefer to handle authentication through your backend (useful for server-side session management), you can integrate with an Express backend instead of using the client-side approach above.
-
-With this approach, your vanilla JavaScript frontend makes HTTP calls to your backend's auth endpoints:
+If you prefer backend session management, you can configure the client to get login URLs from your Express backend. The magic is the `loginUrl` option:
 
 ```javascript
-// Instead of using @civic/auth/vanillajs, use fetch to your backend
-const API_BASE = "http://localhost:3020"; // Your Express server URL
+import { CivicAuth } from "@civic/auth/vanillajs";
 
-async function login() {
-  // Redirect to your backend's login endpoint
-  window.location.href = `${API_BASE}/auth/login`;
-}
+// Configure client to use your backend for login URLs
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+  loginUrl: "https://your-backend.com/auth/login-url", // The magic!
+});
 
-async function checkAuthStatus() {
-  try {
-    const response = await fetch(`${API_BASE}/auth/user`, {
-      credentials: "include", // Important: Include cookies
-    });
-
-    if (response.ok) {
-      const user = await response.json();
-      // Handle logged-in user
-    }
-  } catch (error) {
-    // Handle not logged in
-  }
-}
+// Now authentication works through your backend
+const { user } = await authClient.startAuthentication();
 ```
 
-See the [Express integration guide](/express#frontend-integration-vanilla-javascript) for complete setup instructions.
+See the [Express integration guide](/express#frontend-integration-vanilla-javascript) for complete setup.
 
 ### Configuration Options
 
 | Field                    | Required | Default                          | Description                                                                 |
 | ------------------------ | -------- | -------------------------------- | --------------------------------------------------------------------------- |
 | `clientId`               | Yes      | -                                | Your Civic Auth client ID from [auth.civic.com](https://auth.civic.com)     |
+| `loginUrl`               | No       | -                                | URL to get login URLs from your backend (for backend integration)           |
 | `targetContainerElement` | No       | -                                | DOM element where embedded iframe will be rendered                          |
 | `redirectUrl`            | No       | Current URL                      | OAuth redirect URL after authentication                                     |
 | `displayMode`            | No       | `modal`                          | How the auth UI is displayed: `embedded`, `modal`, `redirect`, or `new_tab` |
 | `scopes`                 | No       | `['openid', 'profile', 'email']` | OAuth scopes to request                                                     |
-
-### Display Modes
-
-The `displayMode` option controls how the authentication UI is presented:
-
-- **`embedded`** (default): The auth UI loads in an iframe within your specified container element
-- **`modal`**: The auth UI opens in a modal overlay on top of your current page
-- **`redirect`**: Full page navigation to the Civic auth server and back to your site
-- **`new_tab`**: Opens auth flow in a new browser tab/popup window
-
-### Logout
-
-Logging out is very simple.
-
-```javascript
-const logout = async () => {
-  await authClient?.logout();
-  // ...
-};
-```
-
-**User object access:**
-
-- Use `authClient.getCurrentUser()` to retrieve current user information before logout
-- Use `authClient.isAuthenticated()` to check if user is currently logged in
 
 ## Troubleshooting
 
