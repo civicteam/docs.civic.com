@@ -7,16 +7,31 @@ public: true
 
 <AccordionGroup>
   <Accordion title="How do I get a new Client ID?">
-    To obtain a new Client ID, sign up at [auth.civic.com](https://auth.civic.com/) to register your application. You can find your unique Client ID to use when integrating our API. Civic Auth uses Proof Key for Code Exchange (PKCE) to securely authenticate requests, so a client secret is not required for frontend integrations.
+    To obtain a new Client ID, sign up at [auth.civic.com](https://auth.civic.com/) to register your application. You can find your unique Client ID to use when integrating our API. 
+
+    **For most applications:** Civic Auth uses PKCE (Proof Key for Code Exchange) by default, so no client secret is required for frontend integrations.
+
+    **For server-side applications:** If you need client secret authentication for backend services, see our [Authentication Flows guide](/overview/authentication-flows) for details on when and how to request client secret support.
 
     <Frame>
       <img src="/images/auth/image-1.png"/>
     </Frame>
 
   </Accordion>
+  <Accordion title="Do I need a client secret?">
+    **Most applications don't need client secrets.** Civic Auth uses PKCE (Proof Key for Code Exchange) by default, which is more secure for client-side applications and doesn't require managing sensitive credentials.
+
+    **You might need a client secret if:**
+    - Building pure server-side applications
+    - Implementing backend services that authenticate directly
+    - Integrating with legacy OAuth systems that require client secrets
+    - Need server-to-server authentication
+
+    Client secrets require special configuration and are not automatically available. See our [Authentication Flows guide](/overview/authentication-flows) to understand both approaches and how to request client secret support if needed.
+  </Accordion>
   <Accordion title="How do I terminate keys?">
 
-  Contact our support team via [Discord](https://discord.com/invite/MWmhXauJw8/) for assistance in managing or revoking keys associated with your application.
+  Contact our support team at [support@civic.com](mailto:support@civic.com) for assistance in managing or revoking keys associated with your application.
 
   </Accordion>
   <Accordion title="How do I add more authentication methods?">
@@ -24,7 +39,7 @@ public: true
 
   Civic Auth supports Google as an authentication provider. However, Civic is working to add support for other major OIDC-compliant providers, such as Microsoft and Apple. Once available, these can be configured within your integration setup.
 
-  Contact our team via [Discord](https://discord.com/invite/MWmhXauJw8/) and let us know which provider you’d like to see added.
+  Contact our team at [support@civic.com](mailto:support@civic.com) and let us know which provider you'd like to see added.
 
   </Accordion>
   <Accordion title="Can my users connect their existing self-managed wallets?">
@@ -46,7 +61,7 @@ public: true
   </Accordion>
   <Accordion title="How are these wallets managed?">
 
-    Civic Auth wallets are provided through a partnership with metakeep.xyz. These wallets are Externally Owned Accounts (EOAs), which are authenticated by a private key that is held by the Metakeep infrastructure. They are linked to a user’s email address. Users verify ownership of their email by entering a unique email code. Wallet management occurs securely through client-side encryption using keys from our wallet provider.
+    Civic Auth wallets are provided through a partnership with metakeep.xyz. These wallets are Externally Owned Accounts (EOAs), which are authenticated by a private key that is held by the Metakeep infrastructure. They are linked to a user's email address. Users verify ownership of their email by entering a unique email code. Wallet management occurs securely through client-side encryption using keys from our wallet provider.
 
   </Accordion>
   <Accordion title="Does Civic own these wallets?">
@@ -61,7 +76,7 @@ public: true
   </Accordion>
   <Accordion title="What happens if users lose their SSO access?">
 
-    If a user loses access to their SSO (e.g., Google login), Civic Auth’s wallet provider includes a recovery feature to restore wallet access, which works independently of Civic’s infrastructure. Recovery is managed through the provider. Contact our team via [Discord](https://discord.com/invite/MWmhXauJw8/) so that we can initiate the wallet recovery process.
+    If a user loses access to their SSO (e.g., Google login), Civic Auth's wallet provider includes a recovery feature to restore wallet access, which works independently of Civic's infrastructure. Recovery is managed through the provider. Contact our team at [support@civic.com](mailto:support@civic.com) so that we can initiate the wallet recovery process.
 
   </Accordion>
   <Accordion title="Can I test Civic Auth before going live in production?">
@@ -93,11 +108,11 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
     Check your console and network tabs for errors.
   </Step>
   <Step>
-    If you’re using an application that's already in production, ensure that all domains or redirect URLs are correctly registered in your app’s configuration. Civic Auth will only redirect to registered domains after login or logout.
+    If you're using an application that's already in production, ensure that all domains or redirect URLs are correctly registered in your app's configuration. Civic Auth will only redirect to registered domains after login or logout.
   </Step>
 </Steps>
 
-  If you’ve completed the steps above and still encounter issues, create a ticket on our [Discord](https://discord.com/invite/MWmhXauJw8/) and provide the following details to help us investigate further:
+  If you've completed the steps above and still encounter issues, contact us at [support@civic.com](mailto:support@civic.com) and provide the following details to help us investigate further:
 
   * A clear description of exactly what you're trying to achieve and the issue you're encountering in doing so
 
@@ -112,17 +127,17 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
   </Accordion>
   <Accordion title="How do I report bugs or request new features?">
 
-  Developers can report bugs or suggest new features via [Discord](https://discord.com/invite/MWmhXauJw8/). Provide as much detail as possible, including logs, screenshots, and steps to reproduce the issue.
+  Developers can report bugs or suggest new features by contacting [support@civic.com](mailto:support@civic.com). Provide as much detail as possible, including logs, screenshots, and steps to reproduce the issue.
 
   </Accordion>
   <Accordion title="How do I invite team members?">
 
-    While Civic Auth doesn’t have this feature yet, we are actively working to include it in a future version of Civic Auth.
+    While Civic Auth doesn't have this feature yet, we are actively working to include it in a future version of Civic Auth.
 
   </Accordion>
   <Accordion title="How do I customize my logo?">
 
-    While Civic Auth doesn’t have this feature yet, we are actively working to include it in a future version of Civic Auth.
+    While Civic Auth doesn't have this feature yet, we are actively working to include it in a future version of Civic Auth.
 
   </Accordion>
   <Accordion title="Can I restrict certain wallets or block specific users?">
