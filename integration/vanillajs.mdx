@@ -29,24 +29,57 @@ cd my-civic-app
 npm install
 npm install @civic/auth
 ```
-
 </Tip>
 
 ### Simple Setup
 
+1. **HTML**:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My App with Civic Auth</title>
+  </head>
+  <body>
+    <h1>My App</h1>
+
+    <button id="loginButton">Sign In</button>
+    <button id="logoutButton">Sign Out</button>
+
+    <!-- Only needed for embedded display mode -->
+    <div id="authContainer"></div>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
+```
+
+2. **JavaScript** (`main.js`):
+
 ```javascript
 import { CivicAuth } from "@civic/auth/vanillajs";
 
-// Initialize and start authentication
+// Initialize auth directly with top-level await
 const authClient = await CivicAuth.create({
-  clientId: "YOUR_CLIENT_ID",
+    clientId: "YOUR_CLIENT_ID",
 });
 
 // Sign in
-const { user } = await authClient.startAuthentication();
+document.getElementById("loginButton").addEventListener("click", async () => {
+    try {
+        const { user } = await authClient.startAuthentication();
+    } catch (error) {
+        console.error("Authentication failed:", error);
+    }
+});
 
 // Sign out
-await authClient.logout();
+document.getElementById("logoutButton").addEventListener("click", async () => {
+    await authClient?.logout();
+});
 ```
 
 That's it\! Replace `YOUR_CLIENT_ID` with your actual client ID and you're done.
@@ -60,7 +93,6 @@ import { CivicAuth } from "@civic/auth/vanillajs";
 
 // Configure client to use your backend for login URLs
 const authClient = await CivicAuth.create({
-  clientId: "YOUR_CLIENT_ID",
   loginUrl: "https://your-backend.com/auth/login-url", // The magic!
 });
 
@@ -68,18 +100,41 @@ const authClient = await CivicAuth.create({
 const { user } = await authClient.startAuthentication();
 ```
 
-See the [Express integration guide](/express#frontend-integration-vanilla-javascript) for complete setup.
 
 ### Configuration Options
 
 | Field                    | Required | Default                          | Description                                                                 |
 | ------------------------ | -------- | -------------------------------- | --------------------------------------------------------------------------- |
 | `clientId`               | Yes      | -                                | Your Civic Auth client ID from [auth.civic.com](https://auth.civic.com)     |
-| `loginUrl`               | No       | -                                | URL to get login URLs from your backend (for backend integration)           |
 | `targetContainerElement` | No       | -                                | DOM element where embedded iframe will be rendered                          |
 | `redirectUrl`            | No       | Current URL                      | OAuth redirect URL after authentication                                     |
 | `displayMode`            | No       | `modal`                          | How the auth UI is displayed: `embedded`, `modal`, `redirect`, or `new_tab` |
 | `scopes`                 | No       | `['openid', 'profile', 'email']` | OAuth scopes to request                                                     |
+
+### Display Modes
+
+The `displayMode` option controls how the authentication UI is presented:
+
+- **`embedded`** (default): The auth UI loads in an iframe within your specified container element
+- **`modal`**: The auth UI opens in a modal overlay on top of your current page
+- **`redirect`**: Full page navigation to the Civic auth server and back to your site
+- **`new_tab`**: Opens auth flow in a new browser tab/popup window
+
+### Logout
+
+Logging out is very simple.
+
+```javascript
+const logout = async () => {
+  await authClient?.logout();
+  // ...
+};
+```
+
+**User object access:**
+
+- Use `authClient.getCurrentUser()` to retrieve current user information before logout
+- Use `authClient.isAuthenticated()` to check if user is currently logged in
 
 ## Troubleshooting
 
@@ -88,7 +143,6 @@ See the [Express integration guide](/express#frontend-integration-vanilla-javasc
 If you encounter an error like `Failed to resolve module specifier "@civic/auth/vanillajs"`, this is typically caused by a corrupted module cache or installation issue.
 
 **Solution:**
-
 ```bash
 # Clear node_modules and package-lock.json, then reinstall
 rm -rf node_modules package-lock.json
@@ -96,7 +150,6 @@ npm install
 ```
 
 **For Vite users:**
-
 ```bash
 # Also clear Vite's cache
 rm -rf node_modules package-lock.json .vite

@@ -39,7 +39,6 @@ import { CivicAuthServer } from "@civic/auth/server";
 
 const app = express();
 
-// REQUIRED: Cookie parser middleware for session management
 app.use(cookieParser());
 
 // 🚀 ONE LINE SETUP: Everything is handled automatically!
@@ -48,26 +47,21 @@ app.use(
     clientId: process.env.CLIENT_ID!,
     redirectUrl: `http://localhost:3020/auth/callback`,
     postLogoutRedirectUrl: `http://localhost:3020/`,
-
-    // Optional: Redirect SPAs back to frontend after auth
-    frontendRedirectUrl: "http://localhost:5173",
-
-    // Optional: OAuth server (defaults to production)
-    oauthServer: process.env.OAUTH_SERVER ?? "https://auth.civic.com/oauth",
-
-    // Optional: CORS is auto-configured from your URLs, but you can customize
-    // cors: {
-    //   origin: ["https://additional-domain.com"],
-    //   credentials: true,
-    // },
-
-    // Optional: Logging configuration
-    logger: {
-      enabled: true, // Set to false to disable all logging
-    },
   }),
 );
 ```
+
+### Configuration Options
+
+| Field                   | Required | Default                        | Description                                                             |
+| ----------------------- | -------- | ------------------------------ | ----------------------------------------------------------------------- |
+| `clientId`              | Yes      | -                              | Your Civic Auth client ID from [auth.civic.com](https://auth.civic.com) |
+| `redirectUrl`           | Yes      | -                              | OAuth redirect URL after authentication                                 |
+| `postLogoutRedirectUrl` | Yes      | -                              | URL to redirect to after logout                                         |
+| `frontendRedirectUrl`   | No       | -                              | Redirect SPAs back to frontend after auth                               |
+| `oauthServer`           | No       | `https://auth.civic.com/oauth` | OAuth server URL (for development/testing)                              |
+| `cors`                  | No       | Auto-configured                | CORS settings (see Advanced Configuration)                              |
+| `logger`                | No       | `{ enabled: true }`            | Logging configuration                                                   |
 
 ## 3. Add Authentication Middleware
 
@@ -132,117 +126,27 @@ app.get("/", async (req: RequestWithAuth, res: Response) => {
 
 ## 6. Frontend Integration (Vanilla JavaScript)
 
-Your Express backend works seamlessly with vanilla JavaScript frontends. Instead of using the `@civic/auth/vanillajs` client-side approach, you can make HTTP calls to your backend's automatic auth routes:
-
-### HTML Setup
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My App with Civic Auth</title>
-  </head>
-  <body>
-    <div id="app">
-      <button id="loginButton">Sign In</button>
-      <button id="logoutButton">Sign Out</button>
-      <div id="userInfo"></div>
-    </div>
-    <script src="main.js"></script>
-  </body>
-</html>
-```
-
-### JavaScript Frontend
+Use the `@civic/auth/vanillajs` client with your backend:
 
 ```javascript
-// main.js
-const API_BASE = "http://localhost:3020"; // Your Express server URL
+import { CivicAuth } from "@civic/auth/vanillajs";
 
-// Check if user is logged in on page load
-window.addEventListener("DOMContentLoaded", async () => {
-  await checkAuthStatus();
-  setupEventListeners();
+// Configure client to use your backend for login URLs
+const authClient = await CivicAuth.create({
+  loginUrl: "http://localhost:3020/auth/login-url", // Your backend endpoint
 });
 
-async function checkAuthStatus() {
-  try {
-    const response = await fetch(`${API_BASE}/auth/user`, {
-      credentials: "include", // Important: Include cookies
-    });
-
-    if (response.ok) {
-      const user = await response.json();
-      showUserInfo(user);
-    } else {
-      showLoginButton();
-    }
-  } catch (error) {
-    console.error("Auth check failed:", error);
-    showLoginButton();
-  }
-}
-
-function setupEventListeners() {
-  document.getElementById("loginButton").addEventListener("click", login);
-  document.getElementById("logoutButton").addEventListener("click", logout);
-}
-
-async function login() {
-  // Redirect to your backend's login endpoint
-  window.location.href = `${API_BASE}/auth/login`;
-}
-
-async function logout() {
-  // Redirect to your backend's logout endpoint
-  window.location.href = `${API_BASE}/auth/logout`;
-}
-
-function showUserInfo(user) {
-  document.getElementById("loginButton").style.display = "none";
-  document.getElementById("logoutButton").style.display = "block";
-  document.getElementById("userInfo").innerHTML = `
-        <h3>Welcome, ${user.name || user.email}!</h3>
-        <p>You are logged in</p>
-    `;
-}
-
-function showLoginButton() {
-  document.getElementById("loginButton").style.display = "block";
-  document.getElementById("logoutButton").style.display = "none";
-  document.getElementById("userInfo").innerHTML = "";
-}
+// Now authentication works through your backend
+const { user } = await authClient.startAuthentication();
 ```
 
-### Advanced: SPA Integration
-
-For single-page applications, you can use the `frontendRedirectUrl` option to automatically redirect back to your frontend after authentication:
+Add this endpoint to expose login URLs:
 
 ```ts
-// In your Express setup
-app.use(
-  CivicAuthServer({
-    clientId: process.env.CLIENT_ID!,
-    redirectUrl: `http://localhost:3020/auth/callback`,
-    postLogoutRedirectUrl: `http://localhost:3020/`,
-    frontendRedirectUrl: "http://localhost:5173", // Your frontend URL
-  }),
-);
-```
-
-Then in your frontend, handle the redirect:
-
-```javascript
-// Check for auth completion (when redirected back from backend)
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get("auth") === "success") {
-  // Authentication successful, check user status
-  await checkAuthStatus();
-  // Clean up URL
-  window.history.replaceState({}, document.title, window.location.pathname);
-}
+app.get("/auth/login-url", async (req: RequestWithAuth, res: Response) => {
+  const loginUrl = await req.civicAuth!.buildLoginUrl();
+  res.json({ loginUrl: loginUrl.toString() });
+});
 ```
 
 ## Manual Setup (Advanced)
@@ -315,6 +219,76 @@ app.get("/auth/callback", async (req: Request, res: Response) => {
 ```
 
 </details>
+
+## Advanced Configuration
+
+### Custom Route Handlers
+
+You can override any of the automatic auth routes by providing custom implementations:
+
+```ts
+app.use(
+  CivicAuthServer(config, {
+    routes: {
+      login: async (req, res) => {
+        // Custom login logic
+        const url = await req.civicAuth!.buildLoginUrl();
+        res.redirect(url.toString());
+      },
+      callback: async (req, res) => {
+        // Custom callback logic
+        const { code, state } = req.query;
+        await req.civicAuth!.handleCallback({ code, state, req });
+        res.redirect("/dashboard");
+      },
+      logout: async (req, res) => {
+        // Custom logout logic
+        const url = await req.civicAuth!.buildLogoutRedirectUrl();
+        res.redirect(url.toString());
+      },
+      user: async (req, res) => {
+        // Custom user endpoint logic
+        const user = await req.civicAuth!.getUser();
+        res.json({ user, timestamp: Date.now() });
+      },
+      refresh: async (req, res) => {
+        // Custom refresh logic
+        await req.civicAuth!.refreshTokens();
+        res.json({ success: true });
+      },
+    },
+  }),
+);
+```
+
+Available route overrides:
+
+- `login` - `/auth/login`
+- `callback` - `/auth/callback`
+- `logout` - `/auth/logout`
+- `logoutCallback` - `/auth/logoutcallback`
+- `user` - `/auth/user`
+- `refresh` - `/auth/refresh`
+
+### CORS Options
+
+The `cors` field accepts these options:
+
+| Field         | Default                             | Description                                                 |
+| ------------- | ----------------------------------- | ----------------------------------------------------------- |
+| `origin`      | Auto-detected from your URLs        | Array of allowed origins, merged with auto-detected origins |
+| `credentials` | `true`                              | Include credentials (cookies) in CORS requests              |
+| `methods`     | `['GET', 'POST', 'PUT', 'DELETE']`  | Allowed HTTP methods                                        |
+| `headers`     | `['Content-Type', 'Authorization']` | Allowed request headers                                     |
+
+Example:
+
+```ts
+cors: {
+  origin: ["https://additional-domain.com"], // Merged with auto-detected
+  credentials: true,
+}
+```
 
 ## PKCE and Client Secrets
 
