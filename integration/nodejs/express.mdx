@@ -44,7 +44,7 @@ app.use(cookieParser());
 // 🚀 ONE LINE SETUP: Everything is handled automatically!
 app.use(
   CivicAuthServer({
-    clientId: "YOUR CLIENT ID",
+    clientId: process.env.CLIENT_ID!,
     redirectUrl: `http://localhost:3020/auth/callback`,
     postLogoutRedirectUrl: `http://localhost:3020/`,
   }),
@@ -62,6 +62,13 @@ app.use(
 | `oauthServer`           | No       | `https://auth.civic.com/oauth` | OAuth server URL (for development/testing)                              |
 | `cors`                  | No       | Auto-configured                | CORS settings (see Advanced Configuration)                              |
 | `logger`                | No       | `{ enabled: true }`            | Logging configuration                                                   |
+
+### Options (Second Parameter)
+
+| Field     | Required | Default | Description                                                 |
+| --------- | -------- | ------- | ----------------------------------------------------------- |
+| `routes`  | No       | -       | Custom route handler overrides (see Advanced Configuration) |
+| `storage` | No       | -       | Custom storage class or factory function                    |
 
 ## 3. Add Authentication Middleware
 
@@ -158,7 +165,7 @@ app.get("/auth/login-url", async (req: RequestWithAuth, res: Response) => {
 
 ```ts
 const config = {
-  clientId: "YOUR CLIENT ID",
+  clientId: process.env.CLIENT_ID!,
   redirectUrl: "http://localhost:3000/auth/callback",
   postLogoutRedirectUrl: "http://localhost:3000/",
 };
@@ -269,6 +276,75 @@ Available route overrides:
 - `logoutCallback` - `/auth/logoutcallback`
 - `user` - `/auth/user`
 - `refresh` - `/auth/refresh`
+
+### Cookie Storage Interface
+
+The Express middleware automatically creates a cookie storage implementation that handles session management. Here's how it works:
+
+```ts
+// Auto-configured cookie settings
+class ExpressCookieStorage extends CookieStorage {
+  constructor(req: Request, res: Response) {
+    // Detects HTTPS vs HTTP for security
+    const isHttps = req.secure || req.headers["x-forwarded-proto"] === "https";
+
+    super({
+      secure: isHttps, // Secure cookies for HTTPS
+      sameSite: isHttps ? "none" : "lax", // Cross-origin for HTTPS
+      httpOnly: false, // Allow frontend access
+      path: "/", // Available for all paths
+    });
+  }
+
+  async get(key: string): Promise<string | null> {
+    return this.req.cookies[key] ?? null;
+  }
+
+  async set(key: string, value: string): Promise<void> {
+    this.res.cookie(key, value, this.settings);
+    this.req.cookies[key] = value; // Immediate access
+  }
+
+  async delete(key: string): Promise<void> {
+    this.res.clearCookie(key);
+  }
+}
+```
+
+**Custom Cookie Storage:**
+
+You can provide your own storage implementation in three ways:
+
+```ts
+// Option 1: Pass storage class directly (recommended)
+app.use(
+  CivicAuthServer(config, {
+    storage: YourCustomCookieStorage, // Will be instantiated with (req, res)
+  }),
+);
+```
+
+```ts
+// Option 2: Pass a factory function
+app.use(
+  CivicAuthServer(config, {
+    storage: (req, res) => new YourCustomCookieStorage(req, res),
+  }),
+);
+```
+
+```ts
+// Option 3: Set up in middleware (backwards compatibility)
+app.use((req, res, next) => {
+  req.storage = new YourCustomCookieStorage(req, res);
+  req.civicAuth = new CivicAuth(req.storage, config);
+  next();
+});
+
+app.use(CivicAuthServer(config)); // Will use your custom storage
+```
+
+The middleware automatically detects existing `req.storage` and `req.civicAuth` and uses them instead of creating defaults.
 
 ### CORS Options
 
