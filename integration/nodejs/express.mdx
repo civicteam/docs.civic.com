@@ -148,8 +148,30 @@ app.get('/admin/hello', async (req: Request, res: Response) => {
 });
 ```
 
-## PKCE and Client Secrets
+## Authentication Flows
 
-Civic Auth uses [**PKCE** (Proof Key for Code Exchange)](https://oauth.net/2/pkce/), to protect users and clients from unauthorized access to user information. This, alongside domain registration for apps in production environments, mean that you don't need to provide a client secret in your backend.
+By default, Civic Auth uses [**PKCE** (Proof Key for Code Exchange)](https://oauth.net/2/pkce/) for secure authentication without requiring client secrets. This approach is recommended for most applications.
 
-When using the Civic Auth SDK, PKCE is handled entirely by the library.
+<Info>
+**Need client secret authentication?** Civic Auth also supports traditional OAuth 2.0 flows with client secrets for server-side applications. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison and how to request client secret support.
+</Info>
+
+### PKCE Flow (Default)
+The examples above use PKCE, which is handled entirely by the Civic Auth SDK. No additional configuration needed - just provide your Client ID.
+
+### Client Secret Flow (Optional)
+For server-side applications requiring client secrets, the same code patterns apply with additional configuration:
+
+```typescript
+const config = {
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
+  pkce: false, // Disable PKCE when using client secrets
+  redirectUrl: 'http://localhost:3000/auth/callback',
+  postLogoutRedirectUrl: 'http://localhost:3000/'
+};
+```
+
+<Warning>
+Client secrets require special setup and are not automatically available. Contact [Civic support](mailto:support@civic.com) to discuss your use case and get client secret access.
+</Warning>
