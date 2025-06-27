@@ -84,6 +84,23 @@ document.getElementById("logoutButton").addEventListener("click", async () => {
 
 That's it\! Replace `YOUR_CLIENT_ID` with your actual client ID and you're done.
 
+## Alternative: Backend Integration
+
+If you prefer backend session management, you can configure the client to get login URLs from your Express backend. The magic is the `loginUrl` option:
+
+```javascript
+import { CivicAuth } from "@civic/auth/vanillajs";
+
+// Configure client to use your backend for login URLs
+const authClient = await CivicAuth.create({
+  loginUrl: "https://your-backend.com/auth/login-url", // The magic!
+});
+
+// Now authentication works through your backend
+const { user } = await authClient.startAuthentication();
+```
+
+
 ### Configuration Options
 
 | Field                    | Required | Default                          | Description                                                                 |
