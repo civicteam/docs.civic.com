@@ -9,129 +9,239 @@ public: true
 
 <CodeGroup>
   ```npm npm
-  npm install @civic/auth cookie-parser
+  npm install @civic/auth cookie-parser cors
   ```
 
 ```yarn yarn
-yarn add @civic/auth cookie-parser
+yarn add @civic/auth cookie-parser cors
 ```
 
 ```pnpm pnpm
-pnpm install @civic/auth cookie-parser
+pnpm install @civic/auth cookie-parser cors
 ```
 
 ```bun bun
-bun add @civic/auth cookie-parser
+bun add @civic/auth cookie-parser cors
 ```
 
 </CodeGroup>
 
-## 2. Setup with CivicAuthServer (Recommended)
+## 2. Configure your App
 
-🚀 **NEW SIMPLIFIED APPROACH**: The easiest way to set up Civic Auth with Express is using the `CivicAuthServer` middleware that automatically handles all auth routes, storage, and CORS configuration.
-
-This approach eliminates the need for manual endpoint creation, cookie storage setup, and CORS configuration. The middleware automatically creates all necessary auth routes and handles session management, making it perfect for both traditional server-rendered apps and modern SPA architectures.
+### Minimal Configuration
 
 ```ts
-import express from "express";
-import cookieParser from "cookie-parser";
-import { CivicAuthServer } from "@civic/auth/server";
+const config = {
+  clientId: // Client ID from auth.civic.com
+  redirectUrl: 'https://your-backend.com/auth/callback' // change to your domain when deploying
+};
+```
 
-const app = express();
+### Full Configuration (with logout and SPA support)
 
-app.use(cookieParser());
+```ts
+const config = {
+  clientId: // Client ID from auth.civic.com
+  redirectUrl: 'https://your-backend.com/auth/callback', // OAuth callback URL
+  postLogoutRedirectUrl: 'https://your-frontend.com/', // Where to redirect after logout
+  loginSuccessUrl: 'https://your-frontend.com/', // Optional: redirect SPAs back to frontend after auth
+  oauthServer: 'https://auth.civic.com/oauth' // Optional: OAuth server URL (for development/testing)
+};
+```
 
-// 🚀 ONE LINE SETUP: Everything is handled automatically!
+Note: All URLs must be absolute URLs.
+
+## 3. Set up CORS (for frontend integration)
+
+If your frontend runs on a different domain/port, configure CORS to enable cross-origin cookie sharing:
+
+```ts
+import cors from "cors";
+
 app.use(
-  CivicAuthServer({
-    clientId: process.env.CLIENT_ID!,
-    redirectUrl: `http://localhost:3020/auth/callback`,
-    postLogoutRedirectUrl: `http://localhost:3020/`,
+  cors({
+    origin: [
+      "http://localhost:5173", // frontend (local development)
+      "http://localhost:3020", // backend (local development)
+      "https://abc123.ngrok.io", // ngrok tunnel (for cross-origin testing)
+      "https://your-frontend.com", // production frontend
+    ],
+    credentials: true, // Allow cookies to be sent cross-origin
+    optionsSuccessStatus: 200,
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+    exposedHeaders: ["Set-Cookie"],
   }),
 );
 ```
 
-### Configuration Options
+**Important:** Cross-origin cookies (different ports/domains) require HTTPS to work properly. For local development with separate frontend/backend ports, use [ngrok](https://ngrok.com/) to create HTTPS tunnels:
 
-| Field                   | Required | Default                        | Description                                                             |
-| ----------------------- | -------- | ------------------------------ | ----------------------------------------------------------------------- |
-| `clientId`              | Yes      | -                              | Your Civic Auth client ID from [auth.civic.com](https://auth.civic.com) |
-| `redirectUrl`           | Yes      | -                              | OAuth redirect URL after authentication                                 |
-| `postLogoutRedirectUrl` | Yes      | -                              | URL to redirect to after logout                                         |
-| `frontendRedirectUrl`   | No       | -                              | Redirect SPAs back to frontend after auth                               |
-| `oauthServer`           | No       | `https://auth.civic.com/oauth` | OAuth server URL (for development/testing)                              |
-| `cors`                  | No       | Auto-configured                | CORS settings (see Advanced Configuration)                              |
-| `logger`                | No       | `{ enabled: true }`            | Logging configuration                                                   |
+```bash
+# Terminal 1: Start your backend
+npm start
 
-### Options (Second Parameter)
+# Terminal 2: Create HTTPS tunnel to your backend
+ngrok http 3020
+# Use the https://abc123.ngrok.io URL as your backend URL
 
-| Field     | Required | Default | Description                                                 |
-| --------- | -------- | ------- | ----------------------------------------------------------- |
-| `routes`  | No       | -       | Custom route handler overrides (see Advanced Configuration) |
-| `storage` | No       | -       | Custom storage class or factory function                    |
+# Terminal 3: Create HTTPS tunnel to your frontend
+ngrok http 5173
+# Use the https://xyz456.ngrok.io URL as your frontend URL
+```
 
-## 3. Add Authentication Middleware
+The cookie storage automatically detects HTTPS and sets `secure: true` + `sameSite: "none"` for cross-origin compatibility. Without HTTPS, cross-origin cookies will not be saved by the browser.
 
-Protect routes that require login:
+## 4. Set up Cookies
+
+Civic Auth uses cookies for storing the login state by default
 
 ```ts
-import { Request, Response, NextFunction } from "express";
-import type { CivicAuth, SessionStorage } from "@civic/auth/server";
+import express, { Request, Response } from "express";
+import { CookieStorage, CivicAuth } from "@civic/auth/server";
+import cookieParser from "cookie-parser";
 
-// Type for requests with auth properties (auto-added by CivicAuthServer)
-type RequestWithAuth = Request & {
-  storage?: SessionStorage;
-  civicAuth?: CivicAuth;
-};
+app.use(cookieParser());
 
-const authMiddleware = async (req: RequestWithAuth, res: Response, next: NextFunction) => {
-  if (!(await req.civicAuth!.isLoggedIn())) {
-    return res.status(401).send("Unauthorized");
+// Tell Civic how to get cookies from your node server
+class ExpressCookieStorage extends CookieStorage {
+  constructor(
+    private req: Request,
+    private res: Response,
+  ) {
+    // Detect if we're running on HTTPS (production) or HTTP (localhost)
+    const isHttps = req.secure || req.headers["x-forwarded-proto"] === "https";
+
+    super({
+      secure: isHttps, // Use secure cookies for HTTPS
+      sameSite: isHttps ? "none" : "lax", // none for HTTPS cross-origin, lax for localhost
+      httpOnly: false, // Allow frontend JavaScript to access cookies
+      path: "/", // Ensure cookies are available for all paths
+    });
   }
+
+  async get(key: string): Promise<string | null> {
+    return Promise.resolve(this.req.cookies[key] ?? null);
+  }
+
+  async set(key: string, value: string): Promise<void> {
+    this.res.cookie(key, value, this.settings);
+    this.req.cookies[key] = value; // Store for immediate access within same request
+  }
+
+  async delete(key: string): Promise<void> {
+    this.res.clearCookie(key);
+  }
+}
+
+app.use((req, res, next) => {
+  // add an instance of the cookie storage and civicAuth api to each request
+  req.storage = new ExpressCookieStorage(req, res);
+  req.civicAuth = new CivicAuth(req.storage, config);
   next();
-};
-
-// Apply authentication middleware to protected routes
-app.use("/admin", authMiddleware);
-```
-
-## 4. Use Protected Routes
-
-Access user information in your protected routes:
-
-```ts
-app.get("/admin/hello", async (req: RequestWithAuth, res: Response) => {
-  const user = await req.civicAuth!.getUser();
-  res.send(`Hello, ${user?.name || user?.email || "User"}!`);
-});
-
-// Optional: Manual token refresh
-app.get("/admin/refresh", async (req: RequestWithAuth, res: Response) => {
-  await req.civicAuth!.refreshTokens();
-  res.send("Tokens refreshed");
 });
 ```
 
-## 5. Automatic Routes
+## 5. Create a Login Endpoint
 
-When using `CivicAuthServer`, these routes are automatically created for you:
-
-- `GET /auth/login` - Redirects to Civic Auth login
-- `GET /auth/callback` - Handles OAuth callback
-- `GET /auth/logout` - Handles logout and redirects to `postLogoutRedirectUrl`
-- `GET /auth/user` - Returns current user info (if logged in)
-- `POST /auth/refresh` - Refreshes tokens
-
-You can trigger login from any route:
+This endpoint will handle login requests, build the Civic login URL and redirect the user to it.
 
 ```ts
-app.get("/", async (req: RequestWithAuth, res: Response) => {
-  const url = await req.civicAuth!.buildLoginUrl();
+import { buildLoginUrl } from "@civic/auth/server";
+
+app.get("/", async (req: Request, res: Response) => {
+  const url = await req.civicAuth.buildLoginUrl();
+
   res.redirect(url.toString());
 });
 ```
 
-## 6. Frontend Integration (Vanilla JavaScript)
+## 6. Create a Logout Endpoint
+
+This endpoint will handle logout requests, build the Civic logout URL and redirect the user to it.
+
+```ts
+import { buildLogoutRedirectUrl } from "@civic/auth/server";
+
+app.get("/auth/logout", async (req: Request, res: Response) => {
+  try {
+    const urlString = await req.civicAuth.buildLogoutRedirectUrl();
+    await req.civicAuth.clearTokens();
+
+    // Convert to URL object to modify parameters
+    const url = new URL(urlString);
+    // Remove the state parameter to avoid it showing up in the frontend URL
+    url.searchParams.delete("state");
+
+    res.redirect(url.toString());
+  } catch (error) {
+    console.error("Logout error:", error);
+    // If logout URL generation fails, clear tokens and redirect to home
+    await req.civicAuth.clearTokens();
+    res.redirect("/");
+  }
+});
+```
+
+## 7. Create the Callback Endpoint
+
+This endpoint handles successful logins and creates the session
+
+```ts
+app.get("/auth/callback", async (req: Request, res: Response) => {
+  const { code, state } = req.query as { code: string; state: string };
+
+  try {
+    const result = await req.civicAuth.handleCallback({
+      code,
+      state,
+      req,
+    });
+
+    if (result.redirectTo) {
+      return res.redirect(result.redirectTo);
+    }
+
+    if (result.content) {
+      return res.send(result.content);
+    }
+
+    res.status(500).json({ error: "Internal server error" });
+  } catch (error) {
+    res.redirect("/?error=auth_failed");
+  }
+});
+```
+
+## 8. Add Middleware
+
+Middleware protects routes that require login.
+
+```ts
+import { isLoggedIn } from "@civic/auth/server";
+
+const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  if (!(await req.civicAuth.isLoggedIn())) return res.status(401).send("Unauthorized");
+  next();
+};
+
+// Apply authentication middleware to any routes that need it
+app.use("/admin", authMiddleware);
+```
+
+## 9. Use the Session
+
+If needed, get the logged-in user information.
+
+```ts
+import { user } from "@civic/auth/server";
+
+app.get("/admin/hello", async (req: Request, res: Response) => {
+  const user = await req.civicAuth.getUser();
+  res.send(`Hello, ${user?.name}!`);
+});
+```
+
+## 10. Frontend Integration (Vanilla JavaScript)
 
 Use the `@civic/auth/vanillajs` client with your backend:
 
@@ -140,7 +250,7 @@ import { CivicAuth } from "@civic/auth/vanillajs";
 
 // Configure client to use your backend for login URLs
 const authClient = await CivicAuth.create({
-  loginUrl: "http://localhost:3020/auth/login-url", // Your backend endpoint
+  loginUrl: "https://your-backend.com/auth/login-url", // Your backend endpoint
 });
 
 // Now authentication works through your backend
@@ -150,220 +260,10 @@ const { user } = await authClient.startAuthentication();
 Add this endpoint to expose login URLs:
 
 ```ts
-app.get("/auth/login-url", async (req: RequestWithAuth, res: Response) => {
-  const loginUrl = await req.civicAuth!.buildLoginUrl();
+app.get("/auth/login-url", async (req: Request, res: Response) => {
+  const loginUrl = await req.civicAuth.buildLoginUrl();
   res.json({ loginUrl: loginUrl.toString() });
 });
-```
-
-## Manual Setup (Advanced)
-
-<details>
-<summary>If you need custom storage or more control, you can still set up Civic Auth manually:</summary>
-
-### Configure your App
-
-```ts
-const config = {
-  clientId: process.env.CLIENT_ID!,
-  redirectUrl: "http://localhost:3000/auth/callback",
-  postLogoutRedirectUrl: "http://localhost:3000/",
-};
-```
-
-### Set up Custom Storage
-
-```ts
-import { CookieStorage, CivicAuth } from "@civic/auth/server";
-
-class ExpressCookieStorage extends CookieStorage {
-  constructor(
-    private req: Request,
-    private res: Response,
-  ) {
-    super({
-      secure: false,
-    });
-  }
-
-  async get(key: string): Promise<string | null> {
-    return Promise.resolve(this.req.cookies[key] ?? null);
-  }
-
-  async set(key: string, value: string): Promise<void> {
-    await this.res.cookie(key, value, this.settings);
-  }
-}
-
-app.use((req, res, next) => {
-  req.storage = new ExpressCookieStorage(req, res);
-  req.civicAuth = new CivicAuth(req.storage, config);
-  next();
-});
-```
-
-### Create Manual Endpoints
-
-```ts
-// Login endpoint
-app.get("/auth/login", async (req: Request, res: Response) => {
-  const url = await req.civicAuth.buildLoginUrl();
-  res.redirect(url.toString());
-});
-
-// Logout endpoint
-app.get("/auth/logout", async (req: Request, res: Response) => {
-  const url = await req.civicAuth.buildLogoutRedirectUrl();
-  res.redirect(url.toString());
-});
-
-// Callback endpoint
-app.get("/auth/callback", async (req: Request, res: Response) => {
-  const { code, state } = req.query as { code: string; state: string };
-  await req.civicAuth.resolveOAuthAccessCode(code, state);
-  res.redirect("/admin/hello");
-});
-```
-
-</details>
-
-## Advanced Configuration
-
-### Custom Route Handlers
-
-You can override any of the automatic auth routes by providing custom implementations:
-
-```ts
-app.use(
-  CivicAuthServer(config, {
-    routes: {
-      login: async (req, res) => {
-        // Custom login logic
-        const url = await req.civicAuth!.buildLoginUrl();
-        res.redirect(url.toString());
-      },
-      callback: async (req, res) => {
-        // Custom callback logic
-        const { code, state } = req.query;
-        await req.civicAuth!.handleCallback({ code, state, req });
-        res.redirect("/dashboard");
-      },
-      logout: async (req, res) => {
-        // Custom logout logic
-        const url = await req.civicAuth!.buildLogoutRedirectUrl();
-        res.redirect(url.toString());
-      },
-      user: async (req, res) => {
-        // Custom user endpoint logic
-        const user = await req.civicAuth!.getUser();
-        res.json({ user, timestamp: Date.now() });
-      },
-      refresh: async (req, res) => {
-        // Custom refresh logic
-        await req.civicAuth!.refreshTokens();
-        res.json({ success: true });
-      },
-    },
-  }),
-);
-```
-
-Available route overrides:
-
-- `login` - `/auth/login`
-- `callback` - `/auth/callback`
-- `logout` - `/auth/logout`
-- `logoutCallback` - `/auth/logoutcallback`
-- `user` - `/auth/user`
-- `refresh` - `/auth/refresh`
-
-### Cookie Storage Interface
-
-The Express middleware automatically creates a cookie storage implementation that handles session management. Here's how it works:
-
-```ts
-// Auto-configured cookie settings
-class ExpressCookieStorage extends CookieStorage {
-  constructor(req: Request, res: Response) {
-    // Detects HTTPS vs HTTP for security
-    const isHttps = req.secure || req.headers["x-forwarded-proto"] === "https";
-
-    super({
-      secure: isHttps, // Secure cookies for HTTPS
-      sameSite: isHttps ? "none" : "lax", // Cross-origin for HTTPS
-      httpOnly: false, // Allow frontend access
-      path: "/", // Available for all paths
-    });
-  }
-
-  async get(key: string): Promise<string | null> {
-    return this.req.cookies[key] ?? null;
-  }
-
-  async set(key: string, value: string): Promise<void> {
-    this.res.cookie(key, value, this.settings);
-    this.req.cookies[key] = value; // Immediate access
-  }
-
-  async delete(key: string): Promise<void> {
-    this.res.clearCookie(key);
-  }
-}
-```
-
-**Custom Cookie Storage:**
-
-You can provide your own storage implementation in three ways:
-
-```ts
-// Option 1: Pass storage class directly (recommended)
-app.use(
-  CivicAuthServer(config, {
-    storage: YourCustomCookieStorage, // Will be instantiated with (req, res)
-  }),
-);
-```
-
-```ts
-// Option 2: Pass a factory function
-app.use(
-  CivicAuthServer(config, {
-    storage: (req, res) => new YourCustomCookieStorage(req, res),
-  }),
-);
-```
-
-```ts
-// Option 3: Set up in middleware (backwards compatibility)
-app.use((req, res, next) => {
-  req.storage = new YourCustomCookieStorage(req, res);
-  req.civicAuth = new CivicAuth(req.storage, config);
-  next();
-});
-
-app.use(CivicAuthServer(config)); // Will use your custom storage
-```
-
-The middleware automatically detects existing `req.storage` and `req.civicAuth` and uses them instead of creating defaults.
-
-### CORS Options
-
-The `cors` field accepts these options:
-
-| Field         | Default                             | Description                                                 |
-| ------------- | ----------------------------------- | ----------------------------------------------------------- |
-| `origin`      | Auto-detected from your URLs        | Array of allowed origins, merged with auto-detected origins |
-| `credentials` | `true`                              | Include credentials (cookies) in CORS requests              |
-| `methods`     | `['GET', 'POST', 'PUT', 'DELETE']`  | Allowed HTTP methods                                        |
-| `headers`     | `['Content-Type', 'Authorization']` | Allowed request headers                                     |
-
-Example:
-
-```ts
-cors: {
-  origin: ["https://additional-domain.com"], // Merged with auto-detected
-  credentials: true,
-}
 ```
 
 ## PKCE and Client Secrets
