@@ -1,111 +1,141 @@
 ---
 title: "Authentication Flows"
-description: "Understanding PKCE vs Client Secret authentication flows and when to use each approach."
+description: "Understanding Civic Auth's flexible OAuth 2.0 authentication methods for maximum security across all application types."
 icon: "arrows-rotate"
 public: true
 ---
 
-Civic Auth supports two OAuth 2.0 authentication flows to accommodate different application architectures and security requirements.
+Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum security across different application architectures and use cases.
 
-## Flow Comparison
+## Authentication Methods
 
 <Tabs>
-  <Tab title="PKCE Flow (Recommended)">
-    **Best for:** Frontend applications, SPAs, mobile apps, and modern web applications.
+  <Tab title="PKCE Only">
+    **Best for:** Public clients (SPAs, mobile apps) where secrets cannot be securely stored.
 
     ### How it Works
     - Uses Proof Key for Code Exchange (PKCE) for security
-    - No client secret required
-    - Suitable for public clients where secrets cannot be kept secure
+    - Default method for public clients
     - Code verifier/challenge mechanism provides security
+    - No client secret required or used
 
-    ### Benefits
-    - ✅ No sensitive credentials to manage
-    - ✅ Secure for client-side applications
-    - ✅ Industry standard for modern apps
-    - ✅ Works with domain registration for production security
+    ### Security Benefits
+    - ✅ No sensitive credentials to manage client-side
+    - ✅ Dynamic verification for each authentication request
+    - ✅ Industry standard for public clients
+    - ✅ Prevents authorization code interception attacks
 
     ### Configuration
     ```javascript
     const config = {
       clientId: "your_client_id",
-      // No clientSecret needed
+      // PKCE enabled by default, no client secret needed
       redirectUrl: "https://yourapp.com/callback"
     }
     ```
   </Tab>
 
-  <Tab title="Client Secret Flow">
-    **Best for:** Server-side applications, backend services, and confidential clients.
+  <Tab title="Client Secret Only">
+    **Best for:** Traditional server-side applications requiring OAuth 2.0 compatibility.
 
     ### How it Works
     - Uses traditional OAuth 2.0 authorization code flow
-    - Requires both client ID and client secret
-    - Suitable for confidential clients that can securely store secrets
-    - PKCE can be disabled when using client secrets
+    - Client authenticates using client secret
+    - PKCE disabled for compatibility with legacy systems
+    - Suitable for confidential clients with secure storage
 
-    ### Benefits
-    - ✅ Familiar OAuth 2.0 pattern
-    - ✅ Suitable for server-to-server scenarios
-    - ✅ Works with existing OAuth infrastructure
-    - ✅ Additional security layer with client authentication
+    ### Security Benefits
+    - ✅ Familiar OAuth 2.0 authentication pattern
+    - ✅ Client authentication via shared secret
+    - ✅ Compatible with existing OAuth infrastructure
+    - ✅ Server-side credential protection
 
     ### Configuration
     ```javascript
     const config = {
       clientId: "your_client_id",
-      clientSecret: "your_client_secret", // Required for this flow
-      pkce: false, // Disable PKCE when using client secrets
+      clientSecret: "your_client_secret",
+      pkce: false, // Disable PKCE for traditional OAuth flow
+      redirectUrl: "https://yourapp.com/callback"
+    }
+    ```
+  </Tab>
+
+  <Tab title="PKCE + Client Secret">
+    **Best for:** Maximum security for confidential clients that can support both methods.
+
+    ### How it Works
+    - Combines PKCE with client secret authentication
+    - Provides maximum security through dual verification
+    - Suitable for high-security server-side applications
+    - Both PKCE challenge and client secret verified
+
+    ### Security Benefits
+    - ✅ **Maximum security** through dual authentication
+    - ✅ Protection against authorization code interception
+    - ✅ Client authentication via secret
+    - ✅ Dynamic PKCE verification per request
+
+    ### Configuration
+    ```javascript
+    const config = {
+      clientId: "your_client_id",
+      clientSecret: "your_client_secret",
+      pkce: true, // Enable PKCE alongside client secret
       redirectUrl: "https://yourapp.com/callback"
     }
     ```
   </Tab>
 </Tabs>
 
-## When to Use Each Flow
+## When to Use Each Method
 
-<CardGroup cols={2}>
-  <Card title="Use PKCE Flow When:" icon="browser">
-    - Building frontend applications (React, Vue, Angular)
-    - Creating single-page applications (SPAs)
-    - Developing mobile applications
-    - Client secrets cannot be kept secure
-    - Following modern OAuth 2.0 best practices
+<CardGroup cols={3}>
+  <Card title="PKCE Only" icon="browser">
+    - Single-page applications (SPAs)
+    - Mobile applications
+    - Frontend applications (React, Vue, Angular)
+    - When client secrets cannot be securely stored
+    - Default for public clients
   </Card>
-  <Card title="Use Client Secret Flow When:" icon="server">
-    - Building server-side applications
-    - Implementing backend services
-    - Need server-to-server authentication
-    - Have secure credential storage
-    - Integrating with legacy OAuth systems
+  <Card title="Client Secret Only" icon="server">
+    - Legacy OAuth 2.0 integrations
+    - Traditional server-side applications
+    - When PKCE is not supported
+    - Simple backend services
+    - Existing OAuth infrastructure
+  </Card>
+  <Card title="PKCE + Client Secret" icon="shield">
+    - **High-security server applications**
+    - Financial or healthcare systems
+    - Enterprise backend services
+    - **Maximum security requirements**
+    - Modern confidential clients
   </Card>
 </CardGroup>
 
-## Getting Client Secret Support
+## Getting Client Secrets
 
-<Warning>
-Client secrets are not automatically available with all Civic Auth accounts and may require special configuration.
-</Warning>
-
-If your use case requires client secret authentication:
+Client secrets are available as an opt-in feature for confidential clients requiring enhanced authentication security.
 
 <Steps>
-  <Step title="Assess Your Needs">
-    Determine if your application truly needs client secrets. Most modern applications work well with the PKCE flow.
+  <Step title="Access Customer Dashboard">
+    Log in to your [Civic Auth Dashboard](https://auth.civic.com/dashboard) to manage your application settings.
   </Step>
-  <Step title="Contact Civic Support">
-    Reach out to [support@civic.com](mailto:support@civic.com) or via our [contact form](https://civickey.typeform.com/req-custom) to discuss:
-    - Your specific use case
-    - Why PKCE flow doesn't meet your needs
-    - Your application architecture
+  <Step title="Generate Client Secret">
+    Navigate to your application settings and generate a client secret. **The secret is shown only once** during generation.
   </Step>
-  <Step title="Configuration">
-    Once approved, Civic will provide your client secret and any necessary configuration guidance.
+  <Step title="Secure Storage">
+    Store your client secret securely using environment variables or secure secret management systems. Secrets are hashed after creation and stored in hashed form for security.
   </Step>
 </Steps>
 
+<Warning>
+**Security Requirements**: Client secrets must be stored securely and never exposed in client-side code. They are suitable only for server-side applications with secure credential storage.
+</Warning>
+
 <Info>
-**Most applications should use the PKCE flow** as it's more secure for client-side code and easier to implement. Only request client secret support if you have a specific server-side use case that requires it.
+**Flexible Security**: Choose the authentication method that best fits your application architecture. Use PKCE-only for public clients, client secrets for traditional OAuth compatibility, or both together for maximum security.
 </Info>
 
 ## Security Considerations
@@ -128,28 +158,41 @@ If your use case requires client secret authentication:
 
 ## Implementation Examples
 
-The Civic Auth SDK supports both flows with the same API:
+The Civic Auth SDK supports all authentication methods with the same API:
 
 <CodeGroup>
-```javascript PKCE Flow (Default)
+```javascript PKCE Only (Default)
 import { CivicAuth } from '@civic/auth/server';
 
 const config = {
   clientId: process.env.CLIENT_ID,
   redirectUrl: 'https://yourapp.com/callback'
-  // PKCE is enabled by default
+  // PKCE enabled by default, no client secret
 };
 
 const civicAuth = new CivicAuth(storage, config);
 ```
 
-```javascript Client Secret Flow
+```javascript Client Secret Only
 import { CivicAuth } from '@civic/auth/server';
 
 const config = {
   clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
-  pkce: false, // Disable PKCE when using client secrets
+  clientSecret: process.env.CLIENT_SECRET,
+  pkce: false, // Disable PKCE for traditional OAuth
+  redirectUrl: 'https://yourapp.com/callback'
+};
+
+const civicAuth = new CivicAuth(storage, config);
+```
+
+```javascript PKCE + Client Secret (Maximum Security)
+import { CivicAuth } from '@civic/auth/server';
+
+const config = {
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  pkce: true, // Enable both PKCE and client secret
   redirectUrl: 'https://yourapp.com/callback'
 };
 
@@ -158,5 +201,5 @@ const civicAuth = new CivicAuth(storage, config);
 </CodeGroup>
 
 <Note>
-For detailed implementation examples with specific frameworks, see our [integration guides](/integration). All guides currently show the PKCE flow, but the same patterns apply when using client secrets with the configuration above.
-</Note> 
+For detailed implementation examples with specific frameworks, see our [integration guides](/integration). All guides show the PKCE-only approach by default, but the same patterns apply when using client secrets or the hybrid PKCE + client secret approach with the configurations above.
+</Note>

@@ -18,11 +18,11 @@ The information you will need:
 At its core, Civic Auth is an [OAuth 2.0 auth server](https://oauth.net/2/). It supports the [authorization code](https://oauth.net/2/grant-types/authorization-code/) grant type with both [PKCE](https://oauth.net/2/pkce/) and traditional client secret authentication.
 
 <Info>
-  **Need help choosing the right flow?** See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison of PKCE vs client secret approaches, including when to use each and how to request client secret support.
+  **Need help choosing the right authentication method?** See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison of PKCE-only, client secret, and hybrid approaches, including when to use each for maximum security.
 </Info>
 
 <Warning>
-  The examples below demonstrate the **PKCE flow** (recommended for most applications). For client secret authentication, contact us at [support@civic.com](mailto:support@civic.com) or see our [Authentication Flows guide](/overview/authentication-flows).
+  The examples below demonstrate the **PKCE-only method** (suitable for public clients). For client secret or hybrid PKCE + client secret authentication, contact us at [support@civic.com](mailto:support@civic.com) or see our [Authentication Flows guide](/overview/authentication-flows).
 </Warning>
 
 ### Sample Call to the OAuth Server
@@ -187,7 +187,7 @@ The **Civic Auth SDK** is designed to simplify front-end integration, with optim
 
 The ID token is produced after completing the login process. A common pattern is for your backend to pass that token to your frontend as a cookie.
 
-Here’s an example of how to access user information in vanilla JavaScript by reading the ID token cookie:
+Here's an example of how to access user information in vanilla JavaScript by reading the ID token cookie:
 
 ```ts
 import jwt from "jsonwebtoken";

@@ -150,28 +150,41 @@ app.get('/admin/hello', async (req: Request, res: Response) => {
 
 ## Authentication Flows
 
-By default, Civic Auth uses [**PKCE** (Proof Key for Code Exchange)](https://oauth.net/2/pkce/) for secure authentication without requiring client secrets. This approach is recommended for most applications.
+Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum security for different application architectures.
 
 <Info>
-**Need client secret authentication?** Civic Auth also supports traditional OAuth 2.0 flows with client secrets for server-side applications. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison and how to request client secret support.
+**Need client secret authentication?** Civic Auth supports PKCE-only, client secrets, and hybrid PKCE + client secret approaches. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison and how to generate client secrets via your Customer Dashboard.
 </Info>
 
-### PKCE Flow (Default)
-The examples above use PKCE, which is handled entirely by the Civic Auth SDK. No additional configuration needed - just provide your Client ID.
+### PKCE-Only (Default)
+The examples above use PKCE-only authentication, which is handled entirely by the Civic Auth SDK. This is the default method suitable for most applications.
 
-### Client Secret Flow (Optional)
+### Client Secret Authentication
 For server-side applications requiring client secrets, the same code patterns apply with additional configuration:
 
 ```typescript
 const config = {
   clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
-  pkce: false, // Disable PKCE when using client secrets
+  clientSecret: process.env.CLIENT_SECRET, // Generate via Customer Dashboard
+  pkce: false, // Traditional OAuth (client secret only)
+  redirectUrl: 'http://localhost:3000/auth/callback',
+  postLogoutRedirectUrl: 'http://localhost:3000/'
+};
+```
+
+### Hybrid PKCE + Client Secret (Maximum Security)
+For maximum security, enable both PKCE and client secret authentication:
+
+```typescript
+const config = {
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET, // Generate via Customer Dashboard
+  pkce: true, // Enable both PKCE and client secret
   redirectUrl: 'http://localhost:3000/auth/callback',
   postLogoutRedirectUrl: 'http://localhost:3000/'
 };
 ```
 
 <Warning>
-Client secrets require special setup and are not automatically available. Contact [Civic support](mailto:support@civic.com) to discuss your use case and get client secret access.
+Client secrets are available through your [Customer Dashboard](https://auth.civic.com/dashboard) and must be stored securely. Never expose client secrets in client-side code.
 </Warning>
