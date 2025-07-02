@@ -54,7 +54,7 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
     ```javascript
     const config = {
       clientId: "your_client_id",
-      clientSecret: "your_client_secret",
+      clientSecret: "your_client_secret", // Contact Civic for this
       pkce: false, // Disable PKCE for traditional OAuth flow
       redirectUrl: "https://yourapp.com/callback"
     }
@@ -80,7 +80,7 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
     ```javascript
     const config = {
       clientId: "your_client_id",
-      clientSecret: "your_client_secret",
+      clientSecret: "your_client_secret", // Contact Civic for this
       pkce: true, // Enable PKCE alongside client secret
       redirectUrl: "https://yourapp.com/callback"
     }
@@ -116,19 +116,9 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
 
 ## Getting Client Secrets
 
-Client secrets are available as an opt-in feature for confidential clients requiring enhanced authentication security.
-
-<Steps>
-  <Step title="Access Customer Dashboard">
-    Log in to your [Civic Auth Dashboard](https://auth.civic.com/dashboard) to manage your application settings.
-  </Step>
-  <Step title="Generate Client Secret">
-    Navigate to your application settings and generate a client secret. **The secret is shown only once** during generation.
-  </Step>
-  <Step title="Secure Storage">
-    Store your client secret securely using environment variables or secure secret management systems. Secrets are hashed after creation and stored in hashed form for security.
-  </Step>
-</Steps>
+<Info>
+If you need a client secret, contact [support@civic.com](mailto:support@civic.com).
+</Info>
 
 <Warning>
 **Security Requirements**: Client secrets must be stored securely and never exposed in client-side code. They are suitable only for server-side applications with secure credential storage.
@@ -178,7 +168,7 @@ import { CivicAuth } from '@civic/auth/server';
 
 const config = {
   clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
+  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
   pkce: false, // Disable PKCE for traditional OAuth
   redirectUrl: 'https://yourapp.com/callback'
 };
@@ -191,7 +181,7 @@ import { CivicAuth } from '@civic/auth/server';
 
 const config = {
   clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
+  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
   pkce: true, // Enable both PKCE and client secret
   redirectUrl: 'https://yourapp.com/callback'
 };

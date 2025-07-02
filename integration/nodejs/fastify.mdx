@@ -155,7 +155,7 @@ fastify.get('/admin/hello', async (request, reply) => {
 Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum security for different application architectures.
 
 <Info>
-**Need client secret authentication?** Civic Auth supports PKCE-only, client secrets, and hybrid PKCE + client secret approaches. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison and how to generate client secrets via your Customer Dashboard.
+**Need client secret authentication?** Civic Auth supports PKCE-only, client secrets, and hybrid PKCE + client secret approaches. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison.
 </Info>
 
 ### PKCE-Only (Default)
@@ -167,7 +167,7 @@ For server-side applications requiring client secrets, the same code patterns ap
 ```typescript
 const config = {
   clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET, // Generate via Customer Dashboard
+  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
   pkce: false, // Traditional OAuth (client secret only)
   redirectUrl: 'http://localhost:3000/auth/callback',
   postLogoutRedirectUrl: 'http://localhost:3000/'
@@ -180,7 +180,7 @@ For maximum security, enable both PKCE and client secret authentication:
 ```typescript
 const config = {
   clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET, // Generate via Customer Dashboard
+  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
   pkce: true, // Enable both PKCE and client secret
   redirectUrl: 'http://localhost:3000/auth/callback',
   postLogoutRedirectUrl: 'http://localhost:3000/'
@@ -188,5 +188,5 @@ const config = {
 ```
 
 <Warning>
-Client secrets are available through your [Customer Dashboard](https://auth.civic.com/dashboard) and must be stored securely. Never expose client secrets in client-side code.
+If you need a client secret, contact [Civic support](mailto:support@civic.com).
 </Warning>

@@ -93,7 +93,7 @@ async def profile(user: BaseUser = Depends(get_current_user)):
 Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum security for different application architectures.
 
 <Info>
-**Need client secret authentication?** Civic Auth supports PKCE-only, client secrets, and hybrid PKCE + client secret approaches. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison and how to generate client secrets via your Customer Dashboard.
+**Need client secret authentication?** Civic Auth supports PKCE-only, client secrets, and hybrid PKCE + client secret approaches. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison.
 </Info>
 
 ### PKCE-Only (Default)
@@ -105,7 +105,7 @@ For server-side applications requiring client secrets, the same code patterns ap
 ```python
 config = {
     "client_id": os.getenv("CLIENT_ID"),
-    "client_secret": os.getenv("CLIENT_SECRET"),  # Generate via Customer Dashboard
+    "client_secret": os.getenv("CLIENT_SECRET"),  # Contact Civic for this
     "pkce": False,  # Traditional OAuth (client secret only)
     "redirect_url": "http://localhost:8000/auth/callback",
     "post_logout_redirect_url": "http://localhost:8000/"
@@ -118,7 +118,7 @@ For maximum security, enable both PKCE and client secret authentication:
 ```python
 config = {
     "client_id": os.getenv("CLIENT_ID"),
-    "client_secret": os.getenv("CLIENT_SECRET"),  # Generate via Customer Dashboard
+    "client_secret": os.getenv("CLIENT_SECRET"),  # Contact Civic for this
     "pkce": True,  # Enable both PKCE and client secret
     "redirect_url": "http://localhost:8000/auth/callback",
     "post_logout_redirect_url": "http://localhost:8000/"
@@ -126,5 +126,5 @@ config = {
 ```
 
 <Warning>
-Client secrets are available through your [Customer Dashboard](https://auth.civic.com/dashboard) and must be stored securely. Never expose client secrets in client-side code.
+If you need a client secret, contact [Civic support](mailto:support@civic.com).
 </Warning>
