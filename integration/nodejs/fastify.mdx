@@ -158,35 +158,4 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
 **Need client secret authentication?** Civic Auth supports PKCE-only, client secrets, and hybrid PKCE + client secret approaches. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison.
 </Info>
 
-### PKCE-Only (Default)
-The examples above use PKCE-only authentication, which is handled entirely by the Civic Auth SDK. This is the default method suitable for most applications.
-
-### Client Secret Authentication
-For server-side applications requiring client secrets, the same code patterns apply with additional configuration:
-
-```typescript
-const config = {
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
-  pkce: false, // Traditional OAuth (client secret only)
-  redirectUrl: 'http://localhost:3000/auth/callback',
-  postLogoutRedirectUrl: 'http://localhost:3000/'
-};
-```
-
-### Hybrid PKCE + Client Secret (Maximum Security)
-For maximum security, enable both PKCE and client secret authentication:
-
-```typescript
-const config = {
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
-  pkce: true, // Enable both PKCE and client secret
-  redirectUrl: 'http://localhost:3000/auth/callback',
-  postLogoutRedirectUrl: 'http://localhost:3000/'
-};
-```
-
-<Warning>
-If you need a client secret, contact [Civic support](mailto:support@civic.com).
-</Warning>
+The examples above use PKCE authentication, which is handled entirely by the Civic Auth SDK and suitable for most applications.

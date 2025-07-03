@@ -36,7 +36,7 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
   </Tab>
 
   <Tab title="Client Secret Only">
-    **Best for:** Traditional server-side applications requiring OAuth 2.0 compatibility.
+    **Best for:** Server-side applications that do not support PKCE.
 
     ### How it Works
     - Uses traditional OAuth 2.0 authorization code flow
@@ -146,50 +146,33 @@ If you need a client secret, contact [support@civic.com](mailto:support@civic.co
   </Accordion>
 </AccordionGroup>
 
-## Implementation Examples
+## Implementation Example
 
-The Civic Auth SDK supports all authentication methods with the same API:
+The Civic Auth SDK is initialized with a `config` object that varies based on the authentication method you choose. The core implementation remains the same.
 
-<CodeGroup>
-```javascript PKCE Only (Default)
+```javascript
 import { CivicAuth } from '@civic/auth/server';
 
+// Define the config object using the parameters from the table below
 const config = {
   clientId: process.env.CLIENT_ID,
-  redirectUrl: 'https://yourapp.com/callback'
-  // PKCE enabled by default, no client secret
+  // ... other parameters
 };
 
+// 'storage' is your implementation of CookieStorage
 const civicAuth = new CivicAuth(storage, config);
 ```
 
-```javascript Client Secret Only
-import { CivicAuth } from '@civic/auth/server';
+### Configuration Parameters
 
-const config = {
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
-  pkce: false, // Disable PKCE for traditional OAuth
-  redirectUrl: 'https://yourapp.com/callback'
-};
-
-const civicAuth = new CivicAuth(storage, config);
-```
-
-```javascript PKCE + Client Secret (Maximum Security)
-import { CivicAuth } from '@civic/auth/server';
-
-const config = {
-  clientId: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET, // Contact Civic for this
-  pkce: true, // Enable both PKCE and client secret
-  redirectUrl: 'https://yourapp.com/callback'
-};
-
-const civicAuth = new CivicAuth(storage, config);
-```
-</CodeGroup>
+| Parameter | PKCE Only (Default) | Client Secret Only | PKCE + Client Secret (Max Security) | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `clientId` | Required | Required | Required | Your application's Client ID. |
+| `clientSecret` | Not used | Required | Required | Contact support to get a client secret. |
+| `pkce` | `true` (default) | `false` | `true` | Enables or disables PKCE. |
+| `redirectUrl` | Required | Required | Required | The URL to redirect to after login. |
+| `postLogoutRedirectUrl`| Optional | Optional | Optional | The URL to redirect to after logout. |
 
 <Note>
-For detailed implementation examples with specific frameworks, see our [integration guides](/integration). All guides show the PKCE-only approach by default, but the same patterns apply when using client secrets or the hybrid PKCE + client secret approach with the configurations above.
+For full implementation examples with specific frameworks, see our [integration guides](/integration). The guides show the PKCE-only approach by default, but you can adapt the `config` object using the parameters above for other flows.
 </Note>

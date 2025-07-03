@@ -7,9 +7,7 @@ public: true
 
 <AccordionGroup>
   <Accordion title="How do I get a new Client ID?">
-    To obtain a new Client ID, sign up at [auth.civic.com](https://auth.civic.com/) to register your application. You can find your unique Client ID to use when integrating our API. 
-
-    **For most applications:** Civic Auth uses PKCE (Proof Key for Code Exchange) by default, so no client secret is required for frontend integrations.
+    To obtain a new Client ID, sign up at [auth.civic.com](https://auth.civic.com/) to register your application. You can find your unique Client ID to use when integrating our API.
 
     **For server-side applications:** If you need client secret authentication for backend services, see our [Authentication Flows guide](/overview/authentication-flows) for details on when and how to request client secret support.
 
@@ -19,20 +17,11 @@ public: true
 
   </Accordion>
   <Accordion title="Do I need a client secret?">
-    **Civic Auth offers multiple authentication methods for maximum security.** Choose the method that best fits your application architecture:
+    **Most applications should use our default PKCE authentication flow**, as it provides strong security for modern web and mobile apps without requiring you to manage client secrets.
 
-    **You might want a client secret for:**
-    - **Maximum security**: Use PKCE + Client Secret for highest security
-    - Traditional server-side applications requiring OAuth 2.0 compatibility
-    - Legacy OAuth systems that don't support PKCE
-    - Backend services requiring client authentication
+    We also support client secrets for server-side applications that require traditional OAuth 2.0 compatibility or want to achieve maximum security by combining it with PKCE.
 
-    **PKCE-only is suitable for:**
-    - Public clients (SPAs, mobile apps) where secrets cannot be securely stored
-    - Modern frontend applications
-    - Default authentication method
-
-    If you need a client secret, contact [Civic support](mailto:support@civic.com). See our [Authentication Flows guide](/overview/authentication-flows) to understand all available methods and choose the best approach for your use case.
+    To see which method is right for you, see our complete [Authentication Flows guide](/overview/authentication-flows). If you need a client secret, please contact [Civic support](mailto:support@civic.com).
   </Accordion>
   <Accordion title="How do I terminate keys?">
 
