@@ -148,41 +148,18 @@ This endpoint will handle login requests, build the Civic login URL and redirect
 ```ts
 import { buildLoginUrl } from "@civic/auth/server";
 
-app.get("/", async (req: Request, res: Response) => {
-  const url = await req.civicAuth.buildLoginUrl();
+app.get("/auth/login-url", async (req: Request, res: Response) => {
+ const frontendState = req.query.state as string | undefined;
 
+  const url = await req.civicAuth!.buildLoginUrl({
+    state: frontendState,
+  });
+  
   res.redirect(url.toString());
 });
 ```
 
-## 6. Create a Logout Endpoint
-
-This endpoint will handle logout requests, build the Civic logout URL and redirect the user to it.
-
-```ts
-import { buildLogoutRedirectUrl } from "@civic/auth/server";
-
-app.get("/auth/logout", async (req: Request, res: Response) => {
-  try {
-    const urlString = await req.civicAuth.buildLogoutRedirectUrl();
-    await req.civicAuth.clearTokens();
-
-    // Convert to URL object to modify parameters
-    const url = new URL(urlString);
-    // Remove the state parameter to avoid it showing up in the frontend URL
-    url.searchParams.delete("state");
-
-    res.redirect(url.toString());
-  } catch (error) {
-    console.error("Logout error:", error);
-    // If logout URL generation fails, clear tokens and redirect to home
-    await req.civicAuth.clearTokens();
-    res.redirect("/");
-  }
-});
-```
-
-## 7. Create the Callback Endpoint
+## 6. Create the Callback Endpoint
 
 This endpoint handles successful logins and creates the session
 
@@ -208,6 +185,33 @@ app.get("/auth/callback", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   } catch (error) {
     res.redirect("/?error=auth_failed");
+  }
+});
+```
+
+## 7. Create a Logout Endpoint
+
+This endpoint will handle logout requests, build the Civic logout URL and redirect the user to it.
+
+```ts
+import { buildLogoutRedirectUrl } from "@civic/auth/server";
+
+app.get("/auth/logout", async (req: Request, res: Response) => {
+  try {
+    const urlString = await req.civicAuth.buildLogoutRedirectUrl();
+    await req.civicAuth.clearTokens();
+
+    // Convert to URL object to modify parameters
+    const url = new URL(urlString);
+    // Remove the state parameter to avoid it showing up in the frontend URL
+    url.searchParams.delete("state");
+
+    res.redirect(url.toString());
+  } catch (error) {
+    console.error("Logout error:", error);
+    // If logout URL generation fails, clear tokens and redirect to home
+    await req.civicAuth.clearTokens();
+    res.redirect("/");
   }
 });
 ```
@@ -261,8 +265,13 @@ Add this endpoint to expose login URLs:
 
 ```ts
 app.get("/auth/login-url", async (req: Request, res: Response) => {
-  const loginUrl = await req.civicAuth.buildLoginUrl();
-  res.json({ loginUrl: loginUrl.toString() });
+  const frontendState = req.query.state as string | undefined;
+
+  const url = await req.civicAuth!.buildLoginUrl({
+    state: frontendState,
+  });
+  
+  res.redirect(url.toString());
 });
 ```
 
