@@ -37,18 +37,6 @@ const config = {
 };
 ```
 
-### Full Configuration (with logout and SPA support)
-
-```ts
-const config = {
-  clientId: // Client ID from auth.civic.com
-  redirectUrl: 'https://your-backend.com/auth/callback', // OAuth callback URL
-  postLogoutRedirectUrl: 'https://your-frontend.com/', // Where to redirect after logout
-  loginSuccessUrl: 'https://your-frontend.com/', // Optional: redirect SPAs back to frontend after auth
-  oauthServer: 'https://auth.civic.com/oauth' // Optional: OAuth server URL (for development/testing)
-};
-```
-
 Note: All URLs must be absolute URLs.
 
 ## 3. Set up CORS (for frontend integration)
@@ -274,6 +262,28 @@ app.get("/auth/login-url", async (req: Request, res: Response) => {
   res.redirect(url.toString());
 });
 ```
+
+## Advanced Configuration
+
+For more advanced use cases, you can include additional optional parameters in your configuration:
+
+```ts
+const config = {
+  clientId: // Client ID from auth.civic.com
+  redirectUrl: 'https://your-backend.com/auth/callback', // OAuth callback URL
+  postLogoutRedirectUrl: 'https://your-frontend.com/', // Where to redirect after logout (Optional)
+  loginSuccessUrl: 'https://your-frontend.com/', // Optional: redirect SPAs back to frontend after auth (optional)
+  oauthServer: 'https://auth.civic.com/oauth' // Optional: OAuth server URL (for development/testing) 
+};
+```
+
+|Parameter |Required |Description |
+|-----------|----------|-------------|
+| `clientId` | ✅ Yes | Client ID from auth.civic.com |
+| `redirectUrl` | ✅ Yes | OAuth callback URL where Civic redirects after authentication |
+| `postLogoutRedirectUrl` | ❌ Optional | Where to redirect users after logout |
+| `loginSuccessUrl` | ❌ Optional | Redirect SPAs back to frontend after successful authentication |
+| `oauthServer` | ❌ Optional | OAuth server URL (useful for development/testing environments) |
 
 ## PKCE and Client Secrets
 

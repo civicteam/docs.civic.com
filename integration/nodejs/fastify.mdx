@@ -36,18 +36,6 @@ const config = {
 };
 ```
 
-### Full Configuration (with logout and SPA support)
-
-```ts
-const config = {
-  clientId: // Client ID from auth.civic.com
-  redirectUrl: 'https://your-backend.com/auth/callback', // OAuth callback URL
-  postLogoutRedirectUrl: 'https://your-frontend.com/', // Where to redirect after logout
-  loginSuccessUrl: 'https://your-frontend.com/', // Optional: redirect SPAs back to frontend after auth
-  oauthServer: 'https://auth.civic.com/oauth' // Optional: OAuth server URL (for development/testing)
-};
-```
-
 Note: All URLs must be absolute URLs.
 
 ## 3. Set up CORS (for frontend integration)
@@ -157,34 +145,7 @@ fastify.get('/', async (request, reply) => {
 });
 ```
 
-## 6. Create a Logout Endpoint
-
-This endpoint will handle logout requests, build the Civic logout URL and redirect the user to it.
-
-```ts
-import { buildLogoutRedirectUrl } from '@civic/auth/server';
-
-fastify.get('/auth/logout', async (request, reply) => {
-  try {
-    const urlString = await request.civicAuth.buildLogoutRedirectUrl();
-    await request.civicAuth.clearTokens();
-
-    // Convert to URL object to modify parameters
-    const url = new URL(urlString);
-    // Remove the state parameter to avoid it showing up in the frontend URL
-    url.searchParams.delete("state");
-
-    return reply.redirect(url.toString());
-  } catch (error) {
-    console.error("Logout error:", error);
-    // If logout URL generation fails, clear tokens and redirect to home
-    await request.civicAuth.clearTokens();
-    return reply.redirect("/");
-  }
-});
-```
-
-## 7. Create the Callback Endpoint
+## 6. Create the Callback Endpoint
 
 This endpoint handles successful logins and creates the session
 
@@ -210,6 +171,35 @@ fastify.get<{
     return reply.status(500).send({ error: "Internal server error" });
   } catch (error) {
     return reply.redirect("/?error=auth_failed");
+  }
+});
+```
+
+## 7. Create a Logout Endpoint
+
+This endpoint will handle logout requests, build the Civic logout URL and redirect the user to it.
+
+```ts
+import { buildLogoutRedirectUrl } from '@civic/auth/server';
+
+fastify.get('/auth/logout', async (request, reply) => {
+  try {
+    const urlString = await request.civicAuth.buildLogoutRedirectUrl({
+      postLogoutRedirectUrl: 'https://your-frontend.com/' // Optional: where to redirect after logout
+    });
+    await request.civicAuth.clearTokens();
+
+    // Convert to URL object to modify parameters
+    const url = new URL(urlString);
+    // Remove the state parameter to avoid it showing up in the frontend URL
+    url.searchParams.delete("state");
+
+    return reply.redirect(url.toString());
+  } catch (error) {
+    console.error("Logout error:", error);
+    // If logout URL generation fails, clear tokens and redirect to home
+    await request.civicAuth.clearTokens();
+    return reply.redirect("/");
   }
 });
 ```
@@ -271,6 +261,28 @@ fastify.get("/auth/login-url", async (request, reply) => {
   return reply.send({ loginUrl: loginUrl.toString() });
 });
 ```
+
+## Advanced Configuration
+
+For more advanced use cases, you can include additional optional parameters in your configuration:
+
+```ts
+const config = {
+  clientId: // Client ID from auth.civic.com
+  redirectUrl: 'https://your-backend.com/auth/callback', // OAuth callback URL
+  postLogoutRedirectUrl: 'https://your-frontend.com/', // Where to redirect after logout (Optional)
+  loginSuccessUrl: 'https://your-frontend.com/', // Optional: redirect SPAs back to frontend after auth (optional)
+  oauthServer: 'https://auth.civic.com/oauth' // Optional: OAuth server URL (for development/testing) 
+};
+```
+
+|Parameter |Required |Description |
+|-----------|----------|-------------|
+| `clientId` | ✅ Yes | Client ID from auth.civic.com |
+| `redirectUrl` | ✅ Yes | OAuth callback URL where Civic redirects after authentication |
+| `postLogoutRedirectUrl` | ❌ Optional | Where to redirect users after logout |
+| `loginSuccessUrl` | ❌ Optional | Redirect SPAs back to frontend after successful authentication |
+| `oauthServer` | ❌ Optional | OAuth server URL (useful for development/testing environments) |
 
 ## PKCE and Client Secrets
 
