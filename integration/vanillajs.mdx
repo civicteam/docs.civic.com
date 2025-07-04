@@ -29,6 +29,7 @@ cd my-civic-app
 npm install
 npm install @civic/auth
 ```
+
 </Tip>
 
 ### Simple Setup
@@ -64,21 +65,21 @@ import { CivicAuth } from "@civic/auth/vanillajs";
 
 // Initialize auth directly with top-level await
 const authClient = await CivicAuth.create({
-    clientId: "YOUR_CLIENT_ID",
+  clientId: "YOUR_CLIENT_ID",
 });
 
 // Sign in
 document.getElementById("loginButton").addEventListener("click", async () => {
-    try {
-        const { user } = await authClient.startAuthentication();
-    } catch (error) {
-        console.error("Authentication failed:", error);
-    }
+  try {
+    const { user } = await authClient.startAuthentication();
+  } catch (error) {
+    console.error("Authentication failed:", error);
+  }
 });
 
 // Sign out
 document.getElementById("logoutButton").addEventListener("click", async () => {
-    await authClient?.logout();
+  await authClient?.logout();
 });
 ```
 
@@ -100,6 +101,27 @@ const authClient = await CivicAuth.create({
 const { user } = await authClient.startAuthentication();
 ```
 
+### Custom Backend Endpoints
+
+When using backend integration, you can customize the API endpoints that the client calls on your backend:
+
+```javascript
+import { CivicAuth } from "@civic/auth/vanillajs";
+
+const authClient = await CivicAuth.create({
+  loginUrl: "https://your-backend.com/auth/login-url",
+  backendEndpoints: {
+    refresh: "/api/v1/auth/refresh", // default: "/auth/refresh"
+    logout: "/api/v1/auth/logout", // default: "/auth/logout"
+    user: "/api/v1/auth/user", // default: "/auth/user"
+  },
+});
+```
+
+<Note>
+  The `backendEndpoints` configuration is only used when `loginUrl` is provided. Each endpoint is optional - if not
+  specified, the default will be used.
+</Note>
 
 ### Configuration Options
 
@@ -110,6 +132,20 @@ const { user } = await authClient.startAuthentication();
 | `redirectUrl`            | No       | Current URL                      | OAuth redirect URL after authentication                                     |
 | `displayMode`            | No       | `modal`                          | How the auth UI is displayed: `embedded`, `modal`, `redirect`, or `new_tab` |
 | `scopes`                 | No       | `['openid', 'profile', 'email']` | OAuth scopes to request                                                     |
+| `loginUrl`               | No       | -                                | Backend URL for login redirect (enables backend integration)                |
+| `backendEndpoints`       | No       | See below                        | Custom backend API endpoints (only used with `loginUrl`)                    |
+
+#### Backend Endpoints Default Values
+
+When using `loginUrl` for backend integration, the following default endpoints are used:
+
+```javascript
+backendEndpoints: {
+  refresh: "/auth/refresh",  // Token refresh endpoint
+  logout: "/auth/logout",    // Logout endpoint
+  user: "/auth/user"         // User info endpoint
+}
+```
 
 ### Display Modes
 
@@ -143,6 +179,7 @@ const logout = async () => {
 If you encounter an error like `Failed to resolve module specifier "@civic/auth/vanillajs"`, this is typically caused by a corrupted module cache or installation issue.
 
 **Solution:**
+
 ```bash
 # Clear node_modules and package-lock.json, then reinstall
 rm -rf node_modules package-lock.json
@@ -150,6 +187,7 @@ npm install
 ```
 
 **For Vite users:**
+
 ```bash
 # Also clear Vite's cache
 rm -rf node_modules package-lock.json .vite
