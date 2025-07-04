@@ -32,7 +32,7 @@ bun add @civic/auth cookie-parser cors
 
 ```ts
 const config = {
-  clientId: // Client ID from auth.civic.com
+  clientId: "YOUR_CLIENT_ID", // Client ID from auth.civic.com
   redirectUrl: 'https://your-backend.com/auth/callback' // change to your domain when deploying
 };
 ```
@@ -269,10 +269,10 @@ For more advanced use cases, you can include additional optional parameters in y
 
 ```ts
 const config = {
-  clientId: // Client ID from auth.civic.com
+  clientId: "YOUR_CLIENT_ID", // Client ID from auth.civic.com
   redirectUrl: 'https://your-backend.com/auth/callback', // OAuth callback URL
   postLogoutRedirectUrl: 'https://your-frontend.com/', // Where to redirect after logout (Optional)
-  loginSuccessUrl: 'https://your-frontend.com/', // Optional: redirect SPAs back to frontend after auth (optional)
+  loginSuccessUrl: 'https://your-frontend.com/', // Optional: redirect Single Page Applications back to frontend after auth (optional)
   oauthServer: 'https://auth.civic.com/oauth' // Optional: OAuth server URL (for development/testing) 
 };
 ```
@@ -282,7 +282,7 @@ const config = {
 | `clientId` | ✅ Yes | Client ID from auth.civic.com |
 | `redirectUrl` | ✅ Yes | OAuth callback URL where Civic redirects after authentication |
 | `postLogoutRedirectUrl` | ❌ Optional | Where to redirect users after logout |
-| `loginSuccessUrl` | ❌ Optional | Redirect SPAs back to frontend after successful authentication |
+| `loginSuccessUrl` | ❌ Optional | Redirect Single Page Applications back to frontend after successful authentication |
 | `oauthServer` | ❌ Optional | OAuth server URL (useful for development/testing environments) |
 
 ## PKCE and Client Secrets
