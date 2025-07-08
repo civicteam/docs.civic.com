@@ -279,11 +279,11 @@ const config = {
 
 |Parameter |Required |Description |
 |-----------|----------|-------------|
-| `clientId` | ✅ Yes | Client ID from auth.civic.com |
-| `redirectUrl` | ✅ Yes | OAuth callback URL where Civic redirects after authentication |
-| `postLogoutRedirectUrl` | ❌ Optional | Where to redirect users after logout |
-| `loginSuccessUrl` | ❌ Optional | Redirect Single Page Applications back to frontend after successful authentication |
-| `oauthServer` | ❌ Optional | OAuth server URL (useful for development/testing environments) |
+| `clientId` | Yes | Client ID from auth.civic.com |
+| `redirectUrl` | Yes | OAuth callback URL where Civic redirects after authentication |
+| `postLogoutRedirectUrl` | No | Where to redirect users after logout |
+| `loginSuccessUrl` | No | Redirect Single Page Applications back to frontend after successful authentication |
+| `oauthServer` | No | OAuth server URL (useful for development/testing environments) |
 
 ## PKCE and Client Secrets
 
