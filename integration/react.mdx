@@ -1,334 +1,466 @@
 ---
-title: "React Router 7"
-icon: "/images/rr7/rr_logo_light.svg"
+title: "React"
+icon: react
+description: "Integrate Civic Auth into your React application with ease, just wrap your app with the Civic Auth provider and add your Client ID (provided after you [sign up](https://auth.civic.com))."
 public: true
 ---
 
+
 ## Quick Start
 
-Integrate Civic Auth into your React Router 7 application using the following steps (a working example is available in our [github examples repo](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/react-router)):
-
-<Note>
-  **Important**: Make sure your application is using React Router version ^7.0.0 or higher. This guide is specifically
-  designed for React Router 7 (formerly Remix).
-</Note>
+A working example is available in our [github examples repo](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/reactjs).
 
 <Info>
-  This guide assumes you are using TypeScript. Please adjust the snippets as needed to remove the types if you are using
-  plain JS.
+  This guide assumes you are using Typescript. Please adjust the snippets as needed to remove the types if you are using plain JS.
 </Info>
 
-### 1. Create Auth Route Handlers
+<Info>
+  If you plan to use Web3 features, select "Auth + Web3" from the tabs below.
+</Info>
 
-Create a catch-all route to handle all authentication-related requests. This route will manage login, logout, callback, and user data endpoints.
+<Tabs>
+<Tab title="Auth">
+```ts App.ts
+import { CivicAuthProvider, UserButton } from "@civic/auth/react";
 
-Create `app/routes/auth.$.tsx`:
-
-```ts app/routes/auth.$.tsx
-import { createRouteHandlers } from "@civic/auth/remix";
-
-// Create route handlers with your configuration
-const { createAuthLoader, getUser } = createRouteHandlers({
-  clientId: process.env.CLIENT_ID,
-});
-
-/**
- * Catch-all loader for auth routes
- */
-export const loader = createAuthLoader();
-
-/**
- * Export getUser function for use in other parts of the app
- */
-export { getUser };
-```
-
-### 2. Set Up Root Loader
-
-Configure your root route to provide user data to all routes in your application. This enables server-side rendering with authentication state.
-
-Update `app/root.tsx`:
-
-```tsx app/root.tsx
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-import type { LinksFunction, LoaderFunction } from "react-router";
-import "./tailwind.css"; // Your CSS imports
-
-import { getUser } from "~/routes/auth.$";
-
-export const links: LinksFunction = () => [
-  // Your link definitions
-];
-
-export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getUser(request);
-  return {
-    // You need this for the useUser hook to work
-    user,
-  };
-};
-
-function Layout({ children }: { children: React.ReactNode }) {
+function App({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
-export default function App() {
-  return (
-    <Layout>
-      <Outlet />
-    </Layout>
-  );
+    <CivicAuthProvider clientId="YOUR CLIENT ID">
+      <UserButton />
+      {children}
+    </CivicAuthProvider>
+  )
 }
 ```
+</Tab>
+
+<Tab title="Auth + Web3">
+```ts App.ts
+import { CivicAuthProvider, UserButton } from "@civic/auth-web3/react";
+
+function App({ children }) {
+  return (
+    <CivicAuthProvider clientId="YOUR CLIENT ID">
+      <UserButton />
+      {children}
+    </CivicAuthProvider>
+  )
+}
+```
+</Tab>
+</Tabs>
 
 ## Usage
 
-### Getting User Information on the Frontend
+### The User Button
 
-The React Router 7 integration provides several components and hooks for frontend authentication:
+The Civic Auth SDK comes with a multi-purpose styled component called the `UserButton`
 
-#### UserButton Component
+<Tabs>
+<Tab title="Auth">
 
-The `UserButton` component provides a complete sign-in/sign-out experience:
+```ts TitleBar.ts
+import { UserButton, CivicAuthProvider } from "@civic/auth/react";
 
-```tsx app/routes/_index.tsx
-import { useLoaderData } from "react-router";
-import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import { getUser } from "~/routes/auth.$";
-import { UserButton } from "@civic/auth/remix/components/UserButton";
-
-export const meta: MetaFunction = () => {
-  return [{ title: "My App" }];
-};
-
-export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await getUser(request);
-  return { user };
-}
-
-export default function Index() {
-  const { user } = useLoaderData<typeof loader>();
-
+export function TitleBar() {
   return (
     <div>
       <h1>My App</h1>
-      <UserButton
-        onSignIn={(user) => console.log("User signed in", user)}
-        onSignOut={() => console.log("User signed out")}
-      />
-
-      {user && (
-        <div>
-          <h2>Welcome, {user.name}!</h2>
-          <p>Email: {user.email}</p>
-        </div>
-      )}
+      <UserButton />
     </div>
   );
-}
+};
 ```
+</Tab>
+<Tab title="Auth + Web3">
+```ts TitleBar.ts
+import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
 
-#### useUser Hook
-
-For accessing user information in components:
-
-```tsx MyComponent.tsx
-import { useUser } from "@civic/auth/remix";
-
-export function MyComponent() {
-  const { user, isLoggedIn } = useUser();
-
-  if (!isLoggedIn) {
-    return <div>Please sign in</div>;
-  }
-
-  return <div>Hello {user.name}!</div>;
-}
-```
-
-#### Custom Authentication Logic
-
-For custom sign-in buttons and authentication flows:
-
-```tsx CustomSignIn.tsx
-import { useCallback } from "react";
-import { useUser } from "@civic/auth/remix";
-
-export function CustomSignIn() {
-  const { signIn, signOut } = useUser();
-
-  const doSignIn = useCallback(() => {
-    console.log("Starting sign-in process");
-    signIn()
-      .then(() => {
-        console.log("Sign-in completed successfully");
-      })
-      .catch((error) => {
-        console.error("Sign-in failed:", error);
-      });
-  }, [signIn]);
-
-  const handleSignOut = async () => {
-    await signOut();
-  };
-
+export function TitleBar() {
   return (
     <div>
-      <button onClick={doSignIn}>Sign In</button>
-      <button onClick={handleSignOut}>Sign Out</button>
+      <h1>My App</h1>
+      <UserButton />
     </div>
   );
+};
+```
+</Tab>
+</Tabs>
+This component is context-dependent. If the user is logged in, it will show their profile picture and name. If the user is not logged in, it will show a Log In button. The button will show a loading spinner while the user is in the process of signing in or signing out.
+
+<Frame caption="The user button">
+  <img src="/images/auth/integration/image-1.png" className="image-50 image-rounded" />
+</Frame>
+
+#### Customizing the User Button
+
+You can customize the styling of the user button by adding either a `className` or `style` property to the UserButton component when declaring it. These styling properties affect both the sign-in button and the user information display when logged in. For further customization, you can also style the buttons that appear in the dropdown menu (which displays when clicking on the user information button) by using the `dropdownButtonClassName` or `dropdownButtonStyle` properties. This gives you granular control over both the main user button and its associated dropdown menu items. Using a className:
+
+<Tabs>
+  <Tab title="Auth">
+      ```css style.css
+      .my-button-container .login-button {
+        color: red;
+        background-color: blue;
+        border: 3px solid #6b7280;
+      }
+
+      .my-button-container .internal-button {
+        background-color: red;
+        color: blue;
+        border: 3px solid #6b7280;
+      }
+      ```
+      ```ts CustomUserButtonClassName.ts
+      import { UserButton, CivicAuthProvider } from "@civic/auth/react";
+
+      export function TitleBar() {
+        return (
+          <div className="my-button-container">
+            <UserButton className="login-button" dropdownButtonClassName="internal-button" />
+          </div>
+        );
+      };
+      ```
+  </Tab>
+
+  <Tab title="Auth + Web3">
+    ```css style.css
+    .my-button-container .login-button {
+      color: red;
+      background-color: blue;
+      border: 3px solid #6b7280;
+    }
+
+    .my-button-container .internal-button {
+      background-color: red;
+      color: blue;
+      border: 3px solid #6b7280;
+    }
+    ```
+    ```bash CustomUserButtonClassName.ts
+      import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
+
+      export function TitleBar() {
+        return (
+          <div className="my-button-container">
+            <UserButton className="login-button" dropdownButtonClassName="internal-button" />
+          </div>
+        );
+      };
+    ```
+  </Tab>
+</Tabs>
+
+Note the use of a *specific* class name declaration in the .css file. This is necessary to ensure that the styles in the imported css className take precedence over internal styles without the use of the discouraged `!important` directive i.e. using just the classname in App.css *would not work*:
+
+```css
+/* this wouldn't override the Civic UserButton styles */
+.login-button {
+  color: red;
+  background-color: blue;
+  border: 3px solid #6b7280;
 }
 ```
 
-## Protected Routes
+Using styles:
 
-React Router 7 supports route-level authentication using loaders. Here's how to create protected routes that require user authentication:
+<Tabs>
+  <Tab title="Auth">
+    ```ts CustomUserButtonStyles.ts
+    import { UserButton, CivicAuthProvider } from "@civic/auth/react";
 
-### Creating a Protected Route
+    export function TitleBar() {
+      return (
+        <div>
+          <UserButton style={{ minWidth: "20rem" }} dropdownButtonStyle={{ backgroundColor: "red" }} />
+        </div>
+      );
+    };
+    ```
+  </Tab>
+  <Tab title="Auth + Web3">
+    ```ts CustomUserButtonStyles.ts
+    import { UserButton, CivicAuthProvider } from "@civic/auth-web3/react";
 
-Create a protected route loader that checks authentication and redirects unauthenticated users:
+    export function TitleBar() {
+      return (
+        <div>
+          <UserButton style={{ minWidth: "20rem" }} dropdownButtonStyle={{ backgroundColor: "red" }} />
+        </div>
+      );
+    };
+    ```
+  </Tab>
+</Tabs>
 
-```tsx app/routes/protected._index.tsx
-import { data, redirect, Outlet } from "react-router";
-import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import { getUser } from "./auth.$";
+You can also provide values in both `style` and `className` props, where the value in `style` will always take precedence over the same CSS-defined style.
 
-export const meta: MetaFunction = () => {
-  return [{ title: "Protected Page - Civic Auth Demo" }];
-};
+#### Creating your own Login and Logout buttons
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await getUser(request);
+You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to create your own buttons for user log in and log out
 
-  if (!user) {
-    // Redirect to home page if user is not authenticated
-    return redirect("/");
-  }
+<Tabs>
+  <Tab title="Auth">
+    ```ts RollYourOwnLogin.ts
+    import { CivicAuthProvider } from "@civic/auth/react";
 
-  return data({ user });
-};
+    export function TitleBar() {
+      const { signIn, signOut } = useUser();
+      return (
+        <div className="flex justify-between items-center">
+          <h1>My App</h1>
+          {!user && <button onClick={signIn} className="sign-in">Sign into My App</button>}
+          {user && <button onClick={signOut} className="sign-out">Sign out of My App</button>}
+        </div>
+      );
+    };
+    ```
+  </Tab>
+  <Tab title="Auth + Web3">
+```ts RollYourOwnLogin.ts
+import { CivicAuthProvider } from "@civic/auth-web3/react";
 
-export default function ProtectedPage() {
+export function TitleBar() {
+  const { signIn, signOut } = useUser();
   return (
-    <div className="flex h-screen items-center justify-center">
-      <Outlet />
+    <div className="flex justify-between items-center">
+      <h1>My App</h1>
+      {!user && <button onClick={signIn} className="sign-in">Sign into My App</button>}
+      {user && <button onClick={signOut} className="sign-out">Sign out of My App</button>}
     </div>
   );
-}
-```
-
-### Protected Route Layout
-
-Create the protected route content that displays to authenticated users:
-
-```tsx app/routes/protected.tsx
-import { Link } from "react-router";
-import type { MetaFunction } from "react-router";
-import { useUser } from "@civic/auth/remix/useUser";
-
-export const meta: MetaFunction = () => {
-  return [{ title: "Protected Page - Civic Auth Demo" }];
 };
+```
+  </Tab>
+</Tabs>
 
-export default function ProtectedLayout() {
+### Getting User Information on the Frontend
+
+Use the Civic Auth SDK to retrieve user information on the frontend.
+
+<Tabs>
+  <Tab title="Auth">
+```ts MyComponent.ts
+import { useUser } from "@civic/auth/react";
+
+export function MyComponent() {
   const { user } = useUser();
 
-  return (
-    <div className="flex h-screen items-center justify-center text-white">
-      <div className="flex flex-col items-center gap-8 p-8 border rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold">Protected Page</h1>
+  if (!user) return <div>User not logged in</div>
 
-        <div className="text-center">
-          <p className="mb-4">Welcome to this protected page, {user?.name || "User"}!</p>
-          <p className="text-gray-600 mb-6">This content is only visible to authenticated users.</p>
-        </div>
-
-        <div className="flex gap-4">
-          <Link to="/" className="px-4 py-2 rounded hover:bg-gray-300">
-            Back to Home
-          </Link>
-          <Link to="/auth/logout" className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
-            Logout
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+  return <div>Hello { user.name }!</div>
 }
 ```
+  </Tab>
+  <Tab title="Auth + Web3">
+```ts MyComponent.ts
+import { useUser } from "@civic/auth-web3/react";
 
-### How It Works
+export function MyComponent() {
+  const { user } = useUser();
 
-1. **Route Protection**: The `protected._index.tsx` loader runs on the server before rendering the page
-2. **Authentication Check**: It uses `getUser(request)` to check if the user is authenticated
-3. **Redirect Logic**: If no user is found, it redirects to the home page using `redirect("/")`
-4. **User Data**: If authenticated, it passes the user data to the route
-5. **Protected Content**: The `protected.tsx` layout displays content only to authenticated users
+  if (!user) return <div>User not logged in</div>
 
-### Alternative Protection Patterns
-
-You can also create more complex protected routes with additional checks:
-
-```tsx app/routes/admin.tsx
-import { redirect } from "react-router";
-import type { LoaderFunctionArgs } from "react-router";
-import { getUser } from "./auth.$";
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await getUser(request);
-
-  if (!user) {
-    return redirect("/");
-  }
-
-  // Additional admin-specific checks can go here
-  if (user.role !== "admin") {
-    throw redirect("/");
-  }
-
-  return { user };
-};
+  return <div>Hello { user.name }!</div>
+}
 ```
+  </Tab>
+</Tabs>
+
+<Info>
+  We use `name` as an example here, but you can call any user object property from the user fields schema, as shown [below](/integration/react#base-user-fields).
+</Info>
 
 ## Advanced Configuration
 
-Civic Auth is a "low-code" solution, so most configuration takes place via the [dashboard](https://auth.civic.com). Changes you make there will be updated automatically in your integration without any code changes.
+Civic Auth is a "low-code" solution, so all configuration takes place via the [dashboard](https://auth.civic.com). Changes you make there will be updated automatically in your integration without any code changes. The only required parameter you need to provide is the client ID.
 
-You can customize the library according to your React Router 7 app's needs. Configure options when calling `createRouteHandlers`:
+The integration provides additional run-time settings and hooks that you can use to customize the library's integration with your own app. If you need any of these, you can add them to the CivicAuthProvider as follows:
 
-```ts app/routes/auth.$.tsx
-import { createRouteHandlers } from "@civic/auth/remix";
+```ts
+<CivicAuthProvider
+  clientId="YOUR CLIENT ID"
+  ...other configuration
+>
+```
+See below for the list of all configuration options
 
-const { createAuthLoader, getUser } = createRouteHandlers({
-  clientId: "YOUR_CLIENT_ID",
-  loginSuccessUrl: "/myCustomSuccessEndpoint",
-  callbackUrl: "/api/myroute/callback",
-  logoutUrl: "/goodbye",
-  baseUrl: "https://myapp.com",
-});
+| Field       | Required | Default    | Example                                                                                        | Description                                                                                                                                                                                                                                                                                                                                                                                      |
+|-------------|----------|------------|------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| clientId    | Yes      | -          | `2cc5633d-2c92-48da-86aa-449634f274b9`                                                         | The key obtained on signup to [auth.civic.com](https://auth.civic.com)                                                                                                                                                                                                                                                                                                                           |
+| nonce       | No       | -          | 1234                                                                                           | A single-use ID used during login, binding a login token with a given client. Needed in advanced authentication processes only                                                                                                                                                                                                                                                                   |
+| onSignIn    | No       | -          | `(error?: Error) => {  if (error) {     // handle error  } else {// handle successful login}}` | A hook that executes after a sign-in attempt, whether successful or not.                                                                                                                                                                                                                                                                                                                         |
+| onSignOut   | No       | -          | ```() => { // handle signout }```                                                              | A hook that executes after a user logs out.                                                                                                                                                                                                                                                                                                                                                      |
+| redirectUrl | No       | currentURL | /authenticating                                                                                | An override for the page that OAuth will redirect to to perform token-exchange. By default Civic will redirect to the current URL and Authentication will be finished by the Civic provider automatically. Only use if you'd like to have some custom display or logic during OAuth token-exchange. The redirect page must have the CivicAuthProvider running in order to finish authentication. |
+| iframeMode  | No       | modal      | iframeMode=\{"embedded"}                                                                       | Set to `embedded` if you want to embed the login iframe in your app rather than opening the iframe in a modal. See [Embedded Login Iframe section](/integration/react#embedded-login-iframe) below.                                                                                                                                                                                         |
+| displayMode | No       | iFrame     | "iframe" \| "redirect" \| "new\_tab"                                                           | **"iframe"**: Authentication happens in an embedded window within your current page.<br/>**"redirect"**: Full page navigation to the auth server and back to your site after completion.<br/>**"new\_tab"**: Opens auth flow in a new browser tab, returning to original tab after completion.                                                                                                   |
+
+### Display Mode
+
+The display mode indicates where the Civic login UI will be displayed. The following display modes are supported:
+
+* `iframe` (default): the UI loads in an iframe that shows in an overlay on top of the existing page content
+
+* `redirect`: the UI redirects the current URL to a Civic login screen, then redirects back to your site when login is complete
+
+* `new_tab`: the UI opens in a new tab or popup window (depending on browser preferences), and after login is complete, the tab or popup closes to return the user to your site
+
+## API
+
+### User Context
+
+The full user context object (provided by `useUser`) looks like this:
+
+```js
+{
+  user: User | null;
+  // these are the OAuth tokens created during authentication
+  idToken?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  forwardedTokens?: ForwardedTokens;
+  // functions and flags for UI and signIn/signOut
+  isLoading: boolean;
+  authStatus: AuthStatus;
+  error: Error | null;
+  signIn: (displayMode?: DisplayMode) => Promise<void>;
+  signOut: () => Promise<void>;
+}
 ```
 
-### Configuration Options
+#### AuthStatus
 
-| Field             | Required | Default          | Example                                | Description                                                                                                                                                                                                                                                                                                                                 |
-| ----------------- | -------- | ---------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `clientId`        | Yes      | -                | `2cc5633d-2c92-48da-86aa-449634f274b9` | The key obtained on signup to [auth.civic.com](https://auth.civic.com/)                                                                                                                                                                                                                                                                     |
-| `loginSuccessUrl` | No       | -                | `/myCustomSuccessEndpoint`             | In a NextJS app, we will redirect your user to this page once the login is finished. If not set, users will be sent back to the root of your app.                                                                                                                                                                                           |
-| `callbackUrl`     | No       | `/auth/callback` | `/api/myroute/callback`                | If you cannot host Civic’s SDK handlers in the default location, you can specify a custom callback route here. This is where you must attach Civic’s GET handler as described [here](/integration/nextjs#2-create-the-civic-auth-api-route), so Civic can complete the OAuth token exchange. Use `loginSuccessUrl` to redirect after login. |
-| `logoutUrl`       | No       | `/`              | `/goodbye`                             | The path your user will be sent to after a successful log-out.                                                                                                                                                                                                                                                                              |
-| `baseUrl`         | No       | -                | `https://myapp.com`                    | The public-facing base URL for your application. Required when deploying behind reverse proxies (Cloudfront + Vercel, AWS ALB, nginx, etc.) to ensure authentication redirects use the correct public domain instead of internal origins.                                                                                                   |
+The `authStatus` field exposed in the UserContext can be used to update your UI depending on the user's authentication status, i.e. update the UI to show a loader while the user is in the process of authenticating or signing out.
+
+```json
+export enum AuthStatus {
+  AUTHENTICATED = "authenticated",
+  UNAUTHENTICATED = "unauthenticated",
+  AUTHENTICATING = "authenticating",
+  ERROR = "error",
+  SIGNING_OUT = "signing_out",
+}
+```
+
+### User
+
+The `User` object looks like this:
+
+```json
+type BaseUser = {
+  id: string;
+  email?: string;
+  name?: string;
+  picture?: string;
+  given_name?: string;
+  family_name?: string;
+  updated_at?: Date;
+};
+
+type User = BaseUser & T;
+```
+
+Where you can pass extra user attributes to the object that you know will be present in user claims, e.g.
+
+```json
+const UserWithNickName = User<{ nickname: string }>;
+```
+
+Field descriptions:
+
+#### Base User Fields
+
+| Field        |                                                                                                                                           |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| id           | The user's unique ID with respect to your app. You can use this to look up the user in the [dashboard](https://auth.civic.com/dashboard). |
+| email        | The user's email address                                                                                                                  |
+| name         | The user's full name                                                                                                                      |
+| given\_name  | The user's given name                                                                                                                     |
+| family\_name | The user's family name                                                                                                                    |
+| updated\_at  | The time at which the user's profile was most recently updated.                                                                           |
+
+
+#### Token Fields
+
+<Info>
+  Typically developers will not need to interact with the token fields, which are used only for advanced use cases.
+</Info>
+
+| Field           |                                                                                                                                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| idToken         | The OIDC id token, used to request identity information about the user                                                                                                                                  |
+| accessToken     | The OAuth 2.0 access token, allowing a client to make API calls to Civic Auth on behalf of the user.                                                                                                    |
+| refreshToken    | The OAuth 2.0 refresh token, allowing a login session to be extended automatically without requiring user interaction. The Civic Auth SDK handles refresh automatically, so you do not need to do this. |
+| forwardedTokens | If the user authenticated using SSO (single-sign-on login) with a federated OAuth provider such as Google, this contains the OIDC and OAuth 2.0 tokens from that provider.                              |
+
+#### Forwarded Tokens
+
+Use forwardedTokens if you need to make requests to the source provider, such as find out provider-specific information.
+
+An example would be, if a user logged in via Google, using the Google forwarded token to query the Google Groups that the user is a member of.
+
+For example:
+
+```ts
+const googleAccessToken = user.forwardedTokens?.google?.accessToken;
+```
+
+#### Embedded Login Iframe
+
+If you want to have the Login screen open directly on a page without the user having to click on button, you can import the `CivicAuthIframeContainer` component along with the AuthProvider option iframeMode`={"embedded"}`
+
+You just need to ensure that the `CivicAuthIframeContainer` is a child under a `CivicAuthProvider`
+
+<Tabs>
+  <Tab title="Auth">
+```ts App.ts
+import { CivicAuthIframeContainer } from "@civic/auth/react";
+
+const Login = () => {
+  return (
+      <div className="login-container">
+        <CivicAuthIframeContainer />
+      </div>
+  );
+};
+
+const App = () => {
+  return (
+      <CivicAuthProvider
+        clientId={"YOUR CLIENT ID"}
+        iframeMode={"embedded"}
+      >
+        <Login />
+      </CivicAuthProvider>
+  );
+}
+```
+  </Tab>
+  <Tab title="Auth + Web3">
+```ts App.ts
+import { CivicAuthIframeContainer } from "@civic/auth-web3/react";
+
+const Login = () => {
+  return (
+      <div className="login-container">
+        <CivicAuthIframeContainer />
+      </div>
+  );
+};
+
+const App = () => {
+  return (
+      <CivicAuthProvider
+        clientId={"YOUR CLIENT ID"}
+        iframeMode={"embedded"}
+      >
+        <Login />
+      </CivicAuthProvider>
+  );
+}
+```
+  </Tab>
+</Tabs>
+
