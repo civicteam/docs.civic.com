@@ -49,6 +49,7 @@
           "group": "Integration",
           "pages": [
             "integration/react",
+            "integration/react-router",
             "integration/nextjs",
             "integration/vanillajs",
             {
