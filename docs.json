@@ -50,6 +50,7 @@
           "pages": [
             "integration/react",
             "integration/nextjs",
+            "integration/nextjs-llm",
             "integration/vanillajs",
             {
               "group": "Node.JS",
