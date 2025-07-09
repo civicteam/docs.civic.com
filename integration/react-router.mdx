@@ -1,16 +1,19 @@
 ---
 title: "React Router 7"
-icon: "js"
+icon: "/images/rr7/rr_logo_light.svg"
 public: true
 ---
+
+<Info>
+  **React Router 7 (formerly Remix)**: This guide covers React Router 7, which is the evolution of the Remix framework. If you're migrating from Remix, the integration patterns are very similar.
+</Info>
 
 ## Quick Start
 
 Integrate Civic Auth into your React Router 7 application using the following steps (a working example is available in our [github examples repo](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/react-router)):
 
 <Note>
-  **Important**: Make sure your application is using React Router version ^7.0.0 or higher. This guide is specifically
-  designed for React Router 7 (formerly Remix).
+  **Important**: Make sure your application is using React Router version ^7.0.0 or higher.
 </Note>
 
 <Info>
@@ -18,65 +21,30 @@ Integrate Civic Auth into your React Router 7 application using the following st
   plain JS.
 </Info>
 
-<Info>If you plan to use Web3 features, select "Auth + Web3" from the tabs below.</Info>
-
 ### 1. Create Auth Route Handlers
 
 Create a catch-all route to handle all authentication-related requests. This route will manage login, logout, callback, and user data endpoints.
 
 Create `app/routes/auth.$.tsx`:
 
-<Tabs>
-  <Tab title="Auth">
-    ```ts app/routes/auth.$.tsx
-    import { createRouteHandlers } from "@civic/auth/remix";
+```ts app/routes/auth.$.tsx
+import { createRouteHandlers } from "@civic/auth/remix";
 
-    // Create route handlers with your configuration
-    const { createAuthLoader, getUser } = createRouteHandlers({
-      clientId: process.env.CLIENT_ID,
-    });
+// Create route handlers with your configuration
+const { createAuthLoader, getUser } = createRouteHandlers({
+  clientId: process.env.CLIENT_ID,
+});
 
-    /**
-     * Catch-all loader for auth routes
-     */
-    export const loader = createAuthLoader();
+/**
+ * Catch-all loader for auth routes
+ */
+export const loader = createAuthLoader();
 
-    /**
-     * Export getUser function for use in other parts of the app
-     */
-    export { getUser };
-    ```
-
-  </Tab>
-  <Tab title="Auth + Web3">
-    ```ts app/routes/auth.$.tsx
-    import { createRouteHandlers } from "@civic/auth-web3/remix";
-
-    // Create route handlers with your configuration
-    const { createAuthLoader, getUser } = createRouteHandlers({
-      clientId: process.env.CLIENT_ID,
-      oauthServer: process.env.OAUTH_SERVER,
-      callbackUrl: process.env.CALLBACK_URL || "http://localhost:5173/auth/callback",
-      loginUrl: process.env.LOGIN_URL || "/auth/login",
-      logoutUrl: process.env.LOGOUT_URL || "/auth/logout",
-      refreshUrl: process.env.REFRESH_URL || "/auth/refresh",
-      logoutCallbackUrl: process.env.LOGOUT_CALLBACK_URL || "/",
-      scope: process.env.SCOPE || "openid profile email",
-    });
-
-    /**
-     * Catch-all loader for auth routes
-     */
-    export const loader = createAuthLoader();
-
-    /**
-     * Export getUser function for use in other parts of the app
-     */
-    export { getUser };
-    ```
-
-  </Tab>
-</Tabs>
+/**
+ * Export getUser function for use in other parts of the app
+ */
+export { getUser };
+```
 
 ### 2. Set Up Root Loader
 
@@ -84,177 +52,51 @@ Configure your root route to provide user data to all routes in your application
 
 Update `app/root.tsx`:
 
-<Tabs>
-  <Tab title="Auth">
-    ```tsx app/root.tsx
-    import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-    import type { LinksFunction, LoaderFunction } from "react-router";
-    import "./tailwind.css"; // Your CSS imports
+```tsx app/root.tsx
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import type { LinksFunction, LoaderFunction } from "react-router";
+import "./tailwind.css"; // Your CSS imports
 
-    import { getUser } from "~/routes/auth.$";
+import { getUser } from "~/routes/auth.$";
 
-    export const links: LinksFunction = () => [
-      // Your link definitions
-    ];
+export const links: LinksFunction = () => [
+  // Your link definitions
+];
 
-    export const loader: LoaderFunction = async ({ request }) => {
-      const user = await getUser(request);
-      return {
-        // You need this for the useUser hook to work
-        user,
-      };
-    };
+export const loader: LoaderFunction = async ({ request }) => {
+  const user = await getUser(request);
+  return {
+    // You need this for the useUser hook to work
+    user,
+  };
+};
 
-    function Layout({ children }: { children: React.ReactNode }) {
-      return (
-        <html lang="en">
-          <head>
-            <meta charSet="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <Meta />
-            <Links />
-          </head>
-          <body>
-            {children}
-            <ScrollRestoration />
-            <Scripts />
-          </body>
-        </html>
-      );
-    }
+function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {children}
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
 
-    export default function App() {
-      return (
-        <Layout>
-          <Outlet />
-        </Layout>
-      );
-    }
-    ```
-
-  </Tab>
-  <Tab title="Auth + Web3">
-    ```tsx app/root.tsx
-    import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-    import type { LinksFunction, LoaderFunction } from "react-router";
-    import "./tailwind.css"; // Your CSS imports
-
-    import { getUser } from "~/routes/auth.$";
-
-    export const links: LinksFunction = () => [
-      // Your link definitions
-    ];
-
-    export const loader: LoaderFunction = async ({ request }) => {
-      const user = await getUser(request);
-      return {
-        // You need this for the useUser hook to work
-        user,
-      };
-    };
-
-    function Layout({ children }: { children: React.ReactNode }) {
-      return (
-        <html lang="en">
-          <head>
-            <meta charSet="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <Meta />
-            <Links />
-          </head>
-          <body>
-            {children}
-            <ScrollRestoration />
-            <Scripts />
-          </body>
-        </html>
-      );
-    }
-
-    export default function App() {
-      return (
-        <Layout>
-          <Outlet />
-        </Layout>
-      );
-    }
-    ```
-
-  </Tab>
-</Tabs>
-
-### 3. Protecting Routes
-
-To protect routes that require authentication, check for user data in your route loaders and redirect unauthenticated users.
-
-Example protected route `app/routes/protected.tsx`:
-
-<Tabs>
-  <Tab title="Auth">
-    ```tsx app/routes/protected.tsx
-    import { data, redirect } from "react-router";
-    import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-    import { getUser } from "./auth.$";
-
-    export const meta: MetaFunction = () => {
-      return [{ title: "Protected Page" }];
-    };
-
-    export const loader = async ({ request }: LoaderFunctionArgs) => {
-      const user = await getUser(request);
-
-      if (!user) {
-        // Redirect to home or login page
-        return redirect("/");
-      }
-
-      return data({ user });
-    };
-
-    export default function ProtectedPage() {
-      return (
-        <div>
-          <h1>Protected Content</h1>
-          <p>This page requires authentication to access.</p>
-        </div>
-      );
-    }
-    ```
-
-  </Tab>
-  <Tab title="Auth + Web3">
-    ```tsx app/routes/protected.tsx
-    import { data, redirect } from "react-router";
-    import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-    import { getUser } from "./auth.$";
-
-    export const meta: MetaFunction = () => {
-      return [{ title: "Protected Page" }];
-    };
-
-    export const loader = async ({ request }: LoaderFunctionArgs) => {
-      const user = await getUser(request);
-
-      if (!user) {
-        // Redirect to home or login page
-        return redirect("/");
-      }
-
-      return data({ user });
-    };
-
-    export default function ProtectedPage() {
-      return (
-        <div>
-          <h1>Protected Content</h1>
-          <p>This page requires authentication to access.</p>
-        </div>
-      );
-    }
-    ```
-
-  </Tab>
-</Tabs>
+export default function App() {
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
+}
+```
 
 ## Usage
 
@@ -266,204 +108,226 @@ The React Router 7 integration provides several components and hooks for fronten
 
 The `UserButton` component provides a complete sign-in/sign-out experience:
 
-<Tabs>
-  <Tab title="Auth">
-    ```tsx app/routes/_index.tsx
-    import { useLoaderData } from "react-router";
-    import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-    import { getUser } from "~/routes/auth.$";
-    import { UserButton } from "@civic/auth/remix/components/UserButton";
+```tsx app/routes/_index.tsx
+import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import { getUser } from "~/routes/auth.$";
+import { UserButton } from "@civic/auth/remix/components/UserButton";
 
-    export const meta: MetaFunction = () => {
-      return [{ title: "My App" }];
-    };
+export const meta: MetaFunction = () => {
+  return [{ title: "My App" }];
+};
 
-    export async function loader({ request }: LoaderFunctionArgs) {
-      const user = await getUser(request);
-      return { user };
-    }
+export async function loader({ request }: LoaderFunctionArgs) {
+  const user = await getUser(request);
+  return { user };
+}
 
-    export default function Index() {
-      const { user } = useLoaderData<typeof loader>();
+export default function Index() {
+  const { user } = useLoaderData<typeof loader>();
 
-      return (
+  return (
+    <div>
+      <h1>My App</h1>
+      <UserButton
+        onSignIn={(user) => console.log("User signed in", user)}
+        onSignOut={() => console.log("User signed out")}
+      />
+
+      {user && (
         <div>
-          <h1>My App</h1>
-          <UserButton
-            onSignIn={(user) => console.log("User signed in", user)}
-            onSignOut={() => console.log("User signed out")}
-          />
-
-          {user && (
-            <div>
-              <h2>Welcome, {user.name}!</h2>
-              <p>Email: {user.email}</p>
-            </div>
-          )}
+          <h2>Welcome, {user.name}!</h2>
+          <p>Email: {user.email}</p>
         </div>
-      );
-    }
-    ```
-
-  </Tab>
-  <Tab title="Auth + Web3">
-    ```tsx app/routes/_index.tsx
-    import { useLoaderData } from "react-router";
-    import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-    import { getUser } from "~/routes/auth.$";
-    import { UserButton } from "@civic/auth-web3/remix/components/UserButton";
-
-    export const meta: MetaFunction = () => {
-      return [{ title: "My App" }];
-    };
-
-    export async function loader({ request }: LoaderFunctionArgs) {
-      const user = await getUser(request);
-      return { user };
-    }
-
-    export default function Index() {
-      const { user } = useLoaderData<typeof loader>();
-
-      return (
-        <div>
-          <h1>My App</h1>
-          <UserButton
-            onSignIn={(user) => console.log("User signed in", user)}
-            onSignOut={() => console.log("User signed out")}
-          />
-
-          {user && (
-            <div>
-              <h2>Welcome, {user.name}!</h2>
-              <p>Email: {user.email}</p>
-            </div>
-          )}
-        </div>
-      );
-    }
-    ```
-
-  </Tab>
-</Tabs>
+      )}
+    </div>
+  );
+}
+```
 
 #### useUser Hook
 
 For accessing user information in components:
 
-<Tabs>
-  <Tab title="Auth">
-    ```tsx MyComponent.tsx
-    import { useUser } from "@civic/auth/remix";
+```tsx MyComponent.tsx
+import { useUser } from "@civic/auth/remix";
 
-    export function MyComponent() {
-      const { user, isLoggedIn } = useUser();
+export function MyComponent() {
+  const { user, isLoggedIn } = useUser();
 
-      if (!isLoggedIn) {
-        return <div>Please sign in</div>;
-      }
+  if (!isLoggedIn) {
+    return <div>Please sign in</div>;
+  }
 
-      return <div>Hello {user.name}!</div>;
-    }
-    ```
-
-  </Tab>
-  <Tab title="Auth + Web3">
-    ```tsx MyComponent.tsx
-    import { useUser } from "@civic/auth-web3/remix";
-
-    export function MyComponent() {
-      const { user, isLoggedIn } = useUser();
-
-      if (!isLoggedIn) {
-        return <div>Please sign in</div>;
-      }
-
-      return <div>Hello {user.name}!</div>;
-    }
-    ```
-
-  </Tab>
-</Tabs>
+  return <div>Hello {user.name}!</div>;
+}
+```
 
 #### Custom Authentication Logic
 
 For custom sign-in buttons and authentication flows:
 
-<Tabs>
-  <Tab title="Auth">
-    ```tsx CustomSignIn.tsx
-    import { startFrontendAuth, logout } from "@civic/auth/remix";
+```tsx CustomSignIn.tsx
+import { useCallback } from "react";
+import { useUser } from "@civic/auth/remix";
 
-    export function CustomSignIn() {
-      const handleSignIn = async () => {
-        try {
-          await startFrontendAuth({
-            clientId: "YOUR_CLIENT_ID",
-            displayMode: "iframe", // or "redirect", "new_tab", "embedded"
-          });
-          // Page will revalidate automatically after successful auth
-        } catch (error) {
-          console.error("Sign-in failed:", error);
-        }
-      };
+export function CustomSignIn() {
+  const { signIn, signOut } = useUser();
 
-      const handleSignOut = async () => {
-        await logout();
-      };
+  const doSignIn = useCallback(() => {
+    console.log("Starting sign-in process");
+    signIn()
+      .then(() => {
+        console.log("Sign-in completed successfully");
+      })
+      .catch((error) => {
+        console.error("Sign-in failed:", error);
+      });
+  }, [signIn]);
 
-      return (
-        <div>
-          <button onClick={handleSignIn}>
-            Sign In
-          </button>
-          <button onClick={handleSignOut}>
-            Sign Out
-          </button>
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
+  return (
+    <div>
+      <button onClick={doSignIn}>Sign In</button>
+      <button onClick={handleSignOut}>Sign Out</button>
+    </div>
+  );
+}
+```
+
+## Protected Routes
+
+React Router 7 supports route-level authentication using loaders. Here's how to create protected routes that require user authentication:
+
+### Creating a Protected Route
+
+Create a protected route loader that checks authentication and redirects unauthenticated users:
+
+```tsx app/routes/protected._index.tsx
+import { data, redirect, Outlet } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import { getUser } from "./auth.$";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "Protected Page - Civic Auth Demo" }];
+};
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const user = await getUser(request);
+
+  if (!user) {
+    // Redirect to home page if user is not authenticated
+    return redirect("/");
+  }
+
+  return data({ user });
+};
+
+export default function ProtectedPage() {
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <Outlet />
+    </div>
+  );
+}
+```
+
+### Protected Route Layout
+
+Create the protected route content that displays to authenticated users:
+
+```tsx app/routes/protected.tsx
+import { Link } from "react-router";
+import type { MetaFunction } from "react-router";
+import { useUser } from "@civic/auth/remix/useUser";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "Protected Page - Civic Auth Demo" }];
+};
+
+export default function ProtectedLayout() {
+  const { user } = useUser();
+
+  return (
+    <div className="flex h-screen items-center justify-center text-white">
+      <div className="flex flex-col items-center gap-8 p-8 border rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold">Protected Page</h1>
+
+        <div className="text-center">
+          <p className="mb-4">Welcome to this protected page, {user?.name || "User"}!</p>
+          <p className="text-gray-600 mb-6">This content is only visible to authenticated users.</p>
         </div>
-      );
-    }
-    ```
 
-  </Tab>
-  <Tab title="Auth + Web3">
-    ```tsx CustomSignIn.tsx
-    import { useUser } from "@civic/auth/remix";
-
-    export function CustomSignIn() {
-
-        const { signIn, signOut } = useUser();
-
-      const doSignIn = useCallback(() => {
-      console.log("Starting sign-in process");
-      signIn()
-        .then(() => {
-          console.log("Sign-in completed successfully");
-        })
-        .catch((error) => {
-          console.error("Sign-in failed:", error);
-        });
-    }, [signIn]);
-
-      const handleSignOut = async () => {
-        await logout();
-      };
-
-      return (
-        <div>
-          <button onClick={handleSignIn}>
-            Sign In
-          </button>
-          <button onClick={handleSignOut}>
-            Sign Out
-          </button>
+        <div className="flex gap-4">
+          <Link to="/" className="px-4 py-2 rounded hover:bg-gray-300">
+            Back to Home
+          </Link>
+          <Link to="/auth/logout" className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+            Logout
+          </Link>
         </div>
-      );
-    }
-    ```
+      </div>
+    </div>
+  );
+}
+```
 
-  </Tab>
-</Tabs>
+### How It Works
+
+1. **Route Protection**: The `protected._index.tsx` loader runs on the server before rendering the page
+2. **Authentication Check**: It uses `getUser(request)` to check if the user is authenticated
+3. **Redirect Logic**: If no user is found, it redirects to the home page using `redirect("/")`
+4. **User Data**: If authenticated, it passes the user data to the route
+5. **Protected Content**: The `protected.tsx` layout displays content only to authenticated users
+
+### Alternative Protection Patterns
+
+You can also create a reusable protection utility:
+
+```tsx app/utils/requireAuth.ts
+import { redirect } from "react-router";
+import { getUser } from "~/routes/auth.$";
+
+export async function requireAuth(request: Request) {
+  const user = await getUser(request);
+
+  if (!user) {
+    throw redirect("/auth/login");
+  }
+
+  return user;
+}
+```
+
+Then use it in any protected route:
+
+```tsx app/routes/admin.tsx
+import type { LoaderFunctionArgs } from "react-router";
+import { requireAuth } from "~/utils/requireAuth";
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const user = await requireAuth(request);
+
+  // Additional admin-specific checks can go here
+  // Example: Check if user has admin privileges (implement according to your needs)
+  if (!isUserAdmin(user.email)) {
+    throw redirect("/");
+  }
+
+  return { user };
+};
+
+// Example helper function - implement according to your business logic
+function isUserAdmin(email: string): boolean {
+  // This is pseudo code - implement your own logic here
+  // e.g., check against a list of admin emails, database lookup, etc.
+  const adminEmails = ["admin@yourcompany.com"];
+  return adminEmails.includes(email);
+}
+```
 
 ## Advanced Configuration
 
@@ -471,108 +335,24 @@ Civic Auth is a "low-code" solution, so most configuration takes place via the [
 
 You can customize the library according to your React Router 7 app's needs. Configure options when calling `createRouteHandlers`:
 
-<Tabs>
-  <Tab title="Auth">
-    ```ts app/routes/auth.$.tsx
-    import { createRouteHandlers } from "@civic/auth/remix";
+```ts app/routes/auth.$.tsx
+import { createRouteHandlers } from "@civic/auth/remix";
 
-    const { createAuthLoader, getUser } = createRouteHandlers({
-      clientId: "YOUR_CLIENT_ID",
-      oauthServer: "https://auth.civic.com/oauth",
-      callbackUrl: "https://myapp.com/auth/callback",
-      loginUrl: "/auth/login",
-      logoutUrl: "/auth/logout",
-      refreshUrl: "/auth/refresh",
-      logoutCallbackUrl: "/goodbye",
-      scope: "openid profile email",
-      include: ["/admin/*", "/dashboard/*"], // Routes requiring auth
-      exclude: ["/public/*", "/api/health"], // Public routes
-
-      // Cookie configuration
-      cookies: {
-        tokens: {
-          secure: true,
-          httpOnly: true,
-          sameSite: "none", // For iframe compatibility
-          maxAge: 3600, // 1 hour
-        },
-        user: {
-          secure: true,
-          httpOnly: false,
-          sameSite: "lax",
-          maxAge: 3600,
-        },
-      },
-
-      // Frontend integration options
-      frontend: {
-        enabled: true,
-        defaultDisplayMode: "iframe",
-        authProcessTimeout: 60000,
-        corsOrigins: ["http://localhost:3000", "https://myapp.com"],
-        iframeCompatibleCookies: true,
-      },
-
-      // Logging configuration
-      logging: {
-        enableFor: "@civic/auth:*",
-      },
-    });
-    ```
-
-  </Tab>
-  <Tab title="Auth + Web3">
-    ```ts app/routes/auth.$.tsx
-    import { createRouteHandlers } from "@civic/auth-web3/remix";
-
-    const { createAuthLoader, getUser } = createRouteHandlers({
-      clientId: "YOUR_CLIENT_ID",
-      oauthServer: "https://auth.civic.com/oauth",
-      callbackUrl: "https://myapp.com/auth/callback",
-      loginUrl: "/auth/login",
-      logoutUrl: "/auth/logout",
-      refreshUrl: "/auth/refresh",
-      logoutCallbackUrl: "/goodbye",
-      scope: "openid profile email",
-      include: ["/admin/*", "/dashboard/*"], // Routes requiring auth
-      exclude: ["/public/*", "/api/health"], // Public routes
-
-      // Frontend integration options
-      frontend: {
-        enabled: true,
-        defaultDisplayMode: "iframe",
-        authProcessTimeout: 60000,
-        corsOrigins: ["http://localhost:3000", "https://myapp.com"],
-        iframeCompatibleCookies: true,
-      },
-
-      // Logging configuration
-      logging: {
-        enableFor: "@civic/auth:*",
-      },
-    });
-    ```
-
-  </Tab>
-</Tabs>
+const { createAuthLoader, getUser } = createRouteHandlers({
+  clientId: "YOUR_CLIENT_ID",
+  loginSuccessUrl: "/myCustomSuccessEndpoint",
+  callbackUrl: "/api/myroute/callback",
+  logoutUrl: "/goodbye",
+  baseUrl: "https://myapp.com",
+});
+```
 
 ### Configuration Options
 
-| Field                         | Required | Default                        | Example                                | Description                                                                                                           |
-| ----------------------------- | -------- | ------------------------------ | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `clientId`                    | Yes      | -                              | `2cc5633d-2c92-48da-86aa-449634f274b9` | The key obtained on signup to [auth.civic.com](https://auth.civic.com/)                                               |
-| `oauthServer`                 | No       | `https://auth.civic.com/oauth` | `https://auth.civic.com/oauth`         | OAuth server URL                                                                                                      |
-| `callbackUrl`                 | Yes      | -                              | `https://myapp.com/auth/callback`      | OAuth callback URL where users return after authentication                                                            |
-| `loginUrl`                    | No       | `/auth/login`                  | `/auth/signin`                         | Login endpoint path                                                                                                   |
-| `logoutUrl`                   | No       | `/auth/logout`                 | `/auth/signout`                        | Logout endpoint path                                                                                                  |
-| `refreshUrl`                  | No       | `/auth/refresh`                | `/auth/token/refresh`                  | Token refresh endpoint path                                                                                           |
-| `logoutCallbackUrl`           | No       | `/`                            | `/goodbye`                             | The path users are sent to after successful logout                                                                    |
-| `scope`                       | No       | `openid profile email`         | `openid profile email offline_access`  | OAuth scope                                                                                                           |
-| `include`                     | No       | `["/"]`                        | `["/admin/*", "/dashboard/*"]`         | An array of path [globs](https://man7.org/linux/man-pages/man7/glob.7.html) that require authentication               |
-| `exclude`                     | No       | Auth routes                    | `["/public/*", "/api/health"]`         | An array of path [globs](https://man7.org/linux/man-pages/man7/glob.7.html) excluded from authentication requirements |
-| `cookies`                     | No       | Secure defaults                | See example above                      | Cookie configuration for tokens and user data                                                                         |
-| `frontend.enabled`            | No       | `true`                         | `false`                                | Enable frontend integration mode for iframe/embedded authentication                                                   |
-| `frontend.defaultDisplayMode` | No       | `iframe`                       | `redirect`                             | Default authentication display mode: `iframe`, `redirect`, `new_tab`, or `embedded`                                   |
-| `frontend.corsOrigins`        | No       | `["http://localhost:3000"]`    | `["https://myapp.com"]`                | CORS origins allowed for frontend integration                                                                         |
-| `logging.enableFor`           | No       | -                              | `@civic/auth:*`                        | Enable logging for debug namespaces                                                                                   |
-
+| Field             | Required | Default          | Example                                | Description                                                                                                                                                                                                                                                                                                                                 |
+| ----------------- | -------- | ---------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`        | Yes      | -                | `2cc5633d-2c92-48da-86aa-449634f274b9` | The key obtained on signup to [auth.civic.com](https://auth.civic.com/)                                                                                                                                                                                                                                                                     |
+| `loginSuccessUrl` | No       | -                | `/myCustomSuccessEndpoint`             | In a NextJS app, we will redirect your user to this page once the login is finished. If not set, users will be sent back to the root of your app.                                                                                                                                                                                           |
+| `callbackUrl`     | No       | `/auth/callback` | `/api/myroute/callback`                | If you cannot host Civic’s SDK handlers in the default location, you can specify a custom callback route here. This is where you must attach Civic’s GET handler as described [here](/integration/nextjs#2-create-the-civic-auth-api-route), so Civic can complete the OAuth token exchange. Use `loginSuccessUrl` to redirect after login. |
+| `logoutUrl`       | No       | `/`              | `/goodbye`                             | The path your user will be sent to after a successful log-out.                                                                                                                                                                                                                                                                              |
+| `baseUrl`         | No       | -                | `https://myapp.com`                    | The public-facing base URL for your application. Required when deploying behind reverse proxies (Cloudfront + Vercel, AWS ALB, nginx, etc.) to ensure authentication redirects use the correct public domain instead of internal origins.                                                                                                   |
