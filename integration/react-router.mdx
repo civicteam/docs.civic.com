@@ -298,6 +298,12 @@ export async function requireAuth(request: Request) {
     throw redirect("/auth/login");
   }
 
+  // Additional admin-specific checks can go here
+  // Example: Check if user has admin privileges (implement according to your needs)
+  if (!isUserAdmin(user.email)) {
+    throw redirect("/");
+  }
+
   return user;
 }
 ```
@@ -311,22 +317,9 @@ import { requireAuth } from "~/utils/requireAuth";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const user = await requireAuth(request);
 
-  // Additional admin-specific checks can go here
-  // Example: Check if user has admin privileges (implement according to your needs)
-  if (!isUserAdmin(user.email)) {
-    throw redirect("/");
-  }
-
   return { user };
 };
 
-// Example helper function - implement according to your business logic
-function isUserAdmin(email: string): boolean {
-  // This is pseudo code - implement your own logic here
-  // e.g., check against a list of admin emails, database lookup, etc.
-  const adminEmails = ["admin@yourcompany.com"];
-  return adminEmails.includes(email);
-}
 ```
 
 ## Advanced Configuration
