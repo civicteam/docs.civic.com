@@ -9,7 +9,7 @@ public: true
   <Accordion title="How do I get a new Client ID?">
     To obtain a new Client ID, sign up at [auth.civic.com](https://auth.civic.com/) to register your application. You can find your unique Client ID to use when integrating our API.
 
-    **For server-side applications:** If you need client secret authentication for backend services, see our [Authentication Flows guide](/overview/authentication-flows) for details on when and how to request client secret support.
+    **For server-side applications:** If you need client secret authentication for backend services, you can generate one directly in your dashboard under the Security tab. See our [Authentication Flows guide](/overview/authentication-flows) for details on when and how to use client secrets.
 
     <Frame>
       <img src="/images/auth/image-1.png"/>
@@ -21,7 +21,7 @@ public: true
 
     We also support client secrets for server-side applications that require traditional OAuth 2.0 compatibility or want to achieve maximum security by combining it with PKCE.
 
-    To see which method is right for you, see our complete [Authentication Flows guide](/overview/authentication-flows). If you need a client secret, please contact [Civic support](mailto:support@civic.com).
+    To see which method is right for you, see our complete [Authentication Flows guide](/overview/authentication-flows). If you need a client secret, you can generate one directly in your dashboard by navigating to the Security tab and clicking "Generate Client Secret". **Important:** The client secret is only displayed once upon generation, so make sure to copy and securely store it immediately. You can always regenerate a new client secret if needed.
   </Accordion>
   <Accordion title="How do I terminate keys?">
 

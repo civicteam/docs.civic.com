@@ -54,7 +54,7 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
     ```javascript
     const config = {
       clientId: "your_client_id",
-      clientSecret: "your_client_secret", // Contact Civic for this
+      clientSecret: "your_client_secret", // Generate in dashboard Security tab
       pkce: false, // Disable PKCE for traditional OAuth flow
       redirectUrl: "https://yourapp.com/callback"
     }
@@ -80,7 +80,7 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
     ```javascript
     const config = {
       clientId: "your_client_id",
-      clientSecret: "your_client_secret", // Contact Civic for this
+      clientSecret: "your_client_secret", // Generate in dashboard Security tab
       pkce: true, // Enable PKCE alongside client secret
       redirectUrl: "https://yourapp.com/callback"
     }
@@ -117,7 +117,7 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
 ## Getting Client Secrets
 
 <Info>
-If you need a client secret, contact [support@civic.com](mailto:support@civic.com).
+To generate a client secret, log into your dashboard at [auth.civic.com](https://auth.civic.com), navigate to the Security tab, and click "Generate Client Secret". **Important:** The client secret is only displayed once upon generation, so make sure to copy and securely store it immediately. You can always regenerate a new client secret if needed.
 </Info>
 
 <Warning>
@@ -168,7 +168,7 @@ const civicAuth = new CivicAuth(storage, config);
 | Parameter | PKCE Only (Default) | Client Secret Only | PKCE + Client Secret (Max Security) | Notes |
 | :--- | :--- | :--- | :--- | :--- |
 | `clientId` | Required | Required | Required | Your application's Client ID. |
-| `clientSecret` | Not used | Required | Required | Contact support to get a client secret. |
+| `clientSecret` | Not used | Required | Required | Generate in dashboard Security tab. |
 | `pkce` | `true` (default) | `false` | `true` | Enables or disables PKCE. |
 | `redirectUrl` | Required | Required | Required | The URL to redirect to after login. |
 | `postLogoutRedirectUrl`| Optional | Optional | Optional | The URL to redirect to after logout. |
