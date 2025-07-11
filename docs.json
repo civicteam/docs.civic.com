@@ -38,11 +38,11 @@
           "group":  "Overview",
           "pages": [
             "index",
-            "overview/authentication-flows",
             "overview/pricing",
             "overview/bring-your-app-to-production",
             "overview/login-options",
             "overview/faqs",
+            "overview/authentication-flows",
             "overview/changelog"
           ]
         },
