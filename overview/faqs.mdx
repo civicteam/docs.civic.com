@@ -7,12 +7,21 @@ public: true
 
 <AccordionGroup>
   <Accordion title="How do I get a new Client ID?">
-    To obtain a new Client ID, sign up at [auth.civic.com](https://auth.civic.com/) to register your application. You can find your unique Client ID to use when integrating our API. Civic Auth uses Proof Key for Code Exchange (PKCE) to securely authenticate requests, so a client secret is not required for frontend integrations.
+    To obtain a new Client ID, sign up at [auth.civic.com](https://auth.civic.com/) to register your application. You can find your unique Client ID to use when integrating our API.
+
+    **For server-side applications:** If you need client secret authentication for backend services, you can generate one directly in your dashboard under the Security tab. See our [Authentication Flows guide](/overview/authentication-flows) for details on when and how to use client secrets.
 
     <Frame>
       <img src="/images/auth/image-1.png"/>
     </Frame>
 
+  </Accordion>
+  <Accordion title="Do I need a client secret?">
+    **Most applications should use our default PKCE authentication flow**, as it provides strong security for modern web and mobile apps without requiring you to manage client secrets.
+
+    We also support client secrets for server-side applications that require traditional OAuth 2.0 compatibility or want to achieve maximum security by combining it with PKCE.
+
+    To see which method is right for you, see our complete [Authentication Flows guide](/overview/authentication-flows). If you need a client secret, you can generate one directly in your dashboard by navigating to the Security tab and clicking "Generate Client Secret". **Important:** The client secret is only displayed once upon generation, so make sure to copy and securely store it immediately. You can always regenerate a new client secret if needed.
   </Accordion>
   <Accordion title="How do I terminate keys?">
 
@@ -46,7 +55,7 @@ public: true
   </Accordion>
   <Accordion title="How are these wallets managed?">
 
-    Civic Auth wallets are provided through a partnership with metakeep.xyz. These wallets are Externally Owned Accounts (EOAs), which are authenticated by a private key that is held by the Metakeep infrastructure. They are linked to a user’s email address. Users verify ownership of their email by entering a unique email code. Wallet management occurs securely through client-side encryption using keys from our wallet provider.
+    Civic Auth wallets are provided through a partnership with metakeep.xyz. These wallets are Externally Owned Accounts (EOAs), which are authenticated by a private key that is held by the Metakeep infrastructure. They are linked to a user's email address. Users verify ownership of their email by entering a unique email code. Wallet management occurs securely through client-side encryption using keys from our wallet provider.
 
   </Accordion>
   <Accordion title="Does Civic own these wallets?">
@@ -93,7 +102,7 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
     Check your console and network tabs for errors.
   </Step>
   <Step>
-    If you’re using an application that's already in production, ensure that all domains or redirect URLs are correctly registered in your app’s configuration. Civic Auth will only redirect to registered domains after login or logout.
+    If you're using an application that's already in production, ensure that all domains or redirect URLs are correctly registered in your app's configuration. Civic Auth will only redirect to registered domains after login or logout.
   </Step>
 </Steps>
 
@@ -117,12 +126,12 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
   </Accordion>
   <Accordion title="How do I invite team members?">
 
-    While Civic Auth doesn’t have this feature yet, we are actively working to include it in a future version of Civic Auth.
+    While Civic Auth doesn't have this feature yet, we are actively working to include it in a future version of Civic Auth.
 
   </Accordion>
   <Accordion title="How do I customize my logo?">
 
-    While Civic Auth doesn’t have this feature yet, we are actively working to include it in a future version of Civic Auth.
+    While Civic Auth doesn't have this feature yet, we are actively working to include it in a future version of Civic Auth.
 
   </Accordion>
   <Accordion title="Can I restrict certain wallets or block specific users?">
