@@ -27,38 +27,90 @@ public: true
 
 ## 2. Configure your App
 
-Your app will need the following configuration:
+### Minimal Configuration
 
 ```ts
 const config = {
-  clientId: // Client ID from auth.civic.com
-  redirectUrl: 'http://localhost:3000/auth/callback', // change to your domain when deploying
-  postLogoutRedirectUrl: 'http://localhost:3000/' // The postLogoutRedirectUrl is the URL where the user will be redirected after successfully logging out from Civic's auth server.
+  clientId: "YOUR_CLIENT_ID", // Client ID from auth.civic.com
+  redirectUrl: 'https://your-backend.com/auth/callback' // change to your domain when deploying
 };
 ```
 
-Note: `redirectUrl` and `postLogoutRedirectUrl` must be absolute URLs.
+Note: All URLs must be absolute URLs.
 
-## 3. Set up Cookies
+## 3. Set up CORS (for frontend integration)
+
+If your frontend runs on a different domain/port, configure CORS to enable cross-origin cookie sharing:
+
+```ts
+import { cors } from 'hono/cors';
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173", // frontend (local development)
+      "http://localhost:3020", // backend (local development)
+      "https://abc123.ngrok.io", // ngrok tunnel (for cross-origin testing)
+      "https://your-frontend.com", // production frontend
+    ],
+    credentials: true, // Allow cookies to be sent cross-origin
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    exposeHeaders: ['Set-Cookie'],
+  }),
+);
+```
+
+**Important:** Cross-origin cookies (different ports/domains) require HTTPS to work properly. For local development with separate frontend/backend ports, use [ngrok](https://ngrok.com/) or similar service to create HTTPS tunnels:
+
+```bash
+# Terminal 1: Start your backend
+npm start
+
+# Terminal 2: Create HTTPS tunnel to your backend
+ngrok http 3020
+# Use the https://abc123.ngrok.io URL as your backend URL
+
+# Terminal 3: Create HTTPS tunnel to your frontend
+ngrok http 5173
+# Use the https://xyz456.ngrok.io URL as your frontend URL
+```
+
+The cookie storage automatically detects HTTPS and sets `secure: true` + `sameSite: "none"` for cross-origin compatibility. Without HTTPS, cross-origin cookies will not be saved by the browser.
+
+## 4. Set up Cookies
 
 Civic Auth uses cookies for storing the login state by default
 
 ```ts
 import { Context } from 'hono';
-import { getCookie, setCookie } from 'hono/cookie';
+import { getCookie, setCookie, deleteCookie } from 'hono/cookie';
 import { CookieStorage, CivicAuth } from '@civic/auth/server';
 
 class HonoCookieStorage extends CookieStorage {
   constructor(private c: Context) {
-    super();
+    // Detect if we're running on HTTPS (production) or HTTP (localhost)
+    const isHttps = c.req.header('x-forwarded-proto') === 'https' || 
+                    c.req.url.startsWith('https://');
+
+    super({
+      secure: isHttps, // Use secure cookies for HTTPS
+      sameSite: isHttps ? "none" : "lax", // none for HTTPS cross-origin, lax for localhost
+      httpOnly: false, // Allow frontend JavaScript to access cookies
+      path: "/", // Ensure cookies are available for all paths
+    });
   }
 
   async get(key: string) {
     return getCookie(this.c, key) ?? null;
   }
 
-  async set(key: string, value: string): void {
-    setCookie(this.c, key, value);
+  async set(key: string, value: string): Promise<void> {
+    setCookie(this.c, key, value, this.settings);
+  }
+
+  async delete(key: string): Promise<void> {
+    deleteCookie(this.c, key);
   }
 }
 
@@ -71,7 +123,7 @@ app.use('*', async (c, next) => {
 });
 ```
 
-## 4. Create a Login Endpoint
+## 5. Create a Login Endpoint
 
 This endpoint will handle login requests, build the Civic login URL and redirect the user to it.
 
@@ -85,51 +137,83 @@ app.get('/', async (c) => {
 });
 ```
 
-## 5. Create the Callback Endpoint
+## 6. Create the Callback Endpoint
 
 This endpoint handles successful logins and creates the session
 
 ```ts
-import { resolveOAuthAccessCode } from '@civic/auth/server';
-
 app.get('/auth/callback', async (c) => {
   const code = c.req.query('code') as string
   const state = c.req.query('state') as string
 
-  await c.get('civicAuth').resolveOAuthAccessCode(code, state);
-  return c.redirect('/admin/hello');
+  try {
+    const result = await c.get('civicAuth').handleCallback({
+      code,
+      state,
+      req: c.req,
+    });
+
+    if (result.redirectTo) {
+      return c.redirect(result.redirectTo);
+    }
+
+    if (result.content) {
+      return c.html(result.content);
+    }
+
+    return c.json({ error: "Internal server error" }, 500);
+  } catch (error) {
+    return c.redirect("/?error=auth_failed");
+  }
 });
 ```
 
-## 6. Create a Logout Endpoint
+## 7. Create a Logout Endpoint
 
 This endpoint will handle logout requests, build the Civic logout URL and redirect the user to it.
 
 ```ts
 import { buildLogoutRedirectUrl } from '@civic/auth/server';
 
-app.get('/auth/logout', async (req: Request, res: Response) => {
-  const url = await c.get('civicAuth').buildLogoutRedirectUrl();
-  res.redirect(url.toString());
+app.get('/auth/logout', async (c) => {
+  try {
+    const urlString = await c.get('civicAuth').buildLogoutRedirectUrl({
+      postLogoutRedirectUrl: 'https://your-frontend.com/' // Optional: where to redirect after logout
+    });
+    await c.get('civicAuth').clearTokens();
+
+    // Convert to URL object to modify parameters
+    const url = new URL(urlString);
+    // Remove the state parameter to avoid it showing up in the frontend URL
+    url.searchParams.delete("state");
+
+    return c.redirect(url.toString());
+  } catch (error) {
+    console.error("Logout error:", error);
+    // If logout URL generation fails, clear tokens and redirect to home
+    await c.get('civicAuth').clearTokens();
+    return c.redirect("/");
+  }
 });
 ```
 
-## 7. Add Middleware
+## 8. Add Middleware
 
 Middleware protects routes that require login.
 
 ```ts
 import { isLoggedIn } from '@civic/auth/server';
 
-// Apply authentication middleware to any routes that need it
-app.use('/admin/*', async (c, next) => {
-  if (!c.get('civicAuth').isLoggedIn()) return c.text('Unauthorized', 401);
-
+const authMiddleware = async (c: Context, next: Function) => {
+  if (!(await c.get('civicAuth').isLoggedIn())) return c.text('Unauthorized', 401);
   return next();
-});
+};
+
+// Apply authentication middleware to any routes that need it
+app.use('/admin/*', authMiddleware);
 ```
 
-## 8. Use the Session
+## 9. Use the Session
 
 If needed, get the logged-in user information.
 
@@ -142,7 +226,54 @@ app.get('/admin/hello', async (c) => {
 });
 ```
 
-## Authentication Flows
+## 10. Frontend Integration (Vanilla JavaScript)
+
+Use the `@civic/auth/vanillajs` client with your backend:
+
+```javascript
+import { CivicAuth } from "@civic/auth/vanillajs";
+
+// Configure client to use your backend for login URLs
+const authClient = await CivicAuth.create({
+  loginUrl: "https://your-backend.com/auth/login-url", // Your backend endpoint
+});
+
+// Now authentication works through your backend
+const { user } = await authClient.startAuthentication();
+```
+
+Add this endpoint to expose login URLs:
+
+```ts
+app.get("/auth/login-url", async (c) => {
+  const loginUrl = await c.get('civicAuth').buildLoginUrl();
+  return c.json({ loginUrl: loginUrl.toString() });
+});
+```
+
+## Advanced Configuration
+
+For more advanced use cases, you can include additional optional parameters in your configuration:
+
+```ts
+const config = {
+  clientId: "YOUR_CLIENT_ID", // Client ID from auth.civic.com
+  redirectUrl: 'https://your-backend.com/auth/callback', // OAuth callback URL
+  postLogoutRedirectUrl: 'https://your-frontend.com/', // Where to redirect after logout (Optional)
+  loginSuccessUrl: 'https://your-frontend.com/', // Optional: redirect Single Page Applications back to frontend after auth (optional)
+  oauthServer: 'https://auth.civic.com/oauth' // Optional: OAuth server URL (for development/testing) 
+};
+```
+
+|Parameter |Required |Description |
+|-----------|----------|-------------|
+| `clientId` | Yes | Client ID from auth.civic.com |
+| `redirectUrl` | Yes | OAuth callback URL where Civic redirects after authentication |
+| `postLogoutRedirectUrl` | No | Where to redirect users after logout |
+| `loginSuccessUrl` | No | Redirect Single Page Applications back to frontend after successful authentication |
+| `oauthServer` | No | OAuth server URL (useful for development/testing environments) |
+
+## PKCE and Client Secrets
 
 Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum security for different application architectures.
 
