@@ -5,16 +5,15 @@ public: true
 ---
 
 <Info>
-  **React Router 7 (formerly Remix)**: This guide covers React Router 7, which is the evolution of the Remix framework. If you're migrating from Remix, the integration patterns are very similar.
+  **React Router 7 (formerly Remix)**: This guide covers React Router 7, which is the evolution of the Remix framework.
+  If you're migrating from Remix, the integration patterns are very similar.
 </Info>
 
 ## Quick Start
 
 Integrate Civic Auth into your React Router 7 application using the following steps (a working example is available in our [github examples repo](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/react-router)):
 
-<Note>
-  **Important**: Make sure your application is using React Router version ^7.0.0 or higher.
-</Note>
+<Note>**Important**: Make sure your application is using React Router version ^7.0.0 or higher.</Note>
 
 <Info>
   This guide assumes you are using TypeScript. Please adjust the snippets as needed to remove the types if you are using
@@ -28,11 +27,15 @@ Create a catch-all route to handle all authentication-related requests. This rou
 Create `app/routes/auth.$.tsx`:
 
 ```ts app/routes/auth.$.tsx
-import { createRouteHandlers } from "@civic/auth/remix";
+// Import from the package with the correct path using the index.ts file
+// This ensures the debug initialization in the index.ts file is executed
+import { createRouteHandlers } from "@civic/auth/react-router-7";
 
-// Create route handlers with your configuration
-const { createAuthLoader, getUser } = createRouteHandlers({
+// Create route handlers with app config
+const { createAuthLoader, getUser, getAuthData } = createRouteHandlers({
   clientId: process.env.CLIENT_ID,
+  oauthServer: process.env.OAUTH_SERVER,
+  loginUrl: process.env.LOGIN_URL,
 });
 
 /**
@@ -41,9 +44,9 @@ const { createAuthLoader, getUser } = createRouteHandlers({
 export const loader = createAuthLoader();
 
 /**
- * Export getUser function for use in other parts of the app
+ * Export getUser and getAuthData functions for use in other parts of the app
  */
-export { getUser };
+export { getUser, getAuthData };
 ```
 
 ### 2. Set Up Root Loader
@@ -55,19 +58,29 @@ Update `app/root.tsx`:
 ```tsx app/root.tsx
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import type { LinksFunction, LoaderFunction } from "react-router";
-import "./tailwind.css"; // Your CSS imports
+import "./tailwind.css";
 
-import { getUser } from "~/routes/auth.$";
+import { getAuthData } from "~/routes/auth.$";
 
 export const links: LinksFunction = () => [
-  // Your link definitions
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  {
+    rel: "preconnect",
+    href: "https://fonts.gstatic.com",
+    crossOrigin: "anonymous",
+  },
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+  },
 ];
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const user = await getUser(request);
+  const authData = await getAuthData(request);
+
   return {
-    // You need this for the useUser hook to work
-    user,
+    // We bootstrap our data through the stack
+    ...authData,
   };
 };
 
@@ -86,6 +99,19 @@ function Layout({ children }: { children: React.ReactNode }) {
         <Scripts />
       </body>
     </html>
+  );
+}
+
+export function ErrorBoundary() {
+  return (
+    <Layout>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900">Something went wrong</h1>
+          <p className="mt-2 text-gray-600">Please try refreshing the page</p>
+        </div>
+      </div>
+    </Layout>
   );
 }
 
@@ -112,7 +138,7 @@ The `UserButton` component provides a complete sign-in/sign-out experience:
 import { useLoaderData } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { getUser } from "~/routes/auth.$";
-import { UserButton } from "@civic/auth/remix/components/UserButton";
+import { UserButton } from "@civic/auth/react-router-7/components/UserButton";
 
 export const meta: MetaFunction = () => {
   return [{ title: "My App" }];
@@ -150,7 +176,7 @@ export default function Index() {
 For accessing user information in components:
 
 ```tsx MyComponent.tsx
-import { useUser } from "@civic/auth/remix";
+import { useUser } from "@civic/auth/react-router-7";
 
 export function MyComponent() {
   const { user, isLoggedIn } = useUser();
@@ -169,7 +195,7 @@ For custom sign-in buttons and authentication flows:
 
 ```tsx CustomSignIn.tsx
 import { useCallback } from "react";
-import { useUser } from "@civic/auth/remix";
+import { useUser } from "@civic/auth/react-router-7";
 
 export function CustomSignIn() {
   const { signIn, signOut } = useUser();
@@ -242,7 +268,7 @@ Create the protected route content that displays to authenticated users:
 ```tsx app/routes/protected.tsx
 import { Link } from "react-router";
 import type { MetaFunction } from "react-router";
-import { useUser } from "@civic/auth/remix/useUser";
+import { useUser } from "@civic/auth/react-router-7/useUser";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Protected Page - Civic Auth Demo" }];
@@ -319,7 +345,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   return { user };
 };
-
 ```
 
 ## Advanced Configuration
@@ -329,7 +354,7 @@ Civic Auth is a "low-code" solution, so most configuration takes place via the [
 You can customize the library according to your React Router 7 app's needs. Configure options when calling `createRouteHandlers`:
 
 ```ts app/routes/auth.$.tsx
-import { createRouteHandlers } from "@civic/auth/remix";
+import { createRouteHandlers } from "@civic/auth/react-router-7";
 
 const { createAuthLoader, getUser } = createRouteHandlers({
   clientId: "YOUR_CLIENT_ID",
