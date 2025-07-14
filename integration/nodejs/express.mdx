@@ -134,8 +134,6 @@ app.use((req, res, next) => {
 This endpoint will handle login requests, build the Civic login URL and redirect the user to it.
 
 ```ts
-import { buildLoginUrl } from "@civic/auth/server";
-
 app.get("/auth/login-url", async (req: Request, res: Response) => {
  const frontendState = req.query.state as string | undefined;
 
