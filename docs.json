@@ -49,8 +49,14 @@
           "group": "Integration",
           "pages": [
             "integration/react",
-            "integration/nextjs",
-            "integration/nextjs-llm",
+            {
+              "group": "Next.js",
+              "pages": [
+                "integration/nextjs-overview",
+                "integration/nextjs",
+                "integration/nextjs-llm"
+              ]
+            },
             "integration/vanillajs",
             {
               "group": "Node.JS",
