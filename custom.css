@@ -49,3 +49,8 @@
     max-width: 90% !important;
   }
 } 
+
+/* Table styles (Base styles are misaligned with the table content) */
+thead {
+  text-align: left;
+}
