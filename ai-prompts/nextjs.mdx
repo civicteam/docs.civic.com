@@ -9,8 +9,8 @@ Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to auto
 ## How to Use
 
 1. Copy the prompt below
-2. Fill in your project context details
-3. Paste it into your AI assistant
+2. Paste it into your AI assistant
+3. The assistant will ask for your project details and guide you through the setup
 4. The assistant will fetch the complete documentation and implement the integration for you
 
 ## Integration Prompt
@@ -36,11 +36,13 @@ curl https://docs.civic.com/integration/nextjs.md
 This documentation contains ALL the code examples and instructions needed for the integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
 
 ## Project Context
-- **Client ID**: [PROVIDE YOUR CLIENT ID HERE - Get this by signing up at https://auth.civic.com]
-- **Project Type**: [New/Existing] Next.js project
-- **Web3 Required**: [Yes/No]
-- **Protected Routes**: [List routes that need authentication, e.g., /dashboard/*, /api/private/*]
-- **Existing Auth**: [Describe any existing auth that needs to be replaced]
+Ask the user for the following information if not provided:
+
+- **Client ID**: If not provided, ask the user to visit https://auth.civic.com, sign up/log in, create a new application, and provide their Client ID
+- **Project Type**: Ask if this is a new or existing Next.js project
+- **Web3 Required**: Ask if they need Web3 features (Yes/No)
+- **Protected Routes**: Ask which routes need authentication (e.g., /dashboard/*, /api/private/*)
+- **Existing Auth**: Ask if there's any existing authentication that needs to be replaced
 
 ## Step 2: Create Implementation Plan
 After fetching the documentation with curl:
