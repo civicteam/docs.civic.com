@@ -1,262 +1,68 @@
 ---
 title: "Changelog"
-description: "Follow new updates and improvements to Civic Auth."
+description: "Product updates and announcements"
 icon: "pen"
 public: true
 ---
 
-## July 14th, 2025
+<Update label="July 14th, 2025" description="Enterprise Security & Performance" tags={["Authentication", "Performance", "Bug Fixes"]}>
+  **Client secret authentication** for confidential client applications with enhanced enterprise security.
 
-<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-  <span style={{ 
-    backgroundColor: "#10B981", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    🔐 Authentication
-  </span>
-  <span style={{ 
-    backgroundColor: "#8B5CF6", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    ⚡ Performance
-  </span>
-  <span style={{ 
-    backgroundColor: "#EF4444", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    🐛 Bug Fix
-  </span>
-</div>
+  **Enhanced SDK support** for vanilla JavaScript applications with any backend framework.
 
-### 🛡️ Enterprise Security & SDK Enhancements
+  **Refresh token expiration** extended to 400 days for better user experience and seamless long-term sessions.
 
-Major security improvements for enterprise applications and expanded framework support.
+  **Mobile login experience** optimized with improved provider display and faster loading times.
 
-- **Client secret authentication** - Full support for confidential client applications with enhanced security
-- **Universal JavaScript SDK** - Enhanced vanilla JavaScript support compatible with any backend framework
+  **Fixed login app loading issues** during authentication redirects and eliminated duplicate account creation in Customer Dashboard.
 
-### 🚀 Performance & User Experience
+  **Resolved mobile display issues** including logo pixelation and provider icon display when no authentication methods are configured.
 
-- **Extended refresh tokens** - Token expiration extended to 400 days for seamless long-term sessions
-- **Optimized mobile login** - Improved provider display and faster loading on mobile devices
+  **Improved Apple authentication** error handling when users cancel login flow.
+</Update>
 
-### 🔧 Stability Improvements
+<Update label="June 5th, 2025" description="Mobile & Web Platform Expansion" tags={["SDKs", "Mobile"]}>
+  **React Native SDK** - Full authentication support for iOS and Android apps with native mobile optimization.
 
-- **Authentication redirect fixes** - Resolved login app loading issues during authentication flows
-- **Account management fixes** - Eliminated duplicate account creation in Customer Dashboard
-- **Mobile display enhancements** - Fixed logo pixelation and provider icon display issues
-- **Apple authentication** - Better error handling when users cancel Apple login flow
+  **Vanilla JavaScript** - Pure JavaScript implementation for projects without frameworks, expanding platform compatibility.
+</Update>
 
-<br />
+<Update label="June 3rd, 2025" description="International Support & UX" tags={["Localization", "Enhancement"]}>
+  **Spanish & German language support** - Complete login flow translation for international users.
 
-## June 5th, 2025
+  **Google profile image caching** - Eliminated render issues with profile pictures for seamless user experience.
 
-<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-  <span style={{ 
-    backgroundColor: "#10B981", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    🚀 SDKs
-  </span>
-</div>
+  **Fixed infinite loading** - Resolved issue where login providers only appeared after manual page refresh.
+</Update>
 
-### 📱 New Mobile & Web Support
+<Update label="May 22nd, 2025" description="Dashboard & Billing Improvements" tags={["Billing", "Dashboard"]}>
+  **Billing chart accuracy** - Fixed chart display showing incorrect month data.
 
-Expanded platform support with native React Native integration and enhanced Vanilla JavaScript compatibility.
+  **App banner optimization** - Now only shown for production apps to reduce development noise.
+</Update>
 
-- **React Native SDK** - Full authentication support for iOS and Android apps with native mobile optimization
-- **Vanilla JavaScript** - Pure JavaScript implementation for projects without frameworks
+<Update label="May 3rd, 2025" description="Next.js Performance Optimization" tags={["Performance", "Next.js"]}>
+  **Router refresh optimization** - Eliminated multiple post-login reloads for smoother authentication flow in Next.js applications.
+</Update>
 
-<br />
+<Update label="April 30th, 2025" description="Billing & Account Management" tags={["Enhancement", "Bug Fixes", "Dashboard"]}>
+  **Enhanced billing dashboard** - Clearer usage charts with accurate usage counting.
 
-## June 3rd, 2025
+  **Claim association fixes** - Resolved login issues with claim processing.
 
-<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-  <span style={{ 
-    backgroundColor: "#8B5CF6", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    🌐 Localization
-  </span>
-  <span style={{ 
-    backgroundColor: "#10B981", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    ✨ Enhancement
-  </span>
-</div>
+  **Account creation fixes** - Eliminated duplicate account creation in Customer Dashboard.
+</Update>
 
-### 🌍 International Language Support
+<Update label="April 29th, 2025" description="Plan Visibility & SDK Enhancements" tags={["Enhancement", "SDK"]}>
+  **Improved plan visibility** - Subscription plan and quota details now prominently displayed front-and-center.
 
-Enhanced login experience with multi-language support and improved profile image handling.
+  **Custom base-URL support** - Enhanced SDK compatibility for custom domain configurations.
+</Update>
 
-- **Spanish & German localization** - Complete login flow translation for international users
-- **Google profile image caching** - Eliminated render issues with profile pictures for seamless user experience
+<Update label="April 17th, 2025" description="Production Deployment Support" tags={["Bug Fixes", "Production"]}>
+  **App duplication fixes** - Resolved errors when duplicating apps for production deployment, streamlining the launch process.
+</Update>
 
-### 🔧 Login Flow Improvements
-
-- **Fixed infinite loading** - Resolved issue where login providers only appeared after manual page refresh
-
-<br />
-
-## May 22nd, 2025
-
-<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-  <span style={{ 
-    backgroundColor: "#F59E0B", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    💳 Billing
-  </span>
-</div>
-
-### 📊 Dashboard Improvements
-
-- **Billing chart accuracy** - Fixed chart display showing incorrect month data
-- **App banner optimization** - Now only shown for production apps to reduce development noise
-
-<br />
-
-## May 3rd, 2025
-
-<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-  <span style={{ 
-    backgroundColor: "#EF4444", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    🐛 Bug Fix
-  </span>
-</div>
-
-### ⚡ Next.js Performance Fix
-
-- **Router refresh optimization** - Eliminated multiple post-login reloads for smoother authentication flow
-
-<br />
-
-## April 30th, 2025
-
-<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-  <span style={{ 
-    backgroundColor: "#10B981", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    ✨ Enhancement
-  </span>
-  <span style={{ 
-    backgroundColor: "#EF4444", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    🐛 Bug Fix
-  </span>
-</div>
-
-### 📈 Billing & Account Management
-
-- **Enhanced billing dashboard** - Clearer usage charts with accurate usage counting
-- **Claim association fixes** - Resolved login issues with claim processing
-- **Account creation fixes** - Eliminated duplicate account creation in Customer Dashboard
-
-<br />
-
-## April 29th, 2025
-
-<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-  <span style={{ 
-    backgroundColor: "#10B981", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    ✨ Enhancement
-  </span>
-</div>
-
-### 💡 Improved Plan Visibility
-
-- **Front-and-center usage** - Subscription plan and quota details now prominently displayed
-- **Custom base-URL support** - Enhanced SDK compatibility for custom domain configurations
-
-<br />
-
-## April 17th, 2025
-
-<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-  <span style={{ 
-    backgroundColor: "#EF4444", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    🐛 Bug Fix
-  </span>
-</div>
-
-### 🚀 Production Launch Support
-
-- **App duplication fixes** - Resolved errors when duplicating apps for production deployment
-
-<br />
-
-## April 16th, 2025
-
-<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
-  <span style={{ 
-    backgroundColor: "#3B82F6", 
-    color: "white", 
-    padding: "4px 8px", 
-    borderRadius: "4px", 
-    fontSize: "12px",
-    fontWeight: "500"
-  }}>
-    🚨 Alerts
-  </span>
-</div>
-
-### 📢 Usage Monitoring
-
-- **Smart usage alerts** - Dashboard and email notifications when approaching or exceeding plan limits
+<Update label="April 16th, 2025" description="Usage Monitoring & Alerts" tags={["Alerts", "Monitoring"]}>
+  **Smart usage alerts** - Dashboard and email notifications when approaching or exceeding plan limits to help manage usage proactively.
+</Update>
