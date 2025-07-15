@@ -49,14 +49,7 @@
           "group": "Integration",
           "pages": [
             "integration/react",
-            {
-              "group": "Next.js",
-              "pages": [
-                "integration/nextjs-overview",
-                "integration/nextjs",
-                "integration/nextjs-llm"
-              ]
-            },
+            "integration/nextjs",
             "integration/vanillajs",
             {
               "group": "Node.JS",
@@ -87,6 +80,15 @@
             },
             "integration/other",
             "integration/error-codes"
+          ]
+        },
+        {
+          "group": "AI Prompts",
+          "icon": "robot",
+          "pages": [
+            "ai-prompts/overview",
+            "ai-prompts/nextjs",
+            "ai-prompts/react"
           ]
         },
         {
