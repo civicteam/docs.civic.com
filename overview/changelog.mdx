@@ -1,72 +1,262 @@
 ---
 title: "Changelog"
-description: "First published: Apr 16, 2025"
+description: "Follow new updates and improvements to Civic Auth."
 icon: "pen"
 public: true
 ---
 
-**2025-06-05**
+## July 14th, 2025
 
-Added
+<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+  <span style={{ 
+    backgroundColor: "#10B981", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    🔐 Authentication
+  </span>
+  <span style={{ 
+    backgroundColor: "#8B5CF6", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    ⚡ Performance
+  </span>
+  <span style={{ 
+    backgroundColor: "#EF4444", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    🐛 Bug Fix
+  </span>
+</div>
 
-- Support for [React Native](https://docs.civic.com/auth/integration/mobile/react-native) and [Vanilla JavaScript](https://docs.civic.com/auth/integration/vanillajs).
+### 🛡️ Enterprise Security & SDK Enhancements
 
-**2025-06-03**
+Major security improvements for enterprise applications and expanded framework support.
 
-Added
+- **Client secret authentication** - Full support for confidential client applications with enhanced security
+- **Universal JavaScript SDK** - Enhanced vanilla JavaScript support compatible with any backend framework
 
-- Spanish and German language support in login experience.
-- Google profile image caching. Users will now see their Google profile picture without render issues.
+### 🚀 Performance & User Experience
 
-Fixed
+- **Extended refresh tokens** - Token expiration extended to 400 days for seamless long-term sessions
+- **Optimized mobile login** - Improved provider display and faster loading on mobile devices
 
-- Resolved issue where the login app loaded indefinitely and login providers only appeared after a manual page refresh.
+### 🔧 Stability Improvements
 
-**2025‑05‑22**
+- **Authentication redirect fixes** - Resolved login app loading issues during authentication flows
+- **Account management fixes** - Eliminated duplicate account creation in Customer Dashboard
+- **Mobile display enhancements** - Fixed logo pixelation and provider icon display issues
+- **Apple authentication** - Better error handling when users cancel Apple login flow
 
-Improved
+<br />
 
-- Billing dashboard – fixed chart display showing incorrect month.
+## June 5th, 2025
 
-Fixed
+<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+  <span style={{ 
+    backgroundColor: "#10B981", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    🚀 SDKs
+  </span>
+</div>
 
-- App banner – now only shown for production apps to reduce noise in staging or development.
+### 📱 New Mobile & Web Support
 
-**2025‑05‑03**
+Expanded platform support with native React Native integration and enhanced Vanilla JavaScript compatibility.
 
-Fixed
+- **React Native SDK** - Full authentication support for iOS and Android apps with native mobile optimization
+- **Vanilla JavaScript** - Pure JavaScript implementation for projects without frameworks
 
-- Next.js router refresh – eliminated multiple post‑login reloads after authentication.
+<br />
 
-**2025‑04‑30**
+## June 3rd, 2025
 
-Improved
+<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+  <span style={{ 
+    backgroundColor: "#8B5CF6", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    🌐 Localization
+  </span>
+  <span style={{ 
+    backgroundColor: "#10B981", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    ✨ Enhancement
+  </span>
+</div>
 
-- Billing dashboard – clearer usage chart and accurate usage count.
+### 🌍 International Language Support
 
-Fixed
+Enhanced login experience with multi-language support and improved profile image handling.
 
-- Resolved claim‑association issues at login.
-- Fixed duplicate account creation in Customer Dashboard.
+- **Spanish & German localization** - Complete login flow translation for international users
+- **Google profile image caching** - Eliminated render issues with profile pictures for seamless user experience
 
-**2025‑04‑29**
+### 🔧 Login Flow Improvements
 
-Improved
+- **Fixed infinite loading** - Resolved issue where login providers only appeared after manual page refresh
 
-- Plan & usage visibility – subscription plan and quota details now front‑and‑center.
+<br />
 
-Fixed
+## May 22nd, 2025
 
-- Custom base‑URL support in Civic Auth SDK.
+<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+  <span style={{ 
+    backgroundColor: "#F59E0B", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    💳 Billing
+  </span>
+</div>
 
-**2025‑04‑17**
+### 📊 Dashboard Improvements
 
-Fixed
+- **Billing chart accuracy** - Fixed chart display showing incorrect month data
+- **App banner optimization** - Now only shown for production apps to reduce development noise
 
-- Resolved errors that occurred when duplicating an app for production launch.
+<br />
 
-**2025‑04‑16**
+## May 3rd, 2025
 
-Added
+<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+  <span style={{ 
+    backgroundColor: "#EF4444", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    🐛 Bug Fix
+  </span>
+</div>
 
-- Usage‑limit alerts – dashboard & e‑mail notifications when you approach or exceed plan limits.
+### ⚡ Next.js Performance Fix
+
+- **Router refresh optimization** - Eliminated multiple post-login reloads for smoother authentication flow
+
+<br />
+
+## April 30th, 2025
+
+<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+  <span style={{ 
+    backgroundColor: "#10B981", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    ✨ Enhancement
+  </span>
+  <span style={{ 
+    backgroundColor: "#EF4444", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    🐛 Bug Fix
+  </span>
+</div>
+
+### 📈 Billing & Account Management
+
+- **Enhanced billing dashboard** - Clearer usage charts with accurate usage counting
+- **Claim association fixes** - Resolved login issues with claim processing
+- **Account creation fixes** - Eliminated duplicate account creation in Customer Dashboard
+
+<br />
+
+## April 29th, 2025
+
+<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+  <span style={{ 
+    backgroundColor: "#10B981", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    ✨ Enhancement
+  </span>
+</div>
+
+### 💡 Improved Plan Visibility
+
+- **Front-and-center usage** - Subscription plan and quota details now prominently displayed
+- **Custom base-URL support** - Enhanced SDK compatibility for custom domain configurations
+
+<br />
+
+## April 17th, 2025
+
+<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+  <span style={{ 
+    backgroundColor: "#EF4444", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    🐛 Bug Fix
+  </span>
+</div>
+
+### 🚀 Production Launch Support
+
+- **App duplication fixes** - Resolved errors when duplicating apps for production deployment
+
+<br />
+
+## April 16th, 2025
+
+<div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+  <span style={{ 
+    backgroundColor: "#3B82F6", 
+    color: "white", 
+    padding: "4px 8px", 
+    borderRadius: "4px", 
+    fontSize: "12px",
+    fontWeight: "500"
+  }}>
+    🚨 Alerts
+  </span>
+</div>
+
+### 📢 Usage Monitoring
+
+- **Smart usage alerts** - Dashboard and email notifications when approaching or exceeding plan limits
