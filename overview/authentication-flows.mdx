@@ -1,0 +1,182 @@
+---
+title: "Authentication Flows"
+description: "Understanding Civic Auth's flexible OAuth 2.0 authentication methods for maximum security across all application types."
+icon: "arrows-rotate"
+public: true
+---
+
+Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum security across different application architectures and use cases.
+
+## Authentication Methods
+
+<Tabs>
+  <Tab title="PKCE Only">
+    **Best for:** Public clients (SPAs, mobile apps) where secrets cannot be securely stored.
+
+    ### How it Works
+    - Uses Proof Key for Code Exchange (PKCE) for security
+    - Default method for public clients
+    - Code verifier/challenge mechanism provides security
+    - No client secret required or used
+
+    ### Security Benefits
+    - ✅ No sensitive credentials to manage client-side
+    - ✅ Dynamic verification for each authentication request
+    - ✅ Industry standard for public clients
+    - ✅ Prevents authorization code interception attacks
+
+    ### Configuration
+    ```javascript
+    const config = {
+      clientId: "your_client_id",
+      // PKCE enabled by default, no client secret needed
+      redirectUrl: "https://yourapp.com/callback"
+    }
+    ```
+  </Tab>
+
+  <Tab title="Client Secret Only">
+    **Best for:** Server-side applications that do not support PKCE.
+
+    ### How it Works
+    - Uses traditional OAuth 2.0 authorization code flow
+    - Client authenticates using client secret
+    - PKCE disabled for compatibility with legacy systems
+    - Suitable for confidential clients with secure storage
+
+    ### Security Benefits
+    - ✅ Familiar OAuth 2.0 authentication pattern
+    - ✅ Client authentication via shared secret
+    - ✅ Compatible with existing OAuth infrastructure
+    - ✅ Server-side credential protection
+
+    ### Configuration
+    ```javascript
+    const config = {
+      clientId: "your_client_id",
+      clientSecret: "your_client_secret", // Generate in dashboard Security tab
+      pkce: false, // Disable PKCE for traditional OAuth flow
+      redirectUrl: "https://yourapp.com/callback"
+    }
+    ```
+  </Tab>
+
+  <Tab title="PKCE + Client Secret">
+    **Best for:** Maximum security for confidential clients that can support both methods.
+
+    ### How it Works
+    - Combines PKCE with client secret authentication
+    - Provides maximum security through dual verification
+    - Suitable for high-security server-side applications
+    - Both PKCE challenge and client secret verified
+
+    ### Security Benefits
+    - ✅ **Maximum security** through dual authentication
+    - ✅ Protection against authorization code interception
+    - ✅ Client authentication via secret
+    - ✅ Dynamic PKCE verification per request
+
+    ### Configuration
+    ```javascript
+    const config = {
+      clientId: "your_client_id",
+      clientSecret: "your_client_secret", // Generate in dashboard Security tab
+      pkce: true, // Enable PKCE alongside client secret
+      redirectUrl: "https://yourapp.com/callback"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## When to Use Each Method
+
+<CardGroup cols={3}>
+  <Card title="PKCE Only" icon="browser">
+    - Single-page applications (SPAs)
+    - Mobile applications
+    - Frontend applications (React, Vue, Angular)
+    - When client secrets cannot be securely stored
+    - Default for public clients
+  </Card>
+  <Card title="Client Secret Only" icon="server">
+    - Legacy OAuth 2.0 integrations
+    - Traditional server-side applications
+    - When PKCE is not supported
+    - Simple backend services
+    - Existing OAuth infrastructure
+  </Card>
+  <Card title="PKCE + Client Secret" icon="shield">
+    - **High-security server applications**
+    - Financial or healthcare systems
+    - Enterprise backend services
+    - **Maximum security requirements**
+    - Modern confidential clients
+  </Card>
+</CardGroup>
+
+## Getting Client Secrets
+
+<Info>
+To generate a client secret, log into your dashboard at [auth.civic.com](https://auth.civic.com), navigate to the Security tab, and click "Generate Client Secret". **Important:** The client secret is only displayed once upon generation, so make sure to copy and securely store it immediately. You can always regenerate a new client secret if needed.
+</Info>
+
+<Frame>
+  <img src="/images/secret.png" alt="Client Secret Generation in Dashboard"/>
+</Frame>
+
+<Warning>
+**Security Requirements**: Client secrets must be stored securely and never exposed in client-side code. They are suitable only for server-side applications with secure credential storage.
+</Warning>
+
+<Info>
+**Flexible Security**: Choose the authentication method that best fits your application architecture. Use PKCE-only for public clients, client secrets for traditional OAuth compatibility, or both together for maximum security.
+</Info>
+
+## Security Considerations
+
+<AccordionGroup>
+  <Accordion title="PKCE Security Model">
+    - **No secrets to compromise:** Even if your frontend code is inspected, there are no sensitive credentials
+    - **Dynamic verification:** Each authentication request uses a unique code verifier/challenge pair
+    - **Domain validation:** Production apps require domain registration for additional security
+    - **Industry standard:** Recommended by OAuth 2.0 Security Best Practices
+  </Accordion>
+
+  <Accordion title="Client Secret Security Model">
+    - **Secure storage required:** Client secrets must be stored securely and never exposed to client-side code
+    - **Server-side only:** Authentication logic must run on your backend servers
+    - **Environment variables:** Use environment variables or secure secret management systems
+    - **HTTPS required:** Always use HTTPS in production to protect credentials in transit
+  </Accordion>
+</AccordionGroup>
+
+## Implementation Example
+
+The Civic Auth SDK is initialized with a `config` object that varies based on the authentication method you choose. The core implementation remains the same.
+
+```javascript
+import { CivicAuth } from '@civic/auth/server';
+
+// Define the config object using the parameters from the table below
+const config = {
+  clientId: process.env.CLIENT_ID,
+  // ... other parameters
+};
+
+// 'storage' is your implementation of CookieStorage
+const civicAuth = new CivicAuth(storage, config);
+```
+
+### Configuration Parameters
+
+| Parameter | PKCE Only (Default) | Client Secret Only | PKCE + Client Secret (Max Security) | Notes |
+| :--- | :--- | :--- | :--- | :--- |
+| `clientId` | Required | Required | Required | Your application's Client ID. |
+| `clientSecret` | Not used | Required | Required | Generate in dashboard Security tab. |
+| `pkce` | `true` (default) | `false` | `true` | Enables or disables PKCE. |
+| `redirectUrl` | Required | Required | Required | The URL to redirect to after login. |
+| `postLogoutRedirectUrl`| Optional | Optional | Optional | The URL to redirect to after logout. |
+
+<Note>
+For full implementation examples with specific frameworks, see our [integration guides](/integration). The guides show the PKCE-only approach by default, but you can adapt the `config` object using the parameters above for other flows.
+</Note>
