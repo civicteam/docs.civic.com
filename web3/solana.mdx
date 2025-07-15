@@ -85,7 +85,7 @@ if (userHasWallet(userContext)) {
 
 ```tsx
 const connection = new Connection(/* your rpc endpoint */);
-const { publicKey, sendTransaction } = user.sol.wallet;
+const { publicKey, sendTransaction } = user.solana.wallet;
 
 const transaction = new Transaction().add(
   SystemProgram.transfer({
