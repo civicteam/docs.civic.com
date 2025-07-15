@@ -8,85 +8,89 @@ public: true
 <Update label="July 14th, 2025" description="Enterprise Security & Mobile Excellence" tags={["Authentication", "Mobile", "Bug Fixes"]}>
 
 🔐 **Client secrets for the enterprise crowd**
-Your enterprise customers have been asking for it, and we delivered! Client secret authentication is now fully supported for confidential client applications. You can choose between PKCE + client secret for maximum security, or client secret only for legacy systems. This brings the enhanced security that large organizations need when integrating Civic Auth into their mission-critical systems.
+We kept hearing from enterprise customers that they needed client secrets for their confidential applications. So we built it. You can now choose PKCE + client secret for maximum security, or go with client secrets only if you're working with legacy systems that need it.
 
-Learn more about [authentication flows and client secrets](/overview/authentication-flows).
+Check out our [authentication flows guide](/overview/authentication-flows) to see how it works.
 
-📱 **Mobile-first login experience**
-We've completely overhauled the mobile login experience. Provider buttons now display beautifully on all screen sizes, loading times are lightning-fast, and everything just... works. No more squinting at tiny buttons or waiting for providers to load!
+📱 **Mobile login that actually works**
+Remember those tiny login buttons that were impossible to tap on mobile? Yeah, we fixed that. Login buttons now look good and load fast on phones. No more squinting at your screen trying to hit the right spot.
 
-🛠️ **Universal JavaScript support**
-Whether you're using Express, Fastify, Hono, or building your own custom backend - our enhanced vanilla JavaScript SDK now works seamlessly with any framework. One SDK to rule them all!
+🛠️ **Vanilla JavaScript plays nice with everything**
+Our vanilla JavaScript integration now works smoothly with Express, Fastify, Hono, or whatever backend you're running. Same simple code, any framework.
 
-🐛 **Spring cleaning for stability**
-We've been busy with our bug spray! Fixed those pesky login app loading issues during redirects, resolved mobile logo pixelation (crisp logos for everyone!), and made Apple authentication much more graceful when users decide to cancel.
+🐛 **Bug hunting season**
+We've been busy fixing:
+- Login redirects work properly again
+- Mobile logos are crisp instead of pixelated 
+- Apple login handles cancellations without breaking
+- Fixed some edge cases when no auth methods are configured
 
 </Update>
 
 <Update label="June 5th, 2025" description="Going Native & Vanilla" tags={["SDKs", "Mobile", "JavaScript"]}>
 
-📱 **React Native support has arrived!**
-iOS and Android developers, this one's for you! Civic Auth now fully supports React Native applications with native mobile optimization. Build once, authenticate everywhere - with the performance your users expect.
+📱 **React Native support is here**
+Your React Native apps can now use Civic Auth. Works on both iOS and Android with solid performance.
 
-🍦 **Pure vanilla JavaScript goodness**
-Sometimes you don't need a framework - you just need authentication that works. Our pure JavaScript implementation is perfect for those "keep it simple" projects where you want full control without the framework overhead.
+🍦 **Pure JavaScript, no frameworks required**
+Want to integrate Civic Auth without any frameworks? Now you can. Plain JavaScript integration that just works.
 
 </Update>
 
 <Update label="June 3rd, 2025" description="¡Hola mundo! Guten Tag authentication!" tags={["Localization", "Enhancement"]}>
 
-🌍 **Breaking language barriers**
-¡Hablamos español! Wir sprechen Deutsch! Our login flow now speaks Spanish and German fluently, making authentication feel native for your international users. Complete translations, cultural considerations - the works.
+🌍 **Speaking Spanish and German**
+Login screens now support Spanish and German with complete translations. Your international users will feel right at home.
 
-📸 **Picture perfect profiles**
-Google profile pictures were having some... let's call them "rendering challenges." We've implemented smart caching that eliminates those awkward moments when profile pics fail to load. Your users' beautiful faces deserve better!
+📸 **Google profile pictures show up**
+Fixed the bug where Google profile pictures wouldn't load. No more broken image icons.
 
 </Update>
 
 <Update label="May 22nd, 2025" description="Dashboard polish & production focus" tags={["Billing", "Dashboard"]}>
 
-📊 **Charts that actually make sense**
-Our billing dashboard was showing some creative interpretations of monthly data. We've brought it back to reality with accurate chart displays that actually reflect your usage patterns.
+📊 **Billing dashboard shows real numbers**
+The billing dashboard was showing incorrect data. Charts now display accurate usage information.
 
-🎯 **Less noise, more signal**
-App banners were getting a bit chatty in development environments. We've taught them to speak only when it matters - production apps only. Your dev workflow just got quieter.
+🎯 **Fewer annoying banners**
+App banners now only appear for production applications, not during development. Less noise while you're building.
 
 </Update>
 
 <Update label="May 3rd, 2025" description="Next.js gets snappier" tags={["Performance", "Next.js"]}>
 
-⚡ **One login, one redirect**
-Next.js developers, we heard your frustration with those annoying multiple post-login reloads. Router refresh optimization means your users get that smooth, single-redirect experience they deserve.
+⚡ **One redirect, not three**
+Next.js apps were doing multiple redirects after login. Fixed it so there's just one clean redirect like there should be.
 
 </Update>
 
 <Update label="April 30th, 2025" description="Dashboard makeover & account fixes" tags={["Enhancement", "Bug Fixes", "Dashboard"]}>
 
-📈 **Billing clarity**
-Usage charts now actually show your real usage (revolutionary concept, we know). Clearer visualizations, accurate counting - billing transparency at its finest.
+📈 **Billing dashboard improvements**
+Usage charts now show the right data with clearer visuals. No more guessing what your actual usage is.
 
 </Update>
 
 <Update label="April 29th, 2025" description="Visibility & flexibility upgrades" tags={["Enhancement", "SDK"]}>
 
-💡 **Your plan, front and center**
-Subscription details and usage quotas are now prominently displayed where you can actually see them. No more hunting through menus to figure out where you stand.
+💡 **Find your plan info easily**
+Subscription details and usage limits are now easy to find. No more hunting through multiple screens.
 
-🔗 **Custom domains, no problem**
-Enhanced SDK support for custom base URLs means your branded authentication flows work seamlessly, whether you're using custom domains or complex proxy setups.
+🔗 **Better custom domain support**
+Improved how the SDK handles custom URLs and domains. More reliable and flexible.
 
 </Update>
 
 <Update label="April 17th, 2025" description="Production launch made easy" tags={["Bug Fixes", "Production"]}>
 
-🚀 **Deploy with confidence**
-Fixed errors that occurred when setting up production applications. We've smoothed out the process so your launch day goes exactly as planned.
+🚀 **Production setup works again**
+Fixed the errors that were happening when setting up production applications. Should be smooth sailing now.
 
 </Update>
 
 <Update label="April 16th, 2025" description="Never get surprised by limits again" tags={["Alerts", "Monitoring"]}>
 
-🚨 **Smart usage alerts**
-We've got your back with proactive notifications! Dashboard alerts and email notifications keep you informed when you're approaching plan limits. No more surprise billing moments.
+🚨 **Know before you hit the limit**
+Added dashboard and email alerts when you're approaching your plan limits. No more surprise overages.
 
 </Update>
