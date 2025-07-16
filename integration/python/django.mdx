@@ -142,8 +142,12 @@ def api_profile(request):
     })
 ```
 
-## PKCE and Client Secrets
+## Authentication Flows
 
-Civic Auth uses [**PKCE** (Proof Key for Code Exchange)](https://oauth.net/2/pkce/), to protect users and clients from unauthorized access to user information. This, alongside domain registration for apps in production environments, mean that you don't need to provide a client secret in your backend.
+Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum security for different application architectures.
 
-When using the Civic Auth SDK, PKCE is handled entirely by the library.
+<Info>
+**Need client secret authentication?** Civic Auth supports PKCE-only, client secrets, and hybrid PKCE + client secret approaches. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison.
+</Info>
+
+The examples above use PKCE authentication, which is handled entirely by the Civic Auth SDK and suitable for most applications.
