@@ -204,10 +204,10 @@ You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to 
 <Tabs>
   <Tab title="Auth">
     ```ts RollYourOwnLogin.ts
-    import { CivicAuthProvider } from "@civic/auth/react";
+    import { useUser } from "@civic/auth/react";
 
     export function TitleBar() {
-      const { signIn, signOut } = useUser();
+      const { user, signIn, signOut } = useUser();
       return (
         <div className="flex justify-between items-center">
           <h1>My App</h1>
@@ -220,10 +220,10 @@ You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to 
   </Tab>
   <Tab title="Auth + Web3">
 ```ts RollYourOwnLogin.ts
-import { CivicAuthProvider } from "@civic/auth-web3/react";
+import { useUser } from "@civic/auth-web3/react";
 
 export function TitleBar() {
-  const { signIn, signOut } = useUser();
+  const { user, signIn, signOut } = useUser();
   return (
     <div className="flex justify-between items-center">
       <h1>My App</h1>
