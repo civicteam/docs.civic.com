@@ -32,16 +32,19 @@ Create `app/routes/auth.$.tsx`:
 import { createRouteHandlers } from "@civic/auth/react-router-7";
 
 // Create route handlers with app config
-const { createAuthLoader, getUser, getAuthData } = createRouteHandlers({
-  clientId: process.env.CLIENT_ID,
-  oauthServer: process.env.OAUTH_SERVER,
-  loginUrl: process.env.LOGIN_URL,
+const { createAuthLoader, createAuthAction, getUser, getAuthData } = createRouteHandlers({
+  clientId: "demo-client-1"
 });
 
 /**
- * Catch-all loader for auth routes
+ * Catch-all loader for auth routes (GET requests)
  */
 export const loader = createAuthLoader();
+
+/**
+ * Catch-all action for auth routes (POST requests)
+ */
+export const action = createAuthAction();
 
 /**
  * Export getUser and getAuthData functions for use in other parts of the app
