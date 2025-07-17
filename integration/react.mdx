@@ -197,6 +197,43 @@ Using styles:
 
 You can also provide values in both `style` and `className` props, where the value in `style` will always take precedence over the same CSS-defined style.
 
+### Getting User Information on the Frontend
+
+Use the Civic Auth SDK to retrieve user information on the frontend.
+
+<Tabs>
+  <Tab title="Auth">
+```ts MyComponent.ts
+import { useUser } from "@civic/auth/react";
+
+export function MyComponent() {
+  const { user } = useUser();
+
+  if (!user) return <div>User not logged in</div>
+
+  return <div>Hello { user.name }!</div>
+}
+```
+  </Tab>
+  <Tab title="Auth + Web3">
+```ts MyComponent.ts
+import { useUser } from "@civic/auth-web3/react";
+
+export function MyComponent() {
+  const { user } = useUser();
+
+  if (!user) return <div>User not logged in</div>
+
+  return <div>Hello { user.name }!</div>
+}
+```
+  </Tab>
+</Tabs>
+
+<Info>
+  We use `name` as an example here, but you can call any user object property from the user fields schema, as shown [below](/integration/react#base-user-fields).
+</Info>
+
 #### Creating your own Login and Logout buttons
 
 You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to create your own buttons for user log in and log out
@@ -235,43 +272,6 @@ export function TitleBar() {
 ```
   </Tab>
 </Tabs>
-
-### Getting User Information on the Frontend
-
-Use the Civic Auth SDK to retrieve user information on the frontend.
-
-<Tabs>
-  <Tab title="Auth">
-```ts MyComponent.ts
-import { useUser } from "@civic/auth/react";
-
-export function MyComponent() {
-  const { user } = useUser();
-
-  if (!user) return <div>User not logged in</div>
-
-  return <div>Hello { user.name }!</div>
-}
-```
-  </Tab>
-  <Tab title="Auth + Web3">
-```ts MyComponent.ts
-import { useUser } from "@civic/auth-web3/react";
-
-export function MyComponent() {
-  const { user } = useUser();
-
-  if (!user) return <div>User not logged in</div>
-
-  return <div>Hello { user.name }!</div>
-}
-```
-  </Tab>
-</Tabs>
-
-<Info>
-  We use `name` as an example here, but you can call any user object property from the user fields schema, as shown [below](/integration/react#base-user-fields).
-</Info>
 
 ## Advanced Configuration
 
