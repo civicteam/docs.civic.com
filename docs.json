@@ -187,7 +187,7 @@
     "primary": {
       "type": "button",
       "label": "Try Auth",
-      "href": "https://auth.civic.com/dashboard/?utm_source=homepage&utm_medium=hero-nav&_gl=1*l2su6m*_gcl_au*MTMwMjY1NzQyMi4xNzQ3MTAzMTc2"
+      "href": "https://auth.civic.com/dashboard?utm_source=docs&utm_medium=hero-nav"
     }
   },
   "footer": {
