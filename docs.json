@@ -84,6 +84,15 @@
           ]
         },
         {
+          "group": "AI Prompts",
+          "icon": "robot",
+          "pages": [
+            "ai-prompts/overview",
+            "ai-prompts/nextjs",
+            "ai-prompts/react"
+          ]
+        },
+        {
           "group": "Web3",
           "pages": [
             "web3/embedded-wallets",

@@ -1,0 +1,94 @@
+---
+title: "React"
+icon: "react"
+public: true
+---
+
+Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to automatically integrate Civic Auth into your React project.
+
+## How to Use
+
+1. Copy the prompt below
+2. Paste it into your AI assistant
+3. The assistant will ask for your project details and guide you through the setup
+4. The assistant will fetch the complete documentation and implement the integration for you
+
+## Integration Prompt
+
+```text
+# Civic Auth Integration Prompt
+
+## Prerequisites
+Before starting, you need a Civic Auth Client ID:
+1. Visit https://auth.civic.com
+2. Sign up or log in to your account
+3. Create a new application to obtain your Client ID
+4. Copy the Client ID for use in this integration
+
+## Task
+Add Civic Auth authentication to this React application.
+
+## Step 1: Fetch the Documentation
+Use curl to fetch the Civic Auth documentation:
+
+curl https://docs.civic.com/integration/react
+
+This documentation contains ALL the code examples and instructions needed for the integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
+
+## Project Context
+Ask the user for the following information if not provided:
+
+- **Client ID**: If not provided, ask the user to visit https://auth.civic.com, sign up/log in, create a new application, and provide their Client ID
+- **Project Type**: Ask if this is a new or existing React project
+- **Build Tool**: Ask what build tool they're using (Create React App, Vite, Next.js, or other)
+- **Web3 Required**: Ask if they need Web3 features (Yes/No)
+- **Protected Routes/Components**: Ask which components need authentication (e.g., Dashboard, Profile, Settings)
+- **Existing Auth**: Ask if there's any existing authentication that needs to be replaced
+
+## Step 2: Create Implementation Plan
+After fetching the documentation with curl:
+1. Analyze the current project structure
+2. Identify which code examples from the documentation apply
+3. Plan the implementation order
+4. Note any existing code that needs to be modified
+
+## Step 3: Implement Civic Auth
+Using ONLY the documentation fetched via curl:
+1. Follow the Quick Start guide step by step
+2. Choose the correct tab ("Auth" or "Auth + Web3") based on requirements
+3. Adapt all code examples to this project's structure
+4. Handle any existing authentication or routing code appropriately
+
+## Important Notes
+- Use ONLY curl to fetch the documentation - no web search tools
+- The fetched documentation is the ONLY source of truth for this implementation
+- All code examples, configuration options, and setup instructions are in that document
+- Pay attention to version requirements and compatibility notes in the documentation
+```
+
+<Note>
+  **Need help?** If you encounter any issues during the LLM-assisted integration, you can always fall back to the [manual integration guide](/integration/react).
+</Note>
+
+## What the AI Assistant Will Do
+
+When you use this prompt, the AI assistant will:
+
+1. **Fetch the documentation** using curl from the official Civic Auth docs
+2. **Analyze your project** structure and requirements
+3. **Install dependencies** and configure your React app
+4. **Set up authentication provider** and wrap your app correctly
+5. **Implement authentication components** for login/logout functionality
+6. **Handle edge cases** like existing auth systems or custom routing
+
+## Supported AI Assistants
+
+This prompt has been tested with:
+- **Claude** (Anthropic)
+- **Cursor** (with Claude)
+- **ChatGPT** (OpenAI)
+- **GitHub Copilot Chat**
+
+<Info>
+  Make sure your AI assistant has the ability to run terminal commands and edit files in your project.
+</Info>
