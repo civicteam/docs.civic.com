@@ -1,72 +1,95 @@
 ---
 title: "Changelog"
-description: "First published: Apr 16, 2025"
+description: "Product updates and announcements"
 icon: "pen"
 public: true
 ---
 
-**2025-06-05**
+<Update label="July 14th, 2025" description="Enterprise Security & Mobile Excellence" tags={["Authentication", "Mobile", "Bug Fixes"]}>
 
-Added
+🔐 **Client secrets for the enterprise crowd**
+We kept hearing from enterprise customers that they needed client secrets for their confidential applications. So we built it. You can now choose PKCE + client secret for maximum security, or go with client secrets only if you're working with legacy systems that need it.
 
-- Support for [React Native](https://docs.civic.com/auth/integration/mobile/react-native) and [Vanilla JavaScript](https://docs.civic.com/auth/integration/vanillajs).
+Check out our [authentication flows guide](/overview/authentication-flows) to see how it works.
 
-**2025-06-03**
+📱 **Mobile login that actually works**
+Remember those tiny login buttons that were impossible to tap on mobile? Yeah, we fixed that. Login buttons now look good and load fast on phones. No more squinting at your screen trying to hit the right spot.
 
-Added
+🛠️ **Vanilla JavaScript plays nice with everything**
+Our vanilla JavaScript integration now works smoothly with Express, Fastify, Hono, or whatever backend you're running. Same simple code, any framework.
 
-- Spanish and German language support in login experience.
-- Google profile image caching. Users will now see their Google profile picture without render issues.
+🐛 **Bug fixes and improvements**
+We've been busy polishing the experience:
+- Various login flow improvements
+- Enhanced mobile display quality
+- Better handling of edge cases across different auth methods
 
-Fixed
+</Update>
 
-- Resolved issue where the login app loaded indefinitely and login providers only appeared after a manual page refresh.
+<Update label="June 5th, 2025" description="Going Native & Vanilla" tags={["SDKs", "Mobile", "JavaScript"]}>
 
-**2025‑05‑22**
+📱 **React Native support is here**
+Your React Native apps can now use Civic Auth. Works on both iOS and Android with solid performance.
 
-Improved
+🍦 **Pure JavaScript, no frameworks required**
+Want to integrate Civic Auth without any frameworks? Now you can. Plain JavaScript integration that just works.
 
-- Billing dashboard – fixed chart display showing incorrect month.
+</Update>
 
-Fixed
+<Update label="June 3rd, 2025" description="¡Hola mundo! Guten Tag authentication!" tags={["Localization", "Enhancement"]}>
 
-- App banner – now only shown for production apps to reduce noise in staging or development.
+🌍 **Speaking Spanish and German**
+Login screens now support Spanish and German with complete translations. Your international users will feel right at home.
 
-**2025‑05‑03**
+📸 **Google profile pictures show up**
+Fixed the bug where Google profile pictures wouldn't load. No more broken image icons.
 
-Fixed
+</Update>
 
-- Next.js router refresh – eliminated multiple post‑login reloads after authentication.
+<Update label="May 22nd, 2025" description="Dashboard polish & production focus" tags={["Billing", "Dashboard"]}>
 
-**2025‑04‑30**
+📊 **Billing dashboard shows real numbers**
+The billing dashboard was showing incorrect data. Charts now display accurate usage information.
 
-Improved
+🎯 **Fewer annoying banners**
+App banners now only appear for production applications, not during development. Less noise while you're building.
 
-- Billing dashboard – clearer usage chart and accurate usage count.
+</Update>
 
-Fixed
+<Update label="May 3rd, 2025" description="Next.js gets snappier" tags={["Performance", "Next.js"]}>
 
-- Resolved claim‑association issues at login.
-- Fixed duplicate account creation in Customer Dashboard.
+⚡ **One redirect, not three**
+Next.js apps were doing multiple redirects after login. Fixed it so there's just one clean redirect like there should be.
 
-**2025‑04‑29**
+</Update>
 
-Improved
+<Update label="April 30th, 2025" description="Dashboard makeover & account fixes" tags={["Enhancement", "Bug Fixes", "Dashboard"]}>
 
-- Plan & usage visibility – subscription plan and quota details now front‑and‑center.
+📈 **Billing dashboard improvements**
+Usage charts now show the right data with clearer visuals. No more guessing what your actual usage is.
 
-Fixed
+</Update>
 
-- Custom base‑URL support in Civic Auth SDK.
+<Update label="April 29th, 2025" description="Visibility & flexibility upgrades" tags={["Enhancement", "SDK"]}>
 
-**2025‑04‑17**
+💡 **Find your plan info easily**
+Subscription details and usage limits are now easy to find. No more hunting through multiple screens.
 
-Fixed
+🔗 **Better custom domain support**
+Improved how the SDK handles custom URLs and domains. More reliable and flexible.
 
-- Resolved errors that occurred when duplicating an app for production launch.
+</Update>
 
-**2025‑04‑16**
+<Update label="April 17th, 2025" description="Production launch made easy" tags={["Bug Fixes", "Production"]}>
 
-Added
+🚀 **Production setup works again**
+Fixed the errors that were happening when setting up production applications. Should be smooth sailing now.
 
-- Usage‑limit alerts – dashboard & e‑mail notifications when you approach or exceed plan limits.
+</Update>
+
+<Update label="April 16th, 2025" description="Never get surprised by limits again" tags={["Alerts", "Monitoring"]}>
+
+🚨 **Know before you hit the limit**
+Added dashboard and email alerts when you're approaching your plan limits. No more surprise overages.
+
+</Update>
