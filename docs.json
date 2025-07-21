@@ -120,9 +120,9 @@
             "icon": "newspaper"
           },
           {
-            "anchor": "Help Center",
-            "href": "https://support.civic.com/hc/en-us?_gl=1*v97ps0*_gcl_au*MjEyNjQ5MTAzMi4xNzQ4MDA2MTU0",
-            "icon": "circle-question"
+            "anchor": "Join Our Community",
+            "href": "https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw",
+            "icon": "slack"
           }
         ]
       }
