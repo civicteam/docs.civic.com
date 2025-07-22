@@ -12,43 +12,60 @@ Use AI assistants like Claude, Cursor, or other LLMs to automatically integrate 
 
 <CardGroup cols={2}>
   <Card title="Next.js" href="/ai-prompts/nextjs" icon="js">
-    AI prompts for Next.js integration with Web3 support (Solana & Ethereum)
+    AI prompts for Next.js authentication integration
   </Card>
   <Card title="React" href="/ai-prompts/react" icon="react">
-    AI prompts for React application integration with Web3 support (Solana & Ethereum)
+    AI prompts for React authentication integration
+  </Card>
+</CardGroup>
+
+## Web3 Embedded Wallet Prompts
+
+<CardGroup cols={2}>
+  <Card title="Solana Embedded Wallets" href="/ai-prompts/solana-embedded-wallets" icon="wallet">
+    Add Solana embedded wallet functionality to existing Civic Auth projects
+  </Card>
+  <Card title="Ethereum Embedded Wallets" href="/ai-prompts/ethereum-embedded-wallets" icon="ethereum">
+    Add Ethereum/EVM embedded wallet functionality to existing Civic Auth projects
   </Card>
 </CardGroup>
 
 ## How to Use These Prompts
 
-1. **Choose your framework** from the list above
-2. **Copy the appropriate prompt** for your use case
-3. **Paste it into your AI assistant** (Claude, Cursor, etc.)
-4. **Specify if you need Web3 features** (Solana, Ethereum, or both)
-5. **Follow the AI's step-by-step instructions**
+### For New Projects
+1. **Start with basic authentication** using [React](/ai-prompts/react) or [Next.js](/ai-prompts/nextjs) prompts
+2. **Add Web3 functionality** (optional) using [Solana](/ai-prompts/solana-embedded-wallets) or [Ethereum](/ai-prompts/ethereum-embedded-wallets) prompts
+3. **Copy the appropriate prompt** and paste it into your AI assistant
+4. **Follow the AI's step-by-step instructions**
+
+### For Existing Projects
+1. **Add Web3 functionality** to your existing Civic Auth integration using the embedded wallet prompts
+2. **Choose your blockchain platform** (Solana, Ethereum, or both)
+3. **Copy the appropriate prompt** and paste it into your AI assistant
 
 ## Web3 Integration Features
 
-Our AI prompts now include comprehensive Web3 support:
+Our focused embedded wallet prompts provide:
 
+- **Prerequisites Checking**: Ensures basic Civic Auth is set up first
 - **Embedded Wallets**: Automatically create non-custodial wallets for users
-- **Multi-Chain Support**: Choose between Solana, Ethereum/EVM, or both
+- **Platform-Specific**: Dedicated prompts for Solana and Ethereum/EVM chains
 - **Wallet Adapters**: Proper integration with Solana Wallet Adapter and Wagmi
 - **Transaction Handling**: Send transactions and check balances
-- **Platform-Specific Configuration**: Optimized setup for each blockchain platform
+- **Multi-Chain Support**: For Ethereum, support multiple EVM networks
 
 ## Benefits of AI-Assisted Integration
 
 - **Faster setup** - Let AI handle the boilerplate code
 - **Fewer errors** - AI follows tested patterns and best practices
+- **Modular approach** - Separate prompts for authentication and Web3 features
 - **Customization** - AI can adapt the integration to your specific needs
 - **Learning** - Understand the integration process as AI explains each step
-- **Web3 Ready** - Complete blockchain integration without manual configuration
 
 ## Tips for Best Results
 
 <Tip>
-Make sure to mention your specific project structure and requirements when using the prompts. The more context you provide, the better the AI can tailor the integration to your needs. For Web3 projects, specify which blockchain platforms you want to support.
+Make sure to mention your specific project structure and requirements when using the prompts. For Web3 projects, start with basic authentication first, then add embedded wallet functionality using the dedicated prompts.
 </Tip>
 
 <Warning>
@@ -57,12 +74,14 @@ Always review the AI-generated code before implementing it in production. While 
 
 ## Best Practices
 
-- **Customize the prompts**: These prompts are starting points. Modify them based on your specific requirements.
-- **Keep them updated**: As you discover patterns that work well, update your prompts.
-- **Version control**: Store your prompts in your repository so your team can benefit from them.
-- **Security first**: Always review AI-generated code for security best practices, especially for Web3 wallet integrations.
-- **Test thoroughly**: For Web3 integrations, test wallet creation, transactions, and error handling on testnets first.
+- **Start simple**: Use basic authentication prompts first, then add Web3 features
+- **One feature at a time**: Don't try to implement everything at once
+- **Customize the prompts**: These prompts are starting points. Modify them based on your specific requirements
+- **Keep them updated**: As you discover patterns that work well, update your prompts
+- **Version control**: Store your prompts in your repository so your team can benefit from them
+- **Security first**: Always review AI-generated code for security best practices, especially for Web3 wallet integrations
+- **Test thoroughly**: For Web3 integrations, test wallet creation, transactions, and error handling on testnets first
 
 ## Need Manual Integration?
 
-If you prefer to integrate manually or need more control over the process, check out our [Integration guides](/integration) for step-by-step instructions.
+If you prefer to integrate manually or need more control over the process, check out our [Integration guides](/integration) for step-by-step instructions. For Web3 features, see our [Web3 documentation](/web3) for detailed platform-specific guides.
