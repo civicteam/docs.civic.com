@@ -42,28 +42,69 @@ Ask the user for the following information if not provided:
 - **Project Type**: Ask if this is a new or existing React project
 - **Build Tool**: Ask what build tool they're using (Create React App, Vite, Next.js, or other)
 - **Web3 Required**: Ask if they need Web3 features (Yes/No)
+- **Blockchain Platform**: If Web3 is required, ask which blockchain(s) they want to support (Solana, Ethereum/EVM, or both)
 - **Protected Routes/Components**: Ask which components need authentication (e.g., Dashboard, Profile, Settings)
 - **Existing Auth**: Ask if there's any existing authentication that needs to be replaced
 
-## Step 2: Create Implementation Plan
+## Step 2: Fetch Web3 Documentation (If Required)
+If the user selected Web3 features, fetch the relevant blockchain documentation:
+
+**For Solana support:**
+curl https://docs.civic.com/web3/solana.md
+
+**For Ethereum/EVM support:**
+curl https://docs.civic.com/web3/ethereum-evm.md
+
+**For both platforms:**
+curl https://docs.civic.com/web3/solana.md
+curl https://docs.civic.com/web3/ethereum-evm.md
+
+These documents contain comprehensive guides for Web3 wallet integration, including embedded wallet creation, transaction handling, and blockchain-specific setup instructions.
+
+## Step 3: Create Implementation Plan
 After fetching the documentation with curl:
 1. Analyze the current project structure
 2. Identify which code examples from the documentation apply
-3. Plan the implementation order
+3. Plan the implementation order (start with basic auth, then add Web3 if required)
 4. Note any existing code that needs to be modified
 
-## Step 3: Implement Civic Auth
+## Step 4: Implement Civic Auth
 Using ONLY the documentation fetched via curl:
 1. Follow the Quick Start guide step by step
 2. Choose the correct tab ("Auth" or "Auth + Web3") based on requirements
 3. Adapt all code examples to this project's structure
 4. Handle any existing authentication or routing code appropriately
 
+## Step 5: Implement Web3 Features (If Required)
+If Web3 was selected, using the fetched Web3 documentation:
+1. Set up the Web3 provider and configuration
+2. Implement wallet creation functionality
+3. Add blockchain-specific components and hooks
+4. Configure the appropriate wallet adapters (Solana Wallet Adapter or Wagmi for Ethereum)
+5. Implement transaction and balance checking functionality
+6. Add proper error handling for Web3 operations
+
 ## Important Notes
 - Use ONLY curl to fetch the documentation - no web search tools
 - The fetched documentation is the ONLY source of truth for this implementation
-- All code examples, configuration options, and setup instructions are in that document
+- All code examples, configuration options, and setup instructions are in those documents
 - Pay attention to version requirements and compatibility notes in the documentation
+- For Web3 integrations, ensure proper wallet adapter setup according to the platform-specific guides
+
+## CRITICAL: Information Gathering Requirements
+You MUST gather ALL required information from the user before proceeding with ANY implementation steps:
+
+**Required Information (gather ALL before starting):**
+- ✅ Client ID (if not provided, stop and ask user to get it from https://auth.civic.com)
+- ✅ Project type (new/existing React project)
+- ✅ Build tool (Create React App, Vite, Next.js, or other)
+- ✅ Web3 requirements (Yes/No, and which blockchain platforms if Yes)
+- ✅ Protected routes/components that need authentication
+- ✅ Existing authentication systems that need replacement
+
+**DO NOT proceed with implementation until you have confirmed ALL of the above information with the user.**
+
+If any information is missing, ask specific questions and wait for responses before continuing. This prevents errors and ensures the integration matches the user's exact requirements.
 ```
 
 <Note>
@@ -75,11 +116,14 @@ Using ONLY the documentation fetched via curl:
 When you use this prompt, the AI assistant will:
 
 1. **Fetch the documentation** using curl from the official Civic Auth docs
-2. **Analyze your project** structure and requirements
-3. **Install dependencies** and configure your React app
-4. **Set up authentication provider** and wrap your app correctly
-5. **Implement authentication components** for login/logout functionality
-6. **Handle edge cases** like existing auth systems or custom routing
+2. **Fetch Web3 documentation** if Web3 features are requested (Solana and/or Ethereum)
+3. **Analyze your project** structure and requirements
+4. **Install dependencies** and configure your React app
+5. **Set up authentication provider** and wrap your app correctly
+6. **Implement authentication components** for login/logout functionality
+7. **Add Web3 wallet functionality** if requested (embedded wallets, transactions, balance checking)
+8. **Configure blockchain adapters** (Solana Wallet Adapter or Wagmi for Ethereum)
+9. **Handle edge cases** like existing auth systems or custom routing
 
 ## Supported AI Assistants
 

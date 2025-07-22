@@ -12,19 +12,30 @@ Use AI assistants like Claude, Cursor, or other LLMs to automatically integrate 
 
 <CardGroup cols={2}>
   <Card title="Next.js" href="/ai-prompts/nextjs" icon="js">
-    AI prompts for Next.js integration with and without Web3 support
+    AI prompts for Next.js integration with Web3 support (Solana & Ethereum)
   </Card>
   <Card title="React" href="/ai-prompts/react" icon="react">
-    AI prompts for React application integration
+    AI prompts for React application integration with Web3 support (Solana & Ethereum)
   </Card>
 </CardGroup>
 
 ## How to Use These Prompts
 
 1. **Choose your framework** from the list above
-2. **Copy the appropriate prompt** for your use case (Web3 or standard)
+2. **Copy the appropriate prompt** for your use case
 3. **Paste it into your AI assistant** (Claude, Cursor, etc.)
-4. **Follow the AI's step-by-step instructions**
+4. **Specify if you need Web3 features** (Solana, Ethereum, or both)
+5. **Follow the AI's step-by-step instructions**
+
+## Web3 Integration Features
+
+Our AI prompts now include comprehensive Web3 support:
+
+- **Embedded Wallets**: Automatically create non-custodial wallets for users
+- **Multi-Chain Support**: Choose between Solana, Ethereum/EVM, or both
+- **Wallet Adapters**: Proper integration with Solana Wallet Adapter and Wagmi
+- **Transaction Handling**: Send transactions and check balances
+- **Platform-Specific Configuration**: Optimized setup for each blockchain platform
 
 ## Benefits of AI-Assisted Integration
 
@@ -32,15 +43,16 @@ Use AI assistants like Claude, Cursor, or other LLMs to automatically integrate 
 - **Fewer errors** - AI follows tested patterns and best practices
 - **Customization** - AI can adapt the integration to your specific needs
 - **Learning** - Understand the integration process as AI explains each step
+- **Web3 Ready** - Complete blockchain integration without manual configuration
 
 ## Tips for Best Results
 
 <Tip>
-Make sure to mention your specific project structure and requirements when using the prompts. The more context you provide, the better the AI can tailor the integration to your needs.
+Make sure to mention your specific project structure and requirements when using the prompts. The more context you provide, the better the AI can tailor the integration to your needs. For Web3 projects, specify which blockchain platforms you want to support.
 </Tip>
 
 <Warning>
-Always review the AI-generated code before implementing it in production. While these prompts are designed to produce working code, it's important to understand what's being added to your project.
+Always review the AI-generated code before implementing it in production. While these prompts are designed to produce working code, it's important to understand what's being added to your project, especially for Web3 integrations involving wallet management.
 </Warning>
 
 ## Best Practices
@@ -48,8 +60,9 @@ Always review the AI-generated code before implementing it in production. While 
 - **Customize the prompts**: These prompts are starting points. Modify them based on your specific requirements.
 - **Keep them updated**: As you discover patterns that work well, update your prompts.
 - **Version control**: Store your prompts in your repository so your team can benefit from them.
-- **Security first**: Always review AI-generated code for security best practices. 
+- **Security first**: Always review AI-generated code for security best practices, especially for Web3 wallet integrations.
+- **Test thoroughly**: For Web3 integrations, test wallet creation, transactions, and error handling on testnets first.
 
 ## Need Manual Integration?
 
-If you prefer to integrate manually or need more control over the process, check out our [Integration guides](/integration) for step-by-step instructions. 
+If you prefer to integrate manually or need more control over the process, check out our [Integration guides](/integration) for step-by-step instructions. For Web3 features, see our [Web3 documentation](/web3) for detailed platform-specific guides. 

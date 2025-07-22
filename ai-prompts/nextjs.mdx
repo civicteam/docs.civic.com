@@ -41,28 +41,70 @@ Ask the user for the following information if not provided:
 - **Client ID**: If not provided, ask the user to visit https://auth.civic.com, sign up/log in, create a new application, and provide their Client ID
 - **Project Type**: Ask if this is a new or existing Next.js project
 - **Web3 Required**: Ask if they need Web3 features (Yes/No)
+- **Blockchain Platform**: If Web3 is required, ask which blockchain(s) they want to support (Solana, Ethereum/EVM, or both)
 - **Protected Routes**: Ask which routes need authentication (e.g., /dashboard/*, /api/private/*)
 - **Existing Auth**: Ask if there's any existing authentication that needs to be replaced
 
-## Step 2: Create Implementation Plan
+## Step 2: Fetch Web3 Documentation (If Required)
+If the user selected Web3 features, fetch the relevant blockchain documentation:
+
+**For Solana support:**
+curl https://docs.civic.com/web3/solana.md
+
+**For Ethereum/EVM support:**
+curl https://docs.civic.com/web3/ethereum-evm.md
+
+**For both platforms:**
+curl https://docs.civic.com/web3/solana.md
+curl https://docs.civic.com/web3/ethereum-evm.md
+
+These documents contain comprehensive guides for Web3 wallet integration, including embedded wallet creation, transaction handling, and blockchain-specific setup instructions.
+
+## Step 3: Create Implementation Plan
 After fetching the documentation with curl:
 1. Analyze the current project structure
 2. Identify which code examples from the documentation apply
-3. Plan the implementation order
+3. Plan the implementation order (start with basic auth, then add Web3 if required)
 4. Note any existing code that needs to be modified
 
-## Step 3: Implement Civic Auth
+## Step 4: Implement Civic Auth
 Using ONLY the documentation fetched via curl:
 1. Follow the Quick Start guide step by step
 2. Choose the correct tab ("Auth" or "Auth + Web3") based on requirements
 3. Adapt all code examples to this project's structure
 4. Handle any existing middleware or auth code appropriately
 
+## Step 5: Implement Web3 Features (If Required)
+If Web3 was selected, using the fetched Web3 documentation:
+1. Set up the Web3 provider and configuration for Next.js
+2. Implement wallet creation functionality
+3. Add blockchain-specific components and hooks
+4. Configure the appropriate wallet adapters (Solana Wallet Adapter or Wagmi for Ethereum)
+5. Set up proper webpack configuration for Solana if using versions < Next.js 15.3
+6. Implement transaction and balance checking functionality
+7. Add proper error handling for Web3 operations
+8. Handle SSR considerations for Web3 components
+
 ## Important Notes
 - Use ONLY curl to fetch the documentation - no web search tools
 - The fetched documentation is the ONLY source of truth for this implementation
-- All code examples, configuration options, and setup instructions are in that document
+- All code examples, configuration options, and setup instructions are in those documents
 - Pay attention to version requirements and security warnings in the documentation
+- For Web3 integrations, ensure proper wallet adapter setup according to the platform-specific guides
+
+## CRITICAL: Information Gathering Requirements
+You MUST gather ALL required information from the user before proceeding with ANY implementation steps:
+
+**Required Information (gather ALL before starting):**
+- ✅ Client ID (if not provided, stop and ask user to get it from https://auth.civic.com)
+- ✅ Project type (new/existing Next.js project)
+- ✅ Web3 requirements (Yes/No, and which blockchain platforms if Yes)
+- ✅ Protected routes that need authentication (e.g., /dashboard/*, /api/private/*)
+- ✅ Existing authentication systems that need replacement
+
+**DO NOT proceed with implementation until you have confirmed ALL of the above information with the user.**
+
+If any information is missing, ask specific questions and wait for responses before continuing. This prevents errors and ensures the integration matches the user's exact requirements.
 
 ## CRITICAL: Middleware File Location
 The middleware.ts file MUST be placed at src/middleware.ts (in the src/ directory), NOT in the project root. This is a common mistake that breaks authentication:
@@ -70,6 +112,12 @@ The middleware.ts file MUST be placed at src/middleware.ts (in the src/ director
 - ❌ WRONG: middleware.ts (project root - breaks authentication)
 
 The middleware file should be placed in the src/ directory as shown in the documentation examples. Placing it in the project root will cause the middleware to not take effect and authentication will fail.
+
+## CRITICAL: Web3 Configuration for Next.js
+When implementing Web3 features with Next.js:
+- For Solana with webpack (Next.js < 15.3): Enable the `enableSolanaWalletAdapter: true` flag in your next.config file
+- For Ethereum/EVM: Ensure proper Wagmi configuration with SSR considerations
+- Handle client-side only components properly to avoid hydration issues
 ```
 
 <Note>
@@ -81,11 +129,15 @@ The middleware file should be placed in the src/ directory as shown in the docum
 When you use this prompt, the AI assistant will:
 
 1. **Fetch the documentation** using curl from the official Civic Auth docs
-2. **Analyze your project** structure and requirements
-3. **Install dependencies** and configure your Next.js app
-4. **Set up authentication** with proper middleware and routes
-5. **Implement frontend components** for login/logout functionality
-6. **Handle edge cases** like existing auth systems or custom configurations
+2. **Fetch Web3 documentation** if Web3 features are requested (Solana and/or Ethereum)
+3. **Analyze your project** structure and requirements
+4. **Install dependencies** and configure your Next.js app
+5. **Set up authentication** with proper middleware and routes
+6. **Implement frontend components** for login/logout functionality
+7. **Add Web3 wallet functionality** if requested (embedded wallets, transactions, balance checking)
+8. **Configure blockchain adapters** (Solana Wallet Adapter or Wagmi for Ethereum)
+9. **Handle Next.js specific configurations** for Web3 (webpack, SSR, etc.)
+10. **Handle edge cases** like existing auth systems or custom configurations
 
 ## Supported AI Assistants
 
