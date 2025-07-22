@@ -15,201 +15,204 @@ Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to auto
 ## Choose Your Blockchain
 
 <Tabs>
-  <Tab title="Solana">
-    ## Solana Integration Prompt
+<Tab title="Solana">
 
-    ```text
-    # Solana Embedded Wallets Integration Prompt
+## Solana Integration Prompt
 
-    ## Prerequisites Check
-    Before starting, verify the user has:
-    1. Existing Civic Auth integration in their React/Next.js project
-    2. A working Civic Auth Client ID
-    3. Basic authentication already functional
+```text
+# Solana Embedded Wallets Integration Prompt
 
-    If any of these are missing, stop and direct them to set up basic Civic Auth first.
+## Prerequisites Check
+Before starting, verify the user has:
+1. Existing Civic Auth integration in their React/Next.js project
+2. A working Civic Auth Client ID
+3. Basic authentication already functional
 
-    ## Task
-    Add Solana embedded wallet functionality to an existing Civic Auth integration.
+If any of these are missing, stop and direct them to set up basic Civic Auth first.
 
-    ## Step 1: Fetch the Solana Documentation
-    Use curl to fetch the Solana embedded wallets documentation:
+## Task
+Add Solana embedded wallet functionality to an existing Civic Auth integration.
 
-    curl https://docs.civic.com/web3/solana.md
+## Step 1: Fetch the Solana Documentation
+Use curl to fetch the Solana embedded wallets documentation:
 
-    This documentation contains ALL the code examples and instructions needed for Solana wallet integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
+curl https://docs.civic.com/web3/solana.md
 
-    ## Step 2: Gather Project Information
-    Ask the user for the following information if not provided:
+This documentation contains ALL the code examples and instructions needed for Solana wallet integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
 
-    **Required Information (gather ALL before starting):**
-    - ✅ Current framework (React, Next.js, etc.)
-    - ✅ Build tool (Vite, Create React App, Next.js, or other)
-    - ✅ Solana Wallet Adapter preference (Yes/No - whether to integrate with existing wallet adapters)
-    - ✅ Solana RPC endpoint preference (or if they need help choosing one)
-    - ✅ Which components need wallet functionality
-    - ✅ Existing Web3 libraries that might conflict
+## Step 2: Gather Project Information
+Ask the user for the following information if not provided:
 
-    **DO NOT proceed with implementation until you have confirmed ALL of the above information.**
+**Required Information (gather ALL before starting):**
+- ✅ Current framework (React, Next.js, etc.)
+- ✅ Build tool (Vite, Create React App, Next.js, or other)
+- ✅ Solana Wallet Adapter preference (Yes/No - whether to integrate with existing wallet adapters)
+- ✅ Solana RPC endpoint preference (or if they need help choosing one)
+- ✅ Which components need wallet functionality
+- ✅ Existing Web3 libraries that might conflict
 
-    ## Step 3: Analyze Current Setup
-    Before implementing:
-    1. Examine the existing Civic Auth setup
-    2. Identify where the CivicAuthProvider is configured
-    3. Check for any existing Web3 dependencies
-    4. Plan integration points for wallet functionality
+**DO NOT proceed with implementation until you have confirmed ALL of the above information.**
 
-    ## Step 4: Implement Solana Embedded Wallets
-    Using ONLY the documentation fetched via curl:
+## Step 3: Analyze Current Setup
+Before implementing:
+1. Examine the existing Civic Auth setup
+2. Identify where the CivicAuthProvider is configured
+3. Check for any existing Web3 dependencies
+4. Plan integration points for wallet functionality
 
-    1. **Install Dependencies**: Add the required @civic/auth-web3 packages
-    2. **Update Provider**: Enhance the existing CivicAuthProvider setup for Web3
-    3. **Implement Wallet Creation**: Add wallet creation logic for new users
-    4. **Add Wallet Components**: Create components for wallet interaction (balance, transactions)
-    5. **Configure Solana Connection**: Set up RPC connection and network configuration
-    6. **Handle Wallet Adapter** (if requested): Integrate with Solana Wallet Adapter ecosystem
+## Step 4: Implement Solana Embedded Wallets
+Using ONLY the documentation fetched via curl:
 
-    ## Step 5: Add Wallet Functionality
-    Implement core wallet features:
-    - **Check if user has wallet**: Use userHasWallet type guard
-    - **Create wallet for new users**: Implement createWallet functionality  
-    - **Display wallet address**: Show the user's Solana public key
-    - **Check wallet balance**: Query and display SOL balance
-    - **Send transactions**: Basic transaction sending capability
-    - **Error handling**: Proper error states for wallet operations
+1. **Install Dependencies**: Add the required @civic/auth-web3 packages
+2. **Update Provider**: Enhance the existing CivicAuthProvider setup for Web3
+3. **Implement Wallet Creation**: Add wallet creation logic for new users
+4. **Add Wallet Components**: Create components for wallet interaction (balance, transactions)
+5. **Configure Solana Connection**: Set up RPC connection and network configuration
+6. **Handle Wallet Adapter** (if requested): Integrate with Solana Wallet Adapter ecosystem
 
-    ## Important Notes
-    - Use ONLY curl to fetch the documentation - no web search tools
-    - The fetched documentation is the ONLY source of truth for this implementation
-    - All code examples, configuration options, and setup instructions are in that document
-    - Pay attention to Early Access warnings and API stability notes
-    - Ensure proper TypeScript types are used (ExistingWeb3UserContext vs NewWeb3UserContext)
+## Step 5: Add Wallet Functionality
+Implement core wallet features:
+- **Check if user has wallet**: Use userHasWallet type guard
+- **Create wallet for new users**: Implement createWallet functionality  
+- **Display wallet address**: Show the user's Solana public key
+- **Check wallet balance**: Query and display SOL balance
+- **Send transactions**: Basic transaction sending capability
+- **Error handling**: Proper error states for wallet operations
 
-    ## CRITICAL: Webpack Configuration for Next.js
-    If the project uses Next.js with webpack (versions < 15.3), ensure the next.config file includes:
+## Important Notes
+- Use ONLY curl to fetch the documentation - no web search tools
+- The fetched documentation is the ONLY source of truth for this implementation
+- All code examples, configuration options, and setup instructions are in that document
+- Pay attention to Early Access warnings and API stability notes
+- Ensure proper TypeScript types are used (ExistingWeb3UserContext vs NewWeb3UserContext)
 
-    ```javascript
-    createCivicAuthPlugin({
-      clientId: 'YOUR_CLIENT_ID',
-      enableSolanaWalletAdapter: true, // Required for Solana integration
-    })
-    ```
+## CRITICAL: Webpack Configuration for Next.js
+If the project uses Next.js with webpack (versions < 15.3), ensure the next.config file includes:
 
-    ## Testing Requirements
-    After implementation, ensure the following works:
-    1. Existing users can create wallets
-    2. Users with wallets can see their address and balance
-    3. Transaction sending works on testnet
-    4. Error states display properly
-    5. Wallet Adapter integration works (if enabled)
-    ```
-  </Tab>
-  
-  <Tab title="Ethereum">
-    ## Ethereum Integration Prompt
+```javascript
+createCivicAuthPlugin({
+  clientId: 'YOUR_CLIENT_ID',
+  enableSolanaWalletAdapter: true, // Required for Solana integration
+})
+```
 
-    ```text
-    # Ethereum/EVM Embedded Wallets Integration Prompt
+## Testing Requirements
+After implementation, ensure the following works:
+1. Existing users can create wallets
+2. Users with wallets can see their address and balance
+3. Transaction sending works on testnet
+4. Error states display properly
+5. Wallet Adapter integration works (if enabled)
+```
 
-    ## Prerequisites Check
-    Before starting, verify the user has:
-    1. Existing Civic Auth integration in their React/Next.js project
-    2. A working Civic Auth Client ID
-    3. Basic authentication already functional
+</Tab>
+<Tab title="Ethereum">
 
-    If any of these are missing, stop and direct them to set up basic Civic Auth first.
+## Ethereum Integration Prompt
 
-    ## Task
-    Add Ethereum/EVM embedded wallet functionality to an existing Civic Auth integration.
+```text
+# Ethereum/EVM Embedded Wallets Integration Prompt
 
-    ## Step 1: Fetch the Ethereum Documentation
-    Use curl to fetch the Ethereum embedded wallets documentation:
+## Prerequisites Check
+Before starting, verify the user has:
+1. Existing Civic Auth integration in their React/Next.js project
+2. A working Civic Auth Client ID
+3. Basic authentication already functional
 
-    curl https://docs.civic.com/web3/ethereum-evm.md
+If any of these are missing, stop and direct them to set up basic Civic Auth first.
 
-    This documentation contains ALL the code examples and instructions needed for Ethereum wallet integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
+## Task
+Add Ethereum/EVM embedded wallet functionality to an existing Civic Auth integration.
 
-    ## Step 2: Gather Project Information
-    Ask the user for the following information if not provided:
+## Step 1: Fetch the Ethereum Documentation
+Use curl to fetch the Ethereum embedded wallets documentation:
 
-    **Required Information (gather ALL before starting):**
-    - ✅ Current framework (React, Next.js, etc.)
-    - ✅ Build tool (Vite, Create React App, Next.js, or other)
-    - ✅ Wagmi integration preference (Yes/No - whether to integrate with existing Wagmi setup)
-    - ✅ Target blockchain networks (Ethereum mainnet, Polygon, etc.)
-    - ✅ RPC provider preference (Alchemy, Infura, or custom)
-    - ✅ Which components need wallet functionality
-    - ✅ Existing Web3 libraries that might conflict
+curl https://docs.civic.com/web3/ethereum-evm.md
 
-    **DO NOT proceed with implementation until you have confirmed ALL of the above information.**
+This documentation contains ALL the code examples and instructions needed for Ethereum wallet integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
 
-    ## Step 3: Analyze Current Setup
-    Before implementing:
-    1. Examine the existing Civic Auth setup
-    2. Identify where the CivicAuthProvider is configured
-    3. Check for any existing Web3/Wagmi dependencies
-    4. Plan integration points for wallet functionality
+## Step 2: Gather Project Information
+Ask the user for the following information if not provided:
 
-    ## Step 4: Implement Ethereum Embedded Wallets
-    Using ONLY the documentation fetched via curl:
+**Required Information (gather ALL before starting):**
+- ✅ Current framework (React, Next.js, etc.)
+- ✅ Build tool (Vite, Create React App, Next.js, or other)
+- ✅ Wagmi integration preference (Yes/No - whether to integrate with existing Wagmi setup)
+- ✅ Target blockchain networks (Ethereum mainnet, Polygon, etc.)
+- ✅ RPC provider preference (Alchemy, Infura, or custom)
+- ✅ Which components need wallet functionality
+- ✅ Existing Web3 libraries that might conflict
 
-    1. **Install Dependencies**: Add the required @civic/auth-web3 and wagmi packages
-    2. **Update Provider**: Enhance the existing CivicAuthProvider setup for Web3
-    3. **Configure Wagmi**: Set up Wagmi configuration with Civic's embeddedWallet connector
-    4. **Implement Wallet Creation**: Add wallet creation logic for new users
-    5. **Add Wallet Components**: Create components for wallet interaction (balance, transactions)
-    6. **Configure Network Settings**: Set up supported chains and RPC endpoints
-    7. **Handle Chain Switching**: Implement chain switching functionality
+**DO NOT proceed with implementation until you have confirmed ALL of the above information.**
 
-    ## Step 5: Add Wallet Functionality
-    Implement core wallet features:
-    - **Check if user has wallet**: Use userHasWallet type guard
-    - **Create wallet for new users**: Implement createWallet functionality  
-    - **Display wallet address**: Show the user's Ethereum address
-    - **Check wallet balance**: Query and display ETH balance
-    - **Send transactions**: Basic transaction sending capability
-    - **Chain switching**: Allow users to switch between supported networks
-    - **Error handling**: Proper error states for wallet operations
+## Step 3: Analyze Current Setup
+Before implementing:
+1. Examine the existing Civic Auth setup
+2. Identify where the CivicAuthProvider is configured
+3. Check for any existing Web3/Wagmi dependencies
+4. Plan integration points for wallet functionality
 
-    ## Step 6: Configure Multi-Chain Support (Optional)
-    If the user needs multiple chains:
-    - Set up supported chains configuration
-    - Configure custom RPC endpoints
-    - Handle chain-specific logic
-    - Implement proper error handling for unsupported chains
+## Step 4: Implement Ethereum Embedded Wallets
+Using ONLY the documentation fetched via curl:
 
-    ## Important Notes
-    - Use ONLY curl to fetch the documentation - no web search tools
-    - The fetched documentation is the ONLY source of truth for this implementation
-    - All code examples, configuration options, and setup instructions are in that document
-    - Pay attention to Wagmi version compatibility requirements
-    - Ensure proper TypeScript types are used (ExistingWeb3UserContext vs NewWeb3UserContext)
+1. **Install Dependencies**: Add the required @civic/auth-web3 and wagmi packages
+2. **Update Provider**: Enhance the existing CivicAuthProvider setup for Web3
+3. **Configure Wagmi**: Set up Wagmi configuration with Civic's embeddedWallet connector
+4. **Implement Wallet Creation**: Add wallet creation logic for new users
+5. **Add Wallet Components**: Create components for wallet interaction (balance, transactions)
+6. **Configure Network Settings**: Set up supported chains and RPC endpoints
+7. **Handle Chain Switching**: Implement chain switching functionality
 
-    ## CRITICAL: Wagmi Configuration
-    The embeddedWallet() connector must be properly configured in your Wagmi setup:
+## Step 5: Add Wallet Functionality
+Implement core wallet features:
+- **Check if user has wallet**: Use userHasWallet type guard
+- **Create wallet for new users**: Implement createWallet functionality  
+- **Display wallet address**: Show the user's Ethereum address
+- **Check wallet balance**: Query and display ETH balance
+- **Send transactions**: Basic transaction sending capability
+- **Chain switching**: Allow users to switch between supported networks
+- **Error handling**: Proper error states for wallet operations
 
-    ```javascript
-    import { embeddedWallet } from '@civic/auth-web3/wagmi'
+## Step 6: Configure Multi-Chain Support (Optional)
+If the user needs multiple chains:
+- Set up supported chains configuration
+- Configure custom RPC endpoints
+- Handle chain-specific logic
+- Implement proper error handling for unsupported chains
 
-    const config = createConfig({
-      connectors: [
-        embeddedWallet(), // Civic embedded wallet
-        // ... other connectors like MetaMask
-      ],
-      // ... rest of configuration
-    })
-    ```
+## Important Notes
+- Use ONLY curl to fetch the documentation - no web search tools
+- The fetched documentation is the ONLY source of truth for this implementation
+- All code examples, configuration options, and setup instructions are in that document
+- Pay attention to Wagmi version compatibility requirements
+- Ensure proper TypeScript types are used (ExistingWeb3UserContext vs NewWeb3UserContext)
 
-    ## Testing Requirements
-    After implementation, ensure the following works:
-    1. Existing users can create wallets
-    2. Users with wallets can see their address and balance
-    3. Transaction sending works on testnet
-    4. Chain switching functions properly
-    5. Wagmi hooks work correctly with Civic wallets
-    6. Error states display properly
-    ```
-  </Tab>
+## CRITICAL: Wagmi Configuration
+The embeddedWallet() connector must be properly configured in your Wagmi setup:
+
+```javascript
+import { embeddedWallet } from '@civic/auth-web3/wagmi'
+
+const config = createConfig({
+  connectors: [
+    embeddedWallet(), // Civic embedded wallet
+    // ... other connectors like MetaMask
+  ],
+  // ... rest of configuration
+})
+```
+
+## Testing Requirements
+After implementation, ensure the following works:
+1. Existing users can create wallets
+2. Users with wallets can see their address and balance
+3. Transaction sending works on testnet
+4. Chain switching functions properly
+5. Wagmi hooks work correctly with Civic wallets
+6. Error states display properly
+```
+
+</Tab>
 </Tabs>
 
 ## What the AI Assistant Will Do
