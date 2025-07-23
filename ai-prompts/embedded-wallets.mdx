@@ -12,7 +12,10 @@ Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to auto
   This prompt assumes you already have Civic Auth basic authentication set up in your project. If not, use the [React](/ai-prompts/react) or [Next.js](/ai-prompts/nextjs) prompts first.
 </Warning>
 
-## Solana Integration Prompt
+## Choose Your Blockchain
+
+<Tabs>
+<Tab title="Solana">
 
 ```text
 # Solana Embedded Wallets Integration Prompt
@@ -100,9 +103,9 @@ After implementation, ensure the following works:
 5. Wallet Adapter integration works (if enabled)
 ```
 
----
+</Tab>
 
-## Ethereum Integration Prompt
+<Tab title="Ethereum">
 
 ```text
 # Ethereum/EVM Embedded Wallets Integration Prompt
@@ -205,6 +208,9 @@ After implementation, ensure the following works:
 5. Wagmi hooks work correctly with Civic wallets
 6. Error states display properly
 ```
+
+</Tab>
+</Tabs>
 
 ## What the AI Assistant Will Do
 
