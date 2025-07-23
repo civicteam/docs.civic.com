@@ -17,6 +17,7 @@ Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to auto
 <Tabs>
 <Tab title="Solana">
 
+```
 # Solana Embedded Wallets Integration Prompt
 
 ## Prerequisites Check
@@ -33,9 +34,7 @@ Add Solana embedded wallet functionality to an existing Civic Auth integration.
 ## Step 1: Fetch the Solana Documentation
 Use curl to fetch the Solana embedded wallets documentation:
 
-```bash
 curl https://docs.civic.com/web3/solana.md
-```
 
 This documentation contains ALL the code examples and instructions needed for Solana wallet integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
 
@@ -88,12 +87,10 @@ Implement core wallet features:
 ## CRITICAL: Webpack Configuration for Next.js
 If the project uses Next.js with webpack (versions < 15.3), ensure the next.config file includes:
 
-```javascript
 createCivicAuthPlugin({
   clientId: 'YOUR_CLIENT_ID',
   enableSolanaWalletAdapter: true, // Required for Solana integration
 })
-```
 
 ## Testing Requirements
 After implementation, ensure the following works:
@@ -102,11 +99,13 @@ After implementation, ensure the following works:
 3. Transaction sending works on testnet
 4. Error states display properly
 5. Wallet Adapter integration works (if enabled)
+```
 
 </Tab>
 
 <Tab title="Ethereum">
 
+```
 # Ethereum/EVM Embedded Wallets Integration Prompt
 
 ## Prerequisites Check
@@ -123,9 +122,7 @@ Add Ethereum/EVM embedded wallet functionality to an existing Civic Auth integra
 ## Step 1: Fetch the Ethereum Documentation
 Use curl to fetch the Ethereum embedded wallets documentation:
 
-```bash
 curl https://docs.civic.com/web3/ethereum-evm.md
-```
 
 This documentation contains ALL the code examples and instructions needed for Ethereum wallet integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
 
@@ -188,7 +185,6 @@ If the user needs multiple chains:
 ## CRITICAL: Wagmi Configuration
 The embeddedWallet() connector must be properly configured in your Wagmi setup:
 
-```javascript
 import { embeddedWallet } from '@civic/auth-web3/wagmi'
 
 const config = createConfig({
@@ -198,7 +194,6 @@ const config = createConfig({
   ],
   // ... rest of configuration
 })
-```
 
 ## Testing Requirements
 After implementation, ensure the following works:
@@ -208,6 +203,7 @@ After implementation, ensure the following works:
 4. Chain switching functions properly
 5. Wagmi hooks work correctly with Civic wallets
 6. Error states display properly
+```
 
 </Tab>
 </Tabs>
