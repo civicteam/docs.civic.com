@@ -88,8 +88,9 @@
           "icon": "robot",
           "pages": [
             "ai-prompts/overview",
-            "ai-prompts/nextjs",
-            "ai-prompts/react"
+            "ai-prompts/nextjs", 
+            "ai-prompts/react",
+            "ai-prompts/embedded-wallets"
           ]
         },
         {

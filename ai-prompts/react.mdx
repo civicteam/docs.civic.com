@@ -35,27 +35,37 @@ curl https://docs.civic.com/integration/react.md
 
 This documentation contains ALL the code examples and instructions needed for the integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
 
-## Project Context
+## Step 2: Gather Project Information
 Ask the user for the following information if not provided:
 
-- **Client ID**: If not provided, ask the user to visit https://auth.civic.com, sign up/log in, create a new application, and provide their Client ID
-- **Project Type**: Ask if this is a new or existing React project
-- **Build Tool**: Ask what build tool they're using (Create React App, Vite, Next.js, or other)
-- **Web3 Required**: Ask if they need Web3 features (Yes/No)
-- **Protected Routes/Components**: Ask which components need authentication (e.g., Dashboard, Profile, Settings)
-- **Existing Auth**: Ask if there's any existing authentication that needs to be replaced
+**Required Information (gather ALL before starting):**
+- ✅ Client ID (if not provided, ask user to get it from https://auth.civic.com)
+- ✅ Project type (new/existing React project)
+- ✅ Build tool (Create React App, Vite, Next.js, or other)
+- ✅ Web3 Support Needed (Yes/No) - This affects which imports and packages to use
+- ✅ Protected routes/components that need authentication
+- ✅ Existing authentication systems that need replacement
 
-## Step 2: Create Implementation Plan
+**DO NOT proceed with implementation until you have confirmed ALL of the above information.**
+
+If any information is missing, ask specific questions and wait for responses before continuing. This prevents errors and ensures the integration matches the user's exact requirements.
+
+## Step 3: Create Implementation Plan
 After fetching the documentation with curl:
 1. Analyze the current project structure
 2. Identify which code examples from the documentation apply
-3. Plan the implementation order
-4. Note any existing code that needs to be modified
+3. Choose the correct setup based on Web3 requirements:
+   - **If Web3 support needed**: Use "Auth + Web3" tab and @civic/auth-web3 packages
+   - **If no Web3 support**: Use "Auth" tab and @civic/auth packages
+4. Plan the implementation order
+5. Note any existing code that needs to be modified
 
-## Step 3: Implement Civic Auth
+## Step 4: Implement Civic Auth
 Using ONLY the documentation fetched via curl:
 1. Follow the Quick Start guide step by step
-2. Choose the correct tab ("Auth" or "Auth + Web3") based on requirements
+2. Choose the correct tab based on Web3 requirements:
+   - **If Web3 support needed**: Use "Auth + Web3" tab (imports from @civic/auth-web3/react)
+   - **If no Web3 support**: Use "Auth" tab (imports from @civic/auth)
 3. Adapt all code examples to this project's structure
 4. Handle any existing authentication or routing code appropriately
 
@@ -64,7 +74,17 @@ Using ONLY the documentation fetched via curl:
 - The fetched documentation is the ONLY source of truth for this implementation
 - All code examples, configuration options, and setup instructions are in that document
 - Pay attention to version requirements and compatibility notes in the documentation
+- **CRITICAL**: If Web3 support is needed, you MUST use @civic/auth-web3 packages and imports, not @civic/auth
+
+## Next Steps
+After completing basic authentication integration:
+- **If Web3 was selected**: Use the [Embedded Wallets](/ai-prompts/embedded-wallets) prompt to add specific wallet functionality (Solana or Ethereum)
+- **If no Web3**: Your basic authentication setup is complete
 ```
+
+<Note>
+  **Need Web3?** After setting up basic authentication, use our [Embedded Wallets](/ai-prompts/embedded-wallets) prompt to add wallet functionality.
+</Note>
 
 <Note>
   **Need help?** If you encounter any issues during the LLM-assisted integration, you can always fall back to the [manual integration guide](/integration/react).
