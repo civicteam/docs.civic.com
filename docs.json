@@ -90,6 +90,13 @@
             "ai-prompts/overview",
             "ai-prompts/nextjs", 
             "ai-prompts/react",
+            {
+              "group": "Python",
+              "icon": "python",
+              "pages": [
+                "ai-prompts/python/fastapi"
+              ]
+            },
             "ai-prompts/embedded-wallets"
           ]
         },
