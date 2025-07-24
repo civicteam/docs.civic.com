@@ -94,7 +94,8 @@
               "group": "Python",
               "icon": "python",
               "pages": [
-                "ai-prompts/python/fastapi"
+                "ai-prompts/python/fastapi",
+                "ai-prompts/python/django"
               ]
             },
             "ai-prompts/embedded-wallets"
