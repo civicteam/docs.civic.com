@@ -29,31 +29,54 @@ Civic Auth SDK is optimized for React and Next.js. However, some features are us
 ### Getting User Information on the Backend
 
 Here are some examples of using the getUser function in popular Node.JS server environments. Note - this snippet assumes you have followed the steps to integrate login with your app as described [here](/integration/nodejs).
+You have to provide a class that tells Civic how to load and store cookies, by implementing the CookieStorage interface.
+We provide examples for [Express](https://docs.civic.com/integration/nodejs/express#4-set-up-cookies), [Hono](https://docs.civic.com/integration/nodejs/hono#4-set-up-cookies) and [Fastify](https://docs.civic.com/integration/nodejs/fastify#4-set-up-cookies).
 
 <CodeGroup>
   ```express Express
-  import { getUser } from '@civic/auth/server';
+  import { CivicAuth } from "@civic/auth/server";
 
   app.get('/admin/hello', async (req, res) => {
-    const user = await getUser(req.storage);
+    // You need to provide a class implementing the CookieStorage interface,
+    // telling Civic how to load and store cookies.
+    // See the Express page for an example:
+    // https://docs.civic.com/integration/nodejs/express#4-set-up-cookies
+
+    const yourCookieStorageInstance = new ExpressCookieStorage();
+    const civicAuth = new CivicAuth(yourCookieStorageInstance);
+    const user = await civicAuth.getUser();
     res.send(`hello ${user.name}!`);
   });
   ```
 
   ```hono Hono
-  import { getUser } from '@civic/auth/server';
+  import { CivicAuth } from "@civic/auth/server";
 
   app.get('/admin/hello', async (c) => {
-    const user = await getUser(c.storage);
+    // You need to provide a class implementing the CookieStorage interface,
+    // telling Civic how to load and store cookies.
+    // See the Hono page for an example:
+    // https://docs.civic.com/integration/nodejs/hono#4-set-up-cookies
+
+    const yourCookieStorageInstance = new HonoCookieStorage();
+    const civicAuth = new CivicAuth(yourCookieStorageInstance);
+    const user = await civicAuth.getUser();
     return c.text(`hello ${user.name}!`);
   });
   ```
 
   ```fastify Fastify
-  import { getUser } from '@civic/auth/server';
+   import { CivicAuth } from "@civic/auth/server";
 
   fastify.get('/admin/hello', async (request, reply) => {
-    const user = await getUser(request.storage);
+    // You need to provide a class implementing the CookieStorage interface,
+    // telling Civic how to load and store cookies.
+    // See the Fastify page for an example:
+    // https://docs.civic.com/integration/nodejs/fastify#4-set-up-cookies
+
+    const yourCookieStorageInstance = new FastifyCookieStorage();
+    const civicAuth = new CivicAuth(yourCookieStorageInstance);
+    const user = await civicAuth.getUser();
     reply.send(`hello ${user.name}!`);
   });
   ```
