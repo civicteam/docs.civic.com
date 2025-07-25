@@ -58,7 +58,7 @@ We provide examples for [Express](https://docs.civic.com/integration/nodejs/expr
     // See the Hono page for an example:
     // https://docs.civic.com/integration/nodejs/hono#4-set-up-cookies
 
-    const yourCookieStorageInstance = new HonoCookieStorage);
+    const yourCookieStorageInstance = new HonoCookieStorage();
     const civicAuth = new CivicAuth(yourCookieStorageInstance);
     const user = await civicAuth.getUser();
     return c.text(`hello ${user.name}!`);
