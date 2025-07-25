@@ -1,41 +1,34 @@
 ---
 title: "FastAPI"
-description: "Follow these simple steps to set up Civic Auth with a [FastAPI](https://fastapi.tiangolo.com/) backend (a working example is available in the [github repo](https://github.com/civicteam/civic-auth-py/tree/main/examples/fastapi))."
+description: "Follow the steps to set up Civic Auth with a [FastAPI](https://fastapi.tiangolo.com/) backend (a working example is available in the [github repo](https://github.com/civicteam/civic-auth-py/tree/main/examples/fastapi))."
 icon: bolt
 public: true
 ---
 
+## Quick Start
 
-
-## 1. Install dependencies
+### 1. Install Dependencies
 
 ```bash
 pip install "civic-auth[fastapi]"
 ```
 
-## 2. Configure your App
+### 2. Create Your App with Authentication
 
-Your app will need the following configuration:
-
-```python
-config = {
-    "client_id": "...",  # Client ID from auth.civic.com
-    "redirect_url": "http://localhost:8000/auth/callback",  # change to your domain when deploying
-    "post_logout_redirect_url": "http://localhost:8000/"  # The postLogoutRedirectUrl is the URL where the user will be redirected after successfully logging out from Civic's auth server.
-}
-```
-
-Note: `redirect_url` and `post_logout_redirect_url` must be absolute URLs.
-
-## 3. Set up Routes and Dependencies
-
-FastAPI integration provides ready-to-use routes and dependencies:
+Create your FastAPI app with Civic Auth integration:
 
 ```python
 from fastapi import FastAPI, Depends
 from civic_auth.integrations.fastapi import create_auth_router, create_auth_dependencies
 
 app = FastAPI()
+
+# Configuration
+config = {
+    "client_id": "YOUR_CLIENT_ID",  # Get this from auth.civic.com
+    "redirect_url": "http://localhost:8000/auth/callback",
+    "post_logout_redirect_url": "http://localhost:8000/"
+}
 
 # Add authentication routes
 app.include_router(create_auth_router(config))
@@ -44,49 +37,179 @@ app.include_router(create_auth_router(config))
 civic_auth_dep, get_current_user, require_auth = create_auth_dependencies(config)
 ```
 
-## 4. Login and Logout Routes
-
-The `create_auth_router` function automatically creates these routes:
-- `/auth/login` - Initiates the login flow
-- `/auth/callback` - Handles the OAuth callback
-- `/auth/logout` - Logs the user out
-
-You can redirect users to `/auth/login` to start the login process:
+### 3. Add Basic Routes
 
 ```python
 from fastapi.responses import RedirectResponse
 
 @app.get("/")
-async def root():
+async def home():
+    return {"message": "Welcome! Go to /auth/login to sign in"}
+
+@app.get("/login")
+async def login():
     return RedirectResponse(url="/auth/login")
 ```
 
-## 5. Protect Routes
-
-Use the `require_auth` dependency to protect routes that require authentication:
+### 4. Add Protected Routes
 
 ```python
-@app.get("/admin/hello", dependencies=[Depends(require_auth)])
-async def hello(user = Depends(get_current_user)):
-    return {"message": f"Hello, {user.name}!"}
-```
-
-## 6. Access User Information
-
-The `get_current_user` dependency provides access to the logged-in user:
-
-```python
-from civic_auth.types import BaseUser
-
-@app.get("/admin/profile")
-async def profile(user: BaseUser = Depends(get_current_user)):
+@app.get("/profile")
+async def profile(user = Depends(get_current_user)):
     return {
-        "id": user.id,
-        "email": user.email,
-        "name": user.name,
-        "picture": user.picture
+        "message": f"Hello, {user.get('name', 'User')}!",
+        "user_info": {
+            "id": user.get("id"),
+            "email": user.get("email"),
+            "name": user.get("name"),
+            "picture": user.get("picture")
+        }
+    }
+
+@app.get("/dashboard", dependencies=[Depends(require_auth)])
+async def dashboard(user = Depends(get_current_user)):
+    return {
+        "message": "Welcome to your dashboard!",
+        "user_name": user.get("name", "User")
     }
 ```
+
+### 5. Run Your App
+
+```bash
+uvicorn main:app --reload
+```
+
+Visit `http://localhost:8000` and click the login link to test authentication.
+
+## How It Works
+
+### Authentication Flow
+1. User visits `/auth/login` - starts the login process
+2. User authenticates with Civic
+3. User gets redirected to `/auth/callback` - completes authentication
+4. User can now access protected routes
+
+### Available Routes
+- `/auth/login` - Start authentication
+- `/auth/callback` - Handle OAuth callback (auto-created)
+- `/auth/logout` - Sign out user
+
+### Working with User Data
+
+The `get_current_user` dependency returns a dictionary with user information:
+
+```python
+@app.get("/user-info")
+async def user_info(user = Depends(get_current_user)):
+    # Safe way to access user data
+    return {
+        "id": user.get("id"),
+        "email": user.get("email", "No email"),
+        "name": user.get("name", "Anonymous"),
+        "picture": user.get("picture")
+    }
+```
+
+### Protecting Routes
+
+Two ways to protect routes:
+
+**Method 1: Using `require_auth` dependency**
+```python
+@app.get("/admin", dependencies=[Depends(require_auth)])
+async def admin_page():
+    return {"message": "Admin only content"}
+```
+
+**Method 2: Using `get_current_user` directly**
+```python
+@app.get("/profile")
+async def profile(user = Depends(get_current_user)):
+    return {"user": user}
+```
+
+## Complete Example
+
+Here's a complete working FastAPI app:
+
+```python
+from fastapi import FastAPI, Depends, Request
+from fastapi.responses import RedirectResponse
+from civic_auth.integrations.fastapi import create_auth_router, create_auth_dependencies
+
+app = FastAPI(title="My Civic Auth App")
+
+# Configuration
+config = {
+    "client_id": "YOUR_CLIENT_ID",  # Replace with your actual client ID
+    "redirect_url": "http://localhost:8000/auth/callback",
+    "post_logout_redirect_url": "http://localhost:8000/"
+}
+
+# Set up authentication
+app.include_router(create_auth_router(config))
+civic_auth_dep, get_current_user, require_auth = create_auth_dependencies(config)
+
+@app.get("/")
+async def home():
+    return {
+        "message": "Welcome to My App!", 
+        "login_url": "/auth/login",
+        "protected_routes": ["/profile", "/dashboard"]
+    }
+
+@app.get("/profile")
+async def profile(user = Depends(get_current_user)):
+    return {
+        "authenticated": True,
+        "user": {
+            "id": user.get("id"),
+            "name": user.get("name"),
+            "email": user.get("email")
+        },
+        "logout_url": "/auth/logout"
+    }
+
+@app.get("/dashboard", dependencies=[Depends(require_auth)])
+async def dashboard(user = Depends(get_current_user)):
+    return {
+        "message": f"Welcome to your dashboard, {user.get('name', 'User')}!",
+        "user_id": user.get("id")
+    }
+
+@app.get("/public")
+async def public():
+    return {"message": "This is a public endpoint - no authentication required"}
+
+# Optional: Check authentication status without requiring login
+@app.get("/auth-status")
+async def auth_status(request: Request):
+    try:
+        user = await get_current_user.__wrapped__(request)
+        return {"authenticated": True, "user_name": user.get("name")}
+    except:
+        return {"authenticated": False}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+```
+
+## Configuration Options
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `client_id` | Yes | Your Civic Auth Client ID from [auth.civic.com](https://auth.civic.com) |
+| `redirect_url` | Yes | Where Civic redirects after authentication (must be absolute URL) |
+| `post_logout_redirect_url` | Yes | Where users go after logout (must be absolute URL) |
+
+## Next Steps
+
+1. **Get your Client ID**: Sign up at [auth.civic.com](https://auth.civic.com)
+2. **Replace `YOUR_CLIENT_ID`** with your actual client ID
+3. **Update URLs** when deploying to production
+4. **Add more protected routes** as needed
 
 ## Authentication Flows
 
