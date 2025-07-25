@@ -95,6 +95,7 @@
               "icon": "python",
               "pages": [
                 "ai-prompts/python/fastapi",
+                "ai-prompts/python/flask",
                 "ai-prompts/python/django"
               ]
             },
