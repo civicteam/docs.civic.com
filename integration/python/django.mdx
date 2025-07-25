@@ -83,12 +83,12 @@ def home(request):
 def profile(request):
     user = request.civic_user
     return JsonResponse({
-        "message": f"Hello, {user.name}!",
+        "message": f"Hello, {user.get('name', 'User')}!",
         "user_info": {
-            "id": user.id,
-            "email": user.email,
-            "name": user.name,
-            "picture": user.picture
+            "id": user.get("id"),
+            "email": user.get("email"),
+            "name": user.get("name"),
+            "picture": user.get("picture")
         }
     })
 
@@ -97,9 +97,9 @@ def dashboard(request):
     user = request.civic_user
     return HttpResponse(f"""
         <h1>Dashboard</h1>
-        <p>Welcome, {user.name}!</p>
-        <img src="{user.picture}" alt="Profile picture" style="width: 50px; height: 50px; border-radius: 50%;">
-        <p>Email: {user.email}</p>
+        <p>Welcome, {user.get('name', 'User')}!</p>
+        <img src="{user.get('picture', '')}" alt="Profile picture" style="width: 50px; height: 50px; border-radius: 50%;">
+        <p>Email: {user.get('email', 'No email')}</p>
         <p><a href="/auth/logout">Logout</a></p>
     """)
 
@@ -146,17 +146,17 @@ Visit `http://localhost:8000` and click the login link to test authentication.
 
 ### Working with User Data
 
-The authenticated user is available via `request.civic_user`:
+The authenticated user is available via `request.civic_user` as a dictionary:
 
 ```python
 @civic_auth_required
 def user_info(request):
     user = request.civic_user
     return JsonResponse({
-        "id": user.id,
-        "email": user.email,
-        "name": user.name,
-        "picture": user.picture
+        "id": user.get("id"),
+        "email": user.get("email"),
+        "name": user.get("name"),
+        "picture": user.get("picture")
     })
 ```
 
@@ -170,7 +170,7 @@ from civic_auth.integrations.django import civic_auth_required
 @civic_auth_required
 def protected_view(request):
     user = request.civic_user
-    return HttpResponse(f"Hello {user.name}, this is protected!")
+    return HttpResponse(f"Hello {user.get('name', 'User')}, this is protected!")
 ```
 
 ## Template Usage
@@ -198,9 +198,9 @@ def dashboard_template(request):
 </head>
 <body>
     {% if civic_user %}
-        <h1>Welcome, {{ civic_user.name }}!</h1>
+        <h1>Welcome, {{ civic_user.name|default:"User" }}!</h1>
         <img src="{{ civic_user.picture }}" alt="Profile picture">
-        <p>Email: {{ civic_user.email }}</p>
+        <p>Email: {{ civic_user.email|default:"No email" }}</p>
         <a href="/auth/logout">Logout</a>
     {% else %}
         <p><a href="/auth/login">Please login</a></p>
@@ -225,10 +225,10 @@ def api_profile(request):
     return Response({
         "authenticated": True,
         "user": {
-            "id": user.id,
-            "email": user.email,
-            "name": user.name,
-            "picture": user.picture
+            "id": user.get("id"),
+            "email": user.get("email"),
+            "name": user.get("name"),
+            "picture": user.get("picture")
         }
     })
 
@@ -237,8 +237,8 @@ def api_profile(request):
 def api_dashboard(request):
     user = request.civic_user
     return Response({
-        "message": f"Welcome to your dashboard, {user.name}!",
-        "user_id": user.id
+        "message": f"Welcome to your dashboard, {user.get('name', 'User')}!",
+        "user_id": user.get("id")
     })
 ```
 
