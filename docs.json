@@ -17,6 +17,11 @@
       "measurementId": "G-3GN3S4G1EY"
     }
   },
+  "scripts": [
+    {
+      "path": "/kapa-widget.js"
+    }
+  ],
   "favicon": "/favicon.svg",
   "fonts": {
     "heading": {
