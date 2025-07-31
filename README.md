@@ -147,6 +147,52 @@ We have a `custom.css` file that provides additional styling classes, particular
 
 These classes automatically adjust to 90% width on mobile devices for responsive design.
 
+## 🤖 AI Prompts
+
+Our documentation includes AI-assisted integration prompts that allow developers to use AI assistants (Claude, ChatGPT, etc.) to automatically integrate Civic Auth into their projects.
+
+### Available AI Prompts
+
+- **Framework Prompts**: [React](/ai-prompts/react), [Next.js](/ai-prompts/nextjs)
+- **Python Framework Prompts**: [Django](/ai-prompts/python/django), [FastAPI](/ai-prompts/python/fastapi), [Flask](/ai-prompts/python/flask)  
+- **Web3 Blockchain Prompts**: [Solana](/ai-prompts/web3/solana), [Ethereum](/ai-prompts/web3/ethereum)
+
+### Parsing Tags for Programmatic Access
+
+All AI prompt pages include special parsing tags that make it easy to extract just the prompt content programmatically:
+
+```html
+<!-- PROMPT_START -->
+```text
+# Your AI prompt content here...
+```
+<!-- PROMPT_END -->
+```
+
+**Usage Example:**
+
+```bash
+# Extract just the Solana prompt
+curl https://docs.civic.com/ai-prompts/web3/solana | sed -n '/<!-- PROMPT_START -->/,/<!-- PROMPT_END -->/p'
+
+# Extract just the React prompt  
+curl https://docs.civic.com/ai-prompts/react | sed -n '/<!-- PROMPT_START -->/,/<!-- PROMPT_END -->/p'
+```
+
+This makes it easy to:
+- Build automated tools that fetch prompts
+- Integrate prompts into development workflows
+- Parse prompt content without dealing with page markup
+
+### Adding New AI Prompts
+
+When adding new AI prompt pages:
+
+1. Follow the same structure as existing prompt pages
+2. Include the `<!-- PROMPT_START -->` and `<!-- PROMPT_END -->` tags around the actual prompt content
+3. Use the same frontmatter format with `title`, `icon`, and `public: true`
+4. Update the overview page to reference the new prompt
+
 ## 🔗 Link Checker
 
 To ensure all links are valid and working:
