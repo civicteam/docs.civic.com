@@ -104,7 +104,14 @@
                 "ai-prompts/python/django"
               ]
             },
-            "ai-prompts/embedded-wallets"
+            {
+              "group": "Web3",
+              "icon": "wallet",
+              "pages": [
+                "ai-prompts/web3/solana",
+                "ai-prompts/web3/ethereum"
+              ]
+            }
           ]
         },
         {
