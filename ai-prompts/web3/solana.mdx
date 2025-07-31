@@ -5,21 +5,15 @@ public: true
 ---
 
 import SolanaPrompt from '/snippets/solana.mdx';
+import Web3Prerequisites from '/snippets/_web3-prerequisites.mdx';
+import HowToUseWeb3 from '/snippets/_how-to-use-web3.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
 
 Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to automatically add Solana embedded wallet functionality to your existing Civic Auth integration.
 
-## Prerequisites
+<Web3Prerequisites />
 
-<Warning>
-  This prompt assumes you already have Civic Auth basic authentication set up in your project. If not, use the [React](/ai-prompts/react) or [Next.js](/ai-prompts/nextjs) prompts first.
-</Warning>
-
-## How to Use
-
-1. Copy the prompt below
-2. Paste it into your AI assistant
-3. The assistant will verify your existing Civic Auth setup
-4. The assistant will fetch the complete Solana documentation and implement the integration for you
+<HowToUseWeb3 />
 
 ## Integration Prompt
 
@@ -52,6 +46,4 @@ When you use this prompt, the AI assistant will:
   **Need help?** If you encounter any issues during the AI-assisted integration, you can always fall back to the manual integration guide: [Solana](/web3/solana).
 </Note>
 
-<Info>
-  Make sure your AI assistant has the ability to run terminal commands and edit files in your project.
-</Info>
+<AiAssistantRequirements />

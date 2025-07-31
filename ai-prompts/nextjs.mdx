@@ -4,93 +4,21 @@ icon: "js"
 public: true
 ---
 
+import NextjsPrompt from '/snippets/nextjs.mdx';
+import HowToUseBasic from '/snippets/_how-to-use-basic.mdx';
+import Web3UpsellNote from '/snippets/_web3-upsell-note.mdx';
+import SupportedAiAssistants from '/snippets/_supported-ai-assistants.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
+
 Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to automatically integrate Civic Auth into your Next.js project.
 
-## How to Use
-
-1. Copy the prompt below
-2. Paste it into your AI assistant
-3. The assistant will ask for your project details and guide you through the setup
-4. The assistant will fetch the complete documentation and implement the integration for you
+<HowToUseBasic />
 
 ## Integration Prompt
 
-```text
-# Civic Auth Integration Prompt
+<NextjsPrompt />
 
-## Prerequisites
-Before starting, you need a Civic Auth Client ID:
-1. Visit https://auth.civic.com
-2. Sign up or log in to your account
-3. Create a new application to obtain your Client ID
-4. Copy the Client ID for use in this integration
-
-## Task
-Add Civic Auth authentication to this Next.js application.
-
-## Step 1: Fetch the Documentation
-Use curl to fetch the Civic Auth documentation:
-
-curl https://docs.civic.com/integration/nextjs.md
-
-This documentation contains ALL the code examples and instructions needed for the integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
-
-## Step 2: Gather Project Information
-Ask the user for the following information if not provided:
-
-**Required Information (gather ALL before starting):**
-- ✅ Client ID (if not provided, ask user to get it from https://auth.civic.com)
-- ✅ Project type (new/existing Next.js project)
-- ✅ Web3 Support Needed (Yes/No) - This affects which imports and packages to use
-- ✅ Protected routes that need authentication (e.g., /dashboard/*, /api/private/*)
-- ✅ Existing authentication systems that need replacement
-
-**DO NOT proceed with implementation until you have confirmed ALL of the above information.**
-
-If any information is missing, ask specific questions and wait for responses before continuing. This prevents errors and ensures the integration matches the user's exact requirements.
-
-## Step 3: Create Implementation Plan
-After fetching the documentation with curl:
-1. Analyze the current project structure
-2. Identify which code examples from the documentation apply
-3. Choose the correct setup based on Web3 requirements:
-   - **If Web3 support needed**: Use "Auth + Web3" tab and @civic/auth-web3 packages
-   - **If no Web3 support**: Use "Auth" tab and @civic/auth packages
-4. Plan the implementation order
-5. Note any existing code that needs to be modified
-
-## Step 4: Implement Civic Auth
-Using ONLY the documentation fetched via curl:
-1. Follow the Quick Start guide step by step
-2. Choose the correct tab based on Web3 requirements:
-   - **If Web3 support needed**: Use "Auth + Web3" tab (imports from @civic/auth-web3/react)
-   - **If no Web3 support**: Use "Auth" tab (imports from @civic/auth)
-3. Adapt all code examples to this project's structure
-4. Handle any existing middleware or auth code appropriately
-
-## Important Notes
-- Use ONLY curl to fetch the documentation - no web search tools
-- The fetched documentation is the ONLY source of truth for this implementation
-- All code examples, configuration options, and setup instructions are in that document
-- Pay attention to version requirements and security warnings in the documentation
-- **CRITICAL**: If Web3 support is needed, you MUST use @civic/auth-web3 packages and imports, not @civic/auth
-
-## CRITICAL: Middleware File Location
-The middleware.ts file MUST be placed at src/middleware.ts (in the src/ directory), NOT in the project root. This is a common mistake that breaks authentication:
-- ✅ CORRECT: src/middleware.ts 
-- ❌ WRONG: middleware.ts (project root - breaks authentication)
-
-The middleware file should be placed in the src/ directory as shown in the documentation examples. Placing it in the project root will cause the middleware to not take effect and authentication will fail.
-
-## Next Steps
-After completing basic authentication integration:
-- **If Web3 was selected**: Use the [Embedded Wallets](/ai-prompts/embedded-wallets) prompt to add specific wallet functionality (Solana or Ethereum)
-- **If no Web3**: Your basic authentication setup is complete
-```
-
-<Note>
-  **Need Web3?** After setting up basic authentication, use our [Embedded Wallets](/ai-prompts/embedded-wallets) prompt to add wallet functionality.
-</Note>
+<Web3UpsellNote />
 
 <Note>
   **Need help?** If you encounter any issues during the LLM-assisted integration, you can always fall back to the [manual integration guide](/integration/nextjs).
@@ -107,15 +35,7 @@ When you use this prompt, the AI assistant will:
 5. **Implement frontend components** for login/logout functionality
 6. **Handle edge cases** like existing auth systems or custom configurations
 
-## Supported AI Assistants
+<SupportedAiAssistants />
 
-This prompt has been tested with:
-- **Claude** (Anthropic)
-- **Cursor** (with Claude)
-- **ChatGPT** (OpenAI)
-- **GitHub Copilot Chat**
-
-<Info>
-  Make sure your AI assistant has the ability to run terminal commands and edit files in your project.
-</Info>
+<AiAssistantRequirements />
  
