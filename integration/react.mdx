@@ -197,45 +197,6 @@ Using styles:
 
 You can also provide values in both `style` and `className` props, where the value in `style` will always take precedence over the same CSS-defined style.
 
-#### Creating your own Login and Logout buttons
-
-You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to create your own buttons for user log in and log out
-
-<Tabs>
-  <Tab title="Auth">
-    ```ts RollYourOwnLogin.ts
-    import { CivicAuthProvider } from "@civic/auth/react";
-
-    export function TitleBar() {
-      const { signIn, signOut } = useUser();
-      return (
-        <div className="flex justify-between items-center">
-          <h1>My App</h1>
-          {!user && <button onClick={signIn} className="sign-in">Sign into My App</button>}
-          {user && <button onClick={signOut} className="sign-out">Sign out of My App</button>}
-        </div>
-      );
-    };
-    ```
-  </Tab>
-  <Tab title="Auth + Web3">
-```ts RollYourOwnLogin.ts
-import { CivicAuthProvider } from "@civic/auth-web3/react";
-
-export function TitleBar() {
-  const { signIn, signOut } = useUser();
-  return (
-    <div className="flex justify-between items-center">
-      <h1>My App</h1>
-      {!user && <button onClick={signIn} className="sign-in">Sign into My App</button>}
-      {user && <button onClick={signOut} className="sign-out">Sign out of My App</button>}
-    </div>
-  );
-};
-```
-  </Tab>
-</Tabs>
-
 ### Getting User Information on the Frontend
 
 Use the Civic Auth SDK to retrieve user information on the frontend.
@@ -272,6 +233,45 @@ export function MyComponent() {
 <Info>
   We use `name` as an example here, but you can call any user object property from the user fields schema, as shown [below](/integration/react#base-user-fields).
 </Info>
+
+#### Creating your own Login and Logout buttons
+
+You can use the `signIn()` and `signOut()` methods from the `useUser()` hook to create your own buttons for user log in and log out
+
+<Tabs>
+  <Tab title="Auth">
+    ```ts RollYourOwnLogin.ts
+    import { useUser } from "@civic/auth/react";
+
+    export function TitleBar() {
+      const { user, signIn, signOut } = useUser();
+      return (
+        <div className="flex justify-between items-center">
+          <h1>My App</h1>
+          {!user && <button onClick={signIn} className="sign-in">Sign into My App</button>}
+          {user && <button onClick={signOut} className="sign-out">Sign out of My App</button>}
+        </div>
+      );
+    };
+    ```
+  </Tab>
+  <Tab title="Auth + Web3">
+```ts RollYourOwnLogin.ts
+import { useUser } from "@civic/auth-web3/react";
+
+export function TitleBar() {
+  const { user, signIn, signOut } = useUser();
+  return (
+    <div className="flex justify-between items-center">
+      <h1>My App</h1>
+      {!user && <button onClick={signIn} className="sign-in">Sign into My App</button>}
+      {user && <button onClick={signOut} className="sign-out">Sign out of My App</button>}
+    </div>
+  );
+};
+```
+  </Tab>
+</Tabs>
 
 ## Advanced Configuration
 

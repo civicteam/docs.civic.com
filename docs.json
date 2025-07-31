@@ -17,6 +17,11 @@
       "measurementId": "G-3GN3S4G1EY"
     }
   },
+  "scripts": [
+    {
+      "path": "/kapa-widget.js"
+    }
+  ],
   "favicon": "/favicon.svg",
   "fonts": {
     "heading": {
@@ -85,6 +90,25 @@
           ]
         },
         {
+          "group": "AI Prompts",
+          "icon": "robot",
+          "pages": [
+            "ai-prompts/overview",
+            "ai-prompts/nextjs", 
+            "ai-prompts/react",
+            {
+              "group": "Python",
+              "icon": "python",
+              "pages": [
+                "ai-prompts/python/fastapi",
+                "ai-prompts/python/flask",
+                "ai-prompts/python/django"
+              ]
+            },
+            "ai-prompts/embedded-wallets"
+          ]
+        },
+        {
           "group": "Web3",
           "pages": [
             "web3/embedded-wallets",
@@ -112,9 +136,9 @@
             "icon": "newspaper"
           },
           {
-            "anchor": "Help Center",
-            "href": "https://support.civic.com/hc/en-us?_gl=1*v97ps0*_gcl_au*MjEyNjQ5MTAzMi4xNzQ4MDA2MTU0",
-            "icon": "circle-question"
+            "anchor": "Join Our Community",
+            "href": "https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw",
+            "icon": "slack"
           }
         ]
       }
@@ -179,7 +203,7 @@
     "primary": {
       "type": "button",
       "label": "Try Auth",
-      "href": "https://auth.civic.com/dashboard/?utm_source=homepage&utm_medium=hero-nav&_gl=1*l2su6m*_gcl_au*MTMwMjY1NzQyMi4xNzQ3MTAzMTc2"
+      "href": "https://auth.civic.com/dashboard?utm_source=docs&utm_medium=hero-nav"
     }
   },
   "footer": {

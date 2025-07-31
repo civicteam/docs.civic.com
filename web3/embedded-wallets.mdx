@@ -1,14 +1,16 @@
 ---
 title: "Embedded Wallets"
-description: "The **Civic Auth Web3 SDK** ([@civic/auth-web3](https://www.npmjs.com/package/@civic/auth-web3)) extends the functionality of the base **Civic Auth SDK** by including the ability to provision a Web3 wallet for users. This allows Civic Auth apps to provide their users with access to the world of Cryptocurrencies and Web3 without any hassle or prior knowledge."
-icon: wallet
+icon: "wallet"
 public: true
+description: "Civic Auth apps can provide their users with access to Web3 without any prior knowledge"
 ---
 
-<Info>
-Currently, we don't support connecting users' existing self-custodial wallets. This is coming soon.
+The **Civic Auth Web3 SDK** ( [@civic/auth-web3](https://www.npmjs.com/package/@civic/auth-web3) ) extends the functionality of the base **Civic Auth SDK** by including the ability to provision a Web3 wallet for users. This allows Civic Auth apps to provide their users with access to the world of Cryptocurrencies and Web3 without any hassle or prior knowledge.
 
-Right now, we only support embedded wallets, which are generated on behalf of the user by our non-custodial wallet partner. Neither Civic nor your app ever has access to the wallets' private keys.
+<Info>
+  Currently, we don't support connecting users' existing self-custodial wallets. This is coming soon.
+
+  Right now, we only support embedded wallets, which are generated on behalf of the user by our non-custodial wallet partner. Neither Civic nor your app ever has access to the wallets' private keys.
 </Info>
 
 ## Quick Start
@@ -20,13 +22,13 @@ Sign up for Civic Auth at [auth.civic.com](https://auth.civic.com) and make sure
 </Check>
 
 <Check>
-**Code Examples**
+  **Code Examples**
 
-Some complete examples for Solana and EVM can be found on Github [here](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3).
+  Some complete examples for Solana and EVM can be found on Github [here](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth-web3).
 
-The Ethereum and Solana pages have links to specific examples.
+  The Ethereum and Solana pages have links to specific examples.
 
-Also see the code examples in this documentation.
+  Also see the code examples in this documentation.
 </Check>
 
 ## Installation
@@ -34,21 +36,26 @@ Also see the code examples in this documentation.
 Install the Civic Auth Web3 SDK:
 
 <CodeGroup>
-  ```npm npm
-  npm install @civic/auth-web3
-  ```
 
-  ```yarn yarn
-  yarn add @civic/auth-web3
-  ```
+```npm npm
+npm install @civic/auth-web3
+```
 
-  ```pnpm pnpm
-  pnpm install @civic/auth-web3
-  ```
 
-  ```bun bun
-  bun add @civic/auth-web3
-  ```
+```yarn yarn
+yarn add @civic/auth-web3
+```
+
+
+```pnpm pnpm
+pnpm install @civic/auth-web3
+```
+
+
+```bun bun
+bun add @civic/auth-web3
+```
+
 </CodeGroup>
 
 ## Integration
@@ -56,27 +63,31 @@ Install the Civic Auth Web3 SDK:
 Choose your framework for instructions on how to integrate Civic Auth Web3 into your application.
 
 <Info>
-NOTE - Web3 wallets are available for React and Next.js environments.
+  NOTE - Web3 wallets are available for React and Next.js environments.
 
-<<<<<<< HEAD
-If you are interested in using Civic's Web3 wallet feature in other environments, please [contact us](mailto:support@civic.com).
-=======
-If you are interested in using Civic's Web3 wallet feature in other environments, please contact Civic at [support@civic.com](mailto:support@civic.com).
->>>>>>> bcea4e19aa30dc387838ceabfa78767342d7aab2
+  If you are interested in using Civic's Web3 wallet feature in other environments, please contact us in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw).
 </Info>
 
 <CardGroup cols={3}>
-  <Card title="React" href="/integration/react" img="/images/auth/web3/react.png"/>
-  <Card title="Next.js" href="/integration/nextjs" img="/images/auth/web3/next.png"/>
+  <Card title="React" href="/integration/react" img="/images/auth/web3/react.png">
+    
+  </Card>
+  <Card title="Next.js" href="/integration/nextjs" img="/images/auth/web3/next.png">
+    
+  </Card>
 </CardGroup>
 
 ## Using the Wallet
 
 Follow these guides to set up Web3 wallets for your users:
 
-<CardGroup>
-  <Card title="Ethereum & EVMs" href="/web3/ethereum-evm" icon="diamond" horizontal/>
-  <Card title="Solana" href="/web3/solana" icon="code" horizontal/>
+<CardGroup cols={2}>
+  <Card title="Ethereum & EVMs" icon="diamond" horizontal href="/web3/ethereum-evm">
+    
+  </Card>
+  <Card title="Solana" icon="code" horizontal href="/web3/solana">
+    
+  </Card>
 </CardGroup>
 
 ## About Embedded Wallets
@@ -91,19 +102,14 @@ By removing the need for complicated wallet setup, remembering seed phrases etc.
 
 ### Civic's Embedded Wallets
 
-The Civic Embedded Wallet Service is non-custodial, meaning neither Civic nor Civic's customers have control over users’ wallets or assets.
+The Civic Embedded Wallet Service is non-custodial, meaning neither Civic nor Civic's customers have control over users' wallets or assets.
 
-Each wallet is linked to a user’s SSO (Single Sign-On) provider, such as Google, ensuring that only authenticated users can sign transactions.
+Each wallet is linked to a user's SSO (Single Sign-On) provider, such as Google, ensuring that only authenticated users can sign transactions.
 
-<<<<<<< HEAD
-Civic's wallets are EOA (Externally Owned Account) wallets, rather than smart contract (AKA account abstraction) wallets. This has benefits in terms of simplicity and lower gas costs. However, they can be upgraded to support account abstraction, for example to support gas sponsorship. [Contact us](mailto:support@civic.com) if you're interested in this feature.
-=======
-Civic's wallets are EOA (Externally Owned Account) wallets, rather than smart contract (AKA account abstraction) wallets. This has benefits in terms of simplicity and lower gas costs. However, they can be upgraded to support account abstraction, for example to support gas sponsorship. Contact Civic at [support@civic.com](mailto:support@civic.com) if you're interested in this feature.
->>>>>>> bcea4e19aa30dc387838ceabfa78767342d7aab2
+Civic's wallets are EOA (Externally Owned Account) wallets, rather than smart contract (AKA account abstraction) wallets. This has benefits in terms of simplicity and lower gas costs. However, they can be upgraded to support account abstraction, for example to support gas sponsorship. Contact us in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) if you're interested in this feature.
 
 ### **Recovery**
 
 Our wallet provider includes a recovery feature, ensuring that funds are not lost in case of a service interruption with Civic.
 
 For more details on the security and recovery features of Civic wallets, please refer to the documentation provided by our service provider.
-
