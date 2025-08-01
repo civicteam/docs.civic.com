@@ -20,7 +20,23 @@ Integrate Civic Auth into your React Router 7 application using the following st
   plain JS.
 </Info>
 
-### 1. Set Up Authentication Middleware
+### 1. Enable Middleware Feature Flag
+
+First, enable the middleware feature in your React Router config. Create or update `react-router.config.ts`:
+
+```ts react-router.config.ts
+import type { Config } from "@react-router/dev/config";
+
+export default {
+  future: {
+    unstable_middleware: true,
+  },
+} satisfies Config;
+```
+
+<Note>**Important**: Middleware is currently experimental in React Router 7 and requires this feature flag to be enabled.</Note>
+
+### 2. Set Up Authentication Middleware
 
 Configure authentication middleware to handle auth centrally, similar to Next.js middleware. This approach is more efficient as it runs once per request before any loaders.
 
