@@ -20,50 +20,24 @@ Integrate Civic Auth into your React Router 7 application using the following st
   plain JS.
 </Info>
 
-### 1. Create Auth Route Handlers
+### 1. Set Up Authentication Middleware
 
-Create a catch-all route to handle all authentication-related requests. This route will manage login, logout, callback, and user data endpoints.
-
-Create `app/routes/auth.$.tsx`:
-
-```ts app/routes/auth.$.tsx
-// Import from the package with the correct path using the index.ts file
-// This ensures the debug initialization in the index.ts file is executed
-import { createRouteHandlers } from "@civic/auth/react-router-7";
-
-// Create route handlers with app config
-const { createAuthLoader, createAuthAction, getUser, getAuthData } = createRouteHandlers({
-  clientId: "demo-client-1"
-});
-
-/**
- * Catch-all loader for auth routes (GET requests)
- */
-export const loader = createAuthLoader();
-
-/**
- * Catch-all action for auth routes (POST requests)
- */
-export const action = createAuthAction();
-
-/**
- * Export getUser and getAuthData functions for use in other parts of the app
- */
-export { getUser, getAuthData };
-```
-
-### 2. Set Up Root Loader
-
-Configure your root route to provide user data to all routes in your application. This enables server-side rendering with authentication state.
+Configure authentication middleware to handle auth centrally, similar to Next.js middleware. This approach is more efficient as it runs once per request before any loaders.
 
 Update `app/root.tsx`:
 
 ```tsx app/root.tsx
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-import type { LinksFunction, LoaderFunction } from "react-router";
+import type { LinksFunction, Route } from "react-router";
 import "./tailwind.css";
 
-import { getAuthData } from "~/routes/auth.$";
+import { authMiddleware, userContext } from "@civic/auth/react-router-7";
+
+export const unstable_middleware = [
+  authMiddleware({
+    clientId: "YOUR_CLIENT_ID",
+  }),
+];
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -78,14 +52,10 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const authData = await getAuthData(request);
-
-  return {
-    // We bootstrap our data through the stack
-    ...authData,
-  };
-};
+export function loader({ context }: Route.LoaderArgs) {
+  const user = context.get(userContext); // Guaranteed to exist
+  return { user };
+}
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -147,14 +117,7 @@ export const meta: MetaFunction = () => {
   return [{ title: "My App" }];
 };
 
-export async function loader({ request }: LoaderFunctionArgs) {
-  const user = await getUser(request);
-  return { user };
-}
-
 export default function Index() {
-  const { user } = useLoaderData<typeof loader>();
-
   return (
     <div>
       <h1>My App</h1>
@@ -229,23 +192,24 @@ export function CustomSignIn() {
 
 ## Protected Routes
 
-React Router 7 supports route-level authentication using loaders. Here's how to create protected routes that require user authentication:
+React Router 7 supports route-level authentication using loaders. Protected routes can access user data directly from context:
 
 ### Creating a Protected Route
 
-Create a protected route loader that checks authentication and redirects unauthenticated users:
+Create a protected route that gets user data from context:
 
 ```tsx app/routes/protected._index.tsx
 import { data, redirect, Outlet } from "react-router";
-import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import { getUser } from "./auth.$";
+import type { Route, MetaFunction } from "react-router";
+import { userContext } from "@civic/auth/react-router-7";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Protected Page - Civic Auth Demo" }];
 };
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await getUser(request);
+export function loader({ context }: Route.LoaderArgs) {
+  // Get user from context (set by middleware)
+  const user = context.get(userContext);
 
   if (!user) {
     // Redirect to home page if user is not authenticated
@@ -253,7 +217,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   return data({ user });
-};
+}
 
 export default function ProtectedPage() {
   return (
@@ -306,29 +270,28 @@ export default function ProtectedLayout() {
 
 ### How It Works
 
-1. **Route Protection**: The `protected._index.tsx` loader runs on the server before rendering the page
-2. **Authentication Check**: It uses `getUser(request)` to check if the user is authenticated
-3. **Redirect Logic**: If no user is found, it redirects to the home page using `redirect("/")`
-4. **User Data**: If authenticated, it passes the user data to the route
-5. **Protected Content**: The `protected.tsx` layout displays content only to authenticated users
+1. **Centralized Auth**: Middleware handles authentication once per request before any loaders
+2. **Context Storage**: User data is stored in React Router context for all routes to access
+3. **Route Protection**: Protected route loaders get user data from context
+4. **Redirect Logic**: If no user is found in context, it redirects to the home page
+5. **Performance**: More efficient as authentication logic runs only once per request
 
 ### Alternative Protection Patterns
 
-You can also create a reusable protection utility:
+#### Reusable Protection Utilities
 
 ```tsx app/utils/requireAuth.ts
 import { redirect } from "react-router";
-import { getUser } from "~/routes/auth.$";
+import { userContext } from "@civic/auth/react-router-7";
 
-export async function requireAuth(request: Request) {
-  const user = await getUser(request);
+export function requireAuth(context: any) {
+  const user = context.get(userContext);
 
   if (!user) {
     throw redirect("/auth/login");
   }
 
   // Additional admin-specific checks can go here
-  // Example: Check if user has admin privileges (implement according to your needs)
   if (!isUserAdmin(user.email)) {
     throw redirect("/");
   }
@@ -340,15 +303,23 @@ export async function requireAuth(request: Request) {
 Then use it in any protected route:
 
 ```tsx app/routes/admin.tsx
-import type { LoaderFunctionArgs } from "react-router";
+import type { Route } from "react-router";
 import { requireAuth } from "~/utils/requireAuth";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireAuth(request);
+export function loader({ context }: Route.LoaderArgs) {
+  const user = requireAuth(context);
 
   return { user };
-};
+}
 ```
+
+## Benefits of Middleware Approach
+
+1. **Performance**: Authentication logic runs only once per request instead of in every loader
+2. **Centralization**: All auth logic is centralized, similar to Next.js middleware
+3. **Token Refresh**: Handles token refresh globally before any route processing
+4. **Clean Separation**: Routes focus on their specific logic rather than auth concerns
+5. **Consistency**: User data is always available and consistent across all routes
 
 ## Advanced Configuration
 
@@ -356,16 +327,22 @@ Civic Auth is a "low-code" solution, so most configuration takes place via the [
 
 You can customize the library according to your React Router 7 app's needs. Configure options when calling `createRouteHandlers`:
 
-```ts app/routes/auth.$.tsx
-import { createRouteHandlers } from "@civic/auth/react-router-7";
+### Middleware Configuration
 
-const { createAuthLoader, getUser } = createRouteHandlers({
-  clientId: "YOUR_CLIENT_ID",
-  loginSuccessUrl: "/myCustomSuccessEndpoint",
-  callbackUrl: "/api/myroute/callback",
-  logoutUrl: "/goodbye",
-  baseUrl: "https://myapp.com",
-});
+Configure options in your `app/root.tsx` file:
+
+```tsx app/root.tsx
+import { authMiddleware } from "@civic/auth/react-router-7";
+
+export const unstable_middleware = [
+  authMiddleware({
+    clientId: "YOUR_CLIENT_ID",
+    loginSuccessUrl: "/myCustomSuccessEndpoint",
+    callbackUrl: "/api/myroute/callback",
+    logoutUrl: "/goodbye",
+    baseUrl: "https://myapp.com",
+  }),
+];
 ```
 
 ### Configuration Options
@@ -373,7 +350,7 @@ const { createAuthLoader, getUser } = createRouteHandlers({
 | Field             | Required | Default          | Example                                | Description                                                                                                                                                                                                                                                                                                                                 |
 | ----------------- | -------- | ---------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `clientId`        | Yes      | -                | `2cc5633d-2c92-48da-86aa-449634f274b9` | The key obtained on signup to [auth.civic.com](https://auth.civic.com/)                                                                                                                                                                                                                                                                     |
-| `loginSuccessUrl` | No       | -                | `/myCustomSuccessEndpoint`             | In a NextJS app, we will redirect your user to this page once the login is finished. If not set, users will be sent back to the root of your app.                                                                                                                                                                                           |
-| `callbackUrl`     | No       | `/auth/callback` | `/api/myroute/callback`                | If you cannot host Civic’s SDK handlers in the default location, you can specify a custom callback route here. This is where you must attach Civic’s GET handler as described [here](/integration/nextjs#2-create-the-civic-auth-api-route), so Civic can complete the OAuth token exchange. Use `loginSuccessUrl` to redirect after login. |
+| `loginSuccessUrl` | No       | -                | `/myCustomSuccessEndpoint`             | In a React Router 7 app, we will redirect your user to this page once the login is finished. If not set, users will be sent back to the root of your app.                                                                                                                                                                                           |
+| `callbackUrl`     | No       | `/auth/callback` | `/api/myroute/callback`                | If you cannot host Civic’s SDK handlers in the default location, you can specify a custom callback route here. This is where you must attach Civic’s GET handler as described above, so Civic can complete the OAuth token exchange. Use `loginSuccessUrl` to redirect after login. |
 | `logoutUrl`       | No       | `/`              | `/goodbye`                             | The path your user will be sent to after a successful log-out.                                                                                                                                                                                                                                                                              |
 | `baseUrl`         | No       | -                | `https://myapp.com`                    | The public-facing base URL for your application. Required when deploying behind reverse proxies (Cloudfront + Vercel, AWS ALB, nginx, etc.) to ensure authentication redirects use the correct public domain instead of internal origins.                                                                                                   |
