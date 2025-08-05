@@ -215,18 +215,20 @@ app.use('/admin/*', authMiddleware);
 
 ## 9. Use the Session
 
-If needed, get the logged-in user information.
+Create an endpoint to get the logged-in user information:
 
 ```ts
-import { user } from '@civic/auth/server';
-
-app.get('/admin/hello', async (c) => {
+app.get('/auth/user', async (c) => {
   const user = await c.get('civicAuth').getUser();
-  return c.text(`Hello, ${user?.name}!`);
+  return c.json(user);
 });
 ```
 
-## 10. Frontend Integration (Vanilla JavaScript)
+This endpoint is important for step 10 (Frontend Integration) as it allows your frontend application to retrieve the current user's information.
+
+## 10. Frontend Integration
+
+### Vanilla JavaScript
 
 Use the `@civic/auth/vanillajs` client with your backend:
 
@@ -242,7 +244,27 @@ const authClient = await CivicAuth.create({
 const { user } = await authClient.startAuthentication();
 ```
 
-Add this endpoint to expose login URLs:
+### React
+
+Use the `@civic/auth/react` components with your backend:
+
+```jsx
+import { CivicAuthProvider } from "@civic/auth/react";
+
+const App = () => {
+  return (
+      <CivicAuthProvider
+         loginUrl="https://your-backend.com/auth/login-url"
+      >
+        <Login />
+      </CivicAuthProvider>
+  );
+}
+```
+
+### Backend Endpoint
+
+Both frontend integrations require this endpoint to expose login URLs:
 
 ```ts
 app.get("/auth/login-url", async (c) => {
