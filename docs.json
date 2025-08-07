@@ -13,8 +13,8 @@
     }
   },
   "integrations": {
-    "ga4": {
-      "measurementId": "G-3GN3S4G1EY"
+    "gtm": {
+      "tagId": "GTM-KRZHVRL"
     }
   },
   "scripts": [
