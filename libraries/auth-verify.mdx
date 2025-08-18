@@ -197,7 +197,8 @@ try {
   // - Invalid/expired tokens
   // - Network failures (OIDC/JWKS fetch)
   // - Key not found in JWKS
-  // - Client ID or audience mismatches
+  // - Client ID mismatches (client_id or tid)
+  // - Audience mismatches (aud claim)
   console.error('Token verification failed:', error.message);
   
   // Handle verification failure appropriately for your application
