@@ -123,6 +123,13 @@
           ]
         },
         {
+          "group": "Libraries & Tools",
+          "icon": "code",
+          "pages": [
+            "libraries/auth-verify"
+          ]
+        },
+        {
           "group": "Guides",
           "pages": [
             "guides/add-auth-to-mcp"
