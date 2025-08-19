@@ -41,12 +41,22 @@ If the email address associated with one of these providers matches the email ad
 
 ## Passkey
 
-Passkeys are encrypted digital keys you create using your fingerprint, face or screen lock. They are saved to a password manager so you can sign in on other devices. They are a modern, passwordless way for your users to sign in to your website or app using their device's built-in security features like fingerprint, face scan, or PIN. Instead of remembering complex passwords, users simply verify their identity with the same method they use to unlock their phone or computer. They're more secure than passwords because they can't be phished, guessed, or stolen in data breaches, and they work seamlessly across all devices when synced through the platform's account (like iCloud Keychain or Google Password Manager).
+Passkeys offer a secure and easy replacement for passwords. Instead of a password, users sign in by approving the login request through a simple, secure action, such as:
+- A biometric scan or PIN on their device (phone or computer)
+- Tapping a physical hardware key (e.g., YubiKey)
+- Authenticating via a third-party service like a password manager (e.g., Bitwarden)
 
-To enable the creation and usage of passkeys for your app, go to Application Options and toggle the "Enable Passkeys" setting. You can also decide how often you'd like your users to be prompted to create a passkey, based either on the number of logins or the time since their last login.
+<img
+src="/images/Passkey.png"
+align="center"
+className="image-60"
+alt="Passkey UI"
+title="Passkey UI"
+/>
 
-When passkeys are enabled, users will see an option to create a passkey during the login process, after they have logged in with one of the existing login methods like email or social login. If they choose to create one, they will be prompted to authenticate using their device's security features. Once created, users can log in using their passkey instead of entering a password or OTP, and they will be prompted to use passkey on subsequent visits to your website. They will always have the option of canceling the passkey login and instead using a different login method.
+*Key Benefits:*
+- Enhanced Security: Passkeys are built on the WebAuthN standard, making them strongly resistant to phishing and server-side data breaches.
+- Effortless User Experience: Users no longer need to create or remember complex passwords, leading to faster, more convenient sign-ins and fewer account lockouts.
+- Cross-Device Syncing: Passkeys can be synced across a user's devices through their platform account (like an Apple ID or Google Account), enabling a seamless login experience on any of their devices.
 
-If they choose not to create a passkey, they will still be logged in as usual and can continue using their existing login methods.
-
-If you toggle the "Enable Passkeys" setting off, users won't be prompted to use their existing passkey but will still be able to log in using their email or social login methods. If you toggle "Enable Passkeys" back on, users can use their previously-created passkeys.
+To learn more about the underlying cryptographic standard, please refer to the official [WebAuthN documentation](https://www.w3.org/TR/webauthn/).
