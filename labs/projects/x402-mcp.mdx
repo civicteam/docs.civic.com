@@ -16,7 +16,7 @@ public: true
 
 ## Overview
 
-X402 MCP bridges the Model Context Protocol with the X402 payment protocol, enabling micropayments for AI tool invocations.
+X402 MCP bridges the [Model Context Protocol](https://modelcontextprotocol.io/) with the [X402 payment protocol](https://www.x402.org/), enabling micropayments for AI tool invocations.
 This integration allows developers to monetize their MCP tools with instant, automatic stablecoin payments directly over HTTP.
 
 The system enables programmatic machine-to-machine transactions without accounts or complex authentication,
@@ -26,7 +26,7 @@ making it ideal for AI agents that need to pay for premium tools and services.
 
 ### Instant Micropayments
 - Pay-per-use model for MCP tools
-- Automatic USDC payments on Base network
+- Automatic USDC payments on [Base network](https://www.base.org/)
 - No accounts or authentication required
 - Settlement happens transparently during tool invocation
 
@@ -73,9 +73,11 @@ The library supports multiple deployment patterns:
 
 1. **Client requests a tool invocation** - Standard MCP request flow
 2. **Server responds with payment requirement** - HTTP 402 status with payment details
-3. **Client constructs payment** - Automatic USDC transaction on Base
+3. **Client constructs payment** - Automatic USDC transaction on [Base](https://www.base.org/)
 4. **Server verifies and executes** - Tool runs after payment confirmation
 5. **Results returned to client** - Standard MCP response with settlement info
+
+Learn more about the [technical implementation](https://github.com/civicteam/x402-mcp#what-is-x402)
 
 ## Quick Demo
 
@@ -101,10 +103,10 @@ The demo uses Base Sepolia testnet. Get test ETH and USDC from the [Coinbase dev
 ## Technical Details
 
 ### X402 Protocol
-X402 revives the HTTP 402 Payment Required status code to enable programmatic payments. Developed by Coinbase, it creates a simple flow for instant, on-chain stablecoin payments.
+[X402](https://www.x402.org/) revives the HTTP 402 Payment Required status code to enable programmatic payments. Developed by [Coinbase](https://www.coinbase.com/en-de/developer-platform/products/x402), it creates a simple flow for instant, on-chain stablecoin payments. Learn more at the [X402 documentation](https://www.x402.org/).
 
 ### MCP Integration
-The library wraps MCP's streaming HTTP transport to intercept tool calls and handle payment flows transparently, maintaining full protocol compatibility while adding monetization capabilities.
+The library wraps [MCP's streaming HTTP transport](https://github.com/civicteam/x402-mcp#how-mcp-works-with-streaming-http) to intercept tool calls and handle payment flows transparently, maintaining full protocol compatibility while adding monetization capabilities. See the [integration architecture](https://github.com/civicteam/x402-mcp#integrating-mcp-and-x402) for implementation details.
 
 ## Open Source
 

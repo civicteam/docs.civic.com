@@ -9,6 +9,8 @@ description: Implementation details and integration guides for X402 MCP
 npm install @civic/x402-mcp
 ```
 
+See the [npm package](https://www.npmjs.com/package/@civic/x402-mcp) for version details.
+
 ## Server Implementation
 
 ### Basic Setup
@@ -180,7 +182,7 @@ const proxy = await createClientProxy({
 
 ### Server Proxy
 
-Monetize existing API-key-protected MCP servers:
+Monetize existing API-key-protected MCP servers. See the [example implementation](https://github.com/civicteam/x402-mcp/tree/main/example):
 
 ```typescript
 import { createServerProxy } from "@civic/x402-mcp";
@@ -206,6 +208,7 @@ const proxy = await createServerProxy({
 1. Get Base Sepolia testnet ETH from [Coinbase Faucet](https://portal.cdp.coinbase.com/products/faucet)
 2. Get testnet USDC from the same faucet
 3. Use `baseSepolia` chain in your configuration
+4. Learn more about [X402 on Coinbase Developer Platform](https://www.coinbase.com/en-de/developer-platform/products/x402)
 
 ### Demo Server
 
@@ -219,13 +222,13 @@ const transport = makePaymentAwareClientTransport(
 ```
 
 Note - Civic makes no guarantees about the availability or reliability of the demo server.
-We advise you deploy your own instance to ensure stablity. The demo server source code is available in the [x402-mcp repository](https://github.com/civicteam/x402-mcp/blob/main/example/server.ts)
+We advise you deploy your own instance to ensure stability. The demo server [source code](https://github.com/civicteam/x402-mcp/blob/main/example/server.ts) is available in the x402-mcp repository
 
 ## Network Configuration
 
-Supported networks from viem:
+Supported networks from [Viem chains](https://viem.sh/docs/chains/introduction):
 
-- `base` - Base mainnet
+- `base` - [Base](https://www.base.org/) mainnet
 - `baseSepolia` - Base Sepolia testnet (recommended for testing)
 - `mainnet` - Ethereum mainnet
 - `sepolia` - Ethereum Sepolia testnet
