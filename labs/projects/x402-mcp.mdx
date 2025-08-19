@@ -1,0 +1,115 @@
+---
+title: X402 MCP
+description: Enable micropayments for MCP tool invocations with X402 payment protocol
+public: true
+---
+
+**Flask Status: Distilling** 🧪
+
+<Frame caption="X402 MCP Direct Integration">
+    <img
+        src="/images/labs/projects/x402-mcp/direct.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
+
+## Overview
+
+X402 MCP bridges the Model Context Protocol with the X402 payment protocol, enabling micropayments for AI tool invocations.
+This integration allows developers to monetize their MCP tools with instant, automatic stablecoin payments directly over HTTP.
+
+The system enables programmatic machine-to-machine transactions without accounts or complex authentication,
+making it ideal for AI agents that need to pay for premium tools and services.
+
+## Key Features
+
+### Instant Micropayments
+- Pay-per-use model for MCP tools
+- Automatic USDC payments on Base network
+- No accounts or authentication required
+- Settlement happens transparently during tool invocation
+
+### Flexible Architecture
+The library supports multiple deployment patterns:
+
+<Frame caption="Client Proxy Architecture - Bridge non-payment-aware clients to payment-required servers">
+    <img
+        src="/images/labs/projects/x402-mcp/client-proxy.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
+
+<Frame caption="Server Proxy Architecture - Monetize existing API-key-protected services">
+    <img
+        src="/images/labs/projects/x402-mcp/server-proxy.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
+
+## Use Cases
+
+### For Tool Developers
+- Monetize your MCP tools with minimal setup
+- Set custom pricing per tool invocation
+- Receive instant payments in USDC
+- No payment infrastructure needed
+
+### For AI Applications
+- Access premium tools programmatically
+- Pay only for what you use
+- Automatic payment handling
+- Works with Claude Desktop and other MCP clients
+
+### For Service Providers
+- Wrap existing APIs with micropayment layer
+- Convert API-key services to pay-per-use
+- Create new revenue streams
+- Maintain full MCP protocol compatibility
+
+## How It Works
+
+1. **Client requests a tool invocation** - Standard MCP request flow
+2. **Server responds with payment requirement** - HTTP 402 status with payment details
+3. **Client constructs payment** - Automatic USDC transaction on Base
+4. **Server verifies and executes** - Tool runs after payment confirmation
+5. **Results returned to client** - Standard MCP response with settlement info
+
+## Quick Demo
+
+Try it with your LLM by adding this MCP server configuration:
+
+```json
+{
+  "mcpServers": {
+    "x402": {
+      "command": "npx",
+      "args": [ "@civic/x402-mcp" ],
+      "env": {
+        "PRIVATE_KEY": "Your wallet private key",
+        "TARGET_URL": "https://x402-mcp.fly.dev/mcp"
+      }
+    }
+  }
+}
+```
+
+The demo uses Base Sepolia testnet. Get test ETH and USDC from the [Coinbase developer platform faucet](https://portal.cdp.coinbase.com/products/faucet).
+
+## Technical Details
+
+### X402 Protocol
+X402 revives the HTTP 402 Payment Required status code to enable programmatic payments. Developed by Coinbase, it creates a simple flow for instant, on-chain stablecoin payments.
+
+### MCP Integration
+The library wraps MCP's streaming HTTP transport to intercept tool calls and handle payment flows transparently, maintaining full protocol compatibility while adding monetization capabilities.
+
+## Open Source
+
+X402 MCP is open source and available on [GitHub](https://github.com/civicteam/x402-mcp). Contributions and feedback are welcome!
+
+## Getting Started
+
+Ready to monetize your MCP tools or access payment-required services? Check out our [implementation guide](/labs/private/x402-mcp) or [contact us](https://civickey.typeform.com/to/uVH7CWJ5) for support.
