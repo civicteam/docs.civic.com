@@ -1,0 +1,230 @@
+---
+title: "@civic/auth-verify"
+description: "Standalone JWT verification library for validating Civic Auth tokens with JWKS endpoint discovery."
+icon: "shield-check"
+public: true
+---
+
+The `@civic/auth-verify` package is a lightweight, standalone JWT verification library specifically designed for validating Civic Auth tokens. Perfect for microservices, serverless functions, and any backend service that needs to verify JWT tokens without the full SDK overhead.
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Lightweight & Fast" icon="bolt">
+    Minimal dependencies and optimized for performance - perfect for serverless environments where cold start time matters.
+  </Card>
+  <Card title="Zero Configuration" icon="magic">
+    Works out-of-the-box with Civic Auth. No manual JWKS endpoint configuration required.
+  </Card>
+  <Card title="Built-in Caching" icon="database">
+    Intelligent JWKS caching reduces network requests and improves response times.
+  </Card>
+  <Card title="TypeScript First" icon="code">
+    Full TypeScript support with comprehensive type definitions for better developer experience.
+  </Card>
+</CardGroup>
+
+## When to Use
+
+### ✅ Perfect For
+- **Microservices Architecture**: Verify tokens in individual services without full SDK overhead
+- **Serverless Functions**: Minimal bundle size and fast cold starts for AWS Lambda, Vercel Functions, etc.
+- **API Gateways**: Token validation at the edge before reaching your application
+- **Background Workers**: Verify user context in queued jobs and background processes
+- **Third-party Integrations**: Validate Civic Auth tokens in external services or webhooks
+
+### ❌ Use Other Solutions If
+- You need complete authentication flows (login/logout) - use full Civic Auth SDK
+- Building React/Next.js applications - use `@civic/auth` or `@civic/auth-web3`
+- Need session management and user state handling
+
+## Prerequisites
+
+This library can verify JWT tokens from any OIDC-compliant issuer:
+
+- **For Civic Auth tokens**: No setup required - works out of the box
+- **For other issuers**: Ensure your issuer exposes a `.well-known/openid-configuration` endpoint
+- **For audience validation**: You'll need the expected audience value from your token issuer
+
+### Getting Civic Auth Credentials (if needed)
+
+If you need a Civic Auth client ID for client validation:
+
+1. Visit [auth.civic.com](https://auth.civic.com)
+2. Sign up or log in to your account
+3. Create a new application to obtain your Client ID
+4. Use the Client ID with the `clientId` parameter when verifying tokens
+
+## Installation
+
+<CodeGroup>
+  ```bash npm
+  npm install @civic/auth-verify
+  ```
+  
+  ```bash pnpm
+  pnpm add @civic/auth-verify
+  ```
+  
+  ```bash yarn
+  yarn add @civic/auth-verify
+  ```
+</CodeGroup>
+
+## Quick Start
+
+The simplest way to verify a Civic Auth token:
+
+```typescript
+import { verify } from '@civic/auth-verify';
+
+// Verify a token (uses Civic Auth issuer by default)
+try {
+  const payload = await verify(token);
+  console.log('User ID:', payload.sub);
+  console.log('Email:', payload.email);
+  console.log('Name:', payload.name);
+} catch (error) {
+  console.error('Token verification failed:', error);
+}
+```
+
+## Cache Options
+
+### Default In-Memory Cache
+```typescript
+import { verify, InMemoryJWKSCache } from '@civic/auth-verify';
+
+// Create a custom cache instance
+const cache = new InMemoryJWKSCache();
+
+// Use the cache for verification
+const payload = await verify(token, {
+  jwksCache: cache
+});
+```
+
+### Bundled Cache (Offline Support)
+The `BundledJWKSCache` contains pre-loaded Civic Auth JWKS keys for offline verification:
+
+```typescript
+import { verify, BundledJWKSCache } from '@civic/auth-verify';
+
+// Use bundled cache with pre-downloaded Civic Auth JWKS
+const cache = new BundledJWKSCache();
+
+const payload = await verify(token, {
+  jwksCache: cache
+});
+```
+
+**Benefits:**
+- ⚡ Zero network latency for Civic Auth tokens
+- 🚀 Perfect for serverless cold starts
+- 📦 Keys bundled at build time
+- 🔄 Automatic fallback to network fetch for other issuers
+
+## API Reference
+
+### `verify(token, options?)`
+
+Verifies a JWT token and returns its payload.
+
+**Parameters:**
+- `token` (string): The JWT token to verify
+- `options` (object, optional):
+  - `issuer` (string): Token issuer URL (defaults to `https://auth.civic.com/oauth/`). The library automatically appends `/.well-known/openid-configuration` to discover OIDC configuration.
+  - `wellKnownConfigurationUrl` (string): Custom OpenID configuration URL (overrides automatic discovery)
+  - `jwksCache` (JWKSCache): Custom JWKS cache implementation
+  - `aud` (string): Expected audience value (typically the identity provider URL)
+  - `clientId` (string): Expected client ID - validates against `client_id` or `tid` fields in the JWT payload
+
+**Returns:** Promise\<JWTPayload\>
+
+**Throws:** Error if token is invalid, expired, or verification fails
+
+### Cache Classes
+
+- **`InMemoryJWKSCache`**: Default in-memory cache with automatic cleanup
+- **`BundledJWKSCache`**: Pre-loaded cache with Civic Auth JWKS for offline verification
+
+## Configuration Examples
+
+### Multiple Issuers
+```typescript
+import { verify } from '@civic/auth-verify';
+
+// Verify Civic Auth token (uses default issuer)
+const civicUser = await verify(civicToken);
+
+// Verify token from custom issuer
+// This will fetch OIDC configuration from:
+// https://custom-auth.example.com/.well-known/openid-configuration
+const customUser = await verify(customToken, {
+  issuer: 'https://custom-auth.example.com'
+});
+```
+
+### Client ID Validation
+```typescript
+import { verify } from '@civic/auth-verify';
+
+// Verify token and ensure it's for your specific client
+const payload = await verify(token, {
+  clientId: 'your-civic-client-id'
+});
+```
+
+### Audience Validation
+```typescript
+import { verify } from '@civic/auth-verify';
+
+// Verify token with expected audience (typically the issuer)
+const payload = await verify(token, {
+  aud: 'https://auth.civic.com/oauth/'
+});
+```
+
+## Error Handling
+
+```typescript
+import { verify } from '@civic/auth-verify';
+
+try {
+  const payload = await verify(token);
+} catch (error) {
+  // The library throws errors with descriptive messages for various scenarios:
+  // - Invalid/expired tokens
+  // - Network failures (OIDC/JWKS fetch)
+  // - Key not found in JWKS
+  // - Client ID mismatches (client_id or tid)
+  // - Audience mismatches (aud claim)
+  console.error('Token verification failed:', error.message);
+  
+  // Handle verification failure appropriately for your application
+  // (redirect to login, return 401, etc.)
+}
+```
+
+## Key Benefits
+
+**vs. Manual JWT Libraries:** Handles OIDC discovery and JWKS fetching automatically, eliminating complex setup and configuration.
+
+## Best Practices
+
+1. **Reuse Cache Instances**: Create cache instances once and reuse them across requests
+2. **Handle Errors Gracefully**: Implement proper error handling for different failure scenarios  
+3. **Use Bundled Cache**: For maximum performance with Civic Auth tokens
+4. **Validate Audience**: Always specify expected audience for production applications
+
+---
+
+<Note>
+  For complete integration examples and real-world use cases, check out our **Recipes section** (coming soon) which will show practical implementations with this library.
+</Note>
+
+## Next Steps
+
+- [Integration Guides](/integration) - Full authentication flows
+- **Recipes** (coming soon) - Practical implementation examples
+- [npm Package](https://www.npmjs.com/package/@civic/auth-verify) - Package details and versions
