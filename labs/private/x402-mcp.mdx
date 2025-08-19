@@ -1,0 +1,273 @@
+---
+title: X402 MCP
+description: Implementation details and integration guides for X402 MCP
+---
+
+## Installation
+
+```bash
+npm install @civic/x402-mcp
+```
+
+See the [npm package](https://www.npmjs.com/package/@civic/x402-mcp) for version details.
+
+## Server Implementation
+
+### Basic Setup
+
+Create a payment-aware MCP server that charges for tool invocations:
+
+```typescript
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { makePaymentAwareServerTransport } from "@civic/x402-mcp";
+
+// Create MCP server
+const server = new McpServer({
+  name: "my-paid-server",
+  version: "1.0.0"
+});
+
+// Define your tools
+server.tool(
+  "expensive-analysis",
+  {
+    description: "Perform complex data analysis",
+    inputSchema: {
+      type: "object",
+      properties: {
+        data: { type: "string" }
+      }
+    }
+  },
+  async (params) => {
+    // Your tool implementation
+    return { result: "Analysis complete" };
+  }
+);
+
+// Create payment-aware transport
+const transport = makePaymentAwareServerTransport(
+  "0x1234...", // Your wallet address to receive payments
+  {
+    "expensive-analysis": "$0.010",  // 1 cent per invocation
+    "another-tool": "$0.002"          // 0.2 cents
+  }
+);
+
+// Connect with payment-aware transport
+await server.connect(transport);
+```
+
+### Advanced Configuration
+
+```typescript
+const transport = makePaymentAwareServerTransport(
+  walletAddress,
+  toolPricing,
+  {
+    // Optional: Custom chain configuration (default: baseSepolia)
+    chain: base,  // or baseSepolia for testing
+
+    // Optional: Custom facilitator URL
+    facilitatorUrl: "https://your-facilitator.com",
+
+    // Optional: Enable logging
+    debug: true
+  }
+);
+```
+
+## Client Implementation
+
+### Basic Setup
+
+Create a client that automatically handles payments:
+
+```typescript
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { makePaymentAwareClientTransport } from "@civic/x402-mcp";
+import { createWalletClient, http, publicActions } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { baseSepolia } from "viem/chains";
+
+// Set up wallet with public actions
+const wallet = createWalletClient({
+  account: privateKeyToAccount(process.env.PRIVATE_KEY),
+  chain: baseSepolia,
+  transport: http()
+}).extend(publicActions);
+
+// Create payment-aware transport
+const transport = makePaymentAwareClientTransport(
+  "http://localhost:3000/mcp",
+  wallet,
+  (txHash) => console.log("Payment sent:", txHash)  // Optional callback
+);
+
+// Connect MCP client
+const client = new Client(
+  { name: "my-client", version: "1.0.0" },
+  { capabilities: {} }
+);
+await client.connect(transport);
+
+// Use tools normally - payments happen automatically
+const result = await client.request({
+  method: "tools/call",
+  params: {
+    name: "expensive-analysis",
+    arguments: { data: "..." }
+  }
+});
+```
+
+## Proxy Deployments
+
+### Client Proxy (CLI)
+
+Run a client proxy to enable non-payment-aware clients (like Claude Desktop) to use payment-required servers:
+
+```bash
+# Stdio mode (for Claude Desktop integration)
+TARGET_URL=http://server.com/mcp PRIVATE_KEY=0x... npx @civic/x402-mcp client-proxy
+
+# HTTP mode (for API access)
+MODE=http PORT=3001 TARGET_URL=http://server.com/mcp PRIVATE_KEY=0x... npx @civic/x402-mcp client-proxy
+```
+
+#### Claude Desktop Configuration
+
+Add to your Claude Desktop config:
+
+```json
+{
+  "mcpServers": {
+    "x402-proxy": {
+      "command": "npx",
+      "args": ["@civic/x402-mcp", "client-proxy"],
+      "env": {
+        "TARGET_URL": "https://payment-required-server.com/mcp",
+        "PRIVATE_KEY": "0x...",
+        "NETWORK": "baseSepolia"  // or "base" for mainnet
+      }
+    }
+  }
+}
+```
+
+### Client Proxy (Programmatic)
+
+```typescript
+import { createClientProxy } from "@civic/x402-mcp";
+import { createWalletClient, http, publicActions } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { baseSepolia } from "viem/chains";
+
+const wallet = createWalletClient({
+  account: privateKeyToAccount(process.env.PRIVATE_KEY),
+  chain: baseSepolia,
+  transport: http()
+}).extend(publicActions);
+
+const proxy = await createClientProxy({
+  targetUrl: "http://payment-required-server.com/mcp",
+  wallet: wallet,
+  mode: "http",
+  port: 3001,
+  onPayment: (txHash) => console.log(`Payment sent: ${txHash}`)
+});
+
+// Clients can now connect to http://localhost:3001
+```
+
+### Server Proxy
+
+Monetize existing API-key-protected MCP servers. See the [example implementation](https://github.com/civicteam/x402-mcp/tree/main/example):
+
+```typescript
+import { createServerProxy } from "@civic/x402-mcp";
+
+const proxy = await createServerProxy({
+  upstreamUrl: "http://api-protected-server.com/mcp",
+  apiKey: process.env.UPSTREAM_API_KEY,
+  paymentWallet: "0x...",  // Your wallet to receive payments
+  toolPricing: {
+    "tool1": "$0.010",
+    "tool2": "$0.005"
+  },
+  port: 3002
+});
+
+// Clients can now pay for access at http://localhost:3002
+```
+
+## Testing
+
+### Testnet Setup
+
+1. Get Base Sepolia testnet ETH from [Coinbase Faucet](https://portal.cdp.coinbase.com/products/faucet)
+2. Get testnet USDC from the same faucet
+3. Use `baseSepolia` chain in your configuration
+4. Learn more about [X402 on Coinbase Developer Platform](https://www.coinbase.com/en-de/developer-platform/products/x402)
+
+### Demo Server
+
+Test against our hosted demo server:
+
+```typescript
+const transport = makePaymentAwareClientTransport(
+  "https://x402-mcp.fly.dev/mcp",
+  wallet
+);
+```
+
+Note - Civic makes no guarantees about the availability or reliability of the demo server.
+We advise you deploy your own instance to ensure stability. The demo server [source code](https://github.com/civicteam/x402-mcp/blob/main/example/server.ts) is available in the x402-mcp repository
+
+## Network Configuration
+
+Supported networks from [Viem chains](https://viem.sh/docs/chains/introduction):
+
+- `base` - [Base](https://www.base.org/) mainnet
+- `baseSepolia` - Base Sepolia testnet (recommended for testing)
+- `mainnet` - Ethereum mainnet
+- `sepolia` - Ethereum Sepolia testnet
+- `optimism` - Optimism mainnet
+- `arbitrum` - Arbitrum One
+- `polygon` - Polygon mainnet
+
+## Error Handling
+
+Common errors and solutions:
+
+### Insufficient Balance
+```
+Error: Insufficient USDC balance
+```
+Solution: Ensure your wallet has enough USDC for payments plus ETH for gas
+
+### Payment Verification Failed
+```
+Error: Payment verification failed
+```
+Solution: Check that you're using the correct network and the payment transaction succeeded
+
+### Tool Not Found in Pricing
+```
+Error: Tool 'xyz' not found in pricing configuration
+```
+Solution: Ensure all tools are configured with prices in the server transport
+
+## Security Considerations
+
+1. **Private Keys**: Never commit private keys to version control
+2. **Environment Variables**: Use environment variables for sensitive data
+3. **Network Selection**: Use testnet for development and testing
+4. **Price Validation**: Validate tool pricing on both client and server
+5. **Rate Limiting**: Implement rate limiting to prevent abuse
+
+## Support
+
+- GitHub: [civicteam/x402-mcp](https://github.com/civicteam/x402-mcp)
+- Issues: [GitHub Issues](https://github.com/civicteam/x402-mcp/issues)
+- Contact: [Get in touch](https://civickey.typeform.com/to/uVH7CWJ5)
