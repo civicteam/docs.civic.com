@@ -1,0 +1,38 @@
+---
+title: "Lovable"
+icon: "react"
+public: true
+---
+
+import LovablePrompt from '/snippets/lovable.mdx';
+import HowToUseBasic from '/snippets/_how-to-use-basic.mdx';
+import Web3UpsellNote from '/snippets/_web3-upsell-note.mdx';
+import SupportedAiAssistants from '/snippets/_supported-ai-assistants.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
+
+Building something amazing on [Lovable](https://lovable.dev/) and want to add authentication super quickly? Just copy the prompt below and paste it into your AI assistant - it will automatically integrate Civic Auth into your Lovable project in minutes!
+
+Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to automatically integrate Civic Auth into your Lovable project.
+
+<HowToUseBasic />
+
+## Integration Prompt
+
+<LovablePrompt />
+
+<Web3UpsellNote />
+
+<Note>
+  **Need help?** If you encounter any issues during the LLM-assisted integration, you can always fall back to the [manual integration guide](/integration/react).
+</Note>
+
+## What the AI Assistant Will Do
+
+When you use this prompt, the AI assistant will:
+
+1. **Fetch the documentation** using curl from the official Civic Auth docs
+2. **Analyze your project** structure and requirements
+3. **Install dependencies** and configure your Lovable app
+4. **Set up authentication provider** and wrap your app correctly
+5. **Implement authentication components** for login/logout functionality
+6. **Handle edge cases** like existing auth systems or custom routing
