@@ -180,6 +180,7 @@
           "group": "Flasks",
           "pages": [
             "labs/projects/mcp-hub",
+            "labs/projects/x402-mcp",
             "labs/projects/guardrail-proxy",
             "labs/projects/bodyguard",
             "labs/projects/passthrough-proxy",
@@ -202,6 +203,7 @@
           "pages": [
             "labs/private/getting-started",
             "labs/private/mcp-hub",
+            "labs/private/x402-mcp",
             "labs/private/guardrail-proxy",
             "labs/private/bodyguard",
             "labs/private/passthrough-proxy",
