@@ -46,6 +46,14 @@ Passkeys offer a secure and easy replacement for passwords. Instead of a passwor
 - Tapping a physical hardware key (e.g., YubiKey)
 - Authenticating via a third-party service like a password manager (e.g., Bitwarden)
 
+To enable the creation and usage of passkeys for your app, go to Application Options and toggle the "Enable Passkeys" setting. You can also decide how often you'd like your users to be prompted to create a passkey, based either on the number of logins or the time since their last login.
+
+### End User Experience
+
+When passkeys are enabled, users will be prompted to create a passkey during the login process, after they have logged in with one of the existing login methods like email or social login. The next time they visit your site they'll be prompted to use the passkey they created.
+
+Users will always have the option of canceling a passkey login and instead using a different login method.
+
 <img
 src="/images/Passkey.png"
 align="center"
@@ -54,15 +62,11 @@ alt="Passkey UI"
 title="Passkey UI"
 />
 
+<Note>Note that due to browser iframe security restrictions, users will go through the full-page authentication flow, rather than authenticating in an iframe.</Note>
+
 *Key Benefits:*
 - Enhanced Security: Passkeys are built on the WebAuthN standard, making them strongly resistant to phishing and server-side data breaches.
 - Effortless User Experience: Users no longer need to create or remember complex passwords, leading to faster, more convenient sign-ins and fewer account lockouts.
 - Cross-Device Syncing: Passkeys can be synced across a user's devices through their platform account (like an Apple ID or Google Account), enabling a seamless login experience on any of their devices.
 
 To learn more about the underlying cryptographic standard, please refer to the official [WebAuthN documentation](https://www.w3.org/TR/webauthn/).
-
-To enable the creation and usage of passkeys for your app, go to Application Options and toggle the "Enable Passkeys" setting. You can also decide how often you'd like your users to be prompted to create a passkey, based either on the number of logins or the time since their last login.
-
-When passkeys are enabled, users will be prompted to create a passkey during the login process, after they have logged in with one of the existing login methods like email or social login. The next time they visit your site they'll be prompted to use the passkey they created.
-
-Users will always have the option of canceling a passkey login and instead using a different login method.
