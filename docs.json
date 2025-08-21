@@ -111,6 +111,16 @@
                 "ai-prompts/web3/solana",
                 "ai-prompts/web3/ethereum"
               ]
+            },
+            {
+              "group": "No-code Platforms",
+              "icon": "wand-magic-sparkles",
+              "pages": [
+                "ai-prompts/no-code/lovable",
+                "ai-prompts/no-code/bolt",
+                "ai-prompts/no-code/v0",
+                "ai-prompts/no-code/replit"
+              ]
             }
           ]
         },
