@@ -1,0 +1,593 @@
+---
+title: "Express + Any Frontend"
+description: "Build a custom Express backend for Civic Auth and connect it to any frontend using the SDK's custom login URL"
+icon: "server"
+public: true
+---
+
+This recipe shows you how to create a custom Express backend that handles Civic Auth authentication and connect it to any frontend application using the Civic SDK's custom login URL feature.
+
+<Info>
+**What you'll build**: A complete authentication system with a custom Express backend that verifies Civic Auth tokens and a frontend that uses the Civic SDK to authenticate users through your backend.
+</Info>
+
+## Overview
+
+The Civic SDK allows you to specify a custom `loginUrl` parameter, enabling you to use your own backend for authentication instead of the default Civic Auth servers. 
+
+<CardGroup cols={2}>
+  <Card title="Custom Authentication" icon="key">
+    Implement custom authentication flows and business logic while leveraging Civic's secure identity verification.
+  </Card>
+  <Card title="Server-side Validation" icon="shield-check">
+    Add additional server-side validation, rate limiting, and security measures to your authentication process.
+  </Card>
+  <Card title="Database Integration" icon="database">
+    Seamlessly integrate with your existing user databases and user management systems.
+  </Card>
+  <Card title="Multi-tenant Support" icon="building">
+    Perfect for multi-tenant applications where different clients need custom authentication flows.
+  </Card>
+</CardGroup>
+
+## Prerequisites
+
+<Check>Node.js 18+ installed</Check>
+<Check>Basic knowledge of Express.js</Check>
+<Check>A Civic Auth application - [Create one at auth.civic.com](https://auth.civic.com)</Check>
+<Check>Your preferred frontend framework (React, Vue, Angular, etc.)</Check>
+
+## Backend Implementation
+
+<Steps>
+  <Step title="Set Up Express Server">
+    Create a new Express application with the necessary dependencies:
+
+    <CodeGroup>
+      ```bash Terminal
+      mkdir civic-express-backend
+      cd civic-express-backend
+      npm init -y
+      ```
+
+      ```bash Install Dependencies
+      npm install express @civic/auth-verify cors dotenv
+      npm install -D @types/express @types/cors typescript nodemon
+      ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="Create the Express Server">
+    Create `server.js` with the core authentication logic:
+
+    ```javascript server.js
+    const express = require('express');
+    const cors = require('cors');
+    const { verify } = require('@civic/auth-verify');
+    require('dotenv').config();
+
+    const app = express();
+    const PORT = process.env.PORT || 3001;
+
+    // Enable CORS for your frontend domain
+    app.use(cors({
+      origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+      credentials: true
+    }));
+
+    app.use(express.json());
+
+    // Health check endpoint
+    app.get('/health', (req, res) => {
+      res.json({ status: 'ok' });
+    });
+
+    // Auth endpoint that handles Civic Auth tokens
+    app.post('/auth/verify', async (req, res) => {
+      const { token } = req.body;
+
+      if (!token) {
+        return res.status(400).json({ error: 'Token is required' });
+      }
+
+      try {
+        // Verify the Civic Auth JWT token
+        const payload = await verify(token, {
+          // Optional: Validate the client ID if needed
+          clientId: process.env.CIVIC_CLIENT_ID
+        });
+
+        // Extract user information
+        const user = {
+          id: payload.sub,
+          email: payload.email,
+          name: payload.name,
+          picture: payload.picture,
+          // Add any custom fields your app needs
+        };
+
+        // Optional: Create or update user in your database
+        // const dbUser = await createOrUpdateUser(user);
+
+        // Return user data to frontend
+        res.json({ 
+          success: true,
+          user,
+          // Optional: Include your own session token
+          // sessionToken: generateSessionToken(user)
+        });
+
+      } catch (error) {
+        console.error('Token verification failed:', error);
+        res.status(401).json({ 
+          error: 'Invalid token',
+          message: error.message 
+        });
+      }
+    });
+
+    // Logout endpoint (optional)
+    app.post('/auth/logout', (req, res) => {
+      // Handle any server-side logout logic
+      res.json({ success: true });
+    });
+
+    app.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
+    });
+    ```
+  </Step>
+
+  <Step title="Environment Configuration">
+    Create a `.env` file in your project root:
+
+    ```bash .env
+    PORT=3001
+    FRONTEND_URL=http://localhost:3000
+    CIVIC_CLIENT_ID=your_civic_client_id_here
+    ```
+
+    <Warning>
+    Replace `your_civic_client_id_here` with your actual Client ID from [auth.civic.com](https://auth.civic.com)
+    </Warning>
+  </Step>
+
+  <Step title="Add TypeScript Support (Optional)">
+    <Accordion title="TypeScript Implementation">
+      If you prefer TypeScript, create `server.ts`:
+
+      ```typescript server.ts
+      import express, { Request, Response } from 'express';
+      import cors from 'cors';
+      import { verify } from '@civic/auth-verify';
+      import dotenv from 'dotenv';
+
+      dotenv.config();
+
+      interface AuthRequest extends Request {
+        body: {
+          token: string;
+        };
+      }
+
+      interface User {
+        id: string;
+        email: string;
+        name: string;
+        picture?: string;
+      }
+
+      const app = express();
+      const PORT = process.env.PORT || 3001;
+
+      app.use(cors({
+        origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+        credentials: true
+      }));
+
+      app.use(express.json());
+
+      app.post('/auth/verify', async (req: AuthRequest, res: Response) => {
+        const { token } = req.body;
+
+        if (!token) {
+          return res.status(400).json({ error: 'Token is required' });
+        }
+
+        try {
+          const payload = await verify(token, {
+            clientId: process.env.CIVIC_CLIENT_ID
+          });
+
+          const user: User = {
+            id: payload.sub,
+            email: payload.email as string,
+            name: payload.name as string,
+            picture: payload.picture as string | undefined,
+          };
+
+          res.json({ success: true, user });
+        } catch (error) {
+          console.error('Token verification failed:', error);
+          res.status(401).json({ 
+            error: 'Invalid token',
+            message: error instanceof Error ? error.message : 'Unknown error'
+          });
+        }
+      });
+
+      app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+      });
+      ```
+    </Accordion>
+  </Step>
+</Steps>
+
+## Frontend Implementation
+
+<Tabs>
+  <Tab title="React">
+    Here's how to configure the Civic SDK to use your custom backend:
+
+    ```jsx App.jsx
+    import { CivicAuthProvider, useUser } from '@civic/auth/react';
+
+    function App() {
+      return (
+        <CivicAuthProvider
+          clientId="your_civic_client_id"
+          // Point to your custom backend
+          loginUrl="http://localhost:3001/auth/verify"
+        >
+          <AuthenticatedApp />
+        </CivicAuthProvider>
+      );
+    }
+
+    function AuthenticatedApp() {
+      const { user, login, logout } = useUser();
+
+      const handleLogin = async () => {
+        try {
+          // This will redirect to Civic Auth, then send the token to your backend
+          await login();
+        } catch (error) {
+          console.error('Login failed:', error);
+        }
+      };
+
+      return (
+        <div>
+          {user ? (
+            <div>
+              <h1>Welcome, {user.name}!</h1>
+              <p>Email: {user.email}</p>
+              <button onClick={logout}>Logout</button>
+            </div>
+          ) : (
+            <button onClick={handleLogin}>Login with Civic</button>
+          )}
+        </div>
+      );
+    }
+    ```
+  </Tab>
+
+  <Tab title="Vanilla JavaScript">
+    For non-React applications:
+
+    ```html index.html
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Civic Auth Custom Backend</title>
+    </head>
+    <body>
+      <div id="app">
+        <button id="loginBtn">Login with Civic</button>
+        <div id="userInfo" style="display: none;">
+          <h2>Welcome, <span id="userName"></span>!</h2>
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+
+      <script type="module">
+        import { CivicAuth } from '@civic/auth';
+
+        const auth = new CivicAuth({
+          clientId: 'your_civic_client_id',
+          loginUrl: 'http://localhost:3001/auth/verify'
+        });
+
+        const loginBtn = document.getElementById('loginBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userInfo = document.getElementById('userInfo');
+        const userName = document.getElementById('userName');
+
+        loginBtn.addEventListener('click', async () => {
+          try {
+            const result = await auth.login();
+            // The SDK will handle the redirect and token exchange
+            if (result.user) {
+              showUser(result.user);
+            }
+          } catch (error) {
+            console.error('Login failed:', error);
+          }
+        });
+
+        logoutBtn.addEventListener('click', async () => {
+          await auth.logout();
+          hideUser();
+        });
+
+        function showUser(user) {
+          userName.textContent = user.name;
+          loginBtn.style.display = 'none';
+          userInfo.style.display = 'block';
+        }
+
+        function hideUser() {
+          loginBtn.style.display = 'block';
+          userInfo.style.display = 'none';
+        }
+
+        // Check if user is already logged in
+        const currentUser = await auth.getUser();
+        if (currentUser) {
+          showUser(currentUser);
+        }
+      </script>
+    </body>
+    </html>
+    ```
+  </Tab>
+</Tabs>
+
+## Advanced Configuration
+
+<Expandable title="🗄️ Adding Database Integration">
+  Extend your Express server to store user data:
+
+  ```javascript database.js
+  const { Pool } = require('pg'); // or your preferred database
+
+  const db = new Pool({
+    connectionString: process.env.DATABASE_URL
+  });
+
+  async function createOrUpdateUser(civicUser) {
+    const query = `
+      INSERT INTO users (civic_id, email, name, picture, last_login)
+      VALUES ($1, $2, $3, $4, NOW())
+      ON CONFLICT (civic_id) 
+      DO UPDATE SET 
+        email = EXCLUDED.email,
+        name = EXCLUDED.name,
+        picture = EXCLUDED.picture,
+        last_login = NOW()
+      RETURNING *;
+    `;
+    
+    const result = await db.query(query, [
+      civicUser.id,
+      civicUser.email,
+      civicUser.name,
+      civicUser.picture
+    ]);
+    
+    return result.rows[0];
+  }
+
+  // Update your verify endpoint
+  app.post('/auth/verify', async (req, res) => {
+    // ... token verification code ...
+    
+    // Store user in database
+    const dbUser = await createOrUpdateUser(user);
+    
+    res.json({ 
+      success: true,
+      user: dbUser,
+      sessionToken: generateSessionToken(dbUser)
+    });
+  });
+  ```
+</Expandable>
+
+<Expandable title="🔐 Adding Session Management">
+  Implement session tokens for subsequent API calls:
+
+  ```javascript sessions.js
+  const jwt = require('jsonwebtoken');
+
+  function generateSessionToken(user) {
+    return jwt.sign(
+      { 
+        userId: user.id,
+        email: user.email 
+      },
+      process.env.SESSION_SECRET,
+      { expiresIn: '7d' }
+    );
+  }
+
+  // Middleware to verify session tokens
+  function authenticateSession(req, res, next) {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+      return res.status(401).json({ error: 'No token provided' });
+    }
+    
+    try {
+      const decoded = jwt.verify(token, process.env.SESSION_SECRET);
+      req.user = decoded;
+      next();
+    } catch (error) {
+      res.status(401).json({ error: 'Invalid session token' });
+    }
+  }
+
+  // Protected route example
+  app.get('/api/profile', authenticateSession, async (req, res) => {
+    const user = await db.query(
+      'SELECT * FROM users WHERE civic_id = $1',
+      [req.user.userId]
+    );
+    res.json(user.rows[0]);
+  });
+  ```
+</Expandable>
+
+## Deployment Considerations
+
+<Warning>
+**Production Checklist**: Make sure to configure these settings before deploying to production.
+</Warning>
+
+### Environment Variables
+
+<CodeGroup>
+```bash Production .env
+NODE_ENV=production
+FRONTEND_URL=https://your-app.com
+CIVIC_CLIENT_ID=your_production_client_id
+SESSION_SECRET=strong_random_secret
+DATABASE_URL=your_database_connection_string
+```
+
+```bash Development .env  
+NODE_ENV=development
+FRONTEND_URL=http://localhost:3000
+CIVIC_CLIENT_ID=your_development_client_id
+SESSION_SECRET=dev_secret_change_in_production
+DATABASE_URL=postgresql://localhost/civic_dev
+```
+</CodeGroup>
+
+### CORS Configuration
+
+Update CORS settings for production:
+
+```javascript cors-config.js
+app.use(cors({
+  origin: function(origin, callback) {
+    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
+```
+
+### Security Best Practices
+
+<CardGroup cols={2}>
+  <Card title="HTTPS Only" icon="lock">
+    Always use HTTPS in production to protect token transmission
+  </Card>
+  <Card title="Token Validation" icon="shield-check">
+    Validate tokens on every request to ensure authenticity
+  </Card>
+  <Card title="Rate Limiting" icon="clock">
+    Implement rate limiting to prevent abuse and brute force attacks
+  </Card>
+  <Card title="Security Monitoring" icon="eye">
+    Log authentication events for security monitoring and audit trails
+  </Card>
+  <Card title="Secure Storage" icon="database">
+    Use secure session storage like Redis or httpOnly cookies
+  </Card>
+  <Card title="CSRF Protection" icon="shield">
+    Implement CSRF protection for state-changing operations
+  </Card>
+</CardGroup>
+
+## Common Issues and Solutions
+
+<AccordionGroup>
+  <Accordion title="🚫 CORS Errors">
+    **Symptoms**: Browser blocks requests to your backend
+
+    **Solutions**:
+    - Ensure your backend allows your frontend's origin
+    - Include credentials in requests
+    - Configure headers properly
+    - Check that your frontend URL matches the CORS configuration
+
+    ```javascript
+    // Correct CORS setup
+    app.use(cors({
+      origin: 'http://localhost:3000', // Your frontend URL
+      credentials: true
+    }));
+    ```
+  </Accordion>
+
+  <Accordion title="❌ Token Verification Failures">
+    **Symptoms**: Authentication fails even with valid tokens
+
+    **Common causes**:
+    - Expired tokens (implement refresh logic)
+    - Wrong client ID configuration
+    - Network issues fetching JWKS
+    - Clock skew between systems
+
+    **Solutions**:
+    ```javascript
+    // Add better error logging
+    try {
+      const payload = await verify(token, { clientId: process.env.CIVIC_CLIENT_ID });
+    } catch (error) {
+      console.error('Verification failed:', {
+        error: error.message,
+        token: token.substring(0, 20) + '...', // Log partial token for debugging
+        timestamp: new Date().toISOString()
+      });
+    }
+    ```
+  </Accordion>
+
+  <Accordion title="🔄 Session Persistence Issues">
+    **Symptoms**: Users lose authentication on page refresh
+
+    **Solutions for better UX**:
+    - Store session tokens in secure httpOnly cookies
+    - Implement refresh token rotation
+    - Handle token expiration gracefully
+    - Use proper session management
+
+    ```javascript
+    // Set secure cookies
+    res.cookie('session_token', sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={3}>
+  <Card title="Advanced Token Validation" icon="shield-check" href="/libraries/auth-verify">
+    Explore the `@civic/auth-verify` documentation for advanced token validation features and options.
+  </Card>
+  <Card title="Express Integration Guide" icon="node-js" href="/integration/nodejs/express">
+    Check out the official Express integration guide for more framework-specific features.
+  </Card>
+  <Card title="Join Our Community" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Get help, share feedback, and connect with other developers building with Civic Auth.
+  </Card>
+</CardGroup>
+
+<Tip>
+**Framework Flexibility**: This recipe demonstrates the power of Civic Auth's custom backend feature. You can adapt this pattern to work with any backend framework (Django, FastAPI, Ruby on Rails, etc.) by implementing similar token verification logic in your preferred language and framework.
+</Tip>

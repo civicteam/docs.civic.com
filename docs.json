@@ -211,6 +211,17 @@
           ]
         }
       ]
+    },{
+      "tab": "Recipes",
+      "groups": [
+        {
+          "group": "Recipes",
+          "pages": [
+            "recipes/overview",
+            "recipes/express-any-backend"
+          ]
+        }
+      ]
     }]
   },
   "logo": {
