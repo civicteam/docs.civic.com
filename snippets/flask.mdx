@@ -57,6 +57,7 @@ Using ONLY the documentation fetched via curl:
 - Pay attention to Python version requirements and dependency compatibility
 - Ensure proper virtual environment setup if needed
 - The get_civic_user() function returns a dictionary, use user.get('field') for safe access
+- **CRITICAL**: The SDK handles ALL token validation - DO NOT implement custom middleware for token parsing/validation
 
 ## CRITICAL: Information Gathering Requirements
 You MUST gather ALL required information from the user before proceeding with ANY implementation steps:
