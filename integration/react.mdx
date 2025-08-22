@@ -50,48 +50,6 @@ function App({ children }) {
 </Tab>
 </Tabs>
 
-## Backend Integration
-
-If you're using a backend server (Express, Fastify, Hono, etc.) for authentication, you can configure the React components to work with your backend using `loginUrl` instead of `clientId`:
-
-<Tabs>
-<Tab title="Auth">
-```tsx App.tsx
-import { CivicAuthProvider } from "@civic/auth/react";
-
-const App = () => {
-  return (
-      <CivicAuthProvider
-         loginUrl="https://your-backend.com/auth/login-url"
-      >
-        <YourAppComponents />
-      </CivicAuthProvider>
-  );
-}
-```
-</Tab>
-
-<Tab title="Auth + Web3">
-```tsx App.tsx
-import { CivicAuthProvider } from "@civic/auth-web3/react";
-
-const App = () => {
-  return (
-      <CivicAuthProvider
-         loginUrl="https://your-backend.com/auth/login-url"
-      >
-        <YourAppComponents />
-      </CivicAuthProvider>
-  );
-}
-```
-</Tab>
-</Tabs>
-
-<Info>
-When using `loginUrl`, your backend server handles the OAuth flow and session management. See our backend integration guides for [Express](/integration/nodejs/express), [Fastify](/integration/nodejs/fastify), or [Hono](/integration/nodejs/hono).
-</Info>
-
 ## Usage
 
 ### The User Button

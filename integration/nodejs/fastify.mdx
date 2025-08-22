@@ -226,20 +226,18 @@ fastify.addHook('preHandler', async (request, reply) => {
 
 ## 9. Use the Session
 
-Create an endpoint to get the logged-in user information:
+If needed, get the logged-in user information.
 
 ```ts
-fastify.get('/auth/user', async (request, reply) => {
+import { user } from '@civic/auth/server';
+
+fastify.get('/admin/hello', async (request, reply) => {
   const user = await request.civicAuth.getUser();
-  return reply.send(user);
+  return `Hello, ${user?.name}!`;
 });
 ```
 
-This endpoint is important for step 10 (Frontend Integration) as it allows your frontend application to retrieve the current user's information.
-
-## 10. Frontend Integration
-
-### Vanilla JavaScript
+## 10. Frontend Integration (Vanilla JavaScript)
 
 Use the `@civic/auth/vanillajs` client with your backend:
 
@@ -255,27 +253,7 @@ const authClient = await CivicAuth.create({
 const { user } = await authClient.startAuthentication();
 ```
 
-### React
-
-Use the `@civic/auth/react` components with your backend:
-
-```jsx
-import { CivicAuthProvider } from "@civic/auth/react";
-
-const App = () => {
-  return (
-      <CivicAuthProvider
-         loginUrl="https://your-backend.com/auth/login-url"
-      >
-        <Login />
-      </CivicAuthProvider>
-  );
-}
-```
-
-### Backend Endpoint
-
-Both frontend integrations require this endpoint to expose login URLs:
+Add this endpoint to expose login URLs:
 
 ```ts
 fastify.get("/auth/login-url", async (request, reply) => {
