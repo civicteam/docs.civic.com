@@ -39,34 +39,56 @@ When a user logs in using an email address, once the OTP code is verified, we ch
 
 If the email address associated with one of these providers matches the email address used to login, we automatically link the accounts. This means that the returned user id will be the same for both login methods, and the user's profile information will be merged, i.e. their name, profile picture, and any other relevant information.
 
-## Passkey
+## Passkeys
 
-Passkeys offer a secure and easy replacement for passwords. Instead of a password, users sign in by approving the login request through a simple, secure action, such as:
-- A biometric scan or PIN on their device (phone or computer)
-- Tapping a physical hardware key (e.g., YubiKey)
-- Authenticating via a third-party service like a password manager (e.g., Bitwarden)
+Passkeys offer a secure and passwordless replacement for traditional passwords. They provide enhanced security while delivering a seamless user experience.
 
-To enable the creation and usage of passkeys for your app, go to Application Options and toggle the "Enable Passkeys" setting. You can also decide how often you'd like your users to be prompted to create a passkey, based either on the number of logins or the time since their last login.
+### What are Passkeys?
 
-### End User Experience
+Instead of typing a password, users authenticate through simple, secure actions such as:
+- A biometric scan (fingerprint, Face ID) or device PIN
+- Tapping a physical security key (e.g., YubiKey) 
+- Authenticating via a password manager (e.g., Bitwarden)
 
-When passkeys are enabled, users will be prompted to create a passkey during the login process, after they have logged in with one of the existing login methods like email or social login. The next time they visit your site they'll be prompted to use the passkey they created.
+### Key Benefits
 
-Users will always have the option of canceling a passkey login and instead using a different login method.
+- **Enhanced Security**: Built on the WebAuthn standard, passkeys are strongly resistant to phishing and server-side data breaches
+- **Effortless Experience**: No need to create, remember, or type complex passwords
+- **Cross-Device Syncing**: Passkeys sync across devices through platform accounts (Apple ID, Google Account)
+- **Faster Logins**: Quick authentication without typing credentials
 
-<img
-src="/images/Passkey.png"
-align="center"
-className="image-60"
-alt="Passkey UI"
-title="Passkey UI"
-/>
+### How to Enable Passkeys
 
-<Note>Note that due to browser iframe security restrictions, users will go through the full-page authentication flow, rather than authenticating in an iframe.</Note>
+To enable passkeys for your app:
 
-*Key Benefits:*
-- Enhanced Security: Passkeys are built on the WebAuthN standard, making them strongly resistant to phishing and server-side data breaches.
-- Effortless User Experience: Users no longer need to create or remember complex passwords, leading to faster, more convenient sign-ins and fewer account lockouts.
-- Cross-Device Syncing: Passkeys can be synced across a user's devices through their platform account (like an Apple ID or Google Account), enabling a seamless login experience on any of their devices.
+1. Navigate to your [Civic Auth Dashboard](https://auth.civic.com/dashboard)
+2. Go to **Application Options** in the sidebar
+3. Find the **Enable passkeys** section
+4. Toggle the passkey setting to **ON**
+5. Configure how often users should be prompted to create a passkey
 
-To learn more about the underlying cryptographic standard, please refer to the official [WebAuthN documentation](https://www.w3.org/TR/webauthn/).
+<Frame>
+    <img src="/images/Passkey-options.png" alt="Enable passkeys in dashboard" title="Passkey configuration options in the Civic Auth Dashboard"/>
+</Frame>
+
+You can customize the passkey prompt frequency by setting "Ask user to register a passkey every" to either:
+- A specific number of logins (e.g., every login, every 5 logins)
+- Time-based intervals (e.g., every week, every month)
+
+### User Experience
+
+When passkeys are enabled, here's what your users will experience:
+
+1. **First-time setup**: After logging in with email or social login, users will be prompted to create a passkey for faster future access
+2. **Subsequent logins**: Users can choose to authenticate with their passkey for instant access
+3. **Fallback options**: Users can always skip passkey authentication and use traditional login methods instead
+
+<Frame>
+    <img src="/images/Passkey.png" alt="Passkey login interface" title="User-facing passkey authentication prompt"/>
+</Frame>
+
+<Note>Due to browser iframe security restrictions, passkey authentication requires users to go through the full-page authentication flow rather than authenticating within an iframe.</Note>
+
+### Technical Implementation
+
+Passkeys are built on the [WebAuthn standard](https://www.w3.org/TR/webauthn/), providing cryptographic security that eliminates many common attack vectors associated with traditional passwords. No additional code changes are required in your application - Civic Auth handles all the passkey implementation automatically.
