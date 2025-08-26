@@ -1,0 +1,84 @@
+```
+# Civic Auth Integration Prompt
+
+## Prerequisites
+Before starting, you need a Civic Auth Client ID and domain setup:
+1. Visit https://auth.civic.com
+2. Sign up or log in to your account
+3. Create a new application to obtain your Client ID
+4. Copy the Client ID for use in this integration
+5. **IMPORTANT FOR LOVABLE**: Since Lovable is a hosted platform, you MUST add your app's domain to Civic Auth:
+   - In the Civic Auth dashboard, navigate to "Domains"
+   - Add your Lovable app's URL (e.g., https://your-app-name.lovable.app/)
+   - This is required because hosted platforms need domain verification for security
+
+## Task
+Stop. Do not use Supabase auth. Remove any Supabase dependencies and configuration files. Instead, implement authentication using Civic Auth only. Do not install @supabase/supabase-js or create any supabase client. Use Civic's authentication flow and API endpoints for all auth functionality including login, logout, and session management.
+
+Add Civic Auth authentication to this React application.
+
+## Step 1: Fetch the Documentation
+Use curl to fetch the Civic Auth documentation:
+
+curl https://docs.civic.com/integration/react.md
+
+This documentation contains ALL the code examples and instructions needed for the integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
+
+## Step 2: Gather Project Information
+Ask the user for the following information if not provided:
+
+**Required Information (gather ALL before starting):**
+- ✅ Client ID (if not provided, ask user to get it from https://auth.civic.com)
+- ✅ Lovable app URL (e.g., https://your-app-name.lovable.app/) - needed for domain registration
+- ✅ Confirmation that the app URL has been added to Civic Auth domains
+- ✅ Project type (new/existing React project)
+- ✅ Build tool (Create React App, Vite, Next.js, or other)
+- ✅ Web3 Support Needed (Yes/No) - This affects which imports and packages to use
+- ✅ Protected routes/components that need authentication
+- ✅ Existing authentication systems that need replacement
+
+**DO NOT proceed with implementation until you have confirmed ALL of the above information.**
+
+If any information is missing, ask specific questions and wait for responses before continuing. This prevents errors and ensures the integration matches the user's exact requirements.
+
+## Step 3: Domain Registration (CRITICAL FOR LOVABLE)
+Before implementing, ensure domain registration is complete:
+1. **Verify the Lovable app URL** is added to Civic Auth domains
+2. **If not added yet**, guide the user to:
+   - Go to https://auth.civic.com
+   - Navigate to "Domains" section
+   - Add their Lovable app URL (e.g., https://your-app-name.lovable.app/)
+   - Save the domain registration
+3. **Do not proceed** until this step is confirmed - authentication will fail without proper domain registration
+
+## Step 4: Create Implementation Plan
+After fetching the documentation with curl and confirming domain registration:
+1. Analyze the current project structure
+2. Identify which code examples from the documentation apply
+3. Choose the correct setup based on Web3 requirements:
+   - **If Web3 support needed**: Use "Auth + Web3" tab and @civic/auth-web3 packages
+   - **If no Web3 support**: Use "Auth" tab and @civic/auth packages
+4. Plan the implementation order
+5. Note any existing code that needs to be modified
+
+## Step 5: Implement Civic Auth
+Using ONLY the documentation fetched via curl:
+1. Follow the Quick Start guide step by step
+2. Choose the correct tab based on Web3 requirements:
+   - **If Web3 support needed**: Use "Auth + Web3" tab (imports from @civic/auth-web3/react)
+   - **If no Web3 support**: Use "Auth" tab (imports from @civic/auth)
+3. Adapt all code examples to this project's structure
+4. Handle any existing authentication or routing code appropriately
+
+## Important Notes
+- Use ONLY curl to fetch the documentation - no web search tools
+- The fetched documentation is the ONLY source of truth for this implementation
+- All code examples, configuration options, and setup instructions are in that document
+- Pay attention to version requirements and compatibility notes in the documentation
+- **CRITICAL**: If Web3 support is needed, you MUST use @civic/auth-web3 packages and imports, not @civic/auth
+
+## Next Steps
+After completing basic authentication integration:
+- **If Web3 was selected**: Use the [Solana](/ai-prompts/web3/solana) or [Ethereum](/ai-prompts/web3/ethereum) prompts to add specific wallet functionality
+- **If no Web3**: Your basic authentication setup is complete
+```
