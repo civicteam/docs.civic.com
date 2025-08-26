@@ -66,6 +66,7 @@ Using ONLY the documentation fetched via curl:
 - The civic_user is available on request.civic_user with attributes like .name, .email, .id, .picture
 - Middleware must be added to MIDDLEWARE list in settings.py
 - URLs must include get_auth_urls() for authentication routes
+- **CRITICAL**: The SDK handles ALL token validation - DO NOT implement custom middleware for token parsing/validation
 
 ## CRITICAL: Information Gathering Requirements
 You MUST gather ALL required information from the user before proceeding with ANY implementation steps:
