@@ -39,54 +39,8 @@ When a user logs in using an email address, once the OTP code is verified, we ch
 
 If the email address associated with one of these providers matches the email address used to login, we automatically link the accounts. This means that the returned user id will be the same for both login methods, and the user's profile information will be merged, i.e. their name, profile picture, and any other relevant information.
 
-## Passkeys
+### Passkeys
 
-Passkeys offer a secure and passwordless replacement for traditional passwords. They provide enhanced security while delivering a seamless user experience.
+Passkeys provide a seamless user experience and enhanced security using biometric authentication, device PINs, or security keys instead of passwords.
 
-### What are Passkeys?
-
-Instead of typing a password, users authenticate through simple, secure actions such as:
-- A biometric scan (fingerprint, Face ID) or device PIN
-- Tapping a physical security key (e.g., YubiKey) 
-- Authenticating via a password manager (e.g., Bitwarden)
-
-### Key Benefits
-
-- **Enhanced Security**: Built on the WebAuthn standard, passkeys are strongly resistant to phishing and server-side data breaches
-- **Effortless Experience**: No need to create, remember, or type complex passwords
-- **Cross-Device Syncing**: Passkeys sync across devices through platform accounts (Apple ID, Google Account)
-- **Faster Logins**: Quick authentication without typing credentials
-
-### How to Enable Passkeys
-
-To enable passkeys for your app:
-
-1. Navigate to your [Civic Auth Dashboard](https://auth.civic.com/dashboard)
-2. Go to **Application Options** in the sidebar
-3. Find the **Enable passkeys** section
-4. Toggle the passkey setting to **ON**
-5. Configure how often users should be prompted to create a passkey
-
-<Frame>
-    <img src="/images/Passkey-options.png" alt="Enable passkeys in dashboard" title="Passkey configuration options in the Civic Auth Dashboard"/>
-</Frame>
-
-You can also decide how often you'd like your users to be prompted to create a passkey, based either on the number of logins or the time since their last login.
-
-### User Experience
-
-When passkeys are enabled, here's what your users will experience:
-
-1. **First-time setup**: After logging in with email or social login, users will be prompted to create a passkey for faster future access
-2. **Subsequent logins**: Users can choose to authenticate with their passkey for instant access
-3. **Fallback options**: Users can always skip passkey authentication and use traditional login methods instead
-
-<Frame>
-    <img src="/images/Passkey.png" alt="Passkey login interface" title="User-facing passkey authentication prompt"/>
-</Frame>
-
-<Note>Due to browser iframe security restrictions, passkey authentication requires users to go through the full-page authentication flow rather than authenticating within an iframe.</Note>
-
-### Technical Implementation
-
-Passkeys are built on the [WebAuthn standard](https://www.w3.org/TR/webauthn/), providing cryptographic security that eliminates many common attack vectors associated with traditional passwords. No additional code changes are required in your application - Civic Auth handles all the passkey implementation automatically.
+Learn more about [setting up and using passkeys](/overview/passkeys).

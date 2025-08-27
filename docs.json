@@ -45,7 +45,13 @@
             "index",
             "overview/pricing",
             "overview/bring-your-app-to-production",
-            "overview/login-options",
+            {
+              "group": "Login Options",
+              "pages": [
+                "overview/login-options",
+                "overview/passkeys"
+              ]
+            },
             "overview/faqs",
             "overview/authentication-flows",
             "overview/changelog"
