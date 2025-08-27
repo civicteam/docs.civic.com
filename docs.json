@@ -47,6 +47,7 @@
             "overview/bring-your-app-to-production",
             {
               "group": "Login Options",
+              "icon": "arrow-right-to-bracket",
               "pages": [
                 "overview/login-options",
                 "overview/passkeys"
