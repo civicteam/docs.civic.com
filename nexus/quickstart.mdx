@@ -1,0 +1,176 @@
+---
+title: Quick Start Guide
+description: Connect Claude Desktop to Civic Nexus in 5 minutes
+icon: "play"
+---
+
+<Note>
+  This guide shows how to connect Claude Desktop with Civic Nexus. For other AI clients, see our [client compatibility guide](/nexus/reference/client-compatibility).
+</Note>
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+<CardGroup cols={2}>
+  <Card title="Claude Desktop" icon="robot" href="https://claude.ai/download">
+    Download and install Claude Desktop (Pro or Team plan required for MCP connectors)
+  </Card>
+  <Card title="Civic Account" icon="user" href="https://ai.civic.com">
+    Create a free account on ai.civic.com
+  </Card>
+</CardGroup>
+
+## Step 1: Browse and select MCP servers
+
+<Steps>
+  <Step title="Visit ai.civic.com">
+    Open [ai.civic.com](https://ai.civic.com) in your browser and sign in with your Civic account.
+    
+    <img
+      className="rounded-lg"
+      src="https://placehold.co/800x400/e0e7ff/6366f1?text=AI+Civic+Homepage"
+      alt="AI Civic homepage"
+    />
+  </Step>
+
+  <Step title="Browse available MCP servers">
+    Explore the directory of available MCP servers. Each server connects to a different service or tool.
+    
+    <Tip>
+      Popular servers include Slack, GitHub, Google Drive, and Spotify. Click on any server to see what it can do.
+    </Tip>
+  </Step>
+
+  <Step title="Select servers to connect">
+    Click the checkbox next to each MCP server you want to use. You can select multiple servers.
+    
+    <Warning>
+      Some servers may require authentication with the service they connect to. Make sure you have access to accounts for the services you select.
+    </Warning>
+  </Step>
+</Steps>
+
+## Step 2: Add the connector to Claude Desktop
+
+After selecting your MCP servers, you'll need to add them to Claude Desktop:
+
+<Steps>
+  <Step title="Copy the MCP URL">
+    On ai.civic.com, look for the MCP URL that appears after you've selected servers. It will look something like:
+    ```
+    https://ai.civic.com/v1/mcp
+    ```
+    Click the copy button to copy this URL.
+  </Step>
+
+  <Step title="Open Claude Desktop settings">
+    In Claude Desktop:
+    1. Click on your profile icon in the top right
+    2. Select "Settings" from the dropdown menu
+    3. Navigate to the "Developer" or "Integrations" section
+  </Step>
+
+  <Step title="Add MCP connector">
+    1. Look for "MCP Connectors" or similar option
+    2. Click "Add Connector" or the "+" button
+    3. Paste the MCP URL you copied from ai.civic.com
+    4. Give your connector a name (e.g., "Civic Nexus")
+    5. Click "Save" or "Add"
+    
+    <img
+      className="rounded-lg"
+      src="https://placehold.co/800x400/d1fae5/22c55e?text=Claude+Desktop+MCP+Settings"
+      alt="Claude Desktop MCP connector settings"
+    />
+  </Step>
+</Steps>
+
+## Step 3: Authenticate and start using
+
+<Steps>
+  <Step title="Complete authentication">
+    When you first use an MCP server that requires authentication:
+    1. Claude will prompt you to connect to the service
+    2. A browser window will open for OAuth authentication
+    3. Sign in to the service and authorize access
+    4. Return to Claude Desktop when complete
+    
+    <Note>
+      Authentication is handled securely by Civic Nexus. Your credentials are never exposed to Claude or stored locally.
+    </Note>
+  </Step>
+
+  <Step title="Test your connection">
+    Try a simple command to verify everything is working:
+    
+    ```
+    "Can you check my recent Slack messages?"
+    ```
+    
+    or
+    
+    ```
+    "What's in my Google Drive?"
+    ```
+    
+    Claude should now be able to access and interact with your connected services.
+  </Step>
+</Steps>
+
+## Common questions
+
+<AccordionGroup>
+  <Accordion title="What if authentication fails?">
+    If you encounter authentication issues:
+    - Make sure you're logged into the correct account for the service
+    - Check if your account email matches between ai.civic.com and the service
+    - Try removing and re-adding the MCP connector
+    - For persistent issues, try using [Hub Bridge](/nexus/hub-bridge) as an alternative
+  </Accordion>
+  
+  <Accordion title="Do I need a paid Claude plan?">
+    Yes, MCP connectors are currently only available on Claude Pro and Team plans. The free Claude plan doesn't support external integrations.
+  </Accordion>
+  
+  <Accordion title="Can I use different email addresses?">
+    If your ai.civic.com account uses a different email than your connected services (e.g., nancy@civic.com vs nancynli@gmail.com), you may need to ensure you're authenticating with the correct account for each service.
+  </Accordion>
+  
+  <Accordion title="What about other AI assistants?">
+    Civic Nexus works with many AI platforms including ChatGPT, Cursor, VS Code, and more. See our [client compatibility guide](/nexus/reference/client-compatibility) for setup instructions for other platforms.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<Card title="Need help?" icon="question" href="/nexus/reference/troubleshooting">
+  Check our troubleshooting guide for solutions to common issues
+</Card>
+
+## Alternative connection method: Hub Bridge
+
+If you're experiencing issues with the direct MCP URL connection, or if you're on a Claude Free plan, you can use Hub Bridge:
+
+<Card title="Hub Bridge Setup" icon="bridge" href="/nexus/hub-bridge">
+  Hub Bridge provides an alternative way to connect using a local terminal application
+</Card>
+
+## Next steps
+
+Now that you're connected, explore what you can do:
+
+<CardGroup cols={2}>
+  <Card title="Browse more servers" icon="grid" href="/nexus/browse-servers">
+    Add more MCP servers to expand Claude's capabilities
+  </Card>
+  <Card title="Use case recipes" icon="book-sparkles" href="/nexus/recipes/marketing-ops">
+    See practical examples for your role
+  </Card>
+  <Card title="Security overview" icon="shield-check" href="/nexus/security/overview">
+    Learn how Nexus keeps your data secure
+  </Card>
+  <Card title="Developer guide" icon="code" href="/nexus/developers/mcp-integration">
+    Build your own MCP integrations
+  </Card>
+</CardGroup>

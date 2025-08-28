@@ -37,6 +37,71 @@
   },
   "navigation": {
     "tabs": [{
+      "tab": "Nexus",
+      "groups": [
+        {
+          "group": "Getting Started",
+          "pages": [
+            "nexus/overview",
+            "nexus/quickstart",
+            "nexus/architecture"
+          ]
+        },
+        {
+          "group": "Connect & Configure",
+          "icon": "plug",
+          "pages": [
+            "nexus/browse-servers",
+            "nexus/connect-services",
+            "nexus/authentication",
+            "nexus/hub-bridge"
+          ]
+        },
+        {
+          "group": "Use Case Recipes",
+          "icon": "book-sparkles",
+          "pages": [
+            "nexus/recipes/marketing-ops",
+            "nexus/recipes/sales-ops",
+            "nexus/recipes/rev-ops",
+            "nexus/recipes/partner-success",
+            "nexus/recipes/service-operations",
+            "nexus/recipes/finance",
+            "nexus/recipes/business-intelligence"
+          ]
+        },
+        {
+          "group": "Developer Guide",
+          "icon": "code",
+          "pages": [
+            "nexus/developers/mcp-integration",
+            "nexus/developers/api-reference",
+            "nexus/developers/organization-setup",
+            "nexus/developers/sdks"
+          ]
+        },
+        {
+          "group": "Security & Compliance",
+          "icon": "shield-check",
+          "pages": [
+            "nexus/security/overview",
+            "nexus/security/authentication-methods",
+            "nexus/security/compliance",
+            "nexus/security/best-practices"
+          ]
+        },
+        {
+          "group": "Reference",
+          "icon": "book",
+          "pages": [
+            "nexus/reference/troubleshooting",
+            "nexus/reference/client-compatibility",
+            "nexus/reference/glossary",
+            "nexus/reference/faq"
+          ]
+        }
+      ]
+    }, {
       "tab": "Auth",
       "groups": [
         {
