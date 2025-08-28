@@ -1,14 +1,11 @@
 ---
 title: "Passkeys"
-description: "Enable passwordless authentication with passkeys for enhanced security and user experience."
+description: "Complete guide to implementing and using passkeys with Civic Auth for passwordless authentication."
 icon: key
 public: true
 ---
 
-Passkeys provide a seamless user experience and enhanced security. Instead of typing a password, users authenticate through simple, secure actions such as:
-- A biometric scan (fingerprint, Face ID) or device PIN
-- Tapping a physical security key (e.g., YubiKey)
-- Authenticating via a password manager (e.g., Bitwarden)
+Passkeys offer a secure and passwordless replacement for traditional passwords. They provide enhanced security while delivering a seamless user experience through biometric authentication, device PINs, or security keys.
 
 ## How to Enable Passkeys
 
@@ -18,13 +15,43 @@ To enable passkeys for your app:
 2. Go to **Application Options** in the sidebar
 3. Find the **Enable passkeys** section
 4. Toggle the passkey setting to **ON**
-5. Configure how often users should be prompted to create a passkey
+5. Configure when users should be prompted to create passkeys
 
 <Frame>
     <img src="/images/Passkey-options.png" alt="Enable passkeys in dashboard" title="Passkey configuration options in the Civic Auth Dashboard"/>
 </Frame>
 
-You can also decide how often you'd like your users to be prompted to create a passkey, based either on the number of logins or time intervals (such as daily).
+### Prompt Frequency Options
+
+You can also decide how often you'd like your users to be prompted to create a passkey, based either on the number of logins or the time since their last login.
+
+## What are Passkeys?
+
+Instead of typing a password, users authenticate through simple, secure actions such as:
+- A biometric scan (fingerprint, Face ID) or device PIN
+- Tapping a physical security key (e.g., YubiKey) 
+- Authenticating via a password manager (e.g., Bitwarden)
+
+## Authentication Flow
+
+Passkeys provide **inherent multi-factor authentication (MFA)** by combining multiple authentication factors in a single step:
+- **Something you have**: The device storing the passkey
+- **Something you are/know**: Biometric verification (fingerprint/face) or device PIN
+
+Users can:
+- Use passkeys to bypass email/social login steps for faster access
+- Always fall back to traditional login methods
+- Continue using their preferred primary authentication method if they don't have their passkey
+
+This flexibility ensures users never get locked out while providing enhanced security through built-in MFA.
+
+## Key Benefits
+
+- **Enhanced Security**: Built on the WebAuthn standard, passkeys are strongly resistant to phishing and server-side data breaches
+- **Effortless Experience**: No need to create, remember, or type complex passwords
+- **Cross-Device Syncing**: Passkeys sync across devices through platform accounts (Apple ID, Google Account)
+- **Faster Logins**: Quick authentication without typing credentials
+- **Built-in MFA**: Inherent multi-factor authentication without additional steps
 
 ## User Experience
 
@@ -40,13 +67,31 @@ When passkeys are enabled, here's what your users will experience:
 
 <Note>Due to browser iframe security restrictions, passkey authentication requires users to go through the full-page authentication flow rather than authenticating within an iframe.</Note>
 
-## Technical Implementation
+## Browser Compatibility
 
-Passkeys are built on the [WebAuthn standard](https://www.w3.org/TR/webauthn/), providing cryptographic security that eliminates many common attack vectors associated with traditional passwords. No additional code changes are required in your application - Civic Auth handles all the passkey implementation automatically.
+For current browser support and compatibility matrices:
+- **[WebAuthn API Browser Compatibility](https://caniuse.com/webauthn)** - Live compatibility data for WebAuthn support
+- **[Passkeys.dev Device Support](https://passkeys.dev/device-support/)** - Detailed passkey support by platform and browser
+- **[FIDO Alliance Certified Products](https://fidoalliance.org/certification/fido-certified-products/)** - List of certified authenticators
 
-## Key Benefits
+### Key Compatibility Resources
+- **[MDN WebAuthn API Documentation](https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API)** - Comprehensive API reference with browser notes
+- **[WebAuthn.io](https://webauthn.io/)** - Interactive demo to test passkey support in your current browser
+- **[Passkeys.dev](https://passkeys.dev/)** - Developer resources and implementation guides
 
-- **Enhanced Security**: Built on the WebAuthn standard, passkeys are strongly resistant to phishing and server-side data breaches
-- **Effortless Experience**: No need to create, remember, or type complex passwords
-- **Cross-Device Syncing**: Passkeys sync across devices through platform accounts (Apple ID, Google Account)
-- **Faster Logins**: Quick authentication without typing credentials
+### Important Implementation Notes
+
+**Cross-platform syncing:**
+- Apple passkeys sync via iCloud Keychain (Apple ecosystem only)
+- Google passkeys sync via Google Password Manager (Chrome/Android)
+- Windows Hello passkeys are typically device-bound
+- See [Passkeys.dev Syncing Guide](https://passkeys.dev/docs/reference/terms/#synced-passkeys) for detailed sync behavior
+
+
+**No additional code changes are required** in your application - Civic Auth handles all the passkey implementation automatically, including:
+- WebAuthn credential creation and verification
+- Cross-platform compatibility
+- Fallback handling
+- Error management
+
+Your application continues to receive the same user authentication tokens regardless of whether the user logged in with a passkey or traditional method.
