@@ -85,13 +85,16 @@ For current browser support and compatibility matrices:
 - Apple passkeys sync via iCloud Keychain (Apple ecosystem only)
 - Google passkeys sync via Google Password Manager (Chrome/Android)
 - Windows Hello passkeys are typically device-bound
-- See [Passkeys.dev Syncing Guide](https://passkeys.dev/docs/reference/terms/#synced-passkeys) for detailed sync behavior
 
+**Password Manager Support:**
+- Check [Passkeys Directory](https://passkeys.directory/) for current password manager passkey support status
+- Implementation varies by manager - consult specific documentation
 
-**No additional code changes are required** in your application - Civic Auth handles all the passkey implementation automatically, including:
-- WebAuthn credential creation and verification
-- Cross-platform compatibility
-- Fallback handling
-- Error management
+**Enterprise Deployment:**
+- Organizations may restrict WebAuthn via Group Policy or MDM
+- See [FIDO Alliance Enterprise Deployment Guide](https://fidoalliance.org/specs/fidoalliance-whitepaper-fido-authentication-deployment-considerations-for-enterprises.pdf)
+- Test in target enterprise environments before deployment
 
-Your application continues to receive the same user authentication tokens regardless of whether the user logged in with a passkey or traditional method.
+**Platform-Specific Considerations:**
+- **Linux:** External security key support is stable; platform authenticator support varies by distribution
+- **Private/Incognito modes:** May restrict credential storage - test your specific use case
