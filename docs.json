@@ -44,6 +44,7 @@
           "pages": [
             "nexus/overview",
             "nexus/quickstart",
+            "nexus/vercel-ai-sdk",
             "nexus/architecture"
           ]
         },
