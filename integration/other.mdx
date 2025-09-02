@@ -193,6 +193,10 @@ Here's an example of how to access user information in vanilla JavaScript by rea
   This example uses browser-compatible JWT decoding. The `jsonwebtoken` library is designed for Node.js and won't work in browser environments. For production applications, consider using a dedicated browser JWT library like `jwt-decode`.
 </Note>
 
+<Warning>
+  **Security Note**: The manual decoding approach below only extracts the JWT payload without validating the signature. In production environments, you should always validate the JWT signature to ensure the token is authentic and hasn't been tampered with. We recommend using [Civic Auth Verify](/libraries/auth-verify) for easy token validation, or you can manually validate against Civic's public keys from the JWKS endpoint at `https://auth.civic.com/oauth/jwks`.
+</Warning>
+
 ```js
 // Option 1: Manual base64 decoding (no dependencies)
 function decodeJWT(token) {
