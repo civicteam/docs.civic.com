@@ -21,6 +21,22 @@ After authenticating a user with Civic Auth, you can create a Web3 wallet for th
 - Only embedded wallets are supported (no self-custodial wallet connections yet)
   </Info>
 
+### Installation
+
+Install the SDK and its peer dependencies:
+
+<Tabs>
+  <Tab title="npm">
+    ```bash npm install @civic/react-native-auth-web3 @solana/web3.js ```
+  </Tab>
+  <Tab title="yarn">
+    ```bash yarn add @civic/react-native-auth-web3 @solana/web3.js ```
+  </Tab>
+  <Tab title="pnpm">
+    ```bash pnpm add @civic/react-native-auth-web3 @solana/web3.js ```
+  </Tab>
+</Tabs>
+
 ### Native Setup
 
 #### Android Configuration
@@ -80,11 +96,11 @@ public override func application(
 }
 ```
 
-### Crypto Polyfill
+### How Wallet Creation Works
 
-The SDK automatically includes a crypto polyfill using [expo-crypto](https://docs.expo.dev/versions/latest/sdk/crypto/) to provide the `getRandomValues` function required by Solana's `PublicKey` object. This polyfill ensures cryptographic operations work correctly in React Native environments where the Web Crypto API is not natively available.
+After authenticating with Civic Auth, the SDK can create a non-custodial embedded wallet for the user. The creation process requires an **ID token** - a JWT received from Civic Auth after successful authentication. This token proves the user's identity and links the wallet to their Civic account.
 
-The polyfill is applied automatically when you import the SDK, so no additional configuration is needed.
+Without a valid ID token, wallet creation will fail. This ensures only authenticated users can create wallets, with each wallet uniquely tied to a specific user account.
 
 ### Quick Start
 
@@ -115,9 +131,7 @@ The `useWeb3Client` hook returns a `Web3Client` object for interacting with bloc
 ```typescript
 interface Web3Client {
   solana: SolanaWeb3Client; // Solana wallet operations
-  ethereum: EthereumWeb3Client; // Ethereum operations (if configured)
   connected: boolean; // Connection status
-
   createWallets(): Promise<Wallets | null>; // Create embedded wallets
   disconnect(): Promise<void>; // Disconnect and cleanup
 }
@@ -130,7 +144,6 @@ The `solana` property provides access to Solana-specific operations:
 ```typescript
 interface SolanaWeb3Client {
   readonly address: string; // Wallet public key
-  wallet: SolanaWallet; // Wallet adapter instance
 
   // Core transaction methods
   sendTransaction(address: string, amount: number): Promise<string>;
@@ -454,3 +467,15 @@ export const AuthProvider = ({
   );
 };
 ```
+
+## Example Repository
+
+For a complete working example of Civic Auth with embedded wallets in a React Native application, check out our example repository:
+
+[https://github.com/civicteam/civic-auth-examples/tree/main/packages/mobile/react-native-expo]
+
+## Crypto Polyfill
+
+The SDK automatically includes a crypto polyfill using [expo-crypto](https://docs.expo.dev/versions/latest/sdk/crypto/) to provide the `getRandomValues` function required by Solana's `PublicKey` object. This polyfill ensures cryptographic operations work correctly in React Native environments where the Web Crypto API is not natively available.
+
+The polyfill is applied automatically when you import the SDK, so no additional configuration is needed.
