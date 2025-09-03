@@ -7,7 +7,7 @@ public: true
 
 The information you will need:
 
-* Auth Server URL: `https://auth.civic.com/oauth`
+* Auth Server URL: `https://auth.civic.com/oauth/`
 
 * Client ID: Provided on sign-up at [auth.civic.com](https://auth.civic.com)
 
@@ -26,7 +26,7 @@ At its core, Civic Auth is an [OAuth 2.0 auth server](https://oauth.net/2/). It 
 To trigger a login process, simply call the oauth server as follows:
 
 ```bash
-https://auth.civic.com/oauth
+https://auth.civic.com/oauth/
     ?response_type=code
     &client_id={clientId}
     &redirect_uri={redirectUri}
@@ -69,10 +69,13 @@ See below for an example of using Civic Auth with a third-party library: [OAuth 
   <script>
 
   const libraryCDN = "https://cdn.jsdelivr.net/npm/oauth4webapi@2.10.3/+esm"
-  const openIdConnectUrl = new URL("https://auth.civic.com/oauth");
+  const openIdConnectUrl = new URL("https://auth.civic.com/oauth/");
   const clientId = "YOUR CLIENT ID";
   const redirectUri = "https://localhost:3000";
   const scope = "openid";
+  
+  // Define currentUrl at top-level scope
+  const currentUrl = new URL(location.href);
 
   const buttonEl = document.querySelector("#login")
   const informationEl = document.querySelector("#information")
@@ -90,7 +93,7 @@ See below for an example of using Civic Auth with a third-party library: [OAuth 
       as = await oauth
         .discoveryRequest(openIdConnectUrl, { algorithm: "oidc" })
         .then((response) => oauth.processDiscoveryResponse(openIdConnectUrl, response))
-      if (currentURL.searchParams.get("code")) {
+      if (currentUrl.searchParams.get("code")) {
         codeVerified = sessionStorage.getItem("code_verifier" )
         getInfo()
       }
@@ -109,11 +112,12 @@ See below for an example of using Civic Auth with a third-party library: [OAuth 
       authorizationUrl.searchParams.set("code_challenge_method", code_challenge_method)
 
       authURL = authorizationUrl.href
+      // Enable the login button once authURL is ready
+      buttonEl.disabled = false
     }
 
     discover()
     async function getInfo(){
-      const currentUrl = new URL(location.href)
       const params = oauth.validateAuthResponse(as, client, currentUrl)
 
       if (oauth.isOAuth2Error(params)) {
@@ -173,7 +177,7 @@ If the refresh token is valid this will return a JSON response containing update
     "access_token": <JWT with sub=userId>
     "id_token": <JWT with sub=userId, profile info & forwardedTokens>
     "refresh_token": <string>
-    "expires_in": <how many seconds until the token expires>\
+    "expires_in": <how many seconds until the token expires>
 }
 ```
 
@@ -185,18 +189,43 @@ The ID token is produced after completing the login process. A common pattern is
 
 Here's an example of how to access user information in vanilla JavaScript by reading the ID token cookie:
 
-```ts
-import jwt from "jsonwebtoken";
+<Note>
+  This example uses browser-compatible JWT decoding. The `jsonwebtoken` library is designed for Node.js and won't work in browser environments. For production applications, consider using a dedicated browser JWT library like `jwt-decode`.
+</Note>
+
+<Warning>
+  **Security Note**: The manual decoding approach below only extracts the JWT payload without validating the signature. In production environments, you should always validate the JWT signature to ensure the token is authentic and hasn't been tampered with. We recommend using [Civic Auth Verify](/libraries/auth-verify) for easy token validation, or you can manually validate against Civic's public keys from the JWKS endpoint at `https://auth.civic.com/oauth/jwks`.
+</Warning>
+
+```js
+// Option 1: Manual base64 decoding (no dependencies)
+function decodeJWT(token) {
+  try {
+    const payload = token.split('.')[1];
+    const decoded = JSON.parse(atob(payload));
+    return decoded;
+  } catch (error) {
+    console.error('Error decoding JWT:', error);
+    return null;
+  }
+}
+
+// Option 2: Use a browser-compatible library like 'jwt-decode'
+// First install: npm install jwt-decode
+// import jwt_decode from 'jwt-decode';
 
 function getUserFromToken() {
-  const cookie = document.cookie
-    .split("; ")
-    .find(row => row.startsWith("id_token="));
-
-  if (!cookie) return null;
-
-  const token = cookie.split("=")[1];
-  return jwt.decode(token);
+  const cookies = document.cookie.split('; ');
+  const tokenCookie = cookies.find(row => row.startsWith('id_token='));
+  
+  if (!tokenCookie) return null;
+  
+  // Handle JWT tokens that may contain = characters
+  const token = tokenCookie.substring('id_token='.length);
+  
+  // Use either approach:
+  return decodeJWT(token);           // Option 1: Manual decoding
+  // return jwt_decode(token);       // Option 2: Using jwt-decode library
 }
 
 const user = getUserFromToken();

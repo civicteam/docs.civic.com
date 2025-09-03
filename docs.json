@@ -111,10 +111,53 @@
             "index",
             "overview/pricing",
             "overview/bring-your-app-to-production",
-            "overview/login-options",
+            {
+              "group": "Login Options",
+              "icon": "arrow-right-to-bracket",
+              "pages": [
+                "overview/login-options",
+                "overview/passkeys"
+              ]
+            },
             "overview/faqs",
             "overview/authentication-flows",
             "overview/changelog"
+          ]
+        },
+        {
+          "group": "AI Prompts",
+          "icon": "robot",
+          "pages": [
+            "ai-prompts/overview",
+            "ai-prompts/nextjs", 
+            "ai-prompts/react",
+            {
+              "group": "Python",
+              "icon": "python",
+              "pages": [
+                "ai-prompts/python/fastapi",
+                "ai-prompts/python/flask",
+                "ai-prompts/python/django"
+              ]
+            },
+            {
+              "group": "Web3",
+              "icon": "wallet",
+              "pages": [
+                "ai-prompts/web3/solana",
+                "ai-prompts/web3/ethereum"
+              ]
+            },
+            {
+              "group": "No-code Platforms",
+              "icon": "wand-magic-sparkles",
+              "pages": [
+                "ai-prompts/no-code/lovable",
+                "ai-prompts/no-code/bolt",
+                "ai-prompts/no-code/v0",
+                "ai-prompts/no-code/replit"
+              ]
+            }
           ]
         },
         {
@@ -152,42 +195,6 @@
             },
             "integration/other",
             "integration/error-codes"
-          ]
-        },
-        {
-          "group": "AI Prompts",
-          "icon": "robot",
-          "pages": [
-            "ai-prompts/overview",
-            "ai-prompts/nextjs", 
-            "ai-prompts/react",
-            {
-              "group": "Python",
-              "icon": "python",
-              "pages": [
-                "ai-prompts/python/fastapi",
-                "ai-prompts/python/flask",
-                "ai-prompts/python/django"
-              ]
-            },
-            {
-              "group": "Web3",
-              "icon": "wallet",
-              "pages": [
-                "ai-prompts/web3/solana",
-                "ai-prompts/web3/ethereum"
-              ]
-            },
-            {
-              "group": "No-code Platforms",
-              "icon": "wand-magic-sparkles",
-              "pages": [
-                "ai-prompts/no-code/lovable",
-                "ai-prompts/no-code/bolt",
-                "ai-prompts/no-code/v0",
-                "ai-prompts/no-code/replit"
-              ]
-            }
           ]
         },
         {
@@ -288,7 +295,7 @@
     "links": [
       {
         "label": "Contact Us",
-        "href": "https://civickey.typeform.com/req-custom"
+        "href": "https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw"
       }
     ],
     "primary": {
