@@ -8,6 +8,10 @@ description: "Civic Auth apps can provide their users with access to Web3 withou
 The **Civic Auth Web3 SDK** ( [@civic/auth-web3](https://www.npmjs.com/package/@civic/auth-web3) ) extends the functionality of the base **Civic Auth SDK** by including the ability to provision a Web3 wallet for users. This allows Civic Auth apps to provide their users with access to the world of Cryptocurrencies and Web3 without any hassle or prior knowledge.
 
 <Info>
+  **Supported Networks**: Civic embedded wallets support 18+ EVM-compatible chains including Ethereum, Base, Polygon, BSC, Arbitrum One, Avalanche, and many more. See the [complete list](/web3/ethereum-evm#supported-evm-chains) for all supported networks.
+</Info>
+
+<Info>
   Currently, we don't support connecting users' existing self-custodial wallets. This is coming soon.
 
   Right now, we only support embedded wallets, which are generated on behalf of the user by our non-custodial wallet partner. Neither Civic nor your app ever has access to the wallets' private keys.
@@ -83,7 +87,7 @@ Follow these guides to set up Web3 wallets for your users:
 
 <CardGroup cols={2}>
   <Card title="Ethereum & EVMs" icon="diamond" horizontal href="/web3/ethereum-evm">
-    
+    Supports 18+ EVM chains including Ethereum, Base, Polygon, Arbitrum, and more
   </Card>
   <Card title="Solana" icon="code" horizontal href="/web3/solana">
     
