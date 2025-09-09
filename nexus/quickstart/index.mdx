@@ -1,10 +1,18 @@
 ---
 title: Get Started
 description: Connect your AI assistant to Nexus in under 5 minutes
-icon: "play"
+icon: "bolt"
 ---
 
 ## Quick Start: 4 Steps
+
+<Frame caption="Watch how to connect your AI assistant to Nexus in under 5 minutes">
+  <img 
+    className="rounded-lg"
+    src="https://placehold.co/800x450/e0e7ff/6366f1?text=Setup+Demo+Video+Coming+Soon"
+    alt="Nexus setup walkthrough video"
+  />
+</Frame>
 
 <Steps>
   <Step title="Select Your Tools">
@@ -29,7 +37,7 @@ icon: "play"
   <Card title="Claude Desktop" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
     **Direct URL** - Copy/paste method (2 mins)
   </Card>
-  <Card title="Cursor" icon="cursor-click" href="/nexus/quickstart/clients/cursor">
+  <Card title="Cursor" icon="code" href="/nexus/quickstart/clients/cursor">
     **One-click install** - Install button (3 mins)
   </Card>
   <Card title="VS Code" icon="code" href="/nexus/quickstart/clients/vscode">
@@ -72,14 +80,16 @@ icon: "play"
 ### Hub Bridge (For Compatibility)  
 **For:** Cursor, VS Code, JetBrains, Windsurf, CLIs
 
-The Hub Bridge is a small program that connects clients to Nexus when they don't support Direct URLs.
+The Hub Bridge connects clients that only support local MCP servers to Civic's remote servers.
 
-- **One-click clients** (Cursor, VS Code): Just click the install button
-- **Manual setup clients**: Add `npx -y @civic/hub-bridge` to your client's MCP server settings
+**Setup methods:**
+- **Auto-install**: `npx @civic/hub-bridge install claude-desktop`
+- **One-click** (Cursor, VS Code): Click the install button in our setup guides
+- **Manual** (JetBrains, etc.): Add the bridge to your MCP config
 
-<Info>
-**Why Hub Bridge?** Some clients only work with local MCP servers, so the bridge runs locally and connects to Nexus for you. It handles all the authentication and setup automatically.
-</Info>
+<Card title="Learn More About Hub Bridge" icon="bridge" href="/nexus/quickstart/hub-bridge">
+  Detailed setup instructions, troubleshooting, and technical architecture
+</Card>
 
 ## What You Can Do
 

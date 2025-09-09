@@ -8,9 +8,34 @@ icon: "bridge"
 
 Hub Bridge is a local proxy that connects clients (like Cursor, VS Code, JetBrains) to Civic Nexus. Your client thinks it's talking to a local MCP server, but the bridge handles authentication and forwards requests to your selected Nexus servers.
 
+**npm package:** [`@civic/hub-bridge`](https://www.npmjs.com/package/@civic/hub-bridge)
+
 <Info>
 **Use Hub Bridge when:** Your client only supports local/stdio MCP servers and doesn't have remote URL options.
 </Info>
+
+## Easy Auto-Install (Recommended)
+
+For supported clients, use the auto-install command:
+
+<Tabs>
+  <Tab title="Claude Desktop">
+    ```bash
+    npx @civic/hub-bridge install claude-desktop
+    ```
+    Then just start Claude Desktop and select "Civic" from the MCP providers.
+  </Tab>
+  <Tab title="Claude Code">
+    ```bash
+    npx @civic/hub-bridge install claude-code
+    ```
+    Then use Claude Code as normal - MCP servers will be available.
+  </Tab>
+</Tabs>
+
+<Note>
+The auto-install command automatically configures your client - no manual JSON editing required!
+</Note>
 
 ## Prerequisites
 
@@ -52,7 +77,34 @@ Make sure you have these before starting:
   </Tab>
 </Tabs>
 
-## Setup Process
+## How Hub Bridge Works
+
+The Hub Bridge follows a modular architecture with clear separation of concerns:
+
+### Core Components
+
+- **Bridge Core**: Connects stdio and HTTP/SSE transports, forwards messages between client and server
+- **Auth Provider**: Handles OAuth client interface for Civic authentication with PKCE flow  
+- **Callback Server**: Creates local HTTP server for OAuth redirects with dynamic port selection
+- **Token Store**: Manages secure storage of authentication tokens with file system persistence
+- **OIDC Configuration**: Fetches OpenID Connect configuration from discovery endpoints
+
+### Authentication Flow
+
+1. **Civic Authentication**: Automatically initiated when bridge starts using PKCE for security
+2. **Service-Specific Authentication**: Intercepts auth URL errors, opens browser for user authorization
+3. **Token Management**: Stores tokens locally for subsequent uses, handles refresh automatically
+
+### Environment Variables
+
+- `MCP_REMOTE_URL`: Remote MCP server URL (default: `https://nexus.civic.com/hub/mcp`)
+- `CIVIC_AUTH_URL`: Civic auth service URL (default: `https://auth.civic.com/oauth`)
+- `CIVIC_AUTH_CLIENT_ID`: OAuth client ID for authentication
+- `NO_LOGIN`: When `true`, bypasses auth and uses public configuration (limited servers)
+- `NO_AUTH_CAPTURE`: When `true`, disables third-party service authorization prompts
+- `CALLBACK_PORT`: OAuth callback server port (default: 8976)
+
+## Manual Setup Process
 
 ### Step 1: Configure Your Client
 
