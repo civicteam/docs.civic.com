@@ -1,0 +1,260 @@
+---
+title: Hub Bridge Setup
+description: Use Hub Bridge when your client doesn't support Direct URL connections
+icon: "bridge"
+---
+
+## What is Hub Bridge?
+
+Hub Bridge is a local proxy that connects clients (like Cursor, VS Code, JetBrains) to Civic Nexus. Your client thinks it's talking to a local MCP server, but the bridge handles authentication and forwards requests to your selected Nexus servers.
+
+<Info>
+**Use Hub Bridge when:** Your client only supports local/stdio MCP servers and doesn't have remote URL options.
+</Info>
+
+## Prerequisites
+
+<Warning>
+Make sure you have these before starting:
+</Warning>
+
+- **Node.js 18 or higher** - Check with `node --version`
+- **Terminal access** - macOS/Linux Terminal, Windows PowerShell, or Command Prompt  
+- **Internet connection** - For initial download and authentication
+- **Default browser** - Bridge opens browser for one-time authentication
+
+### Install Node.js (if needed)
+
+<Tabs>
+  <Tab title="macOS">
+    ```bash
+    # Using Homebrew (recommended)
+    brew install node
+    
+    # Or download from nodejs.org
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```powershell
+    # Using winget
+    winget install OpenJS.NodeJS
+    
+    # Or download from nodejs.org
+    ```
+  </Tab>
+  <Tab title="Linux">
+    ```bash
+    # Ubuntu/Debian
+    sudo apt update && sudo apt install nodejs npm
+    
+    # Or use NodeSource repository for latest version
+    ```
+  </Tab>
+</Tabs>
+
+## Setup Process
+
+### Step 1: Configure Your Client
+
+Add a local MCP server to your client with these exact settings:
+
+```json
+{
+  "name": "Civic Nexus",
+  "type": "stdio",
+  "command": "npx",
+  "args": ["-y", "@civic/hub-bridge"]
+}
+```
+
+<Tabs>
+  <Tab title="Cursor">
+    Use the one-click install button, or add manually in Cursor Settings → Features → MCP
+  </Tab>
+  <Tab title="VS Code">
+    Add to your MCP extension settings or use the direct install link
+  </Tab>
+  <Tab title="JetBrains">
+    Add to MCP plugin configuration in IDE settings
+  </Tab>
+  <Tab title="Other Clients">
+    Look for "MCP Server," "Local MCP," or "stdio" configuration options
+  </Tab>
+</Tabs>
+
+### Step 2: First Run Authentication
+
+When you first use an MCP command, the bridge will automatically:
+
+<Steps>
+  <Step title="Download & Install">
+    Bridge downloads itself (happens once, ~30 seconds)
+  </Step>
+  <Step title="Open Browser">
+    Your default browser opens to nexus.civic.com for authentication
+  </Step>
+  <Step title="Sign In">
+    Authenticate with your Civic account (Google, GitHub, etc.)
+  </Step>
+  <Step title="Select Servers">
+    Choose which MCP servers you want to connect (GitHub, Slack, etc.)
+  </Step>
+  <Step title="Authorize Apps">
+    Complete OAuth flows for each selected service
+  </Step>
+  <Step title="Ready">
+    Bridge is now configured and your client can access your tools
+  </Step>
+</Steps>
+
+### Step 3: Test Connection
+
+Try these commands in your AI client:
+
+```
+"What MCP servers are available?"
+"List my GitHub repositories"  
+"Show me recent Slack messages"
+```
+
+## Managing Your Bridge
+
+### Update Bridge
+```bash
+npx -y @civic/hub-bridge --update
+```
+
+The bridge also auto-updates when you run it, so you typically don't need to manually update.
+
+### View Current Configuration
+```bash
+npx -y @civic/hub-bridge --status
+```
+
+### Reset/Reconfigure
+```bash
+npx -y @civic/hub-bridge --reset
+```
+
+This clears all settings and forces re-authentication.
+
+### Uninstall
+
+To completely remove Hub Bridge:
+
+1. **Remove from your client:** Delete the MCP server configuration
+2. **Clear cache:** `npx -y @civic/hub-bridge --reset`  
+3. **Optional:** Clear npm cache with `npm cache clean --force`
+
+## Troubleshooting
+
+### Common Issues
+
+<AccordionGroup>
+  <Accordion title="Bridge command not found" icon="exclamation-triangle">
+    **Problem:** `npx: command not found` or `'npx' is not recognized`
+    
+    **Solution:** 
+    - Install Node.js 18+ from nodejs.org
+    - Restart your terminal/IDE after installation
+    - Verify with `node --version` and `npm --version`
+  </Accordion>
+  
+  <Accordion title="Browser doesn't open for auth" icon="globe">
+    **Problem:** Authentication browser window doesn't appear
+    
+    **Solution:**
+    - Corporate firewall may be blocking - try from personal network
+    - Manually visit the auth URL shown in terminal output
+    - Check if default browser is set correctly
+    - Try running from regular terminal instead of IDE terminal
+  </Accordion>
+  
+  <Accordion title="Client shows no tools/servers" icon="server">
+    **Problem:** Bridge connects but client doesn't see any MCP tools
+    
+    **Solution:**
+    - Restart your client completely after bridge setup
+    - Check that you selected servers during authentication
+    - Run `npx -y @civic/hub-bridge --status` to verify configuration
+    - Some clients need manual restart of MCP features
+  </Accordion>
+  
+  <Accordion title="Authentication keeps failing" icon="key">
+    **Problem:** Repeated auth prompts or 401 errors
+    
+    **Solution:**
+    - Clear bridge cache: `npx -y @civic/hub-bridge --reset`
+    - Check system time is accurate (OAuth is time-sensitive)
+    - Disable VPN temporarily during initial setup
+    - Contact support if issue persists
+  </Accordion>
+  
+  <Accordion title="Slow or timing out" icon="clock">
+    **Problem:** Bridge responses are slow or timeout
+    
+    **Solution:**
+    - Check internet connection stability
+    - Corporate proxy may be interfering - try personal network
+    - Some MCP operations are inherently slower (large file operations)
+    - Bridge caches auth tokens to minimize delays
+  </Accordion>
+</AccordionGroup>
+
+### Corporate Network Considerations
+
+If you're on a corporate network:
+
+- **Proxy servers** may interfere with authentication - whitelist `nexus.civic.com` and `*.civic.com`
+- **Firewall rules** might block npm/npx - work with IT to allow Node.js tools
+- **Certificate issues** - corporate TLS inspection can cause SSL errors
+- **Alternative:** Try initial setup from personal network, then bridge should work on corporate network
+
+### Getting More Help
+
+<Steps>
+  <Step title="Check Status">
+    Run `npx -y @civic/hub-bridge --status` and note any error messages
+  </Step>
+  <Step title="Gather Info">
+    Note your OS, Node version (`node --version`), and client type
+  </Step>
+  <Step title="Contact Support">
+    Include the above info when contacting support for faster resolution
+  </Step>
+</Steps>
+
+<Card title="Still Need Help?" icon="message-circle" href="https://civickey.typeform.com/to/qJ5mieBw">
+  Contact our support team with your specific setup details
+</Card>
+
+## Advanced Configuration
+
+### Environment Variables
+
+You can customize bridge behavior with environment variables:
+
+```bash
+# Custom cache directory
+export CIVIC_BRIDGE_CACHE_DIR=/path/to/cache
+
+# Enable debug logging  
+export CIVIC_BRIDGE_DEBUG=true
+
+# Custom auth timeout (seconds)
+export CIVIC_BRIDGE_AUTH_TIMEOUT=300
+```
+
+### Multiple Configurations
+
+If you need different server sets for different projects, you can:
+
+1. Use different cache directories with `CIVIC_BRIDGE_CACHE_DIR`
+2. Or run `--reset` to reconfigure when switching contexts
+
+### Performance Tips
+
+- Bridge caches authentication tokens for 1 hour by default
+- First request to each service may be slower due to token refresh
+- Subsequent requests are much faster due to caching
+- Bridge automatically handles token renewal in the background

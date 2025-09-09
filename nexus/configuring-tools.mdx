@@ -1,0 +1,250 @@
+---
+title: Configuring Your Tools
+description: How to select and set up MCP servers on nexus.civic.com and in chat
+icon: "cog"
+---
+
+## Two Ways to Configure Tools
+
+You can configure which tools your AI assistant can access in two ways:
+
+1. **On nexus.civic.com** - Browse and select tools before connecting your AI
+2. **In AI chat** - Configure tools directly in conversation after connecting
+
+## Method 1: Web Configuration (nexus.civic.com)
+
+### Browse Available Tools
+
+Visit **nexus.civic.com** to see all 50+ available tools:
+
+- **Development**: GitHub, GitLab, Linear, Jira
+- **Communication**: Slack, Discord, Telegram
+- **Productivity**: Google Drive, Notion, Airtable
+- **Databases**: PostgreSQL, MySQL, SQLite
+- **Marketing**: ActiveCampaign, HubSpot, Mailchimp
+- **And many more...**
+
+### Select Your Tools
+
+<Steps>
+  <Step title="Browse Categories">
+    Tools are organized by category (Development, Communication, etc.) for easy discovery
+  </Step>
+  <Step title="Click to Add">
+    Click on any tool to add it to your configuration
+  </Step>
+  <Step title="Review Selection">
+    See your selected tools in the sidebar before connecting
+  </Step>
+  <Step title="Get Connection Details">
+    Copy your personalized MCP URL or Hub Bridge installation command
+  </Step>
+</Steps>
+
+### Benefits of Web Configuration
+
+- **Visual browsing** of all available tools
+- **Detailed descriptions** of what each tool does
+- **Pre-selection** before connecting your AI
+- **Easy management** of your tool collection
+
+## Method 2: In-Chat Configuration
+
+After connecting your AI client to Nexus, you can configure tools directly in conversation:
+
+### Adding New Tools
+
+```
+"Connect me to GitHub and Slack"
+"Add the PostgreSQL server for our database"
+"Show me what tools are available to connect"
+"I need access to Google Drive"
+```
+
+### Managing Existing Tools
+
+```
+"What tools do I have connected?"
+"Disconnect from Slack"
+"Show me my GitHub connection status"
+"Update my database connection settings"
+```
+
+### Discovery and Help
+
+```
+"What MCP servers are available?"
+"How do I connect to Notion?"
+"What can I do with the GitHub integration?"
+"Help me set up ActiveCampaign"
+```
+
+### Benefits of Chat Configuration
+
+- **Natural language** setup process
+- **Contextual** tool selection based on your current task
+- **Just-in-time** configuration when you need specific tools
+- **Guided setup** with AI assistance
+
+## Authentication Process
+
+Regardless of how you configure tools, you'll need to authenticate:
+
+<Steps>
+  <Step title="Authorization Request">
+    When you first use a tool, you'll be prompted to authorize access
+  </Step>
+  <Step title="OAuth Flow">
+    A browser window opens to the service's authentication page
+  </Step>
+  <Step title="Grant Permissions">
+    Review and approve the specific permissions your AI will have
+  </Step>
+  <Step title="Return to AI">
+    Close the browser and return to your AI - the tool is now connected
+  </Step>
+</Steps>
+
+<Note>
+**One-time setup**: You only need to authenticate each tool once. Nexus securely manages tokens and handles refresh automatically.
+</Note>
+
+## Managing Your Configuration
+
+### View Connected Tools
+
+Ask your AI:
+```
+"What tools do I have access to?"
+"Show my connected services"
+"List my MCP servers"
+```
+
+### Update Tool Settings
+
+Some tools allow configuration updates:
+```
+"Change my Slack default channel to #general"
+"Update my GitHub repository filter"
+"Show PostgreSQL connection settings"
+```
+
+### Remove Tools
+
+```
+"Disconnect from Slack"
+"Remove the PostgreSQL server"
+"Revoke GitHub access"
+```
+
+<Warning>
+Removing a tool will immediately revoke its access and require re-authentication if you want to use it again.
+</Warning>
+
+## Tool-Specific Configuration
+
+Some tools have specific configuration options:
+
+### GitHub
+- Repository access (public, private, or specific repos)
+- Organization permissions
+- Webhook settings for real-time updates
+
+### Slack
+- Workspace access
+- Channel permissions (read, write, manage)
+- Bot capabilities
+
+### Databases (PostgreSQL, MySQL, etc.)
+- Connection strings
+- Read-only vs read-write access
+- Query timeout settings
+- Schema restrictions
+
+### Google Drive
+- Folder access permissions
+- File type restrictions
+- Sharing capabilities
+
+## Best Practices
+
+### Start Small
+Begin with 2-3 essential tools rather than connecting everything at once. This makes it easier to:
+- Learn how each integration works
+- Troubleshoot any issues
+- Build confidence with AI tool usage
+
+### Review Permissions
+When authenticating, carefully review what access you're granting:
+- ✅ Read access to public repositories
+- ⚠️ Write access to important data
+- ❌ Admin permissions unless necessary
+
+### Regular Audits
+Periodically review your connected tools:
+```
+"Show me what tools I have connected"
+"When did I last use each tool?"
+"What permissions have I granted?"
+```
+
+### Use Descriptive Requests
+Be specific when adding tools:
+- Instead of: "Add GitHub"
+- Try: "Connect to GitHub so I can manage issues in my work repositories"
+
+This helps ensure you get the right level of access for your needs.
+
+## Common Configuration Scenarios
+
+### For Developers
+```
+"Connect me to GitHub, Linear, and Slack"
+"Add PostgreSQL access for our main database"
+"Set up the staging environment database connection"
+```
+
+### For Marketing Teams
+```
+"Connect ActiveCampaign and Google Drive"
+"Add HubSpot for our CRM data"
+"Set up Slack for team notifications"
+```
+
+### For Operations Teams
+```
+"Connect to our Google Workspace (Drive, Sheets, Calendar)"
+"Add Slack and Notion for team coordination"
+"Set up database access for reporting"
+```
+
+## Troubleshooting Configuration
+
+### Tool Won't Connect
+1. Check if the service is supported on nexus.civic.com
+2. Verify you have the necessary permissions in the service
+3. Try disconnecting and reconnecting
+4. Check the troubleshooting guide for service-specific issues
+
+### Authentication Fails
+1. Ensure you're logged into the service in your browser
+2. Check for popup blockers preventing OAuth windows
+3. Try using an incognito/private browser window
+4. Contact the service administrator if using enterprise accounts
+
+### Tool Not Appearing in Chat
+1. Verify the tool is actually connected: "What tools do I have?"
+2. Try refreshing your AI client connection
+3. Check if the tool requires specific activation steps
+4. Restart your AI client if using Hub Bridge
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Tool Directory" icon="server" href="/nexus/reference/servers">
+    Browse all available tools with detailed setup guides
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/nexus/troubleshooting">
+    Common configuration issues and solutions
+  </Card>
+</CardGroup>

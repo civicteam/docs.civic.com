@@ -1,0 +1,108 @@
+---
+title: Get Started
+description: Connect your AI assistant to Nexus in under 5 minutes
+icon: "play"
+---
+
+## Quick Start: 4 Steps
+
+<Steps>
+  <Step title="Select Your Tools">
+    Visit **[nexus.civic.com](https://nexus.civic.com)** and browse 50+ available tools (GitHub, Slack, Google Drive, etc.). Select the ones you want to connect.
+  </Step>
+  <Step title="Connect Your AI Client">
+    Choose your AI assistant below and follow its setup guide. Most clients take 2-5 minutes.
+  </Step>
+  <Step title="Authorize Your Tools">
+    When you first use a tool, you'll authorize access directly in the chat interface
+  </Step>
+  <Step title="Start Using">
+    Ask your AI to use your connected tools: "Check my GitHub PRs", "Send a Slack message", etc.
+  </Step>
+</Steps>
+
+## Choose Your AI Client
+
+### Most Popular
+
+<CardGroup cols={3}>
+  <Card title="Claude Desktop" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
+    **Direct URL** - Copy/paste method (2 mins)
+  </Card>
+  <Card title="Cursor" icon="cursor-click" href="/nexus/quickstart/clients/cursor">
+    **One-click install** - Install button (3 mins)
+  </Card>
+  <Card title="VS Code" icon="code" href="/nexus/quickstart/clients/vscode">
+    **One-click install** - Install link (3 mins)
+  </Card>
+</CardGroup>
+
+### All Supported Clients
+
+<CardGroup cols={3}>
+  <Card title="Claude.ai" icon="globe" href="/nexus/quickstart/clients/claude-web">
+    Web version • Direct URL • 2 mins
+  </Card>
+  <Card title="Goose" icon="terminal" href="/nexus/quickstart/clients/goose">
+    Developer agent • Direct URL • 2 mins  
+  </Card>
+  <Card title="JetBrains IDEs" icon="command" href="/nexus/quickstart/clients/jetbrains">
+    IntelliJ, PyCharm • Manual setup • 5 mins
+  </Card>
+  <Card title="Windsurf" icon="wind" href="/nexus/quickstart/clients/windsurf">
+    Codeium AI IDE • Manual setup • 5 mins
+  </Card>
+  <Card title="Claude Code" icon="terminal" href="/nexus/quickstart/clients/claude-code">
+    CLI coding assistant • Manual setup • 5 mins
+  </Card>
+  <Card title="Gemini CLI" icon="google" href="/nexus/quickstart/clients/gemini">
+    Google CLI tool • Manual setup • 5 mins
+  </Card>
+</CardGroup>
+
+## Two Setup Methods
+
+### Direct URL (Easiest)
+**For:** Claude Desktop, Claude.ai, Goose
+
+1. Visit [nexus.civic.com](https://nexus.civic.com) and select tools
+2. Copy your MCP URL  
+3. Paste into your client's MCP settings
+
+### Hub Bridge (For Compatibility)  
+**For:** Cursor, VS Code, JetBrains, Windsurf, CLIs
+
+The Hub Bridge is a small program that connects clients to Nexus when they don't support Direct URLs.
+
+- **One-click clients** (Cursor, VS Code): Just click the install button
+- **Manual setup clients**: Add `npx -y @civic/hub-bridge` to your client's MCP server settings
+
+<Info>
+**Why Hub Bridge?** Some clients only work with local MCP servers, so the bridge runs locally and connects to Nexus for you. It handles all the authentication and setup automatically.
+</Info>
+
+## What You Can Do
+
+Once connected, ask your AI assistant to use your tools:
+
+**Development workflows:**
+- "Check my open GitHub pull requests"  
+- "Create a new issue for the login bug"
+- "Show me recent commits in the feature branch"
+
+**Team workflows:**
+- "Summarize today's Slack messages in #general"
+- "Send a message to the team about deployment"
+- "What files were updated in our Google Drive today?"
+- "Create a new page in our Notion workspace"
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
+    Full matrix of which clients use which connection method
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/nexus/troubleshooting">
+    Common setup issues and solutions
+  </Card>
+</CardGroup>

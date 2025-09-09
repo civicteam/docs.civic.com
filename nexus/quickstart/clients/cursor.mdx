@@ -1,0 +1,128 @@
+---
+title: Cursor Setup
+description: Connect Cursor AI code editor to Civic Nexus in 3 minutes
+icon: "cursor-click"
+---
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Cursor Editor" icon="cursor-click" href="https://cursor.com">
+    Download and install Cursor (free tier works)
+  </Card>
+  <Card title="Node.js 18+" icon="code" href="https://nodejs.org">
+    Required for the Hub Bridge - check with `node --version`
+  </Card>
+</CardGroup>
+
+## Setup Steps
+
+<Steps>
+  <Step title="Click 'Add to Cursor'">
+    Use the one-click install button below:
+    
+    <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=Civic%20Nexus&config=eyJjb21tYW5kIjoibnB4IC15IEBjaXZpYy9odWItYnJpZGdlIn0%3D">
+      <img
+        src="https://cursor.com/deeplink/mcp-install-dark.svg"
+        alt="Add Civic Nexus to Cursor"
+        width="126"
+        height="28"
+        className="rounded hover:opacity-80 transition-opacity"
+      />
+    </a>
+  </Step>
+  
+  <Step title="Install in Cursor">
+    When Cursor opens, click "Install" to add the Civic Nexus MCP server
+  </Step>
+  
+  <Step title="Enable the Connection">
+    Make sure Civic Nexus is enabled in Cursor's MCP settings. If you don't see it, try disabling and re-enabling it.
+  </Step>
+  
+  <Step title="First-Time Authentication">
+    The first time you use any MCP command, the Hub Bridge will:
+    - Automatically download and install itself
+    - Handle authentication directly in the chat interface  
+    - Let you select which tools to connect from nexus.civic.com
+  </Step>
+</Steps>
+
+## Test Your Connection
+
+Try these prompts in Cursor to verify everything works:
+
+```
+"What MCP servers are available?"
+"Show me my connected tools"
+"Help me set up GitHub integration"
+```
+
+## Troubleshooting
+
+<Accordion title="Cursor doesn't open when I click the install button">
+Make sure Cursor is installed and try copying this URL manually:
+```
+cursor://anysphere.cursor-deeplink/mcp/install?name=Civic%20Nexus&config=eyJjb21tYW5kIjoibnB4IC15IEBjaXZpYy9odWItYnJpZGdlIn0%3D
+```
+</Accordion>
+
+<Accordion title="'Node.js not found' error">
+Install Node.js 18 or later from [nodejs.org](https://nodejs.org) and restart Cursor.
+</Accordion>
+
+<Accordion title="Authentication window doesn't open">
+The Hub Bridge should handle authentication in the chat. If it doesn't:
+1. Restart Cursor
+2. Try disabling and re-enabling Civic Nexus in Cursor settings
+3. Make sure you're trying to use a tool that requires authentication
+</Accordion>
+
+<Accordion title="Civic Nexus not showing in Cursor settings">
+1. Make sure you clicked "Install" when prompted
+2. Check Cursor's MCP server settings manually
+3. Try the manual setup method below
+</Accordion>
+
+## Manual Setup (If One-Click Fails)
+
+If the one-click install doesn't work, add Civic Nexus manually:
+
+<Steps>
+  <Step title="Open Cursor Settings">
+    Go to Cursor → Settings → Extensions → MCP Servers
+  </Step>
+  
+  <Step title="Add MCP Server">
+    Add a new MCP server with these settings:
+    ```json
+    {
+      "name": "Civic Nexus",
+      "type": "stdio",
+      "command": "npx", 
+      "args": ["-y", "@civic/hub-bridge"]
+    }
+    ```
+  </Step>
+  
+  <Step title="Enable and Test">
+    Enable the server and test with: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Hub Bridge Guide" icon="bridge" href="/nexus/quickstart/hub-bridge">
+    Detailed Hub Bridge setup and troubleshooting
+  </Card>
+  <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
+    Technical details about Cursor's MCP support
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/nexus/troubleshooting">
+    Common Cursor connection issues
+  </Card>
+  <Card title="Get Help" icon="message-circle" href="https://civickey.typeform.com/to/qJ5mieBw">
+    Contact support for setup assistance
+  </Card>
+</CardGroup>

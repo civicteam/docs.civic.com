@@ -1,0 +1,110 @@
+---
+title: Google Drive
+description: Access and manage files and folders in Google Drive with comprehensive file operations
+icon: "google-drive"
+---
+
+## Overview
+
+The Google Drive server provides comprehensive integration with [Google Drive](https://drive.google.com), enabling AI assistants to search, access, create, and manage files and folders across personal drives and shared drives.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to Google Drive">
+    Add the Google Drive server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like `search for files` or `list files in root folder` to verify the connection works properly.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="File Search & Discovery" icon="magnifying-glass">
+    Search files and folders across personal and shared drives with advanced operators
+  </Card>
+  <Card title="Content Access" icon="file-text">
+    Read and extract content from Google Docs, Sheets, Office files, and text documents
+  </Card>
+  <Card title="File Management" icon="folder">
+    List, organize, and navigate through Drive folders and directory structures
+  </Card>
+  <Card title="File Creation" icon="plus">
+    Create new files with content from text or external URLs
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Search & Discovery
+
+<AccordionGroup>
+  <Accordion title="search_drive_files">
+    `search_drive_files` — Search for files and folders within Google Drive using advanced query operators, including shared drives support
+  </Accordion>
+</AccordionGroup>
+
+### File Operations
+
+<AccordionGroup>
+  <Accordion title="get_drive_file_content">
+    `get_drive_file_content` — Retrieve and extract content from Google Drive files including Docs, Sheets, Office files, and text documents
+  </Accordion>
+  
+  <Accordion title="create_drive_file">
+    `create_drive_file` — Create new files in Google Drive with content from text input or external URLs
+  </Accordion>
+</AccordionGroup>
+
+### Folder Management
+
+<AccordionGroup>
+  <Accordion title="list_drive_items">
+    `list_drive_items` — List files and folders in specific directories, with support for shared drives and pagination
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Document Management
+- **Content Discovery**: "Search for all documents containing 'quarterly report' in the marketing folder"
+- **File Retrieval**: "Get the content of the project proposal document"
+- **Document Creation**: "Create a new meeting notes document in the team folder"
+
+### File Organization
+- **Folder Navigation**: "List all files in the shared project drive"
+- **File Inventory**: "Show me all spreadsheets modified this week"
+- **Content Search**: "Find all presentations in the sales folder"
+
+### Content Processing
+- **Document Analysis**: "Extract text from the contract document and summarize key points"
+- **Data Access**: "Get content from the customer database spreadsheet"
+- **File Conversion**: "Read the content from the Word document and create a summary"
+
+### Collaboration & Sharing
+- **Shared Drive Access**: "List all files in the marketing shared drive"
+- **Team Resources**: "Search for templates in the company resources folder"
+- **Project Files**: "Find all documents related to Project Alpha across all drives"
+
+## Advanced Features
+
+### Smart Content Extraction
+- **Google Workspace Files**: Native export of Docs, Sheets, and Slides to readable text/CSV
+- **Office Documents**: Automatic parsing of .docx, .xlsx, .pptx files with text extraction
+- **Universal Support**: UTF-8 text extraction with binary file detection
+
+### Shared Drive Support
+- **Multi-Drive Search**: Search across personal drives and accessible shared drives
+- **Drive-Specific Operations**: Target specific shared drives for focused operations
+- **Permission-Aware**: Respects user permissions and access levels
+
+### Search Capabilities
+- **Google Search Operators**: Full support for Drive's native search syntax
+- **Metadata Filtering**: Search by file type, owner, modification date, and more
+- **Pagination Support**: Handle large result sets with efficient pagination
+
+<Note>
+The Google Drive server requires appropriate Google Workspace permissions and OAuth2 authentication to access and modify files in your Google Drive.
+</Note>

@@ -1,0 +1,183 @@
+---
+title: What is MCP?
+description: A beginner's guide to the Model Context Protocol and why it powers Nexus
+icon: "lightbulb"
+---
+
+## The Problem: AI That's Cut Off From Your World
+
+Your AI assistant is smart, but it's trapped. It can't check your GitHub repos, send Slack messages, or read your Google Drive files. It only knows what was in its training data - nothing about your specific work, tools, or data.
+
+This is like having a brilliant research assistant who's locked in a room with no internet, phone, or access to your company's systems. They can think deeply about problems, but they can't help with anything that requires real information or actions.
+
+## The Solution: Model Context Protocol (MCP)
+
+**MCP is like giving your AI assistant API keys to your digital life** - but done safely and with your control.
+
+Think of MCP as a universal translator that lets any AI assistant talk to any tool or service, whether it's GitHub, Slack, your database, or a custom internal tool.
+
+### The Simple Version
+
+Before MCP:
+```
+You: "Check my GitHub pull requests"
+AI: "I can't access external services. You'll need to check GitHub yourself."
+```
+
+After MCP:
+```
+You: "Check my GitHub pull requests"  
+AI: [Uses GitHub MCP server] "You have 3 open PRs: 'Add user auth' needs review, 'Fix login bug' has conflicts, and 'Update docs' is ready to merge."
+```
+
+## How MCP Works: The 30-Second Version
+
+1. **MCP Servers** = Tools that do things (like a GitHub server that can create issues)
+2. **MCP Clients** = AI assistants that want to use tools (like Claude)
+3. **MCP Protocol** = The language they use to talk to each other
+
+```
+Your AI (Client) ←→ MCP Protocol ←→ Your Tools (Servers)
+```
+
+When you ask your AI to "create a GitHub issue," here's what happens:
+1. AI says "I need to use the GitHub tool"
+2. MCP makes sure you've authorized GitHub access
+3. AI sends the request through MCP to GitHub
+4. GitHub creates the issue and responds back
+5. AI tells you "Done! Issue #123 created."
+
+## What Makes MCP Special
+
+### 1. **Universal Connection**
+One protocol works with everything - no matter if it's GitHub, Slack, your database, or a tool your team built last week.
+
+### 2. **Built for AI**
+Unlike regular APIs, MCP is designed specifically for AI assistants. It includes:
+- Descriptions so AI knows what each tool does
+- Examples so AI knows how to use tools properly
+- Safety features to prevent AI from doing harmful things
+
+### 3. **You Stay in Control** 
+- You choose which tools to connect
+- You authorize what the AI can access
+- You can revoke access anytime
+- You can see everything the AI does
+
+### 4. **Secure by Design**
+- AI never gets your actual passwords or API keys
+- All connections are encrypted
+- You can set limits on what AI can do
+- Full audit trail of all actions
+
+## Real Examples That Make Sense
+
+### For Developers
+**Before:** "I need to manually check GitHub, then update Slack, then update my task tracker..."
+**After:** "AI, check all my repos for failing tests, create issues for the failures, and notify my team on Slack."
+
+### For Marketing Teams
+**Before:** "Let me log into 5 different tools to pull this week's metrics..."
+**After:** "AI, pull this week's email metrics, social media stats, and website analytics, then create a summary report."
+
+### For Sales Operations
+**Before:** "I need to update the CRM, then check the calendar, then send follow-up emails..."
+**After:** "AI, find all prospects who haven't responded in 2 weeks and draft personalized follow-up emails."
+
+## The Technical Details (For Those Who Want Them)
+
+MCP defines three types of things AI can work with:
+
+### Tools
+Functions the AI can call, like:
+- `create_github_issue(title, description)`
+- `send_slack_message(channel, text)`
+- `query_database(sql)`
+
+### Resources
+Data sources the AI can read from, like:
+- File systems
+- Database contents
+- API endpoints
+- Live data feeds
+
+### Prompts
+Pre-written instructions that help AI use tools better, like:
+- "Here's how to write good GitHub issues"
+- "Follow this format when posting to Slack"
+
+## Security: The Stuff That Keeps You Safe
+
+### Authentication
+AI has to prove it's allowed to use your tools before it gets access.
+
+### Authorization
+Even after connecting, you control exactly what the AI can do. Examples:
+- ✅ "AI can read my GitHub repos"
+- ❌ "AI cannot delete repositories"
+- ✅ "AI can send messages to #general Slack channel"
+- ❌ "AI cannot create new Slack channels"
+
+### Audit Logging
+Every single thing the AI does gets logged so you can see:
+- What tool was used
+- When it was used
+- What data was accessed
+- What actions were taken
+
+## How Nexus Uses MCP
+
+**Civic Nexus is an MCP service** - we've built the infrastructure so you don't have to:
+
+- **50+ Pre-built MCP Servers**: GitHub, Slack, Google Drive, databases, and more
+- **Secure Connection Management**: We handle OAuth, tokens, and security
+- **Simple Setup**: Just copy one URL or install one package
+- **Enterprise Security**: Encryption, compliance, audit logs
+
+Instead of setting up individual MCP servers yourself, you connect to Nexus and get access to everything through one secure connection.
+
+## What This Means for You
+
+### If You're New to AI Tools
+MCP turns AI assistants from "smart chatbots" into "digital team members" who can actually do work across all your tools.
+
+### If You're Technical
+MCP is the missing piece that makes AI assistants genuinely useful for real work instead of just answering questions.
+
+### If You Manage Teams
+MCP enables AI-powered automation that works across your entire tool stack, turning hours of manual work into minutes of AI-assisted workflows.
+
+## Getting Started
+
+Ready to see what AI can do when it's connected to your tools?
+
+<Card title="Start with Claude Desktop" icon="rocket" href="/nexus/quickstart/clients/claude-desktop">
+  Get up and running in 5 minutes with the most popular setup
+</Card>
+
+<CardGroup cols={2}>
+  <Card title="Browse All Servers" icon="server" href="/nexus/reference/servers">
+    See the 50+ tools and services you can connect
+  </Card>
+  <Card title="View Use Cases" icon="lightbulb" href="/nexus/recipes/marketing-ops">
+    Real examples of AI workflows by team type
+  </Card>
+</CardGroup>
+
+## Questions?
+
+<Accordion title="Is this just fancy API access?">
+No - MCP is specifically designed for AI. Regular APIs don't include the descriptions, examples, and safety features that AI needs to use tools effectively and safely.
+</Accordion>
+
+<Accordion title="What if I don't trust AI with my data?">
+You control every connection. Start with read-only access to non-sensitive tools, then expand as you get comfortable. You can revoke access instantly anytime.
+</Accordion>
+
+<Accordion title="How is this different from Zapier or Make?">
+Those are automation platforms where you pre-define workflows. MCP lets AI create workflows dynamically based on what you ask for in natural language.
+</Accordion>
+
+<Accordion title="Do I need to be technical to use this?">
+Not at all. If you can use Slack or Gmail, you can use MCP. The technical complexity is hidden - you just talk to your AI in plain English.
+</Accordion>

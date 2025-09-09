@@ -44,61 +44,34 @@
           "pages": [
             "nexus/overview",
             "nexus/quickstart",
-            "nexus/vercel-ai-sdk",
-            "nexus/architecture"
-          ]
-        },
-        {
-          "group": "Connect & Configure",
-          "icon": "plug",
-          "pages": [
-            "nexus/browse-servers",
-            "nexus/connect-services",
-            "nexus/authentication",
-            "nexus/hub-bridge"
-          ]
-        },
-        {
-          "group": "Use Case Recipes",
-          "icon": "book-sparkles",
-          "pages": [
-            "nexus/recipes/marketing-ops",
-            "nexus/recipes/sales-ops",
-            "nexus/recipes/rev-ops",
-            "nexus/recipes/partner-success",
-            "nexus/recipes/service-operations",
-            "nexus/recipes/finance",
-            "nexus/recipes/business-intelligence"
-          ]
-        },
-        {
-          "group": "Developer Guide",
-          "icon": "code",
-          "pages": [
-            "nexus/developers/mcp-integration",
-            "nexus/developers/api-reference",
-            "nexus/developers/organization-setup",
-            "nexus/developers/sdks"
-          ]
-        },
-        {
-          "group": "Security & Compliance",
-          "icon": "shield-check",
-          "pages": [
-            "nexus/security/overview",
-            "nexus/security/authentication-methods",
-            "nexus/security/compliance",
-            "nexus/security/best-practices"
+            "nexus/quickstart/hub-bridge"
           ]
         },
         {
           "group": "Reference",
           "icon": "book",
           "pages": [
-            "nexus/reference/troubleshooting",
             "nexus/reference/client-compatibility",
-            "nexus/reference/glossary",
-            "nexus/reference/faq"
+            "nexus/reference/security",
+            {
+              "group": "MCP Servers",
+              "icon": "server",
+              "pages": [
+                "nexus/reference/servers",
+                "nexus/reference/servers/activecampaign",
+                "nexus/reference/servers/github",
+                "nexus/reference/servers/slack",
+                "nexus/reference/servers/notion",
+                "nexus/reference/servers/googledrive"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Support",
+          "icon": "life-buoy",
+          "pages": [
+            "nexus/troubleshooting"
           ]
         }
       ]

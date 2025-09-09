@@ -1,0 +1,156 @@
+---
+title: Client Compatibility
+description: Complete guide to connecting Nexus with your AI assistant or development tool
+icon: "table"
+---
+
+## Compatibility Overview
+
+Nexus works with all major AI assistants and development tools. The setup method depends on whether your client supports remote MCP URLs.
+
+<Note>
+**Quick rule**: If your client settings mention "remote MCP URL" or "HTTP connector", use **Direct URL**. If they only show "local MCP server" or "stdio/command", use **Hub Bridge**.
+</Note>
+
+## Client Compatibility Matrix
+
+| Client | Platform | Connection | Setup Time | Popularity | Guide |
+|--------|----------|------------|------------|------------|-------|
+| **Claude Desktop** | Desktop | Direct URL | 2 mins | 🔥 Most Popular | [Setup](/nexus/quickstart/clients/claude-desktop) |
+| **Claude.ai** | Web | Direct URL | 2 mins | 🔥 Very Popular | [Setup](/nexus/quickstart/clients/claude-web) |
+| **Cursor** | Desktop | Hub Bridge | 3 mins | 🔥 Very Popular | [Setup](/nexus/quickstart/clients/cursor) |
+| **VS Code** | Desktop | Hub Bridge | 3 mins | 🔥 Popular | [Setup](/nexus/quickstart/clients/vscode) |
+| **Goose** | CLI | Direct URL | 2 mins | 📈 Growing | [Setup](/nexus/quickstart/clients/goose) |
+| **JetBrains IDEs** | Desktop | Hub Bridge | 5 mins | 💼 Enterprise | [Setup](/nexus/quickstart/clients/jetbrains) |
+| **Windsurf** | Desktop | Hub Bridge | 5 mins | 🆕 New | [Setup](/nexus/quickstart/clients/windsurf) |
+| **Claude Code** | CLI | Hub Bridge | 5 mins | 💻 Developer | [Setup](/nexus/quickstart/clients/claude-code) |
+| **Gemini CLI** | CLI | Hub Bridge | 5 mins | 🚀 Google | [Setup](/nexus/quickstart/clients/gemini) |
+
+## Connection Methods
+
+### Direct URL (Simpler)
+
+**How it works:** Copy a personalized URL from nexus.civic.com and paste it into your client's settings.
+
+**Clients that support this:**
+- Claude Desktop
+- Claude.ai (Web)
+- Goose
+- Any client with "remote MCP URL" or "HTTP connector" options
+
+**Pros:**
+- ✅ Fastest setup (2 minutes)
+- ✅ No local software needed
+- ✅ Automatic updates
+- ✅ Works across devices
+
+**Setup steps:**
+1. Visit nexus.civic.com and select tools
+2. Copy your MCP URL 
+3. Paste into client settings
+
+### Hub Bridge (Universal Compatibility)
+
+**How it works:** Install a local bridge that connects your client to Nexus servers.
+
+**Clients that need this:**
+- Cursor, VS Code, JetBrains IDEs
+- Windsurf, Claude Code, Gemini CLI
+- Any client with only "local MCP server" options
+
+**Pros:**
+- ✅ Works with any MCP client
+- ✅ Local configuration control
+- ✅ Works offline after setup
+
+**Requirements:**
+- Node.js 18+ installed
+- Terminal/command line access
+
+**Setup steps:**
+1. Configure client to run `npx -y @civic/hub-bridge`
+2. First run opens browser for authentication
+3. Select tools during setup process
+
+## Which Method Should I Use?
+
+### Try Direct URL First
+If your client supports it, Direct URL is almost always better:
+- Faster setup
+- No Node.js requirement
+- No local software to maintain
+- Works immediately across devices
+
+### When to Use Hub Bridge
+Use Hub Bridge if:
+- Your client doesn't have "remote MCP URL" options
+- You're using development tools like IDEs
+- You prefer local control over connections
+- You need offline functionality
+
+## Common Setup Scenarios
+
+### First-Time Users
+**Recommendation:** Start with Claude Desktop (Direct URL)
+- Easiest setup process
+- Most reliable connection
+- Best documentation and support
+- Great for learning how MCP works
+
+### Developers
+**Popular choices:**
+- **VS Code + Hub Bridge**: Best for coding workflows
+- **Cursor + Hub Bridge**: AI-first development experience
+- **Claude Desktop**: For quick queries and automation
+
+### Teams
+**Consider:**
+- **Claude.ai (Web)**: No installation required, works anywhere
+- **Claude Desktop**: Consistent experience across team members
+- **Multiple clients**: Different team members can use different clients with the same Nexus setup
+
+## Troubleshooting Common Issues
+
+### "Remote MCP URL not supported"
+Your client needs Hub Bridge. Follow the Hub Bridge setup guide for your specific client.
+
+### "Node.js not found" 
+Hub Bridge requires Node.js 18+. Install from [nodejs.org](https://nodejs.org) or use a package manager.
+
+### Connection timeout errors
+- **Direct URL**: Check internet connection and firewall settings
+- **Hub Bridge**: Ensure Node.js is properly installed and try restarting
+
+### Authentication failures
+- Clear browser cache and try again
+- Use incognito/private mode for OAuth
+- Check if your organization blocks OAuth flows
+
+## Getting Help
+
+<CardGroup cols={2}>
+  <Card title="Setup Guides" icon="rocket" href="/nexus/quickstart">
+    Detailed instructions for each client with screenshots
+  </Card>
+  <Card title="Contact Support" icon="message-circle" href="https://civickey.typeform.com/to/qJ5mieBw">
+    Get help with your specific client setup
+  </Card>
+</CardGroup>
+
+## Technical Details
+
+<Accordion title="Direct URL Technical Details">
+**Protocol:** HTTP/HTTPS MCP over REST API
+**Authentication:** OAuth2 with PKCE flow
+**Token Management:** Automatic refresh, secure storage
+**Transport:** JSON-RPC over HTTP
+**Benefits:** Cloud-native, automatically updated, cross-platform
+</Accordion>
+
+<Accordion title="Hub Bridge Technical Details">  
+**Protocol:** stdio MCP (local process communication)
+**Authentication:** Proxied OAuth2 through local server
+**Token Management:** Local encrypted storage
+**Transport:** JSON-RPC over stdin/stdout
+**Benefits:** Works with any MCP client, local control
+</Accordion>
