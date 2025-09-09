@@ -43,8 +43,18 @@
           "group": "Getting Started",
           "pages": [
             "nexus/overview",
-            "nexus/quickstart",
+            "nexus/quickstart/index",
             "nexus/quickstart/hub-bridge"
+          ]
+        },
+        {
+          "group": "Key Concepts",
+          "icon": "lightbulb",
+          "pages": [
+            "nexus/concepts/mcp",
+            "nexus/concepts/connection-methods", 
+            "nexus/concepts/tools-resources-prompts",
+            "nexus/concepts/oauth"
           ]
         },
         {
