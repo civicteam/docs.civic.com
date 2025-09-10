@@ -88,25 +88,108 @@ The Hub Bridge should handle authentication in the chat. If it doesn't:
 
 If the one-click install doesn't work, add Civic Nexus manually:
 
+### Method 1: Via Cursor Settings (Recommended)
+
 <Steps>
   <Step title="Open Cursor Settings">
-    Go to Cursor → Settings → Extensions → MCP Servers
+    Go to **Settings → Features → MCP**
   </Step>
   
-  <Step title="Add MCP Server">
-    Add a new MCP server with these settings:
+  <Step title="Add New MCP Server">
+    1. Click **+ Add New MCP Server**
+    2. Select transport type: **stdio**  
+    3. Enter nickname: **Civic Nexus**
+    4. Enter command: **npx -y @civic/hub-bridge**
+    5. Save the configuration
+  </Step>
+  
+  <Step title="Enable and Test">
+    The server should appear in your MCP servers list. Test with: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+### Method 2: Via Configuration File
+
+<Steps>
+  <Step title="Create MCP Configuration File">
+    Create a file called **`.cursor/mcp.json`** in your project root directory
+  </Step>
+  
+  <Step title="Add Configuration">
+    Add the following content:
     ```json
     {
-      "name": "Civic Nexus",
-      "type": "stdio",
-      "command": "npx", 
-      "args": ["-y", "@civic/hub-bridge"]
+      "mcpServers": {
+        "civic-nexus": {
+          "command": "npx",
+          "args": ["-y", "@civic/hub-bridge"]
+        }
+      }
     }
     ```
   </Step>
   
-  <Step title="Enable and Test">
-    Enable the server and test with: "What MCP servers are available?"
+  <Step title="Restart Cursor">
+    Save the file and restart Cursor. The MCP server will be automatically detected.
+  </Step>
+  
+  <Step title="Test Connection">
+    Test with: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+## Managing Your Tools
+
+### Adding More Tools
+
+You can add new tools directly in your Cursor chat:
+
+```
+"Connect me to GitHub"
+"Add Slack to my available tools"  
+"I need access to PostgreSQL"
+"Show me what tools are available to connect"
+```
+
+Cursor will handle the connection process and guide you through any required authentication steps.
+
+### Removing Tools
+
+You can disconnect from specific tools directly in chat:
+
+```
+"Disconnect from Slack"  
+"Remove GitHub from my tools"
+"What tools do I currently have connected?"
+"Stop my access to Google Drive"
+```
+
+### Removing the MCP Server
+
+To remove Civic Nexus completely:
+
+**Via Settings:**
+<Steps>
+  <Step title="Open MCP Settings">
+    Go to **Settings → Features → MCP**
+  </Step>
+  <Step title="Delete Server">
+    1. Find "Civic Nexus" in your MCP servers list
+    2. Click on the server to access its settings  
+    3. Click **Delete** or **Remove** button
+  </Step>
+</Steps>
+
+**Via Configuration File:**
+<Steps>
+  <Step title="Edit Configuration">
+    Open your **`.cursor/mcp.json`** file
+  </Step>
+  <Step title="Remove Entry">
+    Delete the `"civic-nexus"` entry from the `mcpServers` object
+  </Step>
+  <Step title="Save and Restart">
+    Save the file and restart Cursor
   </Step>
 </Steps>
 

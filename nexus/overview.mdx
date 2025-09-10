@@ -13,18 +13,53 @@ icon: "rocket"
 <Steps>
   <Step title="Visit nexus.civic.com">
     Browse and select from 50+ tools and services you want to connect at **[nexus.civic.com](https://nexus.civic.com)**
+    <Frame caption="Browse and select your tools">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/400x250/f0f9ff/0ea5e9?text=Browse+Tools"
+        alt="Nexus directory showing available tools"
+      />
+    </Frame>
   </Step>
   <Step title="Get Your Connection">
     Copy your MCP URL or click the install button for your client
+    <Frame caption="Get your connection details">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/400x250/f0fdf4/22c55e?text=Get+Connection"
+        alt="Copy MCP URL or install button"
+      />
+    </Frame>
   </Step>
   <Step title="Connect Your AI Client">
     Paste the URL or complete the one-click install
+    <Frame caption="Connect to your AI client">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/400x250/fef3c7/d97706?text=Connect+Client"
+        alt="AI client settings with MCP configuration"
+      />
+    </Frame>
   </Step>
   <Step title="Authorize Your Tools">
     When you first use a tool, authorize access directly in the chat interface
+    <Frame caption="Authorize tool access">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/400x250/fce7f3/be185d?text=Authorize+Tools"
+        alt="OAuth authorization popup"
+      />
+    </Frame>
   </Step>
   <Step title="Start Using">
     Ask your AI to use your connected tools in plain English
+    <Frame caption="Your AI can now access your tools">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/400x250/f3e8ff/a855f7?text=Start+Using"
+        alt="AI chat showing tool usage"
+      />
+    </Frame>
   </Step>
 </Steps>
 
@@ -44,7 +79,7 @@ icon: "rocket"
 
 <CardGroup cols={3}>
   <Card title="Claude Desktop" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
-    **Most Popular** - Direct URL method (2 minutes)
+    **Most Popular** - Remote URL method (2 minutes)
   </Card>
   <Card title="Cursor" icon="code" href="/nexus/quickstart/clients/cursor">
     **📦 One-click install** - Install button (3 minutes)
@@ -73,6 +108,22 @@ Once connected, your AI can work with all your tools:
     "Find all files updated in Google Drive this week"
     ```
   </Tab>
+  <Tab title="For Marketing">
+    ```
+    "Update our ActiveCampaign email list with new signups"
+    "Create HubSpot contact records from this lead sheet"
+    "Send campaign performance data to our Slack marketing channel"
+    "Generate a report of this month's Mailchimp engagement metrics"
+    ```
+  </Tab>
+  <Tab title="For RevOps">
+    ```
+    "Sync CRM data with our Google Sheets revenue tracking"
+    "Create Linear tickets for sales process improvements"
+    "Update Airtable with quarterly pipeline metrics"
+    "Send weekly revenue summary to #revenue-ops Slack"
+    ```
+  </Tab>
 </Tabs>
 
 ## Enterprise-Grade Security
@@ -81,9 +132,9 @@ Once connected, your AI can work with all your tools:
   Your data security is our top priority. Civic Nexus uses enterprise-grade infrastructure with encrypted credential management and proactive server security reviews.
 </Note>
 
-🔒 **Secure by Design** - All tokens encrypted, zero data retention, automatic refresh  
+🔒 **Secure by Design** - All tokens encrypted, automatic refresh, enterprise-grade infrastructure  
 ⚡ **Full Control** - Revoke app access instantly, changes apply immediately  
-🛡️ **Privacy First** - Data flows directly between your AI and apps, never stored by Nexus
+🛡️ **Encrypted Ease of Development** - Streamlined development with enterprise security standards
 
 <Card title="Complete Security Details" icon="shield-check" href="/nexus/reference/security">
   Learn about our security architecture, compliance, and best practices
@@ -93,10 +144,10 @@ Once connected, your AI can work with all your tools:
 
 <CardGroup cols={3}>
   <Card title="Claude Desktop" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
-    Direct URL • 2 minutes
+    Remote URL • 2 minutes
   </Card>
   <Card title="Claude.ai" icon="globe" href="/nexus/quickstart/clients/claude-web">
-    Direct URL • 2 minutes
+    Remote URL • 2 minutes
   </Card>
   <Card title="Cursor" icon="code" href="/nexus/quickstart/clients/cursor">
     One-click install • 3 minutes
@@ -111,7 +162,7 @@ Once connected, your AI can work with all your tools:
     Manual setup • 5 minutes
   </Card>
   <Card title="Goose" icon="terminal" href="/nexus/quickstart/clients/goose">
-    Direct URL • 2 minutes
+    Remote URL • 2 minutes
   </Card>
   <Card title="Claude Code" icon="terminal" href="/nexus/quickstart/clients/claude-code">
     Manual setup • 5 minutes
@@ -122,7 +173,7 @@ Once connected, your AI can work with all your tools:
 </CardGroup>
 
 <Info>
-**Two setup methods:** Most clients use either **Direct URL** (copy/paste) or **one-click install**. A few require manual configuration.
+**Two setup methods:** Most clients use either **Remote URL** (copy/paste) or **one-click install**. A few require manual configuration.
 </Info>
 
 ## Ready to Get Started?

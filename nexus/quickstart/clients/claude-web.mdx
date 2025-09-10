@@ -5,30 +5,160 @@ icon: "globe"
 ---
 
 <Note>
-  Claude.ai (Web) setup instructions coming soon...
+  Claude.ai web interface supports direct MCP server connections. You'll need a Claude Pro or Team plan to access MCP connectors.
 </Note>
 
-## Overview
-
-Claude.ai web interface supports Direct URL connections to Civic Nexus MCP servers.
-
-## Coming Soon
-
-Detailed setup instructions for Claude.ai web interface are being prepared and will be available shortly.
-
-## In the Meantime
+## Prerequisites
 
 <CardGroup cols={2}>
-  <Card title="Use Claude Desktop" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
-    Complete setup guide for Claude Desktop (available now)
+  <Card title="Claude Pro/Team Plan" icon="credit-card" href="https://claude.ai/upgrade">
+    MCP connectors require a paid Claude subscription
   </Card>
-  <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
-    See which clients support Direct URL vs Hub Bridge
+  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
+    Create a free account on nexus.civic.com
   </Card>
-  <Card title="Get Help" icon="message-circle" href="https://civickey.typeform.com/to/qJ5mieBw">
-    Contact support for immediate assistance
+</CardGroup>
+
+## Step 1: Get Your MCP URL
+
+<Steps>
+  <Step title="Visit nexus.civic.com">
+    Open [nexus.civic.com](https://nexus.civic.com) and sign in with your Civic account.
+  </Step>
+  <Step title="Select your tools">
+    Browse and select the MCP servers you want to connect (GitHub, Slack, Google Drive, etc.)
+  </Step>
+  <Step title="Copy your MCP URL">
+    Your personalized MCP URL will be displayed: `https://nexus.civic.com/hub/mcp`
+    
+    <Warning>
+      **Keep this URL private** - it's linked to your account and services.
+    </Warning>
+  </Step>
+</Steps>
+
+## Step 2: Add MCP Server in Claude.ai
+
+<Steps>
+  <Step title="Open Claude.ai Settings">
+    1. Go to [claude.ai](https://claude.ai) in your web browser
+    2. Click on **Settings** (usually in the bottom left or profile menu)
+    3. Navigate to **Connectors**
+  </Step>
+  
+  <Step title="Add Custom Connector">
+    1. Click **Add Custom Connector**
+    2. Enter a name: "Civic Nexus"  
+    3. In "Remote MCP server URL" field, paste: `https://nexus.civic.com/hub/mcp`
+    4. Click **Add** to confirm
+    
+    <Frame caption="Adding a custom MCP connector in Claude.ai">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/600x400/f0f9ff/0ea5e9?text=Claude.ai+Add+Connector"
+        alt="Claude.ai connector settings interface"
+      />
+    </Frame>
+  </Step>
+  
+  <Step title="Connect and Authenticate">
+    1. The connector will appear in your list with a **Connect** button
+    2. Click **Connect** to begin authentication
+    3. Follow on-screen instructions to authorize access to your selected services
+    4. Return to **Settings > Connectors** to verify it shows as "Connected"
+  </Step>
+</Steps>
+
+## Step 3: Test Your Connection
+
+Try these commands to verify everything is working:
+
+```
+"What MCP servers are available?"
+"Check my GitHub repositories"  
+"What's in my Google Drive?"
+"Show recent Slack messages"
+```
+
+## Managing Your Tools
+
+### Adding More Tools
+
+You can add new tools directly in your Claude.ai chat:
+
+```
+"Connect me to GitHub"
+"Add Slack to my available tools"  
+"I need access to Google Drive"
+"Show me what tools are available to connect"
+```
+
+Claude will handle the connection process and guide you through any required authentication steps.
+
+### Removing Tools
+
+To disconnect from specific tools, just ask in chat:
+
+```
+"Disconnect from Slack"
+"Remove GitHub from my tools"
+"What tools do I currently have connected?"
+"Stop my access to Google Drive"
+```
+
+### Managing the Entire Connector
+
+To remove the Civic Nexus connector completely:
+
+<Steps>
+  <Step title="Access connectors">
+    Go to **Settings > Connectors** in Claude.ai
+  </Step>
+  <Step title="Remove connector">
+    1. Find "Civic Nexus" in your connectors list
+    2. Click **Remove** or **Delete** next to the connector
+    3. Confirm the removal when prompted
+  </Step>
+  <Step title="Clean up (optional)">
+    Visit [nexus.civic.com](https://nexus.civic.com) to revoke service authorizations if you no longer want Civic to have access
+  </Step>
+</Steps>
+
+## Common Questions
+
+<AccordionGroup>
+  <Accordion title="Do I need a paid Claude plan?">
+    Yes, MCP connectors are only available on Claude Pro and Team plans. The free plan doesn't support external integrations.
+  </Accordion>
+  
+  <Accordion title="What if authentication fails?">
+    - Make sure you're signed into the correct accounts for your connected services
+    - Try removing and re-adding the connector with a fresh URL from nexus.civic.com
+    - Check our [troubleshooting guide](/nexus/troubleshooting) for more solutions
+  </Accordion>
+  
+  <Accordion title="Can I use multiple connectors?">
+    Yes! You can add multiple MCP connectors from different providers. Each will appear separately in your connectors list.
+  </Accordion>
+  
+  <Accordion title="What happens to my data?">
+    Data flows directly between Claude.ai and your connected services through Civic Nexus. See our [security details](/nexus/reference/security) for more information.
+  </Accordion>
+</AccordionGroup>
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Troubleshooting Guide" icon="wrench" href="/nexus/troubleshooting">
+    Solutions for common connection issues
   </Card>
-  <Card title="Hub Bridge Alternative" icon="bridge" href="/nexus/quickstart/hub-bridge">
-    Alternative connection method for unsupported clients
+  <Card title="Browse All Servers" icon="server" href="/nexus/reference/servers">
+    See all available MCP servers you can connect
+  </Card>
+  <Card title="Security Details" icon="shield-check" href="/nexus/reference/security">
+    Learn how Nexus protects your data
+  </Card>
+  <Card title="Get Support" icon="message-circle" href="https://civickey.typeform.com/to/qJ5mieBw">
+    Contact us for personalized help
   </Card>
 </CardGroup>

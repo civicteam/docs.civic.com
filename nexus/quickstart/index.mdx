@@ -31,17 +31,25 @@ icon: "bolt"
 
 ## Choose Your AI Client
 
+<Note>
+**First, check compatibility:** Different clients use different connection methods. Choose the right setup method to avoid configuration issues.
+</Note>
+
+<Card title="Client Compatibility Guide" icon="table" href="/nexus/reference/client-compatibility">
+  See which clients support Remote URL vs Hub Bridge setup methods
+</Card>
+
 ### Most Popular
 
 <CardGroup cols={3}>
   <Card title="Claude Desktop" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
-    **Direct URL** - Copy/paste method (2 mins)
+    **Remote URL** - Copy/paste method (2 mins)
   </Card>
   <Card title="Cursor" icon="code" href="/nexus/quickstart/clients/cursor">
-    **One-click install** - Install button (3 mins)
+    **Hub Bridge** - JSON config file (3 mins)
   </Card>
   <Card title="VS Code" icon="code" href="/nexus/quickstart/clients/vscode">
-    **One-click install** - Install link (3 mins)
+    **Hub Bridge** - JSON config file (3 mins)
   </Card>
 </CardGroup>
 
@@ -49,10 +57,10 @@ icon: "bolt"
 
 <CardGroup cols={3}>
   <Card title="Claude.ai" icon="globe" href="/nexus/quickstart/clients/claude-web">
-    Web version • Direct URL • 2 mins
+    Web version • Remote URL • 2 mins
   </Card>
   <Card title="Goose" icon="terminal" href="/nexus/quickstart/clients/goose">
-    Developer agent • Direct URL • 2 mins  
+    Developer agent • Remote URL • 2 mins  
   </Card>
   <Card title="JetBrains IDEs" icon="command" href="/nexus/quickstart/clients/jetbrains">
     IntelliJ, PyCharm • Manual setup • 5 mins
@@ -70,26 +78,42 @@ icon: "bolt"
 
 ## Two Setup Methods
 
-### Direct URL (Easiest)
+### Remote URL (Most Popular)
 **For:** Claude Desktop, Claude.ai, Goose
 
+The simplest method - direct connection to Civic Nexus:
+
 1. Visit [nexus.civic.com](https://nexus.civic.com) and select tools
-2. Copy your MCP URL  
+2. Copy your personalized MCP URL  
 3. Paste into your client's MCP settings
 
-### Hub Bridge (For Compatibility)  
+This is the easiest setup and works with the most popular AI clients.
+
+### JSON Configuration (Development Tools)
 **For:** Cursor, VS Code, JetBrains, Windsurf, CLIs
 
-The Hub Bridge connects clients that only support local MCP servers to Civic's remote servers.
+Development tools require editing a JSON configuration file to add MCP servers:
 
-**Setup methods:**
-- **Auto-install**: `npx @civic/hub-bridge install claude-desktop`
-- **One-click** (Cursor, VS Code): Click the install button in our setup guides
-- **Manual** (JetBrains, etc.): Add the bridge to your MCP config
+1. **Find your client's config file location:**
+   - **Cursor**: `.cursor/mcp.json` in project root
+   - **VS Code**: `.mcp.json` in workspace root  
+   - **JetBrains**: Check your IDE's MCP plugin docs
+   
+2. **Add the MCP server configuration:**
+   ```json
+   {
+     "command": "npx",
+     "args": ["-y", "@civic/hub-bridge@latest"]
+   }
+   ```
 
-<Card title="Learn More About Hub Bridge" icon="bridge" href="/nexus/quickstart/hub-bridge">
-  Detailed setup instructions, troubleshooting, and technical architecture
-</Card>
+3. **Restart your client** and start using your connected tools
+
+The exact JSON format varies by client, but all use the same `npx -y @civic/hub-bridge@latest` command. This uses the **Hub Bridge** - a local proxy that handles authentication and connects to Civic Nexus servers automatically.
+
+<Info>
+**Start with Remote URL if your client supports it** - it's simpler than JSON configuration.
+</Info>
 
 ## What You Can Do
 

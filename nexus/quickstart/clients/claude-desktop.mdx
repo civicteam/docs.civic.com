@@ -121,19 +121,103 @@ Before you begin, make sure you have:
   </Step>
 </Steps>
 
-## Reset or Remove Connector
+## Managing Your MCP Connectors
 
-If you need to reconfigure or remove the Civic Nexus connector:
+### Adding More Tools
+
+You can add new tools directly in your Claude Desktop chat:
+
+```
+"Connect me to GitHub"
+"Add Slack to my available tools"  
+"I need access to PostgreSQL"
+"Show me what tools are available to connect"
+```
+
+Claude will handle the connection process and guide you through any required authentication steps.
+
+### Alternative Method: Direct Config File Editing
+
+For advanced users, you can also manage MCP servers by editing the configuration file directly:
+
+<Steps>
+  <Step title="Open configuration file">
+    1. In Claude Desktop, go to **Settings**
+    2. Click the **Developer** tab  
+    3. Click **Edit Config** to open `claude_desktop_config.json`
+  </Step>
+  
+  <Step title="Add or modify MCP servers">
+    Your config file should look like this:
+    ```json
+    {
+      "mcpServers": {
+        "civic-nexus": {
+          "command": "curl",
+          "args": ["-X", "POST", "https://nexus.civic.com/hub/mcp"],
+          "env": {
+            "CIVIC_AUTH_TOKEN": "your-token-here"
+          }
+        }
+      }
+    }
+    ```
+    
+    <Warning>
+      **Use the UI method instead** - Manual config editing can break your setup if done incorrectly. The Settings UI is safer and easier.
+    </Warning>
+  </Step>
+  
+  <Step title="Save and restart">
+    1. Save the config file
+    2. **Restart Claude Desktop** for changes to take effect
+  </Step>
+</Steps>
+
+### Removing Tools
+
+You can disconnect from specific tools directly in chat:
+
+```
+"Disconnect from Slack"  
+"Remove GitHub from my tools"
+"What tools do I currently have connected?"
+"Stop my access to Google Drive"
+```
+
+### Removing the Entire Connector
+
+To remove the Civic Nexus connector completely:
 
 <Steps>
   <Step title="Access connector settings">
-    Go to Claude Desktop Settings → Developer → MCP Connectors
+    Go to **Settings → Developer → MCP Connectors** in Claude Desktop
   </Step>
+  
   <Step title="Remove connector">
-    Find "Civic Nexus" in your connectors list and click the remove/delete button
+    1. Find "Civic Nexus" in your connectors list
+    2. Click the **Remove** or **Delete** button
+    3. Confirm the removal when prompted
   </Step>
-  <Step title="Re-add if needed">
-    Follow the setup steps above to re-add with a fresh MCP URL from nexus.civic.com
+  
+  <Step title="Clean up authorizations (optional)">
+    Visit [nexus.civic.com](https://nexus.civic.com) to revoke service authorizations if you no longer want Civic to have access
+  </Step>
+  
+  <Step title="Restart Claude Desktop">
+    Restart Claude Desktop to ensure the connector is fully removed
+  </Step>
+</Steps>
+
+### Reset Connection
+
+If your connector isn't working properly:
+
+<Steps>
+  <Step title="Complete reset">
+    1. Remove the Civic Nexus connector completely
+    2. Restart Claude Desktop  
+    3. Follow the setup steps above to re-add with a fresh MCP URL from nexus.civic.com
   </Step>
 </Steps>
 

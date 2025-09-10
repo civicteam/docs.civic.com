@@ -1,6 +1,6 @@
 ---
 title: Connection Methods
-description: Direct URL vs Hub Bridge - understanding how your AI connects to Nexus
+description: Remote URL vs Hub Bridge - understanding how your AI connects to Nexus
 icon: "network-wired"
 ---
 
@@ -8,7 +8,7 @@ icon: "network-wired"
 
 There are two ways your AI client can connect to Nexus servers. The method depends on what your AI client supports:
 
-## Direct URL Method
+## Remote URL Method
 
 **Simple copy/paste connection** for clients that support remote MCP servers.
 
@@ -68,7 +68,7 @@ Your AI Client ←→ Hub Bridge (local) ←→ Internet ←→ Nexus Servers �
 
 ### Check your AI client's settings:
 
-**Use Direct URL if you see:**
+**Use Remote URL if you see:**
 - "Remote MCP server"
 - "HTTP MCP URL" 
 - "MCP connector URL"
@@ -81,7 +81,7 @@ Your AI Client ←→ Hub Bridge (local) ←→ Internet ←→ Nexus Servers �
 - "Local process"
 
 ### Quick test:
-If your client asks for a command and arguments (like `npx` and `[@civic/hub-bridge]`), you need Hub Bridge. If it asks for a URL, you can use Direct URL.
+If your client asks for a command and arguments (like `npx` and `[@civic/hub-bridge]`), you need Hub Bridge. If it asks for a URL, you can use Remote URL.
 
 ## Why Two Methods?
 
@@ -89,7 +89,7 @@ If your client asks for a command and arguments (like `npx` and `[@civic/hub-bri
 
 Not all AI clients support all MCP features:
 
-**Direct URL requirements:**
+**Remote URL requirements:**
 - HTTP/HTTPS network requests
 - OAuth authentication handling
 - Token refresh management
@@ -102,7 +102,7 @@ Not all AI clients support all MCP features:
 
 ### Technical Differences
 
-**Direct URL clients:**
+**Remote URL clients:**
 - Native MCP HTTP protocol support
 - Built-in OAuth handling
 - Direct network connectivity
@@ -116,7 +116,7 @@ Not all AI clients support all MCP features:
 
 ## Authentication Differences
 
-### Direct URL Authentication:
+### Remote URL Authentication:
 - Your client handles OAuth directly
 - You authorize in your client's interface
 - Client manages token storage and refresh
@@ -128,7 +128,7 @@ Not all AI clients support all MCP features:
 
 ## When to Use Each Method
 
-### Choose Direct URL when:
+### Choose Remote URL when:
 - Your client supports it (check settings for "remote MCP URL")
 - You want the simplest setup
 - You use multiple devices
@@ -142,7 +142,7 @@ Not all AI clients support all MCP features:
 
 ## Troubleshooting Connection Issues
 
-### Direct URL problems:
+### Remote URL problems:
 - **Client doesn't connect**: Check if client supports remote MCP URLs
 - **Authentication fails**: Verify client has OAuth capabilities
 - **URL not accepted**: Try Hub Bridge method instead

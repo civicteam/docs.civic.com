@@ -8,7 +8,7 @@ icon: "wrench"
 
 <Steps>
   <Step title="Check Your Connection Method">
-    **Direct URL:** Does your client show the Civic Nexus connector in settings?  
+    **Remote URL:** Does your client show the Civic Nexus connector in settings?  
     **Hub Bridge:** Run `npx -y @civic/hub-bridge --status` to check bridge health
   </Step>
   <Step title="Verify Authentication">
@@ -21,7 +21,7 @@ icon: "wrench"
 
 ## Common Issues by Connection Method
 
-### Direct URL Issues
+### Remote URL Issues
 
 <AccordionGroup>
   <Accordion title="Client doesn't see Civic Nexus connector" icon="link-slash">
@@ -109,7 +109,7 @@ icon: "wrench"
     - Check system clock is accurate (OAuth tokens are time-sensitive)
     - Clear browser cookies for civic.com and nexus.civic.com
     - **Hub Bridge:** Run `npx -y @civic/hub-bridge --reset` to clear cache
-    - **Direct URL:** Remove and re-add the connector in your client
+    - **Remote URL:** Remove and re-add the connector in your client
   </Accordion>
   
   <Accordion title="OAuth errors from connected services" icon="exclamation-triangle">
@@ -225,7 +225,7 @@ Gather this information to speed up resolution:
     - Client type and version
   </Step>
   <Step title="Connection Details">
-    - Using Direct URL or Hub Bridge?
+    - Using Remote URL or Hub Bridge?
     - What error messages do you see?
     - When did the issue start?
   </Step>
@@ -261,7 +261,7 @@ npx -y @civic/hub-bridge --status --verbose
     npx -y @civic/hub-bridge
     ```
   </Tab>
-  <Tab title="Direct URL">
+  <Tab title="Remote URL">
     Check your client's documentation for MCP debug/verbose logging options
   </Tab>
 </Tabs>
