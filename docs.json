@@ -37,59 +37,10 @@
   },
   "navigation": {
     "tabs": [{
-      "tab": "Nexus",
-      "groups": [
-        {
-          "group": "Getting Started",
-          "pages": [
-            "nexus/overview",
-            "nexus/quickstart/index",
-            "nexus/quickstart/hub-bridge"
-          ]
-        },
-        {
-          "group": "Key Concepts",
-          "icon": "lightbulb",
-          "pages": [
-            "nexus/concepts/mcp",
-            "nexus/concepts/connection-methods", 
-            "nexus/concepts/tools-resources-prompts",
-            "nexus/concepts/oauth"
-          ]
-        },
-        {
-          "group": "Reference",
-          "icon": "book",
-          "pages": [
-            "nexus/reference/client-compatibility",
-            "nexus/reference/security",
-            {
-              "group": "MCP Servers",
-              "icon": "server",
-              "pages": [
-                "nexus/reference/servers",
-                "nexus/reference/servers/activecampaign",
-                "nexus/reference/servers/github",
-                "nexus/reference/servers/slack",
-                "nexus/reference/servers/notion",
-                "nexus/reference/servers/googledrive"
-              ]
-            }
-          ]
-        },
-        {
-          "group": "Support",
-          "icon": "life-buoy",
-          "pages": [
-            "nexus/troubleshooting"
-          ]
-        }
-      ]
-    }, {
       "tab": "Auth",
       "groups": [
         {
-          "group":  "Overview",
+          "group":  "Getting Started",
           "pages": [
             "index",
             "overview/pricing",
@@ -221,6 +172,55 @@
           }
         ]
       }
+    }, {
+      "tab": "Nexus",
+      "groups": [
+        {
+          "group": "Getting Started",
+          "pages": [
+            "nexus/overview",
+            "nexus/quickstart/index",
+            "nexus/quickstart/hub-bridge"
+          ]
+        },
+        {
+          "group": "Key Concepts",
+          "icon": "lightbulb",
+          "pages": [
+            "nexus/concepts/mcp",
+            "nexus/concepts/connection-methods", 
+            "nexus/concepts/tools-resources-prompts",
+            "nexus/concepts/oauth"
+          ]
+        },
+        {
+          "group": "Reference",
+          "icon": "book",
+          "pages": [
+            "nexus/reference/client-compatibility",
+            "nexus/reference/security",
+            {
+              "group": "MCP Servers",
+              "icon": "server",
+              "pages": [
+                "nexus/reference/servers",
+                "nexus/reference/servers/activecampaign",
+                "nexus/reference/servers/github",
+                "nexus/reference/servers/slack",
+                "nexus/reference/servers/notion",
+                "nexus/reference/servers/googledrive"
+              ]
+            }
+          ]
+        },
+        {
+          "group": "Support",
+          "icon": "life-buoy",
+          "pages": [
+            "nexus/troubleshooting"
+          ]
+        }
+      ]
     },{
       "tab": "Labs",
       "groups": [
