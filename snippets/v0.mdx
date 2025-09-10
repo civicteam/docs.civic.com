@@ -23,30 +23,37 @@ Before starting, you need a Civic Auth Client ID and domain setup:
 ## Task
 Add Civic Auth authentication to this Next.js application hosted on V0. Do not use Supabase auth or any other authentication provider - use ONLY Civic Auth as specified below.
 
-## Step 1: Fetch the Documentation (ABSOLUTELY REQUIRED)
-**CRITICAL**: You MUST fetch the official documentation before proceeding. Use curl to fetch the Civic Auth documentation:
+## Step 1: Get the Documentation (ABSOLUTELY REQUIRED)
+**CRITICAL**: You MUST have the official documentation before proceeding. Try to fetch it, or ask the user to provide it:
 
+**Option 1 - Try curl (if available):**
 ```bash
 curl https://docs.civic.com/integration/nextjs.md
 ```
 
+**Option 2 - If curl fails or is not available:**
+Ask the user: "Please provide the content from https://docs.civic.com/integration/nextjs or paste the documentation content here."
+
 **MANDATORY REQUIREMENTS:**
-- ✅ You MUST successfully fetch this URL using curl
-- ✅ You MUST read and understand the entire documentation content
-- ✅ You MUST follow the documentation steps exactly as written
+- ✅ You MUST have the complete documentation content before proceeding
+- ✅ You MUST follow the documentation steps exactly as written  
 - ✅ Do NOT proceed until you have the documentation content
-- ✅ Do NOT use web search or any other tools - ONLY use curl with this exact URL
+- ✅ Do NOT make assumptions about code structure or imports
 
-**If curl fails:** Ask the user to provide the documentation content, or try the curl command again. You cannot proceed without this documentation as it contains the exact code examples and configuration steps.
+**VERIFICATION REQUIRED:** After getting the documentation, you MUST confirm:
+1. You have the complete Next.js integration documentation
+2. You found the 4 main steps from the "Quick Start" section  
+3. You identified packages needed (Auth vs Auth + Web3)
+4. You understand the middleware.ts file location (src/middleware.ts)
+5. You found the UserButton component examples in the "Usage" section
 
-**VERIFICATION REQUIRED:** After running curl, you MUST:
-1. Confirm you successfully retrieved the documentation
-2. Summarize the 4 main steps from the "Quick Start" section  
-3. Identify which packages are needed (Auth vs Auth + Web3)
-4. Show that you understand the middleware.ts file location requirements
-5. Confirm you found the UserButton component examples in the "Usage" section
-
-This documentation contains ALL the code examples and instructions needed for the integration. It is the ONLY source of truth - do not deviate from its instructions.
+**If documentation is not available and user cannot provide it, use this essential structure:**
+The integration requires these 4 core steps from the official docs:
+1. **Add Civic Auth Plugin** in next.config.ts with createCivicAuthPlugin
+2. **Create API Route** at src/app/api/auth/[...civicauth]/route.ts  
+3. **Add Middleware** at src/middleware.ts with authMiddleware
+4. **Frontend Integration** with CivicAuthProvider wrapper
+5. **Add UserButton** component from @civic/auth/react
 
 ## Step 2: Gather Project Information
 Ask the user for the following information if not provided:
@@ -159,11 +166,19 @@ After completing the core setup, implement the Civic Auth UI components:
 
 If your curl result doesn't contain these elements, the fetch failed and you must try again.
 
-**TROUBLESHOOTING CURL ISSUES:**
+**TROUBLESHOOTING DOCUMENTATION ACCESS:**
 - If curl command fails, try: `curl -L https://docs.civic.com/integration/nextjs.md` (with redirect follow)
-- If still failing, ask user: "Please provide the content from https://docs.civic.com/integration/nextjs"
+- If curl is not available or still failing, ask user: "Please provide the content from https://docs.civic.com/integration/nextjs"
+- If user provides documentation content directly, acknowledge receipt and proceed with that content
 - Do NOT proceed with implementation until you have the official documentation content
 - Do NOT make assumptions about API structure or code examples
+
+**WORKING WITH PROVIDED DOCUMENTATION:**
+If the user provides the documentation content (instead of curl), you should:
+1. Acknowledge that you received the documentation
+2. Proceed with the verification requirements listed above
+3. Use the provided content as your source of truth for implementation
+4. Follow the exact code examples from the provided content
 
 ## CRITICAL: Middleware File Location
 The middleware.ts file MUST be placed at src/middleware.ts (in the src/ directory), NOT in the project root. This is essential for V0 projects:
