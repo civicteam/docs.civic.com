@@ -12,10 +12,10 @@ Deploy Bodyguard as a standalone service that other applications can query:
 
 ```bash
 # GET request
-curl "https://ai.civic.com/bodyguard/check?prompt=Your%20prompt%20here"
+curl "https://nexus.civic.com/bodyguard/check?prompt=Your%20prompt%20here"
 
 # POST request
-curl -X POST https://ai.civic.com/bodyguard/check \
+curl -X POST https://nexus.civic.com/bodyguard/check \
   -H "X-API-Key: your_api_key_here"
   -H "Content-Type: application/json" \
   -d '{"prompt":"Your prompt here"}'
@@ -46,7 +46,7 @@ Bodyguard can be used as a middleware hook for MCP servers, analyzing prompts be
     "command": "passthrough-mcp-server",
     "env": [
       "TARGET_SERVER_URL", "https://my-mcp-server",
-      "HOOKS", "https://ai.civic.com/bodyguard/hook?threshold=0.7"
+      "HOOKS", "https://nexus.civic.com/bodyguard/hook?threshold=0.7"
     ]
   }
 }
