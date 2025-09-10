@@ -21,7 +21,7 @@ Before you begin, make sure you have:
   </Card>
 </CardGroup>
 
-## Step 1: Get Your MCP URL
+## Step 1: Copy the MCP URL
 
 <Steps>
   <Step title="Visit nexus.civic.com">
@@ -50,16 +50,12 @@ Before you begin, make sure you have:
     </Warning>
   </Step>
 
-  <Step title="Copy your MCP URL">
-    After selecting servers, you'll see your MCP URL. It will look like:
+  <Step title="Copy the MCP URL">
+    After selecting servers, copy this URL:
     ```
     https://nexus.civic.com/hub/mcp
     ```
-    Click the copy button to copy this URL.
     
-    <Warning>
-      **Don't share this URL** - it's personalized to your account and gives access to your connected services.
-    </Warning>
   </Step>
 </Steps>
 
@@ -77,7 +73,7 @@ Before you begin, make sure you have:
     1. Look for "MCP Connectors" or "Add connector" button
     2. Click "Add custom connector" 
     3. Enter a name: "Civic Nexus"
-    4. Paste your MCP URL from nexus.civic.com
+    4. Paste the MCP URL from nexus.civic.com
     5. Click "Add" then "Connect"
     
     <img
@@ -136,9 +132,13 @@ You can add new tools directly in your Claude Desktop chat:
 
 Claude will handle the connection process and guide you through any required authentication steps.
 
-### Alternative Method: Direct Config File Editing
+### Alternative Method: Hub Bridge (Free Users)
 
-For advanced users, you can also manage MCP servers by editing the configuration file directly:
+If you don't have Claude Pro, Team, or Enterprise, you won't have access to MCP connectors in the UI. Use Hub Bridge instead:
+
+<Warning>
+**Free Claude users**: The MCP connector UI is only available on paid Claude plans. Use this method if you're on the free plan.
+</Warning>
 
 <Steps>
   <Step title="Open configuration file">
@@ -147,30 +147,33 @@ For advanced users, you can also manage MCP servers by editing the configuration
     3. Click **Edit Config** to open `claude_desktop_config.json`
   </Step>
   
-  <Step title="Add or modify MCP servers">
-    Your config file should look like this:
+  <Step title="Add Hub Bridge configuration">
+    Add this to your config file:
     ```json
     {
       "mcpServers": {
         "civic-nexus": {
-          "command": "curl",
-          "args": ["-X", "POST", "https://nexus.civic.com/hub/mcp"],
-          "env": {
-            "CIVIC_AUTH_TOKEN": "your-token-here"
-          }
+          "command": "npx",
+          "args": ["-y", "@civic/hub-bridge@latest"]
         }
       }
     }
     ```
     
-    <Warning>
-      **Use the UI method instead** - Manual config editing can break your setup if done incorrectly. The Settings UI is safer and easier.
-    </Warning>
+    <Note>
+      This uses the **Hub Bridge** method which works with any Claude Desktop version, including free.
+    </Note>
   </Step>
   
   <Step title="Save and restart">
     1. Save the config file
     2. **Restart Claude Desktop** for changes to take effect
+  </Step>
+  
+  <Step title="First-time setup">
+    When you first use an MCP command:
+    1. Create account at **[nexus.civic.com](https://nexus.civic.com)** and select your tools
+    2. The Hub Bridge will handle authentication automatically
   </Step>
 </Steps>
 
