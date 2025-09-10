@@ -26,6 +26,10 @@ exclude = [
   # Social media (often rate-limited)
   '^https?://(www\.)?(twitter|x|linkedin)\.com',
 
+  # AI services that block bots
+  '^https?://(www\.)?claude\.ai',
+  '^https?://(www\.)?notion\.so',
+
   # Email addresses
   '^mailto:',
 
