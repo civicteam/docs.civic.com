@@ -4,45 +4,53 @@ icon: "code-simple"
 public: true
 ---
 
-import { Callout } from 'nextra/components'
+import ReplitPrompt from '/snippets/replit.mdx';
+import Web3UpsellNote from '/snippets/_web3-upsell-note.mdx';
 
-# Replit Integration - Coming Soon
+Building something amazing on [Replit](https://replit.com/) and want to add authentication super quickly? Just copy the prompt below and paste it into Replit's AI chat or follow the instructions manually - it will help you integrate Civic Auth into your project in minutes!
 
-<Callout type="info" emoji="🚧">
-  **We're testing the waters!**
-  
-  We're currently working on perfecting the AI prompt for Replit integration to ensure it works seamlessly with Civic Auth. Our team is testing various scenarios to make sure the integration is smooth and reliable.
-  
-  **Please check back here soon** - we'll have the Replit prompt ready shortly!
-</Callout>
+## Integration Prompt
 
-## What to Expect
+<ReplitPrompt />
 
-When the Replit prompt is ready, it will help you:
+<Web3UpsellNote />
 
-- **Automatically integrate Civic Auth** into your Replit projects
-- **Handle Replit-specific configurations** for the cloud development environment
-- **Set up proper domain registration** for Replit's hosted platform
-- **Implement authentication components** optimized for Replit's collaborative workflow
+<Note>
+  **Need help?** If you encounter any issues during the AI-assisted integration, you can always fall back to the [manual integration guide](/integration/react) or [manual Node.js guide](/integration/nodejs).
+</Note>
 
-## In the Meantime
+## What Replit's AI Will Do
 
-While you wait for the Replit-specific prompt, you can:
+When you use this prompt in Replit, the AI will:
 
-1. **Get your Civic Auth setup ready**:
-   - Visit [auth.civic.com](https://auth.civic.com) to create your account
-   - Create a new application to get your Client ID
-   - Prepare your Replit app's domain for registration
+1. **Fetch the documentation** using curl from the official Civic Auth docs
+2. **Analyze your Replit project** structure and requirements
+3. **Install dependencies** and configure your app for Civic Auth
+4. **Set up authentication provider** and wrap your components correctly
+5. **Implement authentication UI** for login/logout functionality
+6. **Configure domain settings** for Replit's hosted environment
+7. **Set up environment variables** in Replit's Secrets tab
+8. **Handle existing auth systems** if you have any
+9. **Test in Replit's preview** to ensure everything works correctly
 
-2. **Check out our other prompts**:
-   - [Lovable](/ai-prompts/no-code/lovable) - Ready now!
-   - [React](/ai-prompts/react) - For general React projects
-   - [Next.js](/ai-prompts/nextjs) - For Next.js applications
+## Replit-Specific Features
 
-## Stay Updated
+This prompt is specially designed for Replit's unique environment:
 
-Follow our [changelog](/overview/changelog) or join our [Slack community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) to be notified when the Replit prompt is available.
+- **Hot Reload Support**: Changes automatically refresh in Replit's preview
+- **Environment Variables**: Properly configures Replit's Secrets tab
+- **Port Configuration**: Ensures proper port binding for Replit hosting
+- **Preview URL Testing**: Includes steps to test with actual Replit URLs
+- **Package Management**: Works with Replit's built-in package manager
 
----
+## Show Us What You Built! 🚀
 
-*Need immediate help with Replit integration? Feel free to reach out to our team via the [contact form](https://civickey.typeform.com/req-custom) for personalized assistance.*
+We'd love to see what amazing projects you're building with Civic Auth and Replit! 
+
+**Share your creations:**
+- Join our [Slack community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and show off your project
+- Get help from other developers and our team
+- Share feedback and feature requests
+- Connect with the Civic developer community
+
+**Built something cool?** We feature awesome community projects on our social channels and blog!
