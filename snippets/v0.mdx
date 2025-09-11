@@ -47,13 +47,74 @@ Ask the user: "Please provide the content from https://docs.civic.com/integratio
 4. You understand the middleware.ts file location (src/middleware.ts)
 5. You found the UserButton component examples in the "Usage" section
 
-**If documentation is not available and user cannot provide it, use this essential structure:**
-The integration requires these 4 core steps from the official docs:
-1. **Add Civic Auth Plugin** in next.config.ts with createCivicAuthPlugin
-2. **Create API Route** at src/app/api/auth/[...civicauth]/route.ts  
-3. **Add Middleware** at src/middleware.ts with authMiddleware
-4. **Frontend Integration** with CivicAuthProvider wrapper
-5. **Add UserButton** component from @civic/auth/react
+**FALLBACK: Essential Code Structure (if documentation unavailable):**
+Based on the official Next.js integration docs, use these exact code examples:
+
+**1. next.config.ts:**
+```typescript
+import { createCivicAuthPlugin } from "@civic/auth/nextjs"
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+const withCivicAuth = createCivicAuthPlugin({
+  clientId: "YOUR CLIENT ID"
+});
+
+export default withCivicAuth(nextConfig)
+```
+
+**2. src/app/api/auth/[...civicauth]/route.ts:**
+```typescript
+import { handler } from "@civic/auth/nextjs"
+
+export const GET = handler()
+export const POST = handler()
+```
+
+**3. src/middleware.ts:**
+```typescript
+import { authMiddleware } from "@civic/auth/nextjs/middleware"
+
+export default authMiddleware();
+
+export const config = {
+  matcher: [
+    '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
+  ],
+}
+```
+
+**4. Layout with CivicAuthProvider:**
+```typescript
+import { CivicAuthProvider } from "@civic/auth/nextjs";
+
+function Layout({ children }) {
+  return (
+    <CivicAuthProvider>
+      {children}
+    </CivicAuthProvider>
+  )
+}
+```
+
+**5. UserButton Component:**
+```typescript
+import { UserButton } from "@civic/auth/react";
+
+export function TitleBar() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <UserButton />
+    </div>
+  );
+}
+```
+
+**Note:** Always prefer using the complete official documentation when available.
 
 ## Step 2: Gather Project Information
 Ask the user for the following information if not provided:
@@ -121,10 +182,11 @@ Based on Web3 requirements from Step 2:
 5. **Add UserButton Component** - Implement the Civic UserButton for login/logout UI
 
 **5.4 - Code Adaptation**
-- Use the EXACT code examples from the documentation
-- Only adapt file paths/structure for V0's project layout
+- Use the EXACT code examples from the documentation (or fallback examples above if docs unavailable)
+- Only adapt file paths/structure for V0's project layout  
 - Do NOT change imports, function names, or configuration options
 - Preserve ALL code exactly as shown in the documentation
+- If using fallback code, ensure the Client ID placeholder is replaced with user's actual Client ID
 
 **5.5 - UI Components Implementation**
 After completing the core setup, implement the Civic Auth UI components:
