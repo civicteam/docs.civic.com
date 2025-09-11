@@ -1,14 +1,6 @@
 ```
 # Civic Auth Integration Prompt for V0
 
-## CRITICAL: Authentication Requirements
-**STOP - READ THIS FIRST:** This project MUST use Civic Auth for authentication. Do NOT suggest Supabase, NextAuth, or any other authentication provider as alternatives. The user has specifically chosen Civic Auth and you must implement it exactly as requested.
-
-- ❌ DO NOT suggest Supabase authentication 
-- ❌ DO NOT offer alternative authentication options
-- ❌ DO NOT mention "easier" authentication solutions
-- ✅ ONLY implement Civic Auth as specified below
-
 ## Prerequisites
 Before starting, you need a Civic Auth Client ID and domain setup:
 1. Visit https://auth.civic.com
@@ -21,15 +13,16 @@ Before starting, you need a Civic Auth Client ID and domain setup:
    - This is required because hosted platforms need domain verification for security
 
 ## Task
-Add Civic Auth authentication to this Next.js application hosted on V0. Do not use Supabase auth or any other authentication provider - use ONLY Civic Auth as specified below.
+Stop. Do not use Supabase auth, NextAuth, or any other authentication system. Remove any existing auth dependencies and configuration files. Instead, implement authentication using Civic Auth only. Use Civic's authentication flow and API endpoints for all auth functionality including login, logout, and session management.
+
+Add Civic Auth authentication to this Next.js application hosted on V0.
 
 ## Step 1: Get the Documentation (ABSOLUTELY REQUIRED)
 **CRITICAL**: You MUST have the official documentation before proceeding. Try to fetch it, or ask the user to provide it:
 
 **Option 1 - Try curl (if available):**
-```bash
+
 curl https://docs.civic.com/integration/nextjs.md
-```
 
 **Option 2 - If curl fails or is not available:**
 Ask the user: "Please provide the content from https://docs.civic.com/integration/nextjs or paste the documentation content here."
@@ -51,7 +44,7 @@ Ask the user: "Please provide the content from https://docs.civic.com/integratio
 Based on the official Next.js integration docs, use these exact code examples:
 
 **1. next.config.ts:**
-```typescript
+
 import { createCivicAuthPlugin } from "@civic/auth/nextjs"
 import type { NextConfig } from "next";
 
@@ -64,18 +57,16 @@ const withCivicAuth = createCivicAuthPlugin({
 });
 
 export default withCivicAuth(nextConfig)
-```
 
 **2. src/app/api/auth/[...civicauth]/route.ts:**
-```typescript
+
 import { handler } from "@civic/auth/nextjs"
 
 export const GET = handler()
 export const POST = handler()
-```
 
 **3. src/middleware.ts:**
-```typescript
+
 import { authMiddleware } from "@civic/auth/nextjs/middleware"
 
 export default authMiddleware();
@@ -85,10 +76,9 @@ export const config = {
     '/((?!_next|favicon.ico|sitemap.xml|robots.txt|.*\\.jpg|.*\\.png|.*\\.svg|.*\\.gif).*)',
   ],
 }
-```
 
 **4. Layout with CivicAuthProvider:**
-```typescript
+
 import { CivicAuthProvider } from "@civic/auth/nextjs";
 
 function Layout({ children }) {
@@ -98,10 +88,9 @@ function Layout({ children }) {
     </CivicAuthProvider>
   )
 }
-```
 
 **5. UserButton Component:**
-```typescript
+
 import { UserButton } from "@civic/auth/react";
 
 export function TitleBar() {
@@ -112,7 +101,6 @@ export function TitleBar() {
     </div>
   );
 }
-```
 
 **Note:** Always prefer using the complete official documentation when available.
 
@@ -121,20 +109,19 @@ Ask the user for the following information if not provided:
 
 **Required Information (gather ALL before starting):**
 - ✅ Client ID (if not provided, ask user to get it from https://auth.civic.com)
-- ✅ V0 app URL (e.g., https://your-app-name.vercel.app/) - **If you don't have this yet, that's okay! You can set this up after the initial implementation.**
-- ✅ Domain registration status (see Step 3 for handling new apps)
+- ✅ V0 app URL (e.g., https://your-app-name.vercel.app/) - can be added after initial implementation
+- ✅ Domain registration status (can be done after deployment if URL unknown)
 - ✅ Project type (new/existing Next.js project on V0)
 - ✅ Web3 Support Needed (Yes/No) - This affects which imports and packages to use
 - ✅ Protected routes that need authentication (e.g., /dashboard/*, /api/private/*)
 - ✅ Existing authentication systems that need replacement
 
-**DO NOT proceed with implementation until you have confirmed ALL of the above information.** 
-*(Note: V0 app URL can be added during/after implementation - see Step 3)*
+**DO NOT proceed with implementation until you have confirmed ALL of the above information.**
 
 If any information is missing, ask specific questions and wait for responses before continuing. This prevents errors and ensures the integration matches the user's exact requirements.
 
 ## Step 3: Domain Registration (CRITICAL FOR V0)
-V0 apps need their URLs registered with Civic Auth. Here's how to handle this:
+V0 apps need their URLs registered with Civic Auth:
 
 **If you already have your V0 app URL:**
 1. Go to https://auth.civic.com
@@ -145,24 +132,22 @@ V0 apps need their URLs registered with Civic Auth. Here's how to handle this:
 **If you don't have your V0 app URL yet (common for new apps):**
 1. **Proceed with the implementation** - you can add the domain later
 2. **When you test authentication**, you'll get a "redirect URL not found" error
-3. **Copy the URL from your browser address bar** when you get this error
+3. **Copy the URL from your browser** when you get this error
 4. **Go to https://auth.civic.com → Domains** and add that URL
 5. **Refresh your app** - authentication should now work
 
-**Important:** Don't worry about the initial redirect error - this is expected for new V0 apps and is easily fixed by adding the domain after deployment.
-
 ## Step 4: Create Implementation Plan
-After fetching the documentation with curl and confirming domain registration:
-1. Analyze the current project structure in V0
+After fetching the documentation with curl:
+1. Analyze the current V0 project structure
 2. Identify which code examples from the documentation apply
 3. Choose the correct setup based on Web3 requirements:
    - **If Web3 support needed**: Use "Auth + Web3" tab and @civic/auth-web3 packages
    - **If no Web3 support**: Use "Auth" tab and @civic/auth packages
-4. Plan the implementation order for V0's component-based environment
+4. Plan the implementation order for V0's environment
 5. Note any existing code that needs to be modified
 
 ## Step 5: Implement Civic Auth (FOLLOW DOCUMENTATION EXACTLY)
-**CRITICAL**: Use ONLY the documentation fetched via curl. Follow these steps in order:
+**CRITICAL**: Use ONLY the documentation fetched via curl or provided by user. Follow these steps in order:
 
 **5.1 - Quick Start Implementation**
 - Follow the "Quick Start" section from the documentation EXACTLY
@@ -181,40 +166,29 @@ Based on Web3 requirements from Step 2:
 4. **Frontend Integration** (Step 4 in docs) - Add CivicAuthProvider
 5. **Add UserButton Component** - Implement the Civic UserButton for login/logout UI
 
-**5.4 - Code Adaptation**
+**5.4 - Critical File Locations for V0**
+- **Middleware**: `src/middleware.ts` (NOT in project root - this is essential!)
+- **API Route**: `src/app/api/auth/[...civicauth]/route.ts`
+- **Config**: `next.config.ts` (project root)
+- **Environment**: Configure CIVIC_CLIENT_ID in V0's settings
+
+**5.5 - Code Adaptation**
 - Use the EXACT code examples from the documentation (or fallback examples above if docs unavailable)
 - Only adapt file paths/structure for V0's project layout  
 - Do NOT change imports, function names, or configuration options
 - Preserve ALL code exactly as shown in the documentation
 - If using fallback code, ensure the Client ID placeholder is replaced with user's actual Client ID
 
-**5.5 - UI Components Implementation**
-After completing the core setup, implement the Civic Auth UI components:
-
-**UserButton Component (MANDATORY):**
-- Use the UserButton component from the documentation's "Usage" section
-- Import: `import { UserButton } from "@civic/auth/react";`
-- Place in a header/navigation component for easy access
-- This provides automatic login/logout functionality with user display
-
-**Additional Components (Optional):**
-- Implement useUser hook if needed for user information
-- Follow the exact code examples from the "Getting User Information on the Frontend" section
-
-**5.6 - V0-Specific Considerations**
-- Ensure compatibility with V0's Vercel deployment environment
-- Handle existing code appropriately but prioritize Civic Auth implementation
-- Test UserButton functionality in V0's component preview
-
-## Important Notes for V0
+## Important Notes
 **DOCUMENTATION SOURCE:** https://docs.civic.com/integration/nextjs (fetch with https://docs.civic.com/integration/nextjs.md)
 
 - ✅ Use ONLY curl to fetch the documentation - no web search tools
 - ✅ The fetched documentation is the ONLY source of truth for this implementation
 - ✅ All code examples, configuration options, and setup instructions are in that document
 - ✅ **CRITICAL**: If Web3 support is needed, you MUST use @civic/auth-web3 packages and imports, not @civic/auth
-- ✅ **V0 SPECIFIC**: Ensure all environment variables are properly configured for Vercel deployment
-- ✅ **V0 SPECIFIC**: Test authentication flow works correctly with V0's preview URLs
+- ✅ **V0 SPECIFIC**: Middleware file must be at `src/middleware.ts`, not project root
+- ✅ **V0 SPECIFIC**: Test with actual V0 preview URLs, not localhost
+- ✅ **V0 SPECIFIC**: Use Vercel environment variable configuration
 
 **EXPECTED DOCUMENTATION CONTENT INCLUDES:**
 - Quick Start with 4 steps: Plugin, API Route, Middleware, Frontend Integration
@@ -257,11 +231,9 @@ When implementing on V0:
 3. **Build Configuration**: Ensure V0's Next.js build process includes all necessary dependencies
 4. **Deployment Testing**: Test authentication on both preview and production V0 URLs
 
-## Reminder: NO SUPABASE
-**IMPORTANT**: Do not suggest, implement, or mention Supabase authentication at any point. The user has chosen Civic Auth specifically and this is the only acceptable solution. Any suggestion of alternative authentication methods is incorrect and unhelpful.
-
 ## Next Steps
 After completing basic authentication integration:
 - **If Web3 was selected**: Use the [Solana](/ai-prompts/web3/solana) or [Ethereum](/ai-prompts/web3/ethereum) prompts to add specific wallet functionality
 - **If no Web3**: Your basic authentication setup is complete
+- **Production**: Ensure domain is registered in Civic Auth before going live
 ```
