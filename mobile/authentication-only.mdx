@@ -1,0 +1,439 @@
+---
+title: "Authentication Only"
+icon: "user-check"
+description: "Implement OAuth2 authentication in React Native without Web3 functionality."
+public: true
+---
+
+## Overview
+
+For apps that only need user authentication without wallet functionality. This approach uses standard OAuth2/OIDC flow to authenticate users and access their profile information.
+
+**What you get:**
+- User sign-in/sign-out
+- Access to user profile (email, name, picture)
+- Access and ID tokens for API calls
+- Session management
+
+**What you don't get:**
+- Blockchain wallet functionality
+- Transaction signing
+- Crypto payments
+
+## Installation
+
+Before starting, complete the [Installation & Setup](/mobile/installation) guide.
+
+For authentication-only integration, you only need these packages:
+
+```bash
+npx expo install expo-auth-session expo-web-browser
+```
+
+## OAuth2 Configuration
+
+Civic Auth uses standard OAuth2/OIDC endpoints:
+
+- **Authorization**: `https://auth.civic.com/oauth/auth`
+- **Token**: `https://auth.civic.com/oauth/token`
+- **UserInfo**: `https://auth.civic.com/oauth/userinfo`
+- **Scopes**: `openid profile email`
+
+## App Scheme Configuration
+
+Before implementing authentication, you need to configure your app scheme properly for mobile redirects.
+
+### 1. Configure app.json/app.config.js
+
+Add your app scheme to your Expo configuration:
+
+```json app.json
+{
+  "expo": {
+    "name": "Your App Name",
+    "scheme": "your-app",
+    // ... other config
+  }
+}
+```
+
+Or in `app.config.js`:
+
+```js app.config.js
+export default {
+  expo: {
+    name: "Your App Name",
+    scheme: "your-app",
+    // ... other config
+  },
+};
+```
+
+### 2. Register URL Scheme (iOS)
+
+If using bare workflow, also add to your `ios/YourApp/Info.plist`:
+
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLName</key>
+    <string>your-app</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>your-app</string>
+    </array>
+  </dict>
+</array>
+```
+
+### 3. Register Intent Filter (Android)
+
+If using bare workflow, add to your `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<activity android:name=".MainActivity" android:exported="true">
+  <!-- ... existing intent filters ... -->
+  
+  <intent-filter>
+    <action android:name="android.intent.action.VIEW" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <category android:name="android.intent.category.BROWSABLE" />
+    <data android:scheme="your-app" />
+  </intent-filter>
+</activity>
+```
+
+<Warning>
+  Make sure to replace `"your-app"` with your actual app scheme throughout your configuration. The scheme should be unique and match across all configurations.
+</Warning>
+
+## Implementation
+
+### 1. Basic Authentication Flow
+
+React Native applications can integrate with Civic Auth using OAuth2/OIDC-compatible libraries. Popular options include:
+
+- [**Expo AuthSession**](https://docs.expo.dev/versions/latest/sdk/auth-session/) (Recommended)
+- [**react-native-app-auth**](https://github.com/FormidableLabs/react-native-app-auth)
+
+### 2. Authentication Flow Steps
+
+The implementation follows a standard OAuth2 authorization code flow with PKCE:
+
+1. User initiates sign-in
+2. App opens Civic Auth in a WebView
+3. User authenticates with Civic
+4. App receives authorization code through redirect
+5. App exchanges code for tokens
+6. App fetches user information
+
+### 3. Example AuthContext
+
+Here's a complete authentication context using Expo AuthSession:
+
+```typescript
+import React, { createContext, useEffect, useMemo, useReducer } from "react";
+import { AuthRequestConfig, useAuthRequest, makeRedirectUri } from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
+
+// Auth configuration
+const authConfig = {
+  clientId: "your-client-id",
+  scopes: ["openid", "profile", "email"],
+  redirectUri: makeRedirectUri({ scheme: "your-app" }), // Use makeRedirectUri for proper scheme handling
+  authorizationEndpoint: "https://auth.civic.com/oauth/auth",
+  tokenEndpoint: "https://auth.civic.com/oauth/token",
+  userInfoEndpoint: "https://auth.civic.com/oauth/userinfo",
+  endSessionEndpoint: "https://auth.civic.com/oauth/session/end",
+};
+
+interface AuthState {
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  user?: AuthUser;
+  accessToken?: string;
+  idToken?: string;
+  expiresIn?: number;
+}
+
+interface AuthUser {
+  email?: string;
+  name: string;
+  picture?: string;
+  sub: string;
+}
+
+interface AuthAction {
+  type: string;
+  payload?: any;
+}
+
+const initialState: AuthState = {
+  isLoading: false,
+  isAuthenticated: false,
+};
+
+export type AuthContextType = {
+  state: AuthState;
+  signIn?: () => Promise<void>;
+  signOut?: () => Promise<void>;
+};
+
+export const AuthContext = createContext<AuthContextType>({
+  state: initialState,
+});
+
+// Close webview after auth completion
+WebBrowser.maybeCompleteAuthSession();
+
+export const AuthProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: authConfig.clientId,
+      scopes: authConfig.scopes,
+      redirectUri: authConfig.redirectUri,
+      usePKCE: true, // Required by Civic Auth
+    },
+    {
+      authorizationEndpoint: authConfig.authorizationEndpoint,
+      tokenEndpoint: authConfig.tokenEndpoint,
+    },
+  );
+
+  const [authState, dispatch] = useReducer(
+    (previousState: AuthState, action: AuthAction): AuthState => {
+      switch (action.type) {
+        case "SIGN_IN":
+          return {
+            ...previousState,
+            isAuthenticated: true,
+            accessToken: action.payload.access_token,
+            idToken: action.payload.id_token,
+            expiresIn: action.payload.expires_in,
+          };
+        case "USER_INFO":
+          return {
+            ...previousState,
+            user: action.payload,
+          };
+        case "SIGN_OUT":
+          return initialState;
+        default:
+          return previousState;
+      }
+    },
+    initialState,
+  );
+
+  const authContext = useMemo(
+    () => ({
+      state: authState,
+      signIn: async () => {
+        promptAsync();
+      },
+      signOut: async () => {
+        if (!authState.idToken) {
+          throw new Error("No idToken found");
+        }
+        try {
+          const endSessionUrl = new URL(authConfig.endSessionEndpoint);
+          endSessionUrl.searchParams.append("client_id", authConfig.clientId);
+          endSessionUrl.searchParams.append("id_token_hint", authState.idToken);
+          endSessionUrl.searchParams.append(
+            "post_logout_redirect_uri",
+            authConfig.redirectUri,
+          );
+
+          const result = await WebBrowser.openAuthSessionAsync(
+            endSessionUrl.toString(),
+            authConfig.redirectUri,
+          );
+
+          if (result.type === "success") {
+            dispatch({ type: "SIGN_OUT" });
+          }
+        } catch (e) {
+          console.warn(e);
+        }
+      },
+    }),
+    [authState, promptAsync],
+  );
+
+  useEffect(() => {
+    const getToken = async ({
+      code,
+      codeVerifier,
+      redirectUri,
+    }: {
+      code: string;
+      redirectUri: string;
+      codeVerifier?: string;
+    }) => {
+      try {
+        const response = await fetch(authConfig.tokenEndpoint, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            grant_type: "authorization_code",
+            client_id: authConfig.clientId,
+            code,
+            code_verifier: codeVerifier || "",
+            redirect_uri: redirectUri,
+          }).toString(),
+        });
+        if (response.ok) {
+          const payload = await response.json();
+          dispatch({ type: "SIGN_IN", payload });
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    };
+
+    if (response?.type === "success") {
+      const { code } = response.params;
+      getToken({
+        code,
+        codeVerifier: request?.codeVerifier,
+        redirectUri: authConfig.redirectUri || "",
+      });
+    } else if (response?.type === "error") {
+      console.warn("Authentication error: ", response.error);
+    }
+  }, [dispatch, request?.codeVerifier, response]);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await fetch(authConfig.userInfoEndpoint, {
+          headers: { Authorization: `Bearer ${authState.accessToken}` },
+        });
+        if (response.ok) {
+          const payload = await response.json();
+          dispatch({ type: "USER_INFO", payload });
+        }
+      } catch (e) {
+        console.warn("Failed to fetch user info:", e);
+      }
+    };
+
+    if (authState.isAuthenticated && authState.accessToken) {
+      fetchUserInfo();
+    }
+  }, [authState.isAuthenticated, authState.accessToken]);
+
+  return (
+    <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>
+  );
+};
+```
+
+### 4. Using the AuthContext
+
+```tsx
+import React, { useContext } from "react";
+import { View, Text, Button } from "react-native";
+import { AuthContext } from "./AuthProvider";
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AuthScreen />
+    </AuthProvider>
+  );
+}
+
+function AuthScreen() {
+  const { state, signIn, signOut } = useContext(AuthContext);
+
+  if (state.isAuthenticated) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Welcome, {state.user?.name}!</Text>
+        <Text>Email: {state.user?.email}</Text>
+        <Button title="Sign Out" onPress={signOut} />
+      </View>
+    );
+  }
+
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Button title="Sign In with Civic" onPress={signIn} />
+    </View>
+  );
+}
+```
+
+## Token Management
+
+### Access Tokens
+Use access tokens to make authenticated API calls to your backend:
+
+```typescript
+const makeAuthenticatedRequest = async (url: string) => {
+  const response = await fetch(url, {
+    headers: {
+      'Authorization': `Bearer ${state.accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  return response.json();
+};
+```
+
+### ID Tokens
+ID tokens contain user information and can be verified on your backend:
+
+```typescript
+// Send ID token to your backend for verification
+const verifyUser = async () => {
+  const response = await fetch('/api/verify', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      idToken: state.idToken,
+    }),
+  });
+  return response.json();
+};
+```
+
+## Error Handling
+
+```typescript
+const handleAuthError = (error: any) => {
+  switch (error.type) {
+    case 'cancel':
+      console.log('User cancelled authentication');
+      break;
+    case 'error':
+      console.error('Authentication error:', error.error);
+      break;
+    default:
+      console.error('Unknown error:', error);
+  }
+};
+```
+
+## Resources
+
+- [Civic Auth OAuth2/OIDC Integration](/integration/other)
+- [Complete React Native Example](https://github.com/civicteam/civic-auth-examples/tree/main/packages/mobile/react-native-expo)
+- [Expo AuthSession Documentation](https://docs.expo.dev/versions/latest/sdk/auth-session/)
+
+## Next Steps
+
+- Need Web3 functionality? Check out [Web3 Wallet Integration](/mobile/web3-wallet)
+- Review the [API Reference](/mobile/api-reference) for detailed documentation
+- Explore [example implementations](https://github.com/civicteam/civic-auth-examples)
