@@ -1,0 +1,131 @@
+---
+title: Tools, Resources & Prompts
+description: The three types of capabilities your AI can access through MCP
+icon: "toolbox"
+---
+
+## The Three Types of MCP Capabilities
+
+When you connect to an MCP server (like GitHub or Slack), your AI gets access to three types of capabilities:
+
+## Tools 🔧
+
+**Tools are actions your AI can perform** - things that change or do something.
+
+### Examples:
+- **GitHub**: Create an issue, merge a pull request, comment on code
+- **Slack**: Send a message, create a channel, react to posts  
+- **Google Drive**: Create a document, share a file, move files to folders
+- **Email**: Send an email, mark as read, move to folder
+
+### How your AI uses tools:
+```
+You: "Create a GitHub issue for the login bug"
+AI: [Uses GitHub create_issue tool] "Issue #123 created: Fix login bug"
+
+You: "Send a Slack message to the team"  
+AI: [Uses Slack send_message tool] "Message sent to #general"
+```
+
+## Resources 📄
+
+**Resources are information your AI can read** - things that provide data.
+
+### Examples:
+- **GitHub**: Repository contents, issue descriptions, commit history
+- **Slack**: Message history, channel member lists, thread contents
+- **Google Drive**: File contents, folder structures, file metadata
+- **Databases**: Query results, table schemas, stored data
+
+### How your AI uses resources:
+```
+You: "What's in our latest pull request?"
+AI: [Reads GitHub PR resource] "The PR adds user authentication with OAuth..."
+
+You: "Summarize yesterday's Slack messages"
+AI: [Reads Slack message history resource] "Main topics discussed: deployment, bug fixes..."
+```
+
+## Prompts 💭
+
+**Prompts are pre-written instructions** that help your AI use tools and resources effectively.
+
+### Examples:
+- **Code Review Prompt**: "Review this pull request for security issues, performance, and code style"
+- **Bug Report Prompt**: "Create a detailed bug report with steps to reproduce, expected vs actual behavior"
+- **Meeting Summary Prompt**: "Summarize key decisions, action items, and next steps from this conversation"
+
+### How your AI uses prompts:
+```
+You: "Review this pull request"
+AI: [Uses code review prompt] Systematically checks security, performance, style, and provides structured feedback
+
+You: "Summarize today's standup"  
+AI: [Uses meeting summary prompt] Creates organized summary with decisions, action items, blockers
+```
+
+## How They Work Together
+
+A typical AI workflow combines all three:
+
+<Steps>
+  <Step title="Read Resources">
+    AI reads current state (GitHub issues, Slack messages, file contents)
+  </Step>
+  <Step title="Use Prompts">
+    AI applies pre-written instructions for how to analyze or process the information
+  </Step>
+  <Step title="Execute Tools">
+    AI takes actions based on what it learned (create issues, send messages, update files)
+  </Step>
+</Steps>
+
+### Example Workflow:
+```
+You: "Prepare for our team standup"
+
+1. AI reads resources: Recent GitHub commits, Slack messages, project files
+2. AI uses prompt: "Standup preparation checklist"
+3. AI uses tools: Creates summary document, posts reminder in Slack
+```
+
+## Understanding MCP Server Capabilities
+
+Each MCP server provides different combinations:
+
+### GitHub Server
+- **Tools**: Create issues, comment, merge PRs, create branches
+- **Resources**: Repository files, issue lists, commit history, PR details
+- **Prompts**: Code review templates, issue creation guidelines
+
+### Slack Server  
+- **Tools**: Send messages, create channels, react to posts, set status
+- **Resources**: Message history, channel lists, user profiles, thread contents
+- **Prompts**: Message formatting, team communication guidelines
+
+### Google Drive Server
+- **Tools**: Create/edit documents, share files, organize folders
+- **Resources**: File contents, folder structures, sharing permissions
+- **Prompts**: Document creation templates, organization standards
+
+## Why This Matters
+
+Understanding these three types helps you:
+
+- **Ask better questions**: "Read the latest GitHub issues" (resource) vs "Create a new issue" (tool)
+- **Set expectations**: Know what your AI can read vs what it can change
+- **Troubleshoot**: If something isn't working, understand whether it's a tool, resource, or prompt issue
+- **Explore capabilities**: Ask "What tools are available?" to discover what actions your AI can take
+
+## Discovering Available Capabilities
+
+Try these prompts to explore what's available:
+
+```
+"What tools can you use?"
+"What information can you access?"  
+"What prompts are available for GitHub?"
+"Show me all the Slack capabilities"
+```
+
+Your AI will list the tools, resources, and prompts available from your connected MCP servers, helping you understand what's possible.

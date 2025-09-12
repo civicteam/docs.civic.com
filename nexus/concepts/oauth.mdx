@@ -1,0 +1,86 @@
+---
+title: OAuth & Authentication
+description: How Nexus securely connects to your apps without storing passwords
+icon: "shield-check"
+---
+
+## What is OAuth?
+
+OAuth is a secure way for apps to access your accounts in other services without ever seeing your password. When you connect Nexus to GitHub, Slack, or Google Drive, you're using OAuth.
+
+## How It Works
+
+Instead of giving Nexus your GitHub password, OAuth works like this:
+
+<Steps>
+  <Step title="Permission Request">
+    Nexus says "I'd like to access your GitHub repos"
+  </Step>
+  <Step title="You Authorize">
+    GitHub asks you "Allow Nexus to access your repos?" and you click "Yes"
+  </Step>
+  <Step title="Secure Token">
+    GitHub gives Nexus a special token (not your password) that proves you said "yes"
+  </Step>
+  <Step title="Access Granted">
+    Nexus uses the token to access your repos on your behalf
+  </Step>
+</Steps>
+
+## Why OAuth is Safer
+
+**With passwords:**
+- ❌ Apps store your actual password
+- ❌ If they get hacked, your password is exposed
+- ❌ Hard to revoke access
+- ❌ App can do anything your account can do
+
+**With OAuth:**
+- ✅ Apps never see your password
+- ✅ You can revoke access anytime
+- ✅ Limited permissions (read repos, not delete account)
+- ✅ Tokens expire automatically
+
+## OAuth in Nexus
+
+When you first use a tool in Nexus:
+
+1. **Chat Interface**: Your AI will ask you to authorize the service
+2. **Quick Authorization**: Click to approve the specific permissions needed
+3. **One-Time Setup**: You only need to do this once per service
+4. **Automatic Management**: Nexus handles token refresh and renewal
+
+## Managing Your Authorizations
+
+You can always:
+- **View connected services** in your Nexus dashboard
+- **Revoke access** to any service instantly
+- **Re-authorize** if you need different permissions
+- **See what permissions** each service has
+
+## Common Questions
+
+<Accordion title="What happens if I revoke access to a service?">
+The service immediately stops working in your AI assistant. You can re-authorize it anytime by using a command that requires that service.
+</Accordion>
+
+<Accordion title="Does Nexus store my passwords?">
+No, never. Nexus only stores OAuth tokens, which are secure, limited-permission keys that don't contain any password information.
+</Accordion>
+
+<Accordion title="Can I limit what permissions Nexus gets?">
+Yes! During the OAuth flow, you can often choose which permissions to grant. For example, you might allow read access to repositories but not write access.
+</Accordion>
+
+<Accordion title="How long do authorizations last?">
+OAuth tokens typically last 1-24 hours before automatic refresh. If you don't use a service for extended periods, you may need to re-authorize.
+</Accordion>
+
+## Security Best Practices
+
+- **Review permissions** before clicking "Authorize"
+- **Revoke unused services** periodically in your Nexus dashboard
+- **Use specific permissions** rather than granting broad access
+- **Monitor your connected services** to ensure you recognize them all
+
+OAuth keeps your accounts secure while letting your AI assistant do useful work across all your tools.
