@@ -99,6 +99,7 @@
           "pages": [
             "integration/react",
             "integration/nextjs",
+            "integration/react-router",
             "integration/vanillajs",
             {
               "group": "Node.JS",
