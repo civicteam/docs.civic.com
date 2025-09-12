@@ -1,17 +1,66 @@
 ---
-title: "Mobile Solana"
-icon: "code"
+title: "Web3 Wallet Integration"
+icon: "wallet"
+description: "Integrate React Native with Civic Auth and embedded Solana wallets."
 public: true
 ---
 
 <Info>
-  The Civic Auth Solana API for React Native is currently in early access and
+  The Civic Auth Web3 API for React Native is currently in early access and
   subject to change.
 </Info>
 
+## Overview
+
+For apps requiring embedded wallet functionality with blockchain interactions. This approach includes everything from Authentication Only plus embedded Solana wallet creation and blockchain operations.
+
+**What you get:**
+- Everything from [Authentication Only](/mobile/authentication-only)
+- Embedded Solana wallet creation
+- Transaction signing and sending
+- Balance checking and message signing
+- Non-custodial wallet management
+
+## Prerequisites
+
+### 1. Complete Installation
+
+Before starting, complete the [Installation & Setup](/mobile/installation) guide.
+
+### 2. Enable Web3 Wallets in Civic Dashboard
+
+**Critical Step:** You must enable embedded wallets for your application in the Civic Auth dashboard:
+
+1. Go to [Civic Auth Dashboard](https://auth.civic.com/dashboard)
+2. Select your application
+3. Navigate to **Settings** or **Features** section
+4. **Enable "Embedded Wallets"** or **"Web3 Wallets"** feature
+5. Save your changes
+
+<Warning>
+  Without enabling wallets in the dashboard, wallet creation will fail even with correct code implementation.
+</Warning>
+
+### 3. Register Your App Domain/Scheme
+
+**Critical Step:** Register your mobile app scheme with Civic Auth:
+
+1. In the Civic Auth dashboard, go to your app settings
+2. Find the **"Allowed Origins"** or **"Redirect URIs"** section
+3. Add your mobile app scheme (e.g., `myapp://` or `yourapp://`)
+4. Make sure it matches exactly with your app configuration
+
+**Example Domain Registration:**
+- If your app scheme is `myapp://`, register: `myapp://`
+- If your app scheme is `com.yourcompany.yourapp://`, register: `com.yourcompany.yourapp://`
+
+<Note>
+  Your domain registration must match exactly with the scheme configured in your app's `app.json` or `app.config.js` file.
+</Note>
+
 ## Getting Started
 
-After authenticating a user with Civic Auth, you can create a Web3 wallet for them using the `useWeb3Client` hook. Embedded wallets are generated on behalf of users through our non-custodial wallet partner—neither Civic nor your app has access to the private keys.
+After completing the prerequisites above, you can create a Web3 wallet for authenticated users using the `useWeb3Client` hook. Embedded wallets are generated on behalf of users through our non-custodial wallet partner—neither Civic nor your app has access to the private keys.
 
 <Info>
   Only embedded wallets are supported (no self-custodial wallet connections yet)
@@ -61,7 +110,19 @@ android {
 - Xcode 14.0 or higher
 - Swift 5.0 or higher
 
-**Step 1: Add URL Type**
+**Step 1: Generate Native Code**
+
+If you're using Expo managed workflow, first generate the native iOS code:
+
+```bash
+npx expo prebuild
+```
+
+<Note>
+  This creates the native iOS project files needed for the next steps.
+</Note>
+
+**Step 2: Add URL Type**
 
 1. Navigate to the **Info** tab of your app target settings in Xcode
 2. In the **URL Types** section, click the **＋** button to add a new URL
@@ -69,9 +130,42 @@ android {
    - **Identifier:** `metakeep`
    - **URL Schemes:** `$(PRODUCT_BUNDLE_IDENTIFIER)`
 
-**Step 2: Handle Callback URLs**
+**Step 3: Import MetaKeep Framework**
 
-Add the following code to your `ios/<YourAppName>/AppDelegate.swift`:
+Add the MetaKeep import to your `ios/<YourAppName>/AppDelegate.swift` file:
+
+```swift
+import MetaKeep
+```
+
+**Step 4: Add MetaKeep SDK to iOS Dependencies**
+
+Add the MetaKeep pod to your `ios/Podfile`:
+
+```ruby
+target 'YourAppName' do
+  use_expo_modules!
+  
+  # MetaKeep SDK
+  pod 'MetaKeep', '~> 2.0.0'
+  
+  # ... other pods
+end
+```
+
+Install the pod dependencies:
+
+```bash
+cd ios && pod install
+```
+
+<Info>
+  If you encounter a "no such module 'MetaKeep'" error, this step resolves it by adding the MetaKeep SDK to your iOS project dependencies.
+</Info>
+
+**Step 5: Handle Callback URLs**
+
+Add the MetaKeep URL handling code inside the existing `application(_:open:options:)` method in your `ios/<YourAppName>/AppDelegate.swift` file:
 
 ```swift
 public override func application(
@@ -79,18 +173,23 @@ public override func application(
     open url: URL,
     options: [UIApplication.OpenURLOptionsKey: Any] = [:]
 ) -> Bool {
-
-    ...
-
+    
+    // Add this MetaKeep handling code inside the existing method
     if url.absoluteString.lowercased().contains("metakeep") {
         MetaKeep.companion.resume(url: url.absoluteString)
         return true
     }
-
-   ...
-
+    
+    // Keep any existing URL handling code here
+    // ... existing code ...
+    
+    return false
 }
 ```
+
+<Warning>
+  Make sure to add the MetaKeep code **inside** the existing `application(_:open:options:)` method, not as a separate method. The file path will be `ios/<YourAppName>/AppDelegate.swift` after running `expo prebuild`.
+</Warning>
 
 ### How Wallet Creation Works
 
@@ -463,6 +562,53 @@ export const AuthProvider = ({
   );
 };
 ```
+
+## Troubleshooting
+
+### Common Domain Registration Issues
+
+If wallet creation fails, check these common domain registration problems:
+
+#### ❌ Domain Mismatch
+**Problem:** Your registered domain doesn't match your app scheme exactly.
+
+**Example:**
+- App scheme: `myapp://`
+- Registered domain: `myapp` (missing `://`)
+- **Result:** Wallet creation fails
+
+**Solution:** Ensure exact match including `://`
+
+#### ❌ Missing Wallet Feature
+**Problem:** Embedded wallets not enabled in Civic dashboard.
+
+**Symptoms:**
+- Authentication works fine
+- `createWallets()` fails or returns null
+- Console errors about wallet features
+
+**Solution:** Enable "Embedded Wallets" feature in dashboard settings
+
+#### ❌ Incorrect Redirect URI
+**Problem:** Using hardcoded redirect URI instead of `makeRedirectUri()`
+
+**Example:**
+```typescript
+// ❌ Wrong - hardcoded
+redirectUri: "myapp://auth"
+
+// ✅ Correct - dynamic
+redirectUri: makeRedirectUri({ scheme: "myapp" })
+```
+
+### Verifying Your Setup
+
+To verify your domain registration is correct:
+
+1. Check your `app.json`/`app.config.js` scheme matches registered domain
+2. Test authentication first (should work without wallets)
+3. Only then test wallet creation
+4. Check browser developer tools for any CORS or domain errors
 
 ## Example Repository
 

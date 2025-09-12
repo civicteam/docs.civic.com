@@ -115,11 +115,6 @@
                   "integration/python/django"
                 ]
               },
-              {
-                "group": "Mobile",
-                "icon": "mobile-screen-button",
-                "pages": ["integration/mobile/react-native"]
-              },
               "integration/other",
               "integration/error-codes"
             ]
@@ -129,18 +124,23 @@
             "pages": [
               "web3/embedded-wallets",
               "web3/ethereum-evm",
-              "web3/solana",
-              {
-                "group": "Mobile",
-                "icon": "mobile",
-                "pages": ["web3/mobile/solana"]
-              }
+              "web3/solana"
             ]
           },
           {
             "group": "Libraries & Tools",
             "icon": "code",
             "pages": ["libraries/auth-verify"]
+          },
+          {
+            "group": "Mobile",
+            "pages": [
+              "mobile/installation",
+              "mobile/quick-start",
+              "mobile/authentication-only",
+              "mobile/web3-wallet",
+              "mobile/api-reference"
+            ]
           },
           {
             "group": "Guides",
