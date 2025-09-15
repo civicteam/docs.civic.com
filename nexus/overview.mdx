@@ -10,58 +10,54 @@ icon: "rocket"
 
 ## How It Works
 
+### Easiest Way: Try It Directly in Nexus Chat
+
 <Steps>
-  <Step title="Visit nexus.civic.com">
-    Browse and select from 50+ tools and services you want to connect at **[nexus.civic.com](https://nexus.civic.com)**
-    <Frame caption="Browse and select your tools">
+  <Step title="Sign up at nexus.civic.com">
+    Create your account and browse available tools (GitHub, Slack, Google Drive, etc.)
+    <Frame caption="Sign up and browse tools">
       <img
         className="rounded-lg"
-        src="https://placehold.co/400x250/f0f9ff/0ea5e9?text=Browse+Tools"
+        src="https://placehold.co/400x250/f0f9ff/0ea5e9?text=Browse+50%2B+Tools"
         alt="Nexus directory showing available tools"
       />
     </Frame>
   </Step>
-  <Step title="Get Your Connection">
-    Copy the MCP URL or click the install button for your client
-    <Frame caption="Get your connection details">
+  <Step title="Click 'Chat' to test immediately">
+    Use the built-in chat interface - no setup required, start testing tools right away
+    <Frame caption="Built-in Nexus chat interface">
       <img
         className="rounded-lg"
-        src="https://placehold.co/400x250/f0fdf4/22c55e?text=Get+Connection"
-        alt="Copy MCP URL or install button"
+        src="https://placehold.co/600x350/f3e8ff/a855f7?text=Hello%2C+I%27m+your+MCP+assistant%0A%0A%22Connect+me+to+GitHub%22%0A%22Check+my+Slack+messages%22"
+        alt="Nexus chat interface ready to use"
       />
     </Frame>
   </Step>
-  <Step title="Connect Your AI Client">
-    Paste the URL or complete the one-click install
-    <Frame caption="Connect to your AI client">
+  <Step title="Ask for what you need">
+    Request tools and authorizations directly in chat: "Connect me to GitHub", "Check my Slack messages"
+    <Frame caption="Tool authorization in chat">
       <img
         className="rounded-lg"
-        src="https://placehold.co/400x250/fef3c7/d97706?text=Connect+Client"
-        alt="AI client settings with MCP configuration"
+        src="https://placehold.co/400x250/fce7f3/be185d?text=Authorize+GitHub+Access%0A%5BAuthorize%5D"
+        alt="OAuth authorization flow in chat"
       />
     </Frame>
   </Step>
-  <Step title="Authorize Your Tools">
-    When you first use a tool, authorize access directly in the chat interface
-    <Frame caption="Authorize tool access">
+  <Step title="Start working">
+    Your AI assistant can now access your tools - all within the Nexus interface
+    <Frame caption="AI using your connected tools">
       <img
         className="rounded-lg"
-        src="https://placehold.co/400x250/fce7f3/be185d?text=Authorize+Tools"
-        alt="OAuth authorization popup"
-      />
-    </Frame>
-  </Step>
-  <Step title="Start Using">
-    Ask your AI to use your connected tools in plain English
-    <Frame caption="Your AI can now access your tools">
-      <img
-        className="rounded-lg"
-        src="https://placehold.co/400x250/f3e8ff/a855f7?text=Start+Using"
-        alt="AI chat showing tool usage"
+        src="https://placehold.co/600x300/d1fae5/22c55e?text=Here+are+your+recent+GitHub+PRs%3A%0A%E2%80%A2+Fix+login+bug+%28%23123%29%0A%E2%80%A2+Add+feature+%28%23124%29"
+        alt="AI assistant showing results from connected tools"
       />
     </Frame>
   </Step>
 </Steps>
+
+### Optional: Connect External AI Clients
+
+Once you've tested in Nexus chat, you can connect external clients like ChatGPT and Claude for convenience.
 
 <Note>
 **No server management, no API keys to juggle, no complex configurations.**
@@ -75,19 +71,20 @@ icon: "rocket"
   />
 </Frame>
 
-## Start with Your Favorite AI Client
+## Ready to Get Started?
 
-<CardGroup cols={3}>
-  <Card title="Claude Desktop" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
-    **Most Popular** - Remote URL method (2 minutes)
+<CardGroup cols={2}>
+  <Card title="Try Nexus Chat Now" icon="message-circle" href="https://nexus.civic.com">
+    **Fastest way** - No setup required, start using tools immediately
   </Card>
-  <Card title="Cursor" icon="code" href="/nexus/quickstart/clients/cursor">
-    **📦 One-click install** - Install button (3 minutes)
-  </Card>
-  <Card title="VS Code" icon="code" href="/nexus/quickstart/clients/vscode">
-    **📦 One-click install** - Install link (3 minutes)
+  <Card title="Connect Your AI Client" icon="plug" href="/nexus/quickstart">
+    **For convenience** - Use ChatGPT, Claude, or development tools
   </Card>
 </CardGroup>
+
+<Note>
+**Start with Nexus chat first** - Test all tools directly in our interface, then optionally connect external AI clients for convenience.
+</Note>
 
 ## What You Can Do
 
@@ -140,46 +137,38 @@ Once connected, your AI can work with all your tools:
   Learn about our security architecture, compliance, and best practices
 </Card>
 
-## All Supported AI Clients
+## All Supported Clients
 
+### Primary AI Assistants
 <CardGroup cols={3}>
+  <Card title="ChatGPT" icon="message-circle" href="/nexus/quickstart/clients/chatgpt">
+    **Coming Soon** • Direct connector
+  </Card>
   <Card title="Claude Desktop" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
-    Remote URL • 2 minutes
+    **Available** • Direct connector • 2 mins
   </Card>
   <Card title="Claude.ai" icon="globe" href="/nexus/quickstart/clients/claude-web">
-    Remote URL • 2 minutes
-  </Card>
-  <Card title="Cursor" icon="code" href="/nexus/quickstart/clients/cursor">
-    One-click install • 3 minutes
-  </Card>
-  <Card title="VS Code" icon="code" href="/nexus/quickstart/clients/vscode">
-    One-click install • 3 minutes
-  </Card>
-  <Card title="JetBrains IDEs" icon="command" href="/nexus/quickstart/clients/jetbrains">
-    Manual setup • 5 minutes
-  </Card>
-  <Card title="Windsurf" icon="wind" href="/nexus/quickstart/clients/windsurf">
-    Manual setup • 5 minutes
-  </Card>
-  <Card title="Goose" icon="terminal" href="/nexus/quickstart/clients/goose">
-    Remote URL • 2 minutes
-  </Card>
-  <Card title="Claude Code" icon="terminal" href="/nexus/quickstart/clients/claude-code">
-    Manual setup • 5 minutes
-  </Card>
-  <Card title="Gemini CLI" icon="google" href="/nexus/quickstart/clients/gemini">
-    Manual setup • 5 minutes
+    **Available** • Direct connector • 2 mins
   </Card>
 </CardGroup>
 
+### Development Tools
+<Card title="Developer Setup Guide" icon="code" href="/nexus/developers/client-setup">
+  **Cursor, VS Code, JetBrains IDEs, and more** - Advanced setup guides for development environments
+</Card>
+
 <Info>
-**Two setup methods:** Most clients use either **Remote URL** (copy/paste) or **one-click install**. A few require manual configuration.
+**Primary vs Development:** Primary clients offer simple direct connector setup. Development tools require Hub Bridge configuration but offer the same functionality.
 </Info>
 
-## Ready to Get Started?
+## Get Started Right Now
 
-<Card title="Choose Your AI Client and Get Connected" icon="rocket" href="/nexus/quickstart">
-  Step-by-step setup guides with screenshots for all supported clients
+<Card title="Try Nexus Chat Instantly" icon="rocket" href="https://nexus.civic.com">
+  **Zero setup required** - Sign up and start using 50+ tools in our built-in chat interface
+</Card>
+
+<Card title="Or Connect External Clients" icon="plug" href="/nexus/quickstart">
+  Step-by-step guides for ChatGPT, Claude, VS Code, and more
 </Card>
 
 ## Available Tools & Services

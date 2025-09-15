@@ -175,24 +175,31 @@
     }, {
       "tab": "Nexus",
       "groups": [
-        {
-          "group": "Getting Started",
-          "pages": [
-            "nexus/overview",
-            "nexus/quickstart/index",
-            "nexus/quickstart/hub-bridge"
-          ]
-        },
-        {
-          "group": "Key Concepts",
-          "icon": "lightbulb",
-          "pages": [
-            "nexus/concepts/mcp",
-            "nexus/concepts/connection-methods", 
-            "nexus/concepts/tools-resources-prompts",
-            "nexus/concepts/oauth"
-          ]
-        },
+         {
+           "group": "Getting Started",
+           "icon": "rocket",
+           "pages": [
+             "nexus/overview",
+             "nexus/quickstart/index"
+           ]
+         },
+         {
+           "group": "Primary Clients",
+           "icon": "message-circle", 
+           "pages": [
+             "nexus/quickstart/clients/chatgpt",
+             "nexus/quickstart/clients/claude-desktop",
+             "nexus/quickstart/clients/claude-web"
+           ]
+         },
+         {
+           "group": "Developers",
+           "icon": "code",
+           "pages": [
+             "nexus/developers/client-setup",
+             "nexus/quickstart/hub-bridge"
+           ]
+         },
         {
           "group": "Reference",
           "icon": "book",

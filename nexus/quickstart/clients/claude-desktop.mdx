@@ -64,23 +64,33 @@ Before you begin, make sure you have:
 <Steps>
   <Step title="Open Claude Desktop settings">
     In Claude Desktop:
-    1. Click on your profile icon in the top right
-    2. Select "Settings" from the dropdown menu
-    3. Navigate to the "Developer" section
+    1. Click on your **profile icon** in the top right
+    2. Select **"Settings"** from the dropdown menu
+    3. Navigate to the **"Developer"** section
+    
+    <Frame caption="Navigate to Claude Desktop Settings → Developer">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/700x400/f0f9ff/0ea5e9?text=Claude+Desktop+Settings+%E2%86%92+Developer"
+        alt="Claude Desktop settings showing Developer section"
+      />
+    </Frame>
   </Step>
 
   <Step title="Add custom connector">
-    1. Look for "MCP Connectors" or "Add connector" button
-    2. Click "Add custom connector" 
-    3. Enter a name: "Civic Nexus"
-    4. Paste the MCP URL from nexus.civic.com
-    5. Click "Add" then "Connect"
+    1. Look for **"MCP Connectors"** section
+    2. Click **"Add custom connector"** button
+    3. Enter a name: **"Civic Nexus"**
+    4. Paste the MCP URL: `https://nexus.civic.com/hub/mcp`
+    5. Click **"Add"** then **"Connect"**
     
-    <img
-      className="rounded-lg"
-      src="https://placehold.co/800x400/d1fae5/22c55e?text=Claude+Desktop+MCP+Settings"
-      alt="Claude Desktop MCP connector settings"
-    />
+    <Frame caption="Add custom MCP connector in Claude Desktop">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/700x450/d1fae5/22c55e?text=Add+Custom+Connector%0A%E2%86%93%0AName%3A+Civic+Nexus%0AURL%3A+nexus.civic.com%2Fhub%2Fmcp"
+        alt="Claude Desktop MCP connector dialog"
+      />
+    </Frame>
   </Step>
 </Steps>
 
@@ -93,6 +103,14 @@ Before you begin, make sure you have:
     2. A browser window will open for OAuth authentication
     3. Sign in to the service and authorize access
     4. Return to Claude Desktop when complete
+    
+    <Frame caption="OAuth authentication flow (example: GitHub)">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/600x400/fef3c7/f59e0b?text=GitHub+OAuth%0A%E2%86%93%0AAuthorize+Civic+Nexus%0A%5BAuthorize+Application%5D"
+        alt="GitHub OAuth authorization screen"
+      />
+    </Frame>
     
     <Note>
       Authentication is handled securely by Civic Nexus. Your credentials are never exposed to Claude or stored locally.
@@ -112,6 +130,14 @@ Before you begin, make sure you have:
     "Can you check my recent GitHub pull requests?"
     "What's in my Google Drive?"
     ```
+    
+    <Frame caption="Claude Desktop successfully using connected tools">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/700x300/f3e8ff/a855f7?text=Claude+Desktop+Chat%0A%E2%86%93%0A%22Here+are+your+recent+GitHub+PRs%3A%22%0A%E2%80%A2+Fix+login+bug+%28%23123%29%0A%E2%80%A2+Add+new+feature+%28%23124%29"
+        alt="Claude Desktop chat showing successful tool usage"
+      />
+    </Frame>
     
     Claude should now be able to access and interact with your connected services.
   </Step>

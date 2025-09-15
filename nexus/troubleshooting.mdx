@@ -19,41 +19,100 @@ icon: "wrench"
   </Step>
 </Steps>
 
-## Common Issues by Connection Method
+## Primary Client Issues (ChatGPT & Claude)
 
-### Remote URL Issues
+### 401 Authentication Errors
 
 <AccordionGroup>
-  <Accordion title="Client doesn't see Civic Nexus connector" icon="link-slash">
-    **Symptoms:** No Civic Nexus option in client settings, or connector shows "failed to connect"
+  <Accordion title="401 Unauthorized - ChatGPT/Claude Connector" icon="key">
+    **Symptoms:** "Unauthorized", "Authentication failed", or "Invalid credentials" when adding MCP connector
+    
+    **For Claude Desktop/Claude.ai:**
+    - Ensure you have Claude Pro, Team, or Enterprise (MCP not available on free plan)
+    - Check that you're signed into your Claude account
+    - Remove and re-add the Civic Nexus connector with fresh URL
+    - Clear browser cache and cookies for claude.ai
+    - Verify the MCP URL is correct: `https://nexus.civic.com/hub/mcp`
+    
+    **For ChatGPT (when available):**
+    - Ensure you have ChatGPT Plus or Enterprise
+    - Check that MCP connectors are enabled in your subscription
+    - Clear browser cache for chatgpt.com
+    - Try incognito/private browsing mode
+  </Accordion>
+  
+  <Accordion title="401 During Tool Usage" icon="exclamation-triangle">
+    **Symptoms:** Connector connects but tools return "Unauthorized" errors
     
     **Solutions:**
-    - Double-check your MCP URL is correct: `https://nexus.civic.com/hub/mcp`
-    - Each user needs their own URL from nexus.civic.com
-    - Verify your client supports remote MCP URLs (see [compatibility matrix](/nexus/reference/client-compatibility))
-    - Try copying the URL again from nexus.civic.com in case it changed
+    - Visit [nexus.civic.com](https://nexus.civic.com) and ensure you've authorized the specific services (GitHub, Slack, etc.)
+    - Check that your service accounts haven't revoked access
+    - Re-authorize individual services: ask your AI "Connect me to GitHub"
+    - Verify you have the required permissions (repo access, workspace membership, etc.)
+  </Accordion>
+</AccordionGroup>
+
+### 404 Not Found Errors
+
+<AccordionGroup>
+  <Accordion title="404 Connector Not Found" icon="link-slash">
+    **Symptoms:** "Connector not found", "Invalid URL", or "Service unavailable" when adding connector
+    
+    **Solutions:**
+    - Double-check the MCP URL is exactly: `https://nexus.civic.com/hub/mcp`
+    - Ensure you have created an account at [nexus.civic.com](https://nexus.civic.com)
+    - Check your internet connection and try again
+    - Corporate firewall may be blocking - try from personal network
+    - Wait a few minutes and retry (temporary service issues)
+  </Accordion>
+  
+  <Accordion title="404 During Tool Usage" icon="server">
+    **Symptoms:** Connector works but specific tools return "Not Found" errors
+    
+    **Solutions:**
+    - Check that you selected the required MCP servers at nexus.civic.com
+    - Some tools require specific service permissions - re-authorize the service
+    - Try asking: "What MCP servers are available?" to see current connections
+    - Service may be temporarily unavailable - try again later
+  </Accordion>
+</AccordionGroup>
+
+### Connection Issues
+
+<AccordionGroup>
+  <Accordion title="Connector shows as disconnected" icon="link-slash">
+    **Symptoms:** Civic Nexus connector shows "Disconnected" or "Failed" status
+    
+    **Solutions:**
+    - Check internet connection and try refreshing
+    - Remove and re-add the connector with the correct URL
+    - Ensure no VPN or proxy is interfering
+    - For Claude Desktop: update to latest version
+    - For Claude.ai: try refreshing the browser page
   </Accordion>
   
   <Accordion title="Authentication popup blocked" icon="shield">
     **Symptoms:** Client tries to connect but no auth window appears
     
     **Solutions:**
-    - Allow popups for your client application
+    - Allow popups for your client (Claude Desktop/ChatGPT)
     - Try connecting from a different network (corporate firewalls may block)
     - Clear client cache/settings and re-add the connector
-    - Some clients require manual browser authentication
+    - Use incognito/private browsing mode for web clients
   </Accordion>
   
-  <Accordion title="Tools/servers don't appear" icon="server">
+  <Accordion title="Tools don't appear after connecting" icon="server">
     **Symptoms:** Connection succeeds but no MCP tools are visible
     
     **Solutions:**
     - Restart your client completely after initial setup
-    - Check nexus.civic.com - you may need to select servers first
+    - Check nexus.civic.com - make sure you selected MCP servers
+    - Ask your AI: "What MCP tools are available?" to verify connection
     - Complete OAuth flows for each service you want to use
-    - Some tools require specific scopes - re-authorize if needed
   </Accordion>
 </AccordionGroup>
+
+## Developer Tool Issues (Hub Bridge)
 
 ### Hub Bridge Issues  
 
