@@ -5,15 +5,29 @@ icon: layer-group
 public: true
 ---
 
+import PythonSdkWarning from '/snippets/_python-sdk-warning.mdx';
 
+<Info>
+**Prefer AI-assisted setup?** Use our [AI prompts for Django](/ai-prompts/python/django) to automatically integrate Civic Auth using Claude, ChatGPT, or other AI assistants. Includes a step-by-step video tutorial!
+</Info>
 
-## 1. Install dependencies
+<PythonSdkWarning />
+
+## Quick Start
+
+### 1. Install Dependencies
 
 ```bash
 pip install "civic-auth[django]"
 ```
 
-## 2. Configure your App
+Or, if you're using the `uv` package manager:
+
+```bash
+uv add "civic-auth[django]"
+```
+
+### 2. Configure Your Django Settings
 
 Add Civic Auth configuration to your Django settings:
 
@@ -21,86 +35,161 @@ Add Civic Auth configuration to your Django settings:
 # settings.py
 
 CIVIC_AUTH = {
-    "client_id": "...",  # Client ID from auth.civic.com
-    "redirect_url": "http://localhost:8000/auth/callback",  # change to your domain when deploying
-    "post_logout_redirect_url": "http://localhost:8000/"  # The postLogoutRedirectUrl is the URL where the user will be redirected after successfully logging out from Civic's auth server.
+    "client_id": "YOUR_CLIENT_ID",  # Get this from auth.civic.com
+    "redirect_url": "http://localhost:8000/auth/callback",
+    "post_logout_redirect_url": "http://localhost:8000/"
 }
-```
 
-Note: `redirect_url` and `post_logout_redirect_url` must be absolute URLs.
-
-## 3. Add Middleware
-
-Add the Civic Auth middleware to your Django middleware stack:
-
-```python
-# settings.py
-
+# Add Civic Auth middleware
 MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Add Civic Auth middleware
     'civic_auth.integrations.django.CivicAuthMiddleware',
 ]
 ```
 
-## 4. Add URL Patterns
+### 3. Add URL Patterns
 
 Include the Civic Auth URLs in your project:
 
 ```python
 # urls.py
 
+from django.contrib import admin
 from django.urls import path, include
 from civic_auth.integrations.django import get_auth_urls
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     # Add Civic Auth URLs
     path('', include(get_auth_urls())),
     # Your other URLs...
+    path('', include('your_app.urls')),  # Replace with your app
 ]
 ```
 
-This adds the following routes:
-- `/auth/login` - Initiates the login flow
-- `/auth/callback` - Handles the OAuth callback
-- `/auth/logout` - Logs the user out
+### 4. Create Basic Views
 
-## 5. Protect Views
-
-Use the `civic_auth_required` decorator to protect views:
+Create views for your application:
 
 ```python
 # views.py
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
 from civic_auth.integrations.django import civic_auth_required
 
-@civic_auth_required
-def protected_view(request):
-    return HttpResponse("This view requires authentication!")
-```
-
-## 6. Access User Information
-
-The authenticated user is available via `request.civic_user`:
-
-```python
-from django.http import JsonResponse
-from civic_auth.integrations.django import civic_auth_required
+def home(request):
+    return HttpResponse("""
+        <h1>Welcome to My Django App!</h1>
+        <p><a href="/auth/login">Login with Civic Auth</a></p>
+        <p><a href="/profile">View Profile</a> (requires authentication)</p>
+        <p><a href="/dashboard">Dashboard</a> (requires authentication)</p>
+    """)
 
 @civic_auth_required
 def profile(request):
     user = request.civic_user
     return JsonResponse({
-        "id": user.id,
-        "email": user.email,
-        "name": user.name,
-        "picture": user.picture
+        "message": f"Hello, {user.get('name', 'User')}!",
+        "user_info": {
+            "id": user.get("id"),
+            "email": user.get("email"),
+            "name": user.get("name"),
+            "picture": user.get("picture")
+        }
+    })
+
+@civic_auth_required
+def dashboard(request):
+    user = request.civic_user
+    return HttpResponse(f"""
+        <h1>Dashboard</h1>
+        <p>Welcome, {user.get('name', 'User')}!</p>
+        <img src="{user.get('picture', '')}" alt="Profile picture" style="width: 50px; height: 50px; border-radius: 50%;">
+        <p>Email: {user.get('email', 'No email')}</p>
+        <p><a href="/auth/logout">Logout</a></p>
+    """)
+
+def public_page(request):
+    return HttpResponse("<h1>Public Page</h1><p>No authentication required</p>")
+```
+
+### 5. Add URL Patterns for Your Views
+
+```python
+# your_app/urls.py
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('profile/', views.profile, name='profile'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('public/', views.public_page, name='public'),
+]
+```
+
+### 6. Run Your Django App
+
+```bash
+python manage.py runserver
+```
+
+Visit `http://localhost:8000` and click the login link to test authentication.
+
+## How It Works
+
+### Authentication Flow
+1. User visits `/auth/login` - starts the login process
+2. User authenticates with Civic
+3. User gets redirected to `/auth/callback` - completes authentication
+4. User can now access protected views
+
+### Available Routes
+- `/auth/login` - Start authentication
+- `/auth/callback` - Handle OAuth callback (auto-created)
+- `/auth/logout` - Sign out user
+
+### Working with User Data
+
+The authenticated user is available via `request.civic_user` as a dictionary:
+
+```python
+@civic_auth_required
+def user_info(request):
+    user = request.civic_user
+    return JsonResponse({
+        "id": user.get("id"),
+        "email": user.get("email"),
+        "name": user.get("name"),
+        "picture": user.get("picture")
     })
 ```
 
-## 7. Template Context
+### Protecting Views
 
-Access the user in templates:
+Use the `@civic_auth_required` decorator to protect views:
+
+```python
+from civic_auth.integrations.django import civic_auth_required
+
+@civic_auth_required
+def protected_view(request):
+    user = request.civic_user
+    return HttpResponse(f"Hello {user.get('name', 'User')}, this is protected!")
+```
+
+## Template Usage
+
+Access the user in Django templates:
 
 ```python
 # views.py
@@ -108,7 +197,7 @@ from django.shortcuts import render
 from civic_auth.integrations.django import civic_auth_required
 
 @civic_auth_required
-def dashboard(request):
+def dashboard_template(request):
     return render(request, 'dashboard.html', {
         'civic_user': request.civic_user
     })
@@ -116,15 +205,27 @@ def dashboard(request):
 
 ```html
 <!-- templates/dashboard.html -->
-{% if civic_user %}
-    <p>Welcome, {{ civic_user.name }}!</p>
-    <img src="{{ civic_user.picture }}" alt="Profile picture">
-{% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    {% if civic_user %}
+        <h1>Welcome, {{ civic_user.name|default:"User" }}!</h1>
+        <img src="{{ civic_user.picture }}" alt="Profile picture">
+        <p>Email: {{ civic_user.email|default:"No email" }}</p>
+        <a href="/auth/logout">Logout</a>
+    {% else %}
+        <p><a href="/auth/login">Please login</a></p>
+    {% endif %}
+</body>
+</html>
 ```
 
-## 8. API Views
+## Django REST Framework
 
-For Django REST Framework compatibility:
+For API views with Django REST Framework:
 
 ```python
 from rest_framework.decorators import api_view
@@ -136,11 +237,104 @@ from civic_auth.integrations.django import civic_auth_required
 def api_profile(request):
     user = request.civic_user
     return Response({
-        "id": user.id,
-        "email": user.email,
-        "name": user.name
+        "authenticated": True,
+        "user": {
+            "id": user.get("id"),
+            "email": user.get("email"),
+            "name": user.get("name"),
+            "picture": user.get("picture")
+        }
+    })
+
+@api_view(['GET'])
+@civic_auth_required
+def api_dashboard(request):
+    user = request.civic_user
+    return Response({
+        "message": f"Welcome to your dashboard, {user.get('name', 'User')}!",
+        "user_id": user.get("id")
     })
 ```
+
+## Complete Example
+
+Here's a complete working Django project structure:
+
+```python
+# settings.py
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = 'your-secret-key'
+DEBUG = True
+ALLOWED_HOSTS = []
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'your_app',  # Replace with your app name
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'civic_auth.integrations.django.CivicAuthMiddleware',
+]
+
+ROOT_URLCONF = 'your_project.urls'
+
+CIVIC_AUTH = {
+    "client_id": "YOUR_CLIENT_ID",  # Replace with your actual client ID
+    "redirect_url": "http://localhost:8000/auth/callback",
+    "post_logout_redirect_url": "http://localhost:8000/"
+}
+
+# Database, static files, etc. (standard Django configuration)
+```
+
+```python
+# your_project/urls.py
+from django.contrib import admin
+from django.urls import path, include
+from civic_auth.integrations.django import get_auth_urls
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include(get_auth_urls())),
+    path('', include('your_app.urls')),
+]
+```
+
+## Configuration Options
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `client_id` | Yes | Your Civic Auth Client ID from [auth.civic.com](https://auth.civic.com) |
+| `redirect_url` | Yes | Where Civic redirects after authentication (must be absolute URL) |
+| `post_logout_redirect_url` | Yes | Where users go after logout (must be absolute URL) |
+
+<Info>
+Note: `redirect_url` and `post_logout_redirect_url` must be absolute URLs.
+</Info>
+
+## Next Steps
+
+1. **Get your Client ID**: Sign up at [auth.civic.com](https://auth.civic.com)
+2. **Replace `YOUR_CLIENT_ID`** with your actual client ID
+3. **Update URLs** when deploying to production
+4. **Add more protected views** as needed
+5. **Create templates** for better user experience
 
 ## Authentication Flows
 

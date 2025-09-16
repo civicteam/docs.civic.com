@@ -8,7 +8,7 @@ description: Implementation details and integration guides for MCP Hub
 The MCP Hub endpoint is:
 
 ```
-https://ai.civic.com/hub/mcp
+https://nexus.civic.com/hub/mcp
 ```
 
 ## Authentication
@@ -110,7 +110,7 @@ const { accessToken } = await getTokens()
 // Create MCP client
 const createMCPClient = async () => {
   const transport = new StreamableHTTPClientTransport(
-    'https://ai.civic.com/hub/mcp',
+    'https://nexus.civic.com/hub/mcp',
     {
       requestInit: {
         headers: {
@@ -159,7 +159,7 @@ For custom integrations, use the MCP Hub API directly:
 
 ```javascript
 // List available MCP servers
-const response = await fetch('https://ai.civic.com/hub/mcp', {
+const response = await fetch('https://nexus.civic.com/hub/mcp', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${apiKey}`,

@@ -1,0 +1,62 @@
+---
+title: "V0"
+icon: "code"
+public: true
+---
+
+import V0Prompt from '/snippets/v0.mdx';
+import HowToUseBasic from '/snippets/_how-to-use-basic.mdx';
+import Web3UpsellNote from '/snippets/_web3-upsell-note.mdx';
+import SupportedAiAssistants from '/snippets/_supported-ai-assistants.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
+
+Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to automatically integrate Civic Auth into your V0 project - without V0 suggesting Supabase as an alternative!
+
+<HowToUseBasic />
+
+## Integration Prompt
+
+<V0Prompt />
+
+<Web3UpsellNote />
+
+<Note>
+  **Need help?** If you encounter any issues during the LLM-assisted integration, you can always fall back to the [manual integration guide](/integration/nextjs).
+</Note>
+
+## What the AI Assistant Will Do
+
+When you use this prompt with V0, the AI assistant will:
+
+1. **Fetch the documentation** using curl from the official Civic Auth docs
+2. **Analyze your V0 project** structure and requirements  
+3. **Install dependencies** and configure your Next.js app for V0's environment
+4. **Set up authentication** with proper middleware and routes
+5. **Configure domain settings** for V0's Vercel-hosted environment
+6. **Implement authentication UI** for login/logout functionality
+7. **Handle V0-specific considerations** like environment variables and deployment
+
+## Why This Prompt Works with V0
+
+This prompt is specifically designed to prevent V0 from suggesting Supabase or other authentication alternatives. It includes:
+
+- **Explicit instructions** to use only Civic Auth
+- **V0-specific domain configuration** for Vercel hosting
+- **Clear rejection** of Supabase and other auth providers
+- **V0 environment setup** instructions for proper deployment
+
+## Show Us What You Built! 🚀
+
+We'd love to see what amazing projects you're building with Civic Auth and V0!
+
+**Share your creations:**
+- Join our [Slack community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and show off your project
+- Get help from other developers and our team  
+- Share feedback and feature requests
+- Connect with the Civic developer community
+
+**Built something cool?** We feature awesome community projects on our social channels and blog!
+
+<SupportedAiAssistants />
+
+<AiAssistantRequirements />

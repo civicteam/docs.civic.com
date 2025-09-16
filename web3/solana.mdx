@@ -105,6 +105,21 @@ const { publicKey } = user.solana.wallet;
 const balance = await connection.getBalance(publicKey);
 ```
 
+### Signing a message
+
+```tsx
+const { signMessage } = user.solana.wallet;
+
+// The message to sign
+const message = "Hello, World!";
+
+// Convert message to bytes
+const messageBytes = new TextEncoder().encode(message);
+
+// Sign the message
+const signature = await signMessage(messageBytes);
+```
+
 ## Using the Wallet with the Solana Wallet Adapter
 
 The Civic Auth Web3 SDK uses the [Solana Wallet Adapter](https://www.npmjs.com/package/@solana/wallet-adapter-react) to expose the embedded wallet to React frontends. This allows you to use familiar hooks such as `useWallet` and `useConnection` to interact with the wallet.
@@ -113,7 +128,7 @@ This means that Civic will be available as a choice for your users to connect wh
 
 <Frame>
   <img
-    src="/connect-wallet.png"
+    src="/images/connect-wallet.png"
     alt="Solana Wallet Adapter"
     className="width: 75%; display: block; margin: 0 auto;" 
     title=""

@@ -54,3 +54,20 @@
 thead {
   text-align: left;
 }
+
+/* Heading character spacing improvements */
+h1, .heading-1 {
+  letter-spacing: 0.02em !important;
+}
+
+h2, .heading-2 {
+  letter-spacing: 0.015em !important;
+}
+
+h3, .heading-3 {
+  letter-spacing: 0.01em !important;
+}
+
+h4, h5, h6 {
+  letter-spacing: 0.005em !important;
+}

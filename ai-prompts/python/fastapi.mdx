@@ -1,0 +1,57 @@
+---
+title: "FastAPI"
+icon: "bolt"
+public: true
+---
+
+import FastapiPrompt from '/snippets/fastapi.mdx';
+import HowToUseBasic from '/snippets/_how-to-use-basic.mdx';
+import SupportedAiAssistants from '/snippets/_supported-ai-assistants.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
+
+Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to automatically integrate Civic Auth into your FastAPI project.
+
+## Video Tutorial
+
+Watch this step-by-step video guide on setting up Python FastAPI with Civic Auth using AI:
+
+<iframe 
+  src="https://www.youtube.com/embed/OdFNv3BN9ck" 
+  width="100%" 
+  height="420" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+  referrerpolicy="strict-origin-when-cross-origin"
+  allowfullscreen>
+</iframe>
+
+<div style={{ marginTop: 12 }}>
+  Can't see the embedded video? 
+  <a href="https://www.youtube.com/watch?v=OdFNv3BN9ck&list=PLAYyliYf-NkkZIONEeXYFNBMd4so0ToUL&index=3" target="_blank" rel="noopener noreferrer">Open on YouTube</a>.
+</div>
+
+<HowToUseBasic />
+
+## Integration Prompt
+
+<FastapiPrompt />
+
+<Note>
+  **Need help?** If you encounter any issues during the LLM-assisted integration, you can always fall back to the [manual FastAPI integration guide](/integration/python/fastapi).
+</Note>
+
+## What the AI Assistant Will Do
+
+When you use this prompt, the AI assistant will:
+
+1. **Fetch the documentation** using curl from the official Civic Auth docs
+2. **Analyze your project** structure and requirements
+3. **Install dependencies** and configure your FastAPI app
+4. **Set up authentication routes** and dependencies
+5. **Implement protected endpoints** with proper user access
+6. **Handle configuration** for development and production environments
+7. **Test the integration** to ensure everything works correctly
+
+<SupportedAiAssistants />
+
+<AiAssistantRequirements /> 

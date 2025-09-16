@@ -1,0 +1,73 @@
+---
+title: "Ethereum"
+icon: "wallet"
+public: true
+---
+
+import EthereumPrompt from '/snippets/ethereum.mdx';
+import Web3Prerequisites from '/snippets/_web3-prerequisites.mdx';
+import HowToUseWeb3 from '/snippets/_how-to-use-web3.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
+
+Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to automatically add Ethereum/EVM embedded wallet functionality to your existing Civic Auth integration.
+
+<Web3Prerequisites />
+
+<HowToUseWeb3 />
+
+## Integration Prompt
+
+<EthereumPrompt />
+
+## What the AI Assistant Will Do
+
+When you use this prompt, the AI assistant will:
+
+1. **Verify prerequisites** - confirm basic Civic Auth is already set up
+2. **Fetch Ethereum documentation** using curl from the official docs
+3. **Analyze your existing setup** and plan the integration
+4. **Install required dependencies** for Ethereum/EVM functionality
+5. **Enhance your auth provider** with Web3 capabilities
+6. **Configure Wagmi** with Civic's embedded wallet connector
+7. **Implement wallet creation** for new users
+8. **Add wallet components** for balance checking and transactions
+9. **Configure multi-chain support** for various EVM networks
+10. **Handle framework-specific configurations**
+
+## Supported Networks
+
+Civic Auth embedded wallets support the following EVM-compatible blockchain networks:
+
+- **Ethereum** (mainnet and testnets)
+- **Base** (Coinbase Layer 2)
+- **Polygon** (MATIC ecosystem)
+- **BSC (BNB)** (Binance Smart Chain)
+- **Arbitrum One** (Ethereum Layer 2)
+- **Avalanche** (AVAX C-Chain)
+- **Unichain** (Uniswap Layer 2)
+- **Sonic** (High-speed blockchain)
+- **Cronos** (Crypto.com Chain)
+- **OP Mainnet** (Optimism Layer 2)
+- **Linea** (ConsenSys zkEVM)
+- **ZKSync Era** (Matter Labs zkEVM)
+- **Filecoin** (Decentralized storage)
+- **Gnosis** (Community-driven chain)
+- **Rootstock** (Bitcoin sidechain)
+- **Mantle** (Modular Layer 2)
+- **Ronin** (Gaming-focused sidechain)
+- **Celo** (Mobile-first blockchain)
+
+## Supported Features
+
+- **Multi-chain support** with easy network switching
+- **Wagmi integration** for React hooks
+- **Custom RPC endpoints**
+- **Transaction sending and balance checking**
+- **Error handling and user feedback**
+- **Chain-specific configuration**
+
+<Note>
+  **Need help?** If you encounter any issues during the AI-assisted integration, you can always fall back to the manual integration guide: [Ethereum](/web3/ethereum-evm).
+</Note>
+
+<AiAssistantRequirements />

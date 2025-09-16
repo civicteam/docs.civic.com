@@ -1,0 +1,83 @@
+```
+# Civic Auth FastAPI Integration Prompt
+
+## Prerequisites
+Before starting, you need a Civic Auth Client ID:
+1. Visit https://auth.civic.com
+2. Sign up or log in to your account
+3. Create a new application to obtain your Client ID
+4. Copy the Client ID for use in this integration
+
+## Task
+Add Civic Auth authentication to this FastAPI application.
+
+## Step 1: Fetch the Documentation
+Use curl to fetch the Civic Auth FastAPI documentation:
+
+curl https://docs.civic.com/integration/python/fastapi.md
+
+This documentation contains ALL the code examples and instructions needed for the integration. Do NOT use web search or any other tools - only use curl to fetch this specific URL.
+
+## Step 2: Gather Project Information
+Ask the user for the following information if not provided:
+
+**Required Information (gather ALL before starting):**
+- ✅ Client ID (if not provided, ask user to get it from https://auth.civic.com)
+- ✅ Project type (new/existing FastAPI project)
+- ✅ Python environment setup (virtual environment, dependencies)
+- ✅ Protected routes/endpoints that need authentication
+- ✅ Existing authentication systems that need replacement
+- ✅ Deployment environment (local development, production URLs)
+
+**DO NOT proceed with implementation until you have confirmed ALL of the above information.**
+
+If any information is missing, ask specific questions and wait for responses before continuing. This prevents errors and ensures the integration matches the user's exact requirements.
+
+## Step 3: Create Implementation Plan
+After fetching the documentation with curl:
+1. Analyze the current project structure
+2. Identify which code examples from the documentation apply
+3. Plan the implementation order
+4. Note any existing code that needs to be modified
+5. Determine if this is a new FastAPI project or existing one
+
+## Step 4: Implement Civic Auth
+Using ONLY the documentation fetched via curl:
+1. Follow the Quick Start guide step by step
+2. Install the required civic-auth[fastapi] package
+3. Set up the FastAPI app with authentication routes
+4. Configure the auth dependencies and middleware
+5. Adapt all code examples to this project's structure
+6. Handle any existing authentication or routing code appropriately
+
+## Important Notes
+- Use ONLY curl to fetch the documentation - no web search tools
+- The fetched documentation is the ONLY source of truth for this implementation
+- All code examples, configuration options, and setup instructions are in that document
+- Pay attention to Python version requirements and dependency compatibility
+- Ensure proper virtual environment setup if needed
+- The get_current_user dependency returns a dictionary, use user.get('field') for safe access
+- **CRITICAL**: The SDK handles ALL token validation - DO NOT implement custom middleware for token parsing/validation
+
+## CRITICAL: Information Gathering Requirements
+You MUST gather ALL required information from the user before proceeding with ANY implementation steps:
+
+**Required Information (gather ALL before starting):**
+- ✅ Client ID (if not provided, stop and ask user to get it from https://auth.civic.com)
+- ✅ Project type (new/existing FastAPI project)
+- ✅ Python environment details
+- ✅ Protected endpoints that need authentication
+- ✅ Existing authentication systems that need replacement
+- ✅ Deployment configuration (URLs for redirect_url and post_logout_redirect_url)
+
+**DO NOT proceed with implementation until you have confirmed ALL of the above information with the user.**
+
+If any information is missing, ask specific questions and wait for responses before continuing. This prevents errors and ensures the integration matches the user's exact requirements.
+
+## Next Steps
+After completing basic authentication integration:
+- Test the authentication flow with /auth/login
+- Verify protected routes work correctly
+- Update URLs for production deployment
+- Add additional protected endpoints as needed
+```

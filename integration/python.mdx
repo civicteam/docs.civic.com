@@ -14,6 +14,7 @@ The core integration points here are as follows:
 
 Use these guides to set up Civic Auth with any of the most common Python web frameworks.
 
+
 <CardGroup cols={3}>
   <Card title="FastAPI" href="/integration/python/fastapi" img="/images/auth/integration/fastapi.png">
     
@@ -47,6 +48,22 @@ pip install "civic-auth[flask]"
 
 ```bash Django
 pip install "civic-auth[django]"
+```
+</CodeGroup>
+
+If you're using the `uv` package manager:
+
+<CodeGroup>
+```bash FastAPI
+uv add "civic-auth[fastapi]"
+```
+
+```bash Flask
+uv add "civic-auth[flask]"
+```
+
+```bash Django
+uv add "civic-auth[django]"
 ```
 </CodeGroup>
 
