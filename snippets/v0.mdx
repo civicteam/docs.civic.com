@@ -38,7 +38,7 @@ Visit https://docs.civic.com/integration/nextjs and review the complete integrat
 **FALLBACK: Essential Code Structure (if documentation unavailable):**
 Based on the official Next.js integration docs, use these exact code examples:
 
-**1. next.config.ts:**
+**1. next.config.ts** (PROJECT ROOT - NOT in src/):
 
 import { createCivicAuthPlugin } from "@civic/auth/nextjs"
 import type { NextConfig } from "next";
@@ -53,14 +53,14 @@ const withCivicAuth = createCivicAuthPlugin({
 
 export default withCivicAuth(nextConfig)
 
-**2. app/api/auth/[...civicauth]/route.ts:**
+**2. src/app/api/auth/[...civicauth]/route.ts** (IN src/ directory):
 
 import { handler } from "@civic/auth/nextjs"
 
 export const GET = handler()
 export const POST = handler()
 
-**3. src/middleware.ts:**
+**3. src/middleware.ts** (IN src/ directory):
 
 import { authMiddleware } from "@civic/auth/nextjs/middleware"
 
@@ -72,7 +72,7 @@ export const config = {
   ],
 }
 
-**4. Layout with CivicAuthProvider:**
+**4. Layout with CivicAuthProvider** (typically src/app/layout.tsx IN src/ directory):
 
 import { CivicAuthProvider } from "@civic/auth/nextjs";
 
@@ -102,8 +102,8 @@ export function TitleBar() {
 ## Step 2: Gather Project Information
 Ask the user for the following information if not provided:
 
-**Required Information (gather ALL before starting):**
-- ✅ Client ID (if not provided, ask user to get it from https://auth.civic.com)
+**Required Information (MUST gather ALL before starting - ask user directly):**
+- ✅ **Client ID** (REQUIRED - ask user: "Please provide your Civic Auth Client ID. If you don't have one, visit https://auth.civic.com to get it.")
 - ✅ V0 app URL (e.g., https://your-app-name.vercel.app/) - can be added after initial implementation
 - ✅ Domain registration status (can be done after deployment if URL unknown)
 - ✅ Project type (new/existing Next.js project on V0)
@@ -111,7 +111,7 @@ Ask the user for the following information if not provided:
 - ✅ Protected routes that need authentication (e.g., /dashboard/*, /api/private/*)
 - ✅ Existing authentication systems that need replacement
 
-**DO NOT proceed with implementation until you have confirmed ALL of the above information.**
+**DO NOT proceed with implementation until you have confirmed ALL of the above information, especially the Client ID.**
 
 If any information is missing, ask specific questions and wait for responses before continuing. This prevents errors and ensures the integration matches the user's exact requirements.
 
@@ -161,11 +161,19 @@ Based on Web3 requirements from Step 2:
 4. **Frontend Integration** (Step 4 in docs) - Add CivicAuthProvider
 5. **Add UserButton Component** - Implement the Civic UserButton for login/logout UI
 
-**5.4 - Critical File Locations for V0**
-- **Middleware**: `src/middleware.ts` (NOT in project root - this is essential!)
-- **API Route**: `app/api/auth/[...civicauth]/route.ts`
-- **Config**: `next.config.ts` (project root)
+**5.4 - Critical File Locations for V0 (Everything in src/ directory)**
+- **Middleware**: `src/middleware.ts` (in src/ directory, NOT project root - this is essential!)
+- **API Route**: `src/app/api/auth/[...civicauth]/route.ts` (in src/ directory structure)
+- **Config**: `next.config.ts` (project root - only exception to src/ rule)
 - **Environment**: Configure CIVIC_CLIENT_ID in V0's settings
+
+**IMPORTANT - Next.js Directory Structure:**
+- **Project Root**: `next.config.ts`, `package.json`, `tsconfig.json` (configuration files)
+- **src/ Directory**: `src/middleware.ts`, `src/app/`, `src/components/`, all application code
+- **API Routes**: `src/app/api/auth/[...civicauth]/route.ts` 
+- **Layout**: `src/app/layout.tsx` (with CivicAuthProvider)
+
+**Rule**: Configuration files go in project root, ALL application code goes in src/
 
 **5.5 - Code Adaptation**
 - Use the EXACT code examples from the documentation (or fallback examples above if docs unavailable)
@@ -173,6 +181,7 @@ Based on Web3 requirements from Step 2:
 - Do NOT change imports, function names, or configuration options
 - Preserve ALL code exactly as shown in the documentation
 - If using fallback code, ensure the Client ID placeholder is replaced with user's actual Client ID
+- **CRITICAL**: Always ask the user for their Client ID before starting implementation
 
 ## Important Notes
 **DOCUMENTATION SOURCE:** https://docs.civic.com/integration/nextjs
