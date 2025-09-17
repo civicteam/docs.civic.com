@@ -18,14 +18,9 @@ Stop. Do not use Supabase auth, NextAuth, or any other authentication system. Re
 Add Civic Auth authentication to this Next.js application hosted on V0.
 
 ## Step 1: Get the Documentation (ABSOLUTELY REQUIRED)
-**CRITICAL**: You MUST have the official documentation before proceeding. Try to fetch it, or ask the user to provide it:
+**CRITICAL**: You MUST have the official documentation before proceeding.
 
-**Option 1 - Try curl (if available):**
-
-curl https://docs.civic.com/integration/nextjs.md
-
-**Option 2 - If curl fails or is not available:**
-Ask the user: "Please provide the content from https://docs.civic.com/integration/nextjs or paste the documentation content here."
+Visit https://docs.civic.com/integration/nextjs and review the complete integration documentation using your available tools. If you cannot access the documentation, ask the user: "Please provide the content from https://docs.civic.com/integration/nextjs or paste the documentation content here."
 
 **MANDATORY REQUIREMENTS:**
 - ✅ You MUST have the complete documentation content before proceeding
@@ -58,7 +53,7 @@ const withCivicAuth = createCivicAuthPlugin({
 
 export default withCivicAuth(nextConfig)
 
-**2. src/app/api/auth/[...civicauth]/route.ts:**
+**2. app/api/auth/[...civicauth]/route.ts:**
 
 import { handler } from "@civic/auth/nextjs"
 
@@ -137,7 +132,7 @@ V0 apps need their URLs registered with Civic Auth:
 5. **Refresh your app** - authentication should now work
 
 ## Step 4: Create Implementation Plan
-After fetching the documentation with curl:
+After reviewing the documentation:
 1. Analyze the current V0 project structure
 2. Identify which code examples from the documentation apply
 3. Choose the correct setup based on Web3 requirements:
@@ -147,7 +142,7 @@ After fetching the documentation with curl:
 5. Note any existing code that needs to be modified
 
 ## Step 5: Implement Civic Auth (FOLLOW DOCUMENTATION EXACTLY)
-**CRITICAL**: Use ONLY the documentation fetched via curl or provided by user. Follow these steps in order:
+**CRITICAL**: Use ONLY the official documentation or content provided by user. Follow these steps in order:
 
 **5.1 - Quick Start Implementation**
 - Follow the "Quick Start" section from the documentation EXACTLY
@@ -168,7 +163,7 @@ Based on Web3 requirements from Step 2:
 
 **5.4 - Critical File Locations for V0**
 - **Middleware**: `src/middleware.ts` (NOT in project root - this is essential!)
-- **API Route**: `src/app/api/auth/[...civicauth]/route.ts`
+- **API Route**: `app/api/auth/[...civicauth]/route.ts`
 - **Config**: `next.config.ts` (project root)
 - **Environment**: Configure CIVIC_CLIENT_ID in V0's settings
 
@@ -180,10 +175,10 @@ Based on Web3 requirements from Step 2:
 - If using fallback code, ensure the Client ID placeholder is replaced with user's actual Client ID
 
 ## Important Notes
-**DOCUMENTATION SOURCE:** https://docs.civic.com/integration/nextjs (fetch with https://docs.civic.com/integration/nextjs.md)
+**DOCUMENTATION SOURCE:** https://docs.civic.com/integration/nextjs
 
-- ✅ Use ONLY curl to fetch the documentation - no web search tools
-- ✅ The fetched documentation is the ONLY source of truth for this implementation
+- ✅ Use ONLY the official documentation - no web search tools
+- ✅ The official documentation is the ONLY source of truth for this implementation
 - ✅ All code examples, configuration options, and setup instructions are in that document
 - ✅ **CRITICAL**: If Web3 support is needed, you MUST use @civic/auth-web3 packages and imports, not @civic/auth
 - ✅ **V0 SPECIFIC**: Middleware file must be at `src/middleware.ts`, not project root
@@ -200,17 +195,16 @@ Based on Web3 requirements from Step 2:
 - Import statements like `import { UserButton } from "@civic/auth/react"`
 - useUser hook examples for getting user information
 
-If your curl result doesn't contain these elements, the fetch failed and you must try again.
+If the documentation doesn't contain these elements, you must access the complete documentation.
 
 **TROUBLESHOOTING DOCUMENTATION ACCESS:**
-- If curl command fails, try: `curl -L https://docs.civic.com/integration/nextjs.md` (with redirect follow)
-- If curl is not available or still failing, ask user: "Please provide the content from https://docs.civic.com/integration/nextjs"
+- If you cannot access the documentation, ask user: "Please provide the content from https://docs.civic.com/integration/nextjs"
 - If user provides documentation content directly, acknowledge receipt and proceed with that content
 - Do NOT proceed with implementation until you have the official documentation content
 - Do NOT make assumptions about API structure or code examples
 
 **WORKING WITH PROVIDED DOCUMENTATION:**
-If the user provides the documentation content (instead of curl), you should:
+If the user provides the documentation content, you should:
 1. Acknowledge that you received the documentation
 2. Proceed with the verification requirements listed above
 3. Use the provided content as your source of truth for implementation
