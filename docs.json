@@ -185,7 +185,7 @@
          },
          {
            "group": "Supported Clients",
-           "icon": "message-circle",
+           "icon": "desktop",
            "pages": [
              "nexus/quickstart/nexus-chat",
              "nexus/quickstart/clients/mistral-lechat",
