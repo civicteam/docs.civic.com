@@ -211,6 +211,7 @@
            "icon": "code",
            "pages": [
              "nexus/developers/client-setup",
+             "nexus/developers/vercel-ai-sdk",
              "nexus/quickstart/hub-bridge"
            ]
          },

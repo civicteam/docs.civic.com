@@ -35,6 +35,10 @@ exclude = [
 
   # Tel links
   '^tel:',
+
+  # Application protocol links
+  '^cursor://',
+  '^vscode:',
 ]
 
 # Exclude all private IPs

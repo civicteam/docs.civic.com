@@ -1,0 +1,438 @@
+---
+title: Vercel AI SDK Integration
+description: Build AI applications using Civic Nexus with Vercel AI SDK
+icon: "triangle"
+---
+
+## Overview
+
+Integrate Civic Nexus with Vercel AI SDK to build AI applications that can access external tools and services through MCP (Model Context Protocol). This enables your AI agents to interact with GitHub, Slack, Google Drive, and other connected services.
+
+<Note>
+**Prerequisites:** You'll need a Civic account and Node.js 18+ installed. [Create your account](https://nexus.civic.com) and select your tools first.
+</Note>
+
+## Installation
+
+Install the required packages:
+
+```bash
+npm install @modelcontextprotocol/sdk @civic/auth
+```
+
+<CardGroup cols={2}>
+  <Card title="MCP SDK" icon="plug">
+    Provides HTTP client transport for MCP protocol
+  </Card>
+  <Card title="Civic Auth" icon="shield-check">
+    Handles authentication with Civic Nexus
+  </Card>
+</CardGroup>
+
+## Basic Setup
+
+### Step 1: Create MCP Client
+
+Create a function to initialize the MCP client with authentication:
+
+```typescript
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { getTokens } from "@civic/auth/nextjs";
+
+const createMCPClient = async () => {
+  // Get access token from Civic Auth
+  const { accessToken } = await getTokens();
+  
+  if (!accessToken) {
+    throw new Error('No access token available. User needs to authenticate.');
+  }
+
+  // Create transport with authentication
+  const transport = new StreamableHTTPClientTransport(
+    'https://nexus.civic.com/hub/mcp',
+    {
+      requestInit: {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    }
+  );
+
+  // Initialize MCP client
+  const client = new Client({
+    name: 'my-ai-app',
+    version: '1.0.0'
+  }, {
+    capabilities: {}
+  });
+
+  await client.connect(transport);
+  return client;
+};
+```
+
+### Step 2: List Available Tools
+
+Query available MCP tools from your connected services:
+
+```typescript
+const listAvailableTools = async () => {
+  const client = await createMCPClient();
+  
+  try {
+    const tools = await client.listTools();
+    console.log('Available tools:', tools.tools);
+    return tools.tools;
+  } catch (error) {
+    console.error('Failed to list tools:', error);
+    throw error;
+  } finally {
+    await client.close();
+  }
+};
+```
+
+### Step 3: Call MCP Tools
+
+Execute tools with the MCP client:
+
+```typescript
+const callMCPTool = async (toolName: string, arguments: Record<string, any>) => {
+  const client = await createMCPClient();
+  
+  try {
+    const result = await client.callTool({
+      name: toolName,
+      arguments
+    });
+    
+    return result.content;
+  } catch (error) {
+    console.error(`Failed to call tool ${toolName}:`, error);
+    throw error;
+  } finally {
+    await client.close();
+  }
+};
+```
+
+## Integration with Vercel AI SDK
+
+### Using with OpenAI
+
+Combine MCP tools with OpenAI's function calling:
+
+```typescript
+import { openai } from '@ai-sdk/openai';
+import { generateText } from 'ai';
+
+const generateWithMCPTools = async (prompt: string) => {
+  // Get available MCP tools
+  const client = await createMCPClient();
+  const { tools } = await client.listTools();
+  
+  // Convert MCP tools to OpenAI function format
+  const functions = tools.map(tool => ({
+    name: tool.name,
+    description: tool.description,
+    parameters: tool.inputSchema
+  }));
+
+  const result = await generateText({
+    model: openai('gpt-4'),
+    prompt,
+    tools: functions,
+    toolCall: async (toolCall) => {
+      // Execute MCP tool when function is called
+      const result = await callMCPTool(toolCall.toolName, toolCall.args);
+      return result;
+    }
+  });
+
+  await client.close();
+  return result;
+};
+```
+
+### Using with Anthropic Claude
+
+```typescript
+import { anthropic } from '@ai-sdk/anthropic';
+import { generateText } from 'ai';
+
+const generateWithClaude = async (prompt: string) => {
+  const client = await createMCPClient();
+  const { tools } = await client.listTools();
+  
+  const functions = tools.map(tool => ({
+    name: tool.name,
+    description: tool.description,
+    parameters: tool.inputSchema
+  }));
+
+  const result = await generateText({
+    model: anthropic('claude-3-haiku-20240307'),
+    prompt,
+    tools: functions,
+    toolCall: async (toolCall) => {
+      const result = await callMCPTool(toolCall.toolName, toolCall.args);
+      return result;
+    }
+  });
+
+  await client.close();
+  return result;
+};
+```
+
+## Complete Example: AI Assistant
+
+Here's a complete example of an AI assistant that can access external tools:
+
+```typescript
+// pages/api/chat.ts (Next.js API route)
+import { NextRequest } from 'next/server';
+import { openai } from '@ai-sdk/openai';
+import { streamText } from 'ai';
+import { createMCPClient, callMCPTool } from '../../lib/mcp';
+
+export async function POST(req: NextRequest) {
+  const { messages } = await req.json();
+  
+  // Initialize MCP client
+  const client = await createMCPClient();
+  const { tools } = await client.listTools();
+  
+  // Convert MCP tools to AI SDK format
+  const functions = tools.map(tool => ({
+    name: tool.name,
+    description: tool.description,
+    parameters: tool.inputSchema
+  }));
+
+  const result = await streamText({
+    model: openai('gpt-4'),
+    messages,
+    tools: functions,
+    toolCall: async (toolCall) => {
+      try {
+        // Execute the MCP tool
+        const result = await callMCPTool(toolCall.toolName, toolCall.args);
+        return {
+          success: true,
+          result: result
+        };
+      } catch (error) {
+        return {
+          success: false,
+          error: error.message
+        };
+      }
+    }
+  });
+
+  await client.close();
+  return result.toAIStreamResponse();
+}
+```
+
+```typescript
+// lib/mcp.ts (Helper functions)
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { getTokens } from "@civic/auth/nextjs";
+
+export const createMCPClient = async () => {
+  const { accessToken } = await getTokens();
+  
+  if (!accessToken) {
+    throw new Error('Authentication required');
+  }
+
+  const transport = new StreamableHTTPClientTransport(
+    'https://nexus.civic.com/hub/mcp',
+    {
+      requestInit: {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    }
+  );
+
+  const client = new Client({
+    name: 'ai-assistant',
+    version: '1.0.0'
+  }, {
+    capabilities: {}
+  });
+
+  await client.connect(transport);
+  return client;
+};
+
+export const callMCPTool = async (toolName: string, args: Record<string, any>) => {
+  const client = await createMCPClient();
+  
+  try {
+    const result = await client.callTool({
+      name: toolName,
+      arguments: args
+    });
+    return result.content;
+  } finally {
+    await client.close();
+  }
+};
+```
+
+## Error Handling
+
+Add robust error handling for production applications:
+
+```typescript
+const safeCallMCPTool = async (toolName: string, args: Record<string, any>) => {
+  try {
+    const client = await createMCPClient();
+    const result = await client.callTool({
+      name: toolName,
+      arguments: args
+    });
+    await client.close();
+    return {
+      success: true,
+      data: result.content
+    };
+  } catch (error) {
+    console.error(`MCP Tool Error [${toolName}]:`, error);
+    
+    if (error.message.includes('Authentication')) {
+      return {
+        success: false,
+        error: 'Authentication failed. Please log in again.',
+        code: 'AUTH_ERROR'
+      };
+    }
+    
+    if (error.message.includes('Tool not found')) {
+      return {
+        success: false,
+        error: `Tool "${toolName}" is not available. Check your connected services.`,
+        code: 'TOOL_NOT_FOUND'
+      };
+    }
+    
+    return {
+      success: false,
+      error: 'An unexpected error occurred.',
+      code: 'UNKNOWN_ERROR'
+    };
+  }
+};
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Connection Management">
+    - Always close MCP clients after use to prevent connection leaks
+    - Consider connection pooling for high-traffic applications
+    - Implement retry logic for transient network failures
+  </Accordion>
+  
+  <Accordion title="Authentication">
+    - Handle token expiration gracefully
+    - Implement token refresh logic
+    - Store tokens securely using Civic Auth helpers
+  </Accordion>
+  
+  <Accordion title="Tool Discovery">
+    - Cache available tools to reduce API calls
+    - Validate tool arguments before calling
+    - Handle tools that may be temporarily unavailable
+  </Accordion>
+  
+  <Accordion title="Performance">
+    - Use streaming responses for better UX
+    - Implement proper error boundaries
+    - Monitor MCP tool response times
+  </Accordion>
+</AccordionGroup>
+
+## Example Applications
+
+<CardGroup cols={2}>
+  <Card title="GitHub Assistant" icon="github">
+    AI that can create issues, review PRs, and search code
+  </Card>
+  <Card title="Slack Bot" icon="slack">
+    Conversational bot with access to channels and users
+  </Card>
+  <Card title="Drive Manager" icon="google-drive">
+    AI-powered file organization and search
+  </Card>
+  <Card title="Data Analytics" icon="chart-bar">
+    Query databases and generate insights conversationally
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+### Common Issues
+
+<AccordionGroup>
+  <Accordion title="Authentication Errors">
+    **Error:** "No access token available" or "Authentication failed"
+    
+    **Solutions:**
+    - Ensure user is logged in via Civic Auth
+    - Check token expiration and refresh if needed
+    - Verify correct scope permissions
+  </Accordion>
+  
+  <Accordion title="Tool Not Available">
+    **Error:** Tool not found or unavailable
+    
+    **Solutions:**
+    - Check that required services are connected at nexus.civic.com
+    - Verify tool names match exactly (case-sensitive)
+    - Test tool availability with listTools() first
+  </Accordion>
+  
+  <Accordion title="Network Issues">
+    **Error:** Connection timeouts or network errors
+    
+    **Solutions:**
+    - Implement retry logic with exponential backoff
+    - Check firewall settings if using corporate network
+    - Verify nexus.civic.com is accessible
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<Steps>
+  <Step title="Set up Authentication">
+    Configure Civic Auth in your Next.js application following our [auth guide](/integration/nextjs)
+  </Step>
+  
+  <Step title="Connect Services">
+    Visit [nexus.civic.com](https://nexus.civic.com) to connect GitHub, Slack, or other services
+  </Step>
+  
+  <Step title="Build Your AI App">
+    Use the examples above to create your AI-powered application
+  </Step>
+  
+  <Step title="Deploy">
+    Deploy to Vercel or your preferred platform with proper environment variables
+  </Step>
+</Steps>
+
+<Card title="Need Help?" icon="message-circle" href="https://civickey.typeform.com/to/uVH7CWJ5">
+  Contact our team for technical support and implementation assistance
+</Card>
