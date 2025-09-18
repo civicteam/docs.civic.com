@@ -29,6 +29,7 @@ exclude = [
   # AI services that block bots
   '^https?://(www\.)?claude\.ai',
   '^https?://(www\.)?notion\.so',
+  '^https?://(www\.)?chat\.mistral\.ai',
 
   # Email addresses
   '^mailto:',

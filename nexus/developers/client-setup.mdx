@@ -65,7 +65,7 @@ Most development tools still require the **Hub Bridge** method:
 **Why Hub Bridge?** Some development tools only support local MCP servers, so the bridge acts as a secure proxy between your IDE and Civic Nexus.
 </Info>
 
-## Cursor Setup
+## Cursor Setup {#cursor}
 
 **Recommended:** Use the one-click install for fastest setup.
 
@@ -91,7 +91,7 @@ Most development tools still require the **Hub Bridge** method:
   </Step>
 </Steps>
 
-## VS Code Setup
+## VS Code Setup {#vscode}
 
 **VS Code now supports both remote HTTP endpoints and Hub Bridge.**
 
@@ -300,7 +300,7 @@ export CIVIC_BRIDGE_AUTH_TIMEOUT=300
 
 ---
 
-## JetBrains IDEs Setup
+## JetBrains IDEs Setup {#jetbrains}
 
 **Supported:** IntelliJ IDEA, PyCharm, WebStorm, PhpStorm, GoLand, etc.
 
@@ -327,6 +327,60 @@ export CIVIC_BRIDGE_AUTH_TIMEOUT=300
 
 <Card title="Full JetBrains Guide" icon="arrow-right" href="/nexus/quickstart/clients/jetbrains">
   IDE-specific setup instructions
+</Card>
+
+---
+
+## Windsurf Setup {#windsurf}
+
+**Windsurf (Codeium AI IDE)** requires Hub Bridge configuration.
+
+<Steps>
+  <Step title="Configure MCP Server">
+    Add to Windsurf's MCP configuration:
+    ```json
+    {
+      "command": "npx",
+      "args": ["-y", "@civic/hub-bridge"]
+    }
+    ```
+  </Step>
+</Steps>
+
+<Card title="Full Windsurf Guide" icon="arrow-right" href="/nexus/quickstart/clients/windsurf">
+  Detailed Windsurf setup instructions
+</Card>
+
+---
+
+## Goose Setup {#goose}
+
+**Goose (Block's Developer Agent)** now supports direct HTTP endpoints without Hub Bridge.
+
+<Steps>
+  <Step title="Get MCP URL">
+    Sign in to [nexus.civic.com](https://nexus.civic.com) and copy: https://nexus.civic.com/hub/mcp
+  </Step>
+
+  <Step title="Configure Goose">
+    Add to your Goose config (typically ~/.config/goose/config.yaml):
+    ```yaml
+    mcp:
+      servers:
+        civic-nexus:
+          type: http
+          url: https://nexus.civic.com/hub/mcp
+          name: "Civic Nexus"
+    ```
+  </Step>
+
+  <Step title="Restart and Test">
+    Restart Goose and try: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+<Card title="Full Goose Guide" icon="arrow-right" href="/nexus/quickstart/clients/goose">
+  Direct URL setup for Goose
 </Card>
 
 ---
