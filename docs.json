@@ -203,6 +203,24 @@
                  "nexus/quickstart/clients/jetbrains",
                  "nexus/quickstart/clients/gemini"
                ]
+             },
+             {
+               "group": "MCP Servers",
+               "icon": "server",
+               "pages": [
+                 "nexus/reference/servers",
+                 "nexus/reference/servers/activecampaign",
+                 "nexus/reference/servers/github",
+                 "nexus/reference/servers/slack",
+                 "nexus/reference/servers/notion",
+                 "nexus/reference/servers/n8n",
+                 "nexus/reference/servers/postgresql",
+                 "nexus/reference/servers/sentry",
+                 "nexus/reference/servers/linear",
+                 "nexus/reference/servers/hubspot",
+                 "nexus/reference/servers/dropbox",
+                 "nexus/reference/servers/coingecko"
+               ]
              }
            ]
          },
@@ -220,19 +238,7 @@
           "icon": "book",
           "pages": [
             "nexus/reference/client-compatibility",
-            "nexus/reference/security",
-            {
-              "group": "MCP Servers",
-              "icon": "server",
-              "pages": [
-                "nexus/reference/servers",
-                "nexus/reference/servers/activecampaign",
-                "nexus/reference/servers/github",
-                "nexus/reference/servers/slack",
-                "nexus/reference/servers/notion",
-                "nexus/reference/servers/googledrive"
-              ]
-            }
+            "nexus/reference/security"
           ]
         },
         {

@@ -26,11 +26,18 @@ icon: "globe"
     Open [nexus.civic.com](https://nexus.civic.com) and sign in with your Civic account.
   </Step>
   <Step title="Select your tools">
-    Browse and select the MCP servers you want to connect (GitHub, Slack, Google Drive, etc.)
+    Browse and select the MCP servers you want to connect (GitHub, Slack, Dropbox, etc.)
   </Step>
   <Step title="Copy the MCP URL">
     Copy this URL: `https://nexus.civic.com/hub/mcp`
     
+    <Frame caption="Civic Nexus homepage showing available tools">
+      <img
+        className="rounded-lg"
+        src="/images/steps/claude/01.png"
+        alt="Civic Nexus homepage"
+      />
+    </Frame>
   </Step>
 </Steps>
 
@@ -41,6 +48,14 @@ icon: "globe"
     1. Go to [claude.ai](https://claude.ai) in your web browser
     2. Click on **Settings** (usually in the bottom left or profile menu)
     3. Navigate to **Connectors**
+    
+    <Frame caption="Claude.ai Settings showing Connectors section">
+      <img
+        className="rounded-lg"
+        src="/images/steps/claude/02.png"
+        alt="Claude.ai settings page with Connectors section highlighted"
+      />
+    </Frame>
   </Step>
   
   <Step title="Add Custom Connector">
@@ -52,7 +67,7 @@ icon: "globe"
     <Frame caption="Adding a custom MCP connector in Claude.ai">
       <img
         className="rounded-lg"
-        src="https://placehold.co/700x450/f0f9ff/0ea5e9?text=Add+Custom+Connector%0A%E2%86%93%0AName%3A+Civic+Nexus%0AServer+URL%3A+nexus.civic.com%2Fhub%2Fmcp%0A%5BAdd%5D"
+        src="/images/steps/claude/03.png"
         alt="Claude.ai connector settings dialog"
       />
     </Frame>
@@ -67,7 +82,7 @@ icon: "globe"
     <Frame caption="Claude.ai connector successfully connected">
       <img
         className="rounded-lg"
-        src="https://placehold.co/600x300/d1fae5/22c55e?text=Connectors%0A%E2%86%93%0ACivic+Nexus+%E2%9C%85+Connected%0A%5BManage%5D+%5BDisconnect%5D"
+        src="/images/steps/claude/05.png"
         alt="Claude.ai showing connected Civic Nexus connector"
       />
     </Frame>
@@ -81,9 +96,17 @@ Try these commands to verify everything is working:
 ```
 "What MCP servers are available?"
 "Check my GitHub repositories"  
-"What's in my Google Drive?"
+"What's in my Dropbox?"
 "Show recent Slack messages"
 ```
+
+<Frame caption="Claude.ai successfully using connected tools">
+  <img
+    className="rounded-lg"
+    src="/images/steps/claude/04.png"
+    alt="Claude.ai chat showing successful tool usage"
+  />
+</Frame>
 
 ## Managing Your Tools
 
@@ -94,7 +117,7 @@ You can add new tools directly in your Claude.ai chat:
 ```
 "Connect me to GitHub"
 "Add Slack to my available tools"  
-"I need access to Google Drive"
+"I need access to Dropbox"
 "Show me what tools are available to connect"
 ```
 
@@ -108,7 +131,7 @@ To disconnect from specific tools, just ask in chat:
 "Disconnect from Slack"
 "Remove GitHub from my tools"
 "What tools do I currently have connected?"
-"Stop my access to Google Drive"
+"Stop my access to Dropbox"
 ```
 
 ### Managing the Entire Connector

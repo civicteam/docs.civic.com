@@ -21,47 +21,55 @@ All development tools require:
     Required for the Hub Bridge - check with node --version
   </Card>
   <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
-    Free signup - authenticate development tools via OAuth
+    Create account and select your tools at nexus.civic.com
   </Card>
 </CardGroup>
 
-## Quick Start (2 Options)
+## How Developer Setup Works
 
-### Option 1: Direct HTTP Connection
+### Option 1: Remote HTTP Endpoints (Newer Clients)
+
+Some development tools now support direct HTTP connections:
 
 <Steps>
   <Step title="Get MCP URL">
-    Visit [nexus.civic.com](https://nexus.civic.com) and copy your personal MCP endpoint URL
+    Sign in to nexus.civic.com and copy: https://nexus.civic.com/hub/mcp
   </Step>
   <Step title="Configure Client">
-    Add the HTTP endpoint directly to your development tool's MCP configuration
+    Add the URL as an HTTP endpoint in your client settings
   </Step>
   <Step title="Authenticate">
-    Follow OAuth prompts when first using any server - tokens are securely stored
+    OAuth authentication happens directly through the browser
   </Step>
 </Steps>
 
-### Option 2: Hub Bridge (Local Proxy)
+**Clients with HTTP support:** VS Code, Goose
+
+### Option 2: Hub Bridge (Traditional Method)
+
+Most development tools still require the **Hub Bridge** method:
 
 <Steps>
   <Step title="Configuration">
-    Add `npx -y @civic/hub-bridge` as your MCP server command in client settings
+    Add a JSON configuration that tells your IDE to run npx @civic/hub-bridge
   </Step>
   <Step title="Authentication">
-    Run any MCP command - OAuth browser window opens automatically for first-time setup
+    Hub Bridge handles OAuth flows and server selection automatically
   </Step>
   <Step title="Usage">
-    Hub Bridge handles authentication and routes requests to your selected Civic Nexus servers
+    Your IDE connects to Civic Nexus tools through the local bridge
   </Step>
 </Steps>
 
 <Info>
-**Performance:** HTTP endpoints are faster. **Compatibility:** Hub Bridge works with more clients that don't support HTTP endpoints yet.
+**Why Hub Bridge?** Some development tools only support local MCP servers, so the bridge acts as a secure proxy between your IDE and Civic Nexus.
 </Info>
 
 ## Cursor Setup {#cursor}
 
 **Recommended:** Use the one-click install for fastest setup.
+
+### Method 1: Manual Configuration
 
 <Steps>
   <Step title="Create Config File">
@@ -77,8 +85,9 @@ All development tools require:
     }
     ```
   </Step>
+  
   <Step title="Restart Cursor">
-    Restart Cursor to load the MCP configuration
+    Save the file and restart Cursor
   </Step>
 </Steps>
 
@@ -86,61 +95,91 @@ All development tools require:
 
 **VS Code now supports both remote HTTP endpoints and Hub Bridge.**
 
+### Method 1: Remote HTTP Endpoint (Recommended)
+
 <Steps>
   <Step title="Get MCP URL">
-    Visit [nexus.civic.com](https://nexus.civic.com) and copy your MCP endpoint URL
+    Sign in to nexus.civic.com and copy: https://nexus.civic.com/hub/mcp
   </Step>
+
   <Step title="Add to VS Code">
-    Open VS Code settings.json and add:
-    ```json
-    "mcp.servers": {
-      "civic-nexus": {
-        "url": "YOUR_MCP_ENDPOINT_URL_HERE"
-      }
-    }
-    ```
+    1. Open VS Code Settings (File > Preferences > Settings)
+    2. Search for "MCP"
+    3. Add server with Type: **http**, URL: https://nexus.civic.com/hub/mcp
   </Step>
+
   <Step title="Test Connection">
-    Open any file and try using MCP tools through VS Code's interface
+    Try: "What MCP servers are available?" in VS Code's AI features
   </Step>
 </Steps>
 
+## Troubleshooting
+
+### Common Setup Issues
+
 <AccordionGroup>
   <Accordion title="Node.js not found">
-    **Error:** `npx: command not found` or `node: command not found`
+    **Error:** "npx: command not found" or "'node' is not recognized"
     
-    **Solution:** Install Node.js 18+ from [nodejs.org](https://nodejs.org)
-    
-    Verify installation:
-    ```bash
-    node --version  # Should show v18+ 
-    npm --version   # Should show 8+
-    ```
+    **Solution:**
+    - Install Node.js 18+ from [nodejs.org](https://nodejs.org)
+    - Restart your terminal/IDE after installation
+    - Verify: node --version and npm --version
   </Accordion>
+  
   <Accordion title="Hub Bridge fails to start">
-    **Error:** Hub Bridge exits immediately or shows connection errors
+    **Error:** Bridge process exits immediately or shows errors
     
-    **Solutions:**
-    1. **Check Node.js version:** Must be 18 or higher
-    2. **Clear npm cache:** Run `npm cache clean --force`
-    3. **Manual install:** Run `npm install -g @civic/hub-bridge` then use `hub-bridge` instead of `npx -y @civic/hub-bridge`
-    4. **Firewall/Network:** Ensure your network allows connections to `nexus.civic.com`
-    5. **Proxy users:** Configure npm proxy settings if behind corporate firewall
-    
-    **Debug Mode:**
-    ```bash
-    DEBUG=* npx -y @civic/hub-bridge
-    ```
-    
-    This will show detailed logs to help identify the issue.
+    **Solution:**
+    - Check Node.js version (must be 18+)
+    - Clear npm cache: npm cache clean --force
+    - Try manual install: npm install -g @civic/hub-bridge
+    - Check for corporate proxy/firewall blocking npm
   </Accordion>
 </AccordionGroup>
 
----
+## Hub Bridge Deep Dive
 
-## One-Click Install Buttons
+### What is Hub Bridge?
 
-### Quick Install Links
+Hub Bridge (@civic/hub-bridge) is a local Node.js application that:
+
+- **Translates protocols:** Converts between stdio MCP (used by IDEs) and HTTP MCP (used by Civic Nexus)
+- **Handles authentication:** Manages OAuth flows and token storage locally
+- **Provides security:** Encrypts tokens and manages secure connections
+- **Auto-updates:** Downloads and updates itself automatically
+
+### How It Works
+
+**Data Flow:**
+```text
+[Your IDE] -> [Hub Bridge] -> [Civic Nexus] -> [GitHub/Slack/etc.]
+             Local Process    Cloud Service    External Services
+```
+
+1. **Your IDE** runs npx @civic/hub-bridge as a local MCP server
+2. **Hub Bridge** receives commands via stdio and forwards them to Civic Nexus via HTTP
+3. **Civic Nexus** executes commands on connected services using stored OAuth tokens
+4. **Results** flow back through the same path
+
+### Configuration Options
+
+The Hub Bridge supports these environment variables:
+
+```bash
+# Custom cache directory (optional)
+export CIVIC_BRIDGE_CACHE_DIR=/custom/path
+
+# Debug mode (optional)
+export CIVIC_BRIDGE_DEBUG=true
+
+# Custom auth timeout (optional)  
+export CIVIC_BRIDGE_AUTH_TIMEOUT=300
+```
+
+## Complex JSX Elements Test
+
+### One-Click Install Buttons
 
 <Steps>
   <Step title="Click Install Button">
@@ -164,63 +203,70 @@ All development tools require:
   </Step>
 </Steps>
 
-### Remote HTTP Alternative
+## Complex Nested Test
+
+### YAML Code Block Inside Step with JSX
 
 <Steps>
   <Step title="Configure Goose">
-    Add to your ~/.config/goose/profiles.yaml:
+    Add to your Goose config (typically ~/.config/goose/config.yaml):
     ```yaml
-    default:
-      provider: openai
-      processor: gpt-4o
-      accelerator: gpt-4o-mini
-      moderator: passive
-      toolkits:
-        - name: mcp
-          requires:
-            - url: YOUR_MCP_ENDPOINT_URL_HERE
+    mcp:
+      servers:
+        civic-nexus:
+          type: http
+          url: https://nexus.civic.com/hub/mcp
+          name: "Civic Nexus"
     ```
   </Step>
+  
   <Step title="Try Debugging">
-    Run goose session start and try: "List my GitHub repositories"
+    Enable debug mode and check logs:
+    ```bash
+    export CIVIC_BRIDGE_DEBUG=true
+    npx @civic/hub-bridge
+    ```
   </Step>
 </Steps>
 
-### Troubleshooting
+### Getting Help
 
 <Steps>
   <Step title="Check the Basics">
-    1. **Node.js 18+** installed and accessible
-    2. **Internet connection** to nexus.civic.com working
-    3. **MCP configuration** syntax is correct (valid JSON/YAML)
-    4. **Client restart** after configuration changes
-    5. **Firewall/antivirus** not blocking connections
+    - Node.js version: node --version (must be 18+)
+    - Hub Bridge status: npx @civic/hub-bridge --help
+    - Network connectivity to nexus.civic.com
   </Step>
+  
   <Step title="Contact Support">
-    Still having issues? Get help with your specific setup:
+    If issues persist, contact support with:
+    - Your IDE/client type and version
+    - Node.js version
+    - Any error messages
+    - Debug logs (if available)
   </Step>
 </Steps>
 
 <Card title="Get Support" icon="message-circle" href="https://civickey.typeform.com/to/qJ5mieBw">
-  Having setup issues? Contact our team for personalized assistance with your development environment.
+  Contact our team with your specific development setup questions
 </Card>
 
 ---
 
-## Client Compatibility
+## Supported Development Tools
 
 ### AI-First Code Editors
 
 <CardGroup cols={2}>
   <Card title="Cursor" icon="code">
     **Setup Time:** 3 minutes
-    **Method:** One-click install or Hub Bridge
-    **HTTP Support:** ✅ Via Hub Bridge
+    **Method:** One-click install or JSON config
+    **Best For:** AI-assisted development
   </Card>
   <Card title="Windsurf" icon="wind">
-    **Setup Time:** 3 minutes  
-    **Method:** Hub Bridge configuration
-    **HTTP Support:** ❌ Requires Hub Bridge
+    **Setup Time:** 5 minutes  
+    **Method:** JSON configuration  
+    **Best For:** Codeium AI development
   </Card>
 </CardGroup>
 
@@ -231,10 +277,10 @@ All development tools require:
     **3 minutes** - HTTP endpoint or Hub Bridge
   </Card>
   <Card title="JetBrains IDEs" icon="command">
-    **5 minutes** - Hub Bridge via MCP plugin
+    **5 minutes** - Manual configuration
   </Card>
   <Card title="Vim/Neovim" icon="terminal">
-    **Advanced setup** - Community MCP plugins
+    **5 minutes** - Plugin + JSON
   </Card>
 </CardGroup>
 
@@ -245,10 +291,10 @@ All development tools require:
     **2 minutes** - HTTP endpoint support
   </Card>
   <Card title="Claude Code" icon="terminal">
-    **Coming Soon** - Direct integration planned
+    **5 minutes** - Hub Bridge
   </Card>
   <Card title="Gemini CLI" icon="google">
-    **Coming Soon** - MCP support planned
+    **5 minutes** - Hub Bridge
   </Card>
 </CardGroup>
 
@@ -260,27 +306,27 @@ All development tools require:
 
 <Steps>
   <Step title="Install MCP Plugin">
-    1. Go to **File > Settings > Plugins**
-    2. Search for "MCP" in the marketplace
-    3. Install the **Model Context Protocol** plugin
-    4. Restart your IDE
+    1. Go to **Settings > Plugins**
+    2. Search for "MCP" and install the MCP plugin
+    3. Restart your IDE
   </Step>
+  
   <Step title="Configure MCP Server">
-    1. Go to **File > Settings > Tools > MCP**
-    2. Add new server configuration:
+    1. Go to **Settings > MCP Servers**
+    2. Click **Add Server**
+    3. Configure:
        - **Name:** Civic Nexus
-       - **Command:** `npx`
-       - **Arguments:** `-y @civic/hub-bridge`
-    3. Save configuration
+       - **Command:** npx -y @civic/hub-bridge
+       - **Type:** stdio
   </Step>
+  
   <Step title="Enable and Test">
-    1. Enable the Civic Nexus server in MCP settings
-    2. Test connection by opening any file and accessing MCP tools
+    Enable the server and test with AI features in your IDE
   </Step>
 </Steps>
 
 <Card title="Full JetBrains Guide" icon="arrow-right" href="/nexus/quickstart/clients/jetbrains">
-  Detailed setup instructions with screenshots and troubleshooting
+  IDE-specific setup instructions
 </Card>
 
 ---
@@ -302,7 +348,7 @@ All development tools require:
 </Steps>
 
 <Card title="Full Windsurf Guide" icon="arrow-right" href="/nexus/quickstart/clients/windsurf">
-  Complete setup instructions and configuration examples
+  Detailed Windsurf setup instructions
 </Card>
 
 ---
@@ -313,40 +359,43 @@ All development tools require:
 
 <Steps>
   <Step title="Get MCP URL">
-    Visit [nexus.civic.com](https://nexus.civic.com) and copy your MCP endpoint URL
+    Sign in to [nexus.civic.com](https://nexus.civic.com) and copy: https://nexus.civic.com/hub/mcp
   </Step>
+
   <Step title="Configure Goose">
-    Add to ~/.config/goose/profiles.yaml:
+    Add to your Goose config (typically ~/.config/goose/config.yaml):
     ```yaml
-    default:
-      provider: openai
-      processor: gpt-4o
-      accelerator: gpt-4o-mini
-      toolkits:
-        - name: mcp
-          requires:
-            - url: YOUR_MCP_ENDPOINT_URL_HERE
+    mcp:
+      servers:
+        civic-nexus:
+          type: http
+          url: https://nexus.civic.com/hub/mcp
+          name: "Civic Nexus"
     ```
   </Step>
+
   <Step title="Restart and Test">
-    Start a new Goose session and try: "What GitHub repositories do I have access to?"
+    Restart Goose and try: "What MCP servers are available?"
   </Step>
 </Steps>
 
 <Card title="Full Goose Guide" icon="arrow-right" href="/nexus/quickstart/clients/goose">
-  Complete Goose setup with advanced configuration options
+  Direct URL setup for Goose
 </Card>
 
 ---
 
 ## Best Practices
 
-### Development Workflow
+### Project-Level Configuration
 
-1. **Start simple** - Use one server first (like GitHub or Slack)
-2. **Test incrementally** - Add one server at a time
-3. **Monitor usage** - Check your Civic Nexus dashboard for activity
-4. **Update regularly** - Keep Hub Bridge updated with `npm update -g @civic/hub-bridge`
+**Recommended:** Use project-level MCP configuration files:
+
+- **Cursor:** .cursor/mcp.json in project root
+- **VS Code:** .mcp.json in workspace root
+- **JetBrains:** Per-project settings in .idea/ folder
+
+This allows different projects to have different MCP server configurations.
 
 ### Team Collaboration
 

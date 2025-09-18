@@ -25,125 +25,91 @@ Before you begin, make sure you have:
 
 <Steps>
   <Step title="Visit nexus.civic.com">
-    Open [nexus.civic.com](https://nexus.civic.com) in your browser and sign in with your Civic account.
-    
-    <img
-      className="rounded-lg"
-      src="https://placehold.co/800x400/e0e7ff/6366f1?text=Civic+Nexus+Homepage"
-      alt="Civic Nexus homepage"
-    />
+    Open [nexus.civic.com](https://nexus.civic.com) and sign in with your Civic account.
   </Step>
-
-  <Step title="Browse available MCP servers">
-    Explore the directory of available MCP servers. Each server connects to a different service or tool.
-    
-    <Tip>
-      Popular servers include Slack, GitHub, Google Drive, and Notion. Click on any server to see what it can do.
-    </Tip>
+  <Step title="Select your tools">
+    Browse and select the MCP servers you want to connect (GitHub, Slack, Dropbox, etc.)
   </Step>
-
-  <Step title="Select servers to connect">
-    Click the checkbox next to each MCP server you want to use. You can select multiple servers.
-    
-    <Warning>
-      Some servers may require authentication with the service they connect to. Make sure you have access to accounts for the services you select.
-    </Warning>
-  </Step>
-
   <Step title="Copy the MCP URL">
-    After selecting servers, copy this URL:
-    ```
-    https://nexus.civic.com/hub/mcp
-    ```
+    Copy this URL: `https://nexus.civic.com/hub/mcp`
     
+    <Frame caption="Civic Nexus homepage showing available tools">
+      <img
+        className="rounded-lg"
+        src="/images/steps/claude/01.png"
+        alt="Civic Nexus homepage"
+      />
+    </Frame>
   </Step>
 </Steps>
 
-## Step 2: Add Connector to Claude Desktop
+## Step 2: Add MCP Server in Claude Desktop
 
 <Steps>
-  <Step title="Open Claude Desktop settings">
-    In Claude Desktop:
-    1. Click on your **profile icon** in the top right
-    2. Select **"Settings"** from the dropdown menu
-    3. Navigate to the **"Developer"** section
+  <Step title="Open Claude Desktop Settings">
+    1. In Claude Desktop, click on **Settings** (usually in the bottom left or profile menu)
+    2. Navigate to **Connectors**
     
-    <Frame caption="Navigate to Claude Desktop Settings → Developer">
+    <Frame caption="Claude Desktop Settings showing Connectors section">
       <img
         className="rounded-lg"
-        src="https://placehold.co/700x400/f0f9ff/0ea5e9?text=Claude+Desktop+Settings+%E2%86%92+Developer"
-        alt="Claude Desktop settings showing Developer section"
+        src="/images/steps/claude/02.png"
+        alt="Claude Desktop settings page with Connectors section highlighted"
       />
     </Frame>
   </Step>
-
-  <Step title="Add custom connector">
-    1. Look for **"MCP Connectors"** section
-    2. Click **"Add custom connector"** button
-    3. Enter a name: **"Civic Nexus"**
-    4. Paste the MCP URL: `https://nexus.civic.com/hub/mcp`
-    5. Click **"Add"** then **"Connect"**
+  
+  <Step title="Add Custom Connector">
+    1. Click **"Add Custom Connector"**
+    2. Enter a name: **"Civic Nexus"**  
+    3. In "Remote MCP server URL" field, paste: `https://nexus.civic.com/hub/mcp`
+    4. Click **"Add"** to confirm
     
-    <Frame caption="Add custom MCP connector in Claude Desktop">
+    <Frame caption="Adding a custom MCP connector in Claude Desktop">
       <img
         className="rounded-lg"
-        src="https://placehold.co/700x450/d1fae5/22c55e?text=Add+Custom+Connector%0A%E2%86%93%0AName%3A+Civic+Nexus%0AURL%3A+nexus.civic.com%2Fhub%2Fmcp"
-        alt="Claude Desktop MCP connector dialog"
+        src="/images/steps/claude/03.png"
+        alt="Claude Desktop connector settings dialog"
+      />
+    </Frame>
+  </Step>
+  
+  <Step title="Connect and Authenticate">
+    1. The connector will appear in your list with a **"Connect"** button
+    2. Click **"Connect"** to begin authentication
+    3. Follow on-screen instructions to authorize access to your selected services
+    4. Return to **Settings > Connectors** to verify it shows as "Connected"
+    
+    <Frame caption="Claude Desktop connector successfully connected">
+      <img
+        className="rounded-lg"
+        src="/images/steps/claude/05.png"
+        alt="Claude Desktop showing connected Civic Nexus connector"
       />
     </Frame>
   </Step>
 </Steps>
 
-## Step 3: Authenticate and Test
+## Step 3: Test Your Connection
 
-<Steps>
-  <Step title="Complete authentication">
-    When you first use an MCP server that requires authentication:
-    1. Claude will prompt you to connect to the service
-    2. A browser window will open for OAuth authentication
-    3. Sign in to the service and authorize access
-    4. Return to Claude Desktop when complete
-    
-    <Frame caption="OAuth authentication flow (example: GitHub)">
-      <img
-        className="rounded-lg"
-        src="https://placehold.co/600x400/fef3c7/f59e0b?text=GitHub+OAuth%0A%E2%86%93%0AAuthorize+Civic+Nexus%0A%5BAuthorize+Application%5D"
-        alt="GitHub OAuth authorization screen"
-      />
-    </Frame>
-    
-    <Note>
-      Authentication is handled securely by Civic Nexus. Your credentials are never exposed to Claude or stored locally.
-    </Note>
-  </Step>
+Try these commands to verify everything is working:
 
-  <Step title="Test your connection">
-    Try these simple commands to verify everything is working:
-    
-    ```
-    "What MCP servers are available?"
-    ```
-    
-    Or test a specific service:
-    
-    ```
-    "Can you check my recent GitHub pull requests?"
-    "What's in my Google Drive?"
-    ```
-    
-    <Frame caption="Claude Desktop successfully using connected tools">
-      <img
-        className="rounded-lg"
-        src="https://placehold.co/700x300/f3e8ff/a855f7?text=Claude+Desktop+Chat%0A%E2%86%93%0A%22Here+are+your+recent+GitHub+PRs%3A%22%0A%E2%80%A2+Fix+login+bug+%28%23123%29%0A%E2%80%A2+Add+new+feature+%28%23124%29"
-        alt="Claude Desktop chat showing successful tool usage"
-      />
-    </Frame>
-    
-    Claude should now be able to access and interact with your connected services.
-  </Step>
-</Steps>
+```
+"What MCP servers are available?"
+"Check my GitHub repositories"  
+"What's in my Dropbox?"
+"Show recent Slack messages"
+```
 
-## Managing Your MCP Connectors
+<Frame caption="Claude Desktop successfully using connected tools">
+  <img
+    className="rounded-lg"
+    src="/images/steps/claude/04.png"
+    alt="Claude Desktop chat showing successful tool usage"
+  />
+</Frame>
+
+## Managing Your Tools
 
 ### Adding More Tools
 
@@ -152,7 +118,7 @@ You can add new tools directly in your Claude Desktop chat:
 ```
 "Connect me to GitHub"
 "Add Slack to my available tools"  
-"I need access to PostgreSQL"
+"I need access to Dropbox"
 "Show me what tools are available to connect"
 ```
 
@@ -211,42 +177,24 @@ You can disconnect from specific tools directly in chat:
 "Disconnect from Slack"  
 "Remove GitHub from my tools"
 "What tools do I currently have connected?"
-"Stop my access to Google Drive"
+"Stop my access to Dropbox"
 ```
 
-### Removing the Entire Connector
+### Managing the Entire Connector
 
 To remove the Civic Nexus connector completely:
 
 <Steps>
-  <Step title="Access connector settings">
-    Go to **Settings → Developer → MCP Connectors** in Claude Desktop
+  <Step title="Access connectors">
+    Go to **Settings > Connectors** in Claude Desktop
   </Step>
-  
   <Step title="Remove connector">
     1. Find "Civic Nexus" in your connectors list
-    2. Click the **Remove** or **Delete** button
+    2. Click **Remove** or **Delete** next to the connector
     3. Confirm the removal when prompted
   </Step>
-  
-  <Step title="Clean up authorizations (optional)">
+  <Step title="Clean up (optional)">
     Visit [nexus.civic.com](https://nexus.civic.com) to revoke service authorizations if you no longer want Civic to have access
-  </Step>
-  
-  <Step title="Restart Claude Desktop">
-    Restart Claude Desktop to ensure the connector is fully removed
-  </Step>
-</Steps>
-
-### Reset Connection
-
-If your connector isn't working properly:
-
-<Steps>
-  <Step title="Complete reset">
-    1. Remove the Civic Nexus connector completely
-    2. Restart Claude Desktop  
-    3. Follow the setup steps above to re-add with a fresh MCP URL from nexus.civic.com
   </Step>
 </Steps>
 
@@ -297,9 +245,9 @@ Once connected, test these prompts to make sure everything works:
     "Send a test message to myself"
     ```
   </Tab>
-  <Tab title="If you selected Google Drive">
+  <Tab title="If you selected Dropbox">
     ```
-    "What files are in my Google Drive?"
+    "What files are in my Dropbox?"
     "Show me recently modified documents"
     "Search for files containing 'project'"
     ```
