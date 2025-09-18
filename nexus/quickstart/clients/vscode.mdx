@@ -15,31 +15,64 @@ icon: "code"
   </Card>
 </CardGroup>
 
-## Setup Steps
+## Setup Options
+
+VS Code now supports both local Hub Bridge and direct remote HTTP endpoints.
+
+### Option 1: Remote HTTP Endpoint (Direct Connection)
+
+<Steps>
+  <Step title="Visit nexus.civic.com">
+    1. Sign in to [nexus.civic.com](https://nexus.civic.com)
+    2. Select the MCP servers you want to use
+    3. Copy the MCP URL: `https://nexus.civic.com/hub/mcp`
+  </Step>
+
+  <Step title="Add to VS Code Settings">
+    1. Open VS Code Settings (**File → Preferences → Settings**)
+    2. Search for "MCP"
+    3. In the **MCP Servers** section, click **Add Server**
+    4. Configure:
+       - **Name**: Civic Nexus
+       - **Type**: http
+       - **URL**: `https://nexus.civic.com/hub/mcp`
+    5. Save the configuration
+  </Step>
+
+  <Step title="Enable MCP Features">
+    In VS Code Settings, search for "MCP" and enable the required MCP extension options
+  </Step>
+
+  <Step title="Test Connection">
+    Try these commands to verify: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+### Option 2: Hub Bridge (Local Connection)
 
 <Steps>
   <Step title="Click 'Add to VS Code'">
     Use the one-click install button below:
-    
+
     <a href="vscode:mcp/install?%7B%22name%22%3A%22Civic%20Nexus%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40civic%2Fhub-bridge%22%5D%7D">
       <div className="inline-block bg-[#007ACC] text-white px-4 py-2 rounded hover:bg-[#005a9e] transition-colors">
-        📦 Add to VS Code
+        📦 Add to VS Code (Hub Bridge)
       </div>
     </a>
   </Step>
-  
+
   <Step title="Install in VS Code">
     When VS Code opens, click "Install" to add the Civic Nexus MCP server
   </Step>
-  
+
   <Step title="Enable MCP Features">
     In VS Code Settings, search for "MCP" and enable the required MCP extension options
   </Step>
-  
+
   <Step title="First-Time Authentication">
     The first time you use any MCP command, the Hub Bridge will:
     - Automatically download and install itself
-    - Handle authentication directly in the chat interface  
+    - Handle authentication directly in the chat interface
     - Let you select which tools to connect from nexus.civic.com
   </Step>
 </Steps>

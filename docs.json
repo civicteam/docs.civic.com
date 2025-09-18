@@ -184,12 +184,26 @@
            ]
          },
          {
-           "group": "Primary Clients",
-           "icon": "message-circle", 
+           "group": "Supported Clients",
+           "icon": "message-circle",
            "pages": [
-             "nexus/quickstart/clients/chatgpt",
+             "nexus/quickstart/nexus-chat",
+             "nexus/quickstart/clients/mistral-lechat",
+             "nexus/quickstart/clients/claude-web",
              "nexus/quickstart/clients/claude-desktop",
-             "nexus/quickstart/clients/claude-web"
+             {
+               "group": "More Clients",
+               "icon": "ellipsis",
+               "pages": [
+                 "nexus/quickstart/clients/cursor",
+                 "nexus/quickstart/clients/goose",
+                 "nexus/quickstart/clients/vscode",
+                 "nexus/quickstart/clients/windsurf",
+                 "nexus/quickstart/clients/claude-code",
+                 "nexus/quickstart/clients/jetbrains",
+                 "nexus/quickstart/clients/gemini"
+               ]
+             }
            ]
          },
          {

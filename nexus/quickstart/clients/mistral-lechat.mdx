@@ -1,11 +1,11 @@
 ---
-title: Claude Desktop Setup
-description: Connect Claude Desktop to Civic Nexus in 5 minutes
-icon: "desktop"
+title: Mistral LeChat Setup
+description: Connect Mistral LeChat to Civic Nexus in 5 minutes
+icon: "sparkles"
 ---
 
 <Note>
-  This guide covers Claude Desktop setup. For other AI clients, see our [client compatibility guide](/nexus/reference/client-compatibility).
+  This guide covers Mistral LeChat setup. For other AI clients, see our [client compatibility guide](/nexus/reference/client-compatibility).
 </Note>
 
 ## Prerequisites
@@ -13,8 +13,8 @@ icon: "desktop"
 Before you begin, make sure you have:
 
 <CardGroup cols={2}>
-  <Card title="Claude Desktop" icon="robot" href="https://claude.ai">
-    Download and install Claude Desktop (Pro or Team plan required for MCP connectors)
+  <Card title="Mistral LeChat" icon="robot" href="https://chat.mistral.ai">
+    Access to Mistral LeChat at chat.mistral.ai
   </Card>
   <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
     Create a free account on nexus.civic.com
@@ -26,7 +26,7 @@ Before you begin, make sure you have:
 <Steps>
   <Step title="Visit nexus.civic.com">
     Open [nexus.civic.com](https://nexus.civic.com) in your browser and sign in with your Civic account.
-    
+
     <img
       className="rounded-lg"
       src="https://placehold.co/800x400/e0e7ff/6366f1?text=Civic+Nexus+Homepage"
@@ -36,7 +36,7 @@ Before you begin, make sure you have:
 
   <Step title="Browse available MCP servers">
     Explore the directory of available MCP servers. Each server connects to a different service or tool.
-    
+
     <Tip>
       Popular servers include Slack, GitHub, Google Drive, and Notion. Click on any server to see what it can do.
     </Tip>
@@ -44,7 +44,7 @@ Before you begin, make sure you have:
 
   <Step title="Select servers to connect">
     Click the checkbox next to each MCP server you want to use. You can select multiple servers.
-    
+
     <Warning>
       Some servers may require authentication with the service they connect to. Make sure you have access to accounts for the services you select.
     </Warning>
@@ -55,40 +55,55 @@ Before you begin, make sure you have:
     ```
     https://nexus.civic.com/hub/mcp
     ```
-    
+
   </Step>
 </Steps>
 
-## Step 2: Add Connector to Claude Desktop
+## Step 2: Add Connector to LeChat
 
 <Steps>
-  <Step title="Open Claude Desktop settings">
-    In Claude Desktop:
-    1. Click on your **profile icon** in the top right
-    2. Select **"Settings"** from the dropdown menu
-    3. Navigate to the **"Developer"** section
-    
-    <Frame caption="Navigate to Claude Desktop Settings → Developer">
+  <Step title="Open LeChat Intelligence settings">
+    In LeChat:
+    1. Look at the **left-hand sidebar**
+    2. Click on the **"Intelligence"** tab
+    3. This will open the Intelligence settings panel
+
+    <Frame caption="Navigate to LeChat Intelligence settings">
       <img
         className="rounded-lg"
-        src="https://placehold.co/700x400/f0f9ff/0ea5e9?text=Claude+Desktop+Settings+%E2%86%92+Developer"
-        alt="Claude Desktop settings showing Developer section"
+        src="https://placehold.co/700x400/f0f9ff/0ea5e9?text=LeChat+%E2%86%92+Intelligence+Tab"
+        alt="LeChat showing Intelligence tab in left sidebar"
       />
     </Frame>
   </Step>
 
-  <Step title="Add custom connector">
-    1. Look for **"MCP Connectors"** section
-    2. Click **"Add custom connector"** button
-    3. Enter a name: **"Civic Nexus"**
-    4. Paste the MCP URL: `https://nexus.civic.com/hub/mcp`
-    5. Click **"Add"** then **"Connect"**
-    
-    <Frame caption="Add custom MCP connector in Claude Desktop">
+  <Step title="Access Connectors section">
+    1. In the Intelligence panel, click on **"Connectors"**
+    2. This will show your existing connectors and options to add new ones
+
+    <Frame caption="LeChat Connectors section">
       <img
         className="rounded-lg"
-        src="https://placehold.co/700x450/d1fae5/22c55e?text=Add+Custom+Connector%0A%E2%86%93%0AName%3A+Civic+Nexus%0AURL%3A+nexus.civic.com%2Fhub%2Fmcp"
-        alt="Claude Desktop MCP connector dialog"
+        src="https://placehold.co/700x400/f3e8ff/a855f7?text=Intelligence+%E2%86%92+Connectors"
+        alt="LeChat Connectors section in Intelligence settings"
+      />
+    </Frame>
+  </Step>
+
+  <Step title="Add Custom MCP connector">
+    1. Click **"Add Connector"** button
+    2. Select **"Custom MCP"** from the connector types
+    3. Enter the following information:
+       - **Name**: "Civic Nexus"
+       - **MCP URL**: `https://nexus.civic.com/hub/mcp`
+       - **Description** (optional): "Access hundreds of tools via Civic Nexus"
+    4. Click **"Connect"** to save the connector
+
+    <Frame caption="Add custom MCP connector in LeChat">
+      <img
+        className="rounded-lg"
+        src="https://placehold.co/700x450/d1fae5/22c55e?text=Add+Custom+MCP%0A%E2%86%93%0AName%3A+Civic+Nexus%0AURL%3A+nexus.civic.com%2Fhub%2Fmcp%0A%5BConnect%5D"
+        alt="LeChat Custom MCP connector dialog"
       />
     </Frame>
   </Step>
@@ -99,11 +114,11 @@ Before you begin, make sure you have:
 <Steps>
   <Step title="Complete authentication">
     When you first use an MCP server that requires authentication:
-    1. Claude will prompt you to connect to the service
+    1. LeChat will prompt you to connect to the service
     2. A browser window will open for OAuth authentication
     3. Sign in to the service and authorize access
-    4. Return to Claude Desktop when complete
-    
+    4. Return to LeChat when complete
+
     <Frame caption="OAuth authentication flow (example: GitHub)">
       <img
         className="rounded-lg"
@@ -111,35 +126,35 @@ Before you begin, make sure you have:
         alt="GitHub OAuth authorization screen"
       />
     </Frame>
-    
+
     <Note>
-      Authentication is handled securely by Civic Nexus. Your credentials are never exposed to Claude or stored locally.
+      Authentication is handled securely by Civic Nexus. Your credentials are never exposed to LeChat or stored locally.
     </Note>
   </Step>
 
   <Step title="Test your connection">
     Try these simple commands to verify everything is working:
-    
+
     ```
     "What MCP servers are available?"
     ```
-    
+
     Or test a specific service:
-    
+
     ```
     "Can you check my recent GitHub pull requests?"
     "What's in my Google Drive?"
     ```
-    
-    <Frame caption="Claude Desktop successfully using connected tools">
+
+    <Frame caption="LeChat successfully using connected tools">
       <img
         className="rounded-lg"
-        src="https://placehold.co/700x300/f3e8ff/a855f7?text=Claude+Desktop+Chat%0A%E2%86%93%0A%22Here+are+your+recent+GitHub+PRs%3A%22%0A%E2%80%A2+Fix+login+bug+%28%23123%29%0A%E2%80%A2+Add+new+feature+%28%23124%29"
-        alt="Claude Desktop chat showing successful tool usage"
+        src="https://placehold.co/700x300/f3e8ff/a855f7?text=LeChat+Conversation%0A%E2%86%93%0A%22Here+are+your+recent+GitHub+PRs%3A%22%0A%E2%80%A2+Fix+login+bug+%28%23123%29%0A%E2%80%A2+Add+new+feature+%28%23124%29"
+        alt="LeChat chat showing successful tool usage"
       />
     </Frame>
-    
-    Claude should now be able to access and interact with your connected services.
+
+    LeChat should now be able to access and interact with your connected services.
   </Step>
 </Steps>
 
@@ -147,94 +162,42 @@ Before you begin, make sure you have:
 
 ### Adding More Tools
 
-You can add new tools directly in your Claude Desktop chat:
+You can add new tools directly in your LeChat conversation:
 
 ```
 "Connect me to GitHub"
-"Add Slack to my available tools"  
+"Add Slack to my available tools"
 "I need access to PostgreSQL"
 "Show me what tools are available to connect"
 ```
 
-Claude will handle the connection process and guide you through any required authentication steps.
+LeChat will handle the connection process and guide you through any required authentication steps.
 
-### Alternative Method: Hub Bridge (Free Users)
+### Viewing Connected Tools
 
-If you don't have Claude Pro, Team, or Enterprise, you won't have access to MCP connectors in the UI. Use Hub Bridge instead:
-
-<Warning>
-**Free Claude users**: The MCP connector UI is only available on paid Claude plans. Use this method if you're on the free plan.
-</Warning>
-
-<Steps>
-  <Step title="Open configuration file">
-    1. In Claude Desktop, go to **Settings**
-    2. Click the **Developer** tab  
-    3. Click **Edit Config** to open `claude_desktop_config.json`
-  </Step>
-  
-  <Step title="Add Hub Bridge configuration">
-    Add this to your config file:
-    ```json
-    {
-      "mcpServers": {
-        "civic-nexus": {
-          "command": "npx",
-          "args": ["-y", "@civic/hub-bridge@latest"]
-        }
-      }
-    }
-    ```
-    
-    <Note>
-      This uses the **Hub Bridge** method which works with any Claude Desktop version, including free.
-    </Note>
-  </Step>
-  
-  <Step title="Save and restart">
-    1. Save the config file
-    2. **Restart Claude Desktop** for changes to take effect
-  </Step>
-  
-  <Step title="First-time setup">
-    When you first use an MCP command:
-    1. Create account at **[nexus.civic.com](https://nexus.civic.com)** and select your tools
-    2. The Hub Bridge will handle authentication automatically
-  </Step>
-</Steps>
+To see your currently connected tools:
+1. Go to **Intelligence** → **Connectors** in the left sidebar
+2. View the list of active connectors
+3. You can see connection status and last used time for each
 
 ### Removing Tools
 
-You can disconnect from specific tools directly in chat:
-
-```
-"Disconnect from Slack"  
-"Remove GitHub from my tools"
-"What tools do I currently have connected?"
-"Stop my access to Google Drive"
-```
-
-### Removing the Entire Connector
-
-To remove the Civic Nexus connector completely:
+You can disconnect from specific tools:
 
 <Steps>
   <Step title="Access connector settings">
-    Go to **Settings → Developer → MCP Connectors** in Claude Desktop
+    Go to **Intelligence → Connectors** in LeChat's left sidebar
   </Step>
-  
+
   <Step title="Remove connector">
-    1. Find "Civic Nexus" in your connectors list
-    2. Click the **Remove** or **Delete** button
-    3. Confirm the removal when prompted
+    1. Find "Civic Nexus" or the specific tool in your connectors list
+    2. Click the **three dots** or **settings** icon next to the connector
+    3. Select **"Remove"** or **"Disconnect"**
+    4. Confirm the removal when prompted
   </Step>
-  
+
   <Step title="Clean up authorizations (optional)">
     Visit [nexus.civic.com](https://nexus.civic.com) to revoke service authorizations if you no longer want Civic to have access
-  </Step>
-  
-  <Step title="Restart Claude Desktop">
-    Restart Claude Desktop to ensure the connector is fully removed
   </Step>
 </Steps>
 
@@ -245,7 +208,7 @@ If your connector isn't working properly:
 <Steps>
   <Step title="Complete reset">
     1. Remove the Civic Nexus connector completely
-    2. Restart Claude Desktop  
+    2. Refresh the LeChat page
     3. Follow the setup steps above to re-add with a fresh MCP URL from nexus.civic.com
   </Step>
 </Steps>
@@ -253,10 +216,10 @@ If your connector isn't working properly:
 ## Common Questions
 
 <AccordionGroup>
-  <Accordion title="Do I need a paid Claude plan?">
-    Yes, MCP connectors are currently only available on Claude Pro and Team plans. The free Claude plan doesn't support external integrations.
+  <Accordion title="Is MCP support available on all LeChat plans?">
+    Check your LeChat plan features. MCP connector support may vary by subscription tier. Visit chat.mistral.ai for plan details.
   </Accordion>
-  
+
   <Accordion title="What if authentication fails?">
     If you encounter authentication issues:
     - Make sure you're logged into the correct account for the service
@@ -264,17 +227,17 @@ If your connector isn't working properly:
     - Try removing and re-adding the MCP connector with a fresh URL
     - Check our [troubleshooting guide](/nexus/troubleshooting) for more solutions
   </Accordion>
-  
+
   <Accordion title="Can I use different email addresses?">
     If your nexus.civic.com account uses a different email than your connected services (e.g., work@company.com vs personal@gmail.com), make sure you authenticate with the correct account for each service during the OAuth flow.
   </Accordion>
-  
+
   <Accordion title="My connector shows as disconnected">
     Try these steps:
-    - Update Claude Desktop to the latest version
+    - Refresh the LeChat page
     - Remove the connector completely and re-add with a fresh MCP URL
-    - Check that your system allows Claude network access
-    - Restart Claude Desktop after making changes
+    - Check that your browser allows pop-ups for authentication
+    - Clear browser cache and cookies for chat.mistral.ai
   </Accordion>
 </AccordionGroup>
 
@@ -309,7 +272,7 @@ Once connected, test these prompts to make sure everything works:
 ## Need Help?
 
 <Card title="Troubleshooting Guide" icon="wrench" href="/nexus/troubleshooting">
-  Solutions for common Claude Desktop connection issues
+  Solutions for common LeChat connection issues
 </Card>
 
 ## Next Steps
@@ -318,7 +281,7 @@ Now that you're connected, explore what you can do:
 
 <CardGroup cols={2}>
   <Card title="Browse More Servers" icon="server" href="/nexus/reference/servers">
-    Add more MCP servers to expand Claude's capabilities
+    Add more MCP servers to expand LeChat's capabilities
   </Card>
   <Card title="Security Details" icon="shield-check" href="/nexus/reference/security">
     Learn how Nexus keeps your data secure

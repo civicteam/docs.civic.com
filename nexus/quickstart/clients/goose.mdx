@@ -4,17 +4,111 @@ description: Connect Goose autonomous developer agent to Civic Nexus
 icon: "terminal"
 ---
 
-<Note>
-  Goose setup instructions coming soon...
-</Note>
-
 ## Overview
 
-Goose (Block's autonomous developer agent) supports Remote URL connections to Civic Nexus MCP servers with full OAuth2 support.
+Goose (Block's autonomous developer agent) now supports direct remote HTTP endpoints for connecting to Civic Nexus MCP servers with full OAuth2 support.
 
-## Coming Soon
+## Prerequisites
 
-Detailed setup instructions for Goose configuration are being prepared.
+<CardGroup cols={2}>
+  <Card title="Goose" icon="terminal" href="https://github.com/block/goose">
+    Install Goose autonomous developer agent
+  </Card>
+  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
+    Create a free account on nexus.civic.com
+  </Card>
+</CardGroup>
+
+## Setup with Remote HTTP Endpoint
+
+<Steps>
+  <Step title="Get your MCP URL">
+    1. Sign in to [nexus.civic.com](https://nexus.civic.com)
+    2. Select the MCP servers you want to use
+    3. Copy the MCP URL: `https://nexus.civic.com/hub/mcp`
+  </Step>
+
+  <Step title="Configure Goose">
+    Add the Civic Nexus MCP server to your Goose configuration:
+
+    1. Open your Goose configuration file (typically `~/.config/goose/config.yaml` or project-specific `.goose/config.yaml`)
+    2. Add the following MCP server configuration:
+
+    ```yaml
+    mcp:
+      servers:
+        civic-nexus:
+          type: http
+          url: https://nexus.civic.com/hub/mcp
+          name: "Civic Nexus"
+    ```
+
+    <Note>
+      Goose supports HTTP endpoints directly, no local bridge required.
+    </Note>
+  </Step>
+
+  <Step title="Restart Goose">
+    Restart Goose to load the new configuration:
+    ```bash
+    goose restart
+    ```
+    Or if running as a service:
+    ```bash
+    goose stop
+    goose start
+    ```
+  </Step>
+
+  <Step title="Test Connection">
+    Verify the connection is working:
+    ```
+    "What MCP servers are available?"
+    "Show me my connected tools"
+    ```
+
+    Goose should respond with the list of available Civic Nexus tools.
+  </Step>
+
+  <Step title="Authenticate Services">
+    When you first use a tool that requires authentication:
+    1. Goose will prompt you to authorize access
+    2. A browser window will open for OAuth authentication
+    3. Sign in to the service and authorize access
+    4. Return to Goose when complete
+
+    <Note>
+      Authentication is handled securely by Civic Nexus. Your credentials are never exposed to Goose or stored locally.
+    </Note>
+  </Step>
+</Steps>
+
+## Alternative: Hub Bridge Setup
+
+If you prefer to use the local Hub Bridge instead of direct HTTP endpoints:
+
+<Steps>
+  <Step title="Configure Hub Bridge">
+    Add this to your Goose configuration:
+
+    ```yaml
+    mcp:
+      servers:
+        civic-nexus:
+          type: stdio
+          command: npx
+          args: ["-y", "@civic/hub-bridge"]
+    ```
+  </Step>
+
+  <Step title="Install Node.js">
+    Make sure Node.js 18+ is installed for the Hub Bridge to work
+  </Step>
+
+  <Step title="Restart and Test">
+    Restart Goose and test with: "What MCP servers are available?"
+  </Step>
+</Steps>
 
 ## Resources
 
