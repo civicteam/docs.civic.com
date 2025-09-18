@@ -28,6 +28,8 @@ Integrate Civic Auth into your Next.js application using the following steps (a 
 
 This is where you give your app the Client ID provided when you sign up at [auth.civic.com](https://auth.civic.com).
 
+**Important**: The `next.config.ts` file goes in your **project root directory**, NOT in the `src/` directory.
+
 The defaults should work out of the box for most customers, but if you want to configure your app, see [below](/integration/nextjs#advanced-configuration) for details.
 
 <Tabs>
@@ -75,7 +77,7 @@ The defaults should work out of the box for most customers, but if you want to c
 
 This is where your app will handle login and logout requests.
 
-Create this file at the following path:
+**Important**: This API route file goes in the `src/` directory structure:
 
 `src/app/api/auth/[...civicauth]/route.ts`
 
@@ -107,6 +109,10 @@ export const POST = handler()
 Middleware is used to protect your backend routes, server components and server actions from unauthenticated requests.
 
 Using the Civic Auth middleware ensures that only logged-in users have access to secure parts of your service.
+
+**Important**: The middleware file goes in the `src/` directory:
+
+`src/middleware.ts`
 
 <Tabs>
   <Tab title="Auth">
@@ -192,6 +198,8 @@ export default withCivicAuth(otherMiddleware);
 
 Add the Civic Auth context to your app to give your frontend access to the logged-in user.
 
+**Important**: Your layout file should be in the `src/` directory structure (typically `src/app/layout.tsx`):
+
 <CodeGroup>
 ```js Auth
 import { CivicAuthProvider } from "@civic/auth/nextjs";
@@ -264,8 +272,15 @@ export function TitleBar() {
 
 or if you need to rollout your own button:
 
+<Tabs>
+  <Tab title="Auth">
 ```ts TitleBar.ts
+import { useUser } from "@civic/auth/react";
+import { useCallback } from "react";
+
 export function TitleBar() {
+    const { signIn } = useUser();
+    
     const doSignIn = useCallback(() => {
       console.log("Starting sign-in process");
       signIn()
@@ -287,6 +302,38 @@ export function TitleBar() {
     );
 }
 ```
+  </Tab>
+  <Tab title="Auth + Web3">
+```ts TitleBar.ts
+import { useUser } from "@civic/auth-web3/react";
+import { useCallback } from "react";
+
+export function TitleBar() {
+    const { signIn } = useUser();
+    
+    const doSignIn = useCallback(() => {
+      console.log("Starting sign-in process");
+      signIn()
+        .then(() => {
+          console.log("Sign-in completed successfully");
+        })
+        .catch((error) => {
+          console.error("Sign-in failed:", error);
+        });
+    }, [signIn]);
+
+    return (
+      <div>
+        <h1>My App</h1>
+        <button onClick={doSignIn}>
+          Sign in
+        </button>
+      </div>
+    );
+}
+```
+  </Tab>
+</Tabs>
 
 or the useUser hook, for retrieving information about the user in code:
 
@@ -414,7 +461,7 @@ export default withCivicAuth(nextConfig) // your next config here
 |-------------------|----------|----------------------|----------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `clientId`        | Yes      | -                    | `2cc5633d-2c92-48da-86aa-449634f274b9` | The key obtained on signup to [auth.civic.com](https://auth.civic.com/)                                                                                                                                                                                                                                                                               |
 | `loginSuccessUrl` | No       | -                    | `/myCustomSuccessEndpoint`             | In a NextJS app, we will redirect your user to this page once the login is finished. If not set, users will be sent back to the root of your app.                                                                                                                                                                                                     |
-| `callbackUrl`     | No       | `/api/auth/callback` | `/api/myroute/callback`                | If you cannot host Civic’s SDK handlers in the default location, you can specify a custom callback route here. This is where you must attach Civic’s GET handler as described [here](/integration/nextjs#2-create-the-civic-auth-api-route), so Civic can complete the OAuth token exchange. Use `loginSuccessUrl` to redirect after login. |
+| `callbackUrl`     | No       | `/api/auth/callback` | `/api/myroute/callback`                | If you cannot host Civic's SDK handlers in the default location, you can specify a custom callback route here. This is where you must attach Civic's GET handler as described [here](/integration/nextjs#2-create-the-civic-auth-api-route), so Civic can complete the OAuth token exchange. Use `loginSuccessUrl` to redirect after login. |
 | `loginUrl`        | No       | `/`                  | `/admin`                               | The path your user will be sent to if they access a resource that needs them to be logged in. If you have a dedicated login page, you can set it here.                                                                                                                                                                                                |
 | `logoutUrl`       | No       | `/`                  | `/goodbye`                             | The path your user will be sent to after a successful log-out.                                                                                                                                                                                                                                                                                        |
 | `include`         | No       | `["/*"]`             | `["/admin/*", "/api/admin/*"]`         | An array of path [globs](https://man7.org/linux/man-pages/man7/glob.7.html) that require a user to be logged-in to access. If not set, will include all paths matched by your Next.js [middleware](/integration/nextjs#3-middleware).                                                                                                             |
