@@ -8,16 +8,33 @@ icon: "server"
 
 The Slack server enables AI assistants to interact with your [Slack](https://slack.com) workspaces, allowing seamless communication, channel management, and team collaboration through conversational AI.
 
-## Getting Started
+## How to Add Slack
 
 <Steps>
-  <Step title="Connect to Slack">
-    Add the Slack server to your Nexus environment through the server directory.
+  <Step title="Create Slack App">
+    1. Go to [https://api.slack.com/apps](https://api.slack.com/apps)
+    2. Click **Create New App**
+    3. Select **From scratch**
+    4. Name your app and select your workspace
+  </Step>
+  <Step title="Configure OAuth Permissions">
+    1. In your app settings, click **OAuth & Permissions** in the left menu
+    2. Under **Scopes > Bot Token Scopes**, add all required access permissions
+    3. Scroll up and click **Install to [workspace]**
+    4. Copy the **Bot User OAuth Token** that appears
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Slack server to your Nexus environment through the server directory
+    2. Paste your **Bot User OAuth Token** in the Slack settings in Nexus
   </Step>
   <Step title="Test Connection">
     Start with a simple command like `list channels` or `get recent messages from #general` to verify the connection works properly.
   </Step>
 </Steps>
+
+<Tip>
+If you have difficulty prompting the bot to update OAuth token, go to **Nexus > Org & Toolkit > Account**, delete Slack, then re-add the Slack server to get the prompt again.
+</Tip>
 
 ## What You Can Do
 

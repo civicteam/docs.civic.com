@@ -4,21 +4,6 @@ description: Solutions for common Civic Nexus setup and connection issues
 icon: "wrench"
 ---
 
-## Quick Diagnostics
-
-<Steps>
-  <Step title="Check Your Connection Method">
-    **Remote URL:** Does your client show the Civic Nexus connector in settings?  
-    **Hub Bridge:** Run `npx -y @civic/hub-bridge --status` to check bridge health
-  </Step>
-  <Step title="Verify Authentication">
-    Try a simple command: `"What MCP servers are available?"` or `"List available tools"`
-  </Step>
-  <Step title="Check Server Selection">
-    Visit nexus.civic.com to confirm you've selected and authorized the servers you want to use
-  </Step>
-</Steps>
-
 ## Primary Client Issues (ChatGPT & Claude)
 
 ### 401 Authentication Errors
@@ -112,52 +97,6 @@ icon: "wrench"
   </Accordion>
 </AccordionGroup>
 
-## Developer Tool Issues (Hub Bridge)
-
-### Hub Bridge Issues  
-
-<AccordionGroup>
-  <Accordion title="Command not found errors" icon="terminal">
-    **Symptoms:** `npx: command not found` or `'npx' is not recognized`
-    
-    **Solutions:**
-    - Install Node.js 18+ from nodejs.org
-    - Restart terminal/IDE after Node.js installation  
-    - Verify installation: `node --version` and `npm --version`
-    - On Windows: restart Command Prompt/PowerShell as Administrator
-  </Accordion>
-  
-  <Accordion title="Bridge downloads but fails to start" icon="download">
-    **Symptoms:** Bridge downloads but immediately exits or shows errors
-    
-    **Solutions:**
-    - Check Node.js version: must be 18 or higher
-    - Clear npm cache: `npm cache clean --force`
-    - Try manual install: `npm install -g @civic/hub-bridge`
-    - Check permissions - bridge needs to write to cache directory
-  </Accordion>
-  
-  <Accordion title="Authentication browser doesn't open" icon="browser">
-    **Symptoms:** Bridge starts but browser window doesn't appear for auth
-    
-    **Solutions:**
-    - Corporate firewall blocking - try from personal network first
-    - Manually visit auth URL shown in terminal output
-    - Set default browser if none configured
-    - Disable VPN temporarily during initial setup
-  </Accordion>
-  
-  <Accordion title="Client can't connect to bridge" icon="plug-disconnected">
-    **Symptoms:** Client shows MCP errors or "server not responding"
-    
-    **Solutions:**
-    - Verify exact command: `npx -y @civic/hub-bridge` (note the `-y` flag)
-    - Restart client completely after configuring bridge
-    - Check client MCP settings use "stdio" type, not "http"
-    - Some clients need manual MCP restart after configuration changes
-  </Accordion>
-</AccordionGroup>
-
 ## Authentication Issues
 
 <AccordionGroup>
@@ -167,8 +106,7 @@ icon: "wrench"
     **Solutions:**
     - Check system clock is accurate (OAuth tokens are time-sensitive)
     - Clear browser cookies for civic.com and nexus.civic.com
-    - **Hub Bridge:** Run `npx -y @civic/hub-bridge --reset` to clear cache
-    - **Remote URL:** Remove and re-add the connector in your client
+    - Remove and re-add the connector in your client
   </Accordion>
   
   <Accordion title="OAuth errors from connected services" icon="exclamation-triangle">
@@ -201,7 +139,6 @@ icon: "wrench"
     **Solutions:**
     - First request to each service is slower (authentication)
     - Large operations (file uploads, bulk queries) are inherently slow
-    - **Hub Bridge:** Responses cached for 1 hour to improve speed
     - Check network connection - corporate proxies can add latency
   </Accordion>
   
@@ -211,7 +148,6 @@ icon: "wrench"
     **Solutions:**
     - Break large requests into smaller chunks
     - Some services have strict rate limits (GitHub API: 5,000/hour)
-    - **Hub Bridge:** Increase timeout with `CIVIC_BRIDGE_AUTH_TIMEOUT=600`
     - Try the same command later - may be temporary service issues
   </Accordion>
 </AccordionGroup>
@@ -226,6 +162,21 @@ icon: "wrench"
     - Update Claude Desktop to latest version
     - Remove connector and re-add with fresh MCP URL
     - Check macOS system preferences allow Claude network access
+  </Accordion>
+  
+  <Accordion title="Tools not working or unavailable" icon="tools">
+    **Symptoms:** Claude shows connected but can't access your tools, or tools are missing
+    
+    **Solutions:**
+    1. **Check connector status:** In Claude Desktop settings, verify Civic Nexus connector shows "Connected"
+    2. **Verify tool access:** Ask Claude "What MCP tools are available?" to see current tools
+    3. **Reauthorize if needed:** If tools are missing:
+       - Go to Claude Desktop → Settings → Connectors
+       - Find Civic Nexus connector and click on it
+       - If prompted to "Connect" or "Authorize", click it to reauthorize
+       - Complete any OAuth flows that appear
+    4. **Restart Claude:** Close and reopen Claude Desktop after reauthorization
+    5. **Test again:** Try using a simple tool command to verify access
   </Accordion>
 </AccordionGroup>
 
@@ -259,16 +210,15 @@ Many issues stem from corporate security policies:
 
 <Warning>
 **Common corporate restrictions that affect Nexus:**
-- Proxy servers intercepting HTTPS requests
-- Firewall blocking npm/Node.js downloads  
+- Proxy servers intercepting HTTPS requests  
 - TLS certificate inspection causing SSL errors
 - OAuth redirect URLs blocked by content filters
 </Warning>
 
 **Solutions:**
-- Work with IT to whitelist `*.civic.com`, `*.npmjs.org`, and `*.nodejs.org`
+- Work with IT to whitelist `*.civic.com` 
 - Try initial setup from personal network, then switch to corporate
-- Request proxy bypass for development tools
+- Request proxy bypass for MCP connectors
 - Use company VPN if external setup works
 
 ## Getting Help
@@ -280,13 +230,12 @@ Gather this information to speed up resolution:
 <Steps>
   <Step title="System Info">
     - Operating system and version
-    - Node.js version (`node --version`)  
     - Client type and version
   </Step>
   <Step title="Connection Details">
-    - Using Remote URL or Hub Bridge?
     - What error messages do you see?
     - When did the issue start?
+    - Which client are you using?
   </Step>
   <Step title="Recent Changes">
     - Updated any software recently?
@@ -295,35 +244,21 @@ Gather this information to speed up resolution:
   </Step>
 </Steps>
 
-### Bridge Status Command
-
-For Hub Bridge issues, run this and include the output:
-
-```bash
-npx -y @civic/hub-bridge --status --verbose
-```
-
 ### Contact Support
 
 <Card title="Get Personalized Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
   Include your system info and error details for faster resolution
 </Card>
 
+<Info>
+**Join our Slack community** for the latest updates, improvements, and real-time help from other users. We regularly share troubleshooting tips and new features there.
+</Info>
+
 ## Advanced Debugging
 
 ### Enable Debug Logging
 
-<Tabs>
-  <Tab title="Hub Bridge">
-    ```bash
-    export CIVIC_BRIDGE_DEBUG=true
-    npx -y @civic/hub-bridge
-    ```
-  </Tab>
-  <Tab title="Remote URL">
-    Check your client's documentation for MCP debug/verbose logging options
-  </Tab>
-</Tabs>
+Check your client's documentation for MCP debug/verbose logging options. Most clients support enabling verbose or debug mode for MCP connections.
 
 ### Network Debugging
 
@@ -343,16 +278,13 @@ If nothing else works, complete reset:
 
 <Steps>
   <Step title="Clear Client Settings">
-    Remove Civic Nexus connector/MCP server from client
-  </Step>
-  <Step title="Clear Bridge Cache">
-    `npx -y @civic/hub-bridge --reset`
+    Remove Civic Nexus connector from client
   </Step>
   <Step title="Clear Browser Data">
     Clear cookies/data for civic.com and nexus.civic.com
   </Step>
   <Step title="Restart">
-    Restart client, terminal, and browser
+    Restart client and browser
   </Step>
   <Step title="Reconfigure">
     Start setup process from the beginning
