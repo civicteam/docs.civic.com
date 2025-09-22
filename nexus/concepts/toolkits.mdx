@@ -1,0 +1,219 @@
+---
+title: Toolkits
+description: Create focused groups of MCP servers for specific tasks and workflows
+icon: "toolbox"
+---
+
+## What are Toolkits?
+
+Toolkits allow you to create focused groups of MCP servers that work together for specific tasks or workflows. Instead of connecting to all your available tools at once (which can confuse AI assistants), toolkits let you create targeted combinations optimized for particular use cases.
+
+<Note>
+**Why use toolkits?** When AI assistants have access to too many tools at once, they can struggle to choose the right ones. Toolkits solve this by creating focused, task-specific tool groups.
+</Note>
+
+## Common Toolkit Examples
+
+<CardGroup cols={2}>
+  <Card title="Marketing Analytics" icon="chart-bar">
+    **Tools:** Google Analytics + Notion + Slack
+    
+    Perfect for marketing teams who need to pull analytics data, document insights, and share reports with the team.
+  </Card>
+  
+  <Card title="Developer Debugging" icon="bug">
+    **Tools:** GitHub + PostgreSQL + Notion
+    
+    Ideal for developers who need to investigate issues, query databases, and document solutions.
+  </Card>
+  
+  <Card title="Content Creation" icon="pen-to-square">
+    **Tools:** Linear + GitHub + Slack
+    
+    Great for product teams managing feature requests, code reviews, and team communication.
+  </Card>
+  
+  <Card title="Customer Support" icon="headset">
+    **Tools:** Notion + HubSpot + Slack
+    
+    Excellent for support teams who need to access customer data, update tickets, and coordinate responses.
+  </Card>
+</CardGroup>
+
+## How to Create a Toolkit
+
+Creating a toolkit takes just a few steps and lets you build focused tool groups for your specific workflows.
+
+<Steps>
+  <Step title="Create New Toolkit">
+    Click the **"+ Create toolkit"** button in the top navigation, next to your current toolkit name.
+    
+    <Frame caption="Click 'Create toolkit' to start building your focused tool group">
+      <img
+        className="rounded-lg"
+        src="/images/steps/toolkit/01.png"
+        alt="Nexus interface showing the Create toolkit button in the navigation"
+      />
+    </Frame>
+  </Step>
+  
+  <Step title="Name Your Toolkit">
+    Give your toolkit a descriptive name and URL alias. This helps you and your team understand what the toolkit is designed for.
+    
+    <Frame caption="Enter a name and URL alias for your toolkit">
+      <img
+        className="rounded-lg"
+        src="/images/steps/toolkit/02.png"
+        alt="Create New Toolkit dialog showing name and URL alias fields"
+      />
+    </Frame>
+    
+    **Example names:**
+    - "Marketing Redshift" (for marketing analytics)
+    - "Debug Kit" (for development troubleshooting)  
+    - "Content Pipeline" (for content creation workflow)
+  </Step>
+  
+  <Step title="Copy Your Toolkit URL">
+    Once created, you'll get a unique URL for your toolkit that you can use in any MCP-compatible client.
+    
+    <Frame caption="Copy your toolkit-specific MCP URL to use in AI clients">
+      <img
+        className="rounded-lg"
+        src="/images/steps/toolkit/03.png"
+        alt="Toolkit setup page showing the unique MCP URL for the toolkit"
+      />
+    </Frame>
+    
+    **Toolkit URL format:**
+    ```
+    https://nexus.civic.com/hub/mcp?profile=your-toolkit-name
+    ```
+    
+    **Default URL (all tools):**
+    ```
+    https://nexus.civic.com/hub/mcp
+    ```
+  </Step>
+</Steps>
+
+## Using Toolkits in AI Clients
+
+You have two main ways to work with toolkits:
+
+### Method 1: Direct URL Connection
+
+Use your toolkit's specific URL when setting up MCP connections in clients like Claude Desktop, Cursor, or VS Code.
+
+```
+https://nexus.civic.com/hub/mcp?profile=marketing-redshift
+```
+
+This will connect your AI client to only the tools in that specific toolkit.
+
+### Method 2: Switch Toolkits in Nexus UI
+
+If you're using Nexus Chat or managing multiple toolkits, you can switch between them using the dropdown in the Nexus interface. Simply select the toolkit you want to use from the toolkit selector in the top navigation.
+
+## Toolkit Management
+
+<AccordionGroup>
+  <Accordion title="Adding Tools to a Toolkit">
+    Navigate to your toolkit and click "Add Tools" to select from your connected services. You can add or remove tools anytime without affecting your AI client connections.
+  </Accordion>
+  
+  <Accordion title="Editing Toolkit Names">
+    Click on your toolkit name to edit it. The URL alias will update automatically, but existing connections will continue to work.
+  </Accordion>
+  
+  <Accordion title="Sharing Toolkits">
+    Toolkit URLs are tied to your account's authentication. Team members will need their own toolkit configurations, but you can share the concept and tool combinations.
+  </Accordion>
+  
+  <Accordion title="Default vs Toolkit URLs">
+    - **Default URL:** Gives access to ALL your connected tools
+    - **Toolkit URL:** Gives access to ONLY the tools in that specific toolkit
+    - You can use both simultaneously in different AI clients
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Tip>
+Follow these guidelines to get the most out of your toolkits:
+</Tip>
+
+### Keep Toolkits Focused
+- **3-5 tools maximum** per toolkit for best AI performance
+- Choose tools that naturally work together for specific workflows
+- Avoid mixing unrelated tools (e.g., don't combine crypto data with marketing analytics)
+
+### Use Descriptive Names
+- **Good:** "Customer Support Kit", "Marketing Analytics", "Dev Debug Tools"
+- **Avoid:** "My Tools", "Work Stuff", "Toolkit 1"
+
+### Organize by Workflow, Not by Service
+- **Think workflow:** "Content creation process" → Linear + GitHub + Slack
+- **Don't think service:** "All my productivity tools" → 15+ different services
+
+### Test Your Combinations
+- Try asking your AI to perform typical tasks with your toolkit
+- Adjust the tool combination if the AI seems confused or chooses wrong tools
+- Remove tools that don't add value to the specific workflow
+
+## Common Toolkit Patterns
+
+Based on popular MCP server combinations, here are proven toolkit patterns:
+
+<CardGroup cols={1}>
+  <Card title="Analytics & Reporting" icon="chart-line">
+    **Pattern:** Data source + Documentation + Communication
+    
+    **Examples:**
+    - Google Analytics + Notion + Slack
+    - PostgreSQL + Linear + GitHub
+    - CoinGecko + Notion + Discord
+  </Card>
+  
+  <Card title="Development Workflow" icon="code">
+    **Pattern:** Code repository + Database + Issue tracking
+    
+    **Examples:**
+    - GitHub + PostgreSQL + Linear
+    - GitHub + Sentry + Notion
+    - GitHub + HubSpot + Slack
+  </Card>
+  
+  <Card title="Customer Operations" icon="users">
+    **Pattern:** CRM + Documentation + Communication
+    
+    **Examples:**
+    - HubSpot + Notion + Slack
+    - ActiveCampaign + Linear + GitHub
+    - Dropbox + HubSpot + Notion
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<Steps>
+  <Step title="Plan Your Toolkit">
+    Identify a specific workflow or task you do regularly that involves 3-5 tools
+  </Step>
+  
+  <Step title="Create Your First Toolkit">
+    Follow the steps above to create a focused toolkit for that workflow
+  </Step>
+  
+  <Step title="Test and Refine">
+    Use your toolkit with your preferred AI assistant and adjust the tool combination as needed
+  </Step>
+  
+  <Step title="Create More Toolkits">
+    Build additional toolkits for other workflows once you've validated the first one
+  </Step>
+</Steps>
+
+<Card title="Need Help?" icon="message-circle" href="https://civickey.typeform.com/to/uVH7CWJ5">
+  Contact our team if you need assistance creating effective toolkits for your workflows
+</Card>

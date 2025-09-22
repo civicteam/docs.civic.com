@@ -9,6 +9,14 @@ icon: "triangle"
 Integrate Civic Nexus with Vercel AI SDK to build AI applications that can access external tools and services through MCP (Model Context Protocol). This enables your AI agents to interact with GitHub, Slack, Dropbox, and other connected services.
 
 <Note>
+**Updated for AI SDK v5**: This guide has been updated to use Vercel AI SDK v5. The main changes from v4 include:
+- New tool definition format with `execute` functions
+- Updated streaming response methods (`toDataStreamResponse()` instead of `toAIStreamResponse()`)
+- Improved error handling and type safety
+- App Router examples instead of Pages Router
+</Note>
+
+<Note>
 **Prerequisites:** You'll need a Civic account and Node.js 18+ installed. [Create your account](https://nexus.civic.com) and select your tools first.
 </Note>
 
@@ -17,10 +25,20 @@ Integrate Civic Nexus with Vercel AI SDK to build AI applications that can acces
 Install the required packages:
 
 ```bash
-npm install @modelcontextprotocol/sdk @civic/auth
+npm install ai @ai-sdk/openai @ai-sdk/anthropic @modelcontextprotocol/sdk @civic/auth
 ```
 
+<Note>
+**AI SDK v5**: This guide uses the latest Vercel AI SDK v5, which includes significant improvements and breaking changes from v4. Make sure to use v5 for the best experience.
+</Note>
+
 <CardGroup cols={2}>
+  <Card title="Vercel AI SDK v5" icon="brain">
+    Latest AI SDK for building AI applications
+  </Card>
+  <Card title="Model Providers" icon="robot">
+    OpenAI and Anthropic provider packages
+  </Card>
   <Card title="MCP SDK" icon="plug">
     Provides HTTP client transport for MCP protocol
   </Card>
@@ -134,22 +152,23 @@ const generateWithMCPTools = async (prompt: string) => {
   const client = await createMCPClient();
   const { tools } = await client.listTools();
   
-  // Convert MCP tools to OpenAI function format
-  const functions = tools.map(tool => ({
-    name: tool.name,
-    description: tool.description,
-    parameters: tool.inputSchema
-  }));
+  // Convert MCP tools to AI SDK v5 tool format
+  const aiTools = tools.reduce((acc, tool) => {
+    acc[tool.name] = {
+      description: tool.description,
+      parameters: tool.inputSchema,
+      execute: async (args: any) => {
+        // Execute MCP tool when called
+        return await callMCPTool(tool.name, args);
+      }
+    };
+    return acc;
+  }, {} as Record<string, any>);
 
   const result = await generateText({
     model: openai('gpt-4'),
     prompt,
-    tools: functions,
-    toolCall: async (toolCall) => {
-      // Execute MCP tool when function is called
-      const result = await callMCPTool(toolCall.toolName, toolCall.args);
-      return result;
-    }
+    tools: aiTools,
   });
 
   await client.close();
@@ -167,20 +186,23 @@ const generateWithClaude = async (prompt: string) => {
   const client = await createMCPClient();
   const { tools } = await client.listTools();
   
-  const functions = tools.map(tool => ({
-    name: tool.name,
-    description: tool.description,
-    parameters: tool.inputSchema
-  }));
+  // Convert MCP tools to AI SDK v5 tool format
+  const aiTools = tools.reduce((acc, tool) => {
+    acc[tool.name] = {
+      description: tool.description,
+      parameters: tool.inputSchema,
+      execute: async (args: any) => {
+        // Execute MCP tool when called
+        return await callMCPTool(tool.name, args);
+      }
+    };
+    return acc;
+  }, {} as Record<string, any>);
 
   const result = await generateText({
-    model: anthropic('claude-3-haiku-20240307'),
+    model: anthropic('claude-3-5-sonnet-20241022'),
     prompt,
-    tools: functions,
-    toolCall: async (toolCall) => {
-      const result = await callMCPTool(toolCall.toolName, toolCall.args);
-      return result;
-    }
+    tools: aiTools,
   });
 
   await client.close();
@@ -190,73 +212,28 @@ const generateWithClaude = async (prompt: string) => {
 
 ## Complete Example: AI Assistant
 
-Here's a complete example of an AI assistant that can access external tools:
+Here's a complete example showing how to authenticate with Nexus and integrate MCP tools:
 
 ```typescript
-// pages/api/chat.ts (Next.js API route)
+// app/api/chat/route.ts (Next.js App Router API route)
 import { NextRequest } from 'next/server';
 import { openai } from '@ai-sdk/openai';
 import { streamText } from 'ai';
-import { createMCPClient, callMCPTool } from '../../lib/mcp';
-
-export async function POST(req: NextRequest) {
-  const { messages } = await req.json();
-  
-  // Initialize MCP client
-  const client = await createMCPClient();
-  const { tools } = await client.listTools();
-  
-  // Convert MCP tools to AI SDK format
-  const functions = tools.map(tool => ({
-    name: tool.name,
-    description: tool.description,
-    parameters: tool.inputSchema
-  }));
-
-  const result = await streamText({
-    model: openai('gpt-4'),
-    messages,
-    tools: functions,
-    toolCall: async (toolCall) => {
-      try {
-        // Execute the MCP tool
-        const result = await callMCPTool(toolCall.toolName, toolCall.args);
-        return {
-          success: true,
-          result: result
-        };
-      } catch (error) {
-        return {
-          success: false,
-          error: error.message
-        };
-      }
-    }
-  });
-
-  await client.close();
-  return result.toAIStreamResponse();
-}
-```
-
-```typescript
-// lib/mcp.ts (Helper functions)
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { getTokens } from "@civic/auth/nextjs";
 
-export const createMCPClient = async () => {
+async function createMCPClient() {
+  // Get Civic Auth token for Nexus authentication
   const { accessToken } = await getTokens();
   
-  if (!accessToken) {
-    throw new Error('Authentication required');
-  }
-
+  // Create MCP transport with Nexus authentication headers
   const transport = new StreamableHTTPClientTransport(
     'https://nexus.civic.com/hub/mcp',
     {
       requestInit: {
         headers: {
+          // Required: Bearer token for Nexus authentication
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         }
@@ -265,7 +242,7 @@ export const createMCPClient = async () => {
   );
 
   const client = new Client({
-    name: 'ai-assistant',
+    name: 'my-ai-app',
     version: '1.0.0'
   }, {
     capabilities: {}
@@ -273,143 +250,70 @@ export const createMCPClient = async () => {
 
   await client.connect(transport);
   return client;
-};
+}
 
-export const callMCPTool = async (toolName: string, args: Record<string, any>) => {
+export async function POST(req: NextRequest) {
+  const { messages } = await req.json();
+  
+  // Connect to Nexus MCP Hub
   const client = await createMCPClient();
+  const { tools } = await client.listTools();
   
-  try {
-    const result = await client.callTool({
-      name: toolName,
-      arguments: args
-    });
-    return result.content;
-  } finally {
-    await client.close();
-  }
-};
+  // Convert MCP tools to AI SDK v5 format
+  const aiTools = tools.reduce((acc, tool) => {
+    acc[tool.name] = {
+      description: tool.description,
+      parameters: tool.inputSchema,
+      execute: async (args: any) => {
+        const result = await client.callTool({
+          name: tool.name,
+          arguments: args
+        });
+        return result.content;
+      }
+    };
+    return acc;
+  }, {} as Record<string, any>);
+
+  const result = await streamText({
+    model: openai('gpt-4'),
+    messages,
+    tools: aiTools,
+  });
+
+  await client.close();
+  return result.toDataStreamResponse();
+}
 ```
 
-## Error Handling
+## Nexus Authentication
 
-Add robust error handling for production applications:
-
-```typescript
-const safeCallMCPTool = async (toolName: string, args: Record<string, any>) => {
-  try {
-    const client = await createMCPClient();
-    const result = await client.callTool({
-      name: toolName,
-      arguments: args
-    });
-    await client.close();
-    return {
-      success: true,
-      data: result.content
-    };
-  } catch (error) {
-    console.error(`MCP Tool Error [${toolName}]:`, error);
-    
-    if (error.message.includes('Authentication')) {
-      return {
-        success: false,
-        error: 'Authentication failed. Please log in again.',
-        code: 'AUTH_ERROR'
-      };
-    }
-    
-    if (error.message.includes('Tool not found')) {
-      return {
-        success: false,
-        error: `Tool "${toolName}" is not available. Check your connected services.`,
-        code: 'TOOL_NOT_FOUND'
-      };
-    }
-    
-    return {
-      success: false,
-      error: 'An unexpected error occurred.',
-      code: 'UNKNOWN_ERROR'
-    };
-  }
-};
-```
-
-## Best Practices
+The key to integrating with Nexus is properly setting up the authentication headers. Here's what you need:
 
 <AccordionGroup>
-  <Accordion title="Connection Management">
-    - Always close MCP clients after use to prevent connection leaks
-    - Consider connection pooling for high-traffic applications
-    - Implement retry logic for transient network failures
+  <Accordion title="Required Headers">
+    ```typescript
+    headers: {
+      // Required: Bearer token from Civic Auth
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    }
+    ```
   </Accordion>
   
-  <Accordion title="Authentication">
-    - Handle token expiration gracefully
-    - Implement token refresh logic
-    - Store tokens securely using Civic Auth helpers
+  <Accordion title="Getting the Access Token">
+    Use Civic Auth to get the user's access token:
+    ```typescript
+    import { getTokens } from "@civic/auth/nextjs";
+    const { accessToken } = await getTokens();
+    ```
   </Accordion>
   
-  <Accordion title="Tool Discovery">
-    - Cache available tools to reduce API calls
-    - Validate tool arguments before calling
-    - Handle tools that may be temporarily unavailable
-  </Accordion>
-  
-  <Accordion title="Performance">
-    - Use streaming responses for better UX
-    - Implement proper error boundaries
-    - Monitor MCP tool response times
-  </Accordion>
-</AccordionGroup>
-
-## Example Applications
-
-<CardGroup cols={2}>
-  <Card title="GitHub Assistant" icon="github">
-    AI that can create issues, review PRs, and search code
-  </Card>
-  <Card title="Slack Bot" icon="slack">
-    Conversational bot with access to channels and users
-  </Card>
-  <Card title="Drive Manager" icon="google-drive">
-    AI-powered file organization and search
-  </Card>
-  <Card title="Data Analytics" icon="chart-bar">
-    Query databases and generate insights conversationally
-  </Card>
-</CardGroup>
-
-## Troubleshooting
-
-### Common Issues
-
-<AccordionGroup>
-  <Accordion title="Authentication Errors">
-    **Error:** "No access token available" or "Authentication failed"
-    
-    **Solutions:**
-    - Ensure user is logged in via Civic Auth
-    - Check token expiration and refresh if needed
-    - Verify correct scope permissions
-  </Accordion>
-  
-  <Accordion title="Tool Not Available">
-    **Error:** Tool not found or unavailable
-    
-    **Solutions:**
-    - Check that required services are connected at nexus.civic.com
-    - Verify tool names match exactly (case-sensitive)
-    - Test tool availability with listTools() first
-  </Accordion>
-  
-  <Accordion title="Network Issues">
-    **Error:** Connection timeouts or network errors
-    
-    **Solutions:**
-    - Implement retry logic with exponential backoff
-    - Check firewall settings if using corporate network
-    - Verify nexus.civic.com is accessible
+  <Accordion title="Nexus Endpoint">
+    Always connect to the Nexus MCP Hub endpoint:
+    ```
+    https://nexus.civic.com/hub/mcp
+    ```
   </Accordion>
 </AccordionGroup>
 
