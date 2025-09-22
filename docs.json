@@ -180,7 +180,9 @@
            "icon": "rocket",
            "pages": [
              "nexus/overview",
-             "nexus/quickstart/index"
+             "nexus/quickstart/index",
+             "nexus/concepts/toolkits",
+             "nexus/reference/authorizations"
            ]
          },
          {
