@@ -1,0 +1,424 @@
+---
+title: "API Reference"
+icon: "book"
+description: "Complete API reference for React Native Civic Auth integration."
+public: true
+---
+
+## AuthContext API
+
+### AuthContextType
+
+Main authentication context interface for both authentication-only and Web3 integrations.
+
+```typescript
+interface AuthContextType {
+  state: AuthState;
+  signIn?: () => Promise<void>;
+  signOut?: () => Promise<void>;
+  web3Client?: Web3Client | null; // Only available in Web3 integration
+}
+```
+
+### AuthState
+
+Authentication state object containing user session information.
+
+```typescript
+interface AuthState {
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  user?: AuthUser;
+  accessToken?: string;
+  refreshToken?: string;
+  idToken?: string;
+  expiresIn?: number;
+}
+```
+
+### AuthUser
+
+User profile information returned from Civic Auth.
+
+```typescript
+interface AuthUser {
+  email?: string;
+  name: string;
+  picture?: string;
+  sub: string; // Unique user identifier
+}
+```
+
+### Methods
+
+#### `signIn()`
+
+Initiates the OAuth2 authentication flow.
+
+**Returns:** `Promise<void>`
+
+**Example:**
+```typescript
+const { signIn } = useContext(AuthContext);
+await signIn();
+```
+
+#### `signOut()`
+
+Signs out the user and clears the session.
+
+**Returns:** `Promise<void>`
+
+**Example:**
+```typescript
+const { signOut } = useContext(AuthContext);
+await signOut();
+```
+
+---
+
+## Web3Client API
+
+<Note>
+  Web3Client is only available when using the [Web3 Wallet Integration](/mobile/web3-wallet).
+</Note>
+
+### Web3Client Interface
+
+Main interface for blockchain operations.
+
+```typescript
+interface Web3Client {
+  solana: SolanaWeb3Client; // Solana wallet operations
+  connected: boolean; // Connection status
+  createWallets(): Promise<Wallets | null>; // Create embedded wallets
+  disconnect(): Promise<void>; // Disconnect and cleanup
+}
+```
+
+### SolanaWeb3Client Interface
+
+Solana-specific wallet operations.
+
+```typescript
+interface SolanaWeb3Client {
+  readonly address: string; // Wallet public key
+
+  // Core transaction methods
+  sendTransaction(address: string, amount: number): Promise<string>;
+  signTransaction(transaction: Transaction, reason: string): Promise<Buffer>;
+  signMessage(message: string, reason: string): Promise<string>;
+
+  // Utility methods
+  getBalance(): Promise<number | undefined>;
+  disconnect(): Promise<void>;
+}
+```
+
+### Methods
+
+#### `createWallets()`
+
+Creates embedded wallets for the authenticated user.
+
+**Returns:** `Promise<Wallets | null>`
+
+**Requirements:**
+- User must be authenticated
+- Valid ID token required
+
+**Example:**
+```typescript
+const { web3Client } = useContext(AuthContext);
+if (!web3Client?.solana) {
+  const wallets = await web3Client?.createWallets();
+  console.log('Wallets created:', wallets);
+}
+```
+
+#### `sendTransaction(address, amount)`
+
+Sends SOL to a recipient address. Handles transaction creation, signing, and broadcasting.
+
+**Parameters:**
+- `address` (string): Recipient's public key
+- `amount` (number): Amount in SOL
+
+**Returns:** `Promise<string>` - Transaction hash
+
+**Example:**
+```typescript
+const txHash = await web3Client?.solana?.sendTransaction(
+  "RecipientPublicKeyHere",
+  0.5 // 0.5 SOL
+);
+console.log(`Transaction: ${txHash}`);
+```
+
+#### `signTransaction(transaction, reason)`
+
+Signs a custom Solana transaction.
+
+**Parameters:**
+- `transaction` (Transaction): Solana transaction object
+- `reason` (string): Human-readable reason shown to user
+
+**Returns:** `Promise<Buffer>` - Transaction signature
+
+**Example:**
+```typescript
+import { Transaction, SystemProgram, PublicKey } from "@solana/web3.js";
+
+const transaction = new Transaction().add(
+  SystemProgram.transfer({
+    fromPubkey: new PublicKey(web3Client.solana.address),
+    toPubkey: new PublicKey(recipientAddress),
+    lamports: 0.001 * 1e9,
+  })
+);
+
+const signature = await web3Client?.solana?.signTransaction(
+  transaction,
+  "Approve transfer"
+);
+```
+
+#### `signMessage(message, reason)`
+
+Signs an arbitrary message for verification purposes.
+
+**Parameters:**
+- `message` (string): Message to sign
+- `reason` (string): Human-readable reason shown to user
+
+**Returns:** `Promise<string>` - Base64 encoded signature
+
+**Example:**
+```typescript
+const message = "Verify wallet ownership";
+const signature = await web3Client?.solana?.signMessage(
+  message,
+  "Sign to verify your wallet"
+);
+console.log(`Signature: ${signature}`);
+```
+
+#### `getBalance()`
+
+Gets the current SOL balance of the wallet.
+
+**Returns:** `Promise<number | undefined>` - Balance in SOL
+
+**Example:**
+```typescript
+const balance = await web3Client?.solana?.getBalance();
+console.log(`Balance: ${balance} SOL`);
+```
+
+#### `disconnect()`
+
+Disconnects the Web3 client and cleans up resources.
+
+**Returns:** `Promise<void>`
+
+**Example:**
+```typescript
+await web3Client?.disconnect();
+```
+
+---
+
+## Configuration Objects
+
+### CivicWeb3ClientConfig
+
+Configuration for Web3 client initialization.
+
+```typescript
+interface CivicWeb3ClientConfig {
+  solana: {
+    endpoint: string; // Solana RPC endpoint
+  };
+}
+```
+
+**Example:**
+```typescript
+const web3Config: CivicWeb3ClientConfig = {
+  solana: {
+    endpoint: "https://api.devnet.solana.com",
+  },
+};
+```
+
+### AuthRequestConfig
+
+Configuration for OAuth2 authentication.
+
+```typescript
+interface AuthRequestConfig {
+  clientId: string;
+  scopes: string[];
+  redirectUri: string;
+  authorizationEndpoint: string;
+  tokenEndpoint: string;
+  userInfoEndpoint?: string;
+  endSessionEndpoint?: string;
+}
+```
+
+**Example:**
+```typescript
+import { makeRedirectUri } from "expo-auth-session";
+
+const authConfig: AuthRequestConfig = {
+  clientId: "your-client-id",
+  scopes: ["openid", "profile", "email"],
+  redirectUri: makeRedirectUri({ scheme: "your-app" }),
+  authorizationEndpoint: "https://auth.civic.com/oauth/auth",
+  tokenEndpoint: "https://auth.civic.com/oauth/token",
+  userInfoEndpoint: "https://auth.civic.com/oauth/userinfo",
+  endSessionEndpoint: "https://auth.civic.com/oauth/session/end",
+};
+```
+
+---
+
+## Hooks
+
+### `useWeb3Client(config, idToken)`
+
+React hook for initializing and managing Web3 client.
+
+**Parameters:**
+- `config` (CivicWeb3ClientConfig): Web3 configuration
+- `idToken` (string | undefined): User's ID token from authentication
+
+**Returns:** `Web3Client | null | undefined`
+
+**Example:**
+```typescript
+import { useWeb3Client } from "@civic/react-native-auth-web3";
+
+const web3Config = {
+  solana: {
+    endpoint: "https://api.devnet.solana.com",
+  },
+};
+
+const web3Client = useWeb3Client(web3Config, authState.idToken);
+```
+
+---
+
+## Error Handling
+
+### Common Error Types
+
+#### Authentication Errors
+
+```typescript
+// Handle auth session errors
+if (response?.type === "error") {
+  console.error("Authentication error:", response.error);
+  // Handle specific errors:
+  // - "access_denied": User denied access
+  // - "invalid_request": Malformed request
+  // - "server_error": Server-side error
+}
+
+if (response?.type === "cancel") {
+  console.log("User cancelled authentication");
+}
+```
+
+#### Web3 Errors
+
+```typescript
+try {
+  const txHash = await web3Client?.solana?.sendTransaction(address, amount);
+} catch (error) {
+  console.error("Transaction failed:", error);
+  // Common errors:
+  // - Insufficient balance
+  // - Invalid recipient address
+  // - Network connectivity issues
+  // - User rejected transaction
+}
+```
+
+#### Wallet Creation Errors
+
+```typescript
+try {
+  const wallets = await web3Client?.createWallets();
+} catch (error) {
+  console.error("Wallet creation failed:", error);
+  // Common causes:
+  // - Missing or invalid ID token
+  // - Network connectivity issues
+  // - Service temporarily unavailable
+}
+```
+
+---
+
+## TypeScript Support
+
+All interfaces and types are fully typed for TypeScript projects. Import types from the respective packages:
+
+```typescript
+// Authentication-only types
+import { AuthRequestConfig } from "expo-auth-session";
+
+// Web3 types
+import type { 
+  Web3Client, 
+  SolanaWeb3Client,
+  CivicWeb3ClientConfig 
+} from "@civic/react-native-auth-web3";
+
+// Solana types
+import type { Transaction, PublicKey } from "@solana/web3.js";
+```
+
+---
+
+## Migration Guide
+
+### From Authentication Only to Web3
+
+To upgrade from authentication-only to Web3 integration:
+
+1. **Install additional packages:**
+   ```bash
+   npm install @civic/react-native-auth-web3 @solana/web3.js
+   ```
+
+2. **Add Web3 configuration:**
+   ```typescript
+   const web3Config = {
+     solana: {
+       endpoint: "https://api.devnet.solana.com",
+     },
+   };
+   ```
+
+3. **Initialize Web3 client:**
+   ```typescript
+   const web3Client = useWeb3Client(web3Config, authState.idToken);
+   ```
+
+4. **Complete native setup** as described in [Web3 Wallet Integration](/mobile/web3-wallet)
+
+### Breaking Changes
+
+- None currently, as Web3 integration is additive to authentication-only functionality
+
+---
+
+## Support
+
+- **Documentation Issues:** [GitHub Issues](https://github.com/civicteam/civic-auth-examples/issues)
+- **Developer Community:** [Slack Channel](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw)
+- **Example Code:** [GitHub Repository](https://github.com/civicteam/civic-auth-examples/tree/main/packages/mobile/react-native-expo)

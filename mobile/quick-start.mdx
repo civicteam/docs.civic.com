@@ -1,0 +1,131 @@
+---
+title: "Quick Start"
+icon: "rocket"
+description: "Choose your React Native integration approach with Civic Auth."
+public: true
+---
+
+## Choose Your Integration Path
+
+Civic Auth offers two integration approaches for React Native applications. Choose the one that fits your app's needs:
+
+<CardGroup cols={2}>
+  <Card title="Authentication Only" icon="user-check" href="/mobile/authentication-only">
+    Standard OAuth2/OIDC authentication for user sign-in and profile access.
+    
+    **Best for:**
+    - Apps that only need user authentication
+    - No blockchain functionality required
+    - Simpler setup and maintenance
+  </Card>
+  
+  <Card title="Web3 Wallet Integration" icon="wallet" href="/mobile/web3-wallet">
+    Full authentication plus embedded Solana wallet for blockchain interactions.
+    
+    **Best for:**
+    - DeFi applications
+    - NFT marketplaces
+    - Apps requiring transaction signing
+    - Blockchain-powered features
+    
+    **Requires:**
+    - Enabling Web3 wallets in Civic dashboard
+    - Registering your app domain/scheme
+  </Card>
+</CardGroup>
+
+## Integration Comparison
+
+| Feature | Authentication Only | Web3 Wallet Integration |
+|---------|-------------------|------------------------|
+| **User Authentication** | ✅ OAuth2/OIDC flow | ✅ OAuth2/OIDC flow |
+| **User Profile Access** | ✅ Email, name, picture | ✅ Email, name, picture |
+| **Token Management** | ✅ Access & ID tokens | ✅ Access & ID tokens |
+| **Embedded Wallets** | ❌ Not available | ✅ Solana wallet creation |
+| **Transaction Signing** | ❌ Not available | ✅ Sign & send transactions |
+| **Balance Queries** | ❌ Not available | ✅ Check wallet balances |
+| **Message Signing** | ❌ Not available | ✅ Sign arbitrary messages |
+| **Native Configuration** | ❌ Minimal setup | ✅ Requires iOS/Android config |
+
+## Architecture Overview
+
+<Tabs>
+  <Tab title="Authentication Only">
+    ```mermaid
+    graph TD
+        A[React Native App] --> B[Civic Auth]
+        B --> C[User Profile]
+        B --> D[Access Tokens]
+        A --> E[Your App Logic]
+        C --> E
+        D --> E
+    ```
+    
+    **Flow:**
+    1. User initiates sign-in
+    2. OAuth2 flow with Civic Auth
+    3. Receive user profile and tokens
+    4. Use data in your app
+  </Tab>
+  
+  <Tab title="Web3 Wallet Integration">
+    ```mermaid
+    graph TD
+        A[React Native App] --> B[Civic Auth]
+        B --> C[User Profile]
+        B --> D[Access Tokens]
+        B --> E[ID Token]
+        E --> F[Embedded Wallet]
+        F --> G[Solana Network]
+        A --> H[Your App Logic]
+        C --> H
+        D --> H
+        F --> H
+    ```
+    
+    **Flow:**
+    1. User initiates sign-in
+    2. OAuth2 flow with Civic Auth
+    3. Receive user profile, access token, and ID token
+    4. Create embedded wallet using ID token
+    5. Interact with Solana blockchain
+  </Tab>
+</Tabs>
+
+## Next Steps
+
+<Steps>
+  <Step title="Install Dependencies">
+    Complete the [Installation & Setup](/mobile/installation) for both approaches.
+  </Step>
+  
+  <Step title="Choose Your Path">
+    - [Authentication Only](/mobile/authentication-only) - OAuth2 sign-in only
+    - [Web3 Wallet Integration](/mobile/web3-wallet) - Full blockchain functionality
+  </Step>
+  
+  <Step title="Implement & Test">
+    Follow your chosen integration guide and test with your app.
+  </Step>
+</Steps>
+
+## Common Use Cases
+
+### Authentication Only
+- **Social Apps**: User profiles and content sharing
+- **Business Apps**: Employee authentication and access control  
+- **Content Platforms**: User accounts and personalization
+- **SaaS Applications**: Customer authentication and dashboards
+
+### Web3 Wallet Integration
+- **DeFi Platforms**: Trading, lending, and yield farming
+- **NFT Marketplaces**: Buying, selling, and displaying NFTs
+- **Gaming**: In-game assets and rewards on blockchain
+- **Payment Apps**: Crypto payments and transfers
+- **DAO Applications**: Voting and governance participation
+
+## Need Help?
+
+- Check our [API Reference](/mobile/api-reference) for detailed method documentation
+- View complete examples in our [GitHub repository](https://github.com/civicteam/civic-auth-examples/tree/main/packages/mobile/react-native-expo)
+- Join our [developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) for support
