@@ -1,0 +1,310 @@
+---
+title: "HubSpot Server"
+description: "Access and manage HubSpot CRM data, contacts, companies, deals, and comprehensive sales & marketing workflows"
+icon: "server"
+---
+
+# HubSpot Server
+
+## Overview
+
+The HubSpot server provides comprehensive CRM and marketing automation capabilities. Built by [HubSpot](https://hubspot.com), this server enables AI assistants to manage contacts, companies, deals, workflows, and complete sales & marketing operations.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to HubSpot">
+    Add the HubSpot server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authenticate with HubSpot">
+    Connect your HubSpot account using OAuth to access your CRM data and marketing tools.
+  </Step>
+  <Step title="Test Connection">
+    Start with `hubspot-get-user-details` to verify authentication and `hubspot-list-objects` to explore your data.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="CRM Management" icon="address-book">
+    Manage contacts, companies, deals, and tickets with full CRUD operations
+  </Card>
+  <Card title="Marketing Automation" icon="envelope">
+    Create engagements, manage workflows, and track marketing campaigns
+  </Card>
+  <Card title="Data Architecture" icon="database">
+    Configure custom properties, schemas, and object relationships
+  </Card>
+  <Card title="Sales Pipeline" icon="chart-line">
+    Track deals, manage sales processes, and optimize conversion workflows
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Customer Relationship Management" icon="handshake">
+    - **Contact Management**: Create, update, and organize customer contacts with rich profile data
+    - **Company Profiles**: Maintain comprehensive company records with industry, size, and relationship data
+    - **Deal Tracking**: Monitor sales opportunities from lead to close with stage management
+    - **Ticket Management**: Handle customer support requests and track resolution progress
+  </Accordion>
+
+  <Accordion title="Marketing Operations" icon="megaphone">
+    - **Campaign Management**: Organize contacts into campaigns and track engagement metrics
+    - **Workflow Automation**: Create automated sequences for lead nurturing and customer onboarding
+    - **Engagement Tracking**: Log calls, emails, meetings, and tasks for complete customer history
+    - **Lead Scoring**: Develop and maintain lead scoring models based on behavior and demographics
+  </Accordion>
+
+  <Accordion title="Sales Process Optimization" icon="target">
+    - **Pipeline Management**: Configure sales stages and track deal progression
+    - **Activity Logging**: Record sales activities and maintain comprehensive interaction history
+    - **Performance Analytics**: Analyze sales metrics, conversion rates, and team performance
+    - **Territory Management**: Organize accounts by geography, industry, or sales rep
+  </Accordion>
+
+  <Accordion title="Data Integration & Architecture" icon="sitemap">
+    - **Custom Properties**: Create custom fields for specific business requirements
+    - **Object Associations**: Link contacts, companies, deals, and custom objects
+    - **Data Import/Export**: Bulk manage data with batch operations for efficiency
+    - **Schema Management**: Configure custom object types and their relationships
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (21)
+
+<AccordionGroup>
+  <Accordion title="Authentication & Discovery (2 tools)">
+    Essential tools for authentication and exploring your HubSpot environment.
+
+    **Account Management**
+    <AccordionGroup>
+      <Accordion title="hubspot-get-user-details">
+        Authenticate and analyze access token permissions and account details
+        - **Use Cases**: Verify authentication, understand account permissions
+      </Accordion>
+      <Accordion title="hubspot-get-schemas">
+        Retrieve all custom object schemas in your HubSpot account
+        - **Use Cases**: Understand available object types and their structure
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      Start with `hubspot-get-user-details` to verify your authentication and understand available permissions.
+    </Info>
+  </Accordion>
+
+  <Accordion title="Object Management (6 tools)">
+    Core CRM functionality for managing contacts, companies, deals, and custom objects.
+
+    **CRUD Operations**
+    <AccordionGroup>
+      <Accordion title="hubspot-list-objects">
+        Retrieve paginated lists of any HubSpot object type
+        - **Parameters**: objectType (required), pagination, filters, properties, associations
+        - **Object Types**: contacts, companies, deals, tickets, custom objects
+      </Accordion>
+      <Accordion title="hubspot-search-objects">
+        Perform advanced filtered searches with complex criteria
+        - **Features**: Filter groups, sorting, query strings, property selection
+        - **Use Cases**: Find specific records, complex business logic queries
+      </Accordion>
+      <Accordion title="hubspot-batch-create-objects">
+        Create multiple objects of the same type in one operation
+        - **Efficiency**: Bulk operations for data imports and migrations
+        - **Associations**: Create relationships during object creation
+      </Accordion>
+      <Accordion title="hubspot-batch-update-objects">
+        Update multiple existing objects efficiently in batch operations
+        - **Use Cases**: Bulk data updates, synchronized field changes
+      </Accordion>
+      <Accordion title="hubspot-batch-read-objects">
+        Retrieve multiple objects by their IDs in a single batch operation
+        - **Performance**: Efficient bulk data retrieval for reporting
+      </Accordion>
+    </AccordionGroup>
+
+    <Note>
+      **Common Object Types**: contacts, companies, deals, tickets, products, line_items, quotes, calls, emails, meetings, notes, tasks.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Relationships & Associations (3 tools)">
+    Tools for managing relationships between different HubSpot objects.
+
+    <AccordionGroup>
+      <Accordion title="hubspot-create-association">
+        Establish relationships between HubSpot objects across different types
+        - **Examples**: Link contact to company, associate deal with contact
+        - **Parameters**: fromObjectId, toObjectId, association types
+      </Accordion>
+      <Accordion title="hubspot-get-association-definitions">
+        Retrieve valid association types between specific object types
+        - **Use Cases**: Understand available relationship types before creating associations
+      </Accordion>
+      <Accordion title="hubspot-list-associations">
+        Retrieve existing relationships for a specific object
+        - **Use Cases**: Find all companies associated with a contact, deals linked to accounts
+      </Accordion>
+    </AccordionGroup>
+
+    <Warning>
+      Always use `hubspot-get-association-definitions` to verify valid association types before creating relationships.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Property Management (4 tools)">
+    Configure and manage custom properties and data structure.
+
+    <AccordionGroup>
+      <Accordion title="hubspot-list-properties">
+        Get complete catalog of properties for any HubSpot object type
+        - **Use Cases**: Understand available fields, data structure planning
+      </Accordion>
+      <Accordion title="hubspot-get-property">
+        Retrieve detailed information about a specific property
+        - **Details**: Property type, options, validation rules, usage
+      </Accordion>
+      <Accordion title="hubspot-create-property">
+        Create new custom properties for HubSpot object types
+        - **Customization**: Custom fields, dropdowns, calculations, formulas
+      </Accordion>
+      <Accordion title="hubspot-update-property">
+        Update existing custom properties and their configurations
+        - **Modifications**: Labels, options, validation, descriptions
+      </Accordion>
+    </AccordionGroup>
+
+    <Tip>
+      **Property Types**: Single-line text, multi-line text, dropdown select, number, date, file, URL, and more.
+    </Tip>
+  </Accordion>
+
+  <Accordion title="Engagement Management (3 tools)">
+    Create and manage customer interactions, notes, and tasks.
+
+    <AccordionGroup>
+      <Accordion title="hubspot-create-engagement">
+        Create engagements (Notes or Tasks) associated with CRM objects
+        - **Types**: Notes, Tasks, Calls, Emails, Meetings
+        - **Associations**: Link to contacts, companies, deals, tickets
+      </Accordion>
+      <Accordion title="hubspot-get-engagement">
+        Retrieve engagement details by ID
+        - **Use Cases**: Review interaction history, task details
+      </Accordion>
+      <Accordion title="hubspot-update-engagement">
+        Update existing engagements with new information
+        - **Modifications**: Status, notes, due dates, priorities
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      **Engagement Types**: Note (for logging interactions), Task (for follow-up activities).
+    </Info>
+  </Accordion>
+
+  <Accordion title="Workflow & Automation (2 tools)">
+    Manage marketing automation workflows and business processes.
+
+    <AccordionGroup>
+      <Accordion title="hubspot-list-workflows">
+        Retrieve paginated list of workflows in your HubSpot account
+        - **Use Cases**: Discover automation, understand workflow structure
+      </Accordion>
+      <Accordion title="hubspot-get-workflow">
+        Get detailed information about a specific workflow
+        - **Details**: Actions, triggers, enrollment criteria, performance metrics
+      </Accordion>
+    </AccordionGroup>
+
+    <Note>
+      Workflows are read-only through the API - creation and editing must be done through the HubSpot interface.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Utility Tools (1 tool)">
+    Helpful utilities for navigation and support.
+
+    <AccordionGroup>
+      <Accordion title="hubspot-get-link">
+        Generate HubSpot UI links for different pages and objects
+        - **Link Types**: Object records, list views, reports, settings
+        - **Use Cases**: Direct navigation to HubSpot interface, sharing specific records
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Configuration Requirements
+
+### Authentication Setup
+The HubSpot server uses OAuth2 authentication with HubSpot's API:
+
+<AccordionGroup>
+  <Accordion title="OAuth Scopes" icon="key">
+    **Required Scopes for Full Functionality:**
+    - **CRM Objects**: Read/write access to contacts, companies, deals, tickets
+    - **Properties**: Manage custom properties and object schemas
+    - **Associations**: Create and manage object relationships
+    - **Engagements**: Create and manage notes, tasks, and activities
+    - **Workflows**: Read access to automation workflows
+  </Accordion>
+
+  <Accordion title="Account Requirements" icon="building">
+    - **HubSpot Account**: Free or paid HubSpot account with CRM access
+    - **API Access**: Ensure API access is enabled for your account tier
+    - **Permissions**: Admin or appropriate role permissions for the operations you need
+    - **Rate Limits**: Be aware of HubSpot's API rate limits based on your account tier
+  </Accordion>
+</AccordionGroup>
+
+### Server Configuration
+- **Transport**: STDIO-hosted (local Hub Bridge required)
+- **Hub Bridge**: Uses `npx -y @civic/hub-bridge` for authentication and requests
+- **API Integration**: Direct connection to HubSpot's REST API
+- **Rate Limiting**: Automatic rate limit handling with retry logic
+
+<Note>
+The HubSpot server requires Hub Bridge for authentication management and API request handling.
+</Note>
+
+## Best Practices
+
+### CRM Data Management
+1. **Object Strategy**: Use `hubspot-list-objects` to understand your current data structure
+2. **Search Optimization**: Use `hubspot-search-objects` for complex queries instead of filtering large lists
+3. **Batch Operations**: Use batch tools for bulk operations to improve performance and avoid rate limits
+4. **Property Planning**: Use `hubspot-list-properties` before creating custom fields
+
+### Association Management
+1. **Relationship Discovery**: Use `hubspot-get-association-definitions` to understand available relationships
+2. **Systematic Linking**: Create associations systematically (contact → company → deal)
+3. **Association Cleanup**: Regularly audit and clean up unnecessary associations
+4. **Performance Impact**: Consider association queries impact on API performance
+
+### Workflow Integration
+1. **Automation Audit**: Use `hubspot-list-workflows` to understand existing automations
+2. **Engagement Logging**: Create engagements to maintain comprehensive customer interaction history
+3. **Data Consistency**: Ensure data quality with property validation and required fields
+4. **Performance Monitoring**: Monitor API usage to stay within rate limits
+
+### Sales Process Optimization
+1. **Deal Pipeline**: Structure deals with consistent stages and properties
+2. **Activity Tracking**: Log all customer interactions as engagements
+3. **Custom Properties**: Create custom fields for business-specific requirements
+4. **Reporting Data**: Structure data to support reporting and analytics needs
+
+<Warning>
+HubSpot has strict rate limits that vary by account tier. Use batch operations when possible and implement proper error handling for rate limit responses.
+</Warning>
+
+<Tip>
+**Pro Tip**: Start with read operations to understand your data structure before implementing create/update operations. Use the HubSpot UI to verify API changes during development.
+</Tip>

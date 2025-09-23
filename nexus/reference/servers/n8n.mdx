@@ -1,0 +1,209 @@
+---
+title: "n8n Server"
+description: "Connect to n8n instances for workflow automation, execution management, and integration workflows"
+icon: "server"
+---
+
+# n8n Server
+
+## Overview
+
+The n8n server provides comprehensive integration with [n8n](https://n8n.io) automation platform, enabling AI assistants to manage workflows, monitor executions, and trigger automations programmatically.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to n8n">
+    Add the n8n server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Configure API Access">
+    Provide your n8n instance API URL and API key for authentication.
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like `list workflows` to verify the connection works properly.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Workflow Management" icon="flow-chart">
+    Create, update, activate, and delete n8n workflows programmatically
+  </Card>
+  <Card title="Execution Monitoring" icon="chart-line">
+    Track workflow executions, view results, and monitor automation performance
+  </Card>
+  <Card title="Webhook Triggers" icon="webhook">
+    Execute workflows via webhook calls with custom input data and headers
+  </Card>
+  <Card title="Automation Control" icon="toggle-on">
+    Activate and deactivate workflows to control when automations run
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Workflow Automation" icon="robot">
+    - **Dynamic Workflow Creation**: Build workflows programmatically based on business requirements
+    - **Conditional Automation**: Activate/deactivate workflows based on schedules or events
+    - **Bulk Operations**: Manage multiple workflows simultaneously across projects
+    - **Integration Orchestration**: Coordinate complex multi-step automations
+  </Accordion>
+
+  <Accordion title="Operations Monitoring" icon="monitor">
+    - **Execution Tracking**: Monitor workflow success rates and performance metrics
+    - **Error Analysis**: Identify and analyze failed executions for troubleshooting
+    - **Performance Optimization**: Track execution duration and optimize slow workflows
+    - **Audit Trail**: Maintain logs of workflow changes and execution history
+  </Accordion>
+
+  <Accordion title="Event-Driven Automation" icon="bell">
+    - **Webhook Integration**: Trigger workflows from external systems via webhooks
+    - **Data Processing**: Process incoming data through automated workflow pipelines
+    - **Notification Systems**: Set up automated alerts and notification workflows
+    - **API Orchestration**: Chain multiple API calls through workflow automation
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (11)
+
+<AccordionGroup>
+  <Accordion title="Workflow Management (6 tools)">
+    Complete lifecycle management of n8n workflows from creation to deletion.
+
+    **Core Workflow Operations**
+    <AccordionGroup>
+      <Accordion title="list_workflows">
+        Retrieve a list of all workflows with optional filtering by active/inactive status
+      </Accordion>
+      <Accordion title="get_workflow">
+        Retrieve detailed information about a specific workflow by ID
+      </Accordion>
+      <Accordion title="create_workflow">
+        Create new workflows with nodes, connections, and configuration settings
+      </Accordion>
+      <Accordion title="update_workflow">
+        Modify existing workflows including nodes, connections, and metadata
+      </Accordion>
+      <Accordion title="delete_workflow">
+        Remove workflows permanently from the n8n instance
+      </Accordion>
+    </AccordionGroup>
+
+    **Workflow State Management**
+    <AccordionGroup>
+      <Accordion title="activate_workflow">
+        Enable workflows to run automatically based on their trigger conditions
+      </Accordion>
+      <Accordion title="deactivate_workflow">
+        Disable workflows to prevent automatic execution while preserving configuration
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Execution Management (3 tools)">
+    Monitor and manage workflow execution history and results.
+
+    <AccordionGroup>
+      <Accordion title="list_executions">
+        Retrieve workflow executions with filtering by workflow, status, and pagination support
+      </Accordion>
+      <Accordion title="get_execution">
+        Get detailed execution information including node results and error data
+      </Accordion>
+      <Accordion title="delete_execution">
+        Remove specific execution records from the execution history
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      Use status filters ('success', 'error', 'waiting', 'canceled') to find specific execution types quickly.
+    </Info>
+  </Accordion>
+
+  <Accordion title="Webhook Integration (1 tool)">
+    Execute workflows via HTTP webhooks with custom data and headers.
+
+    <AccordionGroup>
+      <Accordion title="run_webhook">
+        Trigger workflow execution via webhook with optional input data and custom headers
+      </Accordion>
+    </AccordionGroup>
+
+    <Tip>
+      **Pro Tip:** Use meaningful workflow names for webhook endpoints and include error handling in your workflows for robust webhook processing.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Resources
+
+The n8n server provides direct access to workflow and execution data through resource endpoints.
+
+<AccordionGroup>
+  <Accordion title="Collection Endpoints" icon="database">
+    Access entire data collections for browsing and discovery:
+
+    <CardGroup cols={2}>
+      <Card title="Workflows" icon="flow-chart">
+        `n8n://workflows`  
+        Access the complete workflow directory
+      </Card>
+      <Card title="Execution Statistics" icon="chart-bar">
+        `n8n://execution-stats`  
+        View execution metrics and performance data
+      </Card>
+    </CardGroup>
+  </Accordion>
+
+  <Accordion title="Individual Record Endpoints" icon="magnifying-glass">
+    Access specific records when you know their ID:
+
+    <CardGroup cols={2}>
+      <Card title="Workflow Details" icon="flow-chart">
+        `n8n://workflows/{id}`  
+        Get comprehensive workflow information including nodes and connections
+      </Card>
+      <Card title="Execution Details" icon="play">
+        `n8n://executions/{id}`  
+        Get detailed execution results including node outputs and error information
+      </Card>
+    </CardGroup>
+
+    <Tip>
+      **Pro Tip:** Use collection endpoints to discover workflows and executions, then switch to individual record endpoints for detailed analysis.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+
+## Configuration Requirements
+
+### Authentication Setup
+The n8n server requires API key authentication with your n8n instance:
+
+<AccordionGroup>
+  <Accordion title="Required Configuration" icon="key">
+    - **API Key**: Your n8n instance API key (generated in n8n Settings → API Keys)
+    - **API URL**: Your n8n instance API endpoint (e.g., `https://n8n.example.com/api/v1`)
+    - **Webhook Credentials** (optional): Username/password for webhook authentication
+  </Accordion>
+
+  <Accordion title="Default Settings" icon="gear">
+    - **Default API URL**: `https://n8n.civic.com/api/v1`
+    - **Default Webhook Username**: `username`
+    - **Default Webhook Password**: `password`
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+Ensure your n8n instance is accessible from the internet and API access is enabled in your n8n configuration.
+</Warning>
+
+<Note>
+The n8n server requires appropriate API permissions in your n8n instance to create, modify, and execute workflows.
+</Note>
