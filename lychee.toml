@@ -31,10 +31,8 @@ exclude = [
   '^https?://(www\.)?notion\.so',
   '^https?://(www\.)?chat\.mistral\.ai',
 
-  # Email addresses
+  # Contact addresses
   '^mailto:',
-
-  # Tel links
   '^tel:',
 
   # Application protocol links
