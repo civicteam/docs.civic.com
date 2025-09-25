@@ -1,0 +1,301 @@
+---
+title: Hub Bridge Setup
+description: Use Hub Bridge when your client doesn't support Remote URL connections
+icon: "bridge"
+---
+
+## What is Hub Bridge?
+
+Hub Bridge is a local proxy that connects clients (like Cursor, VS Code, JetBrains) to Civic Nexus. Your client thinks it's talking to a local MCP server, but the bridge handles authentication and forwards requests to your selected Nexus servers.
+
+**npm package:** [`@civic/hub-bridge`](https://www.npmjs.com/package/@civic/hub-bridge)
+
+<Info>
+**Use Hub Bridge when:** Your client only supports local/stdio MCP servers and doesn't have remote URL options.
+</Info>
+
+## Check Client Compatibility First
+
+Before setting up Hub Bridge, check if your client supports Remote URL connections instead:
+
+<Card title="Client Compatibility Guide" icon="table" href="/nexus/reference/client-compatibility">
+  See which clients support Remote URL vs Hub Bridge - Remote URL is simpler if your client supports it
+</Card>
+
+**Use Hub Bridge for:** Cursor, VS Code, JetBrains IDEs, Windsurf, Claude Code, and other clients that only support local/stdio MCP servers.
+
+## Setup: Edit Your Client's Configuration
+
+Most clients that require Hub Bridge use a JSON configuration file. Here's how to set it up:
+
+## Prerequisites
+
+<Warning>
+Make sure you have these before starting:
+</Warning>
+
+- **Node.js 18 or higher** - Check with `node --version`
+- **Terminal access** - macOS/Linux Terminal, Windows PowerShell, or Command Prompt  
+- **Internet connection** - For initial download and authentication
+- **Default browser** - Bridge opens browser for one-time authentication
+
+### Install Node.js (if needed)
+
+<Tabs>
+  <Tab title="macOS">
+    ```bash
+    # Using Homebrew (recommended)
+    brew install node
+    
+    # Or download from nodejs.org
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```powershell
+    # Using winget
+    winget install OpenJS.NodeJS
+    
+    # Or download from nodejs.org
+    ```
+  </Tab>
+  <Tab title="Linux">
+    ```bash
+    # Ubuntu/Debian
+    sudo apt update && sudo apt install nodejs npm
+    
+    # Or use NodeSource repository for latest version
+    ```
+  </Tab>
+</Tabs>
+
+
+## Configuration by Client
+
+Each client has its own configuration format and file location. Choose your client below:
+
+<Tabs>
+  <Tab title="Cursor">
+    **File Location:** `.cursor/mcp.json` in your project root
+    
+    **Configuration:**
+    ```json
+    {
+      "mcpServers": {
+        "civic-nexus": {
+          "command": "npx",
+          "args": ["-y", "@civic/hub-bridge@latest"]
+        }
+      }
+    }
+    ```
+    
+    **Alternative:** Use Cursor Settings → Features → MCP → Add New MCP Server
+  </Tab>
+  
+  <Tab title="VS Code">
+    **File Location:** `.mcp.json` in your workspace root
+    
+    **Configuration:**
+    ```json
+    {
+      "servers": {
+        "civic-nexus": {
+          "type": "stdio",
+          "command": "npx",
+          "args": ["-y", "@civic/hub-bridge@latest"]
+        }
+      }
+    }
+    ```
+    
+    **Alternative:** Use File → Preferences → Settings → search "MCP"
+  </Tab>
+  
+  <Tab title="JetBrains IDEs">
+    **File Location:** Check your IDE's MCP plugin documentation for config file location
+    
+    **Configuration:** Most JetBrains IDEs use a similar format:
+    ```json
+    {
+      "mcpServers": {
+        "civic-nexus": {
+          "command": "npx",
+          "args": ["-y", "@civic/hub-bridge@latest"]
+        }
+      }
+    }
+    ```
+    
+    **Setup:** Add via IDE Settings → Plugins → MCP configuration
+  </Tab>
+  
+  <Tab title="Other Clients">
+    **General Format:** Look for MCP server configuration in your client settings
+    
+    **Common patterns:**
+    - **Command:** `npx`
+    - **Arguments:** `["-y", "@civic/hub-bridge@latest"]`
+    - **Type:** `stdio` (if required)
+    - **Name:** `Civic Nexus` or `civic-nexus`
+    
+    The Hub Bridge will work with any client that supports local MCP servers via stdio.
+  </Tab>
+</Tabs>
+
+<Note>
+**All these configurations use the Hub Bridge** - your client runs `npx -y @civic/hub-bridge` locally, and the bridge handles connecting to Civic Nexus servers.
+</Note>
+
+### Step 2: First Run Authentication
+
+When you first use an MCP command, the bridge will automatically:
+
+<Steps>
+  <Step title="Create Account & Select Servers">
+    1. Create your Civic account (Google, GitHub, etc.)
+    2. During account creation, select which MCP servers you want to connect (GitHub, Slack, etc.)
+  </Step>
+  <Step title="Download & Install">
+    Bridge downloads itself (happens once, ~30 seconds)
+  </Step>
+  <Step title="Open Browser">
+    Your default browser opens to nexus.civic.com for authentication
+  </Step>
+  <Step title="Ready for Use">
+    Bridge is now configured and your client can access your selected tools
+  </Step>
+  <Step title="App Authorization (As Needed)">
+    When you first use each specific tool, you'll authorize access to that app (e.g., GitHub OAuth, Slack workspace permission)
+  </Step>
+</Steps>
+
+### Managing Your Server Selection
+
+You can modify which servers you have access to in two ways:
+
+**Option 1: In Chat**
+```
+"Connect me to GitHub"
+"Add Slack to my available tools"  
+"Show me what tools are available to connect"
+"Remove Dropbox from my tools"
+```
+
+**Option 2: On nexus.civic.com**  
+Visit the website to add or remove servers from your account selection.
+
+### Step 3: Test Connection
+
+Try these commands in your AI client:
+
+```
+"What MCP servers are available?"
+"List my GitHub repositories"  
+"Show me recent Slack messages"
+```
+
+
+## Troubleshooting
+
+### Common Issues
+
+<AccordionGroup>
+  <Accordion title="Bridge command not found" icon="exclamation-triangle">
+    **Problem:** `npx: command not found` or `'npx' is not recognized`
+    
+    **Solution:** 
+    - Install Node.js 18+ from nodejs.org
+    - Restart your terminal/IDE after installation
+    - Verify with `node --version` and `npm --version`
+  </Accordion>
+  
+  <Accordion title="Browser doesn't open for auth" icon="globe">
+    **Problem:** Authentication browser window doesn't appear
+    
+    **Solution:**
+    - Corporate firewall may be blocking - try from personal network
+    - Manually visit the auth URL shown in terminal output
+    - Check if default browser is set correctly
+    - Try running from regular terminal instead of IDE terminal
+  </Accordion>
+  
+  <Accordion title="Client shows no tools/servers" icon="server">
+    **Problem:** Bridge connects but client doesn't see any MCP tools
+    
+    **Solution:**
+    - Restart your client completely after bridge setup
+    - Check that you selected servers during authentication
+    - Try using the bridge again to see if it works
+    - Some clients need manual restart of MCP features
+  </Accordion>
+  
+  <Accordion title="Authentication keeps failing" icon="key">
+    **Problem:** Repeated auth prompts or 401 errors
+    
+    **Solution:**
+    - Try reinstalling: remove the MCP server from your client and add it back
+    - Check system time is accurate (OAuth is time-sensitive)
+    - Disable VPN temporarily during initial setup
+    - Join our developer community if issue persists
+  </Accordion>
+  
+  <Accordion title="Slow or timing out" icon="clock">
+    **Problem:** Bridge responses are slow or timeout
+    
+    **Solution:**
+    - Check internet connection stability
+    - Corporate proxy may be interfering - try personal network
+    - Some MCP operations are inherently slower (large file operations)
+    - Bridge caches auth tokens to minimize delays
+  </Accordion>
+</AccordionGroup>
+
+### Corporate Network Considerations
+
+If you're on a corporate network:
+
+- **Proxy servers** may interfere with authentication - whitelist `nexus.civic.com` and `*.civic.com`
+- **Firewall rules** might block npm/npx - work with IT to allow Node.js tools
+- **Certificate issues** - corporate TLS inspection can cause SSL errors
+- **Alternative:** Try initial setup from personal network, then bridge should work on corporate network
+
+### Getting More Help
+
+<Steps>
+  <Step title="Check Error Messages">
+    Note any error messages you see when trying to use MCP commands
+  </Step>
+  <Step title="Gather Info">
+    Note your OS, Node version (`node --version`), and client type
+  </Step>
+  <Step title="Contact Support">
+    Include the above info when contacting support for faster resolution
+  </Step>
+</Steps>
+
+<Card title="Still Need Help?" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+  Contact our support team with your specific setup details
+</Card>
+
+## How Hub Bridge Works
+
+The Hub Bridge follows a modular architecture with clear separation of concerns:
+
+### Core Components
+
+- **Bridge Core**: Connects stdio and HTTP/SSE transports, forwards messages between client and server
+- **Auth Provider**: Handles OAuth client interface for Civic authentication with PKCE flow  
+- **Callback Server**: Creates local HTTP server for OAuth redirects with dynamic port selection
+- **Token Store**: Manages secure storage of authentication tokens with file system persistence
+- **OIDC Configuration**: Fetches OpenID Connect configuration from discovery endpoints
+
+### Authentication Flow
+
+1. **Civic Authentication**: Automatically initiated when bridge starts using PKCE for security
+2. **Service-Specific Authentication**: Intercepts auth URL errors, opens browser for user authorization
+3. **Token Management**: Stores tokens locally for subsequent uses, handles refresh automatically
+
+### Environment Variables
+
+The Hub Bridge may support environment variables for configuration, but refer to the [official package documentation](https://www.npmjs.com/package/@civic/hub-bridge) for the most current and accurate list of supported options.
+

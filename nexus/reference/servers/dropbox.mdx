@@ -1,0 +1,193 @@
+---
+title: "Dropbox Server"
+description: "Access and search files in your Dropbox with upload and search capabilities"
+icon: "server"
+---
+
+# Dropbox Server
+
+## Overview
+
+The Dropbox server provides essential file management capabilities for your Dropbox account. Built by [Dropbox](https://dropbox.com), this server enables AI assistants to search files, upload content, and access your cloud storage directly.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to Dropbox">
+    Add the Dropbox server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authenticate with Dropbox">
+    Connect your Dropbox account using OAuth to access your files and folders.
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple `search` command to verify access and explore your files.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="File Search" icon="magnifying-glass">
+    Search for files across your entire Dropbox or within specific folders
+  </Card>
+  <Card title="File Upload" icon="cloud-arrow-up">
+    Upload new files directly to your Dropbox with base64 encoded content
+  </Card>
+  <Card title="Folder Navigation" icon="folder-tree">
+    Search within specific folder paths for targeted file discovery
+  </Card>
+  <Card title="Content Management" icon="file">
+    Organize and access your cloud storage through AI assistant interactions
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Document Management" icon="file-text">
+    - **File Discovery**: Find documents, spreadsheets, and presentations across your Dropbox
+    - **Content Search**: Search file names and metadata to locate specific resources
+    - **Organization**: Navigate folder structures and understand file organization
+    - **Quick Access**: Retrieve files without manually browsing through folders
+  </Accordion>
+
+  <Accordion title="Content Creation & Storage" icon="pen-to-square">
+    - **Document Upload**: Create and upload new files directly from AI conversations
+    - **Content Backup**: Store generated content, reports, and data files
+    - **Collaborative Storage**: Upload files for team access and sharing
+    - **Automated Archiving**: Store conversation outputs and generated materials
+  </Accordion>
+
+  <Accordion title="Research & Analysis" icon="chart-bar">
+    - **Data File Access**: Find and analyze CSV files, databases, and datasets
+    - **Report Storage**: Access existing reports and analysis documents
+    - **Reference Material**: Locate research papers, documentation, and resources
+    - **Version Control**: Find different versions of documents and compare changes
+  </Accordion>
+
+  <Accordion title="Project Management" icon="list-check">
+    - **Asset Discovery**: Find project files, images, and resources
+    - **Documentation Access**: Locate project documentation and specifications
+    - **File Sharing Preparation**: Search for files that need to be shared or distributed
+    - **Archive Management**: Access historical project files and documentation
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (3)
+
+<AccordionGroup>
+  <Accordion title="File Search & Discovery (2 tools)">
+    Comprehensive search capabilities for finding files across your Dropbox storage.
+
+    **Global and Targeted Search**
+    <AccordionGroup>
+      <Accordion title="search">
+        Search for files across your entire Dropbox account
+        - **Parameters**: query (required) - search term for file names and metadata
+        - **Scope**: Searches all accessible files and folders
+        - **Use Cases**: Find files by name, type, or content when location is unknown
+      </Accordion>
+      <Accordion title="search_file_db">
+        Search for files within a specific Dropbox folder
+        - **Parameters**: query (required), path (optional), max_results (optional)
+        - **Scope**: Limited to specified folder path for targeted results
+        - **Performance**: Faster searches when you know the general location
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      **Search Tips**: Use specific keywords, file extensions (.pdf, .docx), or partial file names for better results.
+    </Info>
+  </Accordion>
+
+  <Accordion title="File Management (1 tool)">
+    Upload and store new files directly in your Dropbox storage.
+
+    <AccordionGroup>
+      <Accordion title="upload_file">
+        Upload new files to your Dropbox with base64 encoded content
+        - **Parameters**: 
+          - path (required): Target location in Dropbox (e.g., "/documents/report.pdf")
+          - content (required): Base64 encoded file content
+        - **Supported Formats**: Any file type that can be base64 encoded
+        - **Use Cases**: Save generated documents, upload analysis results, store conversation outputs
+      </Accordion>
+    </AccordionGroup>
+
+    <Warning>
+      File content must be base64 encoded. Large files may have upload limits based on your Dropbox account tier.
+    </Warning>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Configuration Requirements
+
+### Authentication Setup
+The Dropbox server uses OAuth2 authentication with specific file access scopes:
+
+<AccordionGroup>
+  <Accordion title="OAuth Scopes" icon="key">
+    **Required Permissions:**
+    - **files.metadata.read**: Read file and folder metadata (for search operations)
+    - **files.content.read**: Read file content (for comprehensive access)
+    - **files.content.write**: Write and upload files (for upload operations)
+
+    **Tool-Specific Scopes:**
+    - `search` and `search_file_db`: files.metadata.read
+    - `upload_file`: files.content.read + files.content.write
+  </Accordion>
+
+  <Accordion title="Account Requirements" icon="building">
+    - **Dropbox Account**: Personal or business Dropbox account
+    - **Storage Space**: Sufficient storage for upload operations
+    - **API Access**: Dropbox API access enabled (typically available for all accounts)
+  </Accordion>
+</AccordionGroup>
+
+### Server Configuration
+- **Transport**: STDIO-hosted (requires Hub Bridge)
+- **Hub Bridge**: Uses `npx -y @civic/hub-bridge` for OAuth authentication
+- **File Encoding**: Base64 encoding required for file uploads
+- **Path Format**: Unix-style paths (e.g., "/folder/subfolder/file.ext")
+
+<Note>
+The Dropbox server requires Hub Bridge for secure OAuth token management and API interactions.
+</Note>
+
+## Best Practices
+
+### File Search Strategies
+1. **Start Broad**: Use general terms first, then narrow down with specific keywords
+2. **Use Extensions**: Include file extensions (.pdf, .xlsx, .png) to filter by type
+3. **Folder-Specific**: Use `search_file_db` when you know the approximate location
+4. **Pagination**: Use max_results parameter to control search result volume
+
+### File Upload Guidelines
+1. **Path Planning**: Use clear, descriptive folder structures (e.g., "/projects/2024/reports/")
+2. **File Naming**: Use descriptive names with dates or version numbers
+3. **Encoding Verification**: Ensure proper base64 encoding before upload
+4. **Size Considerations**: Be aware of file size limits and account storage capacity
+
+### Organization & Management
+1. **Consistent Naming**: Use consistent file naming conventions for better searchability
+2. **Folder Structure**: Maintain organized folder hierarchies for efficient searching
+3. **Regular Cleanup**: Periodically search for and organize files to maintain structure
+4. **Backup Strategy**: Use uploads to create backups of important generated content
+
+### Integration Workflows
+1. **Document Generation**: Generate content and immediately upload to Dropbox for storage
+2. **Research Workflows**: Search for existing files before creating new documents
+3. **Collaboration**: Upload files to shared folders for team access
+4. **Archive Management**: Use search to maintain and organize historical files
+
+<Warning>
+Always verify file paths and ensure you have appropriate permissions before uploading files. Incorrect paths may create unintended folder structures.
+</Warning>
+
+<Tip>
+**Pro Tip**: Combine search operations with upload operations - search for existing files first to avoid duplicates, then upload new versions with updated names.
+</Tip>

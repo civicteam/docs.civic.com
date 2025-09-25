@@ -1,0 +1,234 @@
+---
+title: "Sentry Server"
+description: "Monitor and fix errors in your applications with Sentry's error tracking and performance monitoring tools"
+icon: "server"
+---
+
+# Sentry Server
+
+## Overview
+
+The Sentry server provides comprehensive error tracking and performance monitoring capabilities. Built by [Sentry](https://sentry.io), this server enables AI assistants to access error data, manage issues, analyze performance traces, and help teams maintain healthy applications.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to Sentry">
+    Add the Sentry server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authenticate with Sentry">
+    Connect your Sentry account using OAuth to access your organizations and projects.
+  </Step>
+  <Step title="Test Connection">
+    Start with `whoami` to verify authentication and `find organizations` to see your available data.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Error Tracking" icon="bug-slash">
+    Monitor, analyze, and resolve application errors and exceptions across projects
+  </Card>
+  <Card title="Performance Monitoring" icon="gauge-high">
+    Analyze traces, identify bottlenecks, and optimize application performance
+  </Card>
+  <Card title="Issue Management" icon="list-check">
+    Assign issues, update status, and manage the resolution workflow
+  </Card>
+  <Card title="Team Collaboration" icon="users">
+    Create teams, find projects, and coordinate error resolution efforts
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Error Investigation & Resolution" icon="magnifying-glass">
+    - **Issue Analysis**: Get detailed stacktraces, error context, and affected user data
+    - **Root Cause Analysis**: Analyze error patterns and identify common failure points
+    - **Resolution Tracking**: Update issue status, assign to team members, and track fixes
+    - **Event Attachments**: Access screenshots, log files, and diagnostic data
+  </Accordion>
+
+  <Accordion title="Performance Optimization" icon="rocket">
+    - **Trace Analysis**: Examine detailed performance traces and identify slow operations
+    - **Bottleneck Detection**: Find database queries, API calls, and operations causing delays
+    - **Resource Monitoring**: Track memory usage, response times, and throughput metrics
+    - **Trend Analysis**: Search events and perform aggregations to understand patterns
+  </Accordion>
+
+  <Accordion title="Release Management" icon="tag">
+    - **Release Tracking**: Monitor which versions contain specific errors
+    - **Deployment Analysis**: Compare error rates between releases and environments
+    - **Version Health**: Identify problematic releases and plan rollbacks
+    - **Environment Comparison**: Analyze differences between staging and production
+  </Accordion>
+
+  <Accordion title="Team Management" icon="team">
+    - **Organization Setup**: Manage organizations and access controls
+    - **Team Creation**: Set up teams for different projects and responsibilities
+    - **Project Discovery**: Find and organize projects across your organization
+    - **Workflow Management**: Assign issues and track resolution progress
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (12)
+
+<AccordionGroup>
+  <Accordion title="Authentication & Discovery (4 tools)">
+    Essential tools for authentication and exploring your Sentry environment.
+
+    **Account & Organization Management**
+    <AccordionGroup>
+      <Accordion title="whoami">
+        Identify the authenticated user and get account information
+        - **Use Cases**: Verify authentication, get user ID for assignments
+      </Accordion>
+      <Accordion title="find_organizations">
+        List all organizations you have access to in Sentry
+        - **Use Cases**: Discover available organizations, get organization slugs
+      </Accordion>
+      <Accordion title="find_teams">
+        List teams within a specific organization
+        - **Parameters**: organizationSlug (required), regionUrl (optional)
+      </Accordion>
+      <Accordion title="find_projects">
+        List projects within a specific organization
+        - **Parameters**: organizationSlug (required), regionUrl (optional)
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      **Organization Slugs**: Found via `find_organizations`, these are required for most other operations.
+    </Info>
+  </Accordion>
+
+  <Accordion title="Error & Issue Management (3 tools)">
+    Comprehensive tools for managing and resolving application issues.
+
+    <AccordionGroup>
+      <Accordion title="get_issue_details">
+        Get detailed information about specific issues including stacktraces and context
+        - **Input Methods**: Issue ID (e.g., 'PROJECT-123'), Issue URL, or event ID
+        - **Use Cases**: Analyze specific errors, understand failure context
+      </Accordion>
+      <Accordion title="update_issue">
+        Change issue status, assignment, and resolution state
+        - **Status Options**: resolved, resolvedInNextRelease, unresolved, ignored
+        - **Assignment**: Assign to users ('user:123') or teams ('team:456')
+      </Accordion>
+      <Accordion title="get_event_attachment">
+        Download attachments from events (screenshots, logs, diagnostic files)
+        - **Parameters**: organizationSlug, projectSlug, eventId, attachmentId
+        - **Use Cases**: Access diagnostic data, screenshots, and log files
+      </Accordion>
+    </AccordionGroup>
+
+    <Warning>
+      When updating issues, use numeric IDs for assignment (e.g., 'user:123456' or 'team:789').
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Performance & Monitoring (2 tools)">
+    Advanced tools for performance analysis and application monitoring.
+
+    <AccordionGroup>
+      <Accordion title="get_trace_details">
+        Analyze performance traces with span breakdown and statistics
+        - **Input**: Trace ID (32-character hex string)
+        - **Output**: High-level overview, span details, performance metrics
+      </Accordion>
+      <Accordion title="search_events">
+        **The primary tool for statistics and event search** - supports both aggregations and individual events
+        - **Aggregation Queries**: "how many errors this week", "count of timeouts"
+        - **Event Search**: "show me errors from last hour", "find database exceptions"
+        - **Natural Language**: Use plain English to describe what you're looking for
+      </Accordion>
+    </AccordionGroup>
+
+    <Note>
+      **Trace IDs**: 32-character hexadecimal strings (e.g., 'a4d1aae7216b47ff8117cf4e09ce9d0a').
+    </Note>
+  </Accordion>
+
+  <Accordion title="Release & Team Management (3 tools)">
+    Tools for managing releases, teams, and organizational structure.
+
+    <AccordionGroup>
+      <Accordion title="find_releases">
+        List and search releases across projects
+        - **Parameters**: organizationSlug (required), projectSlug, query (optional)
+        - **Use Cases**: Find recent releases, check deployment status
+      </Accordion>
+      <Accordion title="create_team">
+        Create new teams for organizing projects and responsibilities
+        - **Parameters**: organizationSlug (required), name (required)
+        - **Use Cases**: Set up teams for new projects, organize development efforts
+      </Accordion>
+    </AccordionGroup>
+
+    <Tip>
+      **Release Management**: Use `find_releases` with query parameters to search for specific version patterns.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Configuration Requirements
+
+### Authentication Setup
+The Sentry server uses OAuth2 authentication with Sentry's API:
+
+<AccordionGroup>
+  <Accordion title="Authentication Flow" icon="shield-check">
+    1. **OAuth Authorization**: Authenticate via Sentry's OAuth flow
+    2. **Organization Access**: Ensure you have appropriate permissions in target organizations
+    3. **API Permissions**: Verify your account has API access enabled
+    4. **Regional URLs**: Some operations may require region-specific URLs
+  </Accordion>
+
+  <Accordion title="Required Permissions" icon="key">
+    - **Read Access**: View issues, events, traces, and project data
+    - **Write Access**: Update issues, create teams (if using management tools)
+    - **Organization Access**: Access to organizations you want to monitor
+    - **Project Access**: View and manage specific projects
+  </Accordion>
+</AccordionGroup>
+
+### Server Configuration
+- **Transport**: HTTP-based remote server
+- **Endpoint**: `https://mcp.sentry.dev/mcp`
+- **Region Support**: Supports both SaaS (sentry.io) and self-hosted installations
+- **API Version**: Compatible with Sentry's REST API
+
+<Note>
+The Sentry server is hosted remotely and connects directly to Sentry's API infrastructure for optimal performance and security.
+</Note>
+
+## Best Practices
+
+### Error Investigation Workflow
+1. **Start with Search**: Use `search_events` with natural language queries to find relevant errors
+2. **Get Issue Details**: Use `get_issue_details` for specific issues that need investigation
+3. **Analyze Context**: Review stacktraces, user context, and related events
+4. **Track Resolution**: Use `update_issue` to assign, resolve, or prioritize issues
+
+### Performance Monitoring
+1. **Trace Analysis**: Use `get_trace_details` for specific slow requests or transactions
+2. **Pattern Detection**: Use `search_events` for performance aggregations and trends
+3. **Release Comparison**: Compare performance across releases using `find_releases`
+4. **Bottleneck Identification**: Focus on spans with high duration or error rates
+
+### Team Collaboration
+1. **Organization Setup**: Use `find_organizations` and `find_teams` to understand structure
+2. **Project Discovery**: Use `find_projects` to map applications and ownership
+3. **Issue Assignment**: Use `update_issue` with team assignments for collaborative resolution
+4. **Status Tracking**: Maintain clear issue status to track resolution progress
+
+<Warning>
+Always verify organization and project slugs using the discovery tools before performing operations on specific resources.
+</Warning>
