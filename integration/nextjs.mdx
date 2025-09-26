@@ -156,6 +156,7 @@ export const config = {
 ```
   </Tab>
 </Tabs>
+Note: The default matcher does not include the root path ("/"). If you display authenticated elements (like UserButton) on the root page, add "/" to the matcher array to ensure user state is refreshed during middleware prior to page load.
 
 #### Middleware Chaining
 
@@ -357,6 +358,55 @@ import { useUser } from "@civic/auth-web3/react";
 
 export function MyComponent() {
   const { user } = useUser();
+
+  if (!user) return <div>User not logged in</div>
+
+  return <div>Hello { user.name }!</div>
+}
+```
+  </Tab>
+</Tabs>
+
+You can also pass `onSignIn` and `onSignOut` callbacks to the `useUser` hook to trigger actions when the user signs in or out:
+
+<Tabs>
+  <Tab title="Auth">
+```ts MyComponent.ts
+import { useUser } from "@civic/auth/react";
+
+export function MyComponent() {
+  const { user } = useUser({
+    onSignIn: () => {
+      console.log("User signed in");
+      // do something here
+    },
+    onSignOut: () => {
+      console.log("User signed out");
+      // do something here
+    }
+  });
+
+  if (!user) return <div>User not logged in</div>
+
+  return <div>Hello { user.name }!</div>
+}
+```
+  </Tab>
+  <Tab title="Auth + Web3">
+```ts MyComponent.ts
+import { useUser } from "@civic/auth-web3/react";
+
+export function MyComponent() {
+  const { user } = useUser({
+    onSignIn: () => {
+      console.log("User signed in");
+      // do something here
+    },
+    onSignOut: () => {
+      console.log("User signed out");
+      // do something here
+    }
+  });
 
   if (!user) return <div>User not logged in</div>
 
