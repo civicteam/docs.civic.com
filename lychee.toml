@@ -27,11 +27,23 @@ exclude = [
   # Social media (often rate-limited)
   '^https?://(www\.)?(twitter|x|linkedin)\.com',
 
+  # AI services that block bots
+  '^https?://(www\.)?claude\.ai',
+  '^https?://(www\.)?notion\.so',
+  '^https?://(www\.)?chat\.mistral\.ai',
+
   # Email addresses
   '^mailto:',
 
   # Tel links
   '^tel:',
+
+  # Application protocol links
+  '^cursor://',
+  '^vscode:',
+
+  # npm packages (often rate-limited in CI)
+  '^https?://www\.npmjs\.com/package/',
 ]
 
 # Exclude all private IPs

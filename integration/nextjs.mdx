@@ -28,6 +28,8 @@ Integrate Civic Auth into your Next.js application using the following steps (a 
 
 This is where you give your app the Client ID provided when you sign up at [auth.civic.com](https://auth.civic.com).
 
+**Important**: The `next.config.ts` file goes in your **project root directory**, NOT in the `src/` directory.
+
 The defaults should work out of the box for most customers, but if you want to configure your app, see [below](/integration/nextjs#advanced-configuration) for details.
 
 <Tabs>
@@ -75,7 +77,7 @@ The defaults should work out of the box for most customers, but if you want to c
 
 This is where your app will handle login and logout requests.
 
-Create this file at the following path:
+**Important**: This API route file goes in the `src/` directory structure:
 
 `src/app/api/auth/[...civicauth]/route.ts`
 
@@ -107,6 +109,10 @@ export const POST = handler()
 Middleware is used to protect your backend routes, server components and server actions from unauthenticated requests.
 
 Using the Civic Auth middleware ensures that only logged-in users have access to secure parts of your service.
+
+**Important**: The middleware file goes in the `src/` directory:
+
+`src/middleware.ts`
 
 <Tabs>
   <Tab title="Auth">
@@ -192,6 +198,8 @@ export default withCivicAuth(otherMiddleware);
 ### 4. Frontend Integration
 
 Add the Civic Auth context to your app to give your frontend access to the logged-in user.
+
+**Important**: Your layout file should be in the `src/` directory structure (typically `src/app/layout.tsx`):
 
 <CodeGroup>
 ```js Auth
