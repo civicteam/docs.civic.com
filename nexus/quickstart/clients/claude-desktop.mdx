@@ -1,0 +1,280 @@
+---
+title: Claude Desktop Setup
+description: Connect Claude Desktop to Civic Nexus in 5 minutes
+icon: "desktop"
+---
+
+<Note>
+  This guide covers Claude Desktop setup. For other AI clients, see our [client compatibility guide](/nexus/reference/client-compatibility).
+</Note>
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+<CardGroup cols={2}>
+  <Card title="Claude Desktop" icon="robot" href="https://claude.ai">
+    Download and install Claude Desktop (Pro or Team plan required for MCP connectors)
+  </Card>
+  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
+    Create a free account on nexus.civic.com
+  </Card>
+</CardGroup>
+
+## Step 1: Copy the MCP URL
+
+<Steps>
+  <Step title="Visit nexus.civic.com">
+    Open [nexus.civic.com](https://nexus.civic.com) and sign in with your Civic account.
+  </Step>
+  <Step title="Select your tools">
+    Browse and select the MCP servers you want to connect (GitHub, Slack, Dropbox, etc.)
+  </Step>
+  <Step title="Copy the MCP URL">
+    Copy this URL: `https://nexus.civic.com/hub/mcp`
+    
+    <Frame caption="Civic Nexus homepage showing available tools">
+      <img
+        className="rounded-lg"
+        src="/images/steps/claude/01.png"
+        alt="Civic Nexus homepage"
+      />
+    </Frame>
+  </Step>
+</Steps>
+
+## Step 2: Add MCP Server in Claude Desktop
+
+<Steps>
+  <Step title="Open Claude Desktop Settings">
+    1. In Claude Desktop, click on **Settings** (usually in the bottom left or profile menu)
+    2. Navigate to **Connectors**
+    
+    <Frame caption="Claude Desktop Settings showing Connectors section">
+      <img
+        className="rounded-lg"
+        src="/images/steps/claude/02.png"
+        alt="Claude Desktop settings page with Connectors section highlighted"
+      />
+    </Frame>
+  </Step>
+  
+  <Step title="Add Custom Connector">
+    1. Click **"Add Custom Connector"**
+    2. Enter a name: **"Civic Nexus"**  
+    3. In "Remote MCP server URL" field, paste: `https://nexus.civic.com/hub/mcp`
+    4. Click **"Add"** to confirm
+    
+    <Frame caption="Adding a custom MCP connector in Claude Desktop">
+      <img
+        className="rounded-lg"
+        src="/images/steps/claude/03.png"
+        alt="Claude Desktop connector settings dialog"
+      />
+    </Frame>
+  </Step>
+  
+  <Step title="Connect and Authenticate">
+    1. The connector will appear in your list with a **"Connect"** button
+    2. Click **"Connect"** to begin authentication
+    3. Follow on-screen instructions to authorize access to your selected services
+    4. Return to **Settings > Connectors** to verify it shows as "Connected"
+    
+    <Frame caption="Claude Desktop connector successfully connected">
+      <img
+        className="rounded-lg"
+        src="/images/steps/claude/05.png"
+        alt="Claude Desktop showing connected Civic Nexus connector"
+      />
+    </Frame>
+  </Step>
+</Steps>
+
+## Step 3: Test Your Connection
+
+Try these commands to verify everything is working:
+
+```
+"What MCP servers are available?"
+"Check my GitHub repositories"  
+"What's in my Dropbox?"
+"Show recent Slack messages"
+```
+
+<Frame caption="Claude Desktop successfully using connected tools">
+  <img
+    className="rounded-lg"
+    src="/images/steps/claude/04.png"
+    alt="Claude Desktop chat showing successful tool usage"
+  />
+</Frame>
+
+## Managing Your Tools
+
+### Adding More Tools
+
+You can add new tools directly in your Claude Desktop chat:
+
+```
+"Connect me to GitHub"
+"Add Slack to my available tools"  
+"I need access to Dropbox"
+"Show me what tools are available to connect"
+```
+
+Claude will handle the connection process and guide you through any required authentication steps.
+
+### Alternative Method: Hub Bridge (Free Users)
+
+If you don't have Claude Pro, Team, or Enterprise, you won't have access to MCP connectors in the UI. Use Hub Bridge instead:
+
+<Warning>
+**Free Claude users**: The MCP connector UI is only available on paid Claude plans. Use this method if you're on the free plan.
+</Warning>
+
+<Steps>
+  <Step title="Open configuration file">
+    1. In Claude Desktop, go to **Settings**
+    2. Click the **Developer** tab  
+    3. Click **Edit Config** to open `claude_desktop_config.json`
+  </Step>
+  
+  <Step title="Add Hub Bridge configuration">
+    Add this to your config file:
+    ```json
+    {
+      "mcpServers": {
+        "civic-nexus": {
+          "command": "npx",
+          "args": ["-y", "@civic/hub-bridge@latest"]
+        }
+      }
+    }
+    ```
+    
+    <Note>
+      This uses the **Hub Bridge** method which works with any Claude Desktop version, including free.
+    </Note>
+  </Step>
+  
+  <Step title="Save and restart">
+    1. Save the config file
+    2. **Restart Claude Desktop** for changes to take effect
+  </Step>
+  
+  <Step title="First-time setup">
+    When you first use an MCP command:
+    1. Create account at **[nexus.civic.com](https://nexus.civic.com)** and select your tools
+    2. The Hub Bridge will handle authentication automatically
+  </Step>
+</Steps>
+
+### Removing Tools
+
+You can disconnect from specific tools directly in chat:
+
+```
+"Disconnect from Slack"  
+"Remove GitHub from my tools"
+"What tools do I currently have connected?"
+"Stop my access to Dropbox"
+```
+
+### Managing the Entire Connector
+
+To remove the Civic Nexus connector completely:
+
+<Steps>
+  <Step title="Access connectors">
+    Go to **Settings > Connectors** in Claude Desktop
+  </Step>
+  <Step title="Remove connector">
+    1. Find "Civic Nexus" in your connectors list
+    2. Click **Remove** or **Delete** next to the connector
+    3. Confirm the removal when prompted
+  </Step>
+  <Step title="Clean up (optional)">
+    Visit [nexus.civic.com](https://nexus.civic.com) to revoke service authorizations if you no longer want Civic to have access
+  </Step>
+</Steps>
+
+## Common Questions
+
+<AccordionGroup>
+  <Accordion title="Do I need a paid Claude plan?">
+    Yes, MCP connectors are currently only available on Claude Pro and Team plans. The free Claude plan doesn't support external integrations.
+  </Accordion>
+  
+  <Accordion title="What if authentication fails?">
+    If you encounter authentication issues:
+    - Make sure you're logged into the correct account for the service
+    - Check if your account email matches between nexus.civic.com and the service
+    - Try removing and re-adding the MCP connector with a fresh URL
+    - Check our [troubleshooting guide](/nexus/troubleshooting) for more solutions
+  </Accordion>
+  
+  <Accordion title="Can I use different email addresses?">
+    If your nexus.civic.com account uses a different email than your connected services (e.g., work@company.com vs personal@gmail.com), make sure you authenticate with the correct account for each service during the OAuth flow.
+  </Accordion>
+  
+  <Accordion title="My connector shows as disconnected">
+    Try these steps:
+    - Update Claude Desktop to the latest version
+    - Remove the connector completely and re-add with a fresh MCP URL
+    - Check that your system allows Claude network access
+    - Restart Claude Desktop after making changes
+  </Accordion>
+</AccordionGroup>
+
+## Two-Minute Verification
+
+Once connected, test these prompts to make sure everything works:
+
+<Tabs>
+  <Tab title="If you selected GitHub">
+    ```
+    "List my GitHub repositories"
+    "Show me my recent pull requests"
+    "What issues are assigned to me?"
+    ```
+  </Tab>
+  <Tab title="If you selected Slack">
+    ```
+    "What are the recent messages in #general?"
+    "List my Slack workspaces"
+    "Send a test message to myself"
+    ```
+  </Tab>
+  <Tab title="If you selected Dropbox">
+    ```
+    "What files are in my Dropbox?"
+    "Show me recently modified documents"
+    "Search for files containing 'project'"
+    ```
+  </Tab>
+</Tabs>
+
+## Need Help?
+
+<Card title="Troubleshooting Guide" icon="wrench" href="/nexus/troubleshooting">
+  Solutions for common Claude Desktop connection issues
+</Card>
+
+## Next Steps
+
+Now that you're connected, explore what you can do:
+
+<CardGroup cols={2}>
+  <Card title="Browse More Servers" icon="server" href="/nexus/reference/servers">
+    Add more MCP servers to expand Claude's capabilities
+  </Card>
+  <Card title="Security Details" icon="shield-check" href="/nexus/reference/security">
+    Learn how Nexus keeps your data secure
+  </Card>
+  <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
+    See setup guides for other AI clients
+  </Card>
+  <Card title="Get Support" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community if you need help
+  </Card>
+</CardGroup>

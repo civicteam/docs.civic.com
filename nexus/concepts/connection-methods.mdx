@@ -1,0 +1,163 @@
+---
+title: Connection Methods
+description: Remote URL vs Hub Bridge - understanding how your AI connects to Nexus
+icon: "network-wired"
+---
+
+## Two Ways to Connect
+
+There are two ways your AI client can connect to Nexus servers. The method depends on what your AI client supports:
+
+## Remote URL Method
+
+**Simple copy/paste connection** for clients that support remote MCP servers.
+
+### How it works:
+1. Visit nexus.civic.com and select your tools
+2. Copy the MCP URL: `https://nexus.civic.com/hub/mcp`
+3. Paste into your AI client's MCP settings
+4. Your client connects directly to Nexus servers
+
+### Supported clients:
+- Claude Desktop
+- Claude.ai (Web)
+- Goose
+- Any client with "remote MCP URL" or "HTTP connector" options
+
+### Advantages:
+- ✅ **Simplest setup** - just copy and paste
+- ✅ **No local software** needed
+- ✅ **Automatic updates** - always uses latest version
+- ✅ **Works across devices** - same URL everywhere
+
+### Connection flow:
+```
+Your AI Client ←→ Internet ←→ Nexus Servers ←→ Your Tools
+```
+
+## Hub Bridge Method
+
+**Local proxy connection** for clients that only support local MCP servers.
+
+### How it works:
+1. Configure your client to run `npx -y @civic/hub-bridge` as a local MCP server
+2. Your client thinks it's connecting to a local server
+3. The bridge forwards requests to Nexus servers
+4. Bridge handles all authentication and token management
+
+### Supported clients:
+- Cursor (one-click install)
+- VS Code (one-click install)
+- JetBrains IDEs (manual setup)
+- Windsurf (manual setup)
+- Claude Code (auto-install: `npx @civic/hub-bridge install claude-code`)
+- Any client with only "local MCP" or "stdio" options
+
+### Advantages:
+- ✅ **Universal compatibility** - works with any MCP client
+- ✅ **Local control** - bridge runs on your machine
+- ✅ **Transparent authentication** - handles OAuth flows automatically
+- ✅ **Offline capability** - cached tokens work briefly offline
+
+### Connection flow:
+```
+Your AI Client ←→ Hub Bridge (local) ←→ Internet ←→ Nexus Servers ←→ Your Tools
+```
+
+## How to Tell Which Method You Need
+
+### Check your AI client's settings:
+
+**Use Remote URL if you see:**
+- "Remote MCP server"
+- "HTTP MCP URL" 
+- "MCP connector URL"
+- "External MCP server"
+
+**Use Hub Bridge if you see:**
+- "Local MCP server"
+- "Command/stdio"
+- "MCP executable"
+- "Local process"
+
+### Quick test:
+If your client asks for a command and arguments (like `npx` and `[@civic/hub-bridge]`), you need Hub Bridge. If it asks for a URL, you can use Remote URL.
+
+## Why Two Methods?
+
+### MCP Client Limitations
+
+Not all AI clients support all MCP features:
+
+**Remote URL requirements:**
+- HTTP/HTTPS network requests
+- OAuth authentication handling
+- Token refresh management
+- Remote server connections
+
+**Hub Bridge compatibility:**
+- Only needs local process spawning
+- Bridge handles all network complexity
+- Works with any stdio-based MCP client
+
+### Technical Differences
+
+**Remote URL clients:**
+- Native MCP HTTP protocol support
+- Built-in OAuth handling
+- Direct network connectivity
+- Usually newer or more advanced clients
+
+**Hub Bridge clients:**
+- stdio/process-based MCP only
+- No built-in authentication
+- Local-only MCP support
+- Often development tools or older clients
+
+## Authentication Differences
+
+### Remote URL Authentication:
+- Your client handles OAuth directly
+- You authorize in your client's interface
+- Client manages token storage and refresh
+
+### Hub Bridge Authentication:
+- Bridge handles all OAuth flows
+- You authorize in your browser (opened by bridge)
+- Bridge manages tokens locally and refreshes automatically
+
+## When to Use Each Method
+
+### Choose Remote URL when:
+- Your client supports it (check settings for "remote MCP URL")
+- You want the simplest setup
+- You use multiple devices
+- You prefer cloud-based management
+
+### Choose Hub Bridge when:
+- Your client only supports local/stdio MCP
+- You're using development tools (IDEs, CLIs)
+- You want local control over connections
+- Your client doesn't support OAuth
+
+## Troubleshooting Connection Issues
+
+### Remote URL problems:
+- **Client doesn't connect**: Check if client supports remote MCP URLs
+- **Authentication fails**: Verify client has OAuth capabilities
+- **URL not accepted**: Try Hub Bridge method instead
+
+### Hub Bridge problems:
+- **Command not found**: Install Node.js 18+
+- **Bridge won't start**: Check terminal permissions and network access
+- **Authentication hangs**: Ensure browser can open and corporate firewalls aren't blocking
+
+## Both Methods Work the Same
+
+Once connected, **your AI experience is identical** regardless of connection method:
+- Same tools and capabilities
+- Same authentication to individual services
+- Same performance and reliability
+- Same security and privacy protections
+
+The connection method is just plumbing - what matters is that your AI can access your tools!

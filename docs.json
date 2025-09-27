@@ -40,7 +40,7 @@
       "tab": "Auth",
       "groups": [
         {
-          "group":  "Overview",
+          "group":  "Getting Started",
           "pages": [
             "index",
             "overview/pricing",
@@ -171,6 +171,85 @@
           }
         ]
       }
+    }, {
+      "tab": "Nexus",
+      "groups": [
+         {
+           "group": "Getting Started",
+           "icon": "rocket",
+           "pages": [
+             "nexus/overview",
+             "nexus/quickstart/index",
+             "nexus/concepts/toolkits",
+             "nexus/reference/authorizations"
+           ]
+         },
+         {
+           "group": "Supported Clients",
+           "icon": "desktop",
+           "pages": [
+             "nexus/quickstart/nexus-chat",
+             "nexus/quickstart/clients/mistral-lechat",
+             "nexus/quickstart/clients/claude-web",
+             "nexus/quickstart/clients/claude-desktop",
+             {
+               "group": "More Clients",
+               "icon": "ellipsis",
+               "pages": [
+                 "nexus/quickstart/clients/cursor",
+                 "nexus/quickstart/clients/goose",
+                 "nexus/quickstart/clients/vscode",
+                 "nexus/quickstart/clients/windsurf",
+                 "nexus/quickstart/clients/claude-code",
+                 "nexus/quickstart/clients/jetbrains",
+                 "nexus/quickstart/clients/gemini"
+               ]
+             },
+             {
+               "group": "MCP Servers",
+               "icon": "server",
+               "pages": [
+                 "nexus/reference/servers",
+                 "nexus/reference/servers/activecampaign",
+                 "nexus/reference/servers/github",
+                 "nexus/reference/servers/slack",
+                 "nexus/reference/servers/notion",
+                 "nexus/reference/servers/n8n",
+                 "nexus/reference/servers/postgresql",
+                 "nexus/reference/servers/sentry",
+                 "nexus/reference/servers/linear",
+                 "nexus/reference/servers/hubspot",
+                 "nexus/reference/servers/dropbox",
+                 "nexus/reference/servers/coingecko"
+               ]
+             }
+           ]
+         },
+         {
+           "group": "Developers",
+           "icon": "code",
+           "pages": [
+             "nexus/developers/client-setup",
+             "nexus/developers/vercel-ai-sdk",
+             "nexus/quickstart/hub-bridge"
+           ]
+         },
+        {
+          "group": "Reference",
+          "icon": "book",
+          "pages": [
+            "nexus/reference/client-compatibility",
+            "nexus/reference/security"
+          ]
+        },
+        {
+          "group": "Support",
+          "icon": "life-buoy",
+          "pages": [
+            "nexus/troubleshooting"
+          ]
+        }
+      ]
     },{
       "tab": "Labs",
       "groups": [
