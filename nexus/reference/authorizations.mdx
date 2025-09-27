@@ -1,0 +1,177 @@
+---
+title: Managing Authorizations
+description: Understand and control access to your connected services and data
+icon: "key"
+---
+
+## What are Authorizations?
+
+An authorization is the permission you give Nexus to access your tools and services on your behalf. When you connect a service like GitHub, Slack, or Notion to Nexus, you're creating an authorization that allows your AI assistants to interact with that service using your account.
+
+<Note>
+**You're always in control** - Once you've given access to your tools, you can always revoke them instantly. Authorizations are not permanent and can be managed at any time.
+</Note>
+
+## How Authorizations Work
+
+When you first connect a service to Nexus:
+
+1. **You grant permission** - You authorize Nexus to access specific data from the service
+2. **Secure token storage** - Nexus securely stores your access tokens with encryption
+3. **AI assistant access** - Your AI can now use that service through MCP tools
+4. **Ongoing control** - You maintain full control to revoke access anytime
+
+<Frame caption="Your authorization dashboard showing connected services">
+  <img
+    className="rounded-lg"
+    src="/images/steps/security/01.png"
+    alt="Dashboard showing connected apps with revoke access buttons"
+  />
+</Frame>
+
+## Managing Your Authorizations
+
+### Full Control Over Access
+
+- ✅ **View all connections** - See every service you've authorized
+- ✅ **Instant revocation** - Remove access to any service immediately  
+- ✅ **Immediate effect** - Changes apply across all your AI assistants instantly
+
+### When to Revoke Access
+
+You might want to revoke authorizations when:
+
+- **No longer using a service** - Clean up unused connections
+- **Security concerns** - Remove access if you suspect any issues
+- **Account changes** - When switching accounts or roles
+- **Testing purposes** - Temporarily disable specific integrations
+- **Privacy preferences** - Limit AI assistant access to certain data
+
+## How to Revoke Authorizations
+
+<Steps>
+  <Step title="Visit Your Dashboard">
+    Go to [nexus.civic.com](https://nexus.civic.com) and sign in to your account
+  </Step>
+  
+  <Step title="Access Authorization Settings">
+    Navigate to your account settings or connected services section
+  </Step>
+  
+  <Step title="Select Service to Revoke">
+    Find the service you want to disconnect and click the revoke or disconnect option
+  </Step>
+  
+  <Step title="Confirm Revocation">
+    Confirm that you want to remove access to this service
+  </Step>
+</Steps>
+
+<Warning>
+**Immediate Effect**: When you revoke access to a service, it will immediately stop working across all your AI assistants. Any ongoing conversations or tasks using that service will be interrupted.
+</Warning>
+
+## Authorization Scope and Permissions
+
+### What You Authorize
+
+When you connect a service, you typically grant access to:
+
+- **Read your data** - View files, messages, repositories, etc.
+- **Create content** - Add new items, send messages, create files
+- **Update existing items** - Edit documents, update records, modify settings
+- **Delete items** - Remove content when explicitly requested
+
+### What You DON'T Authorize
+
+Nexus and your AI assistants cannot:
+
+- **Access other accounts** - Only your explicitly connected accounts
+- **Exceed your permissions** - AI has the same limits as your user account
+- **Access unrelated services** - Only services you've specifically connected
+- **Persist beyond revocation** - Access stops immediately when revoked
+
+## Security and Privacy
+
+### Protected Information
+
+Your authorization data is protected through:
+
+- 🔒 **Encrypted storage** - All tokens encrypted at rest
+- 🔐 **Secure transmission** - TLS encryption for all communications  
+- 🛡️ **Access controls** - Only you can view or modify your authorizations
+- ⏰ **Automatic refresh** - Tokens refreshed securely without your intervention
+
+### Minimal Permissions
+
+When you connect a service to Nexus, we only ask for the specific permissions we actually need. We request the minimum access required for AI assistants to work with your tools, and nothing more.
+
+This approach helps protect your data by ensuring Nexus never requests unnecessary permissions to access or modify your accounts.
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Regular Authorization Review">
+    **Monthly review recommended:**
+    - Check which services are still connected
+    - Remove authorizations for unused services
+    - Verify all connections are still needed
+    - Clean up old or forgotten integrations
+  </Accordion>
+
+  <Accordion title="Principle of Least Access">
+    **Only connect what you need:**
+    - Start with essential services only
+    - Add more connections as needed
+    - Remove authorizations when projects end
+    - Keep your authorization list minimal and relevant
+  </Accordion>
+
+  <Accordion title="Security-First Approach">
+    **Protect your authorizations:**
+    - Use strong passwords for connected accounts
+    - Enable 2FA on all connected services
+    - Monitor for unusual activity
+    - Revoke access immediately if concerned
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting Authorization Issues
+
+<AccordionGroup>
+  <Accordion title="Authorization Failed">
+    **Problem:** Can't authorize a new service
+    
+    **Solutions:**
+    - Ensure you're signed into the correct account for the service
+    - Check if the service is temporarily unavailable
+    - Clear browser cookies and try again
+    - Join our developer community if the issue persists
+  </Accordion>
+
+  <Accordion title="Service Not Working After Authorization">
+    **Problem:** Connected service isn't responding to AI requests
+    
+    **Solutions:**
+    - Wait a few minutes for authorization to propagate
+    - Try disconnecting and reconnecting the service
+    - Check if your account permissions changed
+    - Verify the service is online and accessible
+  </Accordion>
+
+  <Accordion title="Can't Revoke Authorization">
+    **Problem:** Unable to disconnect a service
+    
+    **Solutions:**
+    - Refresh the page and try again
+    - Clear browser cache and cookies
+    - Try from a different browser or device
+    - Join our developer community for assistance
+  </Accordion>
+</AccordionGroup>
+
+## Need Help?
+
+<Card title="Authorization Support" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+  Having trouble with authorizations? Join our developer community for assistance with connecting or disconnecting services.
+</Card>

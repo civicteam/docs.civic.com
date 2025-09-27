@@ -1,0 +1,220 @@
+---
+title: Developer Client Setup
+description: Advanced setup guides for development tools and IDEs
+icon: "code"
+---
+
+## Overview
+
+This section covers setup for development tools and IDEs that require more technical configuration than the primary ChatGPT/Claude clients.
+
+<Note>
+**New to Civic Nexus?** Start with [Claude Desktop](/nexus/quickstart/clients/claude-desktop) for the simplest setup experience, then add development tools later.
+</Note>
+
+## Prerequisites
+
+All development tools require:
+
+<CardGroup cols={2}>
+  <Card title="Node.js 18+" icon="node" href="https://nodejs.org">
+    Required for the Hub Bridge - check with node --version
+  </Card>
+  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
+    Free signup - authenticate development tools via OAuth
+  </Card>
+</CardGroup>
+
+## Quick Start (2 Options)
+
+### Option 1: Direct HTTP Connection
+
+<Steps>
+  <Step title="Get MCP URL">
+    Visit [nexus.civic.com](https://nexus.civic.com) and copy your personal MCP endpoint URL
+  </Step>
+  <Step title="Configure Client">
+    Add the HTTP endpoint directly to your development tool's MCP configuration
+  </Step>
+  <Step title="Authenticate">
+    Follow OAuth prompts when first using any server - tokens are securely stored
+  </Step>
+</Steps>
+
+### Option 2: Hub Bridge (Local Proxy)
+
+<Steps>
+  <Step title="Configuration">
+    Add `npx -y @civic/hub-bridge` as your MCP server command in client settings
+  </Step>
+  <Step title="Authentication">
+    Run any MCP command - OAuth browser window opens automatically for first-time setup
+  </Step>
+  <Step title="Usage">
+    Hub Bridge handles authentication and routes requests to your selected Civic Nexus servers
+  </Step>
+</Steps>
+
+<Info>
+**Performance:** HTTP endpoints are faster. **Compatibility:** Hub Bridge works with more clients that don't support HTTP endpoints yet.
+</Info>
+
+## Cursor Setup
+
+**Most Popular Development Tool** - AI-powered code editor with excellent MCP support.
+
+<Card title="Complete Cursor Setup Guide" icon="cursor-click" href="/nexus/quickstart/clients/cursor">
+  **One-click install available** - Complete walkthrough with troubleshooting and testing steps
+</Card>
+
+**Quick Summary:**
+- ✅ One-click install button available
+- ✅ Node.js 18+ required  
+- ✅ Works with free and paid Cursor plans
+- ⏱️ Setup time: 2 minutes
+
+## VS Code Setup
+
+**Industry Standard Editor** - Support for both HTTP connectors and Hub Bridge method.
+
+<Card title="Complete VS Code Setup Guide" icon="code" href="/nexus/quickstart/clients/vscode">
+  **Multiple setup methods** - HTTP connector, Hub Bridge, and one-click install options
+</Card>
+
+**Quick Summary:**
+- ✅ Remote HTTP connector support (recommended)
+- ✅ Hub Bridge fallback method available
+- ✅ One-click install link included
+- ⏱️ Setup time: 2 minutes
+
+---
+
+<Card title="Get Support" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+  Having setup issues? Join our developer community for assistance with your development environment.
+</Card>
+
+---
+
+## Client Compatibility
+
+### AI-First Code Editors
+
+<CardGroup cols={2}>
+  <Card title="Cursor" icon="code">
+    **Setup Time:** 3 minutes
+    **Method:** One-click install or Hub Bridge
+    **HTTP Support:** ✅ Via Hub Bridge
+  </Card>
+  <Card title="Windsurf" icon="wind">
+    **Setup Time:** 3 minutes  
+    **Method:** Hub Bridge configuration
+    **HTTP Support:** ❌ Requires Hub Bridge
+  </Card>
+</CardGroup>
+
+### Traditional IDEs
+
+<CardGroup cols={3}>
+  <Card title="VS Code" icon="code">
+    **3 minutes** - HTTP endpoint or Hub Bridge
+  </Card>
+  <Card title="JetBrains IDEs" icon="command">
+    **5 minutes** - Hub Bridge via MCP plugin
+  </Card>
+  <Card title="Vim/Neovim" icon="terminal">
+    **Advanced setup** - Community MCP plugins
+  </Card>
+</CardGroup>
+
+### Command Line Tools
+
+<CardGroup cols={3}>
+  <Card title="Goose" icon="terminal">
+    **2 minutes** - HTTP endpoint support
+  </Card>
+  <Card title="Claude Code" icon="terminal">
+    **Coming Soon** - Direct integration planned
+  </Card>
+  <Card title="Gemini CLI" icon="google">
+    **Coming Soon** - MCP support planned
+  </Card>
+</CardGroup>
+
+---
+
+## JetBrains IDEs Setup
+
+**Enterprise Development Environment** - Full IDE suite with robust MCP plugin support.
+
+<Card title="Complete JetBrains Setup Guide" icon="command" href="/nexus/quickstart/clients/jetbrains">
+  **Plugin-based setup** - Step-by-step guide for IntelliJ, PyCharm, WebStorm, and all JetBrains IDEs
+</Card>
+
+**Quick Summary:**
+- ✅ Supports all JetBrains IDEs (IntelliJ, PyCharm, WebStorm, etc.)
+- ✅ MCP plugin available in marketplace  
+- ✅ Hub Bridge integration method
+- ⏱️ Setup time: 2 minutes
+
+---
+
+## Windsurf Setup
+
+**Codeium AI IDE** - Modern AI-powered development environment with MCP support.
+
+<Card title="Complete Windsurf Setup Guide" icon="wind" href="/nexus/quickstart/clients/windsurf">
+  **Hub Bridge method** - Configuration steps for Windsurf's MCP integration
+</Card>
+
+**Quick Summary:**
+- ✅ Codeium AI IDE integration
+- ✅ Hub Bridge configuration required
+- ✅ JSON-based setup process
+- ⏱️ Setup time: 2 minutes
+
+---
+
+## Goose Setup
+
+**Block's Developer Agent** - Command-line AI assistant with direct HTTP endpoint support.
+
+<Card title="Complete Goose Setup Guide" icon="terminal" href="/nexus/quickstart/clients/goose">
+  **Direct HTTP support** - No Hub Bridge needed, direct MCP URL configuration
+</Card>
+
+**Quick Summary:**
+- ✅ Direct HTTP endpoint support (no Hub Bridge needed)
+- ✅ YAML configuration file setup
+- ✅ Advanced toolkit configurations available
+- ⏱️ Setup time: 2 minutes
+
+---
+
+## Best Practices
+
+### Development Workflow
+
+1. **Start simple** - Use one server first (like GitHub or Slack)
+2. **Test incrementally** - Add one server at a time
+3. **Monitor usage** - Check your Civic Nexus dashboard for activity
+4. **Update regularly** - Keep Hub Bridge updated with `npm update -g @civic/hub-bridge`
+
+### Team Collaboration
+
+**For teams using the same tools:**
+
+1. **Commit config files** to version control (they don't contain secrets)
+2. **Document setup** in your project README
+3. **Use consistent naming** across team members
+4. **Share tool selections** - use same Civic Nexus server selection
+
+### Security Considerations
+
+- **Hub Bridge runs locally** - tokens never leave your machine except to make API calls
+- **Tokens are encrypted** using OS-level key storage
+- **OAuth scopes are minimal** - only request necessary permissions
+- **Revoke access anytime** at nexus.civic.com
+
+<Card title="Security Details" icon="shield-check" href="/nexus/reference/security">
+  Complete security documentation and compliance information
+</Card>

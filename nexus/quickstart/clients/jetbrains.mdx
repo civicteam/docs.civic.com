@@ -1,0 +1,47 @@
+---
+title: JetBrains IDEs Setup
+description: Connect JetBrains IDEs (IntelliJ, PyCharm, WebStorm) to Civic Nexus
+icon: "command"
+---
+
+<Note>
+  JetBrains IDE setup instructions coming soon...
+</Note>
+
+## Overview
+
+JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm, etc.) require the Hub Bridge method for connecting to Civic Nexus MCP servers.
+
+## Configuration Required
+
+JetBrains IDEs need manual MCP server configuration with these settings:
+
+```json
+{
+  "name": "Civic Nexus",
+  "type": "stdio", 
+  "command": "npx",
+  "args": ["-y", "@civic/hub-bridge"]
+}
+```
+
+## Coming Soon
+
+Detailed setup instructions with IDE-specific screenshots and configuration steps are being prepared.
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Hub Bridge Guide" icon="bridge" href="/nexus/quickstart/hub-bridge">
+    Essential Hub Bridge setup for JetBrains IDEs
+  </Card>
+  <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
+    JetBrains MCP support details
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/nexus/troubleshooting">
+    Common JetBrains connection issues
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community for JetBrains setup help
+  </Card>
+</CardGroup>
