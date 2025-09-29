@@ -98,32 +98,37 @@ Add this configuration:
 
 ### 2. Vercel AI SDK Integration
 
-Use the MCP Hub with Vercel AI SDK for building AI applications.
+Use the MCP Hub with Vercel AI SDK v5 for building AI applications.
 
 ```typescript
+import { generateText, experimental_createMCPClient } from 'ai';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { getTokens } from "@civic/auth/nextjs";
 
 // Get access token
 const { accessToken } = await getTokens()
 
-// Create MCP client
-const createMCPClient = async () => {
-  const transport = new StreamableHTTPClientTransport(
-    'https://nexus.civic.com/hub/mcp',
-    {
-      requestInit: {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
+// Create MCP client with transport
+const transport = new StreamableHTTPClientTransport(
+  new URL('https://nexus.civic.com/hub/mcp'),
+  {
+    requestInit: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
       }
     }
-  );
+  }
+);
 
-  return createMCPClient({
-    transport
-  });
-};
+const mcpClient = await experimental_createMCPClient({ transport });
+const mcpTools = await mcpClient.tools();
+
+// Use with generateText
+const result = await generateText({
+  model: yourModel,
+  messages: yourMessages,
+  tools: mcpTools,
+});
 ```
 
 ### 3. n8n Workflow Integration
