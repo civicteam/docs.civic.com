@@ -165,7 +165,7 @@ If you are already using middleware in your Next.js app, then you can chain them
 <Tabs>
   <Tab title="Auth">
 ```ts src/middleware.ts
-import { auth } from "@civic/auth/nextjs"
+import { auth } from "@civic/auth/nextjs/middleware"
 import { NextRequest, NextResponse } from "next/server";
 
 const withCivicAuth = auth();
@@ -180,7 +180,7 @@ export default withCivicAuth(otherMiddleware);
   </Tab>
   <Tab title="Auth + Web3">
 ```ts src/middleware.ts
-import { auth } from "@civic/auth-web3/nextjs"
+import { auth } from "@civic/auth-web3/nextjs/middleware"
 import { NextRequest, NextResponse } from "next/server";
 
 const withCivicAuth = auth();
