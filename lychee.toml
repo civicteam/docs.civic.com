@@ -13,7 +13,7 @@ user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 # Accept these status codes
 # 403 added for npmjs.com which returns this for bot detection
-accept = [200, 204, 206, 301, 302, 307, 308, 403]
+accept = [200, 204, 206, 301, 302, 307, 308, 403, 429]
 
 # Exclude these patterns
 exclude = [
