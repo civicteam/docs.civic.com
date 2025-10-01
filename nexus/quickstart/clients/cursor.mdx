@@ -1,0 +1,211 @@
+---
+title: Cursor Setup
+description: Connect Cursor AI code editor to Civic Nexus in 3 minutes
+icon: "code"
+---
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Cursor Editor" icon="cursor-click" href="https://cursor.com">
+    Download and install Cursor (free tier works)
+  </Card>
+  <Card title="Node.js 18+" icon="code" href="https://nodejs.org">
+    Required for the Hub Bridge - check with `node --version`
+  </Card>
+</CardGroup>
+
+## Setup Steps
+
+<Steps>
+  <Step title="Click 'Add to Cursor'">
+    Use the one-click install button below:
+    
+    <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=Civic%20Nexus&config=eyJjb21tYW5kIjoibnB4IC15IEBjaXZpYy9odWItYnJpZGdlIn0%3D">
+      <img
+        src="https://cursor.com/deeplink/mcp-install-dark.svg"
+        alt="Add Civic Nexus to Cursor"
+        width="126"
+        height="28"
+        className="rounded hover:opacity-80 transition-opacity"
+      />
+    </a>
+  </Step>
+  
+  <Step title="Install in Cursor">
+    When Cursor opens, click "Install" to add the Civic Nexus MCP server
+  </Step>
+  
+  <Step title="Enable the Connection">
+    Make sure Civic Nexus is enabled in Cursor's MCP settings. If you don't see it, try disabling and re-enabling it.
+  </Step>
+  
+  <Step title="First-Time Authentication">
+    The first time you use any MCP command, the Hub Bridge will:
+    - Automatically download and install itself
+    - Handle authentication directly in the chat interface  
+    - Let you select which tools to connect from nexus.civic.com
+  </Step>
+</Steps>
+
+## Test Your Connection
+
+Try these prompts in Cursor to verify everything works:
+
+```
+"What MCP servers are available?"
+"Show me my connected tools"
+"Help me set up GitHub integration"
+```
+
+## Troubleshooting
+
+<Accordion title="Cursor doesn't open when I click the install button">
+Make sure Cursor is installed and try copying this URL manually:
+```
+cursor://anysphere.cursor-deeplink/mcp/install?name=Civic%20Nexus&config=eyJjb21tYW5kIjoibnB4IC15IEBjaXZpYy9odWItYnJpZGdlIn0%3D
+```
+</Accordion>
+
+<Accordion title="'Node.js not found' error">
+Install Node.js 18 or later from [nodejs.org](https://nodejs.org) and restart Cursor.
+</Accordion>
+
+<Accordion title="Authentication window doesn't open">
+The Hub Bridge should handle authentication in the chat. If it doesn't:
+1. Restart Cursor
+2. Try disabling and re-enabling Civic Nexus in Cursor settings
+3. Make sure you're trying to use a tool that requires authentication
+</Accordion>
+
+<Accordion title="Civic Nexus not showing in Cursor settings">
+1. Make sure you clicked "Install" when prompted
+2. Check Cursor's MCP server settings manually
+3. Try the manual setup method below
+</Accordion>
+
+## Manual Setup (If One-Click Fails)
+
+If the one-click install doesn't work, add Civic Nexus manually:
+
+### Method 1: Via Cursor Settings (Recommended)
+
+<Steps>
+  <Step title="Open Cursor Settings">
+    Go to **Settings → Features → MCP**
+  </Step>
+  
+  <Step title="Add New MCP Server">
+    1. Click **+ Add New MCP Server**
+    2. Select transport type: **stdio**  
+    3. Enter nickname: **Civic Nexus**
+    4. Enter command: **npx -y @civic/hub-bridge**
+    5. Save the configuration
+  </Step>
+  
+  <Step title="Enable and Test">
+    The server should appear in your MCP servers list. Test with: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+### Method 2: Via Configuration File
+
+<Steps>
+  <Step title="Create MCP Configuration File">
+    Create a file called **`.cursor/mcp.json`** in your project root directory
+  </Step>
+  
+  <Step title="Add Configuration">
+    Add the following content:
+    ```json
+    {
+      "mcpServers": {
+        "civic-nexus": {
+          "command": "npx",
+          "args": ["-y", "@civic/hub-bridge"]
+        }
+      }
+    }
+    ```
+  </Step>
+  
+  <Step title="Restart Cursor">
+    Save the file and restart Cursor. The MCP server will be automatically detected.
+  </Step>
+  
+  <Step title="Test Connection">
+    Test with: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+## Managing Your Tools
+
+### Adding More Tools
+
+You can add new tools directly in your Cursor chat:
+
+```
+"Connect me to GitHub"
+"Add Slack to my available tools"  
+"I need access to PostgreSQL"
+"Show me what tools are available to connect"
+```
+
+Cursor will handle the connection process and guide you through any required authentication steps.
+
+### Removing Tools
+
+You can disconnect from specific tools directly in chat:
+
+```
+"Disconnect from Slack"  
+"Remove GitHub from my tools"
+"What tools do I currently have connected?"
+"Stop my access to Dropbox"
+```
+
+### Removing the MCP Server
+
+To remove Civic Nexus completely:
+
+**Via Settings:**
+<Steps>
+  <Step title="Open MCP Settings">
+    Go to **Settings → Features → MCP**
+  </Step>
+  <Step title="Delete Server">
+    1. Find "Civic Nexus" in your MCP servers list
+    2. Click on the server to access its settings  
+    3. Click **Delete** or **Remove** button
+  </Step>
+</Steps>
+
+**Via Configuration File:**
+<Steps>
+  <Step title="Edit Configuration">
+    Open your **`.cursor/mcp.json`** file
+  </Step>
+  <Step title="Remove Entry">
+    Delete the `"civic-nexus"` entry from the `mcpServers` object
+  </Step>
+  <Step title="Save and Restart">
+    Save the file and restart Cursor
+  </Step>
+</Steps>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Hub Bridge Guide" icon="bridge" href="/nexus/quickstart/hub-bridge">
+    Detailed Hub Bridge setup and troubleshooting
+  </Card>
+  <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
+    Technical details about Cursor's MCP support
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/nexus/troubleshooting">
+    Common Cursor connection issues
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community for setup assistance
+  </Card>
+</CardGroup>

@@ -1,0 +1,295 @@
+---
+title: Mistral LeChat Setup
+description: Connect Mistral LeChat to Civic Nexus in 5 minutes
+icon: "sparkles"
+---
+
+<Note>
+  This guide covers Mistral LeChat setup. For other AI clients, see our [client compatibility guide](/nexus/reference/client-compatibility).
+</Note>
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+<CardGroup cols={2}>
+  <Card title="Mistral LeChat" icon="robot" href="https://chat.mistral.ai">
+    Access to Mistral LeChat at chat.mistral.ai
+  </Card>
+  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
+    Create a free account on nexus.civic.com
+  </Card>
+</CardGroup>
+
+## Step 1: Copy the MCP URL
+
+<Steps>
+  <Step title="Visit nexus.civic.com">
+    Open [nexus.civic.com](https://nexus.civic.com) in your browser and sign in with your Civic account.
+
+    <img
+      className="rounded-lg"
+      src="/images/steps/welcome/01.png"
+      alt="Civic Nexus homepage"
+    />
+  </Step>
+
+  <Step title="Browse available MCP servers">
+    Explore the directory of available MCP servers. Each server connects to a different service or tool.
+
+    <Tip>
+      Popular servers include Slack, GitHub, Dropbox, and Notion. Click on any server to see what it can do.
+    </Tip>
+  </Step>
+
+  <Step title="Select servers to connect">
+    Click the checkbox next to each MCP server you want to use. You can select multiple servers.
+
+    <Warning>
+      Some servers may require authentication with the service they connect to. Make sure you have access to accounts for the services you select.
+    </Warning>
+  </Step>
+
+  <Step title="Copy the MCP URL">
+    After selecting servers, copy this URL:
+    ```
+    https://nexus.civic.com/hub/mcp
+    ```
+
+  </Step>
+</Steps>
+
+## Step 2: Add Connector to LeChat
+
+<Steps>
+  <Step title="Open LeChat Intelligence settings">
+    In LeChat:
+    1. Look at the **left-hand sidebar**
+    2. Click on the **"Intelligence"** tab
+    3. This will open the Intelligence settings panel
+
+    <Frame caption="Navigate to LeChat Intelligence settings">
+      <img
+        className="rounded-lg"
+        src="/images/steps/mistral/01.png"
+        alt="LeChat showing Intelligence tab in left sidebar"
+      />
+    </Frame>
+  </Step>
+
+  <Step title="Access Connectors section">
+    1. In the Intelligence panel, click on **"Connectors"**
+    2. This will show your existing connectors and options to add new ones
+
+    <Frame caption="LeChat Connectors section">
+      <img
+        className="rounded-lg"
+        src="/images/steps/mistral/02.png"
+        alt="LeChat Connectors section in Intelligence settings"
+      />
+    </Frame>
+  </Step>
+
+  <Step title="Add Custom MCP connector">
+    1. Click **"Add Connector"** button
+    2. Select **"Custom MCP"** from the connector types
+    3. Enter the following information:
+       - **Name**: "Civic Nexus"
+       - **MCP URL**: `https://nexus.civic.com/hub/mcp`
+       - **Description** (optional): "Access hundreds of tools via Civic Nexus"
+    4. Click **"Connect"** to save the connector
+
+    <Frame caption="Add custom MCP connector in LeChat">
+      <img
+        className="rounded-lg"
+        src="/images/steps/mistral/03.png"
+        alt="LeChat Custom MCP connector dialog"
+      />
+    </Frame>
+  </Step>
+</Steps>
+
+## Step 3: Authenticate and Test
+
+<Steps>
+  <Step title="Complete authentication">
+    When you first use an MCP server that requires authentication:
+    1. LeChat will prompt you to connect to the service
+    2. A browser window will open for OAuth authentication
+    3. Sign in to the service and authorize access
+    4. Return to LeChat when complete
+
+    <Frame caption="OAuth authentication flow (example: GitHub)">
+      <img
+        className="rounded-lg"
+        src="/images/steps/welcome/05.png"
+        alt="GitHub OAuth authorization screen"
+      />
+    </Frame>
+
+    <Note>
+      Authentication is handled securely by Civic Nexus. Your credentials are never exposed to LeChat or stored locally.
+    </Note>
+  </Step>
+
+  <Step title="Test your connection">
+    Try these simple commands to verify everything is working:
+
+    ```
+    "What MCP servers are available?"
+    ```
+
+    Or test a specific service:
+
+    ```
+    "Can you check my recent GitHub pull requests?"
+    "What's in my Dropbox?"
+    ```
+
+    <Frame caption="LeChat successfully using connected tools">
+      <img
+        className="rounded-lg"
+        src="/images/steps/mistral/06.png"
+        alt="LeChat chat showing successful tool usage"
+      />
+    </Frame>
+
+    LeChat should now be able to access and interact with your connected services.
+  </Step>
+</Steps>
+
+## Managing Your MCP Connectors
+
+### Adding More Tools
+
+You can add new tools directly in your LeChat conversation:
+
+```
+"Connect me to GitHub"
+"Add Slack to my available tools"
+"I need access to PostgreSQL"
+"Show me what tools are available to connect"
+```
+
+LeChat will handle the connection process and guide you through any required authentication steps.
+
+### Viewing Connected Tools
+
+To see your currently connected tools:
+1. Go to **Intelligence** → **Connectors** in the left sidebar
+2. View the list of active connectors
+3. You can see connection status and last used time for each
+
+### Removing Tools
+
+You can disconnect from specific tools:
+
+<Steps>
+  <Step title="Access connector settings">
+    Go to **Intelligence → Connectors** in LeChat's left sidebar
+  </Step>
+
+  <Step title="Remove connector">
+    1. Find "Civic Nexus" or the specific tool in your connectors list
+    2. Click the **three dots** or **settings** icon next to the connector
+    3. Select **"Remove"** or **"Disconnect"**
+    4. Confirm the removal when prompted
+  </Step>
+
+  <Step title="Clean up authorizations (optional)">
+    Visit [nexus.civic.com](https://nexus.civic.com) to revoke service authorizations if you no longer want Civic to have access
+  </Step>
+</Steps>
+
+### Reset Connection
+
+If your connector isn't working properly:
+
+<Steps>
+  <Step title="Complete reset">
+    1. Remove the Civic Nexus connector completely
+    2. Refresh the LeChat page
+    3. Follow the setup steps above to re-add with a fresh MCP URL from nexus.civic.com
+  </Step>
+</Steps>
+
+## Common Questions
+
+<AccordionGroup>
+  <Accordion title="Is MCP support available on all LeChat plans?">
+    Check your LeChat plan features. MCP connector support may vary by subscription tier. Visit chat.mistral.ai for plan details.
+  </Accordion>
+
+  <Accordion title="What if authentication fails?">
+    If you encounter authentication issues:
+    - Make sure you're logged into the correct account for the service
+    - Check if your account email matches between nexus.civic.com and the service
+    - Try removing and re-adding the MCP connector with a fresh URL
+    - Check our [troubleshooting guide](/nexus/troubleshooting) for more solutions
+  </Accordion>
+
+  <Accordion title="Can I use different email addresses?">
+    If your nexus.civic.com account uses a different email than your connected services (e.g., work@company.com vs personal@gmail.com), make sure you authenticate with the correct account for each service during the OAuth flow.
+  </Accordion>
+
+  <Accordion title="My connector shows as disconnected">
+    Try these steps:
+    - Refresh the LeChat page
+    - Remove the connector completely and re-add with a fresh MCP URL
+    - Check that your browser allows pop-ups for authentication
+    - Clear browser cache and cookies for chat.mistral.ai
+  </Accordion>
+</AccordionGroup>
+
+## Two-Minute Verification
+
+Once connected, test these prompts to make sure everything works:
+
+<Tabs>
+  <Tab title="If you selected GitHub">
+    ```
+    "List my GitHub repositories"
+    "Show me my recent pull requests"
+    "What issues are assigned to me?"
+    ```
+  </Tab>
+  <Tab title="If you selected Slack">
+    ```
+    "What are the recent messages in #general?"
+    "List my Slack workspaces"
+    "Send a test message to myself"
+    ```
+  </Tab>
+  <Tab title="If you selected Dropbox">
+    ```
+    "What files are in my Dropbox?"
+    "Show me recently modified documents"
+    "Search for files containing 'project'"
+    ```
+  </Tab>
+</Tabs>
+
+## Need Help?
+
+<Card title="Troubleshooting Guide" icon="wrench" href="/nexus/troubleshooting">
+  Solutions for common LeChat connection issues
+</Card>
+
+## Next Steps
+
+Now that you're connected, explore what you can do:
+
+<CardGroup cols={2}>
+  <Card title="Browse More Servers" icon="server" href="/nexus/reference/servers">
+    Add more MCP servers to expand LeChat's capabilities
+  </Card>
+  <Card title="Security Details" icon="shield-check" href="/nexus/reference/security">
+    Learn how Nexus keeps your data secure
+  </Card>
+  <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
+    See setup guides for other AI clients
+  </Card>
+  <Card title="Get Support" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Contact us if you need help
+  </Card>
+</CardGroup>
