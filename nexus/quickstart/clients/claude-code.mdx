@@ -4,31 +4,84 @@ description: Connect Anthropic's Claude Code CLI to Civic Nexus
 icon: "terminal"
 ---
 
-<Note>
-  Claude Code setup instructions coming soon...
-</Note>
+<Callout icon="terminal" color="blue">
+  Claude Code connects to Civic Nexus through the Hub Bridge MCP server. Follow the steps below to pair the two tools in a few minutes.
+</Callout>
 
 ## Overview
 
-Claude Code (Anthropic's command-line coding assistant) requires the Hub Bridge method for connecting to Civic Nexus MCP servers.
+Claude Code (Anthropic's command-line coding assistant) uses Model Context Protocol (MCP) to talk to external tools. Civic Nexus exposes its functionality through the `@civic/hub-bridge` MCP server, which you can register with the Claude CLI.
 
-## Coming Soon
+## Prerequisites
 
-Detailed setup instructions for Claude Code configuration are being prepared.
+- Anthropic Claude CLI (`claude`) installed and authenticated
+- Node.js 18 or newer (required for `npx @civic/hub-bridge`)
+- Civic Nexus account with access to Hub Bridge
+
+## Quick Setup
+
+<Steps>
+  <Step title="Register the Civic server">
+    Run this command to add the Civic Hub Bridge MCP server:
+
+    ```bash
+    claude mcp add civic "npx @civic/hub-bridge"
+    ```
+
+    This installs the bridge (if needed) and stores the connection in your Claude MCP config.
+  </Step>
+  <Step title="Launch Claude Code">
+    Start the Claude CLI session:
+
+    ```bash
+    claude
+    ```
+
+    Tip: add the `--debug` flag if you want to watch MCP logs while connecting.
+  </Step>
+  <Step title="Connect and sign in">
+    Inside the Claude session, run the MCP menu command:
+
+    ```text
+    /mcp
+    ```
+
+    Select the `civic` server and follow the browser sign-in flow to authorize Civic Nexus. Once the login completes, Claude confirms that the server is available for tool execution.
+  </Step>
+</Steps>
+
+<Frame>
+  <img
+    src="/images/claude-code.png"
+    alt="Claude CLI connected to the Civic MCP server"
+    className="image-80 image-rounded"
+  />
+</Frame>
+
+## Verify the Connection
+
+- In Claude, run `/mcp` again to check that `civic` shows as `connected`
+- Test a Civic command (for example, request a tool list) to confirm the session is authorized
+
+## Troubleshooting
+
+- If the connection shows `failed`, re-run `claude --debug` to view detailed logs in your terminal
+- Ensure you have an active Civic session in your default browser; the MCP flow opens a new window for login
+- Delete and re-add the server with `claude mcp remove civic` followed by the setup command if you need to refresh credentials
 
 ## Resources
 
 <CardGroup cols={2}>
   <Card title="Hub Bridge Guide" icon="bridge" href="/nexus/quickstart/hub-bridge">
-    Essential Hub Bridge setup for Claude Code
+    Full Hub Bridge configuration details
   </Card>
   <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
-    Claude Code MCP support details
+    MCP support matrix for Claude Code
   </Card>
   <Card title="Troubleshooting" icon="wrench" href="/nexus/troubleshooting">
-    Common Claude Code connection issues
+    Common Claude Code connection fixes
   </Card>
   <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Join our developer community for Claude Code setup help
+    Ask setup questions in our developer Slack
   </Card>
 </CardGroup>
