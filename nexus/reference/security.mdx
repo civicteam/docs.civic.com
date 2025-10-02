@@ -60,25 +60,19 @@ icon: "shield-check"
 - Data encryption at rest and in transit
 - Regular security audits and penetration testing
 - 24/7 monitoring and incident response
-- Advanced threat detection and response
 
 ### Zero Trust Architecture
 - Every request is authenticated and authorized
 - Principle of least privilege access
-- Session-based security controls
 - Automatic token rotation
 
 ### Privacy by Design
-- Conversations stored for 1 day to improve the product, then automatically deleted
-- User-controlled data access and deletion
-- Transparent data handling practices
 - All stored data encrypted at rest and in transit
 - Privacy-focused design principles throughout the platform
 
 ### Authentication Methods
 - OAuth2 for secure app authorization
 - API key management for supported services
-- Multi-factor authentication support
 - Single sign-on (SSO) integration
 
 ### MCP Server Security Review
@@ -93,7 +87,6 @@ icon: "shield-check"
 - Source code analysis for security vulnerabilities and best practices
 - Dependency scanning for known security issues
 - Authentication and authorization mechanism validation
-- Data handling and privacy compliance verification
 
 ## Security Best Practices
 
@@ -101,17 +94,42 @@ icon: "shield-check"
 Follow these recommendations to maximize your security when using Civic Nexus:
 </Tip>
 
-### For Organizations
-- Regularly review connected applications
-- Use SSO where available
-- Monitor access logs and activity
-- Implement least-privilege access policies
-
-### For Individual Users
 - Only connect apps you actively use
 - Review and revoke unused connections monthly
 - Use strong authentication methods
 - Keep your AI client software updated
+
+## Claude Code Setup
+
+Quickly connect Civic to Claude Code using the MCP CLI workflow:
+
+<Steps>
+  <Step title="Register the Civic MCP server">
+    Run the following command in your terminal:
+
+    ```bash
+    claude mcp add civic "npx @civic/hub-bridge"
+    ```
+  </Step>
+  <Step title="Launch Claude Code">
+    Start the Claude CLI by running:
+
+    ```bash
+    claude
+    ```
+  </Step>
+  <Step title="Connect and sign in">
+    In the Claude prompt, type `/mcp`, choose the `civic` server, and follow the Civic login flow to authorize access.
+  </Step>
+</Steps>
+
+<Frame>
+  <img
+    src="/images/claude-code.png"
+    alt="Connecting Civic within Claude Code"
+    className="image-80 image-rounded"
+  />
+</Frame>
 
 ## Incident Response
 

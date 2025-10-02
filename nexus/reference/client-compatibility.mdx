@@ -18,10 +18,11 @@ Civic Nexus works with all major AI assistants and development tools. The setup 
 
 ## Client Compatibility Matrix
 
-| Client | Platform | Connection | Setup Time | Popularity | Guide |
+| Client | Platform | Connection | Setup Time | Status | Guide |
 |--------|----------|------------|------------|------------|-------|
-| **Claude Desktop** | Desktop | Remote URL | 2 mins | 🔥 Most Popular | [Setup](/nexus/quickstart/clients/claude-desktop) |
-| **Claude.ai** | Web | Remote URL | 2 mins | 🔥 Very Popular | [Setup](/nexus/quickstart/clients/claude-web) |
+| **Nexus Chat** | Web | Built-in | 0 mins | 🔥 **Recommended** | [Try Now](https://nexus.civic.com) |
+| **Claude Desktop** | Desktop | Remote URL | 2 mins | 🧪 Experimental | [Setup](/nexus/quickstart/clients/claude-desktop) |
+| **Claude.ai** | Web | Remote URL | 2 mins | 🧪 Experimental | [Setup](/nexus/quickstart/clients/claude-web) |
 | **Cursor** | Desktop | Hub Bridge | 3 mins | 🔥 Very Popular | [Setup](/nexus/quickstart/clients/cursor) |
 | **VS Code** | Desktop | Hub Bridge | 3 mins | 🔥 Popular | [Setup](/nexus/quickstart/clients/vscode) |
 | **Goose** | CLI | Remote URL | 2 mins | 📈 Growing | [Setup](/nexus/quickstart/clients/goose) |
@@ -31,7 +32,7 @@ Civic Nexus works with all major AI assistants and development tools. The setup 
 | **Gemini CLI** | CLI | Hub Bridge | 2 mins | 🚀 Google | [Setup](/nexus/quickstart/clients/gemini) |
 
 <Warning>
-**ChatGPT Support**: ChatGPT does not currently support MCP connectors and cannot connect to Civic Nexus. We're monitoring ChatGPT's roadmap and will add support when OpenAI releases MCP connector functionality. For now, we recommend **Claude Desktop** or **Claude.ai** for the best experience.
+**ChatGPT Support**: ChatGPT does not currently support MCP connectors and cannot connect to Civic Nexus. We're monitoring ChatGPT's roadmap and will add support when OpenAI releases MCP connector functionality. For now, we recommend **Nexus Chat** for the best experience, or try **Cursor** and **VS Code** for development workflows.
 </Warning>
 
 ## Connection Methods
@@ -41,8 +42,9 @@ Civic Nexus works with all major AI assistants and development tools. The setup 
 **How it works:** Copy the MCP URL from [nexus.civic.com](https://nexus.civic.com) and paste it into your client's settings.
 
 **Clients that support this:**
-- **Claude Desktop** - Most popular choice
-- **Claude.ai (Web)** - No installation required
+- **Nexus Chat** - Built-in, no setup required (recommended)
+- **Claude Desktop** - Experimental support
+- **Claude.ai (Web)** - Experimental support 
 - **Goose** - Developer CLI tool
 - Any client with "remote MCP URL" or "HTTP connector" options
 
@@ -55,11 +57,11 @@ Civic Nexus works with all major AI assistants and development tools. The setup 
 
 **Setup steps:**
 1. Visit **[nexus.civic.com](https://nexus.civic.com)** and select your tools
-2. Copy the MCP URL 
-3. Paste into your client's MCP settings
+2. Click **"Chat"** to start using tools immediately (recommended)
+3. Or copy the MCP URL to connect external clients
 
-<Card title="Claude Desktop Setup Guide" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
-  Complete walkthrough for the most popular setup method
+<Card title="Try Nexus Chat Now" icon="message-circle" href="https://nexus.civic.com">
+  Zero setup required - start using tools immediately in our built-in chat interface
 </Card>
 
 ### JSON Configuration (Development Tools)
@@ -150,14 +152,14 @@ Use JSON configuration for:
 ## Common Setup Scenarios
 
 ### 🆕 First-Time Users
-**Recommendation:** Start with **Claude Desktop** (Remote URL)
-- ✅ Easiest 2-minute setup process
-- ✅ Most reliable connection method
-- ✅ Best documentation and community support
+**Recommendation:** Start with **Nexus Chat** (Built-in)
+- ✅ Zero setup required - just sign up and start chatting
+- ✅ All tools available immediately
+- ✅ No client installation or configuration
 - ✅ Perfect for learning how Civic Nexus works
 
-<Card title="Start with Claude Desktop" icon="desktop" href="/nexus/quickstart/clients/claude-desktop">
-  Get up and running in 2 minutes with the most popular setup
+<Card title="Try Nexus Chat Now" icon="message-circle" href="https://nexus.civic.com">
+  Get started instantly with our built-in chat interface - no setup required
 </Card>
 
 ### 👩‍💻 Developers
@@ -172,13 +174,14 @@ Use JSON configuration for:
   </Card>
 </CardGroup>
 
-**Pro tip:** Many developers use **Claude Desktop** for quick queries alongside their IDE setup.
+**Pro tip:** Many developers use **Nexus Chat** for quick queries and then connect their IDE for project-specific work.
 
 ### 👥 Teams & Organizations
 **Team-friendly options:**
 
-- **🌐 Claude.ai (Web)**: No installation required, works from any browser
-- **🖥️ Claude Desktop**: Consistent experience across all team members  
+- **💬 Nexus Chat**: Zero setup, works from any browser, immediate access to all tools
+- **🌐 Claude.ai (Web)**: Experimental support, no installation required  
+- **🖥️ Claude Desktop**: Experimental support, consistent experience across team members
 - **🔗 Multiple clients**: Each team member can use their preferred client with the same [nexus.civic.com](https://nexus.civic.com) account
 
 ### 🏢 Enterprise Users
