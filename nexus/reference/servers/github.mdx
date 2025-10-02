@@ -1,0 +1,311 @@
+---
+title: "GitHub Server"
+description: "Connect to GitHub repositories for development workflows, issue management, and code operations"
+icon: "server"
+---
+
+# GitHub Server
+
+## Overview
+
+The GitHub server provides comprehensive integration with [GitHub](https://github.com) repositories, enabling AI assistants to manage issues, pull requests, code files, and development workflows programmatically.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to GitHub">
+    Add the GitHub server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple tool like `get_me` or `search_repositories` to verify the connection works properly.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Issue Management" icon="circle-exclamation">
+    Create, update, and track issues across repositories with full comment management
+  </Card>
+  <Card title="Pull Request Workflows" icon="code-pull-request">
+    Manage PRs from creation to merge, including reviews, comments, and status checks
+  </Card>
+  <Card title="Code Operations" icon="code">
+    Read, create, and modify files directly in repositories with branch management
+  </Card>
+  <Card title="Repository Search" icon="magnifying-glass">
+    Search across repositories, code, users, and issues to find relevant information
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Development Automation" icon="robot">
+    - **PR Creation**: Automatically create pull requests from feature branches with proper descriptions
+    - **Code Reviews**: Generate review comments and suggestions based on code changes
+    - **Issue Triage**: Automatically label and assign issues based on content analysis
+    - **Branch Management**: Create feature branches and manage merge workflows
+  </Accordion>
+
+  <Accordion title="Project Management" icon="list-check">
+    - **Issue Tracking**: Monitor project progress through issue creation and updates
+    - **Status Reports**: Generate project status reports from commit history and PR activity
+    - **Team Coordination**: Track team member contributions and code review assignments
+    - **Release Management**: Coordinate releases by analyzing commit history and issue resolution
+  </Accordion>
+
+  <Accordion title="Code Intelligence" icon="brain">
+    - **Code Search**: Find similar patterns, functions, or implementations across repositories
+    - **Documentation Updates**: Automatically update documentation based on code changes
+    - **Security Monitoring**: Track and respond to security scanning alerts
+    - **Dependency Analysis**: Monitor repository dependencies and update requirements
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools
+
+<Note>Tool counts may change as the server evolves. See individual categories below for current capabilities.</Note>
+
+<AccordionGroup>
+  <Accordion title="User Operations">
+    Authentication and user information management.
+
+    <AccordionGroup>
+      <Accordion title="get_me">
+        Get details of the authenticated user including profile information and permissions
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Issue Management">
+    Complete issue lifecycle management including creation, updates, and comments.
+
+    **Core Issue Operations**
+    <AccordionGroup>
+      <Accordion title="get_issue">
+        Get the complete contents and metadata of a specific issue within a repository
+      </Accordion>
+      <Accordion title="create_issue">
+        Create new issues with title, description, labels, and assignees
+      </Accordion>
+      <Accordion title="list_issues">
+        List all issues in a repository with filtering and sorting options
+      </Accordion>
+      <Accordion title="update_issue">
+        Update existing issues including status, labels, assignees, and descriptions
+      </Accordion>
+      <Accordion title="search_issues">
+        Search for issues across repositories using GitHub's powerful search syntax
+      </Accordion>
+    </AccordionGroup>
+
+    **Issue Comments**
+    <AccordionGroup>
+      <Accordion title="get_issue_comments">
+        Retrieve all comments for a specific issue including author and timestamp information
+      </Accordion>
+      <Accordion title="add_issue_comment">
+        Add new comments to existing issues for collaboration and updates
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Pull Request Management">
+    Comprehensive pull request workflows from creation to merge.
+
+    **PR Core Operations**
+    <AccordionGroup>
+      <Accordion title="get_pull_request">
+        Get complete details of a pull request including metadata, status, and changes
+      </Accordion>
+      <Accordion title="create_pull_request">
+        Create new pull requests with title, description, and branch specifications
+      </Accordion>
+      <Accordion title="list_pull_requests">
+        List all pull requests in a repository with filtering by status, author, or branch
+      </Accordion>
+      <Accordion title="update_pull_request">
+        Update PR title, description, labels, or other metadata
+      </Accordion>
+      <Accordion title="merge_pull_request">
+        Merge approved pull requests using different merge strategies
+      </Accordion>
+    </AccordionGroup>
+
+    **PR Analysis**
+    <AccordionGroup>
+      <Accordion title="get_pull_request_files">
+        Get list of files changed in a pull request with diff information
+      </Accordion>
+      <Accordion title="get_pull_request_status">
+        Check the status of pull request including CI/CD checks and review status
+      </Accordion>
+      <Accordion title="update_pull_request_branch">
+        Update pull request branch with latest changes from base branch
+      </Accordion>
+    </AccordionGroup>
+
+    **PR Collaboration**
+    <AccordionGroup>
+      <Accordion title="get_pull_request_comments">
+        Retrieve all comments on a pull request for review and discussion
+      </Accordion>
+      <Accordion title="get_pull_request_reviews">
+        Get all code reviews and their status (approved, changes requested, etc.)
+      </Accordion>
+      <Accordion title="create_pull_request_review">
+        Create comprehensive code reviews with comments and approval status
+      </Accordion>
+      <Accordion title="add_pull_request_review_comment">
+        Add specific line-by-line comments during code review process
+      </Accordion>
+      <Accordion title="request_copilot_review">
+        Request automated code review assistance from GitHub Copilot
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="File & Code Operations">
+    Direct file manipulation and code management within repositories.
+
+    <AccordionGroup>
+      <Accordion title="create_or_update_file">
+        Create new files or update existing files in repositories with commit messages
+      </Accordion>
+      <Accordion title="get_file_contents">
+        Read the contents of any file in a repository with support for different branches
+      </Accordion>
+      <Accordion title="push_files">
+        Push multiple file changes to a repository in a single commit
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Repository Management">
+    Repository-level operations including creation, forking, and discovery.
+
+    <AccordionGroup>
+      <Accordion title="search_repositories">
+        Search for repositories across GitHub using various criteria and filters
+      </Accordion>
+      <Accordion title="create_repository">
+        Create new repositories with specified settings, visibility, and initial content
+      </Accordion>
+      <Accordion title="fork_repository">
+        Fork existing repositories to your account or organization for contributions
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Branch & Commit Operations">
+    Git workflow management including branching, commits, and history.
+
+    <AccordionGroup>
+      <Accordion title="list_branches">
+        List all branches in a repository with their latest commit information
+      </Accordion>
+      <Accordion title="create_branch">
+        Create new branches from existing branches for feature development
+      </Accordion>
+      <Accordion title="list_commits">
+        Get commit history for a repository or specific branch with author and message details
+      </Accordion>
+      <Accordion title="get_commit">
+        Get detailed information about a specific commit including file changes
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Search Operations">
+    Advanced search capabilities across GitHub's entire platform.
+
+    <AccordionGroup>
+      <Accordion title="search_code">
+        Search for specific code patterns, functions, or implementations across repositories
+      </Accordion>
+      <Accordion title="search_users">
+        Find GitHub users based on various criteria like location, followers, or repositories
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Security & Scanning">
+    Security monitoring and vulnerability management tools.
+
+    <AccordionGroup>
+      <Accordion title="get_code_scanning_alert">
+        Get details of specific code security alerts and vulnerabilities
+      </Accordion>
+      <Accordion title="list_code_scanning_alerts">
+        List all code scanning security alerts for a repository
+      </Accordion>
+      <Accordion title="get_secret_scanning_alert">
+        Get details of secret scanning alerts for exposed credentials
+      </Accordion>
+      <Accordion title="list_secret_scanning_alerts">
+        List all secret scanning alerts to identify exposed sensitive information
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Resources
+
+The GitHub server provides direct access to GitHub data through resource endpoints.
+
+<AccordionGroup>
+  <Accordion title="Collection Endpoints" icon="database">
+    Access entire data collections for browsing and discovery:
+
+    <CardGroup cols={2}>
+      <Card title="Repositories" icon="folder">
+        `github://repositories`  
+        Access repository listings and metadata
+      </Card>
+      <Card title="Issues" icon="circle-exclamation">
+        `github://issues`  
+        Browse issues across accessible repositories
+      </Card>
+      <Card title="Pull Requests" icon="code-pull-request">
+        `github://pull-requests`  
+        View pull request data and status
+      </Card>
+      <Card title="Users" icon="users">
+        `github://users`  
+        Access user profiles and information
+      </Card>
+    </CardGroup>
+  </Accordion>
+
+  <Accordion title="Individual Record Endpoints" icon="magnifying-glass">
+    Access specific records when you know their ID:
+
+    <CardGroup cols={2}>
+      <Card title="Repository" icon="folder">
+        `github://repositories/{owner}/{repo}`  
+        Get specific repository details
+      </Card>
+      <Card title="Issue" icon="circle-exclamation">
+        `github://issues/{owner}/{repo}/{number}`  
+        Get individual issue details
+      </Card>
+      <Card title="Pull Request" icon="code-pull-request">
+        `github://pull-requests/{owner}/{repo}/{number}`  
+        Get specific pull request information
+      </Card>
+      <Card title="User" icon="users">
+        `github://users/{username}`  
+        Get user profile and activity
+      </Card>
+    </CardGroup>
+
+    <Tip>
+      **Pro Tip:** Use collection endpoints to discover repositories and issues, then switch to individual record endpoints for detailed operations.
+    </Tip>
+  </Accordion>
+</AccordionGroup>

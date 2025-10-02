@@ -1,0 +1,240 @@
+---
+title: VS Code Setup  
+description: Connect VS Code to Civic Nexus with MCP extension support in 3 minutes
+icon: "code"
+---
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="VS Code" icon="code" href="https://code.visualstudio.com">
+    Download and install VS Code (free)
+  </Card>
+  <Card title="Node.js 18+" icon="code" href="https://nodejs.org">
+    Required for the Hub Bridge - check with `node --version`
+  </Card>
+</CardGroup>
+
+## Setup Options
+
+VS Code now supports both local Hub Bridge and direct remote HTTP endpoints.
+
+### Option 1: Remote HTTP Endpoint (Direct Connection)
+
+<Steps>
+  <Step title="Visit nexus.civic.com">
+    1. Sign in to [nexus.civic.com](https://nexus.civic.com)
+    2. Select the MCP servers you want to use
+    3. Copy the MCP URL: `https://nexus.civic.com/hub/mcp`
+  </Step>
+
+  <Step title="Add to VS Code Settings">
+    1. Open VS Code Settings (**File → Preferences → Settings**)
+    2. Search for "MCP"
+    3. In the **MCP Servers** section, click **Add Server**
+    4. Configure:
+       - **Name**: Civic Nexus
+       - **Type**: http
+       - **URL**: `https://nexus.civic.com/hub/mcp`
+    5. Save the configuration
+  </Step>
+
+  <Step title="Enable MCP Features">
+    In VS Code Settings, search for "MCP" and enable the required MCP extension options
+  </Step>
+
+  <Step title="Test Connection">
+    Try these commands to verify: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+### Option 2: Hub Bridge (Local Connection)
+
+<Steps>
+  <Step title="Click 'Add to VS Code'">
+    Use the one-click install button below:
+
+    <a href="vscode:mcp/install?%7B%22name%22%3A%22Civic%20Nexus%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40civic%2Fhub-bridge%22%5D%7D">
+      <div className="inline-block bg-[#007ACC] text-white px-4 py-2 rounded hover:bg-[#005a9e] transition-colors">
+        📦 Add to VS Code (Hub Bridge)
+      </div>
+    </a>
+  </Step>
+
+  <Step title="Install in VS Code">
+    When VS Code opens, click "Install" to add the Civic Nexus MCP server
+  </Step>
+
+  <Step title="Enable MCP Features">
+    In VS Code Settings, search for "MCP" and enable the required MCP extension options
+  </Step>
+
+  <Step title="First-Time Authentication">
+    The first time you use any MCP command, the Hub Bridge will:
+    - Automatically download and install itself
+    - Handle authentication directly in the chat interface
+    - Let you select which tools to connect from nexus.civic.com
+  </Step>
+</Steps>
+
+## Test Your Connection
+
+Try these prompts in VS Code's chat/AI features:
+
+```
+"What MCP servers are available?"
+"Show me my connected tools"
+"Help me set up GitHub integration"
+```
+
+## Manual Setup (Alternative)
+
+If the one-click install doesn't work, add Civic Nexus manually:
+
+### Method 1: Via VS Code Settings (Recommended)
+
+<Steps>
+  <Step title="Open VS Code Settings">
+    Go to **File → Preferences → Settings**, then search for "MCP"
+  </Step>
+  
+  <Step title="Add MCP Server">
+    1. Look for **MCP Servers** section in settings
+    2. Click **Add Server** or **+**
+    3. Configure the server:
+       - **Name**: Civic Nexus
+       - **Type**: stdio
+       - **Command**: npx -y @civic/hub-bridge
+    4. Save the configuration
+  </Step>
+  
+  <Step title="Enable and Test">
+    Enable MCP features and test with: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+### Method 2: Via Configuration File  
+
+<Steps>
+  <Step title="Create MCP Configuration File">
+    Create a file called **`.mcp.json`** in your workspace root directory
+  </Step>
+  
+  <Step title="Add Configuration">
+    Add the following content:
+    ```json
+    {
+      "servers": {
+        "civic-nexus": {
+          "type": "stdio",
+          "command": "npx",
+          "args": ["-y", "@civic/hub-bridge"]
+        }
+      }
+    }
+    ```
+  </Step>
+  
+  <Step title="Restart VS Code">
+    Save the file and restart VS Code. The MCP server will be automatically detected.
+  </Step>
+  
+  <Step title="Test Connection">
+    Test with: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<Accordion title="VS Code doesn't open when I click the install button">
+Make sure VS Code is installed and try copying this URL manually:
+```
+vscode:mcp/install?%7B%22name%22%3A%22Civic%20Nexus%22%2C%22type%22%3A%22stdio%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40civic%2Fhub-bridge%22%5D%7D
+```
+</Accordion>
+
+<Accordion title="'Node.js not found' error">
+Install Node.js 18 or later from [nodejs.org](https://nodejs.org) and restart VS Code.
+</Accordion>
+
+<Accordion title="MCP settings not found">
+Make sure you have the MCP extension installed. Some VS Code versions require additional extensions for MCP support.
+</Accordion>
+
+<Accordion title="Authentication window doesn't open">
+The Hub Bridge should handle authentication in the chat. If it doesn't:
+1. Restart VS Code
+2. Make sure you're trying to use a tool that requires authentication
+3. Try running the Hub Bridge manually: `npx -y @civic/hub-bridge`
+</Accordion>
+
+## Managing Your Tools
+
+### Adding More Tools
+
+You can add new tools directly in your VS Code chat:
+
+```
+"Connect me to GitHub"
+"Add Slack to my available tools"  
+"I need access to PostgreSQL"
+"Show me what tools are available to connect"
+```
+
+VS Code will handle the connection process and guide you through any required authentication steps.
+
+### Removing Tools
+
+You can disconnect from specific tools directly in chat:
+
+```
+"Disconnect from Slack"  
+"Remove GitHub from my tools"
+"What tools do I currently have connected?"
+"Stop my access to Dropbox"
+```
+
+### Removing the MCP Server
+
+To remove Civic Nexus completely:
+
+**Via Settings:**
+<Steps>
+  <Step title="Open MCP Settings">
+    Go to **File → Preferences → Settings** and search for "MCP"
+  </Step>
+  <Step title="Delete Server">
+    1. Find "Civic Nexus" in your MCP servers list
+    2. Click the **Delete** or **Remove** button next to it
+  </Step>
+</Steps>
+
+**Via Configuration File:**
+<Steps>
+  <Step title="Edit Configuration">
+    Open your **`.mcp.json`** file in the workspace root
+  </Step>
+  <Step title="Remove Entry">
+    Delete the `"civic-nexus"` entry from the `servers` object
+  </Step>
+  <Step title="Save and Restart">
+    Save the file and restart VS Code
+  </Step>
+</Steps>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Hub Bridge Guide" icon="bridge" href="/nexus/quickstart/hub-bridge">
+    Detailed Hub Bridge setup for VS Code
+  </Card>
+  <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
+    Technical details about VS Code MCP support
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/nexus/troubleshooting">
+    Common VS Code connection issues
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community for setup assistance
+  </Card>
+</CardGroup>
