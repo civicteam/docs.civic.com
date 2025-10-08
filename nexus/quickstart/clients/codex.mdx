@@ -1,0 +1,80 @@
+---
+title: Codex Setup
+description: Connect Codex to Civic Nexus
+icon: "terminal"
+---
+
+<Callout icon="terminal" color="blue">
+  Codex connects to Civic Nexus through the Hub Bridge MCP server. Follow the steps below to pair the two tools in a few minutes.
+</Callout>
+
+## Overview
+
+Codex uses Model Context Protocol (MCP) to talk to external tools. Civic Nexus exposes its functionality through the `@civic/hub-bridge` MCP server, which you can register with Codex.
+
+## Prerequisites
+
+- Codex installed and authenticated
+- Node.js 18 or newer (required for `npx @civic/hub-bridge`)
+- Civic Nexus account with access to Hub Bridge
+
+## Quick Setup
+
+<Steps>
+  <Step title="Register the Civic server">
+    Run this command to add the Civic Hub Bridge MCP server:
+
+    ```bash
+    codex mcp add nexus -- npx -y @civic/hub-bridge
+    ```
+
+    This installs the bridge (if needed) and stores the connection in your Codex MCP config.
+  </Step>
+  <Step title="Launch Codex">
+    Start the Codex session:
+
+    ```bash
+    codex
+    ```
+
+    Tip: add the `--debug` flag if you want to watch MCP logs while connecting.
+  </Step>
+  <Step title="Connect and sign in">
+    Inside the Codex session, run the MCP menu command:
+
+    ```text
+    /mcp
+    ```
+
+    Select the `nexus` server and follow the browser sign-in flow to authorize Civic Nexus. Once the login completes, Codex confirms that the server is available for tool execution.
+  </Step>
+</Steps>
+
+## Verify the Connection
+
+- In Codex, run `/mcp` again to check that `nexus` shows as `connected`
+- Test a Civic command (for example, request a tool list) to confirm the session is authorized
+
+## Troubleshooting
+
+- If the connection shows `failed`, re-run `codex --debug` to view detailed logs in your terminal
+- Ensure you have an active Civic session in your default browser; the MCP flow opens a new window for login
+- Delete and re-add the server with `codex mcp remove nexus` followed by the setup command if you need to refresh credentials
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Hub Bridge Guide" icon="bridge" href="/nexus/quickstart/hub-bridge">
+    Full Hub Bridge configuration details
+  </Card>
+  <Card title="Client Compatibility" icon="table" href="/nexus/reference/client-compatibility">
+    MCP support matrix for Codex
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/nexus/troubleshooting">
+    Common Codex connection fixes
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Ask setup questions in our developer Slack
+  </Card>
+</CardGroup>
+
