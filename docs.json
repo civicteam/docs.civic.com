@@ -201,6 +201,7 @@
                  "nexus/quickstart/clients/vscode",
                  "nexus/quickstart/clients/windsurf",
                  "nexus/quickstart/clients/claude-code",
+                 "nexus/quickstart/clients/codex",
                  "nexus/quickstart/clients/jetbrains",
                  "nexus/quickstart/clients/gemini"
                ]
