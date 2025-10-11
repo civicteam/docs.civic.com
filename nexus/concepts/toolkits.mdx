@@ -25,25 +25,25 @@ Toolkits allow you to create focused groups of MCP servers that work together fo
 <CardGroup cols={2}>
   <Card title="Marketing Analytics" icon="chart-bar">
     **Tools:** Google Analytics + Notion + Slack
-    
+
     Perfect for marketing teams who need to pull analytics data, document insights, and share reports with the team.
   </Card>
-  
+
   <Card title="Developer Debugging" icon="bug">
     **Tools:** GitHub + PostgreSQL + Notion
-    
+
     Ideal for developers who need to investigate issues, query databases, and document solutions.
   </Card>
-  
+
   <Card title="Content Creation" icon="pen-to-square">
     **Tools:** Linear + GitHub + Slack
-    
+
     Great for product teams managing feature requests, code reviews, and team communication.
   </Card>
-  
+
   <Card title="Customer Support" icon="headset">
     **Tools:** Notion + HubSpot + Slack
-    
+
     Excellent for support teams who need to access customer data, update tickets, and coordinate responses.
   </Card>
 </CardGroup>
@@ -55,7 +55,7 @@ Creating a toolkit takes just a few steps and lets you build focused tool groups
 <Steps>
   <Step title="Create New Toolkit">
     Click the **"+ Create toolkit"** button in the top navigation, next to your current toolkit name.
-    
+
     <Frame caption="Click 'Create toolkit' to start building your focused tool group">
       <img
         className="rounded-lg"
@@ -64,10 +64,10 @@ Creating a toolkit takes just a few steps and lets you build focused tool groups
       />
     </Frame>
   </Step>
-  
+
   <Step title="Name Your Toolkit">
     Give your toolkit a descriptive name and URL alias. This helps you and your team understand what the toolkit is designed for.
-    
+
     <Frame caption="Enter a name and URL alias for your toolkit">
       <img
         className="rounded-lg"
@@ -75,16 +75,16 @@ Creating a toolkit takes just a few steps and lets you build focused tool groups
         alt="Create New Toolkit dialog showing name and URL alias fields"
       />
     </Frame>
-    
+
     **Example names:**
     - "Marketing Redshift" (for marketing analytics)
-    - "Debug Kit" (for development troubleshooting)  
+    - "Debug Kit" (for development troubleshooting)
     - "Content Pipeline" (for content creation workflow)
   </Step>
-  
+
   <Step title="Copy Your Toolkit URL">
     Once created, you'll get a unique URL for your toolkit that you can use in any MCP-compatible client.
-    
+
     <Frame caption="Copy your toolkit-specific MCP URL to use in AI clients">
       <img
         className="rounded-lg"
@@ -92,12 +92,12 @@ Creating a toolkit takes just a few steps and lets you build focused tool groups
         alt="Toolkit setup page showing the unique MCP URL for the toolkit"
       />
     </Frame>
-    
+
     **Toolkit URL format:**
     ```
     https://nexus.civic.com/hub/mcp?profile=your-toolkit-name
     ```
-    
+
     **Default URL (all tools):**
     ```
     https://nexus.civic.com/hub/mcp
@@ -129,19 +129,47 @@ If you're using Nexus Chat or managing multiple toolkits, you can switch between
   <Accordion title="Adding Tools to a Toolkit">
     Navigate to your toolkit and click "Add Tools" to select from your connected services. You can add or remove tools anytime without affecting your AI client connections.
   </Accordion>
-  
+
   <Accordion title="Editing Toolkit Names">
     Click on your toolkit name to edit it. The URL alias will update automatically, but existing connections will continue to work.
   </Accordion>
-  
+
   <Accordion title="Sharing Toolkits">
     Toolkit URLs are tied to your account's authentication. Team members will need their own toolkit configurations, but you can share the concept and tool combinations.
   </Accordion>
-  
+
   <Accordion title="Default vs Toolkit URLs">
     - **Default URL:** Gives access to ALL your connected tools
     - **Toolkit URL:** Gives access to ONLY the tools in that specific toolkit
     - You can use both simultaneously in different AI clients
+  </Accordion>
+
+  <Accordion title="Filtering Tools in Toolkits">
+    One of the most important factors in the accuracy of an LLM is the amount of tools it has access to.
+    The more tools, the more likely it is that it will pick the wrong one.
+
+    Some MCP servers include a large number of tools, only a few of which may be relevant to your use case.
+
+    Narrow down your toolkit by asking the AI to filter tools based on usage or specific functionality.
+    The filtered selection is saved to your toolkit.
+
+    **Sample prompts:**
+    - "This toolkit has too many tools. Please select only the ones related to generating reports and store that against the toolkit"
+    - "Please filter out any tools we did not use in this interaction, and store that against the toolkit"
+  </Accordion>
+
+  <Accordion title="Presetting Parameters">
+    You can train the LLM to use tools the way you want them.
+
+    If a tool, or set of tools, includes a parameter, that you always want set to a specific value,
+    you can prompt the LLM to preset it.
+
+    The AI will automatically use these presets when calling those tools.
+
+    **Sample prompts:**
+    - "From now on, in this toolkit, always use property ID xyz when using Google Analytics"
+    - "Preset the log groups parameter to this list: [log-group-1, log-group-2, log-group-3] when executing log queries"
+    - "Always use the production database connection for queries in this toolkit"
   </Accordion>
 </AccordionGroup>
 
@@ -176,25 +204,25 @@ Based on popular MCP server combinations, here are proven toolkit patterns:
 <CardGroup cols={1}>
   <Card title="Analytics & Reporting" icon="chart-line">
     **Pattern:** Data source + Documentation + Communication
-    
+
     **Examples:**
     - Google Analytics + Notion + Slack
     - PostgreSQL + Linear + GitHub
     - CoinGecko + Notion + Discord
   </Card>
-  
+
   <Card title="Development Workflow" icon="code">
     **Pattern:** Code repository + Database + Issue tracking
-    
+
     **Examples:**
     - GitHub + PostgreSQL + Linear
     - GitHub + Sentry + Notion
     - GitHub + HubSpot + Slack
   </Card>
-  
+
   <Card title="Customer Operations" icon="users">
     **Pattern:** CRM + Documentation + Communication
-    
+
     **Examples:**
     - HubSpot + Notion + Slack
     - ActiveCampaign + Linear + GitHub
@@ -208,15 +236,15 @@ Based on popular MCP server combinations, here are proven toolkit patterns:
   <Step title="Plan Your Toolkit">
     Identify a specific workflow or task you do regularly that involves 3-5 tools
   </Step>
-  
+
   <Step title="Create Your First Toolkit">
     Follow the steps above to create a focused toolkit for that workflow
   </Step>
-  
+
   <Step title="Test and Refine">
     Use your toolkit with your preferred AI assistant and adjust the tool combination as needed
   </Step>
-  
+
   <Step title="Create More Toolkits">
     Build additional toolkits for other workflows once you've validated the first one
   </Step>
