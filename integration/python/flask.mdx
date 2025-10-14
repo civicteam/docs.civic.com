@@ -238,3 +238,22 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
 </Info>
 
 The examples above use PKCE authentication, which is handled entirely by the Civic Auth SDK and suitable for most applications.
+
+### Access Tokens
+
+Retrieve tokens from session (or via a CivicAuth instance if exposed):
+
+```python
+from flask import session
+from civic_auth.core import CivicAuth  # for key names
+
+@app.route("/tokens")
+@civic_auth_required
+async def tokens():
+    return {
+        "access_token": session.get(CivicAuth.ACCESS_TOKEN_KEY),
+        "id_token": session.get(CivicAuth.ID_TOKEN_KEY),
+        "refresh_token": session.get(CivicAuth.REFRESH_TOKEN_KEY),
+        "token_type": "Bearer",
+    }
+```

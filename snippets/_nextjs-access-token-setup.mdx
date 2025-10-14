@@ -1,0 +1,53 @@
+<Tabs>
+  <Tab title="1. next.config.ts">
+    ```ts
+    import { createCivicAuthPlugin } from "@civic/auth/nextjs"
+    import type { NextConfig } from "next";
+    
+    const nextConfig: NextConfig = {};
+    const withCivicAuth = createCivicAuthPlugin({ clientId: "YOUR_CLIENT_ID" });
+    export default withCivicAuth(nextConfig)
+    ```
+  </Tab>
+  
+  <Tab title="2. API Route">
+    **File:** `src/app/api/auth/[...civicauth]/route.ts`
+    ```ts
+    import { handler } from "@civic/auth/nextjs"
+    export const GET = handler()
+    export const POST = handler()
+    ```
+  </Tab>
+  
+  <Tab title="3. Middleware">
+    **File:** `src/middleware.ts`
+    ```ts
+    import { authMiddleware } from "@civic/auth/nextjs/middleware"
+    export default authMiddleware();
+    export const config = { matcher: ['/((?!_next|favicon.ico|.*\\.png).*)',] };
+    ```
+  </Tab>
+  
+  <Tab title="4. Get Token">
+    ```ts
+    import { getTokens } from "@civic/auth/nextjs";
+    const { accessToken } = await getTokens();
+    // Use in headers:
+    headers: { Authorization: `Bearer ${accessToken}` }
+    ```
+  </Tab>
+</Tabs>
+
+<CardGroup cols={2}>
+  <Card title="Full Integration Guide" icon="book" href="/integration/nextjs">
+    Complete Next.js setup with frontend components, configuration options, and deployment details
+  </Card>
+  <Card title="AI Prompt for Next.js" icon="robot" href="/ai-prompts/nextjs">
+    Use Claude, ChatGPT, or other AI assistants to automatically set up Civic Auth
+  </Card>
+</CardGroup>
+
+<Note>
+  Get your Client ID at [auth.civic.com](https://auth.civic.com)
+</Note>
+

@@ -234,3 +234,18 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
 </Info>
 
 The examples above use PKCE authentication, which is handled entirely by the Civic Auth SDK and suitable for most applications.
+
+### Access Tokens
+
+Use the CivicAuth dependency to retrieve tokens (auto-refresh):
+
+```python
+from fastapi import Depends
+from civic_auth.integrations.fastapi import create_auth_dependencies
+
+civic_auth_dep, get_current_user, require_auth = create_auth_dependencies(config)
+
+@app.get("/tokens", dependencies=[Depends(require_auth)])
+async def tokens(civic = Depends(civic_auth_dep)):
+    return await civic.get_tokens()
+```

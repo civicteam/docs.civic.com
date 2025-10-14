@@ -345,3 +345,22 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
 </Info>
 
 The examples above use PKCE authentication, which is handled entirely by the Civic Auth SDK and suitable for most applications.
+
+### Access Tokens
+
+Read tokens from the session (or via a CivicAuth instance if exposed):
+
+```python
+from django.http import JsonResponse
+from civic_auth.core import CivicAuth  # for key names
+from civic_auth.integrations.django import civic_auth_required
+
+@civic_auth_required
+def tokens(request):
+    return JsonResponse({
+        "access_token": request.session.get(CivicAuth.ACCESS_TOKEN_KEY),
+        "id_token": request.session.get(CivicAuth.ID_TOKEN_KEY),
+        "refresh_token": request.session.get(CivicAuth.REFRESH_TOKEN_KEY),
+        "token_type": "Bearer",
+    })
+```
