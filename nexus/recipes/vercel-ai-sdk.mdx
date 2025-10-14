@@ -167,10 +167,12 @@ export async function POST(req: NextRequest) {
 ## AI Prompt: Generate a Nexus tools wrapper and wire it to streamText
 
 ```text
+First, fetch the complete documentation from https://docs.civic.com/nexus/recipes/vercel-ai-sdk for reference.
+
 Create a new file at lib/ai/tools/nexus.ts that:
 - Exports: createMCPClient(), listNexusTools(), callNexusTool(name, args)
 - Uses StreamableHTTPClientTransport to https://nexus.civic.com/hub/mcp
-- Fetches { accessToken } via getTokens() and sets Authorization: Bearer ${accessToken}
+- Fetches { accessToken } via getTokens() from @civic/auth/nextjs and sets Authorization: Bearer ${accessToken}
 - Returns tool schemas as-is (name, description, inputSchema)
 
 Update app/api/chat/route.ts to import the wrapper, convert Nexus tools to AI SDK v5 tools { description, parameters, execute }, call streamText, and return result.toDataStreamResponse().
