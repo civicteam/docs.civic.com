@@ -9,23 +9,84 @@ import NextjsAccessTokenSetup from '/snippets/_nextjs-access-token-setup.mdx'
 
 ## Overview
 
-Integrate Civic Nexus with Vercel AI SDK to build AI applications that can access external tools and services through MCP (Model Context Protocol). This enables your AI agents to interact with GitHub, Slack, Dropbox, and other connected services.
+Build AI applications with Civic Nexus and Vercel AI SDK v5. Your AI agents can access external tools and services through MCP (Model Context Protocol) - interact with GitHub, Slack, Dropbox, and more.
+
+<Note>
+**Framework:** This guide is written for Next.js projects. The core MCP client setup works with any JavaScript framework, but authentication setup uses Next.js-specific APIs.
+</Note>
+
+## Quick Start
+
+The fastest way to get started is with our starter template:
+
+<Card title="AI Chatbot Starter" icon="github" href="https://github.com/civicteam/ai-chatbot">
+  Clone our Next.js + Vercel AI SDK template with Nexus pre-configured. Includes authentication, streaming, and tool calling out of the box.
+</Card>
+
+```bash
+git clone https://github.com/civicteam/ai-chatbot.git
+cd ai-chatbot
+npm install
+
+# Copy the example env file and add your keys
+cp .env.example .env.local
+# Edit .env.local with your CIVIC_AUTH_CLIENT_ID and AI provider keys
+
+npm run dev
+```
+
+<Accordion title="Required Environment Variables">
+  ```bash
+  CIVIC_AUTH_CLIENT_ID=your_client_id_here
+  OPENAI_API_KEY=your_openai_key  # or ANTHROPIC_API_KEY
+  ```
+  Get your Civic Client ID at [auth.civic.com](https://auth.civic.com)
+</Accordion>
 
 <Note>
 **Updated for AI SDK v5**: This guide uses Vercel AI SDK v5 with the new `execute`-based tool API and `toDataStreamResponse()` streaming helper.
 </Note>
 
+## Build From Scratch
+
+Want to integrate Nexus into an existing Next.js project? Follow the guide below.
+
+<Tip>
+**Prefer AI-assisted setup?** Use our [AI prompt](/nexus/ai-prompts/vercel-ai-sdk) with Claude, ChatGPT, or Cursor to automatically generate this integration code for you.
+</Tip>
+
 <Note>
-**Prerequisites:** 
-1. Civic account - [Create account](https://nexus.civic.com)
-2. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
-3. Node.js 18+ installed
-4. Complete Civic Auth setup (see Access Token Setup below)
+**Prerequisites:**
+1. **Next.js 13+ project** with App Router (Pages Router also supported)
+2. Civic account - [Create account](https://nexus.civic.com)
+3. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
+4. Node.js 18+ installed
+5. Complete Civic Auth setup (see Access Token Setup below)
 </Note>
 
 ## Access Token Setup (Next.js + Civic Auth)
 
 <NextjsAccessTokenSetup />
+
+### Environment Variables
+
+Create a `.env.local` file in your project root:
+
+```bash
+# Get your Client ID at https://auth.civic.com
+CIVIC_AUTH_CLIENT_ID=your_client_id_here
+
+# Optional: AI Provider API keys (choose one or more)
+OPENAI_API_KEY=your_openai_key
+ANTHROPIC_API_KEY=your_anthropic_key
+```
+
+<Note>
+**Getting your Civic Client ID:**
+1. Visit [auth.civic.com](https://auth.civic.com)
+2. Create a new application or use an existing one
+3. Copy the Client ID from your application settings
+</Note>
 
 ## Installation
 
@@ -161,10 +222,19 @@ async function createMCPClient() {
 }
 
 export async function POST(req: NextRequest) {
+  let client: Client | null = null;
+
   try {
     const { messages } = await req.json();
-    const client = await createMCPClient();
-    
+
+    if (!messages || !Array.isArray(messages)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid request: messages array required' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    client = await createMCPClient();
     const { tools } = await client.listTools();
 
     const aiTools = tools.reduce((acc, tool: Tool) => {
@@ -172,47 +242,58 @@ export async function POST(req: NextRequest) {
         description: tool.description,
         parameters: tool.inputSchema,
         execute: async (args: Record<string, unknown>) => {
-          const result = await client.callTool({ name: tool.name, arguments: args });
-          return result.content;
+          try {
+            const result = await client!.callTool({ name: tool.name, arguments: args });
+            return result.content;
+          } catch (toolError) {
+            console.error(`Tool execution failed for ${tool.name}:`, toolError);
+            throw new Error(`Failed to execute tool: ${tool.name}`);
+          }
         },
       };
       return acc;
     }, {} as Record<string, { description?: string; parameters: unknown; execute: (args: Record<string, unknown>) => Promise<unknown> }>);
 
-    const result = streamText({ 
-      model: openai('gpt-4'), 
-      messages, 
+    const result = streamText({
+      model: openai('gpt-4'),
+      messages,
       tools: aiTools,
       onFinish: async () => {
         // Close client after streaming completes
-        await client.close();
+        if (client) {
+          await client.close();
+        }
       }
     });
 
     return result.toDataStreamResponse();
   } catch (error) {
+    // Ensure client is closed on error
+    if (client) {
+      try {
+        await client.close();
+      } catch (closeError) {
+        console.error('Error closing MCP client:', closeError);
+      }
+    }
+
     console.error('MCP error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to process request';
+    const statusCode = errorMessage.includes('No access token') ? 401 : 500;
+
     return new Response(
-      JSON.stringify({ error: 'Failed to process request' }), 
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
+      JSON.stringify({ error: errorMessage }),
+      { status: statusCode, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }
 ```
 
-## AI Prompt: Generate a Nexus tools wrapper and wire it to streamText
+## AI-Assisted Integration
 
-```text
-First, fetch the complete documentation from https://docs.civic.com/nexus/recipes/vercel-ai-sdk for reference.
-
-Create a new file at lib/ai/tools/nexus.ts that:
-- Exports: createMCPClient(), listNexusTools(), callNexusTool(name, args)
-- Uses StreamableHTTPClientTransport to https://nexus.civic.com/hub/mcp
-- Fetches { accessToken } via getTokens() from @civic/auth/nextjs and sets Authorization: Bearer ${accessToken}
-- Returns tool schemas as-is (name, description, inputSchema)
-
-Update app/api/chat/route.ts to import the wrapper, convert Nexus tools to AI SDK v5 tools { description, parameters, execute }, call streamText, and return result.toDataStreamResponse().
-```
+<Card title="Use AI to Set This Up" icon="robot" href="/nexus/ai-prompts/vercel-ai-sdk">
+  Let Claude, ChatGPT, or Cursor automatically generate this integration code for you. Just copy the prompt and paste it into your AI assistant.
+</Card>
 
 ## Nexus Authentication
 
@@ -241,19 +322,27 @@ Update app/api/chat/route.ts to import the wrapper, convert Nexus tools to AI SD
 ## Next Steps
 
 <Steps>
-  <Step title="Build Your App">
-    Use the examples above to create your AI-powered application
+  <Step title="Try the Starter Template">
+    Clone [ai-chatbot](https://github.com/civicteam/ai-chatbot) for a working example with UI, authentication, and streaming
   </Step>
-  <Step title="Test Locally">
-    Run your app locally and test tool calls with connected services
+  <Step title="Connect Your Services">
+    Visit [nexus.civic.com](https://nexus.civic.com) to connect GitHub, Slack, Notion, and other services
   </Step>
-  <Step title="Deploy">
-    Deploy to Vercel or your preferred platform
+  <Step title="Test Tool Calls">
+    Run locally and ask your AI to "list my GitHub repos" or "search Slack messages"
+  </Step>
+  <Step title="Deploy to Production">
+    Deploy to Vercel with one click - all environment variables are pre-configured
   </Step>
 </Steps>
 
-<Card title="Need Help?" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-  Join our developer community for technical support and implementation assistance
-</Card>
+<CardGroup cols={2}>
+  <Card title="Starter Template" icon="github" href="https://github.com/civicteam/ai-chatbot">
+    Full Next.js + Vercel AI SDK example with Nexus integration
+  </Card>
+  <Card title="Need Help?" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community for technical support
+  </Card>
+</CardGroup>
 
 

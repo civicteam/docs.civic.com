@@ -1,0 +1,206 @@
+---
+title: "TypeScript"
+icon: "code"
+public: true
+---
+
+import TypeScriptPrompt from '/snippets/nexus-typescript.mdx';
+
+Use this prompt with your preferred AI assistant (Claude, ChatGPT, Cursor, etc.) to automatically integrate Civic Nexus into your TypeScript/JavaScript project.
+
+## Prerequisites
+
+Before using this prompt, ensure you have:
+
+<Steps>
+  <Step title="Civic Account">
+    [Create account](https://nexus.civic.com) and connect your services (GitHub, Slack, etc.)
+  </Step>
+  <Step title="Civic Auth Client ID">
+    Get yours at [auth.civic.com](https://auth.civic.com) - you'll need this for the prompt
+  </Step>
+  <Step title="Choose Your AI SDK">
+    Decide which SDK you want to use:
+    - **Vercel AI SDK** - Best for Next.js apps with streaming UI
+    - **OpenAI Agents SDK** - Simplest setup with automatic tool handling
+    - **Anthropic Messages API** - Native MCP support built into the API
+  </Step>
+  <Step title="TypeScript/JavaScript Project">
+    Have a Node.js 18+ or Next.js project ready
+  </Step>
+</Steps>
+
+## How This Works
+
+This is a **smart, dynamic prompt** that:
+
+1. **Asks you questions** about your project and which SDK you want to use
+2. **Navigates docs.civic.com** to find the latest documentation
+3. **Searches for the right guides** based on your SDK choice
+4. **Implements the integration** following current best practices
+5. **Asks for your Client ID** but never asks for API keys (you add those to .env yourself)
+
+<Note>
+**Why dynamic?** Instead of hardcoding documentation URLs, this prompt teaches the AI to navigate and search docs.civic.com. This means it always finds the most up-to-date documentation, even if we update our docs.
+</Note>
+
+## How to Use This Prompt
+
+1. **Copy the prompt** below (click the copy icon in the top-right)
+2. **Paste into your AI assistant** (Claude, ChatGPT, Cursor, etc.)
+3. **Answer the questions** the AI asks:
+   - Which SDK you want to use
+   - Your Civic Auth Client ID (from auth.civic.com)
+   - Your project details (framework, router type, etc.)
+4. **Let the AI navigate docs** and implement the integration
+5. **Add your API keys** to `.env.local` when prompted
+
+## Integration Prompt
+
+<TypeScriptPrompt />
+
+## What the AI Assistant Will Do
+
+When you use this prompt, the AI assistant will:
+
+<Steps>
+  <Step title="Gather Information">
+    Asks which SDK you want, your Client ID, and project details
+  </Step>
+  <Step title="Navigate Documentation">
+    Searches docs.civic.com for Nexus recipes and Civic Auth guides
+  </Step>
+  <Step title="Set Up Environment">
+    Creates .env.local with your Client ID and tells you to add API keys
+  </Step>
+  <Step title="Install Civic Auth">
+    Sets up authentication based on your framework
+  </Step>
+  <Step title="Implement Nexus Integration">
+    Follows the recipe for your chosen SDK (Vercel, OpenAI, or Anthropic)
+  </Step>
+  <Step title="Test & Verify">
+    Guides you to test the integration with a simple query
+  </Step>
+</Steps>
+
+## SDK Options
+
+The prompt supports three integration approaches:
+
+<CardGroup cols={3}>
+  <Card title="Vercel AI SDK" icon="triangle">
+    **Best for:** Next.js apps with streaming UI
+
+    **Approach:** Manual tool looping with execute functions
+
+    [Manual Recipe →](/nexus/recipes/vercel-ai-sdk)
+  </Card>
+  <Card title="OpenAI Agents SDK" icon="robot">
+    **Best for:** Quick prototypes, simplest setup
+
+    **Approach:** hostedMcpTool() - automatic tool handling
+
+    [Manual Recipe →](/nexus/recipes/openai-agents)
+  </Card>
+  <Card title="Anthropic Messages API" icon="message">
+    **Best for:** Direct API usage with Claude
+
+    **Approach:** Native mcp_servers parameter
+
+    [Manual Recipe →](/nexus/recipes/anthropic)
+  </Card>
+</CardGroup>
+
+## Important Notes
+
+<AccordionGroup>
+  <Accordion title="Client ID Required">
+    The AI will ask for your Civic Auth Client ID. Have it ready from [auth.civic.com](https://auth.civic.com).
+  </Accordion>
+  <Accordion title="API Keys Handled Separately">
+    The AI will NEVER ask you for your OpenAI or Anthropic API keys. It will tell you to add them to `.env.local` yourself.
+  </Accordion>
+  <Accordion title="Dynamic Documentation">
+    The AI navigates and searches docs.civic.com instead of using hardcoded URLs. This keeps the integration up-to-date.
+  </Accordion>
+  <Accordion title="Framework Flexibility">
+    Works with Next.js, Node.js, and other TypeScript/JavaScript frameworks. The AI adapts to your setup.
+  </Accordion>
+</AccordionGroup>
+
+## Supported AI Assistants
+
+This prompt works with any AI assistant that can:
+- Navigate and search websites
+- Read documentation dynamically
+- Write code and create files
+- Install npm packages
+- Understand TypeScript/JavaScript
+
+Popular options:
+- **Claude** (via Claude.ai or Claude Code)
+- **ChatGPT** (with web browsing or Code Interpreter)
+- **Cursor** (built-in AI assistant)
+- **GitHub Copilot Chat**
+- **Windsurf**
+- **Cline**
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="AI Can't Find Documentation">
+    - Make sure the AI has web access
+    - Try being more explicit: "Navigate to docs.civic.com and search for Nexus"
+    - Check that the AI is starting from docs.civic.com (not civic.com or other sites)
+  </Accordion>
+  <Accordion title="Authentication Not Working">
+    - Verify CIVIC_AUTH_CLIENT_ID is in .env.local
+    - Check that the value matches your Client ID from auth.civic.com
+    - For Next.js: Ensure middleware.ts is in src/ directory
+  </Accordion>
+  <Accordion title="Tool Calls Failing">
+    - Confirm services are connected at nexus.civic.com
+    - Check that user is authenticated (has access token)
+    - Verify the Nexus endpoint: https://nexus.civic.com/hub/mcp
+  </Accordion>
+</AccordionGroup>
+
+## Manual Integration
+
+Prefer to integrate manually? Check out our recipe pages:
+
+<CardGroup cols={3}>
+  <Card title="Vercel AI SDK" icon="book" href="/nexus/recipes/vercel-ai-sdk">
+    Step-by-step manual integration
+  </Card>
+  <Card title="OpenAI Agents" icon="book" href="/nexus/recipes/openai-agents">
+    Step-by-step manual integration
+  </Card>
+  <Card title="Anthropic API" icon="book" href="/nexus/recipes/anthropic">
+    Step-by-step manual integration
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+After the AI completes the integration:
+
+<Steps>
+  <Step title="Add API Keys">
+    Add your AI provider API key to .env.local
+  </Step>
+  <Step title="Connect Services">
+    Visit [nexus.civic.com](https://nexus.civic.com) to connect more tools
+  </Step>
+  <Step title="Test Integration">
+    Try queries like "list my GitHub repos" or "search Slack messages"
+  </Step>
+  <Step title="Deploy">
+    Deploy your application with Nexus integration
+  </Step>
+</Steps>
+
+<Card title="Need Help?" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+  Join our developer community for technical support and implementation assistance
+</Card>

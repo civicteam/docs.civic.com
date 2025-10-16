@@ -243,10 +243,20 @@
           ]
         },
         {
+          "group": "AI Prompts",
+          "icon": "robot",
+          "pages": [
+            "nexus/ai-prompts/overview",
+            "nexus/ai-prompts/typescript"
+          ]
+        },
+        {
           "group": "Recipes",
           "icon": "file-code",
           "pages": [
             "nexus/recipes/vercel-ai-sdk",
+            "nexus/recipes/openai-agents",
+            "nexus/recipes/anthropic",
             "nexus/recipes/openai-sdk",
             "nexus/recipes/python-pydantic"
           ]

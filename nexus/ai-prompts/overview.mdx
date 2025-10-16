@@ -1,0 +1,113 @@
+---
+title: "Overview"
+icon: "circle-info"
+public: true
+---
+
+# AI-Assisted Nexus Integration
+
+Use AI assistants like Claude, Cursor, or other LLMs to automatically integrate Civic Nexus into your AI application. These prompts provide step-by-step instructions that AI assistants can follow to connect your AI agents to external tools and services through MCP (Model Context Protocol).
+
+## Choose Your AI SDK
+
+Select the SDK you're using in your project:
+
+<CardGroup cols={3}>
+  <Card title="Vercel AI SDK" href="/nexus/ai-prompts/vercel-ai-sdk" icon="triangle">
+    AI prompt for Vercel AI SDK v5 integration
+  </Card>
+  <Card title="OpenAI Agents SDK" href="/nexus/ai-prompts/openai-agents" icon="robot">
+    AI prompt for OpenAI Agents SDK integration
+  </Card>
+  <Card title="Anthropic Messages API" href="/nexus/ai-prompts/anthropic" icon="message">
+    AI prompt for Anthropic Messages API with MCP connector
+  </Card>
+</CardGroup>
+
+## How to Use These Prompts
+
+### Step 1: Prerequisites
+Before using any prompt, ensure you have:
+1. **Civic Account** - [Create account](https://nexus.civic.com)
+2. **Connected Services** - Connect GitHub, Slack, Notion, etc. at [nexus.civic.com](https://nexus.civic.com)
+3. **Civic Auth Client ID** - Get yours at [auth.civic.com](https://auth.civic.com)
+4. **AI Provider API Key** - OpenAI, Anthropic, or compatible provider
+
+### Step 2: Choose Your SDK
+Pick the AI SDK that matches your project:
+- **Vercel AI SDK** - Best for Next.js projects with streaming UI
+- **OpenAI Agents SDK** - Simplest integration with hosted MCP tools
+- **Anthropic Messages API** - Direct API integration with native MCP support
+
+### Step 3: Copy and Paste
+1. Navigate to the appropriate prompt page
+2. Copy the entire prompt
+3. Paste it into your AI assistant (Claude, ChatGPT, Cursor, etc.)
+4. Follow the AI's step-by-step instructions
+
+## What These Prompts Will Do
+
+When you use these prompts, the AI assistant will:
+
+1. **Fetch Complete Documentation** - Uses curl to get the latest Nexus integration guides
+2. **Set Up Authentication** - Configures Civic Auth to get access tokens for Nexus
+3. **Install Dependencies** - Adds required packages for your chosen SDK
+4. **Create MCP Client** - Sets up connection to `https://nexus.civic.com/hub/mcp`
+5. **Wire Up Tools** - Connects Nexus tools to your AI SDK (approach varies by SDK)
+6. **Handle Streaming** - Implements proper streaming responses (where applicable)
+7. **Add Error Handling** - Includes robust error handling and client cleanup
+
+## Tips for Best Results
+
+<Warning>
+Always review the AI-generated code before implementing it in production. While these prompts are designed to produce working code, it's important to understand what's being added to your project.
+</Warning>
+
+## Best Practices
+
+- **Start with the starter template** - Clone [ai-chatbot](https://github.com/civicteam/ai-chatbot) if you're starting fresh
+- **One SDK at a time** - Don't try to implement multiple SDKs simultaneously
+- **Test with one tool** - Start by calling a single Nexus tool before expanding
+- **Environment variables** - Keep your Client ID and API keys secure
+- **Error handling** - Ensure proper client cleanup in all code paths
+- **Review the docs** - Check the manual integration guides if you need more context
+
+## Need Manual Integration?
+
+If you prefer to integrate manually or need more control over the process, check out our [Recipes](/nexus/recipes/vercel-ai-sdk) for step-by-step code examples.
+
+## Supported AI Assistants
+
+These prompts work with any AI assistant that can:
+- Execute curl commands to fetch documentation
+- Read and write files in your project
+- Install npm packages
+- Understand TypeScript/JavaScript
+
+Popular options include:
+- **Claude** (via Claude.ai or Claude Code)
+- **ChatGPT** (with Code Interpreter)
+- **Cursor** (built-in AI assistant)
+- **GitHub Copilot Chat**
+- **Windsurf**
+- **Cline**
+
+## What's Next?
+
+After successfully integrating Nexus with your AI SDK:
+
+<Steps>
+  <Step title="Connect More Services">
+    Visit [nexus.civic.com](https://nexus.civic.com) to connect additional tools like Linear, Notion, Dropbox
+  </Step>
+  <Step title="Test Tool Calls">
+    Ask your AI to perform tasks like "list my GitHub repos" or "search Slack for messages about X"
+  </Step>
+  <Step title="Deploy to Production">
+    Deploy your AI application with Nexus integration
+  </Step>
+</Steps>
+
+<Card title="Need Help?" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+  Join our developer community for technical support and implementation assistance
+</Card>
