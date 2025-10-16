@@ -16,7 +16,11 @@ Integrate Civic Nexus with Vercel AI SDK to build AI applications that can acces
 </Note>
 
 <Note>
-**Prerequisites:** You'll need a Civic account and Node.js 18+ installed. [Create your account](https://nexus.civic.com) and select your tools first.
+**Prerequisites:** 
+1. Civic account - [Create account](https://nexus.civic.com)
+2. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
+3. Node.js 18+ installed
+4. Complete Civic Auth setup (see Access Token Setup below)
 </Note>
 
 ## Access Token Setup (Next.js + Civic Auth)
@@ -42,7 +46,9 @@ import { getTokens } from "@civic/auth/nextjs";
 
 const createMCPClient = async () => {
   const { accessToken } = await getTokens();
-  if (!accessToken) throw new Error('No access token available.');
+  if (!accessToken) {
+    throw new Error('No access token available. User must be authenticated.');
+  }
 
   const transport = new StreamableHTTPClientTransport(
     'https://nexus.civic.com/hub/mcp',
@@ -79,11 +85,14 @@ const listAvailableTools = async () => {
 ### Step 3: Call MCP Tools
 
 ```typescript
-const callMCPTool = async (toolName: string, arguments: Record<string, any>) => {
+const callMCPTool = async (toolName: string, args: Record<string, unknown>) => {
   const client = await createMCPClient();
   try {
-    const result = await client.callTool({ name: toolName, arguments });
+    const result = await client.callTool({ name: toolName, arguments: args });
     return result.content;
+  } catch (error) {
+    console.error(`Failed to call tool ${toolName}:`, error);
+    throw error;
   } finally {
     await client.close();
   }
@@ -95,28 +104,33 @@ const callMCPTool = async (toolName: string, arguments: Record<string, any>) => 
 ```typescript
 import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
+import type { Tool } from '@modelcontextprotocol/sdk/types.js';
 
 const generateWithMCPTools = async (prompt: string) => {
   const client = await createMCPClient();
-  const { tools } = await client.listTools();
+  
+  try {
+    const { tools } = await client.listTools();
 
-  const aiTools = tools.reduce((acc, tool) => {
-    acc[tool.name] = {
-      description: tool.description,
-      parameters: tool.inputSchema,
-      execute: async (args: any) => callMCPTool(tool.name, args),
-    };
-    return acc;
-  }, {} as Record<string, any>);
+    const aiTools = tools.reduce((acc, tool: Tool) => {
+      acc[tool.name] = {
+        description: tool.description,
+        parameters: tool.inputSchema,
+        execute: async (args: Record<string, unknown>) => callMCPTool(tool.name, args),
+      };
+      return acc;
+    }, {} as Record<string, { description?: string; parameters: unknown; execute: (args: Record<string, unknown>) => Promise<unknown> }>);
 
-  const result = await generateText({
-    model: openai('gpt-4'),
-    prompt,
-    tools: aiTools,
-  });
+    const result = await generateText({
+      model: openai('gpt-4'),
+      prompt,
+      tools: aiTools,
+    });
 
-  await client.close();
-  return result;
+    return result;
+  } finally {
+    await client.close();
+  }
 };
 ```
 
@@ -130,9 +144,14 @@ import { streamText } from 'ai';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { getTokens } from "@civic/auth/nextjs";
+import type { Tool } from '@modelcontextprotocol/sdk/types.js';
 
 async function createMCPClient() {
   const { accessToken } = await getTokens();
+  if (!accessToken) {
+    throw new Error('No access token available. User must be authenticated.');
+  }
+
   const transport = new StreamableHTTPClientTransport('https://nexus.civic.com/hub/mcp', {
     requestInit: { headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' } }
   });
@@ -142,25 +161,42 @@ async function createMCPClient() {
 }
 
 export async function POST(req: NextRequest) {
-  const { messages } = await req.json();
-  const client = await createMCPClient();
-  const { tools } = await client.listTools();
+  try {
+    const { messages } = await req.json();
+    const client = await createMCPClient();
+    
+    const { tools } = await client.listTools();
 
-  const aiTools = tools.reduce((acc, tool) => {
-    acc[tool.name] = {
-      description: tool.description,
-      parameters: tool.inputSchema,
-      execute: async (args: any) => {
-        const result = await client.callTool({ name: tool.name, arguments: args });
-        return result.content;
-      },
-    };
-    return acc;
-  }, {} as Record<string, any>);
+    const aiTools = tools.reduce((acc, tool: Tool) => {
+      acc[tool.name] = {
+        description: tool.description,
+        parameters: tool.inputSchema,
+        execute: async (args: Record<string, unknown>) => {
+          const result = await client.callTool({ name: tool.name, arguments: args });
+          return result.content;
+        },
+      };
+      return acc;
+    }, {} as Record<string, { description?: string; parameters: unknown; execute: (args: Record<string, unknown>) => Promise<unknown> }>);
 
-  const result = await streamText({ model: openai('gpt-4'), messages, tools: aiTools });
-  await client.close();
-  return result.toDataStreamResponse();
+    const result = streamText({ 
+      model: openai('gpt-4'), 
+      messages, 
+      tools: aiTools,
+      onFinish: async () => {
+        // Close client after streaming completes
+        await client.close();
+      }
+    });
+
+    return result.toDataStreamResponse();
+  } catch (error) {
+    console.error('MCP error:', error);
+    return new Response(
+      JSON.stringify({ error: 'Failed to process request' }), 
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
 }
 ```
 
@@ -205,14 +241,11 @@ Update app/api/chat/route.ts to import the wrapper, convert Nexus tools to AI SD
 ## Next Steps
 
 <Steps>
-  <Step title="Set up Authentication">
-    Configure Civic Auth in your Next.js application: [/integration/nextjs](/integration/nextjs)
-  </Step>
-  <Step title="Connect Services">
-    Visit [nexus.civic.com](https://nexus.civic.com) to connect GitHub, Slack, and more
-  </Step>
   <Step title="Build Your App">
     Use the examples above to create your AI-powered application
+  </Step>
+  <Step title="Test Locally">
+    Run your app locally and test tool calls with connected services
   </Step>
   <Step title="Deploy">
     Deploy to Vercel or your preferred platform
