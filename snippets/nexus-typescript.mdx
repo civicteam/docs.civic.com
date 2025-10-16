@@ -4,14 +4,25 @@
 ## Task
 Integrate Civic Nexus with an AI SDK in this TypeScript/JavaScript application.
 
-## Step 1: Gather Information
-Ask the user:
-1. **Which AI SDK are you using?**
-   - Vercel AI SDK
-   - OpenAI Agents SDK
-   - Anthropic Messages API
-2. **What is your Civic Auth Client ID?** (Get it from https://auth.civic.com)
-3. **What framework are you using?** (Next.js, Node.js, etc.)
+## Step 1: Analyze Project & Gather Information
+
+**First, check the project:**
+1. Read `package.json` to see what's installed:
+   - Look for `ai` package → User likely wants Vercel AI SDK
+   - Look for `@openai/agents` → User wants OpenAI Agents SDK
+   - Look for `@anthropic-ai/sdk` → User wants Anthropic Messages API
+   - Check for `next` → It's a Next.js project
+   - Check for other frameworks (Express, Hono, etc.)
+
+2. Check existing files to confirm:
+   - Look for imports of `ai`, `@ai-sdk/openai`, etc. → Vercel AI SDK
+   - Look for imports of `@openai/agents` → OpenAI Agents SDK
+   - Look for imports of `@anthropic-ai/sdk` or `Anthropic` → Anthropic Messages API
+
+**Then ask the user:**
+1. **Confirm the AI SDK**: "I see you're using [detected SDK]. Is that correct, or would you like to use a different one?"
+   - If nothing detected, ask: "Which AI SDK do you want to use: Vercel AI SDK, OpenAI Agents SDK, or Anthropic Messages API?"
+2. **Get their Civic Auth Client ID**: "What is your Civic Auth Client ID? (Get it from https://auth.civic.com)"
 
 ## Step 2: Find the Recipe
 Navigate to https://docs.civic.com, search for "Nexus", then navigate to Recipes:
@@ -35,6 +46,8 @@ Implement exactly what the recipe shows:
 - Set up Civic Auth as shown
 - Implement the integration code
 - For Next.js: Put middleware.ts in src/ directory
+
+**IMPORTANT for Next.js Middleware**: Pay close attention to the middleware wrapping pattern in the Civic Auth docs. Use `auth()` to create a wrapper, then wrap your custom middleware function with it. Don't forget to define public routes and handle redirects with callback URLs.
 
 ## Step 5: Test
 Guide them to:
