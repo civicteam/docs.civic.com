@@ -51,13 +51,10 @@ npm run dev
 
 Want to integrate Nexus into an existing Next.js project? Follow the guide below.
 
-<Tip>
-**Prefer AI-assisted setup?** Use our [AI prompt](/nexus/ai-prompts/vercel-ai-sdk) with Claude, ChatGPT, or Cursor to automatically generate this integration code for you.
-</Tip>
 
 <Note>
 **Prerequisites:**
-1. **Next.js 13+ project** with App Router (Pages Router also supported)
+1. **Next.js 14+ project** with App Router (Pages Router also supported)
 2. Civic account - [Create account](https://nexus.civic.com)
 3. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
 4. Node.js 18+ installed
@@ -76,9 +73,8 @@ Create a `.env.local` file in your project root:
 # Get your Client ID at https://auth.civic.com
 CIVIC_AUTH_CLIENT_ID=your_client_id_here
 
-# Optional: AI Provider API keys (choose one or more)
-OPENAI_API_KEY=your_openai_key
-ANTHROPIC_API_KEY=your_anthropic_key
+# AI Provider API key
+AI_GATEWAY_API_KEY=your_api_key
 ```
 
 <Note>
@@ -98,134 +94,51 @@ npm install ai @ai-sdk/openai @ai-sdk/anthropic @modelcontextprotocol/sdk @civic
 
 ## Basic Setup
 
-### Step 1: Create MCP Client
+### Create Nexus Tools Helper
 
 ```typescript
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { getTokens } from "@civic/auth/nextjs";
+import { experimental_createMCPClient as createMCPClient } from "ai";
 
-const createMCPClient = async () => {
-  const { accessToken } = await getTokens();
+export const getNexusTools = async () => {
+  const { accessToken } = (await getTokens()) ?? {};
   if (!accessToken) {
-    throw new Error('No access token available. User must be authenticated.');
+    // Return empty tools if no access token (Nexus is optional)
+    return {};
   }
 
-  const transport = new StreamableHTTPClientTransport(
-    'https://nexus.civic.com/hub/mcp',
-    {
-      requestInit: {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
+  try {
+    const transport = new StreamableHTTPClientTransport(
+      new URL('https://nexus.civic.com/hub/mcp'), {
+        requestInit: {
+          headers: {
+            Authorization: `Bearer ${accessToken}`
+          }
         }
       }
-    }
-  );
+    );
 
-  const client = new Client({ name: 'my-ai-app', version: '1.0.0' }, { capabilities: {} });
-  await client.connect(transport);
-  return client;
-};
-```
-
-### Step 2: List Available Tools
-
-```typescript
-const listAvailableTools = async () => {
-  const client = await createMCPClient();
-  try {
-    const tools = await client.listTools();
-    return tools.tools;
-  } finally {
-    await client.close();
-  }
-};
-```
-
-### Step 3: Call MCP Tools
-
-```typescript
-const callMCPTool = async (toolName: string, args: Record<string, unknown>) => {
-  const client = await createMCPClient();
-  try {
-    const result = await client.callTool({ name: toolName, arguments: args });
-    return result.content;
+    const mcpClient = await createMCPClient({ transport });
+    return mcpClient.tools();
   } catch (error) {
-    console.error(`Failed to call tool ${toolName}:`, error);
-    throw error;
-  } finally {
-    await client.close();
+    console.warn('Failed to load Nexus tools, continuing without them:', error);
+    return {};
   }
-};
-```
-
-## Use with Vercel AI SDK
-
-```typescript
-import { openai } from '@ai-sdk/openai';
-import { generateText } from 'ai';
-import type { Tool } from '@modelcontextprotocol/sdk/types.js';
-
-const generateWithMCPTools = async (prompt: string) => {
-  const client = await createMCPClient();
-  
-  try {
-    const { tools } = await client.listTools();
-
-    const aiTools = tools.reduce((acc, tool: Tool) => {
-      acc[tool.name] = {
-        description: tool.description,
-        parameters: tool.inputSchema,
-        execute: async (args: Record<string, unknown>) => callMCPTool(tool.name, args),
-      };
-      return acc;
-    }, {} as Record<string, { description?: string; parameters: unknown; execute: (args: Record<string, unknown>) => Promise<unknown> }>);
-
-    const result = await generateText({
-      model: openai('gpt-4'),
-      prompt,
-      tools: aiTools,
-    });
-
-    return result;
-  } finally {
-    await client.close();
-  }
-};
+}
 ```
 
 ## Complete Example: App Router API route
 
 ```typescript
 // app/api/chat/route.ts
-import { NextRequest } from 'next/server';
-import { openai } from '@ai-sdk/openai';
 import { streamText } from 'ai';
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { getTokens } from "@civic/auth/nextjs";
-import type { Tool } from '@modelcontextprotocol/sdk/types.js';
+import { myProvider } from '@/lib/ai/providers';
+import { getNexusTools } from '@/lib/ai/tools/nexus';
 
-async function createMCPClient() {
-  const { accessToken } = await getTokens();
-  if (!accessToken) {
-    throw new Error('No access token available. User must be authenticated.');
-  }
-
-  const transport = new StreamableHTTPClientTransport('https://nexus.civic.com/hub/mcp', {
-    requestInit: { headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' } }
-  });
-  const client = new Client({ name: 'my-ai-app', version: '1.0.0' }, { capabilities: {} });
-  await client.connect(transport);
-  return client;
-}
-
-export async function POST(req: NextRequest) {
-  let client: Client | null = null;
-
+export async function POST(request: Request) {
   try {
-    const { messages } = await req.json();
+    const { messages, selectedChatModel } = await request.json();
 
     if (!messages || !Array.isArray(messages)) {
       return new Response(
@@ -234,66 +147,32 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    client = await createMCPClient();
-    const { tools } = await client.listTools();
-
-    const aiTools = tools.reduce((acc, tool: Tool) => {
-      acc[tool.name] = {
-        description: tool.description,
-        parameters: tool.inputSchema,
-        execute: async (args: Record<string, unknown>) => {
-          try {
-            const result = await client!.callTool({ name: tool.name, arguments: args });
-            return result.content;
-          } catch (toolError) {
-            console.error(`Tool execution failed for ${tool.name}:`, toolError);
-            throw new Error(`Failed to execute tool: ${tool.name}`);
-          }
-        },
-      };
-      return acc;
-    }, {} as Record<string, { description?: string; parameters: unknown; execute: (args: Record<string, unknown>) => Promise<unknown> }>);
+    // Get Nexus tools
+    const nexusTools = await getNexusTools();
 
     const result = streamText({
-      model: openai('gpt-4'),
+      model: myProvider.languageModel(selectedChatModel),
       messages,
-      tools: aiTools,
-      onFinish: async () => {
-        // Close client after streaming completes
-        if (client) {
-          await client.close();
-        }
-      }
+      tools: {
+        // Your existing tools
+        ...yourExistingTools,
+        // Spread Nexus tools
+        ...nexusTools
+      },
     });
 
-    return result.toDataStreamResponse();
+    return result.toTextStreamResponse();
   } catch (error) {
-    // Ensure client is closed on error
-    if (client) {
-      try {
-        await client.close();
-      } catch (closeError) {
-        console.error('Error closing MCP client:', closeError);
-      }
-    }
-
-    console.error('MCP error:', error);
+    console.error('Chat error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Failed to process request';
-    const statusCode = errorMessage.includes('No access token') ? 401 : 500;
 
     return new Response(
       JSON.stringify({ error: errorMessage }),
-      { status: statusCode, headers: { 'Content-Type': 'application/json' } }
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }
 ```
-
-## AI-Assisted Integration
-
-<Card title="Use AI to Set This Up" icon="robot" href="/nexus/ai-prompts/vercel-ai-sdk">
-  Let Claude, ChatGPT, or Cursor automatically generate this integration code for you. Just copy the prompt and paste it into your AI assistant.
-</Card>
 
 ## Nexus Authentication
 

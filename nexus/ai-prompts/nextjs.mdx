@@ -1,0 +1,116 @@
+---
+title: "Next.js + Nexus"
+icon: "js"
+public: true
+---
+
+import NexusNextjsPrompt from '/snippets/nexus-nextjs.mdx';
+import SupportedAiAssistants from '/snippets/_supported-ai-assistants.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
+
+Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to automatically integrate Civic Auth and Nexus AI tools into your Next.js project.
+
+## What This Does
+
+This AI prompt will help you add:
+- **Civic Auth**: Secure authentication with login/logout
+- **Nexus Integration**: AI access to your connected services (GitHub, Slack, Notion, etc.)
+- **AI SDK Setup**: Your choice of Vercel AI SDK, OpenAI, or Anthropic
+- **Chat Interface**: Basic UI for interacting with your AI agent
+
+## How to Use
+
+<Steps>
+  <Step title="Get Your Civic Client ID">
+    Visit [auth.civic.com](https://auth.civic.com) and create an application to get your Client ID
+  </Step>
+  <Step title="Get Your AI Provider API Key">
+    Get an API key from [OpenAI](https://platform.openai.com) or [Anthropic](https://console.anthropic.com)
+  </Step>
+  <Step title="Connect Services to Nexus">
+    Visit [nexus.civic.com](https://nexus.civic.com) and connect the services you want your AI to access
+  </Step>
+  <Step title="Copy the Prompt Below">
+    Copy the entire prompt from the code block below
+  </Step>
+  <Step title="Paste into Your AI Assistant">
+    Open Claude, ChatGPT, or your preferred AI assistant and paste the prompt
+  </Step>
+  <Step title="Provide Required Information">
+    Answer the questions the AI asks (Client ID, AI SDK preference, etc.)
+  </Step>
+  <Step title="Let the AI Implement">
+    The AI will fetch the documentation and implement everything automatically
+  </Step>
+</Steps>
+
+## Integration Prompt
+
+<NexusNextjsPrompt />
+
+<Note>
+  **Alternative: Starter Template** - If you want a complete working example immediately, clone our [ai-chatbot starter](https://github.com/civicteam/ai-chatbot) instead.
+</Note>
+
+## What the AI Assistant Will Do
+
+When you use this prompt, the AI assistant will:
+
+1. **Fetch the documentation** using curl from the official Civic docs
+2. **Analyze your project** structure and detect existing packages
+3. **Install dependencies** for Civic Auth and your chosen AI SDK
+4. **Set up authentication** with middleware and login page
+5. **Integrate Nexus tools** using the appropriate pattern for your AI SDK
+6. **Create a chat interface** (if needed)
+7. **Handle edge cases** like existing auth systems or custom configurations
+
+<SupportedAiAssistants />
+
+<AiAssistantRequirements />
+
+## Supported AI SDKs
+
+The prompt supports all major AI SDKs:
+
+<CardGroup cols={2}>
+  <Card title="Vercel AI SDK" icon="triangle">
+    Best for Next.js applications with streaming support
+  </Card>
+  <Card title="OpenAI Agents SDK" icon="robot">
+    Simplest setup with automatic tool handling
+  </Card>
+  <Card title="Anthropic Messages API" icon="message">
+    Native MCP connector built into the API
+  </Card>
+  <Card title="OpenAI SDK" icon="code">
+    Manual function calling for full control
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+After the AI completes the integration:
+
+<Steps>
+  <Step title="Test Authentication">
+    Run your app and verify login/logout works correctly
+  </Step>
+  <Step title="Test AI Chat">
+    Ask your AI to "list my GitHub repositories" or other tool-based queries
+  </Step>
+  <Step title="Connect More Services">
+    Visit [nexus.civic.com](https://nexus.civic.com) to add more tools
+  </Step>
+  <Step title="Deploy">
+    Deploy to Vercel or your preferred hosting platform
+  </Step>
+</Steps>
+
+<CardGroup cols={2}>
+  <Card title="Starter Template" icon="github" href="https://github.com/civicteam/ai-chatbot">
+    See a complete working example
+  </Card>
+  <Card title="Need Help?" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community
+  </Card>
+</CardGroup>

@@ -1,5 +1,5 @@
 ---
-title: Anthropic Messages API
+title: Anthropic SDK
 description: Use Civic Nexus with Anthropic's Messages API using the native MCP connector
 icon: "message"
 public: true
@@ -15,15 +15,12 @@ Integrate Civic Nexus with Anthropic's Messages API using the **native MCP conne
 **Native MCP Support**: The Anthropic Messages API includes built-in MCP connector support. Just add the `mcp_servers` parameter to your API calls.
 </Note>
 
-<Tip>
-**Prefer AI-assisted setup?** Use our [AI prompt](/nexus/ai-prompts/anthropic) with Claude, ChatGPT, or Cursor to automatically generate this integration code for you.
-</Tip>
 
 ## Prerequisites
 
 <Note>
 **Prerequisites:**
-1. **Node.js 18+ project** (Next.js or any Node.js framework)
+1. **Node.js 18+ project** (Next.js 14+ or any Node.js framework)
 2. Civic account - [Create account](https://nexus.civic.com)
 3. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
 4. Anthropic API Key - Get yours at [console.anthropic.com](https://console.anthropic.com)
@@ -44,7 +41,7 @@ Create a `.env.local` file in your project root:
 # Get your Client ID at https://auth.civic.com
 CIVIC_AUTH_CLIENT_ID=your_client_id_here
 
-# Get your Anthropic API key at https://console.anthropic.com
+# Anthropic API key
 ANTHROPIC_API_KEY=your_anthropic_api_key
 ```
 

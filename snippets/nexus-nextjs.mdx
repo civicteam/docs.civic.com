@@ -1,0 +1,146 @@
+```
+# Civic Auth + Nexus AI Integration Prompt
+
+## Prerequisites
+Before starting, you need:
+1. **Civic Auth Client ID**:
+   - Visit https://auth.civic.com
+   - Sign up or log in to your account
+   - Create a new application to obtain your Client ID
+   - Copy the Client ID for use in this integration
+
+2. **AI Provider API Key**: Get an API key from your chosen provider:
+   - OpenAI: https://platform.openai.com
+   - Anthropic: https://console.anthropic.com
+
+3. **Connect Services to Nexus**:
+   - Visit https://nexus.civic.com
+   - Connect the services you want your AI to access (GitHub, Slack, Notion, etc.)
+
+## Task
+Add Civic Auth authentication and Nexus AI integration to this Next.js application. This will enable authenticated users to interact with an AI that can access their connected services.
+
+## Step 1: Fetch the Documentation
+Use curl to fetch the necessary documentation:
+
+### Civic Auth Documentation
+
+curl https://docs.civic.com/integration/nextjs.md
+
+### Nexus Recipe Documentation
+After the user selects their AI SDK preference, fetch the appropriate recipe:
+- For Vercel AI SDK: curl https://docs.civic.com/nexus/recipes/vercel-ai-sdk.md
+- For OpenAI Agents SDK:
+  - curl https://docs.civic.com/nexus/recipes/openai-agents.md
+  - curl https://openai.github.io/openai-agents-js/guides/mcp/
+- For Anthropic Messages API: curl https://docs.civic.com/nexus/recipes/anthropic.md
+- For OpenAI SDK (function calling): curl https://docs.civic.com/nexus/recipes/openai-sdk.md
+
+**IMPORTANT**: Do NOT use web search or any other tools - only use curl to fetch these specific URLs.
+
+## Step 2: Gather Project Information
+Ask the user for the following information if not provided:
+
+**Required Information (gather ALL before starting):**
+- ✅ Client ID (if not provided, ask user to get it from https://auth.civic.com)
+- ✅ AI Provider preference (Vercel AI SDK, OpenAI Agents SDK, Anthropic Messages API, or OpenAI SDK)
+- ✅ Project type (new/existing Next.js project)
+- ✅ Existing authentication systems that need replacement (if any)
+
+**DO NOT proceed with implementation until you have confirmed ALL of the above information.**
+
+## Step 3: Create Implementation Plan
+After fetching the documentation with curl:
+1. Analyze the current project structure
+2. Detect existing packages in package.json to identify what's already installed
+3. Plan the integration order:
+   - First: Civic Auth setup (if not already present)
+   - Second: AI SDK installation and setup
+   - Third: Nexus tools integration
+   - Fourth: Basic chat interface (if needed)
+
+## Step 4: Implement Civic Auth
+Using ONLY the Civic Auth documentation fetched via curl:
+
+1. **Install dependencies**:
+
+   npm install @civic/auth
+
+2. **Add environment variables** to .env.local:
+
+   CIVIC_AUTH_CLIENT_ID=your_client_id_here
+   AI_GATEWAY_API_KEY=your_api_key_here
+
+3. **Set up middleware** at src/middleware.ts:
+   - Use the middleware wrapping pattern from the documentation
+   - Wrap existing middleware if present
+   - Configure protected routes
+
+4. **Create login page** if one doesn't exist
+
+5. **Replace existing auth** if needed:
+   - Be thorough when replacing existing authentication
+   - Remove old auth providers
+   - Update all references to use Civic Auth
+
+**CRITICAL**: The middleware.ts file MUST be placed at src/middleware.ts (in the src/ directory), NOT in the project root.
+
+## Step 5: Implement AI SDK + Nexus Integration
+Based on the user's AI SDK preference (gathered in Step 2), follow the appropriate recipe documentation that you fetched in Step 1.
+
+The recipe will show you how to:
+1. Install the required AI SDK packages
+2. Create the Nexus tools helper using the pattern specific to that SDK
+3. Use the access token from getTokens() from @civic/auth/nextjs
+4. Configure the MCP client to connect to https://nexus.civic.com/hub/mcp
+5. Integrate the tools into your AI chat implementation
+
+Follow the recipe documentation exactly as it shows the implementation pattern for the chosen SDK.
+
+## Step 6: Create Chat Interface (if needed)
+If the project doesn't have a chat UI:
+1. Create a basic chat component with message input/display
+2. Connect it to the AI API route
+3. Handle streaming responses if applicable
+
+## Important Implementation Notes
+
+### Authentication Pattern
+- Always use getTokens() from @civic/auth/nextjs to get the access token
+- Handle missing tokens gracefully (user not authenticated)
+- Return 401 errors when authentication is required but missing
+
+### Error Handling
+- Nexus tools should fail gracefully (return empty object if unavailable)
+- Provide clear error messages for authentication issues
+- Log errors for debugging but don't expose sensitive information
+
+### Environment Variables
+- Never hardcode API keys or Client IDs
+- Use .env.local for all sensitive configuration
+- Variable names:
+  - CIVIC_AUTH_CLIENT_ID (not NEXT_PUBLIC)
+  - AI_GATEWAY_API_KEY (not provider-specific names)
+
+### Middleware Location
+- ✅ CORRECT: src/middleware.ts
+- ❌ WRONG: middleware.ts (project root - breaks authentication)
+
+## Starter Template Reference
+For a complete working example, users can reference:
+- GitHub: https://github.com/civicteam/ai-chatbot
+- This shows the full integration with UI, streaming, and all features
+
+## Next Steps After Integration
+1. **Test the integration**:
+   - Verify login/logout works
+   - Test AI chat functionality
+   - Confirm Nexus tools are accessible (e.g., "list my GitHub repos")
+
+2. **Connect more services**:
+   - Visit https://nexus.civic.com to add more tools
+
+3. **Deploy to production**:
+   - Set environment variables in your hosting platform
+   - Test authentication flows in production environment
+```

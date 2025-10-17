@@ -5,8 +5,6 @@ icon: "python"
 public: true
 ---
 
-import NextjsAccessTokenSetup from '/snippets/_nextjs-access-token-setup.mdx'
-
 ## Overview
 
 This recipe shows how to use Pydantic AI with Nexus MCP tools. To call Nexus, you need a Civic `access_token`.
@@ -17,13 +15,52 @@ This recipe shows how to use Pydantic AI with Nexus MCP tools. To call Nexus, yo
 pip install "pydantic-ai-slim[mcp]"
 ```
 
-## Access Token Setup (Next.js)
+## Access Token Setup (Python)
 
-If using a Next.js frontend, set up Civic Auth to obtain an access token:
+Get the Civic access token in your Python backend:
 
-<NextjsAccessTokenSetup />
+<Tabs>
+  <Tab title="FastAPI">
+    ```python
+    from civic_auth.integrations.fastapi import create_auth_dependencies
+    
+    civic_auth_dep, get_current_user, require_auth = create_auth_dependencies(config)
+    
+    @app.post("/chat", dependencies=[Depends(require_auth)])
+    async def chat(civic = Depends(civic_auth_dep)):
+        tokens = await civic.get_tokens()
+        access_token = tokens["access_token"]
+        # Use access_token with Pydantic AI
+    ```
+  </Tab>
+  <Tab title="Flask">
+    ```python
+    from flask import session
+    from civic_auth.core import CivicAuth
+    
+    @app.post("/chat")
+    @civic_auth_required
+    async def chat():
+        access_token = session.get(CivicAuth.ACCESS_TOKEN_KEY)
+        # Use access_token with Pydantic AI
+    ```
+  </Tab>
+  <Tab title="Django">
+    ```python
+    from civic_auth.core import CivicAuth
+    from civic_auth.integrations.django import civic_auth_required
+    
+    @civic_auth_required
+    def chat(request):
+        access_token = request.session.get(CivicAuth.ACCESS_TOKEN_KEY)
+        # Use access_token with Pydantic AI
+    ```
+  </Tab>
+</Tabs>
 
-**Python-only stacks:** See [/integration/python](/integration/python) for FastAPI/Flask/Django snippets to obtain tokens via `civic.get_tokens()` or session extraction.
+<Note>
+  Full Python integration guide: [/integration/python](/integration/python)
+</Note>
 
 ## Use Pydantic AI as an MCP client
 

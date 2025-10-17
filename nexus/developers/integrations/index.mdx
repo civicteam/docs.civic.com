@@ -1,0 +1,102 @@
+---
+title: AI SDKs Overview
+description: Integrate Civic Nexus with your AI application using popular SDKs
+icon: "plug"
+public: true
+---
+
+## Before You Start
+
+To integrate Nexus into your application, you need to complete these prerequisite steps first:
+
+<Steps>
+  <Step title="Visit nexus.civic.com">
+    Create your organization account to get started
+    <Frame caption="Create your Nexus organization">
+      <img
+        className="rounded-lg"
+        src="/images/steps/nexus-dev/01.png"
+        alt="Nexus organization creation"
+      />
+    </Frame>
+  </Step>
+  <Step title="Add your tool suite">
+    Connect the services you want your AI to access (GitHub, Slack, Dropbox, etc.)
+    <Frame caption="Connect your tools">
+      <img
+        className="rounded-lg"
+        src="/images/steps/nexus-dev/02.png"
+        alt="Adding tools to your Nexus organization"
+      />
+    </Frame>
+  </Step>
+  <Step title="Visit auth.civic.com to get your Client ID">
+    Create a Civic Auth application and copy your Client ID
+    <Frame caption="Get your Civic Auth Client ID">
+      <img
+        className="rounded-lg"
+        src="/images/steps/nexus-dev/03.png"
+        alt="Getting Client ID from auth.civic.com"
+      />
+    </Frame>
+  </Step>
+  <Step title="Link your Client ID in Nexus">
+    Return to Nexus and link your Civic Auth Client ID to enable authenticated access
+    <Frame caption="Link Client ID in Nexus">
+      <img
+        className="rounded-lg"
+        src="/images/steps/nexus-dev/04.png"
+        alt="Linking Client ID in Nexus settings"
+      />
+    </Frame>
+  </Step>
+</Steps>
+
+## Choose Your Integration
+
+Once you've completed the setup steps above, choose the SDK that matches your stack:
+
+<CardGroup cols={2}>
+  <Card title="Vercel AI SDK" icon="triangle" href="/nexus/recipes/vercel-ai-sdk">
+    **Best for Next.js apps** - Streaming support, built for React Server Components
+  </Card>
+  <Card title="OpenAI SDK (Agents)" icon="robot" href="/nexus/recipes/openai-agents">
+    **Simplest setup** - Automatic tool handling with hostedMcpTool()
+  </Card>
+  <Card title="Anthropic SDK" icon="message" href="/nexus/recipes/anthropic">
+    **Native MCP support** - Built directly into Messages API
+  </Card>
+  <Card title="OpenAI SDK" icon="code" href="/nexus/recipes/openai-sdk">
+    **Full control** - Manual function calling approach
+  </Card>
+  <Card title="Python (Pydantic)" icon="python" href="/nexus/recipes/python-pydantic">
+    **Python applications** - Type-safe integration with Pydantic
+  </Card>
+</CardGroup>
+
+<Note>
+**Need help choosing?**
+- **Building a Next.js app?** → Vercel AI SDK
+- **Want the simplest setup?** → OpenAI SDK (Agents)
+- **Using Claude directly?** → Anthropic SDK
+- **Python developer?** → Python (Pydantic)
+</Note>
+
+## What You'll Get
+
+All integrations provide:
+- ✅ **Authenticated access** to user's connected tools
+- ✅ **Automatic tool discovery** - No manual configuration
+- ✅ **Secure token handling** - OAuth tokens managed by Civic
+- ✅ **Real-time access** - Tools reflect current user permissions
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="AI-Assisted Setup" icon="robot" href="/nexus/ai-prompts/nextjs">
+    Use our AI prompt to automatically set up Civic Auth + Nexus
+  </Card>
+  <Card title="Join Our Community" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Get help from other developers
+  </Card>
+</CardGroup>

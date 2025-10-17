@@ -1,5 +1,5 @@
 ---
-title: OpenAI Agents SDK
+title: OpenAI SDK (Agents)
 description: Use Civic Nexus with OpenAI Agents SDK using the hosted MCP tool approach
 icon: "robot"
 public: true
@@ -15,15 +15,12 @@ Integrate Civic Nexus with OpenAI Agents SDK using the `hostedMcpTool()` approac
 **Updated for OpenAI Agents SDK**: This guide uses the new hosted MCP tool feature. For the older function calling approach, see [OpenAI SDK (Node.js)](/nexus/recipes/openai-sdk).
 </Note>
 
-<Tip>
-**Prefer AI-assisted setup?** Use our [AI prompt](/nexus/ai-prompts/openai-agents) with Claude, ChatGPT, or Cursor to automatically generate this integration code for you.
-</Tip>
 
 ## Prerequisites
 
 <Note>
 **Prerequisites:**
-1. **Node.js 18+ project** (Next.js or any Node.js framework)
+1. **Node.js 18+ project** (Next.js 14+ or any Node.js framework)
 2. Civic account - [Create account](https://nexus.civic.com)
 3. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
 4. OpenAI API Key - Get yours at [platform.openai.com](https://platform.openai.com)
@@ -44,7 +41,7 @@ Create a `.env.local` file in your project root:
 # Get your Client ID at https://auth.civic.com
 CIVIC_AUTH_CLIENT_ID=your_client_id_here
 
-# Get your OpenAI API key at https://platform.openai.com
+# OpenAI API key
 OPENAI_API_KEY=your_openai_api_key
 ```
 
@@ -199,27 +196,36 @@ for await (const event of result) {
 console.log(`Final result: ${result.finalOutput}`);
 ```
 
-## Human-in-the-Loop Approval
+## Tool Approval
 
-Add approval gates for sensitive operations:
+Control which tools require approval before execution. Configure this in the hostedMcpTool:
 
 ```typescript
-const result = await run(
-  agent,
-  'Delete my GitHub repository named test-repo',
-  {
-    humanInTheLoop: {
-      getApproval: async (params) => {
-        console.log(`Tool ${params.toolName} needs approval`);
-        console.log(`Arguments:`, params.arguments);
+import { Agent, hostedMcpTool } from '@openai/agents';
+import { getTokens } from '@civic/auth/nextjs';
 
-        // Implement your approval logic here
-        // Could show UI, send notification, etc.
-        return true; // or false to reject
+const { accessToken } = await getTokens();
+
+const agent = new Agent({
+  name: 'Nexus Assistant',
+  instructions: 'You are a helpful assistant with access to external tools through Civic Nexus.',
+  tools: [
+    hostedMcpTool({
+      serverLabel: 'civic-nexus',
+      serverUrl: 'https://nexus.civic.com/hub/mcp',
+      authorization: {
+        type: 'bearer',
+        token: accessToken
+      },
+      requireApproval: {
+        // Never require approval for these tools
+        never: { toolNames: ['github__list_repos', 'slack__search_messages'] },
+        // Always require approval for these tools
+        always: { toolNames: ['github__delete_repo'] },
       }
-    }
-  }
-);
+    }),
+  ],
+});
 ```
 
 ## AI-Assisted Integration
