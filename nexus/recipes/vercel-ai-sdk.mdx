@@ -44,7 +44,7 @@ npm run dev
 </Accordion>
 
 <Note>
-**Updated for AI SDK v5**: This guide uses Vercel AI SDK v5 with the new `execute`-based tool API and `toDataStreamResponse()` streaming helper.
+**Updated for AI SDK v5**: This guide uses Vercel AI SDK v5 with `convertToCoreMessages()` for message handling and `toUIMessageStreamResponse()` for streaming compatibility with `@ai-sdk/react`.
 </Note>
 
 ## Build From Scratch
@@ -89,7 +89,7 @@ AI_GATEWAY_API_KEY=your_api_key
 Install the required packages:
 
 ```bash
-npm install ai @ai-sdk/openai @ai-sdk/anthropic @modelcontextprotocol/sdk @civic/auth
+npm install ai @ai-sdk/openai @ai-sdk/anthropic @ai-sdk/react @modelcontextprotocol/sdk @civic/auth
 ```
 
 ## Basic Setup
@@ -132,13 +132,13 @@ export const getNexusTools = async () => {
 
 ```typescript
 // app/api/chat/route.ts
-import { streamText } from 'ai';
-import { myProvider } from '@/lib/ai/providers';
+import { convertToCoreMessages, streamText } from 'ai';
+import { openai } from '@ai-sdk/openai';
 import { getNexusTools } from '@/lib/ai/tools/nexus';
 
 export async function POST(request: Request) {
   try {
-    const { messages, selectedChatModel } = await request.json();
+    const { messages } = await request.json();
 
     if (!messages || !Array.isArray(messages)) {
       return new Response(
@@ -147,21 +147,20 @@ export async function POST(request: Request) {
       );
     }
 
+    // Convert UI messages to core messages
+    const coreMessages = convertToCoreMessages(messages);
+
     // Get Nexus tools
     const nexusTools = await getNexusTools();
 
     const result = streamText({
-      model: myProvider.languageModel(selectedChatModel),
-      messages,
-      tools: {
-        // Your existing tools
-        ...yourExistingTools,
-        // Spread Nexus tools
-        ...nexusTools
-      },
+      model: openai('gpt-4o'),
+      messages: coreMessages,
+      tools: nexusTools,
     });
 
-    return result.toTextStreamResponse();
+    // Use toUIMessageStreamResponse() for @ai-sdk/react compatibility
+    return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error('Chat error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Failed to process request';
@@ -173,6 +172,19 @@ export async function POST(request: Request) {
   }
 }
 ```
+
+<Note>
+**Using Anthropic/Claude?** Replace the model with:
+```typescript
+import { anthropic } from '@ai-sdk/anthropic';
+
+const result = streamText({
+  model: anthropic('claude-sonnet-4-5-20250929'),
+  messages: coreMessages,
+  tools: nexusTools,
+});
+```
+</Note>
 
 ## Nexus Authentication
 
