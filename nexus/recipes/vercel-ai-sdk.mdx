@@ -73,15 +73,14 @@ Create a `.env.local` file in your project root:
 # Get your Client ID at https://auth.civic.com
 CIVIC_AUTH_CLIENT_ID=your_client_id_here
 
-# AI Provider API key
+# AI Provider API key from Vercel AI Gateway
 AI_GATEWAY_API_KEY=your_api_key
 ```
 
 <Note>
-**Getting your Civic Client ID:**
-1. Visit [auth.civic.com](https://auth.civic.com)
-2. Create a new application or use an existing one
-3. Copy the Client ID from your application settings
+**Getting your API keys:**
+1. **Civic Client ID**: Visit [auth.civic.com](https://auth.civic.com), create a new application, and copy the Client ID
+2. **AI Gateway API Key**: Visit [vercel.com/ai-gateway](https://vercel.com/ai-gateway) to get your API key for AI providers
 </Note>
 
 ## Installation
@@ -89,7 +88,7 @@ AI_GATEWAY_API_KEY=your_api_key
 Install the required packages:
 
 ```bash
-npm install ai @ai-sdk/openai @ai-sdk/anthropic @ai-sdk/react @modelcontextprotocol/sdk @civic/auth
+pnpm install ai @ai-sdk/openai @ai-sdk/anthropic @ai-sdk/react @modelcontextprotocol/sdk @civic/auth
 ```
 
 ## Basic Setup
