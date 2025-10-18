@@ -26,13 +26,19 @@ The fastest way to get started is with our starter template:
 ```bash
 git clone https://github.com/civicteam/ai-chatbot.git
 cd ai-chatbot
-npm install
+pnpm install
 
 # Copy the example env file and add your keys
 cp .env.example .env.local
 # Edit .env.local with your CIVIC_AUTH_CLIENT_ID and AI provider keys
 
-npm run dev
+#make sure you have docker installed for the database
+docker-compose up -d
+
+#run the database migrations
+pnpm run db:migrate
+
+pnpm run dev
 ```
 
 <Accordion title="Required Environment Variables">
