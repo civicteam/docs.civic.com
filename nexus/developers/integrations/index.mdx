@@ -5,13 +5,27 @@ icon: "plug"
 public: true
 ---
 
-## Before You Start
+## Getting Started from Scratch
 
-To integrate Nexus into your application, you need to complete these prerequisite steps first:
+Building a new AI application? Follow these steps in order:
 
 <Steps>
-  <Step title="Visit nexus.civic.com">
-    Create your organization account to get started
+  <Step title="Create your Next.js project">
+    Start with a fresh Next.js 14+ project:
+    ```bash
+    npx create-next-app@latest
+    ```
+  </Step>
+  <Step title="Set up Civic Auth login">
+    Use our AI-assisted prompt to quickly integrate Civic Auth into your Next.js app:
+    <Card title="Next.js + Civic Auth Setup" icon="robot" href="/nexus/ai-prompts/nextjs">
+      **AI-assisted setup** - Automatically configure authentication in your Next.js project
+    </Card>
+  </Step>
+  <Step title="Configure Nexus for your organization">
+    Once authentication is working, set up Nexus to provide tools to your application:
+
+    **a)** Visit [nexus.civic.com](https://nexus.civic.com) and create your organization
     <Frame caption="Create your Nexus organization">
       <img
         className="rounded-lg"
@@ -19,9 +33,8 @@ To integrate Nexus into your application, you need to complete these prerequisit
         alt="Nexus organization creation"
       />
     </Frame>
-  </Step>
-  <Step title="Add your tool suite">
-    Connect the services you want your AI to access (GitHub, Slack, Dropbox, etc.)
+
+    **b)** Connect the services you want your AI to access (GitHub, Slack, Dropbox, etc.)
     <Frame caption="Connect your tools">
       <img
         className="rounded-lg"
@@ -29,9 +42,8 @@ To integrate Nexus into your application, you need to complete these prerequisit
         alt="Adding tools to your Nexus organization"
       />
     </Frame>
-  </Step>
-  <Step title="Visit auth.civic.com to get your Client ID">
-    Create a Civic Auth application and copy your Client ID
+
+    **c)** Get your Client ID from [auth.civic.com](https://auth.civic.com)
     <Frame caption="Get your Civic Auth Client ID">
       <img
         className="rounded-lg"
@@ -39,9 +51,8 @@ To integrate Nexus into your application, you need to complete these prerequisit
         alt="Getting Client ID from auth.civic.com"
       />
     </Frame>
-  </Step>
-  <Step title="Link your Client ID in Nexus">
-    Return to Nexus and link your Civic Auth Client ID to enable authenticated access
+
+    **d)** Link your Civic Auth Client ID in Nexus settings to enable authenticated tool access
     <Frame caption="Link Client ID in Nexus">
       <img
         className="rounded-lg"
@@ -50,7 +61,14 @@ To integrate Nexus into your application, you need to complete these prerequisit
       />
     </Frame>
   </Step>
+  <Step title="Integrate an AI SDK">
+    Now you're ready to add AI capabilities! Choose an SDK below and follow its recipe to connect your authenticated users to Nexus tools.
+  </Step>
 </Steps>
+
+<Note>
+**Already have a Next.js app with Civic Auth?** Skip to Step 3 to configure Nexus, then choose your SDK integration below.
+</Note>
 
 ## Choose Your Integration
 
@@ -92,11 +110,6 @@ All integrations provide:
 
 ## Need Help?
 
-<CardGroup cols={2}>
-  <Card title="AI-Assisted Setup" icon="robot" href="/nexus/ai-prompts/nextjs">
-    Use our AI prompt to automatically set up Civic Auth + Nexus
-  </Card>
-  <Card title="Join Our Community" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Get help from other developers
-  </Card>
-</CardGroup>
+<Card title="Join Our Community" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+  Get help from other developers building with Nexus
+</Card>
