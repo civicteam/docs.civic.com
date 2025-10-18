@@ -1,0 +1,98 @@
+---
+title: OpenAI SDK
+description: Use OpenAI with Nexus tools (function calling) without the Vercel AI SDK
+icon: "robot"
+public: true
+---
+
+import NextjsAccessTokenSetup from '/snippets/_nextjs-access-token-setup.mdx'
+
+## Overview
+
+This recipe shows how to wire Nexus MCP tools to the official OpenAI Node SDK using function calling.
+
+<Note>
+**Why manual function calling?** The standard OpenAI SDK doesn't have native MCP support yet. OpenAI announced MCP support for their Responses API is coming soon, but it's not available in the `openai` package yet.
+
+**Want a simpler approach?** Check out the [OpenAI Agents SDK recipe](/nexus/recipes/openai-agents) which has native MCP support via `hostedMcpTool()` - no manual tool looping required!
+</Note>
+
+## Access Token Setup (Next.js)
+
+<NextjsAccessTokenSetup />
+
+**Non-Next.js:** Forward a Bearer token from your frontend or validate incoming tokens server-side (see [/libraries/auth-verify](/libraries/auth-verify)).
+
+
+## Create an MCP Client
+
+```ts
+import OpenAI from 'openai';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { getTokens } from '@civic/auth/nextjs';
+
+async function createMCP() {
+  const { accessToken } = await getTokens();
+
+  if (!accessToken) {
+    throw new Error('No access token available. User must be authenticated.');
+  }
+
+  const transport = new StreamableHTTPClientTransport('https://nexus.civic.com/hub/mcp', {
+    requestInit: { headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' } },
+  });
+  const client = new Client({ name: 'my-app', version: '1.0.0' }, { capabilities: {} });
+  await client.connect(transport);
+  return client;
+}
+```
+
+## Call with Tool Functions
+
+```ts
+export async function chatWithTools(messages: any[]) {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+  const mcp = await createMCP();
+  const { tools } = await mcp.listTools();
+
+  const toolDefs = tools.map((t) => ({
+    type: 'function' as const,
+    function: { name: t.name, description: t.description, parameters: t.inputSchema },
+  }));
+
+  let response = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages,
+    tools: toolDefs,
+    tool_choice: 'auto',
+  });
+
+  const call = response.choices[0]?.message?.tool_calls?.[0];
+  if (call) {
+    const toolName = call.function.name;
+    const args = JSON.parse(call.function.arguments || '{}');
+    const result = await mcp.callTool({ name: toolName, arguments: args });
+
+    // Send tool result back to the model
+    response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        ...messages,
+        response.choices[0].message,
+        { role: 'tool', tool_call_id: call.id, content: JSON.stringify(result.content) },
+      ],
+    });
+  }
+
+  await mcp.close();
+  return response;
+}
+```
+
+## Notes
+
+- Obtain the Civic access token via your server environment (e.g., Next.js `getTokens()`), or forward a Bearer token from a trusted frontend.
+- To verify tokens server-side in non-Next.js stacks, see [/libraries/auth-verify](/libraries/auth-verify).
+
+

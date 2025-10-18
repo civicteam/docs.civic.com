@@ -1,0 +1,335 @@
+---
+title: Anthropic SDK
+description: Use Civic Nexus with Anthropic's Messages API using the native MCP connector
+icon: "message"
+public: true
+---
+
+import NextjsAccessTokenSetup from '/snippets/_nextjs-access-token-setup.mdx'
+
+## Overview
+
+Integrate Civic Nexus with Anthropic's Messages API using the **native MCP connector** feature. This is built directly into the API - no separate MCP client needed!
+
+<Note>
+**Native MCP Support**: The Anthropic Messages API includes built-in MCP connector support. Just add the `mcp_servers` parameter to your API calls.
+</Note>
+
+
+## Prerequisites
+
+<Note>
+**Prerequisites:**
+1. **Node.js 18+ project** (Next.js 14+ or any Node.js framework)
+2. Civic account - [Create account](https://nexus.civic.com)
+3. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
+4. Anthropic API Key - Get yours at [console.anthropic.com](https://console.anthropic.com)
+5. Complete Civic Auth setup (see Access Token Setup below)
+</Note>
+
+## Access Token Setup (Next.js + Civic Auth)
+
+<NextjsAccessTokenSetup />
+
+**Non-Next.js:** Forward a Bearer token from your frontend or validate incoming tokens server-side (see [/libraries/auth-verify](/libraries/auth-verify)).
+
+### Environment Variables
+
+Create a `.env.local` file in your project root:
+
+```bash
+# Get your Client ID at https://auth.civic.com
+CIVIC_AUTH_CLIENT_ID=your_client_id_here
+
+# Anthropic API key
+ANTHROPIC_API_KEY=your_anthropic_api_key
+```
+
+<Note>
+**Getting your Civic Client ID:**
+1. Visit [auth.civic.com](https://auth.civic.com)
+2. Create a new application or use an existing one
+3. Copy the Client ID from your application settings
+</Note>
+
+## Installation
+
+Install the required packages:
+
+```bash
+npm install @anthropic-ai/sdk
+```
+
+Note: No MCP SDK required! The MCP connector is built into the Anthropic SDK.
+
+## Basic Setup
+
+### Create Message with MCP Connector
+
+```typescript
+import Anthropic from '@anthropic-ai/sdk';
+import { getTokens } from '@civic/auth/nextjs';
+
+async function createMessage(userMessage: string) {
+  const { accessToken } = await getTokens();
+
+  if (!accessToken) {
+    throw new Error('No access token available. User must be authenticated.');
+  }
+
+  const client = new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY!,
+  });
+
+  const response = await client.messages.create({
+    model: 'claude-sonnet-4-5',
+    max_tokens: 1024,
+    messages: [{ role: 'user', content: userMessage }],
+    mcp_servers: [
+      {
+        type: 'url',
+        url: 'https://nexus.civic.com/hub/mcp',
+        name: 'civic-nexus',
+        authorization_token: accessToken,
+      },
+    ],
+  }, {
+    headers: {
+      'anthropic-beta': 'mcp-client-2025-04-04',
+    },
+  });
+
+  return response;
+}
+```
+
+**Key Points:**
+- Add `mcp_servers` parameter to your messages.create() call
+- Include the beta header: `"anthropic-beta": "mcp-client-2025-04-04"`
+- Pass your Civic access token as `authorization_token`
+- That's it! No tool looping, no MCP client setup
+
+## Complete Example: Next.js API Route
+
+```typescript
+// app/api/chat/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import Anthropic from '@anthropic-ai/sdk';
+import { getTokens } from '@civic/auth/nextjs';
+
+export async function POST(req: NextRequest) {
+  try {
+    const { messages } = await req.json();
+
+    if (!messages || !Array.isArray(messages)) {
+      return NextResponse.json(
+        { error: 'Invalid request: messages array required' },
+        { status: 400 }
+      );
+    }
+
+    const { accessToken } = await getTokens();
+
+    if (!accessToken) {
+      return NextResponse.json(
+        { error: 'Not authenticated' },
+        { status: 401 }
+      );
+    }
+
+    const client = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY!,
+    });
+
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-5',
+      max_tokens: 4096,
+      messages,
+      mcp_servers: [
+        {
+          type: 'url',
+          url: 'https://nexus.civic.com/hub/mcp',
+          name: 'civic-nexus',
+          authorization_token: accessToken,
+        },
+      ],
+    }, {
+      headers: {
+        'anthropic-beta': 'mcp-client-2025-04-04',
+      },
+    });
+
+    return NextResponse.json(response);
+  } catch (error) {
+    console.error('Anthropic API error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to process request';
+    const statusCode = errorMessage.includes('authentication') ? 401 : 500;
+
+    return NextResponse.json(
+      { error: errorMessage },
+      { status: statusCode }
+    );
+  }
+}
+```
+
+## Streaming Responses
+
+For real-time streaming:
+
+```typescript
+const stream = await client.messages.create({
+  model: 'claude-sonnet-4-5',
+  max_tokens: 4096,
+  messages: [{ role: 'user', content: 'List my GitHub repositories' }],
+  mcp_servers: [
+    {
+      type: 'url',
+      url: 'https://nexus.civic.com/hub/mcp',
+      name: 'civic-nexus',
+      authorization_token: accessToken,
+    },
+  ],
+  stream: true,
+}, {
+  headers: {
+    'anthropic-beta': 'mcp-client-2025-04-04',
+  },
+});
+
+for await (const event of stream) {
+  if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+    console.log(event.delta.text);
+  }
+}
+```
+
+## Tool Configuration (Optional)
+
+Restrict which tools Claude can use:
+
+```typescript
+mcp_servers: [
+  {
+    type: 'url',
+    url: 'https://nexus.civic.com/hub/mcp',
+    name: 'civic-nexus',
+    authorization_token: accessToken,
+    tool_configuration: {
+      enabled: true,
+      allowed_tools: ['github__list_repos', 'slack__search_messages']
+    }
+  },
+]
+```
+
+## Key Advantages
+
+<CardGroup cols={2}>
+  <Card title="Native Integration" icon="plug">
+    Built directly into Messages API - no extra SDKs
+  </Card>
+  <Card title="Automatic Tools" icon="wand-magic-sparkles">
+    Claude discovers and calls tools automatically
+  </Card>
+  <Card title="Simple Setup" icon="sparkles">
+    Just add mcp_servers parameter to API calls
+  </Card>
+  <Card title="Streaming Support" icon="water">
+    Real-time responses with stream: true
+  </Card>
+</CardGroup>
+
+## Nexus Authentication
+
+<AccordionGroup>
+  <Accordion title="Required MCP Server Config">
+    ```typescript
+    mcp_servers: [
+      {
+        type: 'url',
+        url: 'https://nexus.civic.com/hub/mcp',
+        name: 'civic-nexus',
+        authorization_token: accessToken, // Civic access token
+      },
+    ]
+    ```
+  </Accordion>
+  <Accordion title="Required Beta Header">
+    ```typescript
+    headers: {
+      'anthropic-beta': 'mcp-client-2025-04-04',
+    }
+    ```
+  </Accordion>
+  <Accordion title="Getting the Access Token">
+    ```typescript
+    import { getTokens } from "@civic/auth/nextjs";
+    const { accessToken } = await getTokens();
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Response Format
+
+Claude returns `mcp_tool_use` blocks in the response:
+
+```json
+{
+  "type": "mcp_tool_use",
+  "id": "mcptoolu_01234...",
+  "name": "github__list_repos",
+  "input": {
+    "owner": "username"
+  }
+}
+```
+
+These are handled automatically by Claude - you don't need to process them manually.
+
+## Current Limitations
+
+<Note>
+The MCP connector currently only supports:
+- Tool calls (not MCP resources or prompts)
+- HTTP servers (not STDIO servers)
+- SSE and Streamable HTTP transports
+
+Amazon Bedrock and Google Vertex integrations are not yet supported.
+</Note>
+
+## Comparison with Other Approaches
+
+| Feature | Anthropic MCP Connector | OpenAI Agents SDK | Vercel AI SDK |
+|---------|------------------------|------------------|---------------|
+| **Setup Complexity** | Low | Low | Medium |
+| **MCP SDK Needed** | No | No | Yes |
+| **Tool Looping** | No (automatic) | No (automatic) | Yes (manual) |
+| **Best For** | Direct API usage | Quick prototypes | Next.js apps |
+| **Streaming** | Yes | Yes | Yes |
+
+## Next Steps
+
+<Steps>
+  <Step title="Test with Simple Queries">
+    Try "list my GitHub repos" or "search Slack messages about X"
+  </Step>
+  <Step title="Connect More Services">
+    Visit [nexus.civic.com](https://nexus.civic.com) to connect additional tools
+  </Step>
+  <Step title="Configure Tool Access">
+    Use tool_configuration to restrict which tools Claude can use
+  </Step>
+  <Step title="Deploy">
+    Deploy your application to production
+  </Step>
+</Steps>
+
+<CardGroup cols={2}>
+  <Card title="Anthropic MCP Docs" icon="message" href="https://docs.claude.com/en/docs/agents-and-tools/mcp-connector">
+    Learn more about Anthropic's MCP connector
+  </Card>
+  <Card title="Need Help?" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community for technical support
+  </Card>
+</CardGroup>

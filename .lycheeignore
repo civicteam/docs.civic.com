@@ -37,3 +37,5 @@ https://github.com/civicteam/bodyguard
 https://nexus.civic.com/bodyguard/ui
 # NPM page returning error
 https://www.npmjs.com/package/@civic/auth-mcp#-framework-agnostic-usage
+# WebAuthn.io timing out in CI. Skipping for now.
+https://webauthn.io/

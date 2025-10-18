@@ -226,21 +226,45 @@
              }
            ]
          },
-         {
-           "group": "Developers",
-           "icon": "code",
-           "pages": [
-             "nexus/developers/client-setup",
-             "nexus/developers/vercel-ai-sdk",
-             "nexus/quickstart/hub-bridge"
-           ]
-         },
+        {
+          "group": "Developers",
+          "icon": "code",
+          "pages": [
+            {
+              "group": "IDE Setup",
+              "icon": "code",
+              "pages": [
+                "nexus/developers/client-setup",
+                "nexus/quickstart/hub-bridge"
+              ]
+            },
+            {
+              "group": "AI SDKs",
+              "icon": "plug",
+              "pages": [
+                "nexus/developers/integrations/index",
+                "nexus/recipes/vercel-ai-sdk",
+                "nexus/recipes/openai-agents",
+                "nexus/recipes/anthropic",
+                "nexus/recipes/openai-sdk",
+                "nexus/recipes/python-pydantic"
+              ]
+            }
+          ]
+        },
         {
           "group": "Reference",
           "icon": "book",
           "pages": [
             "nexus/reference/client-compatibility",
             "nexus/reference/security"
+          ]
+        },
+        {
+          "group": "AI Prompts",
+          "icon": "robot",
+          "pages": [
+            "nexus/ai-prompts/nextjs"
           ]
         },
         {

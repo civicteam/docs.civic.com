@@ -110,3 +110,21 @@ def hello(request):
 ```
 
 </CodeGroup>
+
+## Getting the Access Token
+
+Use CivicAuth-managed storage to retrieve tokens. Prefer the SDK helper that exposes a `CivicAuth` instance and call `await civic.get_tokens()` (auto-refreshes when needed). If your endpoint receives a bearer token from a frontend, you can also read it from the `Authorization` header.
+
+```python
+# Preferred: via CivicAuth instance
+tokens = await civic.get_tokens()  # { 'access_token': '...', 'id_token': '...', ... }
+access_token = tokens["access_token"]
+
+# Fallback: read bearer token from headers (example)
+auth = request.headers.get("Authorization", "")
+access_token = auth.removeprefix("Bearer ").strip()
+```
+
+<Info>
+  Need structured validation? See the Pydantic recipe: [/nexus/recipes/python-pydantic](/nexus/recipes/python-pydantic).
+</Info>

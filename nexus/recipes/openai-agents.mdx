@@ -1,0 +1,305 @@
+---
+title: OpenAI SDK (Agents)
+description: Use Civic Nexus with OpenAI Agents SDK using the hosted MCP tool approach
+icon: "robot"
+public: true
+---
+
+import NextjsAccessTokenSetup from '/snippets/_nextjs-access-token-setup.mdx'
+
+## Overview
+
+Integrate Civic Nexus with OpenAI Agents SDK using the `hostedMcpTool()` approach. This is the **simplest** way to use Nexus with OpenAI - no manual tool looping or conversion code required.
+
+<Note>
+**Updated for OpenAI Agents SDK**: This guide uses the new hosted MCP tool feature. For the older function calling approach, see [OpenAI SDK (Node.js)](/nexus/recipes/openai-sdk).
+</Note>
+
+
+## Prerequisites
+
+<Note>
+**Prerequisites:**
+1. **Node.js 18+ project** (Next.js 14+ or any Node.js framework)
+2. Civic account - [Create account](https://nexus.civic.com)
+3. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
+4. OpenAI API Key - Get yours at [platform.openai.com](https://platform.openai.com)
+5. Complete Civic Auth setup (see Access Token Setup below)
+</Note>
+
+## Access Token Setup (Next.js + Civic Auth)
+
+<NextjsAccessTokenSetup />
+
+**Non-Next.js:** Forward a Bearer token from your frontend or validate incoming tokens server-side (see [/libraries/auth-verify](/libraries/auth-verify)).
+
+### Environment Variables
+
+Create a `.env.local` file in your project root:
+
+```bash
+# Get your Client ID at https://auth.civic.com
+CIVIC_AUTH_CLIENT_ID=your_client_id_here
+
+# OpenAI API key
+OPENAI_API_KEY=your_openai_api_key
+```
+
+<Note>
+**Getting your Civic Client ID:**
+1. Visit [auth.civic.com](https://auth.civic.com)
+2. Create a new application or use an existing one
+3. Copy the Client ID from your application settings
+</Note>
+
+## Installation
+
+Install the required packages:
+
+```bash
+npm install @openai/agents openai
+```
+
+## Basic Setup
+
+### Step 1: Create Agent with Hosted MCP Tool
+
+```typescript
+import { Agent, hostedMcpTool } from '@openai/agents';
+import { getTokens } from '@civic/auth/nextjs';
+
+async function createNexusAgent() {
+  const { accessToken } = await getTokens();
+
+  if (!accessToken) {
+    throw new Error('No access token available. User must be authenticated.');
+  }
+
+  return new Agent({
+    name: 'Nexus Assistant',
+    model: 'gpt-4o-mini',
+    instructions: 'You are a helpful assistant with access to external tools through Civic Nexus. Use the available tools to help users with their tasks.',
+    tools: [
+      hostedMcpTool({
+        serverLabel: 'civic-nexus',
+        serverUrl: 'https://nexus.civic.com/hub/mcp',
+        authorization: {
+          type: 'bearer',
+          token: accessToken
+        }
+      }),
+    ],
+  });
+}
+```
+
+### Step 2: Run the Agent
+
+```typescript
+import { run } from '@openai/agents';
+
+async function main() {
+  const agent = await createNexusAgent();
+
+  const result = await run(
+    agent,
+    'List my GitHub repositories'
+  );
+
+  console.log(result.finalOutput);
+}
+
+main().catch(console.error);
+```
+
+That's it! The Agent automatically:
+- Discovers available tools from Nexus
+- Selects the appropriate tool to use
+- Calls the tool with the right parameters
+- Returns the result to you
+
+## Complete Example: Next.js API Route
+
+```typescript
+// app/api/agent/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { Agent, hostedMcpTool, run } from '@openai/agents';
+import { getTokens } from '@civic/auth/nextjs';
+
+export async function POST(req: NextRequest) {
+  try {
+    const { message } = await req.json();
+
+    if (!message) {
+      return NextResponse.json(
+        { error: 'Message is required' },
+        { status: 400 }
+      );
+    }
+
+    const { accessToken } = await getTokens();
+
+    if (!accessToken) {
+      return NextResponse.json(
+        { error: 'Not authenticated' },
+        { status: 401 }
+      );
+    }
+
+    const agent = new Agent({
+      name: 'Nexus Assistant',
+      model: 'gpt-4o-mini',
+      instructions: 'You are a helpful assistant with access to external tools through Civic Nexus.',
+      tools: [
+        hostedMcpTool({
+          serverLabel: 'civic-nexus',
+          serverUrl: 'https://nexus.civic.com/hub/mcp',
+          authorization: {
+            type: 'bearer',
+            token: accessToken
+          }
+        }),
+      ],
+    });
+
+    const result = await run(agent, message);
+
+    return NextResponse.json({
+      response: result.finalOutput
+    });
+  } catch (error) {
+    console.error('Agent error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to process request';
+    return NextResponse.json(
+      { error: errorMessage },
+      { status: 500 }
+    );
+  }
+}
+```
+
+## Streaming Responses
+
+For real-time streaming:
+
+```typescript
+const result = await run(agent, 'Your question here?', { stream: true });
+
+for await (const event of result) {
+  if (event.type === 'response.output_text.delta') {
+    console.log(event.delta);
+  }
+}
+
+console.log(`Final result: ${result.finalOutput}`);
+```
+
+## Tool Approval
+
+Control which tools require approval before execution. Configure this in the hostedMcpTool:
+
+```typescript
+import { Agent, hostedMcpTool } from '@openai/agents';
+import { getTokens } from '@civic/auth/nextjs';
+
+const { accessToken } = await getTokens();
+
+const agent = new Agent({
+  name: 'Nexus Assistant',
+  model: 'gpt-4o-mini',
+  instructions: 'You are a helpful assistant with access to external tools through Civic Nexus.',
+  tools: [
+    hostedMcpTool({
+      serverLabel: 'civic-nexus',
+      serverUrl: 'https://nexus.civic.com/hub/mcp',
+      authorization: {
+        type: 'bearer',
+        token: accessToken
+      },
+      requireApproval: {
+        // Never require approval for these tools
+        never: { toolNames: ['github__list_repos', 'slack__search_messages'] },
+        // Always require approval for these tools
+        always: { toolNames: ['github__delete_repo'] },
+      }
+    }),
+  ],
+});
+```
+
+## Key Advantages
+
+<CardGroup cols={2}>
+  <Card title="Simplest Setup" icon="sparkles">
+    Minimal code - just hostedMcpTool() configuration
+  </Card>
+  <Card title="Automatic Tools" icon="wand-magic-sparkles">
+    Agent discovers and calls tools automatically
+  </Card>
+  <Card title="Remote Execution" icon="cloud">
+    Tools run through OpenAI's Responses API
+  </Card>
+  <Card title="Built-in Streaming" icon="water">
+    Easy streaming support with stream: true option
+  </Card>
+</CardGroup>
+
+## Nexus Authentication
+
+<AccordionGroup>
+  <Accordion title="Required Authorization">
+    ```typescript
+    authorization: {
+      type: 'bearer',
+      token: accessToken  // Civic access token from getTokens()
+    }
+    ```
+  </Accordion>
+  <Accordion title="Getting the Access Token">
+    ```typescript
+    import { getTokens } from "@civic/auth/nextjs";
+    const { accessToken } = await getTokens();
+    ```
+  </Accordion>
+  <Accordion title="Nexus Endpoint">
+    ```
+    https://nexus.civic.com/hub/mcp
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Comparison with Other Approaches
+
+| Feature | OpenAI Agents SDK (hostedMcpTool) | OpenAI SDK (function calling) | Vercel AI SDK |
+|---------|-----------------------------------|------------------------------|---------------|
+| **Setup Complexity** | Low | Medium | Medium |
+| **Tool Looping** | No (automatic) | Yes (manual) | Yes (manual) |
+| **Tool Conversion** | No | Yes | Yes |
+| **Best For** | Quick prototypes | Full control | Next.js apps |
+| **Streaming** | Yes | Yes | Yes |
+
+## Next Steps
+
+<Steps>
+  <Step title="Test with Simple Queries">
+    Try "list my GitHub repos" or "search Slack messages about X"
+  </Step>
+  <Step title="Connect More Services">
+    Visit [nexus.civic.com](https://nexus.civic.com) to connect additional tools
+  </Step>
+  <Step title="Add Streaming">
+    Implement real-time responses with the stream option
+  </Step>
+  <Step title="Deploy">
+    Deploy your agent to production
+  </Step>
+</Steps>
+
+<CardGroup cols={2}>
+  <Card title="OpenAI Agents Docs" icon="robot" href="https://openai.github.io/openai-agents-js/guides/mcp/">
+    Learn more about OpenAI Agents SDK
+  </Card>
+  <Card title="Need Help?" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community for technical support
+  </Card>
+</CardGroup>

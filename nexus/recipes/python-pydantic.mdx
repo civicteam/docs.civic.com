@@ -1,0 +1,174 @@
+---
+title: Python + Pydantic
+description: Validate inputs with Pydantic and call Nexus tools using Civic access tokens
+icon: "python"
+public: true
+---
+
+## Overview
+
+This recipe shows how to use Pydantic AI with Nexus MCP tools. To call Nexus, you need a Civic `access_token`.
+
+## Install
+
+```bash
+pip install "pydantic-ai-slim[mcp]"
+```
+
+## Access Token Setup (Python)
+
+Get the Civic access token in your Python backend:
+
+<Tabs>
+  <Tab title="FastAPI">
+    ```python
+    from civic_auth.integrations.fastapi import create_auth_dependencies
+    
+    civic_auth_dep, get_current_user, require_auth = create_auth_dependencies(config)
+    
+    @app.post("/chat", dependencies=[Depends(require_auth)])
+    async def chat(civic = Depends(civic_auth_dep)):
+        tokens = await civic.get_tokens()
+        access_token = tokens["access_token"]
+        # Use access_token with Pydantic AI
+    ```
+  </Tab>
+  <Tab title="Flask">
+    ```python
+    from flask import session
+    from civic_auth.core import CivicAuth
+    
+    @app.post("/chat")
+    @civic_auth_required
+    async def chat():
+        access_token = session.get(CivicAuth.ACCESS_TOKEN_KEY)
+        # Use access_token with Pydantic AI
+    ```
+  </Tab>
+  <Tab title="Django">
+    ```python
+    from civic_auth.core import CivicAuth
+    from civic_auth.integrations.django import civic_auth_required
+    
+    @civic_auth_required
+    def chat(request):
+        access_token = request.session.get(CivicAuth.ACCESS_TOKEN_KEY)
+        # Use access_token with Pydantic AI
+    ```
+  </Tab>
+</Tabs>
+
+<Note>
+  Full Python integration guide: [/integration/python](/integration/python)
+</Note>
+
+## Use Pydantic AI as an MCP client
+
+```python
+from pydantic_ai import Agent
+from pydantic_ai.mcp import MCPServerStreamableHTTP
+
+# Obtain a Civic access token (see integration/python)
+access_token = "..."
+
+# Connect to Nexus MCP Hub with Bearer auth
+server = MCPServerStreamableHTTP(
+    "https://nexus.civic.com/hub/mcp",
+    headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+)
+
+agent = Agent("openai:gpt-4o", toolsets=[server])
+
+async def main():
+    async with agent:
+        result = await agent.run("List open PRs in civicteam/ai-chatbot")
+    print(result.output)
+```
+
+<Tip>
+  You can customize how tools are called (names, arguments, etc.). See Pydantic AI MCP client docs: [Tool call customization](https://ai.pydantic.dev/mcp/client/#tool-call-customization).
+</Tip>
+
+## Example: FastAPI Endpoint
+
+```python
+from fastapi import Depends
+from civic_auth.integrations.fastapi import create_auth_dependencies
+
+civic_auth_dep, get_current_user, require_auth = create_auth_dependencies(config)
+
+@app.post("/search", dependencies=[Depends(require_auth)])
+async def search(body: dict, civic = Depends(civic_auth_dep)):
+    tokens = await civic.get_tokens()
+    access_token = tokens["access_token"]
+    # Create a server per request (or reuse within a lifespan context)
+    server = MCPServerStreamableHTTP(
+        "https://nexus.civic.com/hub/mcp",
+        headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+    )
+    agent = Agent("openai:gpt-4o", toolsets=[server])
+    async with agent:
+        result = await agent.run(body.get("prompt", ""))
+    return {"output": result.output}
+```
+
+## Example: Flask Route
+
+```python
+from flask import request, jsonify, session
+from civic_auth.core import CivicAuth
+
+@app.post("/search")
+@civic_auth_required
+async def search():
+    access_token = session.get(CivicAuth.ACCESS_TOKEN_KEY)
+    server = MCPServerStreamableHTTP(
+        "https://nexus.civic.com/hub/mcp",
+        headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+    )
+    agent = Agent("openai:gpt-4o", toolsets=[server])
+    async with agent:
+        result = await agent.run(request.json.get("prompt", ""))
+    return jsonify({"output": result.output})
+```
+
+## Example: Django View
+
+```python
+from django.http import JsonResponse
+from civic_auth.core import CivicAuth
+from civic_auth.integrations.django import civic_auth_required
+import json, asyncio
+
+@civic_auth_required
+def search(request):
+    access_token = request.session.get(CivicAuth.ACCESS_TOKEN_KEY)
+    payload = json.loads(request.body)
+    server = MCPServerStreamableHTTP(
+        "https://nexus.civic.com/hub/mcp",
+        headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
+    )
+    agent = Agent("openai:gpt-4o", toolsets=[server])
+    async def run_prompt():
+        async with agent:
+            return await agent.run(payload.get("prompt", ""))
+    result = asyncio.run(run_prompt())
+    return JsonResponse({"output": result.output})
+```
+
+## Optional: OpenAI Python Usage
+
+```python
+from openai import OpenAI
+
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])  # set your key
+
+# Pseudocode: you decide when to call tools
+# 1) Ask model, 2) If tool call requested, call Nexus, 3) Send result back
+```
+
+<Info>
+  Server-to-server token validation? Use [/libraries/auth-verify](/libraries/auth-verify) to verify incoming Civic tokens when not using framework session helpers.
+</Info>
+
+

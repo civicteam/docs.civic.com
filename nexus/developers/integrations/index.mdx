@@ -1,0 +1,115 @@
+---
+title: AI SDKs Overview
+description: Integrate Civic Nexus with your AI application using popular SDKs
+icon: "plug"
+public: true
+---
+
+## Getting Started from Scratch
+
+Building a new AI application? Follow these steps in order:
+
+<Steps>
+  <Step title="Create your Next.js project">
+    Start with a fresh Next.js 14+ project:
+    ```bash
+    npx create-next-app@latest
+    ```
+  </Step>
+  <Step title="Set up Civic Auth login">
+    Use our AI-assisted prompt to quickly integrate Civic Auth into your Next.js app:
+    <Card title="Next.js + Civic Auth Setup" icon="robot" href="/nexus/ai-prompts/nextjs">
+      **AI-assisted setup** - Automatically configure authentication in your Next.js project
+    </Card>
+  </Step>
+  <Step title="Configure Nexus for your organization">
+    Once authentication is working, set up Nexus to provide tools to your application:
+
+    **a)** Visit [nexus.civic.com](https://nexus.civic.com) and create your organization
+    <Frame caption="Create your Nexus organization">
+      <img
+        className="rounded-lg"
+        src="/images/steps/nexus-dev/01.png"
+        alt="Nexus organization creation"
+      />
+    </Frame>
+
+    **b)** Connect the services you want your AI to access (GitHub, Slack, Dropbox, etc.)
+    <Frame caption="Connect your tools">
+      <img
+        className="rounded-lg"
+        src="/images/steps/nexus-dev/02.png"
+        alt="Adding tools to your Nexus organization"
+      />
+    </Frame>
+
+    **c)** Get your Client ID from [auth.civic.com](https://auth.civic.com)
+    <Frame caption="Get your Civic Auth Client ID">
+      <img
+        className="rounded-lg"
+        src="/images/steps/nexus-dev/03.png"
+        alt="Getting Client ID from auth.civic.com"
+      />
+    </Frame>
+
+    **d)** Link your Civic Auth Client ID in Nexus settings to enable authenticated tool access
+    <Frame caption="Link Client ID in Nexus">
+      <img
+        className="rounded-lg"
+        src="/images/steps/nexus-dev/04.png"
+        alt="Linking Client ID in Nexus settings"
+      />
+    </Frame>
+  </Step>
+  <Step title="Integrate an AI SDK">
+    Now you're ready to add AI capabilities! Choose an SDK below and follow its recipe to connect your authenticated users to Nexus tools.
+  </Step>
+</Steps>
+
+<Note>
+**Already have a Next.js app with Civic Auth?** Skip to Step 3 to configure Nexus, then choose your SDK integration below.
+</Note>
+
+## Choose Your Integration
+
+Once you've completed the setup steps above, choose the SDK that matches your stack:
+
+<CardGroup cols={2}>
+  <Card title="Vercel AI SDK" icon="triangle" href="/nexus/recipes/vercel-ai-sdk">
+    **Best for Next.js apps** - Streaming support, built for React Server Components
+  </Card>
+  <Card title="OpenAI SDK (Agents)" icon="robot" href="/nexus/recipes/openai-agents">
+    **Simplest setup** - Automatic tool handling with hostedMcpTool()
+  </Card>
+  <Card title="Anthropic SDK" icon="message" href="/nexus/recipes/anthropic">
+    **Native MCP support** - Built directly into Messages API
+  </Card>
+  <Card title="OpenAI SDK" icon="code" href="/nexus/recipes/openai-sdk">
+    **Full control** - Manual function calling approach
+  </Card>
+  <Card title="Python (Pydantic)" icon="python" href="/nexus/recipes/python-pydantic">
+    **Python applications** - Type-safe integration with Pydantic
+  </Card>
+</CardGroup>
+
+<Note>
+**Need help choosing?**
+- **Building a Next.js app?** → Vercel AI SDK
+- **Want the simplest setup?** → OpenAI SDK (Agents)
+- **Using Claude directly?** → Anthropic SDK
+- **Python developer?** → Python (Pydantic)
+</Note>
+
+## What You'll Get
+
+All integrations provide:
+- ✅ **Authenticated access** to user's connected tools
+- ✅ **Automatic tool discovery** - No manual configuration
+- ✅ **Secure token handling** - OAuth tokens managed by Civic
+- ✅ **Real-time access** - Tools reflect current user permissions
+
+## Need Help?
+
+<Card title="Join Our Community" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+  Get help from other developers building with Nexus
+</Card>
