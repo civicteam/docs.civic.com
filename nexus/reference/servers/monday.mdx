@@ -1,0 +1,432 @@
+---
+title: "Monday.com Server"
+description: "Project management and task coordination through Monday.com's comprehensive Work Graph platform"
+icon: "server"
+---
+
+# Monday.com Server
+
+## Overview
+
+The Monday.com server provides comprehensive project management and work coordination capabilities. Built by [Monday.com](https://monday.com), this server enables AI assistants to manage boards, items, workflows, forms, documents, dashboards, and complete project operations through the Work Graph.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to Monday.com">
+    Add the HubSpot server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Install the MCP app from the Monday Marketplace">
+    (You might need to ask a workspace admin to do this.)
+    Log into your monday.com account. Click on your avatar at the top right and choose "App marketplace". Search for "mcp" and install the "monday mcp" app. 
+  </Step>
+
+  <Step title="Authenticate with Monday.com">
+    On the Nexus Chat tab, ask for a list of all your tasks on monday.com.
+    An Authorization pop-up will appear, guiding you through the login process.
+  </Step>
+  <Step title="Test Connection">
+    Once you have logged in, Nexus will fetch your tasks from monday.com and list them.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Board Management" icon="table">
+    Manage boards, items, groups, and columns with full CRUD operations
+  </Card>
+  <Card title="Forms & Automation" icon="file-lines">
+    Create forms, manage questions, and automate data collection workflows
+  </Card>
+  <Card title="Documents & Dashboards" icon="chart-column">
+    Create documents with markdown, build dashboards, and visualize data with widgets
+  </Card>
+  <Card title="Workspace Organization" icon="folder-tree">
+    Organize workspaces, folders, and manage team collaboration structures
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Project Management" icon="list-check">
+    - **Board Creation**: Set up new boards with custom columns, groups, and workflows
+    - **Item Tracking**: Create, update, and manage items with detailed column values
+    - **Activity Monitoring**: Track board activity and changes over time
+    - **Update Management**: Add updates and comments to items for team communication
+  </Accordion>
+
+  <Accordion title="Form Building & Data Collection" icon="square-check">
+    - **Form Creation**: Build custom forms with various question types and validation
+    - **Question Configuration**: Create text, date, select, rating, and other question types
+    - **Form Customization**: Configure appearance, accessibility, and submission behavior
+    - **Response Handling**: Direct form submissions to specific boards and groups
+  </Accordion>
+
+  <Accordion title="Document Management" icon="file-alt">
+    - **Document Creation**: Create markdown documents in workspaces or attached to items
+    - **Document Organization**: Store documents in folders and link to specific items
+    - **Content Management**: Read and manage document collections across workspaces
+    - **Workspace Documentation**: Maintain project documentation alongside work items
+  </Accordion>
+
+  <Accordion title="Data Visualization" icon="chart-bar">
+    - **Dashboard Creation**: Build dashboards aggregating data from multiple boards
+    - **Widget Configuration**: Add charts, numbers, and battery widgets to dashboards
+    - **Schema Exploration**: Understand widget capabilities before configuration
+    - **Multi-Board Analytics**: Visualize data across project portfolios
+  </Accordion>
+
+  <Accordion title="Workspace Organization" icon="sitemap">
+    - **Workspace Management**: Create and configure workspaces with proper permissions
+    - **Folder Structure**: Organize boards and documents into logical folder hierarchies
+    - **Object Movement**: Reorganize boards, folders, and documents across workspaces
+    - **Team Coordination**: Manage users, teams, and collaboration structures
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (30)
+
+<AccordionGroup>
+  <Accordion title="Board & Item Management (5 tools)">
+    Core operations for working with boards and their items.
+
+    **Board Operations**
+    <AccordionGroup>
+      <Accordion title="get_board_info">
+        Get comprehensive board information including metadata, structure, owners, and configuration
+        - **Use Cases**: Understand board schema, column types, and available filters
+        - **Best Practice**: Always use before filtering or querying board items
+      </Accordion>
+      <Accordion title="get_board_activity">
+        Get board activity logs for a specified time range (defaults to last 30 days)
+        - **Parameters**: boardId (required), fromDate, toDate
+        - **Use Cases**: Track changes, audit activity, monitor team engagement
+      </Accordion>
+      <Accordion title="get_board_items_page">
+        Get board items with pagination, filtering, ordering, and column selection
+        - **Parameters**: boardId (required), filters, searchTerm, limit, cursor, includeColumns
+        - **Performance**: Set includeColumns=false when only counting or checking existence
+        - **Filtering**: Use get_board_info first to understand column structure
+      </Accordion>
+    </AccordionGroup>
+
+    **Item Operations**
+    <AccordionGroup>
+      <Accordion title="create_item">
+        Create new items, subitems, or duplicate existing items with modifications
+        - **Parameters**: boardId, name, columnValues (JSON string), groupId, parentItemId
+        - **Use Cases**: Add tasks, create subitems, duplicate templates
+      </Accordion>
+      <Accordion title="create_update">
+        Create updates/comments on board items with optional mentions
+        - **Parameters**: itemId, body, mentionsList (JSON string with user/team IDs)
+        - **Use Cases**: Team communication, progress updates, discussions
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      **Performance Tip**: Use `includeColumns: false` in get_board_items_page when you only need item counts or IDs to significantly reduce token usage.
+    </Info>
+  </Accordion>
+
+  <Accordion title="Board Structure (3 tools)">
+    Tools for creating and configuring board structure elements.
+
+    <AccordionGroup>
+      <Accordion title="create_board">
+        Create a new Monday.com board
+        - **Parameters**: boardName (required), boardKind (private/public/share), boardDescription, workspaceId
+        - **Use Cases**: Project setup, team workspaces, process templates
+      </Accordion>
+      <Accordion title="create_column">
+        Create a new column in a board with specific type and settings
+        - **Parameters**: boardId, columnType, columnTitle, columnDescription, columnSettings
+        - **Column Types**: text, status, date, people, numbers, dropdown, and 30+ more
+        - **Best Practice**: Use get_column_type_info to understand settings schema first
+      </Accordion>
+      <Accordion title="create_group">
+        Create a new group (section) in a board to organize items
+        - **Parameters**: boardId, groupName, groupColor, relativeTo, positionRelativeMethod
+        - **Use Cases**: Workflow phases, categorization, sprint planning
+        - **Note**: New items are created in the top group by default
+      </Accordion>
+    </AccordionGroup>
+
+    <Note>
+      Monday.com supports 30+ column types including status, people, date, timeline, dropdown, numbers, text, email, phone, location, and more.
+    </Note>
+  </Accordion>
+
+  <Accordion title="User & Team Management (1 tool)">
+    Precision-first user and team retrieval with optimized queries.
+
+    <AccordionGroup>
+      <Accordion title="list_users_and_teams">
+        Retrieve users and teams with flexible filtering options
+        - **Priority Parameters**: getMe (current user), name (search), userIds, teamIds
+        - **Optimization**: Use specific IDs when available for best performance
+        - **Returns**: User profiles with team memberships, team details with optional members
+        - **Best Practices**:
+          - Use `getMe: true` for current user (standalone parameter)
+          - Use `name` search when you have names but no IDs
+          - Use `userIds` or `teamIds` when available for highest precision
+          - Avoid broad queries without parameters
+      </Accordion>
+    </AccordionGroup>
+
+    <Warning>
+      The `getMe` and `name` parameters cannot be combined with other parameters. Use them standalone for targeted queries.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Forms (4 tools)">
+    Complete form creation, configuration, and question management.
+
+    **Form Management**
+    <AccordionGroup>
+      <Accordion title="create_form">
+        Create a new form with associated board for responses
+        - **Parameters**: destination_workspace_id (required), folder_id, board_kind, owner_ids
+        - **Returns**: board_id and formToken for future operations
+        - **Use Cases**: Lead capture, surveys, request intake, feedback collection
+      </Accordion>
+      <Accordion title="get_form">
+        Retrieve form details and configuration by form token
+        - **Parameters**: formToken (extracted from form URL)
+        - **URL Format**: forms.monday.com/forms/[TOKEN]?r=use1
+      </Accordion>
+      <Accordion title="update_form">
+        Update form settings, appearance, features, and metadata
+        - **Actions**: updateFeatures, updateAppearance, updateAccessibility, updateFormHeader
+        - **Actions**: updateQuestionOrder, setFormPassword, activate, deactivate
+        - **Configuration**: Appearance, layout, branding, submission behavior, access control
+      </Accordion>
+      <Accordion title="form_questions_editor">
+        Create, update, or delete form questions
+        - **Actions**: create, update, delete
+        - **Question Types**: ShortText, LongText, Email, Phone, Date, SingleSelect, MultiSelect
+        - **Question Types**: Boolean, Number, Rating, File, Location, Country, and more
+        - **Settings**: Validation, prefill, visibility, required, display options
+      </Accordion>
+    </AccordionGroup>
+
+    <Tip>
+      Forms automatically create boards to store responses. Configure the board group, owners, and subscribers during form creation.
+    </Tip>
+  </Accordion>
+
+  <Accordion title="Documents (2 tools)">
+    Create and manage Monday.com documents with markdown support.
+
+    <AccordionGroup>
+      <Accordion title="read_docs">
+        Get documents with pagination and filtering by ID or workspace
+        - **Query Types**: ids (document IDs), object_ids, workspace_ids
+        - **Pagination**: Default 25 per page, check has_more_pages for additional results
+        - **Ordering**: created_at or used_at
+      </Accordion>
+      <Accordion title="create_doc">
+        Create markdown documents in workspaces or attached to items
+        - **Location Types**: workspace (with optional folder_id), item (with optional column_id)
+        - **Parameters**: doc_name, markdown content, location configuration
+        - **Use Cases**: Project documentation, meeting notes, process guides
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      Documents can be created in workspaces (standalone) or attached to board items via doc columns for contextual documentation.
+    </Info>
+  </Accordion>
+
+  <Accordion title="Workspaces & Organization (8 tools)">
+    Comprehensive workspace, folder, and organizational structure management.
+
+    **Workspace Operations**
+    <AccordionGroup>
+      <Accordion title="list_workspaces">
+        List all accessible workspaces with ID, name, and description
+        - **Returns**: Up to 500 workspaces
+        - **Use Cases**: Workspace discovery, navigation, initial setup
+      </Accordion>
+      <Accordion title="workspace_info">
+        Get detailed workspace contents including boards, docs, and folders
+        - **Returns**: Up to 100 of each object type per workspace
+        - **Use Cases**: Workspace exploration, structure understanding
+      </Accordion>
+      <Accordion title="create_workspace">
+        Create a new workspace
+        - **Parameters**: name, workspaceKind (closed/open/template), description, accountProductId
+      </Accordion>
+      <Accordion title="update_workspace">
+        Update workspace properties
+        - **Parameters**: id, attributes (name, description, kind, accountProductId)
+      </Accordion>
+    </AccordionGroup>
+
+    **Folder Operations**
+    <AccordionGroup>
+      <Accordion title="create_folder">
+        Create a new folder in a workspace
+        - **Parameters**: workspaceId, name, color, fontWeight, customIcon, parentFolderId
+        - **Styling**: 16 color options, font weights, custom icons
+      </Accordion>
+      <Accordion title="update_folder">
+        Update folder properties and position
+        - **Parameters**: folderId, name, color, parentFolderId, position, workspaceId
+        - **Movement**: Change parent folder or reposition relative to other objects
+      </Accordion>
+      <Accordion title="move_object">
+        Move boards, folders, or overviews between locations
+        - **Object Types**: Board, Folder, Overview
+        - **Parameters**: objectType, id, position, parentFolderId, workspaceId
+        - **Use Cases**: Reorganization, workspace cleanup, structure optimization
+      </Accordion>
+    </AccordionGroup>
+
+    <Note>
+      Folders support 16 predefined colors, 4 font weights, and custom icons for visual organization and quick navigation.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Dashboards & Widgets (3 tools)">
+    Create and configure data visualization dashboards with widgets.
+
+    <AccordionGroup>
+      <Accordion title="create_dashboard">
+        Create a dashboard aggregating data from one or more boards
+        - **Parameters**: name, workspace_id, board_ids (1-50), kind (PUBLIC/PRIVATE)
+        - **Optional**: board_folder_id for organization
+        - **Use Cases**: Project portfolios, team analytics, executive reporting
+      </Accordion>
+      <Accordion title="all_widgets_schema">
+        Fetch JSON Schema 7 definitions for all available widget types
+        - **Returns**: Complete schema for CHART, NUMBER, BATTERY widgets
+        - **Use Cases**: Widget planning, validation, understanding capabilities
+        - **Best Practice**: Always call before creating widgets
+      </Accordion>
+      <Accordion title="create_widget">
+        Create a widget in a dashboard or board view
+        - **Widget Types**: CHART (various chart types), NUMBER (KPIs), BATTERY (progress indicators)
+        - **Parameters**: parent_container_id, parent_container_type, widget_kind, settings
+        - **Requirements**: Settings must conform to widget schema
+      </Accordion>
+    </AccordionGroup>
+
+    <Warning>
+      Always use `all_widgets_schema` before creating widgets to understand required settings and data types. Widget creation will fail if settings don't conform to schema.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Advanced GraphQL (4 tools)">
+    Direct GraphQL API access and schema exploration for advanced operations.
+
+    **GraphQL Operations**
+    <AccordionGroup>
+      <Accordion title="all_monday_api">
+        Execute any Monday.com GraphQL query or mutation
+        - **Parameters**: query (GraphQL string), variables (JSON string)
+        - **Use Cases**: Custom operations, complex queries, unsupported features
+        - **Best Practice**: Use get_graphql_schema and get_type_details first
+      </Accordion>
+      <Accordion title="get_graphql_schema">
+        Fetch the Monday.com GraphQL schema structure
+        - **Parameters**: operationType (read/write) - filter queries or mutations
+        - **Returns**: Available query fields, mutation fields, GraphQL types
+        - **Use Cases**: API exploration, schema understanding, query planning
+      </Accordion>
+      <Accordion title="get_type_details">
+        Get detailed information about a specific GraphQL type
+        - **Parameters**: typeName
+        - **Returns**: Type fields, arguments, descriptions, relationships
+        - **Use Cases**: Understanding data structures, planning queries
+      </Accordion>
+    </AccordionGroup>
+
+    **Column Schema**
+    <AccordionGroup>
+      <Accordion title="get_column_type_info">
+        Retrieve comprehensive column type information and settings schema
+        - **Parameters**: columnType (one of 30+ types)
+        - **Returns**: JSON schema definition, validation rules, available properties
+        - **Use Cases**: Column creation planning, settings validation
+      </Accordion>
+    </AccordionGroup>
+
+    <Tip>
+      For complex operations not covered by dedicated tools, use the GraphQL tools to craft custom queries. Start with schema exploration to understand available fields.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Configuration Requirements
+
+### Authentication Setup
+The Monday.com server uses OAuth2 authentication with Monday.com's API:
+
+<AccordionGroup>
+  <Accordion title="OAuth Scopes" icon="key">
+    **Required Scopes for Full Functionality:**
+    - **Boards**: Read/write access to boards, items, groups, columns
+    - **Users**: Read access to users and teams
+    - **Workspaces**: Manage workspaces, folders, and organization
+    - **Forms**: Create and manage forms and questions
+    - **Documents**: Read and create documents with markdown
+    - **Dashboards**: Create dashboards and widgets
+  </Accordion>
+
+  <Accordion title="Account Requirements" icon="building">
+    - **Monday.com Account**: Free or paid Monday.com account
+    - **API Access**: Ensure API access is enabled for your account tier
+    - **Permissions**: Appropriate role permissions for creating and managing resources
+    - **Rate Limits**: Be aware of API rate limits based on your account tier
+  </Accordion>
+</AccordionGroup>
+
+### Server Configuration
+- **Transport**: SSE (Server-Sent Events) - Remote MCP server
+
+<Note>
+The Monday.com server uses Server-Sent Events (SSE) for real-time communication with the Monday.com API.
+</Note>
+
+## Best Practices
+
+### Board & Item Management
+1. **Schema First**: Always use `get_board_info` before querying items to understand column structure
+2. **Performance Optimization**: Set `includeColumns: false` when you only need item counts or IDs
+3. **Filtering**: Use column-specific filters after understanding board schema from get_board_info
+4. **Pagination**: Use cursor-based pagination for large datasets
+
+### Form Building
+1. **Structure Planning**: Design form flow and question types before creation
+2. **Schema Validation**: Use form_questions_editor with appropriate question types and settings
+3. **User Experience**: Configure appearance, accessibility, and submission behavior
+4. **Response Management**: Set up board groups and notifications during form creation
+
+### Document Management
+1. **Location Strategy**: Decide between workspace docs (standalone) vs item docs (contextual)
+2. **Markdown Format**: Use proper markdown formatting for rich document content
+3. **Organization**: Use folders and workspaces for logical document grouping
+4. **Pagination**: Handle pagination for large document collections
+
+### Dashboard & Analytics
+1. **Schema First**: Always call `all_widgets_schema` before creating widgets
+2. **Board Selection**: Choose relevant boards that contain the data to visualize
+3. **Widget Configuration**: Validate settings against schema to prevent creation failures
+4. **Dashboard Organization**: Use folders to organize dashboards by purpose or team
+
+### GraphQL Operations
+1. **Schema Exploration**: Use `get_graphql_schema` and `get_type_details` before custom queries
+2. **Field Selection**: Request only needed fields to minimize data transfer
+3. **Column Planning**: Use `get_column_type_info` before creating columns
+4. **Testing**: Test queries with read operations before write operations
+
+<Tip>
+**Pro Tip**: Start with read operations (`get_board_info`, `list_workspaces`, `workspace_info`) to understand your environment structure before implementing create/update operations.
+</Tip>
