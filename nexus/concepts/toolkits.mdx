@@ -203,6 +203,29 @@ If you're using Nexus Chat or managing multiple toolkits, you can switch between
 
 ## Best Practices
 
+<Tip>
+Follow these guidelines to get the most out of your toolkits:
+</Tip>
+
+### Keep Toolkits Focused
+- **3-5 tools maximum** per toolkit for best AI performance
+- Choose tools that naturally work together for specific workflows
+- Avoid mixing unrelated tools (e.g., don't combine crypto data with marketing analytics)
+
+### Use Descriptive Names
+- **Good:** "Customer Support Kit", "Marketing Analytics", "Dev Debug Tools"
+- **Avoid:** "My Tools", "Work Stuff", "Toolkit 1"
+
+### Organize by Workflow, Not by Service
+- **Think workflow:** "Content creation process" → Linear + GitHub + Slack
+- **Don't think service:** "All my productivity tools" → 15+ different services
+
+### Test Your Combinations
+- Try asking your AI to perform typical tasks with your toolkit
+- Adjust the tool combination if the AI seems confused or chooses wrong tools
+- Remove tools that don't add value to the specific workflow
+
+### Additional Best Practices
 - **Create toolkits with as few tools as possible.** Use broad toolkits to help with configuration and data gathering, then once you know what you want, bake these into a new toolkit, and filter out all tools you don't need.
 - **Ask the LLM to configure itself** - once you have a process that works well for you, ask it to create a new toolkit and configure the toolkit data to help the LLM to reproduce it.
 - **Parameter presetting and tool filters can be used as guardrails,** preventing LLMs from accessing resources or performing actions that they are not permitted to. For more fine-grained guardrails, ask the LLM which guardrails are available to it. *Do not* use description fields as guardrails - unlike tool filters and parameter presets, these are guidelines only and LLMs are not beholden to them.
