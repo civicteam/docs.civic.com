@@ -26,13 +26,13 @@ The fastest way to get started is with our starter template:
 ```bash
 git clone https://github.com/civicteam/ai-chatbot.git
 cd ai-chatbot
-npm install
+pnpm install
 
 # Copy the example env file and add your keys
 cp .env.example .env.local
 # Edit .env.local with your CIVIC_AUTH_CLIENT_ID and AI provider keys
 
-npm run dev
+pnpm dev
 ```
 
 <Accordion title="Required Environment Variables">
@@ -70,17 +70,17 @@ Want to integrate Nexus into an existing Next.js project? Follow the guide below
 Create a `.env.local` file in your project root:
 
 ```bash
-# Get your Client ID at https://auth.civic.com
+# Civic Auth
 CIVIC_AUTH_CLIENT_ID=your_client_id_here
 
-# AI Provider API key from Vercel AI Gateway
-AI_GATEWAY_API_KEY=your_api_key
+# AI Gateway (works with OpenAI, Anthropic, and other providers)
+AI_GATEWAY_API_KEY=your_vercel_ai_gateway_key
 ```
 
 <Note>
 **Getting your API keys:**
 1. **Civic Client ID**: Visit [auth.civic.com](https://auth.civic.com), create a new application, and copy the Client ID
-2. **AI Gateway API Key**: Visit [vercel.com/ai-gateway](https://vercel.com/ai-gateway) to get your API key for AI providers
+2. **AI Gateway API Key**: Visit [vercel.com/ai-gateway](https://vercel.com/ai-gateway) to get one API key that works with OpenAI, Anthropic, and other providers
 </Note>
 
 ## Installation
