@@ -175,8 +175,8 @@ If you're using Nexus Chat or managing multiple toolkits, you can switch between
   <Accordion title="Toolkit Descriptions">
     If you are building a toolkit for a very specific workflow or set of workflows, you can add useful context to the toolkit, and it will be provided to the context when connecting Nexus.
 
-    **Example:**
-    "In this toolkit I will be checking for new issues from my incident manager, investigating in Github, and posting my findings to the project management service. Please set the toolkit description to summarise that process and provide instructions to the LLM when using it."
+    **Sample prompts:**
+    - "In this toolkit I will be checking for new issues from my incident manager, investigating in Github, and posting my findings to the project management service. Please set the toolkit description to summarise that process and provide instructions to the LLM when using it."
   </Accordion>
 
   <Accordion title="Aliasing Tools">
@@ -186,18 +186,16 @@ If you're using Nexus Chat or managing multiple toolkits, you can switch between
     This is particularly useful when combined with the preset parameter feature, to convert a generic tool to a targeted one.
     </Note>
 
-    **Example:**
-
-    **Step 1:** "Please preset the Google Analytics create-report tool with the following report parameters: `<...>` and the following property id `<...>`"
-
-    **Step 2:** "Please rename the create-report tool to 'get-24h-web-funnel-statistics'"
+    **Sample prompts:**
+    - **Step 1:** "Please preset the Google Analytics create-report tool with the following report parameters: `<...>` and the following property id `<...>`"
+    - **Step 2:** "Please rename the create-report tool to 'get-24h-web-funnel-statistics'"
   </Accordion>
 
   <Accordion title="Custom Tool Descriptions">
     Tool descriptions are determined by Nexus and the MCP server providers, and provide only generic usage instructions to the LLM by default. Custom Descriptions combine with the other features to allow you to refine the tools to your specific use-case, by giving the LLM hints as to how you like to use the tools.
 
-    **Example:**
-    "Please update the slack get-messages tool description to look in the following channels: ..."
+    **Sample prompts:**
+    - "Please update the slack get-messages tool description to look in the following channels: ..."
   </Accordion>
 </AccordionGroup>
 
