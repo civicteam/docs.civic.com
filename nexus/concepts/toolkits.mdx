@@ -210,7 +210,7 @@ Follow these guidelines to get the most out of your toolkits:
 ### Keep Toolkits Focused
 - **3-5 tools maximum** per toolkit for best AI performance
 - Choose tools that naturally work together for specific workflows
-- Avoid mixing unrelated tools (e.g., don't combine crypto data with marketing analytics)
+- Remove tools you don't need by asking the LLM to filter them out.
 
 ### Use Descriptive Names
 - **Good:** "Customer Support Kit", "Marketing Analytics", "Dev Debug Tools"
@@ -225,10 +225,16 @@ Follow these guidelines to get the most out of your toolkits:
 - Adjust the tool combination if the AI seems confused or chooses wrong tools
 - Remove tools that don't add value to the specific workflow
 
-### Additional Best Practices
-- **Create toolkits with as few tools as possible.** Use broad toolkits to help with configuration and data gathering, then once you know what you want, bake these into a new toolkit, and filter out all tools you don't need.
-- **Ask the LLM to configure itself** - once you have a process that works well for you, ask it to create a new toolkit and configure the toolkit data to help the LLM to reproduce it.
-- **Parameter presetting and tool filters can be used as guardrails,** preventing LLMs from accessing resources or performing actions that they are not permitted to. For more fine-grained guardrails, ask the LLM which guardrails are available to it. *Do not* use description fields as guardrails - unlike tool filters and parameter presets, these are guidelines only and LLMs are not beholden to them.
+### Configure your Toolkit
+- Use broad toolkits to help figure out what you want, then bake the ones you need into a new toolkit.
+- Ask the LLM to configure itself. once you have a process that works well for you, ask it to create a new toolkit and configure the toolkit data to help the LLM to reproduce it.
+
+### Stay Safe
+- Parameter presetting and tool filters can be used as guardrails
+- An LLM cannot use tools that you filter out, or override parameters you preset
+- For more fine-grained guardrails, ask the LLM which guardrails are available to it
+- *Do not* use descriptions as guardrails
+- Unlike tool filters and parameter presets, descriptions are guidelines only and LLMs are not beholden to them.
 
 ## Common Toolkit Patterns
 
