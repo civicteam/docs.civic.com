@@ -1,0 +1,537 @@
+---
+title: "Pipedrive Server"
+description: "Sales CRM and pipeline management through Pipedrive's comprehensive sales platform"
+icon: "server"
+---
+
+# Pipedrive Server
+
+## Overview
+
+The Pipedrive server provides comprehensive sales CRM and pipeline management capabilities. Built by [Pipedrive](https://www.pipedrive.com), this server enables AI assistants to manage deals, contacts, organizations, activities, and complete sales operations through Pipedrive's API.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to Pipedrive">
+    Add the Pipedrive server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authenticate with Pipedrive">
+    Connect your Pipedrive account using an API token to access your CRM data.
+  </Step>
+  <Step title="Test Connection">
+    Start with `get_pipelines` to explore your sales pipelines and `get_deals` to view your active deals.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Deal Management" icon="handshake">
+    Track and manage sales deals through your pipeline with full CRUD operations
+  </Card>
+  <Card title="Contact Management" icon="users">
+    Manage persons and organizations with comprehensive contact information
+  </Card>
+  <Card title="Pipeline Configuration" icon="chart-line">
+    Configure sales pipelines, stages, and deal progression workflows
+  </Card>
+  <Card title="Activity Tracking" icon="calendar-check">
+    Schedule and track calls, meetings, tasks, and other sales activities
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Sales Pipeline Management" icon="funnel-dollar">
+    - **Deal Tracking**: Create, update, and monitor deals through your sales stages
+    - **Pipeline Configuration**: Set up custom pipelines with stages and probabilities
+    - **Deal Analysis**: Filter deals by status, owner, person, or organization
+    - **Batch Operations**: Bulk create, update, or delete deals for efficiency
+  </Accordion>
+
+  <Accordion title="Contact & Relationship Management" icon="address-card">
+    - **Person Management**: Maintain comprehensive contact profiles with email and phone
+    - **Organization Tracking**: Manage company accounts with addresses and relationships
+    - **Contact Search**: Find persons and organizations with flexible search capabilities
+    - **Contact Linking**: Associate persons with organizations and deals
+  </Accordion>
+
+  <Accordion title="Activity & Task Management" icon="tasks">
+    - **Activity Scheduling**: Create calls, meetings, tasks, deadlines, and emails
+    - **Activity Tracking**: Monitor completion status and track team activities
+    - **Due Date Management**: Set and track due dates and times for activities
+    - **Activity Organization**: Link activities to deals, persons, and organizations
+  </Accordion>
+
+  <Accordion title="Notes & Documentation" icon="sticky-note">
+    - **Note Creation**: Add notes to deals, persons, and organizations
+    - **Note Pinning**: Pin important notes for quick visibility
+    - **Note Organization**: Filter notes by associated entity or user
+    - **Batch Operations**: Manage multiple notes efficiently
+  </Accordion>
+
+  <Accordion title="Universal Search" icon="magnifying-glass">
+    - **Cross-Object Search**: Search across deals, persons, organizations, and more
+    - **Related Items**: Include related items in search results
+    - **Flexible Filtering**: Use exact match or fuzzy search with field selection
+    - **Comprehensive Results**: Get unified results across multiple entity types
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (54)
+
+<AccordionGroup>
+  <Accordion title="Deal Management (10 tools)">
+    Core operations for managing sales deals and opportunities.
+
+    **Deal Operations**
+    <AccordionGroup>
+      <Accordion title="get_deals">
+        Get a list of deals from Pipedrive with filtering and pagination
+        - **Parameters**: start, limit (default: 100, max: 500), status, filter_id
+        - **Filters**: user_id, person_id, org_id for targeted retrieval
+        - **Status Options**: all_not_deleted, open, won, lost, deleted
+      </Accordion>
+      <Accordion title="get_deal">
+        Get a specific deal by ID with complete details
+        - **Parameters**: id (required)
+        - **Returns**: Full deal information including value, stage, dates, associations
+      </Accordion>
+      <Accordion title="search_deals">
+        Search for deals using text queries
+        - **Parameters**: term (required), fields, exact_match, person_id, org_id
+        - **Use Cases**: Find deals by title, filter by contacts or accounts
+      </Accordion>
+      <Accordion title="create_deal">
+        Create a new deal in Pipedrive
+        - **Required**: title
+        - **Optional**: value, currency, user_id, person_id, org_id, stage_id, status
+        - **Additional**: probability (0-100), expected_close_date, visibility settings
+      </Accordion>
+      <Accordion title="update_deal">
+        Update an existing deal
+        - **Required**: id
+        - **Updatable**: All deal properties including title, value, stage, status
+      </Accordion>
+      <Accordion title="delete_deal">
+        Delete a deal from Pipedrive
+        - **Required**: id
+        - **Note**: Permanently removes the deal
+      </Accordion>
+    </AccordionGroup>
+
+    **Batch Operations**
+    <AccordionGroup>
+      <Accordion title="batch_create_deals">
+        Create multiple deals in a single operation
+        - **Parameters**: deals array (each with title, value, currency, etc.)
+        - **Efficiency**: Bulk deal creation for imports or bulk operations
+      </Accordion>
+      <Accordion title="batch_update_deals">
+        Update multiple deals simultaneously
+        - **Parameters**: deals array (each must include id)
+        - **Use Cases**: Mass status updates, bulk reassignment
+      </Accordion>
+      <Accordion title="batch_delete_deals">
+        Delete multiple deals in one operation
+        - **Parameters**: ids array
+        - **Use Cases**: Bulk cleanup, data management
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      **Deal Status Values**: open (active), won (closed won), lost (closed lost), deleted (removed)
+    </Info>
+  </Accordion>
+
+  <Accordion title="Person Management (9 tools)">
+    Manage individual contacts with comprehensive profile information.
+
+    **Person Operations**
+    <AccordionGroup>
+      <Accordion title="get_persons">
+        Get a list of persons from Pipedrive
+        - **Parameters**: start, limit (default: 100, max: 500), user_id, filter_id
+        - **Filters**: first_char to filter by name's first letter
+      </Accordion>
+      <Accordion title="get_person">
+        Get a specific person by ID
+        - **Parameters**: id (required)
+        - **Returns**: Complete contact information including email, phone, organization
+      </Accordion>
+      <Accordion title="search_persons">
+        Search for persons using text queries
+        - **Parameters**: term (required), fields, exact_match, org_id
+        - **Use Cases**: Find contacts by name, filter by organization
+      </Accordion>
+      <Accordion title="create_person">
+        Create a new person in Pipedrive
+        - **Required**: name
+        - **Optional**: owner_id, org_id, email, phone, visible_to
+      </Accordion>
+      <Accordion title="update_person">
+        Update an existing person
+        - **Required**: id
+        - **Updatable**: name, owner_id, org_id, email, phone, visibility
+      </Accordion>
+      <Accordion title="delete_person">
+        Delete a person from Pipedrive
+        - **Required**: id
+      </Accordion>
+    </AccordionGroup>
+
+    **Batch Operations**
+    <AccordionGroup>
+      <Accordion title="batch_create_persons">
+        Create multiple persons in one operation
+        - **Parameters**: persons array (each with name, email, phone, org_id)
+      </Accordion>
+      <Accordion title="batch_update_persons">
+        Update multiple persons simultaneously
+        - **Parameters**: persons array (each must include id)
+      </Accordion>
+      <Accordion title="batch_delete_persons">
+        Delete multiple persons in one operation
+        - **Parameters**: ids array
+      </Accordion>
+    </AccordionGroup>
+
+    <Note>
+      **Visibility Options**: 1=Owner & followers, 3=Entire company, 5=Owner's visibility group, 7=Owner's visibility group and sub-groups
+    </Note>
+  </Accordion>
+
+  <Accordion title="Organization Management (9 tools)">
+    Manage company accounts and organizational relationships.
+
+    **Organization Operations**
+    <AccordionGroup>
+      <Accordion title="get_organizations">
+        Get a list of organizations from Pipedrive
+        - **Parameters**: start, limit (default: 100, max: 500), user_id, filter_id
+        - **Filters**: first_char to filter by name's first letter
+      </Accordion>
+      <Accordion title="get_organization">
+        Get a specific organization by ID
+        - **Parameters**: id (required)
+        - **Returns**: Complete organization details including address and owner
+      </Accordion>
+      <Accordion title="search_organizations">
+        Search for organizations using text queries
+        - **Parameters**: term (required), fields, exact_match
+        - **Use Cases**: Find companies by name with flexible search
+      </Accordion>
+      <Accordion title="create_organization">
+        Create a new organization in Pipedrive
+        - **Required**: name
+        - **Optional**: owner_id, visible_to, address
+      </Accordion>
+      <Accordion title="update_organization">
+        Update an existing organization
+        - **Required**: id
+        - **Updatable**: name, owner_id, visible_to, address
+      </Accordion>
+      <Accordion title="delete_organization">
+        Delete an organization from Pipedrive
+        - **Required**: id
+      </Accordion>
+    </AccordionGroup>
+
+    **Batch Operations**
+    <AccordionGroup>
+      <Accordion title="batch_create_organizations">
+        Create multiple organizations in one operation
+        - **Parameters**: organizations array (each with name, owner_id, address)
+      </Accordion>
+      <Accordion title="batch_update_organizations">
+        Update multiple organizations simultaneously
+        - **Parameters**: organizations array (each must include id)
+      </Accordion>
+      <Accordion title="batch_delete_organizations">
+        Delete multiple organizations in one operation
+        - **Parameters**: ids array
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Pipeline & Stage Management (8 tools)">
+    Configure and manage sales pipelines and deal stages.
+
+    **Pipeline Operations**
+    <AccordionGroup>
+      <Accordion title="get_pipelines">
+        Get all pipelines in your Pipedrive account
+        - **Returns**: List of all configured pipelines
+        - **Use Cases**: Discover available pipelines, understand sales structure
+      </Accordion>
+      <Accordion title="get_pipeline">
+        Get a specific pipeline by ID
+        - **Parameters**: id (required)
+        - **Returns**: Pipeline details including stages and configuration
+      </Accordion>
+      <Accordion title="create_pipeline">
+        Create a new sales pipeline
+        - **Required**: name
+        - **Optional**: deal_probability (0 or 1), order_nr, active status
+      </Accordion>
+      <Accordion title="update_pipeline">
+        Update an existing pipeline
+        - **Required**: id
+        - **Updatable**: name, deal_probability, order_nr, active status
+      </Accordion>
+      <Accordion title="delete_pipeline">
+        Delete a pipeline from Pipedrive
+        - **Required**: id
+        - **Warning**: Affects all deals in the pipeline
+      </Accordion>
+    </AccordionGroup>
+
+    **Stage Operations**
+    <AccordionGroup>
+      <Accordion title="get_stages">
+        Get pipeline stages
+        - **Parameters**: pipeline_id (optional filter)
+        - **Returns**: All stages or stages for a specific pipeline
+      </Accordion>
+      <Accordion title="get_stage">
+        Get a specific stage by ID
+        - **Parameters**: id (required)
+        - **Returns**: Stage details including probability and rotten settings
+      </Accordion>
+      <Accordion title="create_stage">
+        Create a new stage in a pipeline
+        - **Required**: name, pipeline_id
+        - **Optional**: deal_probability (0-100), rotten_days, rotten_flag, order_nr
+      </Accordion>
+      <Accordion title="update_stage">
+        Update an existing stage
+        - **Required**: id
+        - **Updatable**: All stage properties including probability and rotten settings
+      </Accordion>
+      <Accordion title="delete_stage">
+        Delete a stage from a pipeline
+        - **Required**: id
+      </Accordion>
+    </AccordionGroup>
+
+    <Tip>
+      **Rotten Deals**: Set rotten_days to automatically flag deals that stay in a stage too long without activity.
+    </Tip>
+  </Accordion>
+
+  <Accordion title="Activity Management (9 tools)">
+    Schedule and track sales activities including calls, meetings, and tasks.
+
+    **Activity Operations**
+    <AccordionGroup>
+      <Accordion title="get_activities">
+        Get a list of activities from Pipedrive
+        - **Parameters**: start, limit (default: 100, max: 500), user_id, filter_id
+        - **Filters**: type, done (0=not done, 1=done)
+        - **Use Cases**: View pending tasks, track completed activities
+      </Accordion>
+      <Accordion title="get_activity">
+        Get a specific activity by ID
+        - **Parameters**: id (required)
+        - **Returns**: Complete activity details including due date, duration, notes
+      </Accordion>
+      <Accordion title="create_activity">
+        Create a new activity in Pipedrive
+        - **Required**: subject, type (call, meeting, task, deadline, email, lunch)
+        - **Optional**: due_date, due_time, duration, user_id, deal_id, person_id, org_id
+        - **Additional**: note, done status (0 or 1)
+      </Accordion>
+      <Accordion title="update_activity">
+        Update an existing activity
+        - **Required**: id
+        - **Updatable**: All activity properties including subject, type, dates, associations
+      </Accordion>
+      <Accordion title="delete_activity">
+        Delete an activity from Pipedrive
+        - **Required**: id
+      </Accordion>
+      <Accordion title="mark_activity_done">
+        Mark an activity as completed (convenience method)
+        - **Required**: id
+        - **Use Cases**: Quick completion without updating other fields
+      </Accordion>
+    </AccordionGroup>
+
+    **Batch Operations**
+    <AccordionGroup>
+      <Accordion title="batch_create_activities">
+        Create multiple activities in one operation
+        - **Parameters**: activities array (each with subject, type, due_date, etc.)
+      </Accordion>
+      <Accordion title="batch_update_activities">
+        Update multiple activities simultaneously
+        - **Parameters**: activities array (each must include id)
+      </Accordion>
+      <Accordion title="batch_delete_activities">
+        Delete multiple activities in one operation
+        - **Parameters**: ids array
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      **Activity Types**: call, meeting, task, deadline, email, lunch. Each type can have due dates, times, and durations.
+    </Info>
+  </Accordion>
+
+  <Accordion title="Note Management (8 tools)">
+    Create and manage notes attached to deals, persons, and organizations.
+
+    **Note Operations**
+    <AccordionGroup>
+      <Accordion title="get_notes">
+        Get a list of notes from Pipedrive
+        - **Parameters**: start, limit (default: 100, max: 500), user_id
+        - **Filters**: deal_id, person_id, org_id, pinned flags
+        - **Use Cases**: View notes by entity, filter pinned notes
+      </Accordion>
+      <Accordion title="get_note">
+        Get a specific note by ID
+        - **Parameters**: id (required)
+        - **Returns**: Note content and associated entities
+      </Accordion>
+      <Accordion title="create_note">
+        Create a new note in Pipedrive
+        - **Required**: content
+        - **Optional**: user_id, deal_id, person_id, org_id
+        - **Pinning**: pinned_to_deal_flag, pinned_to_person_flag, pinned_to_organization_flag
+      </Accordion>
+      <Accordion title="update_note">
+        Update an existing note
+        - **Required**: id
+        - **Updatable**: content, associations, pinning flags
+      </Accordion>
+      <Accordion title="delete_note">
+        Delete a note from Pipedrive
+        - **Required**: id
+      </Accordion>
+    </AccordionGroup>
+
+    **Batch Operations**
+    <AccordionGroup>
+      <Accordion title="batch_create_notes">
+        Create multiple notes in one operation
+        - **Parameters**: notes array (each with content, deal_id, person_id)
+      </Accordion>
+      <Accordion title="batch_update_notes">
+        Update multiple notes simultaneously
+        - **Parameters**: notes array (each must include id)
+      </Accordion>
+      <Accordion title="batch_delete_notes">
+        Delete multiple notes in one operation
+        - **Parameters**: ids array
+      </Accordion>
+    </AccordionGroup>
+
+    <Note>
+      **Note Pinning**: Pin notes (flag value 1) to make them prominent on deals, persons, or organizations. Use 0 to unpin.
+    </Note>
+  </Accordion>
+
+  <Accordion title="Universal Search (1 tool)">
+    Search across multiple entity types in a single query.
+
+    <AccordionGroup>
+      <Accordion title="search_items">
+        Search across multiple item types in Pipedrive
+        - **Required**: term
+        - **Item Types**: deal, person, organization, product, lead, file
+        - **Parameters**: item_types (comma-separated), fields, exact_match
+        - **Options**: search_for_related_items, include_fields
+        - **Pagination**: start, limit
+        - **Use Cases**: Universal search, cross-entity discovery, related item exploration
+      </Accordion>
+    </AccordionGroup>
+
+    <Tip>
+      **Pro Tip**: Use `search_items` without specifying item_types to search across all entity types at once for comprehensive results.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Configuration Requirements
+
+### Authentication Setup
+The Pipedrive server uses API Key authentication:
+
+<AccordionGroup>
+  <Accordion title="API Token" icon="key">
+    **Obtaining Your API Token:**
+    1. Log in to your Pipedrive account
+    2. Navigate to Settings → Personal → API
+    3. Copy your personal API token
+    4. Keep the token secure and never share it publicly
+
+    **Token Scope:**
+    - Full access to your Pipedrive data
+    - Read and write permissions for all CRM entities
+    - Honors your user permissions and visibility settings
+  </Accordion>
+
+  <Accordion title="Account Requirements" icon="building">
+    - **Pipedrive Account**: Any Pipedrive plan (Essential, Advanced, Professional, Enterprise)
+    - **API Access**: API access is available on all Pipedrive plans
+    - **Permissions**: API operations respect your user role and visibility settings
+    - **Rate Limits**: Be aware of Pipedrive's API rate limits (varies by plan)
+  </Accordion>
+</AccordionGroup>
+
+### Server Configuration
+- **Transport**: STDIO-hosted (local Hub Bridge required)
+- **Hub Bridge**: Uses `npx -y @civic/hub-bridge` for authentication and requests
+- **API Integration**: Direct connection to Pipedrive's REST API v1
+- **Type**: Experimental - Active development with expanding capabilities
+
+<Note>
+The Pipedrive server requires Hub Bridge for authentication management and API request handling.
+</Note>
+
+## Best Practices
+
+### Deal Management
+1. **Pipeline First**: Use `get_pipelines` and `get_stages` to understand your sales structure before creating deals
+2. **Status Tracking**: Use appropriate status values (open, won, lost) to maintain accurate pipeline metrics
+3. **Deal Associations**: Link deals to persons and organizations for complete relationship tracking
+4. **Batch Operations**: Use batch tools when creating or updating multiple deals for better performance
+
+### Contact Management
+1. **Organization Links**: Associate persons with organizations to maintain company relationships
+2. **Search Efficiency**: Use search tools with specific fields for faster results
+3. **Visibility Settings**: Configure appropriate visibility levels based on team structure
+4. **Data Quality**: Maintain consistent email and phone formats for better data integrity
+
+### Activity Planning
+1. **Activity Types**: Choose appropriate types (call, meeting, task) based on the action required
+2. **Due Dates**: Always set due dates and times for accountability
+3. **Association**: Link activities to relevant deals, persons, or organizations for context
+4. **Completion Tracking**: Mark activities as done to track team productivity
+
+### Pipeline Configuration
+1. **Stage Progression**: Order stages logically from initial contact to closed won/lost
+2. **Probability Mapping**: Set realistic win probabilities for each stage
+3. **Rotten Deal Alerts**: Configure rotten_days to identify stalled deals
+4. **Active Management**: Use order_nr to control stage display order
+
+### Note Management
+1. **Pinning Strategy**: Pin important notes for quick visibility but avoid over-pinning
+2. **Context Linking**: Always attach notes to deals, persons, or organizations
+3. **Batch Creation**: Use batch operations when adding notes to multiple entities
+4. **Content Quality**: Write clear, concise notes that provide value for future reference
+
+<Warning>
+Pipedrive has API rate limits that vary by plan. Use batch operations when possible and implement proper error handling for rate limit responses.
+</Warning>
+
+<Tip>
+**Pro Tip**: Start with read operations (`get_pipelines`, `get_deals`, `get_persons`) to understand your Pipedrive structure before implementing create/update operations.
+</Tip>
