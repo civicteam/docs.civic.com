@@ -1,0 +1,372 @@
+---
+title: "React Router 7"
+icon: "/images/rr7/rr_logo_light.svg"
+public: true
+---
+
+<Info>
+  **React Router 7 (formerly Remix)**: This guide covers React Router 7, which is the evolution of the Remix framework.
+  If you're migrating from Remix, the integration patterns are very similar.
+</Info>
+
+## Quick Start
+
+Integrate Civic Auth into your React Router 7 application using the following steps (a working example is available in our [github examples repo](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/react-router)):
+
+<Note>**Important**: Make sure your application is using React Router version ^7.0.0 or higher.</Note>
+
+<Info>
+  This guide assumes you are using TypeScript. Please adjust the snippets as needed to remove the types if you are using
+  plain JS.
+</Info>
+
+### 1. Enable Middleware Feature Flag
+
+First, enable the middleware feature in your React Router config. Create or update `react-router.config.ts`:
+
+```ts react-router.config.ts
+import type { Config } from "@react-router/dev/config";
+
+export default {
+  future: {
+    unstable_middleware: true,
+  },
+} satisfies Config;
+```
+
+<Note>**Important**: Middleware is currently experimental in React Router 7 and requires this feature flag to be enabled.</Note>
+
+### 2. Set Up Authentication Middleware
+
+Configure authentication middleware to handle auth centrally, similar to Next.js middleware. This approach is more efficient as it runs once per request before any loaders.
+
+Update `app/root.tsx`:
+
+```tsx app/root.tsx
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import type { LinksFunction, Route } from "react-router";
+import "./tailwind.css";
+
+import { authMiddleware, userContext } from "@civic/auth/react-router-7";
+
+export const unstable_middleware = [
+  authMiddleware({
+    clientId: "YOUR_CLIENT_ID",
+  }),
+];
+
+export const links: LinksFunction = () => [
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  {
+    rel: "preconnect",
+    href: "https://fonts.gstatic.com",
+    crossOrigin: "anonymous",
+  },
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+  },
+];
+
+export function loader({ context }: Route.LoaderArgs) {
+  const user = context.get(userContext); // Guaranteed to exist
+  return { user };
+}
+
+function Layout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        {children}
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
+}
+
+export function ErrorBoundary() {
+  return (
+    <Layout>
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900">Something went wrong</h1>
+          <p className="mt-2 text-gray-600">Please try refreshing the page</p>
+        </div>
+      </div>
+    </Layout>
+  );
+}
+
+export default function App() {
+  return (
+    <Layout>
+      <Outlet />
+    </Layout>
+  );
+}
+```
+
+## Usage
+
+### Getting User Information on the Frontend
+
+The React Router 7 integration provides several components and hooks for frontend authentication:
+
+#### UserButton Component
+
+The `UserButton` component provides a complete sign-in/sign-out experience:
+
+```tsx app/routes/_index.tsx
+import { useLoaderData } from "react-router";
+import type { LoaderFunctionArgs, MetaFunction } from "react-router";
+import { getUser } from "~/routes/auth.$";
+import { UserButton } from "@civic/auth/react-router-7/components/UserButton";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "My App" }];
+};
+
+export default function Index() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <UserButton
+        onSignIn={(user) => console.log("User signed in", user)}
+        onSignOut={() => console.log("User signed out")}
+      />
+
+      {user && (
+        <div>
+          <h2>Welcome, {user.name}!</h2>
+          <p>Email: {user.email}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+#### useUser Hook
+
+For accessing user information in components:
+
+```tsx MyComponent.tsx
+import { useUser } from "@civic/auth/react-router-7";
+
+export function MyComponent() {
+  const { user, isLoggedIn } = useUser();
+
+  if (!isLoggedIn) {
+    return <div>Please sign in</div>;
+  }
+
+  return <div>Hello {user.name}!</div>;
+}
+```
+
+#### Custom Authentication Logic
+
+For custom sign-in buttons and authentication flows:
+
+```tsx CustomSignIn.tsx
+import { useCallback } from "react";
+import { useUser } from "@civic/auth/react-router-7";
+
+export function CustomSignIn() {
+  const { signIn, signOut } = useUser();
+
+  const doSignIn = useCallback(() => {
+    console.log("Starting sign-in process");
+    signIn()
+      .then(() => {
+        console.log("Sign-in completed successfully");
+      })
+      .catch((error) => {
+        console.error("Sign-in failed:", error);
+      });
+  }, [signIn]);
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
+  return (
+    <div>
+      <button onClick={doSignIn}>Sign In</button>
+      <button onClick={handleSignOut}>Sign Out</button>
+    </div>
+  );
+}
+```
+
+## Protected Routes
+
+React Router 7 supports route-level authentication using loaders. Protected routes can access user data directly from context:
+
+### Creating a Protected Route
+
+Create a protected route that gets user data from context:
+
+```tsx app/routes/protected._index.tsx
+import { data, redirect, Outlet } from "react-router";
+import type { Route, MetaFunction } from "react-router";
+import { userContext } from "@civic/auth/react-router-7";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "Protected Page - Civic Auth Demo" }];
+};
+
+export function loader({ context }: Route.LoaderArgs) {
+  // Get user from context (set by middleware)
+  const user = context.get(userContext);
+
+  if (!user) {
+    // Redirect to home page if user is not authenticated
+    return redirect("/");
+  }
+
+  return data({ user });
+}
+
+export default function ProtectedPage() {
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <Outlet />
+    </div>
+  );
+}
+```
+
+### Protected Route Layout
+
+Create the protected route content that displays to authenticated users:
+
+```tsx app/routes/protected.tsx
+import { Link } from "react-router";
+import type { MetaFunction } from "react-router";
+import { useUser } from "@civic/auth/react-router-7/useUser";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "Protected Page - Civic Auth Demo" }];
+};
+
+export default function ProtectedLayout() {
+  const { user } = useUser();
+
+  return (
+    <div className="flex h-screen items-center justify-center text-white">
+      <div className="flex flex-col items-center gap-8 p-8 border rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold">Protected Page</h1>
+
+        <div className="text-center">
+          <p className="mb-4">Welcome to this protected page, {user?.name || "User"}!</p>
+          <p className="text-gray-600 mb-6">This content is only visible to authenticated users.</p>
+        </div>
+
+        <div className="flex gap-4">
+          <Link to="/" className="px-4 py-2 rounded hover:bg-gray-300">
+            Back to Home
+          </Link>
+          <Link to="/auth/logout" className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+            Logout
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+```
+
+### How It Works
+
+1. **Centralized Auth**: Middleware handles authentication once per request before any loaders
+2. **Context Storage**: User data is stored in React Router context for all routes to access
+3. **Route Protection**: Protected route loaders get user data from context
+4. **Redirect Logic**: If no user is found in context, it redirects to the home page
+5. **Performance**: More efficient as authentication logic runs only once per request
+
+### Alternative Protection Patterns
+
+#### Reusable Protection Utilities
+
+```tsx app/utils/requireAuth.ts
+import { redirect } from "react-router";
+import { userContext } from "@civic/auth/react-router-7";
+
+export function requireAuth(context: any) {
+  const user = context.get(userContext);
+
+  if (!user) {
+    throw redirect("/auth/login");
+  }
+
+  // Additional admin-specific checks can go here
+  if (!isUserAdmin(user.email)) {
+    throw redirect("/");
+  }
+
+  return user;
+}
+```
+
+Then use it in any protected route:
+
+```tsx app/routes/admin.tsx
+import type { Route } from "react-router";
+import { requireAuth } from "~/utils/requireAuth";
+
+export function loader({ context }: Route.LoaderArgs) {
+  const user = requireAuth(context);
+
+  return { user };
+}
+```
+
+## Benefits of Middleware Approach
+
+1. **Performance**: Authentication logic runs only once per request instead of in every loader
+2. **Centralization**: All auth logic is centralized, similar to Next.js middleware
+3. **Token Refresh**: Handles token refresh globally before any route processing
+4. **Clean Separation**: Routes focus on their specific logic rather than auth concerns
+5. **Consistency**: User data is always available and consistent across all routes
+
+## Advanced Configuration
+
+Civic Auth is a "low-code" solution, so most configuration takes place via the [dashboard](https://auth.civic.com). Changes you make there will be updated automatically in your integration without any code changes.
+
+You can customize the library according to your React Router 7 app's needs. Configure options when calling `createRouteHandlers`:
+
+### Middleware Configuration
+
+Configure options in your `app/root.tsx` file:
+
+```tsx app/root.tsx
+import { authMiddleware } from "@civic/auth/react-router-7";
+
+export const unstable_middleware = [
+  authMiddleware({
+    clientId: "YOUR_CLIENT_ID",
+    loginSuccessUrl: "/myCustomSuccessEndpoint",
+    callbackUrl: "/api/myroute/callback",
+    logoutUrl: "/goodbye",
+    baseUrl: "https://myapp.com",
+  }),
+];
+```
+
+### Configuration Options
+
+| Field             | Required | Default          | Example                                | Description                                                                                                                                                                                                                                                                                                                                 |
+| ----------------- | -------- | ---------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`        | Yes      | -                | `2cc5633d-2c92-48da-86aa-449634f274b9` | The key obtained on signup to [auth.civic.com](https://auth.civic.com/)                                                                                                                                                                                                                                                                     |
+| `loginSuccessUrl` | No       | -                | `/myCustomSuccessEndpoint`             | In a React Router 7 app, we will redirect your user to this page once the login is finished. If not set, users will be sent back to the root of your app.                                                                                                                                                                                           |
+| `callbackUrl`     | No       | `/auth/callback` | `/api/myroute/callback`                | If you cannot host Civic’s SDK handlers in the default location, you can specify a custom callback route here. This is where you must attach Civic’s GET handler as described above, so Civic can complete the OAuth token exchange. Use `loginSuccessUrl` to redirect after login. |
+| `logoutUrl`       | No       | `/`              | `/goodbye`                             | The path your user will be sent to after a successful log-out.                                                                                                                                                                                                                                                                              |
+| `baseUrl`         | No       | -                | `https://myapp.com`                    | The public-facing base URL for your application. Required when deploying behind reverse proxies (Cloudfront + Vercel, AWS ALB, nginx, etc.) to ensure authentication redirects use the correct public domain instead of internal origins.                                                                                                   |
