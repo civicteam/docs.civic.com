@@ -10,22 +10,60 @@ The Microsoft 365 Teams server enables AI assistants to interact with [Microsoft
 
 ## How to Add Microsoft 365 Teams
 
+The setup process varies depending on your Microsoft account type:
+
+<Warning>
+**Free Teams Users:** The Microsoft Teams MCP server API is incompatible with the free Teams app. You must have a Microsoft 365 Business license or Azure Cloud tenant to use this integration.
+</Warning>
+
+### Microsoft 365 Business Users
+
+For Microsoft 365 Business or Office 365 license holders, **admin approval is required** for first-time setup:
+
 <Steps>
-  <Step title="Ensure Admin Approval">
-    Microsoft 365 apps must be initially approved by an administrator of your Microsoft tenant before users can authorize them.
+  <Step title="Initial Authorization Attempt">
+    Add the Microsoft 365 Teams server and attempt to authorize. Non-admin users will see a "Need admin approval" dialog indicating that Civic Nexus needs permission to access resources in your organization that only an admin can grant.
   </Step>
-  <Step title="Connect to Nexus">
-    1. Add the Microsoft 365 Teams server to your Nexus environment
-    2. Authorize using OAuth when prompted with your Microsoft account
+  <Step title="Admin Grants Consent (One-Time)">
+    Your Microsoft tenant administrator must configure consent in Microsoft Entra ID:
+
+    **Access Entra ID:**
+    - From Microsoft 365: Click the app launcher (grid icon) in the top-left corner of any Microsoft 365 app → Click **Admin** → From the left sidebar, click **Show All** → Under "Admin centers", select **Identity**
+    - From Azure Portal: Click the app launcher (grid icon) in the top-left corner → Select **Entra** from the Microsoft Cloud services
+
+    **Configure User Consent:**
+    1. In Entra ID, select **Enterprise apps** from the left sidebar
+    2. Under the "Security" section, click **Consent and permissions**
+    3. Click **User consent settings**
+    4. Select "Allow user consent for apps from verified publishers, for selected permissions" (This allows users to trigger authorization requests from Nexus, since Civic is a verified publisher)
+    5. Click **Save** (Important: Save before proceeding to the next step)
+    6. Click "Select permissions to classify as low impact" (This whitelists the specific permissions users are allowed to consent to. If prompted to save, click **Save** before moving on)
+    7. On the permissions screen, click **Add permissions** → Select **Microsoft Graph**
+    8. Select all **OpenId permissions** (required): `openid`, `profile`, `email`
+    9. Add the base permissions: `offline_access`, `User.Read`
+    10. Add Teams-specific permissions: `Team.ReadBasic.All`, `Channel.ReadBasic.All`, `TeamMember.Read.All`, `ChannelMessage.Read.All`, `ChannelMessage.Send`
+    11. Click **Add permissions** then **Save**
   </Step>
-  <Step title="Test Connection">
-    Start with a simple command like "Show me all the teams I'm a member of" to verify the connection works properly.
+  <Step title="Wait and Retry">
+    Wait up to **1 hour** for changes to propagate, then retry authorization in Nexus.
+  </Step>
+  <Step title="Complete Authorization">
+    You'll now see a standard OAuth consent screen showing "Permissions requested" by Civic Nexus. The app will request permissions such as:
+    - Maintain access to data you have given it access to
+    - Read basic information of all teams
+    - Read the names and descriptions of all channels
+    - Read and send channel messages
+    - View your basic profile
+
+    Click **Accept** to complete the authorization and start using the Microsoft 365 Teams integration.
   </Step>
 </Steps>
 
-<Tip>
-For detailed integration instructions with Microsoft 365 accounts, see the [Nexus MS365 Integration Guide](https://civicteam.atlassian.net/wiki/spaces/Labs/pages/3793944577).
-</Tip>
+<Note>
+**Alternative Setup Method:** The steps above use a proactive approach where admins configure permissions up-front. Alternatively, administrators can enable "Admin consent requests" (found in **Admin consent settings** within Entra ID). This allows users to trigger approval requests directly when they attempt to authorize, and admins can approve on-demand rather than pre-configuring permissions.
+
+For complete setup instructions with screenshots and troubleshooting, see the [detailed MS365 integration guide](https://civicteam.atlassian.net/wiki/spaces/Labs/pages/3793944577).
+</Note>
 
 ## What You Can Do
 
