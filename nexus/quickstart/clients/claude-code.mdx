@@ -20,35 +20,81 @@ Claude Code (Anthropic's command-line coding assistant) uses Model Context Proto
 
 ## Quick Setup
 
-<Steps>
-  <Step title="Register the Civic server">
-    Run this command to add the Civic Hub Bridge MCP server:
+Claude Code supports two connection methods. Choose the one that works best for you:
 
-    ```bash
-    claude mcp add civic "npx @civic/hub-bridge"
-    ```
+<Tabs>
+  <Tab title="HTTP Transport (Recommended)">
+    ### Direct Connection via HTTP
 
-    This installs the bridge (if needed) and stores the connection in your Claude MCP config.
-  </Step>
-  <Step title="Launch Claude Code">
-    Start the Claude CLI session:
+    Claude Code now supports direct HTTP connections to Nexus without needing a local bridge.
 
-    ```bash
-    claude
-    ```
+    <Steps>
+      <Step title="Register the Civic server with HTTP transport">
+        Run this command to add Civic Nexus via HTTP:
 
-    Tip: add the `--debug` flag if you want to watch MCP logs while connecting.
-  </Step>
-  <Step title="Connect and sign in">
-    Inside the Claude session, run the MCP menu command:
+        ```bash
+        claude mcp add --transport http civic https://nexus.civic.com/hub/mcp
+        ```
 
-    ```text
-    /mcp
-    ```
+        This configures Claude Code to connect directly to Nexus over HTTP.
+      </Step>
+      <Step title="Launch Claude Code">
+        Start the Claude CLI session:
 
-    Select the `civic` server and follow the browser sign-in flow to authorize Civic Nexus. Once the login completes, Claude confirms that the server is available for tool execution.
-  </Step>
-</Steps>
+        ```bash
+        claude
+        ```
+
+        Tip: add the `--debug` flag if you want to watch MCP logs while connecting.
+      </Step>
+      <Step title="Connect and sign in">
+        Inside the Claude session, run the MCP menu command:
+
+        ```text
+        /mcp
+        ```
+
+        Select the `civic` server and follow the browser sign-in flow to authorize Civic Nexus. Once the login completes, Claude confirms that the server is available for tool execution.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab title="Hub Bridge (Alternative)">
+    ### Local Bridge Connection
+
+    If you prefer using the Hub Bridge or encounter issues with HTTP transport, you can use the local bridge method.
+
+    <Steps>
+      <Step title="Register the Civic server">
+        Run this command to add the Civic Hub Bridge MCP server:
+
+        ```bash
+        claude mcp add civic "npx @civic/hub-bridge"
+        ```
+
+        This installs the bridge (if needed) and stores the connection in your Claude MCP config.
+      </Step>
+      <Step title="Launch Claude Code">
+        Start the Claude CLI session:
+
+        ```bash
+        claude
+        ```
+
+        Tip: add the `--debug` flag if you want to watch MCP logs while connecting.
+      </Step>
+      <Step title="Connect and sign in">
+        Inside the Claude session, run the MCP menu command:
+
+        ```text
+        /mcp
+        ```
+
+        Select the `civic` server and follow the browser sign-in flow to authorize Civic Nexus. Once the login completes, Claude confirms that the server is available for tool execution.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
 
 <Frame>
   <img
