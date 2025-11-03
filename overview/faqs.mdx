@@ -82,7 +82,75 @@ public: true
   </Accordion>
   <Accordion title="What domains need to be registered for apps?">
 
-  All domains or redirect URLs used by your application must be explicitly included in your Civic Auth configuration when your app is in production mode. This ensures that login and logout redirects function correctly and securely.
+  All domains where your application is hosted must be explicitly registered in your Civic Auth dashboard under "Domains" when your app is in production mode. This is required for OAuth 2.0 security - Civic will only redirect to registered domains after authentication.
+
+  **What needs to be registered:**
+  - Your application's domain(s) (e.g., `https://myapp.com`)
+  - Your OAuth callback URLs for backend integrations (e.g., `https://myapp.com/auth/callback`)
+  
+  **Note:** The `loginSuccessUrl` parameter (used to redirect users to a specific page after login) does **not** need to be registered separately - it's used for navigation within your already-registered domain.
+
+  </Accordion>
+  <Accordion title="How do I redirect my users to a specific page after login?">
+
+  The approach depends on your application type:
+
+  ### Backend Frameworks (Express, Fastify, Hono)
+  
+  Use the `loginSuccessUrl` configuration parameter:
+
+  ```ts
+  const config = {
+    clientId: "YOUR_CLIENT_ID",
+    redirectUrl: 'https://your-backend.com/auth/callback', // OAuth callback
+    loginSuccessUrl: 'https://your-frontend.com/dashboard', // Where to send users after login
+  };
+  ```
+
+  **How it works:**
+  1. `redirectUrl` is the OAuth callback where Civic redirects to complete authentication
+  2. After your backend processes the callback, it redirects the user to `loginSuccessUrl`
+
+  ### Next.js
+
+  Use the `loginSuccessUrl` configuration parameter in your Next.js config:
+
+  ```ts
+  const withCivicAuth = createCivicAuthPlugin({
+    clientId: "YOUR_CLIENT_ID",
+    loginSuccessUrl: "/dashboard", // Where to send users after login
+  });
+  ```
+
+  ### React / Single Page Applications (SPAs)
+
+  **Important:** `loginSuccessUrl` is **not supported** for React or frontend-only SPAs. Instead, use the `onSignIn` hook:
+
+  ```tsx
+  import { CivicAuthProvider } from "@civic/auth/react";
+  import { useNavigate } from "react-router-dom";
+
+  function App() {
+    const navigate = useNavigate();
+
+    const handleSignIn = (error?: Error) => {
+      if (!error) {
+        navigate("/dashboard"); // Redirect after successful login
+      }
+    };
+
+    return (
+      <CivicAuthProvider 
+        clientId="YOUR_CLIENT_ID"
+        onSignIn={handleSignIn}
+      >
+        {/* Your app content */}
+      </CivicAuthProvider>
+    );
+  }
+  ```
+
+  For more details, see the [React integration documentation](/integration/react#redirecting-users-after-login).
 
   </Accordion>
   <Accordion title="How can I monitor usage for Civic Auth?">
