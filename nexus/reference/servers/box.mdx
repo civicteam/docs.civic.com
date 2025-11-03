@@ -1,0 +1,115 @@
+---
+title: Box
+description: Access and manage files in Box cloud storage with AI-powered document analysis and search capabilities
+icon: "server"
+---
+
+## Overview
+
+The Box server enables AI assistants to interact with [Box](https://www.box.com) cloud storage, providing seamless file management, document retrieval, and content analysis capabilities through OAuth-secured connections.
+
+## How to Add Box
+
+<Steps>
+  <Step title="Create Box Account">
+    1. Go to [https://account.box.com/](https://account.box.com/)
+    2. Sign up for a free Box account or use your existing account
+    3. Upload files to your Box storage
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Box server to your Nexus environment through the server directory
+    2. Authorize Box when prompted using OAuth
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Show me my box files" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Box uses remotely-hosted MCP server with OAuth authorization. For detailed setup instructions, visit [Managing Box MCP Servers](https://support.box.com/hc/en-us/articles/43847256139923-Managing-Box-MCP-Servers).
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="File Management" icon="folder-open">
+    Browse, search, and organize files across your Box account
+  </Card>
+  <Card title="Document Analysis" icon="file-magnifying-glass">
+    Extract information from documents with AI-powered content analysis
+  </Card>
+  <Card title="Content Search" icon="magnifying-glass">
+    Search for files by name, type, or content across your entire Box storage
+  </Card>
+  <Card title="File Operations" icon="file-arrow-down">
+    Upload, download, and manage files programmatically
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### File Management
+
+<AccordionGroup>
+  <Accordion title="list_files">
+    List all files and folders in your Box account with metadata
+  </Accordion>
+
+  <Accordion title="search_files">
+    Search for files by name, type, or other criteria
+  </Accordion>
+
+  <Accordion title="get_file_content">
+    Retrieve and read file contents for analysis
+  </Accordion>
+
+  <Accordion title="upload_file">
+    Upload new files to Box storage
+  </Accordion>
+</AccordionGroup>
+
+### Document Analysis
+
+<AccordionGroup>
+  <Accordion title="extract_document_data">
+    Extract structured information from documents (names, emails, etc.)
+  </Accordion>
+
+  <Accordion title="analyze_file">
+    Analyze file content and extract key insights
+  </Accordion>
+</AccordionGroup>
+
+### Organization
+
+<AccordionGroup>
+  <Accordion title="create_folder">
+    Create new folders to organize files
+  </Accordion>
+
+  <Accordion title="move_file">
+    Move files between folders
+  </Accordion>
+
+  <Accordion title="get_folder_contents">
+    List all files within a specific folder
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Document Discovery
+"Show me my box files" - Quickly browse all files stored in your Box account.
+
+### Data Extraction
+"Extract all the names and email addresses from this document" - Use AI to parse structured data from documents.
+
+### Content Search
+"Search for files containing 'contract'" - Find relevant documents across your entire Box storage.
+
+### File Type Filtering
+"Find all Word documents in my Box account" - Locate files by specific formats.
+
+<Note>
+Box supports OAuth authorization and provides secure access to your cloud storage. The server is remotely hosted by Box for optimal performance and security.
+</Note>

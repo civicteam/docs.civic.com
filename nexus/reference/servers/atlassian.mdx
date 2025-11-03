@@ -1,0 +1,145 @@
+---
+title: Atlassian
+description: Connect to Jira and Confluence to manage projects, search content, and collaborate across your Atlassian workspace
+icon: "server"
+---
+
+## Overview
+
+The Atlassian server enables AI assistants to interact with [Jira](https://www.atlassian.com/software/jira) and [Confluence](https://www.atlassian.com/software/confluence), providing comprehensive project management and documentation capabilities through Rovo-powered intelligent search and full read/write access.
+
+## How to Add Atlassian
+
+<Steps>
+  <Step title="Access Atlassian Administration">
+    1. Go to Atlassian Administration and select your organization
+    2. Navigate to **Apps > AI settings > Rovo MCP server**
+  </Step>
+  <Step title="Configure Domain Access">
+    1. Add or remove domains as needed for your organization
+    2. You can use Atlassian's default supported domain list or specify your own
+    3. These controls apply to OAuth connections only (API token connections aren't restricted)
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Atlassian server to your Nexus environment through the server directory
+    2. Authorize using OAuth when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Search Jira for all my open tasks" or "List my recent Confluence pages" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+For more details, see [Control Atlassian Rovo MCP server settings](https://support.atlassian.com/security-and-access-policies/docs/control-atlassian-rovo-mcp-server-settings/)
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Intelligent Search" icon="magnifying-glass">
+    Use Rovo Search to find content across Jira and Confluence with natural language queries
+  </Card>
+  <Card title="Project Management" icon="list-check">
+    Create, update, and transition Jira issues with full field management and workflow control
+  </Card>
+  <Card title="Documentation" icon="file-lines">
+    Create and update Confluence pages with Markdown formatting and comment management
+  </Card>
+  <Card title="Cross-Product Workflows" icon="diagram-project">
+    Build workflows that span Jira and Confluence for seamless collaboration
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Search & Discovery
+
+<AccordionGroup>
+  <Accordion title="atlassian-search">
+    Rovo-powered intelligent search across both Jira and Confluence. Use this by default for natural language queries.
+  </Accordion>
+
+  <Accordion title="searchJiraIssuesUsingJql">
+    Search Jira issues using JQL (Jira Query Language) for precise field-level filtering
+  </Accordion>
+
+  <Accordion title="searchConfluenceUsingCql">
+    Search Confluence content using CQL (Confluence Query Language) for advanced queries
+  </Accordion>
+</AccordionGroup>
+
+### Jira Management
+
+<AccordionGroup>
+  <Accordion title="createJiraIssue">
+    Create new Jira issues with custom fields, assignees, and metadata
+  </Accordion>
+
+  <Accordion title="getJiraIssue">
+    Retrieve detailed information about a specific Jira issue
+  </Accordion>
+
+  <Accordion title="editJiraIssue">
+    Update fields on existing Jira issues
+  </Accordion>
+
+  <Accordion title="transitionJiraIssue">
+    Move issues through workflow states
+  </Accordion>
+
+  <Accordion title="addCommentToJiraIssue">
+    Add comments to Jira issues with optional visibility restrictions
+  </Accordion>
+</AccordionGroup>
+
+### Confluence Management
+
+<AccordionGroup>
+  <Accordion title="createConfluencePage">
+    Create new Confluence pages with Markdown content
+  </Accordion>
+
+  <Accordion title="updateConfluencePage">
+    Update existing Confluence pages with version tracking
+  </Accordion>
+
+  <Accordion title="getConfluencePage">
+    Retrieve page content converted to Markdown format
+  </Accordion>
+
+  <Accordion title="createConfluenceFooterComment">
+    Add general comments to pages
+  </Accordion>
+
+  <Accordion title="createConfluenceInlineComment">
+    Add comments attached to specific text selections
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Sprint Planning
+"Search Jira for all tasks in project AUTH with status 'Backlog' created in the last 2 weeks. Show me the top 10, then transition them to 'Selected for Development' and add a comment 'Added to Sprint 23'"
+
+### Team Standup Preparation
+"Show me all Jira issues assigned to me that are 'In Progress'. For each issue, get the latest comments and summarize my current status. Also show which issues are due this week."
+
+### Documentation Sync
+"Search for all bugs in project AUTH tagged 'api-endpoint' that were resolved this sprint. Create a Confluence page in the Labs space titled 'Sprint 23 - API Endpoints Completed' with a summary of each bug and its resolution."
+
+### Research Workflow
+"Search for 'authentication analytics' across Jira and Confluence, summarize the top 5 results, then create a new Confluence page in the Labs space titled 'Authentication Analytics Research Summary' with your findings"
+
+<Note>
+**Available Products:** Both Confluence and Jira with full read/write capabilities
+
+**Search Tip:** Use Rovo Search (atlassian-search) by default for intelligent cross-product search. Only use CQL/JQL when you need precise field-level filtering.
+
+**URL Handling:** Most tools accept full Confluence/Jira URLs and will extract IDs automatically.
+
+**Content Format:** All page and comment creation uses Markdown format.
+</Note>
+
+<Warning>
+The MCP server currently requests over-privileged access, so you cannot limit it to read-only operations. Coupled with the lack of approval requests in Nexus, care must be taken when using this MCP server.
+</Warning>

@@ -1,0 +1,136 @@
+---
+title: ClickUp
+description: Manage tasks, projects, and team collaboration in ClickUp workspaces with comprehensive project management capabilities
+icon: "server"
+---
+
+## Overview
+
+The ClickUp server enables AI assistants to interact with [ClickUp](https://clickup.com) workspaces, providing powerful task management, sprint planning, and team collaboration capabilities through conversational AI.
+
+## How to Add ClickUp
+
+<Steps>
+  <Step title="Create ClickUp Account">
+    1. Go to [http://ClickUp.com](http://ClickUp.com)
+    2. Sign up for a free account or use your existing workspace
+  </Step>
+  <Step title="Generate API Token">
+    1. In ClickUp, click your profile avatar
+    2. Go to **Settings > Apps**
+    3. Generate a new API token
+    4. Copy the token for use in Nexus
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the ClickUp server to your Nexus environment
+    2. Enter your API token when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Show me all tasks assigned to me" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+ClickUp's MCP server is actively evolving. Features may change in the coming weeks as the platform stabilizes.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Task Management" icon="list-check">
+    Create, update, and track tasks with full field management and status updates
+  </Card>
+  <Card title="Sprint Planning" icon="calendar-days">
+    Organize sprints, create task lists, and manage project timelines
+  </Card>
+  <Card title="Team Collaboration" icon="users">
+    Assign tasks, add comments, and coordinate team activities
+  </Card>
+  <Card title="Documentation" icon="file-lines">
+    Create documents and organize project knowledge within ClickUp
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Task Management
+
+<AccordionGroup>
+  <Accordion title="create_task">
+    Create new tasks with priorities, assignees, due dates, and tags
+  </Accordion>
+
+  <Accordion title="update_task">
+    Update task details, status, priority, or assignments
+  </Accordion>
+
+  <Accordion title="get_tasks">
+    Retrieve tasks with filtering by assignee, status, and tags
+  </Accordion>
+
+  <Accordion title="add_task_comment">
+    Add comments to tasks for team communication
+  </Accordion>
+</AccordionGroup>
+
+### Project Organization
+
+<AccordionGroup>
+  <Accordion title="create_folder">
+    Create folders to organize tasks and projects
+  </Accordion>
+
+  <Accordion title="create_list">
+    Create task lists within spaces or folders
+  </Accordion>
+
+  <Accordion title="get_spaces">
+    List all available spaces in your workspace
+  </Accordion>
+</AccordionGroup>
+
+### Documentation
+
+<AccordionGroup>
+  <Accordion title="create_document">
+    Create documents for project documentation
+  </Accordion>
+
+  <Accordion title="create_doc_page">
+    Add pages to existing documents
+  </Accordion>
+</AccordionGroup>
+
+### Communication
+
+<AccordionGroup>
+  <Accordion title="send_chat_message">
+    Send messages to team chat channels
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Sprint Generation
+"Create a new folder called 'Sprint 23' in Team Space, then create 5 tasks in it: Implement user authentication (high priority, assigned to me), Design dashboard mockups (urgent), Write API documentation, Fix bug #234, Review pull requests. Set due dates for next Friday and tag them all with 'sprint-23'"
+
+### Team Standup Preparation
+"Show me all tasks assigned to me that are 'in progress' status. Then for each task, add a comment with today's progress update. Also show me which tasks are due this week."
+
+### Documentation Sync
+"Create a document called 'API Endpoints Documentation'. Find all tasks tagged 'api-endpoint' in the current sprint. For each task, create a page in the document with the task name as title and the task description as content."
+
+<Note>
+**Chat Features:** You can send chat messages, but reading messages and creating new channels are not yet available via MCP.
+
+**Server Updates:** ClickUp's MCP server is undergoing active development. Any changes to the remote server may require updates on the Nexus side.
+</Note>
+
+<Warning>
+**Known Issues:**
+- Time management tools are currently failing (bug report sent to ClickUp)
+- Update Bulk Task tool fails (bug report sent to ClickUp)
+- Attach tool's "upload from URL" mode does not work (base64 upload works fine)
+
+These tools remain available in Nexus with the expectation that ClickUp will fix these issues soon.
+</Warning>

@@ -1,0 +1,135 @@
+---
+title: Postmark
+description: Send transactional emails with template support and delivery tracking for reliable email delivery
+icon: "server"
+---
+
+## Overview
+
+The Postmark server enables AI assistants to interact with [Postmark](https://postmarkapp.com), a reliable transactional email service designed for sending application emails, notifications, and automated messages with high deliverability.
+
+## How to Add Postmark
+
+<Steps>
+  <Step title="Create Postmark Account">
+    1. Go to [https://account.postmarkapp.com/](https://account.postmarkapp.com/)
+    2. Sign up for an account or log in to your existing account
+  </Step>
+  <Step title="Get API Key">
+    1. Navigate to your server in Postmark
+    2. Go to **Settings > API Tokens** or visit [https://account.postmarkapp.com/servers/YOUR_SERVER_ID/credentials](https://account.postmarkapp.com/servers/17321032/credentials)
+    3. Copy your Server API Token
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Postmark server to your Nexus environment
+    2. When prompted to send an email in Postmark:
+       - Enter your API key
+       - Provide your default sender email address
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "List all my email templates" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Postmark accounts start in test mode until approved. In test mode, you can send to @civic.com addresses (though they may bounce due to DMARC policies). Once approved, you can send to any verified addresses.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Transactional Emails" icon="envelope">
+    Send automated emails with high deliverability and tracking
+  </Card>
+  <Card title="Template Management" icon="file-code">
+    Use pre-built email templates for consistent messaging
+  </Card>
+  <Card title="Delivery Tracking" icon="chart-line">
+    Monitor email delivery statistics and engagement metrics
+  </Card>
+  <Card title="Email Tagging" icon="tags">
+    Organize emails with tags for better analytics and filtering
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Email Operations
+
+<AccordionGroup>
+  <Accordion title="send_email">
+    Send individual transactional emails with custom content
+  </Accordion>
+
+  <Accordion title="send_email_with_template">
+    Send emails using pre-defined templates with variable substitution
+  </Accordion>
+
+  <Accordion title="send_batch">
+    Send multiple emails in a single batch request
+  </Accordion>
+</AccordionGroup>
+
+### Template Management
+
+<AccordionGroup>
+  <Accordion title="list_templates">
+    List all email templates in your account
+  </Accordion>
+
+  <Accordion title="get_template">
+    Retrieve a specific template with its content and variables
+  </Accordion>
+
+  <Accordion title="validate_template">
+    Validate template syntax and variables before sending
+  </Accordion>
+</AccordionGroup>
+
+### Analytics & Tracking
+
+<AccordionGroup>
+  <Accordion title="get_delivery_stats">
+    View email delivery statistics and performance metrics
+  </Accordion>
+
+  <Accordion title="get_bounces">
+    List bounced emails with reasons and details
+  </Accordion>
+
+  <Accordion title="track_email">
+    Get delivery status and engagement data for sent emails
+  </Accordion>
+</AccordionGroup>
+
+### Configuration
+
+<AccordionGroup>
+  <Accordion title="list_sender_signatures">
+    List verified sender email addresses
+  </Accordion>
+
+  <Accordion title="manage_suppressions">
+    Manage email suppression list for bounces and unsubscribes
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Template-Based Emails
+"Send a welcome email using template 12345 to newuser@example.com" - Use pre-designed templates for consistent branding.
+
+### Transactional Notifications
+"Send a transactional email tagged as 'order-confirmation' to customer@example.com" - Send automated notifications with proper categorization.
+
+### Delivery Monitoring
+"Show me email delivery statistics" - Track email performance and deliverability.
+
+### Template Discovery
+"List all my email templates" - Review available templates for use in campaigns.
+
+<Note>
+Postmark uses the official MCP server repository from [ActiveCampaign/postmark-mcp](https://github.com/ActiveCampaign/postmark-mcp).
+
+**Test Mode:** New accounts are in test mode until approved by Postmark. Test mode allows sending to specific domains but emails may bounce due to DMARC policies. Authorized accounts can send to any verified addresses.
+</Note>

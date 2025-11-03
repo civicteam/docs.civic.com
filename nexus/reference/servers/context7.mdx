@@ -1,0 +1,100 @@
+---
+title: Context7
+description: Access library documentation and code examples with RAG-powered search for accurate coding assistance
+icon: "server"
+---
+
+## Overview
+
+The Context7 server provides AI assistants with access to [Context7](https://context7.com), a globally-accessible RAG service for library source code and documentation. It delivers real code snippets and examples rather than theoretical documentation, helping improve LLM accuracy when working with library code.
+
+## How to Add Context7
+
+<Steps>
+  <Step title="Create Context7 Account">
+    1. Go to [https://context7.com](https://context7.com)
+    2. Sign in with your preferred method
+  </Step>
+  <Step title="Generate API Key">
+    1. Visit the [Context7 dashboard](https://context7.com/dashboard)
+    2. Copy your generated API key
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Context7 server to your Nexus environment
+    2. Enter your API key when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "How to handle authentication in Next.js?" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Context7 works best when combined with other developer tools like GitHub, Socket, and Semgrep in a "coder's toolkit" within your IDE.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Library Documentation" icon="book">
+    Access up-to-date documentation for thousands of libraries across multiple languages
+  </Card>
+  <Card title="Code Examples" icon="code">
+    Get real code snippets and practical examples from library source code
+  </Card>
+  <Card title="Targeted Search" icon="bullseye">
+    Use embedding search to find precisely relevant documentation for your needs
+  </Card>
+  <Card title="Multi-Language Support" icon="language">
+    Query documentation across different programming languages and frameworks
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Documentation Access
+
+<AccordionGroup>
+  <Accordion title="resolve-library-id">
+    Resolve a package or product name to a Context7-compatible library ID
+  </Accordion>
+
+  <Accordion title="get-library-docs">
+    Fetch up-to-date documentation for a specific library with targeted topic search
+  </Accordion>
+
+  <Accordion title="search-docs">
+    Search across library documentation using embedding-based search
+  </Accordion>
+</AccordionGroup>
+
+### Code Discovery
+
+<AccordionGroup>
+  <Accordion title="get-code-examples">
+    Retrieve real code examples from library source code
+  </Accordion>
+
+  <Accordion title="find-usage-patterns">
+    Discover common usage patterns for specific library features
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Integration Help
+"Can you tell me how to integrate @civic/auth?" - Get specific integration instructions with code examples.
+
+### Framework Learning
+"How to handle authentication in Next.js?" - Learn best practices with real-world code snippets.
+
+### API Discovery
+"Show me routing examples in Express" - Discover how to use specific framework features.
+
+### Feature Exploration
+"What are the hooks available in React?" - Explore available features in popular libraries.
+
+<Note>
+Context7 is one of the most widely-used engineering MCP servers. It provides real code snippets and examples, not just theoretical documentation, and uses embedding search to make targeted queries.
+
+When integrated into a developer toolkit with GitHub, Socket, and other tools, you can configure Nexus to prefer specific libraries or languages without having to provide that context in every prompt.
+</Note>

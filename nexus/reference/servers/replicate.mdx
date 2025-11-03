@@ -1,0 +1,135 @@
+---
+title: Replicate
+description: Run AI models for image generation, video creation, audio synthesis, and more with simple API access
+icon: "server"
+---
+
+## Overview
+
+The Replicate server enables AI assistants to interact with [Replicate](https://replicate.com), a platform that lets developers easily run, fine-tune, and deploy machine learning models through a simple API. Access thousands of community and custom models without managing infrastructure or GPUs.
+
+## How to Add Replicate
+
+<Steps>
+  <Step title="Create Replicate Account">
+    1. Go to [https://replicate.com/](https://replicate.com/)
+    2. Sign up for an account
+    3. Add a credit card (pay-as-you-go pricing)
+  </Step>
+  <Step title="Generate API Token">
+    1. Go to your [Account Settings](https://replicate.com/account/api-tokens)
+    2. Create a new API token
+    3. Copy the token for use in Nexus
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Replicate server to your Nexus environment
+    2. Enter your API token when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Generate an image of a sunset over mountains" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Replicate uses pay-as-you-go pricing, so you only pay for what you use. Different models have different costs per run.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Image Generation" icon="image">
+    Create images from text prompts using models like FLUX Schnell and Stable Diffusion
+  </Card>
+  <Card title="Video Creation" icon="video">
+    Generate videos from text descriptions with models like Minimax Video-01
+  </Card>
+  <Card title="Audio Synthesis" icon="music">
+    Create music and sound effects from text prompts using Stable Audio
+  </Card>
+  <Card title="Model Discovery" icon="magnifying-glass">
+    Browse and run thousands of pre-trained models for various AI tasks
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Image Generation
+
+<AccordionGroup>
+  <Accordion title="run_flux_schnell">
+    Generate high-quality images quickly using FLUX Schnell model
+  </Accordion>
+
+  <Accordion title="run_stable_diffusion">
+    Create images with Stable Diffusion for detailed artistic control
+  </Accordion>
+
+  <Accordion title="run_dall_e">
+    Generate images using DALL-E for creative interpretations
+  </Accordion>
+</AccordionGroup>
+
+### Video Generation
+
+<AccordionGroup>
+  <Accordion title="run_minimax_video">
+    Create videos from text descriptions using Minimax Video-01
+  </Accordion>
+
+  <Accordion title="run_video_model">
+    Run various video generation models with custom parameters
+  </Accordion>
+</AccordionGroup>
+
+### Audio Generation
+
+<AccordionGroup>
+  <Accordion title="run_stable_audio">
+    Generate music and sound effects using Stable Audio 2.5
+  </Accordion>
+
+  <Accordion title="synthesize_audio">
+    Create custom audio content with various synthesis models
+  </Accordion>
+</AccordionGroup>
+
+### Model Management
+
+<AccordionGroup>
+  <Accordion title="list_models">
+    Browse available models by category and popularity
+  </Accordion>
+
+  <Accordion title="get_model_details">
+    Get information about specific models and their parameters
+  </Accordion>
+
+  <Accordion title="run_prediction">
+    Run any Replicate model with custom inputs
+  </Accordion>
+
+  <Accordion title="get_prediction_status">
+    Check the status and results of model runs
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Image Generation - Cyberpunk City
+**Prompt:** "Neon-lit cyberpunk cityscape at night, towering skyscrapers with holographic advertisements, rain-slicked streets reflecting pink and blue neon lights, flying cars in distance, moody atmospheric fog, blade runner aesthetic, 4k cinematic"
+
+### Video Generation - Cyberpunk Flythrough
+**Prompt:** "Flying through a neon-lit cyberpunk city at night, camera gliding between tall buildings with glowing signs, rain falling, holographic ads flickering, futuristic traffic below, cinematic POV shot"
+
+### Audio Generation - Cyberpunk Soundtrack
+**Prompt:** "Cyberpunk Synthwave, Dark Atmospheric Synths, Heavy Bass, Retro 80s Drums, Neon Vibes, Dystopian, Cinematic, Electronic, 110 BPM, Moody and Intense"
+
+### Nature Photography
+**Prompt:** "Misty forest at dawn, sun rays piercing through tall pine trees, morning fog hovering over forest floor, dewdrops on leaves, peaceful and serene atmosphere, soft golden light, nature photography, 4k"
+
+### Retro Gaming Aesthetic
+**Prompt:** "Retro 80s arcade room, glowing pixel art game screens, neon pink and cyan lighting, vintage arcade cabinets lined up, checkered floor, nostalgic atmosphere, vaporwave aesthetic, vibrant colors, 4k digital art"
+
+<Note>
+Replicate hosts thousands of community and custom models for various AI tasks. All infrastructure, scaling, and GPU management is handled for you. Pay only for what you use with transparent per-run pricing.
+</Note>

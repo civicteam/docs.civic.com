@@ -1,0 +1,126 @@
+---
+title: Findymail
+description: Find and verify email addresses and contact information for sales prospecting and outreach
+icon: "server"
+---
+
+## Overview
+
+The Findymail server enables AI assistants to interact with [Findymail](https://findymail.com), providing email finding, verification, and contact discovery capabilities for sales teams and business development professionals.
+
+## How to Add Findymail
+
+<Steps>
+  <Step title="Create Findymail Account">
+    1. Go to [https://findymail.com](https://findymail.com)
+    2. Sign up for an account or log in to your existing account
+  </Step>
+  <Step title="Generate API Key">
+    1. Navigate to your account settings
+    2. Go to **API Settings**
+    3. Generate a new API key
+    4. Copy the API key for use in Nexus
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Findymail server to your Nexus environment
+    2. Enter your API key when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Verify if john.doe@company.com is a valid email address" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Findymail uses separate credit pools for "finder" operations and "verifier" operations. Monitor your credit usage to avoid unexpected limits.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Email Discovery" icon="magnifying-glass">
+    Find email addresses for contacts at specific companies using name and domain
+  </Card>
+  <Card title="Email Verification" icon="circle-check">
+    Verify if email addresses are valid and deliverable
+  </Card>
+  <Card title="Contact Enrichment" icon="user-plus">
+    Get additional contact information from LinkedIn profiles
+  </Card>
+  <Card title="Domain Search" icon="building">
+    Find contacts associated with specific company domains
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Email Finding
+
+<AccordionGroup>
+  <Accordion title="find_email">
+    Find email addresses for a person at a specific company domain
+  </Accordion>
+
+  <Accordion title="find_contacts_by_domain">
+    Discover all available contacts at a company domain
+  </Accordion>
+
+  <Accordion title="linkedin_profile_lookup">
+    Extract contact information from LinkedIn profile URLs
+  </Accordion>
+</AccordionGroup>
+
+### Verification
+
+<AccordionGroup>
+  <Accordion title="verify_email">
+    Check if an email address is valid and deliverable
+  </Accordion>
+
+  <Accordion title="bulk_verify">
+    Verify multiple email addresses in a single request
+  </Accordion>
+</AccordionGroup>
+
+### Company Data
+
+<AccordionGroup>
+  <Accordion title="get_company_info">
+    Retrieve company information and metadata
+  </Accordion>
+
+  <Accordion title="find_linkedin_url">
+    Find LinkedIn company page URLs for domains
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Email Verification
+"Verify if john.doe@company.com is a valid email address" - Quickly validate email addresses before sending outreach.
+
+### Contact Discovery
+"Find the email for Sarah Johnson at salesforce.com" - Locate specific contacts at target companies.
+
+### Executive Outreach
+"What's the email address for the CTO at stripe.com?" - Find decision-makers by role.
+
+### Lead Validation
+"Check if this email is deliverable: contact@example.com" - Ensure email addresses are valid before adding to CRM.
+
+### LinkedIn Research
+"Get details from this LinkedIn profile: linkedin.com/in/marcbenioff" - Extract contact data from professional profiles.
+
+<Note>
+Findymail separates credits into "finder" credits and "verifier" credits. Each operation type consumes from its respective pool.
+</Note>
+
+<Warning>
+**Known Limitations:**
+- **Phone finder** returns same data as email finder, not actual phone numbers
+- **LinkedIn URL finder** returns company pages instead of personal profiles
+- **Company data** has sparse coverage, even for major companies
+- **No confidence scores** to assess result reliability
+- **Variable success rates** - legitimate queries may return null results
+- **No credit monitoring tool** available via MCP
+- **Limited error differentiation** - cannot distinguish between "not found" and rate limits
+</Warning>

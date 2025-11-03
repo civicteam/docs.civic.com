@@ -1,0 +1,149 @@
+---
+title: Microsoft 365 Mail
+description: Manage Outlook emails with full inbox control, attachment handling, and shared mailbox support
+icon: "server"
+---
+
+## Overview
+
+The Microsoft 365 Mail server enables AI assistants to interact with [Microsoft Outlook](https://www.microsoft.com/microsoft-365/outlook/email-and-calendar-software-microsoft-outlook) and Exchange Online, providing comprehensive email management, attachment handling, and shared mailbox capabilities through Microsoft Graph API.
+
+## How to Add Microsoft 365 Mail
+
+<Steps>
+  <Step title="Ensure Admin Approval">
+    Microsoft 365 apps must be initially approved by an administrator of your Microsoft tenant before users can authorize them.
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Microsoft 365 Mail server to your Nexus environment
+    2. Authorize using OAuth when prompted with your Microsoft account
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Show me my latest 5 emails" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+For detailed integration instructions with Microsoft 365 accounts, see the [Nexus MS365 Integration Guide](https://civicteam.atlassian.net/wiki/spaces/Labs/pages/3793944577).
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Email Management" icon="envelope">
+    Read, send, and organize emails with full inbox control
+  </Card>
+  <Card title="Attachment Handling" icon="paperclip">
+    Upload, download, and manage email attachments programmatically
+  </Card>
+  <Card title="Folder Organization" icon="folder">
+    Create, browse, and manage email folders for better organization
+  </Card>
+  <Card title="Shared Mailboxes" icon="users">
+    Access and manage shared mailboxes for team collaboration
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Email Operations
+
+<AccordionGroup>
+  <Accordion title="list_messages">
+    List emails with filtering by folder, read status, and date range
+  </Accordion>
+
+  <Accordion title="get_message">
+    Retrieve full email content including body and metadata
+  </Accordion>
+
+  <Accordion title="send_message">
+    Send emails with HTML or plain text formatting
+  </Accordion>
+
+  <Accordion title="create_draft">
+    Create draft emails for review before sending
+  </Accordion>
+
+  <Accordion title="delete_message">
+    Delete emails from inbox or specific folders
+  </Accordion>
+</AccordionGroup>
+
+### Attachment Management
+
+<AccordionGroup>
+  <Accordion title="list_attachments">
+    List all attachments in a specific email
+  </Accordion>
+
+  <Accordion title="get_attachment">
+    Download and retrieve attachment content
+  </Accordion>
+
+  <Accordion title="add_attachment">
+    Attach files to emails when sending
+  </Accordion>
+</AccordionGroup>
+
+### Folder Management
+
+<AccordionGroup>
+  <Accordion title="list_folders">
+    List all mail folders in your mailbox
+  </Accordion>
+
+  <Accordion title="create_folder">
+    Create new folders for email organization
+  </Accordion>
+
+  <Accordion title="move_message">
+    Move emails between folders
+  </Accordion>
+</AccordionGroup>
+
+### Shared Mailboxes
+
+<AccordionGroup>
+  <Accordion title="access_shared_mailbox">
+    Access shared mailboxes with delegated permissions
+  </Accordion>
+
+  <Accordion title="send_from_shared">
+    Send emails from shared mailbox addresses
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Reading Mail
+"Show me my latest 5 emails" - Quickly review recent messages.
+
+### Filtered Search
+"List all unread emails from the last week" - Find specific messages with criteria.
+
+### Attachment Management
+"Show me all emails with attachments" - Locate emails with files.
+
+### Sending Mail
+"Send an email to john@example.com with subject 'Meeting Follow-up' and a brief summary of our discussion" - Compose and send emails directly.
+
+### Draft Creation
+"Create a draft email to sarah@example.com about the Q4 planning session" - Prepare emails for review.
+
+### Folder Organization
+"Move this email to my Archive folder" - Organize inbox programmatically.
+
+### Shared Mailbox Access
+"Show me emails in the support@company.com shared mailbox" - Access team mailboxes.
+
+### Attachment Analysis
+"Download the PDF from the latest email and summarize its contents" - Extract and analyze file contents.
+
+<Note>
+**Attachment size limit:** Attachments are limited by Microsoft Graph API restrictions (typically 4MB for single request).
+
+**Search limitations:** Cannot combine search ($search) with filter ($filter) parameters in the same query.
+
+**HTML and plain text:** Supports both HTML and plain text email formats.
+</Note>

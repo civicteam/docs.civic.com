@@ -1,0 +1,132 @@
+---
+title: Pipedrive
+description: Manage CRM pipelines, deals, contacts, and organizations with comprehensive sales workflow automation
+icon: "server"
+---
+
+## Overview
+
+The Pipedrive server enables AI assistants to interact with [Pipedrive](https://www.pipedrive.com) CRM, providing complete sales pipeline management, contact organization, and deal tracking capabilities through conversational AI.
+
+## How to Add Pipedrive
+
+<Steps>
+  <Step title="Create Pipedrive Account">
+    1. Go to [https://www.pipedrive.com](https://www.pipedrive.com)
+    2. Sign up for an account or log in to your existing workspace
+  </Step>
+  <Step title="Generate API Key">
+    1. Click your avatar and go to **Personal preferences**
+    2. Open the **API** tab
+    3. Generate a new API token
+    4. Copy the token for use in Nexus
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Pipedrive server to your Nexus environment
+    2. Enter your API token when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "List my contacts on Pipedrive" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+OAuth support will be added once Civic's marketplace app is approved by Pipedrive. Currently, API key authentication is available.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Deal Management" icon="handshake">
+    Create, update, and track deals through your sales pipeline stages
+  </Card>
+  <Card title="Contact Organization" icon="address-book">
+    Manage contacts and organizations with full profile management
+  </Card>
+  <Card title="Pipeline Tracking" icon="chart-line">
+    Monitor deal progress and move opportunities through stages
+  </Card>
+  <Card title="Sales Automation" icon="robot">
+    Automate common CRM tasks and workflows with AI assistance
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Deal Management
+
+<AccordionGroup>
+  <Accordion title="create_deal">
+    Create new deals with value, stage, contact, and organization details
+  </Accordion>
+
+  <Accordion title="update_deal">
+    Update deal information including stage, value, and custom fields
+  </Accordion>
+
+  <Accordion title="list_deals">
+    List all deals with filtering by stage, owner, and status
+  </Accordion>
+
+  <Accordion title="move_deal">
+    Move deals to different pipeline stages
+  </Accordion>
+
+  <Accordion title="get_deal">
+    Retrieve detailed information about a specific deal
+  </Accordion>
+</AccordionGroup>
+
+### Contact Management
+
+<AccordionGroup>
+  <Accordion title="create_person">
+    Add new contacts with name, email, phone, and organization
+  </Accordion>
+
+  <Accordion title="list_persons">
+    List all contacts in your CRM
+  </Accordion>
+
+  <Accordion title="update_person">
+    Update contact information and custom fields
+  </Accordion>
+
+  <Accordion title="get_person">
+    Get detailed contact information
+  </Accordion>
+</AccordionGroup>
+
+### Organization Management
+
+<AccordionGroup>
+  <Accordion title="create_organization">
+    Create new organizations/companies in your CRM
+  </Accordion>
+
+  <Accordion title="list_organizations">
+    List all organizations with filtering options
+  </Accordion>
+
+  <Accordion title="update_organization">
+    Update organization details and custom fields
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Create Organization and Contact
+"Create an organization called 'ABC Systems' on Pipedrive. Dave Jones is the first contact person (dave.jones@example.com)" - Set up new prospects with complete information.
+
+### List Contacts
+"List my contacts on Pipedrive" - Review all contacts in your CRM.
+
+### Create Deal
+"Create a deal to supply workflow automation agents to ABC Systems to the value of $50k, with Dave Jones as the contact" - Track new opportunities with full context.
+
+### Move Deal Through Pipeline
+"Move the ABC Systems automation deal into the 'Demo scheduled' stage" - Update deal status as it progresses.
+
+<Note>
+Pipedrive uses a Civic fork of the [bratland/pipedrive-mcp-server](https://github.com/bratland/pipedrive-mcp-server) repository with added write operation tools for comprehensive CRM management.
+</Note>

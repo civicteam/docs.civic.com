@@ -1,0 +1,126 @@
+---
+title: Hunter.io
+description: Find and verify professional email addresses with comprehensive domain search and email validation
+icon: "server"
+---
+
+## Overview
+
+The Hunter.io server enables AI assistants to interact with [Hunter.io](https://hunter.io), providing professional email finding, verification, and domain research capabilities with confidence scoring and comprehensive contact discovery.
+
+## How to Add Hunter.io
+
+<Steps>
+  <Step title="Create Hunter.io Account">
+    1. Go to [https://hunter.io](https://hunter.io)
+    2. Sign up for a free account or log in to your existing account
+  </Step>
+  <Step title="Generate API Key">
+    1. Navigate to your account dashboard
+    2. Go to **API** section
+    3. Copy your API key
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Hunter.io server to your Nexus environment
+    2. Enter your API key when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "How many searches do I have left this month?" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+The free tier provides 25 domain searches and 50 email verifications per month, which reset on the last day of each month.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Email Discovery" icon="magnifying-glass">
+    Find email addresses for specific people or discover all contacts at a company
+  </Card>
+  <Card title="Email Verification" icon="shield-check">
+    Verify email deliverability with confidence scores and SMTP validation
+  </Card>
+  <Card title="Domain Research" icon="building">
+    Explore company email patterns and discover contacts by department or role
+  </Card>
+  <Card title="Usage Monitoring" icon="chart-bar">
+    Track remaining searches and verifications for the current billing period
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Email Finding
+
+<AccordionGroup>
+  <Accordion title="email_finder">
+    Find email addresses for a specific person at a company domain
+  </Accordion>
+
+  <Accordion title="domain_search">
+    Search for all email addresses associated with a company domain
+  </Accordion>
+
+  <Accordion title="email_count">
+    Check how many email addresses Hunter has for a specific domain
+  </Accordion>
+</AccordionGroup>
+
+### Verification
+
+<AccordionGroup>
+  <Accordion title="email_verifier">
+    Verify if an email address is valid and deliverable with confidence score
+  </Accordion>
+
+  <Accordion title="bulk_verification">
+    Verify multiple email addresses in a single batch request
+  </Accordion>
+</AccordionGroup>
+
+### Account Management
+
+<AccordionGroup>
+  <Accordion title="account_information">
+    Check remaining searches, verifications, and current plan limits
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Credit Monitoring
+"How many searches and verifications do I have left this month?" - Track your API usage and plan limits.
+
+### Email Discovery
+"Find the email address for John Kelly at acme.com" - Locate specific contacts at target companies.
+
+### Executive Outreach
+"Get me Patrick Collison's email at stripe.com" - Find decision-makers by name and company.
+
+### Email Verification
+"Verify if john.doe@example.com is a valid email address" - Validate emails before adding to your CRM.
+
+### Domain Research
+"Search for all emails at dropbox.com and show me the first 5 results" - Discover all available contacts at a company.
+
+### Department Targeting
+"Find marketing department emails at adobe.com" - Target specific departments for outreach campaigns.
+
+<Note>
+**Free Tier Constraints:**
+- 25 domain searches per month (resets on the last day)
+- 50 email verifications per month
+- 50 credits total available
+- No access to bulk operations or API integrations on free tier
+
+**Accept-all servers:** Some domains accept all emails at SMTP level, making verification less reliable. Hunter flags these with confidence scores.
+</Note>
+
+<Warning>
+**Known Limitations:**
+- **No bulk exports** - Free tier limited to single queries (no CSV exports)
+- **Rate limits** - API calls are throttled to prevent abuse
+- **Historical data** - Cannot access email discovery history or saved searches on free tier
+</Warning>
