@@ -220,6 +220,7 @@
                  "nexus/reference/servers/sentry",
                  "nexus/reference/servers/linear",
                  "nexus/reference/servers/hubspot",
+                 "nexus/reference/servers/monday",
                  "nexus/reference/servers/dropbox",
                  "nexus/reference/servers/coingecko"
                ]
