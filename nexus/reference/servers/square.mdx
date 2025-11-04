@@ -1,6 +1,6 @@
 ---
 title: "Square Server"
-description: "Business operations and payment management through Square's comprehensive API"
+description: "Point-of-sale and business management platform for payment processing, inventory management, customer relationships, invoicing, bookings, and commerce operations"
 icon: "server"
 ---
 
@@ -8,7 +8,7 @@ icon: "server"
 
 ## Overview
 
-The Square server provides comprehensive business operations and payment management capabilities. Built by [Square](https://squareup.com), this server enables AI assistants to manage your Square account, access business details, manage product catalogs, process orders, and generate sales reports.
+The Square server provides point-of-sale and business management capabilities. Built by [Square](https://squareup.com), this server enables AI assistants to manage payment processing, inventory management, customer relationships, invoicing, bookings, and complete commerce operations through Square's comprehensive API.
 
 ## Getting Started
 
@@ -80,28 +80,48 @@ The Square server provides comprehensive business operations and payment managem
 
 <AccordionGroup>
   <Accordion title="get_service_info">
-    Get information about the Square MCP service and available capabilities
-    - **Use Cases**: Understand service structure and available operations
-    - **Returns**: Service metadata and capability information
+    **CALL THIS FIRST** before trying to get type info. Get information about a Square API service category and its available methods.
+
+    - **Input**: `service` - The Square API service category (e.g., 'catalog', 'payments', 'customers', 'inventory')
+    - **Returns**: Available methods and service details for the specified Square API service category
+    - **Use Cases**: Discover what operations are available in a service before making requests
   </Accordion>
 
   <Accordion title="get_type_info">
-    Get detailed information about specific Square API data types
-    - **Use Cases**: Understand data structures before making API requests
-    - **Returns**: Type definitions and field information
+    Get request and response schema for a specific Square API method. You must call this before calling make_api_request.
+
+    - **Input**:
+      - `service` - The Square API service category (e.g., 'catalog', 'payments')
+      - `method` - The API method to call (e.g., 'list', 'create')
+    - **Returns**: Request and response schema for the specified API method
+    - **Use Cases**: Understand required parameters and response format before making API calls
   </Accordion>
 
   <Accordion title="make_api_request">
-    Execute custom Square API requests for comprehensive business operations
-    - **Use Cases**: Access any Square API endpoint for business management
-    - **Capabilities**:
-      - Fetch account details and business information
-      - List and manage products in catalog
-      - Update catalog items and inventory
-      - Get order reports and transaction history
-      - Generate sales analytics and reports
-      - Manage locations, customers, and more
-    - **Best Practice**: Use get_service_info and get_type_info first to understand available operations
+    Unified tool for all Square API operations. Be sure to get types before calling.
+
+    - **Input**:
+      - `service` (required) - The Square API service category
+      - `method` (required) - The API method to call
+      - `request` (optional) - JSON object with required parameters for the method
+      - `characterization` (optional) - Brief description of business intent (e.g., 'Processing customer payment', 'Adding inventory item', 'Generating sales report') - Do not pass PII
+
+    - **Available Services** (40+ services):
+      - **Payments**: applepay, cards, payments, refunds, disputes
+      - **Catalog**: catalog, inventory
+      - **Customers**: customers, customergroups, customersegments, customercustomattributes
+      - **Orders**: orders, ordercustomattributes
+      - **Invoices**: invoices
+      - **Bookings**: bookings, bookingcustomattributes
+      - **Locations**: locations, locationcustomattributes, devices
+      - **Team**: team, labor
+      - **Loyalty**: loyalty, giftcards, giftcardactivities
+      - **Merchants**: merchants, merchantcustomattributes
+      - **Financial**: bankaccounts, payouts, cashdrawers
+      - **Integrations**: webhooksubscriptions, events, sites, snippets
+      - **Commerce**: checkout, subscriptions, terminal, vendors
+
+    - **Best Practice**: Always call get_service_info first, then get_type_info before making API requests
   </Accordion>
 </AccordionGroup>
 
