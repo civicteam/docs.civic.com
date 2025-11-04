@@ -148,15 +148,7 @@ The Dropbox server uses OAuth2 authentication with specific file access scopes:
   </Accordion>
 </AccordionGroup>
 
-### Server Configuration
-- **Transport**: STDIO-hosted (requires Hub Bridge)
-- **Hub Bridge**: Uses `npx -y @civic/hub-bridge` for OAuth authentication
-- **File Encoding**: Base64 encoding required for file uploads
-- **Path Format**: Unix-style paths (e.g., "/folder/subfolder/file.ext")
 
-<Note>
-The Dropbox server requires Hub Bridge for secure OAuth token management and API interactions.
-</Note>
 
 ## Best Practices
 

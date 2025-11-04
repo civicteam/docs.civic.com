@@ -1,0 +1,170 @@
+---
+title: "Square Server"
+description: "Business operations and payment management through Square's comprehensive API"
+icon: "server"
+---
+
+# Square Server
+
+## Overview
+
+The Square server provides comprehensive business operations and payment management capabilities. Built by [Square](https://squareup.com), this server enables AI assistants to manage your Square account, access business details, manage product catalogs, process orders, and generate sales reports.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to Square">
+    Add the Square server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authenticate with Square">
+    On the Nexus Chat tab, ask to retrieve your business details on Square.
+    An Authorization pop-up will appear, guiding you through the OAuth login process.
+  </Step>
+  <Step title="Test Connection">
+    Once you have logged in, Nexus will fetch your Square business information and display it.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Business Management" icon="building">
+    Access and manage your Square business account details and settings
+  </Card>
+  <Card title="Product Catalog" icon="box">
+    List, create, update, and manage products in your Square catalog
+  </Card>
+  <Card title="Order Management" icon="receipt">
+    View and manage orders, track sales, and process transactions
+  </Card>
+  <Card title="Sales Reports" icon="chart-line">
+    Generate detailed sales reports and analyze business performance
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Business Operations" icon="briefcase">
+    - **Account Details**: Retrieve your business information and account settings
+    - **Business Insights**: Access key business metrics and performance data
+    - **Location Management**: View and manage multiple business locations
+    - **Configuration**: Access and update business configuration settings
+  </Accordion>
+
+  <Accordion title="Product & Catalog Management" icon="tags">
+    - **Product Listing**: View all products in your Square catalog
+    - **Inventory Management**: Track product inventory and availability
+    - **Catalog Updates**: Add new products or update existing product details
+    - **Pricing Management**: Manage product pricing and variations
+  </Accordion>
+
+  <Accordion title="Order & Transaction Management" icon="cash-register">
+    - **Order Tracking**: View all orders from today or specific time periods
+    - **Transaction History**: Access detailed transaction records
+    - **Order Details**: Get comprehensive information about specific orders
+    - **Payment Processing**: Track payment status and methods
+  </Accordion>
+
+  <Accordion title="Sales Analytics" icon="chart-bar">
+    - **Sales Reports**: Generate monthly, weekly, or custom date range sales reports
+    - **Performance Metrics**: Analyze sales trends and business performance
+    - **Revenue Tracking**: Monitor revenue across products and time periods
+    - **Business Intelligence**: Get insights into top-performing products and services
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (3)
+
+<AccordionGroup>
+  <Accordion title="get_service_info">
+    Get information about the Square MCP service and available capabilities
+    - **Use Cases**: Understand service structure and available operations
+    - **Returns**: Service metadata and capability information
+  </Accordion>
+
+  <Accordion title="get_type_info">
+    Get detailed information about specific Square API data types
+    - **Use Cases**: Understand data structures before making API requests
+    - **Returns**: Type definitions and field information
+  </Accordion>
+
+  <Accordion title="make_api_request">
+    Execute custom Square API requests for comprehensive business operations
+    - **Use Cases**: Access any Square API endpoint for business management
+    - **Capabilities**:
+      - Fetch account details and business information
+      - List and manage products in catalog
+      - Update catalog items and inventory
+      - Get order reports and transaction history
+      - Generate sales analytics and reports
+      - Manage locations, customers, and more
+    - **Best Practice**: Use get_service_info and get_type_info first to understand available operations
+  </Accordion>
+</AccordionGroup>
+
+<Info>
+The Square server provides a comprehensive wrapper around Square's REST API, enabling full access to Square's business management capabilities through natural language interactions.
+</Info>
+
+---
+
+## Configuration Requirements
+
+### Authentication Setup
+The Square server uses OAuth2 authentication with Square's API:
+
+<AccordionGroup>
+  <Accordion title="OAuth Scopes" icon="key">
+    **Required Scopes for Full Functionality:**
+    - **Business Information**: Read access to business account details
+    - **Catalog**: Read/write access to product catalog
+    - **Orders**: Read access to orders and transactions
+    - **Payments**: Read access to payment information
+    - **Reports**: Access to sales reports and analytics
+  </Accordion>
+
+  <Accordion title="Account Requirements" icon="building">
+    - **Square Account**: Active Square business account (free or paid)
+    - **API Access**: Ensure API access is enabled for your account
+    - **Permissions**: Appropriate role permissions for accessing business data
+    - **Rate Limits**: Be aware of API rate limits based on your account tier
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+### API Usage
+1. **Service Discovery**: Use `get_service_info` first to understand available operations
+2. **Type Understanding**: Use `get_type_info` to understand data structures before requests
+3. **Efficient Requests**: Request only the data you need to minimize API usage
+4. **Error Handling**: Handle API errors gracefully and respect rate limits
+
+### Business Operations
+1. **Read First**: Fetch current state before making updates to business data
+2. **Validation**: Validate data formats and requirements before creating or updating resources
+3. **Testing**: Test operations with read-only requests before making changes
+4. **Monitoring**: Regularly check sales reports and analytics for business insights
+
+<Tip>
+**Pro Tip**: Start by retrieving your business details and exploring your catalog before attempting to make changes. This helps you understand your current Square setup and available data.
+</Tip>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Official Square MCP Documentation" icon="book" href="https://developer.squareup.com/docs/mcp">
+    Complete Square MCP server documentation
+  </Card>
+  <Card title="Square Developer Portal" icon="code" href="https://developer.squareup.com/">
+    Square API reference and developer resources
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Ask questions in our developer Slack community
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/nexus/troubleshooting">
+    Common Square server connection fixes
+  </Card>
+</CardGroup>
