@@ -171,6 +171,32 @@ If you're using Nexus Chat or managing multiple toolkits, you can switch between
     - "Preset the log groups parameter to this list: [log-group-1, log-group-2, log-group-3] when executing log queries"
     - "Always use the production database connection for queries in this toolkit"
   </Accordion>
+
+  <Accordion title="Toolkit Descriptions">
+    If you are building a toolkit for a very specific workflow or set of workflows, you can add useful context to the toolkit, and it will be provided to the context when connecting Nexus.
+
+    **Sample prompts:**
+    - "In this toolkit I will be checking for new issues from my incident manager, investigating in Github, and posting my findings to the project management service. Please set the toolkit description to summarise that process and provide instructions to the LLM when using it."
+  </Accordion>
+
+  <Accordion title="Aliasing Tools">
+    Aliasing tools is useful if you have a specific workflow in mind, and helps improve tool selection accuracy by refining the tool name to match that description. For example, if you have a ticket manager and incident manager in the toolkit, you may have two "get-issue" tools - but you can rename one to "investigate-alert" and the other to "check-ticket".
+
+    <Note>
+    This is particularly useful when combined with the preset parameter feature, to convert a generic tool to a targeted one.
+    </Note>
+
+    **Sample prompts:**
+    - **Step 1:** "Please preset the Google Analytics create-report tool with the following report parameters: `<...>` and the following property id `<...>`"
+    - **Step 2:** "Please rename the create-report tool to 'get-24h-web-funnel-statistics'"
+  </Accordion>
+
+  <Accordion title="Custom Tool Descriptions">
+    Tool descriptions are determined by Nexus and the MCP server providers, and provide only generic usage instructions to the LLM by default. Custom Descriptions combine with the other features to allow you to refine the tools to your specific use-case, by giving the LLM hints as to how you like to use the tools.
+
+    **Sample prompts:**
+    - "Please update the slack get-messages tool description to look in the following channels: ..."
+  </Accordion>
 </AccordionGroup>
 
 ## Best Practices
@@ -182,7 +208,7 @@ Follow these guidelines to get the most out of your toolkits:
 ### Keep Toolkits Focused
 - **3-5 tools maximum** per toolkit for best AI performance
 - Choose tools that naturally work together for specific workflows
-- Avoid mixing unrelated tools (e.g., don't combine crypto data with marketing analytics)
+- Remove tools you don't need by asking the LLM to filter them out
 
 ### Use Descriptive Names
 - **Good:** "Customer Support Kit", "Marketing Analytics", "Dev Debug Tools"
@@ -195,7 +221,18 @@ Follow these guidelines to get the most out of your toolkits:
 ### Test Your Combinations
 - Try asking your AI to perform typical tasks with your toolkit
 - Adjust the tool combination if the AI seems confused or chooses wrong tools
-- Remove tools that don't add value to the specific workflow
+- **Remove tools that don't add value** to the specific workflow
+
+### Configure your Toolkit
+- Use broad toolkits to help figure out what you want, then bake the ones you need into a new toolkit
+- **Ask the LLM to configure itself**. Once you have a process that works well for you, ask it to create a new toolkit and configure the toolkit data to help the LLM to reproduce it
+
+### Stay Safe
+- Parameter presetting and tool filters can be used as guardrails
+- An LLM **cannot use tools** that you filter out, or override parameters you preset
+- For more fine-grained guardrails, ask the LLM which guardrails are available to it
+- *Do not* use descriptions as guardrails
+- Unlike tool filters and parameter presets, descriptions are **guidelines only** and LLMs can ignore them.
 
 ## Common Toolkit Patterns
 

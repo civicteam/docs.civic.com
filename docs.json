@@ -36,292 +36,296 @@
     }
   },
   "navigation": {
-    "tabs": [{
-      "tab": "Auth",
-      "groups": [
-        {
-          "group":  "Getting Started",
-          "pages": [
-            "index",
-            "overview/pricing",
-            "overview/bring-your-app-to-production",
+    "tabs": [
+      {
+        "tab": "Nexus",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "icon": "rocket",
+            "pages": [
+              "index",
+              "nexus/quickstart/index",
+              "nexus/concepts/toolkits",
+              "nexus/reference/authorizations"
+            ]
+          },
+          {
+            "group": "Supported Clients",
+            "icon": "desktop",
+            "pages": [
+              "nexus/quickstart/nexus-chat",
+              "nexus/quickstart/clients/mistral-lechat",
+              "nexus/quickstart/clients/claude-web",
+              "nexus/quickstart/clients/claude-desktop",
+              {
+                "group": "More Clients",
+                "icon": "ellipsis",
+                "pages": [
+                  "nexus/quickstart/clients/cursor",
+                  "nexus/quickstart/clients/goose",
+                  "nexus/quickstart/clients/vscode",
+                  "nexus/quickstart/clients/windsurf",
+                  "nexus/quickstart/clients/claude-code",
+                  "nexus/quickstart/clients/codex",
+                  "nexus/quickstart/clients/jetbrains",
+                  "nexus/quickstart/clients/gemini"
+                ]
+              },
+              {
+                "group": "MCP Servers",
+                "icon": "server",
+                "pages": [
+                  "nexus/reference/servers",
+                  "nexus/reference/servers/activecampaign",
+                  "nexus/reference/servers/github",
+                  "nexus/reference/servers/slack",
+                  "nexus/reference/servers/notion",
+                  "nexus/reference/servers/n8n",
+                  "nexus/reference/servers/postgresql",
+                  "nexus/reference/servers/sentry",
+                  "nexus/reference/servers/linear",
+                  "nexus/reference/servers/hubspot",
+                  "nexus/reference/servers/dropbox",
+                  "nexus/reference/servers/coingecko"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Developers",
+            "icon": "code",
+            "pages": [
+              {
+                "group": "IDE Setup",
+                "icon": "code",
+                "pages": [
+                  "nexus/developers/client-setup",
+                  "nexus/quickstart/hub-bridge"
+                ]
+              },
+              {
+                "group": "AI SDKs",
+                "icon": "plug",
+                "pages": [
+                  "nexus/developers/integrations/index",
+                  "nexus/recipes/vercel-ai-sdk",
+                  "nexus/recipes/openai-agents",
+                  "nexus/recipes/anthropic",
+                  "nexus/recipes/openai-sdk",
+                  "nexus/recipes/python-pydantic"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Reference",
+            "icon": "book",
+            "pages": [
+              "nexus/reference/client-compatibility",
+              "nexus/reference/security"
+            ]
+          },
+          {
+            "group": "AI Prompts",
+            "icon": "robot",
+            "pages": [
+              "nexus/ai-prompts/nextjs"
+            ]
+          },
+          {
+            "group": "Support",
+            "icon": "life-buoy",
+            "pages": [
+              "nexus/troubleshooting"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Auth",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "auth/index",
+              "overview/pricing",
+              "overview/bring-your-app-to-production",
+              {
+                "group": "Login Options",
+                "icon": "arrow-right-to-bracket",
+                "pages": [
+                  "overview/login-options",
+                  "overview/passkeys"
+                ]
+              },
+              "overview/faqs",
+              "overview/authentication-flows",
+              "overview/changelog"
+            ]
+          },
+          {
+            "group": "AI Prompts",
+            "icon": "robot",
+            "pages": [
+              "ai-prompts/overview",
+              "ai-prompts/nextjs",
+              "ai-prompts/react",
+              {
+                "group": "Python",
+                "icon": "python",
+                "pages": [
+                  "ai-prompts/python/fastapi",
+                  "ai-prompts/python/flask",
+                  "ai-prompts/python/django"
+                ]
+              },
+              {
+                "group": "Web3",
+                "icon": "wallet",
+                "pages": [
+                  "ai-prompts/web3/solana",
+                  "ai-prompts/web3/ethereum"
+                ]
+              },
+              {
+                "group": "No-code Platforms",
+                "icon": "wand-magic-sparkles",
+                "pages": [
+                  "ai-prompts/no-code/lovable",
+                  "ai-prompts/no-code/v0",
+                  "ai-prompts/no-code/replit"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Integration",
+            "pages": [
+              "integration/react",
+              "integration/nextjs",
+              "integration/vanillajs",
+              {
+                "group": "Node.JS",
+                "icon": "node-js",
+                "pages": [
+                  "integration/nodejs",
+                  "integration/nodejs/express",
+                  "integration/nodejs/hono",
+                  "integration/nodejs/fastify"
+                ]
+              },
+              {
+                "group": "Python",
+                "icon": "python",
+                "pages": [
+                  "integration/python",
+                  "integration/python/fastapi",
+                  "integration/python/flask",
+                  "integration/python/django"
+                ]
+              },
+              {
+                "group": "Mobile",
+                "icon": "mobile-screen-button",
+                "pages": [
+                  "integration/mobile/react-native"
+                ]
+              },
+              "integration/other",
+              "integration/error-codes"
+            ]
+          },
+          {
+            "group": "Web3",
+            "pages": [
+              "web3/embedded-wallets",
+              "web3/ethereum-evm",
+              "web3/solana"
+            ]
+          },
+          {
+            "group": "Libraries & Tools",
+            "icon": "code",
+            "pages": [
+              "libraries/auth-verify"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/add-auth-to-mcp"
+            ]
+          }
+        ],
+        "global": {
+          "anchors": [
             {
-              "group": "Login Options",
-              "icon": "arrow-right-to-bracket",
-              "pages": [
-                "overview/login-options",
-                "overview/passkeys"
-              ]
+              "anchor": "About us",
+              "href": "https://www.civic.com/about",
+              "icon": "circle-info"
             },
-            "overview/faqs",
-            "overview/authentication-flows",
-            "overview/changelog"
-          ]
-        },
-        {
-          "group": "AI Prompts",
-          "icon": "robot",
-          "pages": [
-            "ai-prompts/overview",
-            "ai-prompts/nextjs", 
-            "ai-prompts/react",
             {
-              "group": "Python",
-              "icon": "python",
-              "pages": [
-                "ai-prompts/python/fastapi",
-                "ai-prompts/python/flask",
-                "ai-prompts/python/django"
-              ]
+              "anchor": "Blog",
+              "href": "https://www.civic.com/blog",
+              "icon": "newspaper"
             },
             {
-              "group": "Web3",
-              "icon": "wallet",
-              "pages": [
-                "ai-prompts/web3/solana",
-                "ai-prompts/web3/ethereum"
-              ]
-            },
-            {
-              "group": "No-code Platforms",
-              "icon": "wand-magic-sparkles",
-              "pages": [
-                "ai-prompts/no-code/lovable",
-                "ai-prompts/no-code/v0",
-                "ai-prompts/no-code/replit"
-              ]
+              "anchor": "Join Our Community",
+              "href": "https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw",
+              "icon": "slack"
             }
           ]
-        },
-        {
-          "group": "Integration",
-          "pages": [
-            "integration/react",
-            "integration/nextjs",
-            "integration/vanillajs",
-            {
-              "group": "Node.JS",
-              "icon": "node-js",
-              "pages": [
-                "integration/nodejs",
-                "integration/nodejs/express",
-                "integration/nodejs/hono",
-                "integration/nodejs/fastify"
-              ]
-            },
-            {
-              "group": "Python",
-              "icon": "python",
-              "pages": [
-                "integration/python",
-                "integration/python/fastapi",
-                "integration/python/flask",
-                "integration/python/django"
-              ]
-            },
-            {
-              "group": "Mobile",
-              "icon": "mobile-screen-button",
-              "pages": [
-                "integration/mobile/react-native"
-              ]
-            },
-            "integration/other",
-            "integration/error-codes"
-          ]
-        },
-        {
-          "group": "Web3",
-          "pages": [
-            "web3/embedded-wallets",
-            "web3/ethereum-evm",
-            "web3/solana"
-          ]
-        },
-        {
-          "group": "Libraries & Tools",
-          "icon": "code",
-          "pages": [
-            "libraries/auth-verify"
-          ]
-        },
-        {
-          "group": "Guides",
-          "pages": [
-            "guides/add-auth-to-mcp"
-          ]
         }
-      ],
-      "global": {
-        "anchors": [
+      },
+      {
+        "tab": "Labs",
+        "groups": [
           {
-            "anchor": "About us",
-            "href": "https://www.civic.com/about",
-            "icon": "circle-info"
+            "group": " ",
+            "pages": [
+              "labs",
+              "labs/flask-status",
+              "labs/feedback"
+            ]
           },
           {
-            "anchor": "Blog",
-            "href": "https://www.civic.com/blog",
-            "icon": "newspaper"
+            "group": "Flasks",
+            "pages": [
+              "labs/projects/mcp-hub",
+              "labs/projects/x402-mcp",
+              "labs/projects/guardrail-proxy",
+              "labs/projects/bodyguard",
+              "labs/projects/passthrough-proxy",
+              "labs/projects/civic-knowledge"
+            ]
           },
           {
-            "anchor": "Join Our Community",
-            "href": "https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw",
-            "icon": "slack"
+            "group": "Concepts",
+            "pages": [
+              "labs/concepts/mcp",
+              "labs/concepts/guardrails",
+              "labs/concepts/prompt-injection",
+              "labs/concepts/auth-strategies",
+              "labs/concepts/hooks",
+              "labs/concepts/rag"
+            ]
+          },
+          {
+            "group": "\ud83d\udd13Integration",
+            "pages": [
+              "labs/private/getting-started",
+              "labs/private/mcp-hub",
+              "labs/private/x402-mcp",
+              "labs/private/guardrail-proxy",
+              "labs/private/bodyguard",
+              "labs/private/passthrough-proxy",
+              "labs/private/civic-knowledge"
+            ]
           }
         ]
       }
-    }, {
-      "tab": "Nexus",
-      "groups": [
-         {
-           "group": "Getting Started",
-           "icon": "rocket",
-           "pages": [
-             "nexus/overview",
-             "nexus/quickstart/index",
-             "nexus/concepts/toolkits",
-             "nexus/reference/authorizations"
-           ]
-         },
-         {
-           "group": "Supported Clients",
-           "icon": "desktop",
-           "pages": [
-             "nexus/quickstart/nexus-chat",
-             "nexus/quickstart/clients/mistral-lechat",
-             "nexus/quickstart/clients/claude-web",
-             "nexus/quickstart/clients/claude-desktop",
-             {
-               "group": "More Clients",
-               "icon": "ellipsis",
-               "pages": [
-                 "nexus/quickstart/clients/cursor",
-                 "nexus/quickstart/clients/goose",
-                 "nexus/quickstart/clients/vscode",
-                 "nexus/quickstart/clients/windsurf",
-                 "nexus/quickstart/clients/claude-code",
-                 "nexus/quickstart/clients/codex",
-                 "nexus/quickstart/clients/jetbrains",
-                 "nexus/quickstart/clients/gemini"
-               ]
-             },
-             {
-               "group": "MCP Servers",
-               "icon": "server",
-               "pages": [
-                 "nexus/reference/servers",
-                 "nexus/reference/servers/activecampaign",
-                 "nexus/reference/servers/github",
-                 "nexus/reference/servers/slack",
-                 "nexus/reference/servers/notion",
-                 "nexus/reference/servers/n8n",
-                 "nexus/reference/servers/postgresql",
-                 "nexus/reference/servers/sentry",
-                 "nexus/reference/servers/linear",
-                 "nexus/reference/servers/hubspot",
-                 "nexus/reference/servers/dropbox",
-                 "nexus/reference/servers/coingecko"
-               ]
-             }
-           ]
-         },
-        {
-          "group": "Developers",
-          "icon": "code",
-          "pages": [
-            {
-              "group": "IDE Setup",
-              "icon": "code",
-              "pages": [
-                "nexus/developers/client-setup",
-                "nexus/quickstart/hub-bridge"
-              ]
-            },
-            {
-              "group": "AI SDKs",
-              "icon": "plug",
-              "pages": [
-                "nexus/developers/integrations/index",
-                "nexus/recipes/vercel-ai-sdk",
-                "nexus/recipes/openai-agents",
-                "nexus/recipes/anthropic",
-                "nexus/recipes/openai-sdk",
-                "nexus/recipes/python-pydantic"
-              ]
-            }
-          ]
-        },
-        {
-          "group": "Reference",
-          "icon": "book",
-          "pages": [
-            "nexus/reference/client-compatibility",
-            "nexus/reference/security"
-          ]
-        },
-        {
-          "group": "AI Prompts",
-          "icon": "robot",
-          "pages": [
-            "nexus/ai-prompts/nextjs"
-          ]
-        },
-        {
-          "group": "Support",
-          "icon": "life-buoy",
-          "pages": [
-            "nexus/troubleshooting"
-          ]
-        }
-      ]
-    },{
-      "tab": "Labs",
-      "groups": [
-        {
-          "group": " ",
-          "pages": [
-            "labs",
-            "labs/flask-status",
-            "labs/feedback"
-          ]
-        },
-        {
-          "group": "Flasks",
-          "pages": [
-            "labs/projects/mcp-hub",
-            "labs/projects/x402-mcp",
-            "labs/projects/guardrail-proxy",
-            "labs/projects/bodyguard",
-            "labs/projects/passthrough-proxy",
-            "labs/projects/civic-knowledge"
-          ]
-        },
-        {
-          "group": "Concepts",
-          "pages": [
-            "labs/concepts/mcp",
-            "labs/concepts/guardrails",
-            "labs/concepts/prompt-injection",
-            "labs/concepts/auth-strategies",
-            "labs/concepts/hooks",
-            "labs/concepts/rag"
-          ]
-        },
-        {
-          "group": "🔓Integration",
-          "pages": [
-            "labs/private/getting-started",
-            "labs/private/mcp-hub",
-            "labs/private/x402-mcp",
-            "labs/private/guardrail-proxy",
-            "labs/private/bodyguard",
-            "labs/private/passthrough-proxy",
-            "labs/private/civic-knowledge"
-          ]
-        }
-      ]
-    }]
+    ]
   },
   "logo": {
     "light": "/logo/light.png",
@@ -337,8 +341,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Try Auth",
-      "href": "https://auth.civic.com/dashboard?utm_source=docs&utm_medium=hero-nav"
+      "label": "Try Nexus",
+      "href": "https://nexus.civic.com?utm_source=docs&utm_medium=hero-nav"
     }
   },
   "footer": {
