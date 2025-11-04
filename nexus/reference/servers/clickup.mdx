@@ -1,6 +1,6 @@
 ---
 title: ClickUp
-description: Manage tasks, projects, and team collaboration in ClickUp workspaces with comprehensive project management capabilities
+description: Manage tasks, track time, and collaborate on projects with ClickUp's comprehensive project management tools
 icon: "server"
 ---
 
@@ -51,61 +51,185 @@ ClickUp's MCP server is actively evolving. Features may change in the coming wee
   </Card>
 </CardGroup>
 
-## Available Tools
+## Available Tools (41)
+
+### Search & Hierarchy
+
+<AccordionGroup>
+  <Accordion title="clickup_search">
+    Search across your ClickUp workspace for tasks, documents, and content
+  </Accordion>
+
+  <Accordion title="clickup_get_workspace_hierarchy">
+    Get the complete workspace structure including spaces, folders, and lists
+  </Accordion>
+</AccordionGroup>
 
 ### Task Management
 
 <AccordionGroup>
-  <Accordion title="create_task">
+  <Accordion title="clickup_create_task">
     Create new tasks with priorities, assignees, due dates, and tags
   </Accordion>
 
-  <Accordion title="update_task">
+  <Accordion title="clickup_get_task">
+    Retrieve detailed information about a specific task
+  </Accordion>
+
+  <Accordion title="clickup_update_task">
     Update task details, status, priority, or assignments
   </Accordion>
 
-  <Accordion title="get_tasks">
-    Retrieve tasks with filtering by assignee, status, and tags
+  <Accordion title="clickup_create_bulk_tasks">
+    Create multiple tasks in a single operation
   </Accordion>
 
-  <Accordion title="add_task_comment">
-    Add comments to tasks for team communication
+  <Accordion title="clickup_update_bulk_tasks">
+    Update multiple tasks in a single operation
+  </Accordion>
+
+  <Accordion title="clickup_get_workspace_tasks">
+    Retrieve tasks from across the workspace with filtering options
   </Accordion>
 </AccordionGroup>
 
-### Project Organization
+### Comments & Files
 
 <AccordionGroup>
-  <Accordion title="create_folder">
+  <Accordion title="clickup_get_task_comments">
+    Retrieve comments from a task
+  </Accordion>
+
+  <Accordion title="clickup_create_task_comment">
+    Add comments to tasks for team communication
+  </Accordion>
+
+  <Accordion title="clickup_attach_task_file">
+    Attach files to tasks
+  </Accordion>
+</AccordionGroup>
+
+### Time Tracking
+
+<AccordionGroup>
+  <Accordion title="clickup_get_task_time_entries">
+    Get time tracking entries for a task
+  </Accordion>
+
+  <Accordion title="clickup_start_time_tracking">
+    Start tracking time on a task
+  </Accordion>
+
+  <Accordion title="clickup_stop_time_tracking">
+    Stop the current time tracking session
+  </Accordion>
+
+  <Accordion title="clickup_add_time_entry">
+    Add a time entry to a task
+  </Accordion>
+
+  <Accordion title="clickup_get_current_time_entry">
+    Get the currently running time entry
+  </Accordion>
+</AccordionGroup>
+
+### List Management
+
+<AccordionGroup>
+  <Accordion title="clickup_create_list">
+    Create task lists within spaces
+  </Accordion>
+
+  <Accordion title="clickup_create_list_in_folder">
+    Create task lists within folders
+  </Accordion>
+
+  <Accordion title="clickup_get_list">
+    Get details about a specific list
+  </Accordion>
+
+  <Accordion title="clickup_update_list">
+    Update list settings and properties
+  </Accordion>
+</AccordionGroup>
+
+### Folder Management
+
+<AccordionGroup>
+  <Accordion title="clickup_create_folder">
     Create folders to organize tasks and projects
   </Accordion>
 
-  <Accordion title="create_list">
-    Create task lists within spaces or folders
+  <Accordion title="clickup_get_folder">
+    Get details about a specific folder
   </Accordion>
 
-  <Accordion title="get_spaces">
-    List all available spaces in your workspace
+  <Accordion title="clickup_update_folder">
+    Update folder settings and properties
   </Accordion>
 </AccordionGroup>
 
-### Documentation
+### Tags
 
 <AccordionGroup>
-  <Accordion title="create_document">
+  <Accordion title="clickup_add_tag_to_task">
+    Add tags to tasks for organization
+  </Accordion>
+
+  <Accordion title="clickup_remove_tag_from_task">
+    Remove tags from tasks
+  </Accordion>
+</AccordionGroup>
+
+### Members
+
+<AccordionGroup>
+  <Accordion title="clickup_get_workspace_members">
+    List all members in the workspace
+  </Accordion>
+
+  <Accordion title="clickup_find_member_by_name">
+    Find workspace members by name
+  </Accordion>
+
+  <Accordion title="clickup_resolve_assignees">
+    Resolve assignee names to user IDs
+  </Accordion>
+</AccordionGroup>
+
+### Chat
+
+<AccordionGroup>
+  <Accordion title="clickup_get_chat_channels">
+    List available chat channels
+  </Accordion>
+
+  <Accordion title="clickup_send_chat_message">
+    Send messages to team chat channels
+  </Accordion>
+</AccordionGroup>
+
+### Documents
+
+<AccordionGroup>
+  <Accordion title="clickup_create_document">
     Create documents for project documentation
   </Accordion>
 
-  <Accordion title="create_doc_page">
+  <Accordion title="clickup_list_document_pages">
+    List all pages in a document
+  </Accordion>
+
+  <Accordion title="clickup_get_document_pages">
+    Get content from document pages
+  </Accordion>
+
+  <Accordion title="clickup_create_document_page">
     Add pages to existing documents
   </Accordion>
-</AccordionGroup>
 
-### Communication
-
-<AccordionGroup>
-  <Accordion title="send_chat_message">
-    Send messages to team chat channels
+  <Accordion title="clickup_update_document_page">
+    Update existing document pages
   </Accordion>
 </AccordionGroup>
 
