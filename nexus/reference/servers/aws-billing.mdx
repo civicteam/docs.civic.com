@@ -1,12 +1,8 @@
 ---
 title: AWS Billing
-description: Monitor AWS costs, analyze spending patterns, and optimize cloud infrastructure with comprehensive billing insights
+description: Query and analyze AWS billing and cost data through Model Context Protocol
 icon: "server"
 ---
-
-<Info>
-**Coming Soon** - This server is currently in development and will be available soon.
-</Info>
 
 ## Overview
 
@@ -59,61 +55,63 @@ Enable Cost Optimization Hub in us-east-1 region and opt into Compute Optimizer.
   </Card>
 </CardGroup>
 
-## Available Tools
-
-### Cost Management
+## Available Tools (14)
 
 <AccordionGroup>
-  <Accordion title="get_cost_and_usage">
-    Get detailed AWS costs and usage data with filtering by service, region, and time period
+  <Accordion title="cost-explorer">
+    Comprehensive tool for retrieving AWS cost and usage data using Cost Explorer API. Supports multiple operations including getCostAndUsage, getCostAndUsageWithResources, getDimensionValues, getCostForecast, getUsageForecast, getTagsOrValues, getCostCategories, and getSavingsPlansUtilization
   </Accordion>
 
-  <Accordion title="get_cost_forecast">
-    Predict future AWS spending based on historical usage patterns
+  <Accordion title="compute-optimizer">
+    Retrieves performance-based optimization recommendations from AWS Compute Optimizer for EC2, Auto Scaling groups, EBS volumes, Lambda functions, RDS instances, and ECS services
   </Accordion>
 
-  <Accordion title="compare_month_to_month_costs">
-    Compare costs between different months to identify trends
+  <Accordion title="cost-optimization">
+    Retrieves cost optimization recommendations from AWS Cost Optimization Hub including rightsizing, idle resource detection, and Reserved Instance/Savings Plans purchase recommendations
   </Accordion>
 
-  <Accordion title="get_cost_by_service">
-    Break down costs by AWS service for specific time periods
-  </Accordion>
-</AccordionGroup>
-
-### Optimization
-
-<AccordionGroup>
-  <Accordion title="list_cost_optimization_recommendations">
-    Get comprehensive cost-saving recommendations from Cost Optimization Hub
+  <Accordion title="storage-lens">
+    Query S3 Storage Lens metrics data using Athena SQL for storage optimization analysis
   </Accordion>
 
-  <Accordion title="get_rightsizing_recommendations">
-    Identify overprovisioned EC2 instances with potential savings
+  <Accordion title="aws-pricing">
+    Comprehensive AWS pricing analysis tool providing access to service pricing information through get_service_codes, get_service_attributes, get_attribute_values, and get_pricing_from_api operations
   </Accordion>
 
-  <Accordion title="get_reservation_utilization">
-    Check Reserved Instance and Savings Plans utilization
+  <Accordion title="bcm-pricing-calc">
+    Work with workload estimates using the AWS Billing and Cost Management Pricing Calculator API
   </Accordion>
 
-  <Accordion title="get_compute_optimizer_recommendations">
-    Get performance and cost optimization recommendations for compute resources
-  </Accordion>
-</AccordionGroup>
-
-### Monitoring
-
-<AccordionGroup>
-  <Accordion title="list_cost_anomalies">
-    Detect and investigate unusual spending patterns
+  <Accordion title="budgets">
+    Retrieves AWS budget information including budget limits, actual spend, and forecasted spend
   </Accordion>
 
-  <Accordion title="get_budgets">
-    List all budgets and their current status
+  <Accordion title="cost-anomaly">
+    Retrieves AWS cost anomalies detected on your account during a specified time period
   </Accordion>
 
-  <Accordion title="get_free_tier_usage">
-    Monitor AWS Free Tier usage and remaining limits
+  <Accordion title="cost-comparison">
+    Retrieves AWS cost comparisons between two one-month periods for month-to-month variance analysis
+  </Accordion>
+
+  <Accordion title="free-tier-usage">
+    Retrieves AWS Free Tier usage information showing current usage across services
+  </Accordion>
+
+  <Accordion title="rec-details">
+    Get detailed cost optimization recommendation with integrated data from multiple AWS services including Cost Optimization Hub, Compute Optimizer, and Cost Explorer
+  </Accordion>
+
+  <Accordion title="ri-performance">
+    Retrieves AWS Reserved Instance coverage and utilization data using Cost Explorer API
+  </Accordion>
+
+  <Accordion title="sp-performance">
+    Retrieves AWS Savings Plans coverage and utilization data through get_savings_plans_coverage, get_savings_plans_utilization, and get_savings_plans_utilization_details operations
+  </Accordion>
+
+  <Accordion title="session-sql">
+    Execute SQL queries on the persistent session database to query tables created by other tools within the current session
   </Accordion>
 </AccordionGroup>
 
