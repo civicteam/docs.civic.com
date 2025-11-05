@@ -32,67 +32,24 @@ If you have a free outlook.com email address:
 
 ### Microsoft 365 Business Users
 
-For Microsoft 365 Business or Office 365 license holders, **admin approval is required** for first-time setup:
+For Microsoft 365 Business or Office 365 license holders, setup is straightforward:
 
 <Steps>
-  <Step title="Initial Authorization Attempt">
-    Add the Microsoft 365 Mail server and attempt to authorize. Non-admin users will see a "Need admin approval" dialog indicating that Civic Nexus needs permission to access resources in your organization that only an admin can grant.
-
-    ![Need Admin Approval Dialog](/images/ms365-setup/02-need-admin-approval.png)
+  <Step title="Add Server">
+    Add the Microsoft 365 Mail server to your Nexus environment through the server directory.
   </Step>
-  <Step title="Admin Grants Consent (One-Time)">
-    Your Microsoft tenant administrator must configure consent in Microsoft Entra ID:
-
-    **Access Entra ID:**
-    - From Microsoft 365: Click the app launcher (grid icon) in the top-left corner of any Microsoft 365 app → Click **Admin** → From the left sidebar, click **Show All** → Under "Admin centers", select **Identity**
-
-      ![Microsoft 365 App Launcher](/images/ms365-setup/03-m365-app-launcher.png)
-
-      ![Admin Centers - Identity](/images/ms365-setup/04-admin-centers-identity.png)
-
-    - From Azure Portal: Click the app launcher (grid icon) in the top-left corner → Select **Entra** from the Microsoft Cloud services
-
-      ![Azure App Launcher](/images/ms365-setup/05-azure-app-launcher.png)
-
-    **Configure User Consent:**
-    1. In Entra ID, select **Enterprise apps** from the left sidebar
-    2. Under the "Security" section, click **Consent and permissions**
-    3. Click **User consent settings**
-
-       ![User Consent Settings](/images/ms365-setup/09-user-consent-settings.png)
-
-    4. Select "Allow user consent for apps from verified publishers, for selected permissions" (This allows users to trigger authorization requests from Nexus, since Civic is a verified publisher)
-    5. Click **Save** (Important: Save before proceeding to the next step)
-    6. Click "Select permissions to classify as low impact" (This whitelists the specific permissions users are allowed to consent to. If prompted to save, click **Save** before moving on)
-    7. On the permissions screen, click **Add permissions** → Select **Microsoft Graph**
-
-       ![Select Microsoft Graph](/images/ms365-setup/12-select-microsoft-graph.png)
-
-    8. Select all **OpenId permissions** (required): `openid`, `profile`, `email`
-    9. Add the base permissions: `offline_access`, `User.Read`
-    10. Add Mail-specific permissions: `Mail.Read`, `Mail.ReadWrite`, `Mail.Send`
-    11. Click **Add permissions** then **Save**
-  </Step>
-  <Step title="Wait and Retry">
-    Wait up to **1 hour** for changes to propagate, then retry authorization in Nexus.
-  </Step>
-  <Step title="Complete Authorization">
-    You'll now see a standard OAuth consent screen showing "Permissions requested" by Civic Nexus. The app will request permissions such as:
-    - Maintain access to data you have given it access to
-    - Read and write access to user mail
-    - Send mail as a user
-    - View your basic profile
+  <Step title="Authorize">
+    Simply log in and approve the OAuth consent request. No admin approval needed for Mail.
 
     ![OAuth Consent Screen - Mail](/images/ms365-setup/06-oauth-consent-mail.png)
-
-    Click **Accept** to complete the authorization and start using the Microsoft 365 Mail integration.
+  </Step>
+  <Step title="Test Connection">
+    Try "Show me my latest 5 emails" to verify the connection works.
   </Step>
 </Steps>
 
 <Note>
-**Alternative Setup Method:** The steps above use a proactive approach where admins configure permissions up-front. Alternatively, administrators can enable "Admin consent requests" (found in **Admin consent settings** within Entra ID). This allows users to trigger approval requests directly when they attempt to authorize, and admins can approve on-demand rather than pre-configuring permissions.
-
-![Admin Consent Requests Toggle](/images/ms365-setup/13-admin-consent-requests-toggle.png)
+**Admin approval is NOT required for Mail.** Unlike other Microsoft 365 apps (SharePoint, Teams, etc.), the Mail server works with direct user consent for both personal and business accounts.
 </Note>
 
 ## What You Can Do
