@@ -1,0 +1,140 @@
+---
+title: Google Analytics
+description: Access and analyze Google Analytics data including accounts, properties, dimensions, metrics, and reports
+icon: "server"
+---
+
+## Overview
+
+The Google Analytics server enables AI assistants to interact with [Google Analytics](https://analytics.google.com), providing comprehensive analytics data access including account management, property configuration, custom dimensions and metrics, realtime reporting, and historical data analysis through the Google Analytics Data API.
+
+## How to Add Google Analytics
+
+<Steps>
+  <Step title="Add Server">
+    Add the Google Analytics server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in with your Google account and approve the OAuth consent request. No admin approval needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "Show me my Google Analytics account summaries" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Simple OAuth Consent:** Google Analytics uses standard Google OAuth consent. Works with personal Google accounts and Google Workspace without special admin approval.
+
+**Experimental Status:** This server is marked as EXPERIMENTAL and uses the Google Analytics Data API v1 beta.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Account & Property Management" icon="building">
+    List accounts, properties, and Google Ads links
+  </Card>
+  <Card title="Custom Configuration" icon="sliders">
+    Retrieve custom dimensions and metrics for properties
+  </Card>
+  <Card title="Realtime Reporting" icon="bolt">
+    Run realtime reports with current visitor data
+  </Card>
+  <Card title="Historical Reporting" icon="chart-line">
+    Generate data reports with date ranges and complex filtering
+  </Card>
+</CardGroup>
+
+## Available Tools (6)
+
+### Account & Property Operations
+
+<AccordionGroup>
+  <Accordion title="get_account_summaries">
+    Retrieve information about all Google Analytics accounts and properties accessible to the user. Returns account and property details for configuration.
+  </Accordion>
+
+  <Accordion title="get_property_details">
+    Get detailed information about a specific Google Analytics property by property ID. Property ID can be a number or "properties/123" format.
+  </Accordion>
+
+  <Accordion title="list_google_ads_links">
+    List all Google Ads account links for a specific property. Shows integration between Analytics and advertising accounts.
+  </Accordion>
+
+  <Accordion title="get_custom_dimensions_and_metrics">
+    Retrieve custom Core Reporting dimensions and metrics defined for a specific property. Essential for understanding available custom data fields.
+  </Accordion>
+</AccordionGroup>
+
+### Reporting Operations
+
+<AccordionGroup>
+  <Accordion title="run_realtime_report">
+    Run a Google Analytics Data API realtime report showing current visitor activity. Supports realtime dimensions and metrics, filtering with FilterExpression, ordering with OrderBy, and pagination. Returns up to 10 rows per request.
+  </Accordion>
+
+  <Accordion title="run_report">
+    Run a Google Analytics Data API historical report with date ranges. Supports standard and custom dimensions/metrics, complex filtering with FilterExpression, ordering with OrderBy, pagination, and currency code specification. Returns up to 10 rows per request.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Account Discovery
+"Show me all my Google Analytics accounts and properties" - List accessible analytics configurations.
+
+### Property Details
+"Get information about property 123456789" - View specific property configuration.
+
+### Google Ads Integration
+"List all Google Ads links for my property" - View advertising account connections.
+
+### Custom Configuration
+"Show me the custom dimensions and metrics for property 123456789" - Understand available custom data fields.
+
+### Realtime Monitoring
+"Show me current active users by country in realtime" - Monitor live visitor activity with dimensions like country and metrics like activeUsers.
+
+### Realtime Event Tracking
+"Get realtime data for 'purchase' events" - Track specific events as they happen using dimension filters.
+
+### Historical Analysis
+"Show me page views for the last 30 days by page path" - Analyze historical data with date range "30daysAgo" to "yesterday".
+
+### Date Range Comparison
+"Compare January 2025 vs February 2025 traffic" - Use multiple date ranges to compare periods.
+
+### Event Filtering
+"Show events from google / cpc source" - Apply dimension filters to segment data by traffic source.
+
+### Metric Filtering
+"Find pages with more than 100 views" - Use metric filters to find high-performing content.
+
+### Sorted Reports
+"Show top 10 pages by event count descending" - Apply OrderBy to sort results by metrics.
+
+### Currency Conversion
+"Show revenue in EUR instead of default currency" - Specify ISO4217 currency code like "EUR", "USD", or "JPY".
+
+<Note>
+**Property ID Format:** Accepts either a number (e.g., 123456789) or string format "properties/123456789".
+
+**Report Limits:** Both run_realtime_report and run_report return maximum 10 rows per request. Use offset for pagination to retrieve additional data.
+
+**Date Ranges:** Supports absolute dates ("2025-01-01") and relative dates ("yesterday", "today", "30daysAgo").
+
+**Filtering:** Uses Google Analytics Data API FilterExpression with support for:
+- Simple filters (string_filter, numeric_filter, in_list_filter, empty_filter)
+- NOT expressions
+- AND/OR group filters
+- Independent dimension_filter and metric_filter application
+
+**Filter Limitations:** dimension_filter and metric_filter are applied independently. Complex combinations like `(dimension1 AND metric1) OR (dimension2 AND metric2)` require multiple report requests or client-side filtering.
+
+**Dimensions & Metrics:**
+- run_realtime_report: Only realtime dimensions and metrics from [Realtime API Schema](https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-api-schema)
+- run_report: Standard dimensions/metrics from [API Schema](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema) plus custom dimensions/metrics from get_custom_dimensions_and_metrics
+
+**Ordering:** Use OrderBy objects to sort by dimensions (with order_type: ALPHANUMERIC, CASE_INSENSITIVE, NUMERIC) or metrics in ascending/descending order.
+</Note>

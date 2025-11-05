@@ -1,0 +1,151 @@
+---
+title: Google Sheets
+description: Create and manage Google Sheets spreadsheets
+icon: "server"
+---
+
+## Overview
+
+The Google Sheets server enables AI assistants to interact with [Google Sheets](https://sheets.google.com), providing comprehensive spreadsheet management including data reading and writing, range operations, spreadsheet creation, and collaboration features through the Google Sheets API.
+
+## How to Add Google Sheets
+
+<Steps>
+  <Step title="Add Server">
+    Add the Google Sheets server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in with your Google account and approve the OAuth consent request. No admin approval needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "List my Google Sheets" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Simple OAuth Consent:** Google Sheets uses standard Google OAuth consent. Works with personal Google accounts and Google Workspace without special admin approval.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Spreadsheet Discovery" icon="table">
+    List accessible spreadsheets and get spreadsheet information
+  </Card>
+  <Card title="Data Operations" icon="database">
+    Read and modify cell values with range-based operations
+  </Card>
+  <Card title="Spreadsheet Creation" icon="file-spreadsheet">
+    Create new spreadsheets and add sheets within existing ones
+  </Card>
+  <Card title="Collaboration" icon="comments">
+    Read, create, reply to, and resolve spreadsheet comments
+  </Card>
+</CardGroup>
+
+## Available Tools (10)
+
+### Spreadsheet Operations
+
+<AccordionGroup>
+  <Accordion title="list_spreadsheets">
+    List spreadsheets from Google Drive that the user has access to. Returns spreadsheet names, IDs, modified times, and Drive web links. Defaults to 25 spreadsheets maximum.
+  </Accordion>
+
+  <Accordion title="get_spreadsheet_info">
+    Get detailed information about a specific spreadsheet including its title and list of sheets with their IDs and dimensions.
+  </Accordion>
+
+  <Accordion title="create_spreadsheet">
+    Create a new Google Spreadsheet with a title and optional list of sheet names. Returns spreadsheet ID and URL.
+  </Accordion>
+
+  <Accordion title="create_sheet">
+    Create a new sheet (tab) within an existing spreadsheet by specifying the sheet name.
+  </Accordion>
+</AccordionGroup>
+
+### Data Operations
+
+<AccordionGroup>
+  <Accordion title="read_sheet_values">
+    Read values from a specific range in a Google Sheet using A1 notation (e.g., "Sheet1!A1:D10"). Defaults to "A1:Z1000" if range not specified.
+  </Accordion>
+
+  <Accordion title="modify_sheet_values">
+    Modify values in a specific range - can write, update, or clear values. Supports value input options: "RAW" (no parsing) or "USER_ENTERED" (formulas evaluated). Can clear ranges by setting clear_values parameter.
+  </Accordion>
+</AccordionGroup>
+
+### Comment Operations
+
+<AccordionGroup>
+  <Accordion title="read_spreadsheet_comments">
+    Read all comments from a Google Spreadsheet including author, creation time, and content.
+  </Accordion>
+
+  <Accordion title="create_spreadsheet_comment">
+    Create a new comment on a Google Spreadsheet with specified content.
+  </Accordion>
+
+  <Accordion title="reply_to_spreadsheet_comment">
+    Reply to a specific comment in a Google Spreadsheet by comment ID.
+  </Accordion>
+
+  <Accordion title="resolve_spreadsheet_comment">
+    Resolve a comment in a Google Spreadsheet to mark it as complete.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Spreadsheet Discovery
+"Show me all my Google Sheets" - List accessible spreadsheets with metadata and links.
+
+### Spreadsheet Details
+"Get information about the Budget 2024 spreadsheet" - View sheet names and structure.
+
+### Reading Data
+"Read values from cells A1 to D10 in the Sales sheet" - Extract data from specific ranges.
+
+### Reading Large Ranges
+"Read all data from the Data sheet" - Uses default range A1:Z1000 for comprehensive data retrieval.
+
+### Writing Data
+"Write 'Q1 Sales' to cell A1 and '50000' to cell B1" - Update cell values in specified ranges.
+
+### Formula Entry
+"Add formula '=SUM(A1:A10)' to cell A11 with USER_ENTERED mode" - Insert formulas that evaluate automatically.
+
+### Clearing Data
+"Clear values in range A1:D10" - Remove data from specified cells using clear_values parameter.
+
+### Spreadsheet Creation
+"Create a new spreadsheet called 'Monthly Budget' with sheets for each month" - Generate new spreadsheets with multiple sheets.
+
+### Adding Sheets
+"Add a new sheet called 'Q4 Data' to the existing spreadsheet" - Expand spreadsheets with additional tabs.
+
+### Reading Comments
+"Show me all comments in the Project Tracker spreadsheet" - View collaboration feedback.
+
+### Adding Comments
+"Add a comment saying 'Please verify these numbers'" - Provide feedback on spreadsheet data.
+
+### Comment Threads
+"Reply to comment ABC123 with 'Verified and approved'" - Participate in spreadsheet discussions.
+
+### Resolving Comments
+"Mark comment XYZ789 as resolved" - Complete feedback loops.
+
+<Note>
+**Range Notation:** Uses A1 notation for specifying cell ranges. Format: "Sheet1!A1:D10" (with sheet name) or "A1:D10" (default sheet). Default range is "A1:Z1000" if not specified.
+
+**Value Input Options:**
+- "RAW": Values stored as-is without parsing
+- "USER_ENTERED": Formulas and formatted values are parsed as if entered by user (default)
+
+**List Limits:** list_spreadsheets returns up to 25 spreadsheets by default, configurable via max_results parameter.
+
+**Multi-Sheet Creation:** create_spreadsheet can initialize multiple sheets at once by providing a list of sheet names.
+</Note>

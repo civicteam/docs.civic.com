@@ -1,0 +1,124 @@
+---
+title: Google Calendar
+description: Access and manage Google Calendar events
+icon: "server"
+---
+
+## Overview
+
+The Google Calendar server enables AI assistants to interact with [Google Calendar](https://calendar.google.com), providing comprehensive calendar management including event creation, modification, retrieval, and deletion through the Google Calendar API.
+
+## How to Add Google Calendar
+
+<Steps>
+  <Step title="Add Server">
+    Add the Google Calendar server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in with your Google account and approve the OAuth consent request. No admin approval needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "Show me my calendar events for today" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Simple OAuth Consent:** Google Calendar uses standard Google OAuth consent. No special admin approval or Google Workspace setup is required - works with any Google account.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Event Management" icon="calendar">
+    Create, modify, and delete calendar events with full details
+  </Card>
+  <Card title="Calendar Discovery" icon="list">
+    List all accessible calendars and their details
+  </Card>
+  <Card title="Event Search" icon="magnifying-glass">
+    Search and retrieve events by time range or keywords
+  </Card>
+  <Card title="Google Meet Integration" icon="video">
+    Add or remove Google Meet video conference links to events
+  </Card>
+</CardGroup>
+
+## Available Tools (6)
+
+### Calendar Operations
+
+<AccordionGroup>
+  <Accordion title="list_calendars">
+    Retrieve all calendars accessible to the user including primary calendar, subscribed calendars, and shared calendars.
+  </Accordion>
+</AccordionGroup>
+
+### Event Retrieval
+
+<AccordionGroup>
+  <Accordion title="get_events">
+    List events within a specified time range. Supports filtering by calendar ID, time range (RFC3339 format), maximum results, and keyword search.
+  </Accordion>
+
+  <Accordion title="get_event">
+    Retrieve detailed information for a specific event by ID including attendees, location, description, and conference details.
+  </Accordion>
+</AccordionGroup>
+
+### Event Modification
+
+<AccordionGroup>
+  <Accordion title="create_event">
+    Create new calendar events with title, start/end times, description, location, attendees, timezone, Google Drive attachments, and optional Google Meet video conference.
+  </Accordion>
+
+  <Accordion title="modify_event">
+    Update existing event details including title, times, description, location, attendees, timezone, and Google Meet conference link.
+  </Accordion>
+
+  <Accordion title="delete_event">
+    Remove events from calendars by event ID.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### View Schedule
+"Show me all my calendar events for this week" - List upcoming events in a date range.
+
+### Event Details
+"Get the details of my next meeting" - Retrieve specific event information with attendees and location.
+
+### Quick Scheduling
+"Create a team meeting tomorrow at 2pm for 1 hour with alice@example.com and bob@example.com" - Schedule events with attendees.
+
+### All-Day Events
+"Create an all-day event called 'Conference' from October 27 to October 29" - Block calendar days for multi-day events.
+
+### Google Meet Integration
+"Create a meeting tomorrow at 3pm with Google Meet link" - Automatically add video conference details.
+
+### Event Updates
+"Change my 2pm meeting to 3pm and add charlie@example.com as an attendee" - Modify existing events.
+
+### Timezone Handling
+"Schedule a call at 10am Pacific Time with the London office" - Create events with specific timezones.
+
+### Drive Attachments
+"Create a meeting with the project proposal document attached" - Link Google Drive files to calendar events.
+
+### Event Search
+"Find all calendar events with 'project' in the title" - Search events by keyword.
+
+### Calendar Management
+"Show me all my subscribed calendars" - List available calendars for organization.
+
+<Note>
+**RFC3339 Format:** Event times use RFC3339 format (e.g., `2024-10-27T10:00:00-07:00` for timed events or `2024-10-27` for all-day events).
+
+**Calendar IDs:** Use `'primary'` for the user's main calendar or specific calendar IDs from `list_calendars` for shared/subscribed calendars.
+
+**Google Meet:** Set `add_google_meet: true` when creating/modifying events to automatically generate video conference links.
+
+**Attendees:** Specify attendee email addresses to send calendar invitations automatically.
+</Note>

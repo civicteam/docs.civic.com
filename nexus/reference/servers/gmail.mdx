@@ -1,0 +1,151 @@
+---
+title: Google Gmail
+description: Access and manage Gmail messages, labels, threads, and attachments
+icon: "server"
+---
+
+## Overview
+
+The Google Gmail server enables AI assistants to interact with [Gmail](https://mail.google.com), providing comprehensive email management including message search, sending, labeling, thread management, and attachment handling through the Gmail API.
+
+## How to Add Google Gmail
+
+<Steps>
+  <Step title="Add Server">
+    Add the Google Gmail server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in with your Google account and approve the OAuth consent request. No admin approval needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "Show me my latest 5 emails" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Simple OAuth Consent:** Gmail uses standard Google OAuth consent. No special admin approval or Google Workspace setup is required - works with any Gmail account.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Email Search & Reading" icon="magnifying-glass">
+    Search messages with Gmail operators and read full content
+  </Card>
+  <Card title="Sending & Drafting" icon="paper-plane">
+    Send emails and create drafts directly from AI assistants
+  </Card>
+  <Card title="Label Management" icon="tags">
+    Create, update, and apply labels to organize your inbox
+  </Card>
+  <Card title="Attachment Handling" icon="paperclip">
+    List and download email attachments programmatically
+  </Card>
+</CardGroup>
+
+## Available Tools (14)
+
+### Message Operations
+
+<AccordionGroup>
+  <Accordion title="search_gmail_messages">
+    Search messages using Gmail query operators. Returns Message IDs, Thread IDs, and web interface links for verification.
+  </Accordion>
+
+  <Accordion title="get_gmail_message_content">
+    Retrieve full content of a specific message including subject, sender, and body.
+  </Accordion>
+
+  <Accordion title="get_gmail_messages_content_batch">
+    Retrieve multiple messages in a single batch request (up to 5 messages). Supports full content or metadata-only format.
+  </Accordion>
+
+  <Accordion title="send_gmail_message">
+    Send an email using your Gmail account with recipient, subject, and plain text body.
+  </Accordion>
+
+  <Accordion title="draft_gmail_message">
+    Create a draft email with optional recipient. Can be completed and sent later.
+  </Accordion>
+</AccordionGroup>
+
+### Thread Operations
+
+<AccordionGroup>
+  <Accordion title="get_gmail_thread_content">
+    Retrieve complete conversation thread including all messages in chronological order.
+  </Accordion>
+
+  <Accordion title="get_gmail_threads_content_batch">
+    Retrieve multiple threads in batch (up to 25 threads). Useful for analyzing conversations at scale.
+  </Accordion>
+</AccordionGroup>
+
+### Label Management
+
+<AccordionGroup>
+  <Accordion title="list_gmail_labels">
+    List all labels in your Gmail account with IDs, names, and types.
+  </Accordion>
+
+  <Accordion title="manage_gmail_label">
+    Create, update, or delete labels. Control label visibility in both label list and message list.
+  </Accordion>
+
+  <Accordion title="modify_gmail_message_labels">
+    Add or remove labels from a single message. Use to archive (remove INBOX) or delete (add TRASH).
+  </Accordion>
+
+  <Accordion title="batch_modify_gmail_message_labels">
+    Add or remove labels from multiple messages simultaneously for bulk organization.
+  </Accordion>
+</AccordionGroup>
+
+### Attachment Operations
+
+<AccordionGroup>
+  <Accordion title="list_gmail_attachments">
+    List all attachments in a message with IDs, filenames, and sizes.
+  </Accordion>
+
+  <Accordion title="download_gmail_attachment">
+    Download attachment content as base64-encoded data with metadata.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Email Search
+"Find all emails from john@example.com in the last week" - Use Gmail search operators to locate specific messages.
+
+### Reading Messages
+"Show me the content of the most recent email from the newsletter" - Retrieve and display full message content.
+
+### Batch Processing
+"Get the last 5 messages from my inbox and summarize them" - Process multiple emails efficiently in one request.
+
+### Sending Email
+"Send an email to sarah@example.com about tomorrow's meeting" - Compose and send emails directly.
+
+### Draft Creation
+"Create a draft email for the quarterly report" - Prepare emails for review before sending.
+
+### Thread Analysis
+"Show me the entire conversation thread about the project proposal" - Read complete email chains.
+
+### Label Organization
+"Create a label called 'Important Projects' and apply it to all emails from client@example.com" - Organize inbox with custom labels.
+
+### Bulk Label Operations
+"Archive all emails from notifications@example.com" - Remove INBOX label from multiple messages.
+
+### Attachment Management
+"List all attachments in the latest email and download the PDF" - Handle email attachments programmatically.
+
+<Note>
+**Gmail Search Operators:** Supports standard Gmail search syntax including `from:`, `to:`, `subject:`, `after:`, `before:`, `has:attachment`, `is:unread`, and more.
+
+**Batch Limits:** Message batch operations support up to 5 messages, thread batch operations support up to 25 threads.
+
+**Label Operations:** Archiving removes the INBOX label. Deleting adds the TRASH label. System labels like INBOX, SENT, TRASH cannot be deleted.
+</Note>
