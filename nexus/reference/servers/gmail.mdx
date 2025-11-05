@@ -1,12 +1,12 @@
 ---
 title: Google Gmail
-description: Access and manage Gmail messages, labels, threads, and attachments
+description: Access and manage Gmail messages, labels, and threads
 icon: "server"
 ---
 
 ## Overview
 
-The Google Gmail server enables AI assistants to interact with [Gmail](https://mail.google.com), providing comprehensive email management including message search, sending, labeling, thread management, and attachment handling through the Gmail API.
+The Google Gmail server enables AI assistants to interact with [Gmail](https://mail.google.com), providing comprehensive email management including message search, sending, labeling, and thread management through the Gmail API.
 
 ## How to Add Google Gmail
 
@@ -35,15 +35,15 @@ The Google Gmail server enables AI assistants to interact with [Gmail](https://m
   <Card title="Sending & Drafting" icon="paper-plane">
     Send emails and create drafts directly from AI assistants
   </Card>
+  <Card title="Thread Management" icon="comments">
+    Read complete conversation threads and analyze email chains
+  </Card>
   <Card title="Label Management" icon="tags">
     Create, update, and apply labels to organize your inbox
   </Card>
-  <Card title="Attachment Handling" icon="paperclip">
-    List and download email attachments programmatically
-  </Card>
 </CardGroup>
 
-## Available Tools (14)
+## Available Tools (11)
 
 ### Message Operations
 
@@ -101,18 +101,6 @@ The Google Gmail server enables AI assistants to interact with [Gmail](https://m
   </Accordion>
 </AccordionGroup>
 
-### Attachment Operations
-
-<AccordionGroup>
-  <Accordion title="list_gmail_attachments">
-    List all attachments in a message with IDs, filenames, and sizes.
-  </Accordion>
-
-  <Accordion title="download_gmail_attachment">
-    Download attachment content as base64-encoded data with metadata.
-  </Accordion>
-</AccordionGroup>
-
 ## Use Cases
 
 ### Email Search
@@ -138,9 +126,6 @@ The Google Gmail server enables AI assistants to interact with [Gmail](https://m
 
 ### Bulk Label Operations
 "Archive all emails from notifications@example.com" - Remove INBOX label from multiple messages.
-
-### Attachment Management
-"List all attachments in the latest email and download the PDF" - Handle email attachments programmatically.
 
 <Note>
 **Gmail Search Operators:** Supports standard Gmail search syntax including `from:`, `to:`, `subject:`, `after:`, `before:`, `has:attachment`, `is:unread`, and more.
