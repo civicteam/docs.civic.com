@@ -23,22 +23,37 @@ For Microsoft 365 Business or Office 365 license holders, **admin approval is re
 <Steps>
   <Step title="Initial Authorization Attempt">
     Add the Microsoft 365 Teams server and attempt to authorize. Non-admin users will see a "Need admin approval" dialog indicating that Civic Nexus needs permission to access resources in your organization that only an admin can grant.
+
+    ![Need Admin Approval Dialog](/images/ms365-setup/02-need-admin-approval.png)
   </Step>
   <Step title="Admin Grants Consent (One-Time)">
     Your Microsoft tenant administrator must configure consent in Microsoft Entra ID:
 
     **Access Entra ID:**
     - From Microsoft 365: Click the app launcher (grid icon) in the top-left corner of any Microsoft 365 app → Click **Admin** → From the left sidebar, click **Show All** → Under "Admin centers", select **Identity**
+
+      ![Microsoft 365 App Launcher](/images/ms365-setup/03-m365-app-launcher.png)
+
+      ![Admin Centers - Identity](/images/ms365-setup/04-admin-centers-identity.png)
+
     - From Azure Portal: Click the app launcher (grid icon) in the top-left corner → Select **Entra** from the Microsoft Cloud services
+
+      ![Azure App Launcher](/images/ms365-setup/05-azure-app-launcher.png)
 
     **Configure User Consent:**
     1. In Entra ID, select **Enterprise apps** from the left sidebar
     2. Under the "Security" section, click **Consent and permissions**
     3. Click **User consent settings**
+
+       ![User Consent Settings](/images/ms365-setup/09-user-consent-settings.png)
+
     4. Select "Allow user consent for apps from verified publishers, for selected permissions" (This allows users to trigger authorization requests from Nexus, since Civic is a verified publisher)
     5. Click **Save** (Important: Save before proceeding to the next step)
     6. Click "Select permissions to classify as low impact" (This whitelists the specific permissions users are allowed to consent to. If prompted to save, click **Save** before moving on)
     7. On the permissions screen, click **Add permissions** → Select **Microsoft Graph**
+
+       ![Select Microsoft Graph](/images/ms365-setup/12-select-microsoft-graph.png)
+
     8. Select all **OpenId permissions** (required): `openid`, `profile`, `email`
     9. Add the base permissions: `offline_access`, `User.Read`
     10. Add Teams-specific permissions: `Team.ReadBasic.All`, `Channel.ReadBasic.All`, `TeamMember.Read.All`, `ChannelMessage.Read.All`, `ChannelMessage.Send`
@@ -61,6 +76,8 @@ For Microsoft 365 Business or Office 365 license holders, **admin approval is re
 
 <Note>
 **Alternative Setup Method:** The steps above use a proactive approach where admins configure permissions up-front. Alternatively, administrators can enable "Admin consent requests" (found in **Admin consent settings** within Entra ID). This allows users to trigger approval requests directly when they attempt to authorize, and admins can approve on-demand rather than pre-configuring permissions.
+
+![Admin Consent Requests Toggle](/images/ms365-setup/13-admin-consent-requests-toggle.png)
 </Note>
 
 ## What You Can Do

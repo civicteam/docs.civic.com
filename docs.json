@@ -93,6 +93,7 @@
                   "nexus/reference/servers/linear",
                   "nexus/reference/servers/monday",
                   "nexus/reference/servers/ms365-mail",
+                  "nexus/reference/servers/sharepoint",
                   "nexus/reference/servers/ms365-teams",
                   "nexus/reference/servers/n8n",
                   "nexus/reference/servers/notion",
@@ -103,7 +104,6 @@
                   "nexus/reference/servers/replicate",
                   "nexus/reference/servers/salesforce",
                   "nexus/reference/servers/sentry",
-                  "nexus/reference/servers/sharepoint",
                   "nexus/reference/servers/slack",
                   "nexus/reference/servers/square"
                 ]
