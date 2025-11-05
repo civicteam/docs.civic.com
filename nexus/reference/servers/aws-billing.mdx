@@ -1,0 +1,156 @@
+---
+title: AWS Billing
+description: Query and analyze AWS billing and cost data through Model Context Protocol
+icon: "server"
+---
+
+## Overview
+
+The AWS Billing server provides comprehensive cost management and optimization capabilities for [AWS](https://aws.amazon.com) accounts, enabling you to track spending, analyze cost trends, detect anomalies, and identify optimization opportunities across your cloud infrastructure.
+
+## How to Add AWS Billing
+
+<Steps>
+  <Step title="Create IAM User">
+    1. Log in to your AWS Console
+    2. Navigate to **IAM > Users**
+    3. Create a new user with programmatic access
+  </Step>
+  <Step title="Attach Required Policies">
+    Attach the following AWS managed policies to the IAM user:
+    - `ViewOnlyAccess` or `AWSBillingReadOnlyAccess` (core billing)
+    - `CostOptimizationHubReadOnlyAccess` (must enable in us-east-1)
+    - `ComputeOptimizerReadOnlyAccess` (requires opt-in)
+    - `AWSBudgetsReadOnlyAccess` (budget status)
+  </Step>
+  <Step title="Generate Access Keys">
+    1. Select the user and go to **Security credentials**
+    2. Create an access key for programmatic access
+    3. Save your Access Key ID and Secret Access Key
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the AWS Billing server to your Nexus environment
+    2. Enter your AWS credentials when prompted
+  </Step>
+</Steps>
+
+<Tip>
+Enable Cost Optimization Hub in us-east-1 region and opt into Compute Optimizer. It takes approximately 12 hours for initial data to populate.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Cost Analysis" icon="chart-line">
+    Track AWS spending by service, region, and account with customizable date ranges and granularity
+  </Card>
+  <Card title="Budget Monitoring" icon="gauge-high">
+    View budget status, track utilization, and identify budgets at risk of being exceeded
+  </Card>
+  <Card title="Optimization Recommendations" icon="lightbulb">
+    Discover rightsizing opportunities, idle resources, and Reserved Instance recommendations
+  </Card>
+  <Card title="Anomaly Detection" icon="triangle-exclamation">
+    Identify unusual cost spikes and investigate the services causing unexpected spending
+  </Card>
+</CardGroup>
+
+## Available Tools (14)
+
+<AccordionGroup>
+  <Accordion title="cost-explorer">
+    Comprehensive tool for retrieving AWS cost and usage data using Cost Explorer API. Supports multiple operations including getCostAndUsage, getCostAndUsageWithResources, getDimensionValues, getCostForecast, getUsageForecast, getTagsOrValues, getCostCategories, and getSavingsPlansUtilization
+  </Accordion>
+
+  <Accordion title="compute-optimizer">
+    Retrieves performance-based optimization recommendations from AWS Compute Optimizer for EC2, Auto Scaling groups, EBS volumes, Lambda functions, RDS instances, and ECS services
+  </Accordion>
+
+  <Accordion title="cost-optimization">
+    Retrieves cost optimization recommendations from AWS Cost Optimization Hub including rightsizing, idle resource detection, and Reserved Instance/Savings Plans purchase recommendations
+  </Accordion>
+
+  <Accordion title="storage-lens">
+    Query S3 Storage Lens metrics data using Athena SQL for storage optimization analysis
+  </Accordion>
+
+  <Accordion title="aws-pricing">
+    Comprehensive AWS pricing analysis tool providing access to service pricing information through get_service_codes, get_service_attributes, get_attribute_values, and get_pricing_from_api operations
+  </Accordion>
+
+  <Accordion title="bcm-pricing-calc">
+    Work with workload estimates using the AWS Billing and Cost Management Pricing Calculator API
+  </Accordion>
+
+  <Accordion title="budgets">
+    Retrieves AWS budget information including budget limits, actual spend, and forecasted spend
+  </Accordion>
+
+  <Accordion title="cost-anomaly">
+    Retrieves AWS cost anomalies detected on your account during a specified time period
+  </Accordion>
+
+  <Accordion title="cost-comparison">
+    Retrieves AWS cost comparisons between two one-month periods for month-to-month variance analysis
+  </Accordion>
+
+  <Accordion title="free-tier-usage">
+    Retrieves AWS Free Tier usage information showing current usage across services
+  </Accordion>
+
+  <Accordion title="rec-details">
+    Get detailed cost optimization recommendation with integrated data from multiple AWS services including Cost Optimization Hub, Compute Optimizer, and Cost Explorer
+  </Accordion>
+
+  <Accordion title="ri-performance">
+    Retrieves AWS Reserved Instance coverage and utilization data using Cost Explorer API
+  </Accordion>
+
+  <Accordion title="sp-performance">
+    Retrieves AWS Savings Plans coverage and utilization data through get_savings_plans_coverage, get_savings_plans_utilization, and get_savings_plans_utilization_details operations
+  </Accordion>
+
+  <Accordion title="session-sql">
+    Execute SQL queries on the persistent session database to query tables created by other tools within the current session
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Cost Analysis
+"What were my AWS costs by service for October 2025?" - Quickly identify which services are driving your cloud spend.
+
+### Budget Management
+"Which budgets am I close to exceeding?" - Proactively manage budget overruns before they happen.
+
+### Cost Optimization
+"What cost optimization recommendations do you have?" - Discover opportunities to reduce AWS spending without sacrificing performance.
+
+### Anomaly Detection
+"Show me any cost anomalies from the last 30 days" - Investigate unexpected spikes in AWS spending.
+
+### Complex Analysis
+"Analyze my AWS costs and provide optimization recommendations with estimated savings" - Get a comprehensive cost report with actionable insights.
+
+### Performance Optimization
+"Which EC2 instances are overprovisioned?" - Find resources that can be rightsized for cost savings.
+
+<Note>
+**Date Formats:** Use ISO format (YYYY-MM-DD) for dates. End dates are exclusive.
+
+**Granularity:** Daily granularity works best for periods under 3 months; use monthly for longer periods.
+
+**Metrics:** UnblendedCost is the default and recommended metric for most cost queries.
+
+**Cost Optimization Hub:** Available only in us-east-1 region.
+
+**Data Freshness:** Cost data typically has a 24-48 hour delay.
+</Note>
+
+<Warning>
+**Storage Lens:** Currently not supported. Requires S3 Storage Lens configuration.
+
+**Resource-level data:** Limited to last 14 days for detailed resource queries.
+
+**Budgets:** Cannot create or modify budgets, only view existing ones.
+</Warning>

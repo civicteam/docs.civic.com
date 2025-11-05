@@ -1,0 +1,125 @@
+---
+title: Context7
+description: Up-to-date, version-specific documentation and code examples for libraries and frameworks
+icon: "server"
+---
+
+## Overview
+
+The Context7 server provides AI assistants with access to [Context7](https://context7.com), delivering up-to-date, version-specific documentation and code examples for libraries and frameworks. Built by [Upstash](https://github.com/upstash/context7), this service helps improve LLM accuracy when working with library code by providing real, current documentation.
+
+## How to Add Context7
+
+<Steps>
+  <Step title="Create Context7 Account">
+    1. Go to [https://context7.com](https://context7.com)
+    2. Sign in with your preferred method
+  </Step>
+  <Step title="Generate API Key">
+    1. Visit the [Context7 dashboard](https://context7.com/dashboard)
+    2. Copy your generated API key
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Context7 server to your Nexus environment
+    2. Enter your API key when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "How to handle authentication in Next.js?" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Context7 works best when combined with other developer tools like GitHub, Socket, and Semgrep in a "coder's toolkit" within your IDE.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Library Resolution" icon="magnifying-glass">
+    Resolve package names to Context7-compatible library IDs with version information
+  </Card>
+  <Card title="Version-Specific Docs" icon="book-open">
+    Access up-to-date, version-specific documentation for libraries and frameworks
+  </Card>
+  <Card title="Focused Documentation" icon="bullseye">
+    Get targeted documentation on specific topics like hooks, routing, or authentication
+  </Card>
+  <Card title="Code Examples" icon="code">
+    Retrieve real code examples and practical documentation from library sources
+  </Card>
+</CardGroup>
+
+## Available Tools (2)
+
+<AccordionGroup>
+  <Accordion title="resolve-library-id">
+    Resolves a package/product name to a Context7-compatible library ID and returns a list of matching libraries.
+
+    **You MUST call this function before 'get-library-docs'** to obtain a valid Context7-compatible library ID UNLESS the user explicitly provides a library ID in the format '/org/project' or '/org/project/version'.
+
+    - **Input**:
+      - `libraryName` (required) - Library name to search for and retrieve a Context7-compatible library ID
+
+    - **Selection Process**:
+      1. Analyze the query to understand what library/package the user is looking for
+      2. Return the most relevant match based on:
+         - Name similarity to the query (exact matches prioritized)
+         - Description relevance to the query's intent
+         - Documentation coverage (prioritize libraries with higher Code Snippet counts)
+         - Trust score (consider libraries with scores of 7-10 more authoritative)
+
+    - **Use Cases**:
+      - Resolve package names like "react" or "next.js" to Context7 library IDs
+      - Find specific versions of libraries
+      - Discover available documentation for a library
+  </Accordion>
+
+  <Accordion title="get-library-docs">
+    Fetches up-to-date documentation for a library. You must call 'resolve-library-id' first to obtain the exact Context7-compatible library ID required to use this tool, UNLESS the user explicitly provides a library ID in the format '/org/project' or '/org/project/version'.
+
+    - **Input**:
+      - `context7CompatibleLibraryID` (required) - Exact Context7-compatible library ID (e.g., '/mongodb/docs', '/vercel/next.js', '/supabase/supabase', '/vercel/next.js/v14.3.0-canary.87') retrieved from 'resolve-library-id' or directly from user query
+      - `topic` (optional) - Topic to focus documentation on (e.g., 'hooks', 'routing')
+      - `tokens` (optional) - Maximum number of tokens of documentation to retrieve (default: 10000). Higher values provide more context but consume more tokens
+
+    - **Use Cases**:
+      - Get documentation for a specific library version
+      - Focus on specific topics within a library's documentation
+      - Retrieve code examples and usage patterns
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Library Documentation Access" icon="book">
+    - **Integration Help**: "Can you tell me how to integrate @civic/auth?" - Get specific integration instructions with code examples
+    - **Framework Learning**: "How to handle authentication in Next.js?" - Learn best practices with real documentation
+    - **API Discovery**: "Show me routing examples in Express" - Discover how to use specific framework features
+    - **Version-Specific Info**: "Get documentation for Next.js v14.3.0-canary.87" - Access specific version documentation
+
+    **Example**: "How do I use React hooks?" → Resolve library ID for React, then fetch documentation focused on "hooks" topic
+  </Accordion>
+
+  <Accordion title="Targeted Topic Search" icon="bullseye">
+    - **Focused Learning**: Use the `topic` parameter to get documentation on specific subjects
+    - **Token Management**: Control documentation length with the `tokens` parameter (default: 10000)
+    - **Relevant Examples**: Get code examples specific to your query topic
+
+    **Example**: "Show me Next.js routing documentation" → Get library docs with topic="routing"
+  </Accordion>
+
+  <Accordion title="Library Resolution" icon="magnifying-glass">
+    - **Package Discovery**: Find the correct Context7 library ID for packages
+    - **Version Selection**: Choose specific versions when multiple are available
+    - **Trust Scores**: Prioritize well-documented, authoritative library versions
+
+    **Example**: "Find documentation for MongoDB" → Resolve to '/mongodb/docs' library ID
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+Context7 provides up-to-date, version-specific documentation for libraries and frameworks. The two-step workflow (resolve library ID, then fetch docs) ensures you're accessing the correct documentation version.
+
+When integrated into a developer toolkit with GitHub and other tools, you can configure Nexus to prefer specific libraries or languages without having to provide that context in every prompt.
+</Note>

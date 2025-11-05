@@ -356,6 +356,73 @@ The display mode indicates where the Civic login UI will be displayed. The follo
 
 * `new_tab`: the UI opens in a new tab or popup window (depending on browser preferences), and after login is complete, the tab or popup closes to return the user to your site
 
+### Redirecting Users After Login
+
+<Note>
+  **Important:** The `loginSuccessUrl` configuration parameter is **not supported** for React or other frontend-only Single Page Applications (SPAs). 
+  
+  Since we don't know whether you want to use client-side routing (and which router library you're using) or perform a full page redirect, you should handle post-login navigation using the `onSignIn` hook.
+</Note>
+
+Here are examples of how to redirect users after successful login:
+
+**Option 1: Using React Router**
+
+```tsx
+import { CivicAuthProvider } from "@civic/auth/react";
+import { useNavigate } from "react-router-dom";
+
+function App() {
+  const navigate = useNavigate();
+
+  const handleSignIn = (error?: Error) => {
+    if (error) {
+      console.error("Login failed:", error);
+      return;
+    }
+    
+    // Redirect to dashboard after successful login
+    navigate("/dashboard");
+  };
+
+  return (
+    <CivicAuthProvider 
+      clientId="YOUR_CLIENT_ID"
+      onSignIn={handleSignIn}
+    >
+      {/* Your app content */}
+    </CivicAuthProvider>
+  );
+}
+```
+
+**Option 2: Using Full Page Redirect**
+
+```tsx
+import { CivicAuthProvider } from "@civic/auth/react";
+
+function App() {
+  const handleSignIn = (error?: Error) => {
+    if (error) {
+      console.error("Login failed:", error);
+      return;
+    }
+    
+    // Full page redirect after successful login
+    window.location.href = "/dashboard";
+  };
+
+  return (
+    <CivicAuthProvider 
+      clientId="YOUR_CLIENT_ID"
+      onSignIn={handleSignIn}
+    >
+      {/* Your app content */}
+    </CivicAuthProvider>
+  );
+}
+```
+
 ## API
 
 ### User Context

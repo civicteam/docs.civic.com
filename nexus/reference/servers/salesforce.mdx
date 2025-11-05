@@ -1,0 +1,129 @@
+---
+title: Salesforce
+description: Connect and interact with Salesforce CRM through Model Context Protocol, enabling object management, data queries, Apex code operations, and comprehensive field-level security control
+icon: "server"
+---
+
+## Overview
+
+The Salesforce server enables AI assistants to interact with [Salesforce](https://www.salesforce.com) CRM, providing powerful querying capabilities across accounts, opportunities, contacts, and custom objects through conversational AI and SOQL.
+
+## How to Add Salesforce
+
+<Steps>
+  <Step title="Access Salesforce Account">
+    Log in to your Salesforce account with appropriate permissions to access the data you need.
+  </Step>
+  <Step title="Generate API Credentials">
+    1. Go to **Setup** in Salesforce
+    2. Navigate to **Apps > App Manager**
+    3. Create a Connected App or use existing credentials
+    4. Note your Consumer Key, Consumer Secret, and Security Token
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Salesforce server to your Nexus environment
+    2. Enter your credentials when prompted
+    3. Authorize the connection using OAuth
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Show me all open opportunities" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Ensure your Salesforce user has the necessary permissions to query the objects you need to access.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Data Querying" icon="database">
+    Query accounts, opportunities, contacts, and custom objects with SOQL
+  </Card>
+  <Card title="Cross-Object Search" icon="magnifying-glass">
+    Search across multiple Salesforce objects to get a complete view
+  </Card>
+  <Card title="Analytics & Reporting" icon="chart-bar">
+    Calculate metrics, aggregate data, and generate insights from CRM data
+  </Card>
+  <Card title="Deal Intelligence" icon="lightbulb">
+    Identify at-risk deals, calculate health scores, and prioritize opportunities
+  </Card>
+</CardGroup>
+
+## Available Tools (17)
+
+### Data Query
+
+<AccordionGroup>
+  <Accordion title="query_soql">
+    Execute SOQL queries to retrieve Salesforce data
+  </Accordion>
+
+  <Accordion title="search_records">
+    Search across multiple objects using Salesforce Search
+  </Accordion>
+
+  <Accordion title="describe_object">
+    Get metadata about Salesforce objects and their fields
+  </Accordion>
+</AccordionGroup>
+
+### Opportunities
+
+<AccordionGroup>
+  <Accordion title="list_opportunities">
+    List opportunities with filtering by stage, owner, and close date
+  </Accordion>
+
+  <Accordion title="get_opportunity">
+    Retrieve detailed information about a specific opportunity
+  </Accordion>
+
+  <Accordion title="calculate_opportunity_metrics">
+    Aggregate opportunity data by various dimensions
+  </Accordion>
+</AccordionGroup>
+
+### Accounts
+
+<AccordionGroup>
+  <Accordion title="list_accounts">
+    List accounts with filtering and sorting options
+  </Accordion>
+
+  <Accordion title="get_account_details">
+    Get comprehensive account information including related records
+  </Accordion>
+
+  <Accordion title="calculate_account_health">
+    Calculate account health scores based on opportunity data
+  </Accordion>
+</AccordionGroup>
+
+### Analytics
+
+<AccordionGroup>
+  <Accordion title="aggregate_data">
+    Perform aggregations like SUM, COUNT, AVG across records
+  </Accordion>
+
+  <Accordion title="group_by_analysis">
+    Group and analyze data by various dimensions
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Find At-Risk Deals
+"Connect to salesforce and show me all open opportunities closing this week that aren't in Closed Won stage" - Identify deals needing immediate attention.
+
+### Account Health Score
+"Connect to salesforce and calculate total opportunities, revenue, and average deal size grouped by account" - Understand which accounts are most valuable.
+
+### Cross-Object Search
+"Connect to salesforce and search for all records related to 'Global Media' across accounts and opportunities" - Get a 360-degree view of customers.
+
+<Note>
+The Salesforce server provides read-only query access to your CRM data. Use SOQL for precise filtering or natural language search for broader discovery.
+</Note>

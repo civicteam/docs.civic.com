@@ -1,0 +1,204 @@
+---
+title: SharePoint
+description: Manage SharePoint sites, documents, lists, and pages for team collaboration and content management
+icon: "server"
+---
+
+## Overview
+
+The SharePoint server enables AI assistants to interact with [Microsoft SharePoint](https://www.microsoft.com/microsoft-365/sharepoint/collaboration), providing comprehensive site management, document handling, list creation, and content publishing capabilities through Microsoft Graph API.
+
+## How to Add SharePoint
+
+The setup process varies depending on your Microsoft account type:
+
+### Personal Outlook Users
+
+If you have a free outlook.com email address:
+
+<Steps>
+  <Step title="Add Server">
+    Add the SharePoint server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in and approve the OAuth consent request. No additional steps needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "List my SharePoint sites" to verify the connection works.
+  </Step>
+</Steps>
+
+### Microsoft 365 Business Users
+
+For Microsoft 365 Business or Office 365 license holders, **admin approval is required** for first-time setup:
+
+<Steps>
+  <Step title="Initial Authorization Attempt">
+    Add the SharePoint server and attempt to authorize. Non-admin users will see a "Need admin approval" dialog indicating that Civic Nexus needs permission to access resources in your organization that only an admin can grant.
+  </Step>
+  <Step title="Admin Grants Consent (One-Time)">
+    Your Microsoft tenant administrator must configure consent in Microsoft Entra ID:
+
+    **Access Entra ID:**
+    - From Microsoft 365: Click the app launcher (grid icon) in the top-left corner of any Microsoft 365 app → Click **Admin** → From the left sidebar, click **Show All** → Under "Admin centers", select **Identity**
+    - From Azure Portal: Click the app launcher (grid icon) in the top-left corner → Select **Entra** from the Microsoft Cloud services
+
+    **Configure User Consent:**
+    1. In Entra ID, select **Enterprise apps** from the left sidebar
+    2. Under the "Security" section, click **Consent and permissions**
+    3. Click **User consent settings**
+    4. Select "Allow user consent for apps from verified publishers, for selected permissions" (This allows users to trigger authorization requests from Nexus, since Civic is a verified publisher)
+    5. Click **Save** (Important: Save before proceeding to the next step)
+    6. Click "Select permissions to classify as low impact" (This whitelists the specific permissions users are allowed to consent to. If prompted to save, click **Save** before moving on)
+    7. On the permissions screen, click **Add permissions** → Select **Microsoft Graph**
+    8. Select all **OpenId permissions** (required): `openid`, `profile`, `email`
+    9. Add the base permissions: `offline_access`, `User.Read`
+    10. Add SharePoint permissions based on your organization's needs:
+        - **Read-only access**: `Sites.Read.All`, `Files.Read.All`, `Lists.Read.All`
+        - **Read/Write access**: `Sites.ReadWrite.All`, `Files.ReadWrite.All`, `Lists.ReadWrite.All`
+        - **Advanced management** (optional): `Sites.Manage.All`, `Sites.FullControl.All`, `Group.ReadWrite.All`
+    11. Click **Add permissions** then **Save**
+  </Step>
+  <Step title="Wait and Retry">
+    Wait up to **1 hour** for changes to propagate, then retry authorization in Nexus.
+  </Step>
+  <Step title="Complete Authorization">
+    You'll now see a standard OAuth consent screen showing "Permissions requested" by Civic Nexus. The app will request permissions such as:
+    - Maintain access to data you have given it access to
+    - Read items in all site collections
+    - View your basic profile
+
+    Click **Accept** to complete the authorization and start using the SharePoint integration.
+  </Step>
+</Steps>
+
+<Note>
+**Alternative Setup Method:** The steps above use a proactive approach where admins configure permissions up-front. Alternatively, administrators can enable "Admin consent requests" (found in **Admin consent settings** within Entra ID). This allows users to trigger approval requests directly when they attempt to authorize, and admins can approve on-demand rather than pre-configuring permissions.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Site Management" icon="sitemap">
+    Create and manage SharePoint sites for team collaboration
+  </Card>
+  <Card title="Document Management" icon="folder-open">
+    Upload, organize, and search documents across sites and libraries
+  </Card>
+  <Card title="Lists & Tracking" icon="list-check">
+    Create and manage lists for project tracking and data organization
+  </Card>
+  <Card title="Content Publishing" icon="newspaper">
+    Create modern pages and news posts for team communication
+  </Card>
+</CardGroup>
+
+## Available Tools (28)
+
+### Site Management
+
+<AccordionGroup>
+  <Accordion title="list_sites">
+    List all SharePoint sites you have access to
+  </Accordion>
+
+  <Accordion title="create_site">
+    Create new SharePoint sites for team collaboration
+  </Accordion>
+
+  <Accordion title="get_site_details">
+    Get detailed information about a specific site
+  </Accordion>
+</AccordionGroup>
+
+### Document Management
+
+<AccordionGroup>
+  <Accordion title="upload_document">
+    Upload files to SharePoint document libraries
+  </Accordion>
+
+  <Accordion title="create_folder">
+    Create folders to organize documents
+  </Accordion>
+
+  <Accordion title="search_documents">
+    Search for documents across sites and libraries
+  </Accordion>
+
+  <Accordion title="get_document">
+    Download and retrieve document content
+  </Accordion>
+
+  <Accordion title="list_files">
+    List files and folders in a library or folder
+  </Accordion>
+</AccordionGroup>
+
+### Lists & Data
+
+<AccordionGroup>
+  <Accordion title="create_list">
+    Create custom lists for tracking projects, tasks, or data
+  </Accordion>
+
+  <Accordion title="add_list_item">
+    Add items to SharePoint lists
+  </Accordion>
+
+  <Accordion title="get_list_items">
+    Retrieve items from lists with filtering
+  </Accordion>
+
+  <Accordion title="update_list_item">
+    Update existing list items
+  </Accordion>
+</AccordionGroup>
+
+### Content Publishing
+
+<AccordionGroup>
+  <Accordion title="create_page">
+    Create modern pages for site content
+  </Accordion>
+
+  <Accordion title="create_news_post">
+    Publish news posts for team announcements
+  </Accordion>
+
+  <Accordion title="get_pages">
+    List all pages in a site
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Site Creation
+"Create a new SharePoint site called 'Product Launch 2026'" - Set up collaboration spaces for teams.
+
+### Document Organization
+"In the Product Launch 2026 site, create folders for Marketing, Engineering, and Legal. Upload a project charter document to the Engineering folder. Then create subfolders Q1, Q2, Q3, Q4 under Marketing." - Organize project documents systematically.
+
+### Content Search
+"Search the site for all documents containing 'budget'. Then retrieve the content of the financial report and summarize the key metrics." - Find and analyze documents.
+
+### Project Tracking
+"Create a task tracking list with 3 sample projects including titles, budgets, managers, and due dates." - Set up project management structures.
+
+### Team Communication
+"Create a modern page called 'Team Resources Hub'. Then create a news post titled 'Q4 Results Announcement' with a summary of key achievements and upcoming initiatives." - Publish content for teams.
+
+<Note>
+All Microsoft 365 apps require initial administrator approval before users can authorize them in Nexus.
+
+**Modern Pages:** Pages stay in draft status and must be published manually via the web interface.
+</Note>
+
+<Warning>
+**Known Limitations:**
+- **No deletion** - Cannot delete sites, libraries, lists, or pages
+- **No permissions** - Cannot manage users, groups, sharing, or access control
+- **No publishing** - Modern pages stay in draft (must publish manually)
+- **No configuration** - Cannot modify site settings, themes, navigation, or version control
+- **No comments/workflows** - Cannot access comments, recycle bin, or Power Automate integration
+</Warning>

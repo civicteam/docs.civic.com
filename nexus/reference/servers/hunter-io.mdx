@@ -1,0 +1,176 @@
+---
+title: Hunter.io
+description: Email finding and verification service to discover and validate professional email addresses
+icon: "server"
+---
+
+## Overview
+
+The Hunter.io server enables AI assistants to interact with [Hunter.io](https://hunter.io), providing email finding and verification capabilities to discover and validate professional email addresses. Built by [Meerkats AI](https://github.com/Meerkats-Ai), this server helps with domain research and email discovery.
+
+## How to Add Hunter.io
+
+<Steps>
+  <Step title="Create Hunter.io Account">
+    1. Go to [https://hunter.io](https://hunter.io)
+    2. Sign up for a free account or log in to your existing account
+  </Step>
+  <Step title="Generate API Key">
+    1. Navigate to your account dashboard
+    2. Go to **API** section
+    3. Copy your API key
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Hunter.io server to your Nexus environment
+    2. Enter your API key when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "How many searches do I have left this month?" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+The free tier provides 25 domain searches and 50 email verifications per month, which reset on the last day of each month.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Email Finding" icon="magnifying-glass">
+    Find email addresses using domain and name information
+  </Card>
+  <Card title="Email Verification" icon="shield-check">
+    Verify if an email address is valid and deliverable
+  </Card>
+  <Card title="Domain Search" icon="building">
+    Find all email addresses corresponding to a website or company name
+  </Card>
+  <Card title="Account Management" icon="chart-bar">
+    Check email counts and get information about your Hunter account
+  </Card>
+</CardGroup>
+
+## Available Tools (5)
+
+<AccordionGroup>
+  <Accordion title="hunter_find_email">
+    Find an email address using domain and name information.
+
+    - **Input**:
+      - `domain` (required) - The domain name of the company, e.g. "stripe.com"
+      - `first_name` (optional) - The first name of the person
+      - `last_name` (optional) - The last name of the person
+      - `company` (optional) - The name of the company
+      - `full_name` (optional) - The full name of the person (alternative to first_name and last_name)
+
+    - **Use Cases**:
+      - Find specific contacts at target companies
+      - Locate decision-makers by name and company
+      - Build contact lists for outreach campaigns
+
+    **Example**: Find email for John Kelly at acme.com
+  </Accordion>
+
+  <Accordion title="hunter_verify_email">
+    Verify if an email address is valid and deliverable.
+
+    - **Input**:
+      - `email` (required) - The email address to verify
+
+    - **Use Cases**:
+      - Validate emails before adding to your CRM
+      - Clean email lists by removing invalid addresses
+      - Check deliverability before sending outreach
+
+    **Example**: Verify if john.doe@example.com is valid
+  </Accordion>
+
+  <Accordion title="hunter_domain_search">
+    Find all the email addresses corresponding to a website or company name.
+
+    - **Input**:
+      - `domain` (optional) - The domain name to search for, e.g. "stripe.com"
+      - `company` (optional) - The company name to search for (alternative to domain)
+      - `limit` (optional) - The maximum number of emails to return (default: 10, max: 100)
+      - `offset` (optional) - The number of emails to skip (default: 0)
+      - `type` (optional) - The type of emails to return (personal or generic)
+
+    - **Use Cases**:
+      - Discover all available contacts at a company
+      - Research email patterns for a domain
+      - Build comprehensive contact lists
+
+    **Example**: Search for all emails at dropbox.com with limit=5
+  </Accordion>
+
+  <Accordion title="hunter_email_count">
+    Know how many email addresses we have for a domain or a company.
+
+    - **Input**:
+      - `domain` (optional) - The domain name to get the count for, e.g. "stripe.com"
+      - `company` (optional) - The company name to get the count for (alternative to domain)
+
+    - **Use Cases**:
+      - Check coverage before searching a domain
+      - Estimate available contacts for a company
+      - Plan outreach campaigns
+
+    **Example**: Get email count for adobe.com
+  </Accordion>
+
+  <Accordion title="hunter_account_info">
+    Get information regarding your Hunter account.
+
+    - **Input**: None
+
+    - **Use Cases**:
+      - Check remaining searches and verifications
+      - Monitor API usage and plan limits
+      - Track credits for the billing period
+
+    **Example**: Get current account information and remaining credits
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Account Management" icon="chart-bar">
+    - **Credit Monitoring**: "How many searches and verifications do I have left this month?"
+    - **Usage Tracking**: Check your API usage and plan limits
+    - **Billing Period**: Monitor credits for the current billing period
+
+    **Example**: Use `hunter_account_info` to get remaining searches and verifications
+  </Accordion>
+
+  <Accordion title="Email Discovery" icon="magnifying-glass">
+    - **Specific Contacts**: "Find the email address for John Kelly at acme.com"
+    - **Executive Outreach**: "Get me Patrick Collison's email at stripe.com"
+    - **Lead Building**: Build targeted contact lists for outreach campaigns
+
+    **Example**: Use `hunter_find_email` with domain="stripe.com", first_name="Patrick", last_name="Collison"
+  </Accordion>
+
+  <Accordion title="Email Verification" icon="shield-check">
+    - **Email Validation**: "Verify if john.doe@example.com is a valid email address"
+    - **List Cleaning**: Validate emails before adding to your CRM
+    - **Deliverability**: Check if emails are deliverable before sending outreach
+
+    **Example**: Use `hunter_verify_email` with email="john.doe@example.com"
+  </Accordion>
+
+  <Accordion title="Domain Research" icon="building">
+    - **Company Contacts**: "Search for all emails at dropbox.com and show me the first 5 results"
+    - **Email Patterns**: Research email patterns for a domain
+    - **Coverage Check**: Use `hunter_email_count` to check how many emails are available
+
+    **Example**: Use `hunter_domain_search` with domain="dropbox.com", limit=5
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+**Free Tier Constraints:**
+- 25 domain searches per month (resets on the last day)
+- 50 email verifications per month
+- Use `hunter_account_info` to track your remaining credits
+</Note>

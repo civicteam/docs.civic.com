@@ -1,0 +1,224 @@
+---
+title: "DeepWiki Server"
+description: "GitHub repository documentation and AI-powered search for comprehensive code understanding"
+icon: "server"
+---
+
+# DeepWiki Server
+
+## Overview
+
+The DeepWiki server provides GitHub repository documentation and AI-powered search for comprehensive code understanding. Built by [Cognition Labs](https://cognition.ai) (creators of Devin AI), this server transforms any public GitHub repository into interactive, conversational documentation that AI assistants can access and query.
+
+**Key Feature**: Completely free for public repositories with no authentication required.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to DeepWiki">
+    Add the DeepWiki server to your Nexus environment through the server directory. The server connects via `https://mcp.deepwiki.com/mcp` using HTTP transport. No authentication is required for public repositories.
+  </Step>
+  <Step title="Start Exploring">
+    On the Nexus Chat tab, ask about any public GitHub repository. For example: "Give me an overview of the facebook/react repository"
+  </Step>
+  <Step title="Deep Dive">
+    DeepWiki will automatically access the repository's documentation and provide AI-powered insights and answers based on the codebase.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Repository Overview" icon="book-open">
+    Get high-level overviews and architectural summaries of any public GitHub repository
+  </Card>
+  <Card title="Documentation Navigation" icon="sitemap">
+    Explore repository structure and access organized documentation topics
+  </Card>
+  <Card title="Code Understanding" icon="code">
+    Ask questions about code patterns, implementations, and architectural decisions
+  </Card>
+  <Card title="Intelligent Search" icon="magnifying-glass">
+    Get context-aware answers grounded in actual repository documentation
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Codebase Onboarding" icon="rocket">
+    - **Project Overview**: Get high-level summaries of repository structure and purpose
+    - **Architecture Understanding**: Learn about architectural patterns and design decisions
+    - **Documentation Discovery**: Identify key documentation sections and topics
+    - **Quick Start**: Understand how to get started with a new codebase
+
+    **Example**: "Give me a high-level overview of the `modelcontextprotocol/modelcontextprotocol` repository"
+  </Accordion>
+
+  <Accordion title="Documentation Exploration" icon="book">
+    - **Topic Navigation**: Browse documentation topics and sections systematically
+    - **Feature Learning**: Understand specific features and their implementations
+    - **API Discovery**: Learn about available APIs and their usage
+    - **Configuration**: Find configuration options and setup instructions
+
+    **Example**: "Can you explain how Next.js handles server-side rendering?"
+  </Accordion>
+
+  <Accordion title="Code Analysis" icon="magnifying-glass-chart">
+    - **Function Discovery**: Find and understand key functions in a codebase
+    - **Pattern Recognition**: Identify architectural patterns and best practices
+    - **Debugging Support**: Get context about code sections relevant to issues
+    - **Comparative Analysis**: Compare implementations across different repositories
+
+    **Example**: "What are the main architectural patterns used in facebook/react?"
+  </Accordion>
+
+  <Accordion title="Intelligent Q&A" icon="messages-question">
+    - **Natural Language Queries**: Ask questions in plain English about any repository
+    - **Context-Grounded Answers**: Get answers based on actual repository documentation
+    - **Multi-Repository Learning**: Compare approaches across different projects
+    - **Technical Deep Dives**: Get detailed explanations of complex implementations
+
+    **Example**: "How does authentication work in the acme-corp/ecommerce-app repository?"
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (3)
+
+<AccordionGroup>
+  <Accordion title="read_wiki_structure">
+    Retrieve the documentation organization and table of contents for specified repositories
+    - **Use Cases**:
+      - Discover available documentation topics before diving deep
+      - Understand how repository documentation is organized
+      - Navigate documentation systematically
+    - **Best Practice**: Start here to see what documentation is available
+    - **Returns**: Hierarchical structure of documentation topics and sections
+  </Accordion>
+
+  <Accordion title="read_wiki_contents">
+    Access detailed documentation content after identifying topics of interest
+    - **Use Cases**:
+      - Read comprehensive documentation about specific topics
+      - Access AI-generated insights about repository features
+      - View detailed guides and explanations
+    - **When to Use**: After using `read_wiki_structure` to identify relevant topics
+    - **Returns**: Full documentation content with AI-enhanced explanations
+  </Accordion>
+
+  <Accordion title="ask_question">
+    Ask natural language questions about GitHub repositories and get intelligent answers
+    - **Use Cases**:
+      - Get quick answers without navigating documentation manually
+      - Ask about specific implementation details
+      - Compare features or approaches across sections
+      - Get debugging assistance by querying relevant code sections
+    - **Capabilities**:
+      - Context-aware responses based on repository content
+      - Grounded answers derived from actual documentation
+      - Intelligent synthesis of information across multiple sources
+    - **Best Practice**: Be specific in your questions for more accurate answers
+  </Accordion>
+</AccordionGroup>
+
+<Info>
+DeepWiki works with any public GitHub repository indexed on [DeepWiki.com](https://deepwiki.com). Private repositories require a Devin.ai account with OAuth authentication.
+</Info>
+
+---
+
+## Configuration Requirements
+
+### Authentication Setup
+
+<AccordionGroup>
+  <Accordion title="Public Repositories (Free)" icon="unlock">
+    **No Authentication Required**
+    - Completely free access to all public GitHub repositories
+    - No API keys or OAuth required
+    - No rate limits for reasonable usage
+    - Works immediately upon server connection
+  </Accordion>
+
+  <Accordion title="Private Repositories (Devin Account)" icon="lock">
+    **Requires Devin.ai Account**
+    - Sign up for a Devin.ai account
+    - OAuth authentication to obtain Devin API key
+    - Access private repositories in your GitHub account
+    - Subject to Devin.ai account tier limits
+  </Accordion>
+</AccordionGroup>
+
+### Repository Requirements
+- Repository must be indexed on DeepWiki.com
+- Public repositories are automatically accessible
+- Private repositories require Devin.ai authentication
+
+## Best Practices
+
+### Documentation Exploration Workflow
+1. **Start with Structure**: Use `read_wiki_structure` to see available topics
+2. **Targeted Reading**: Use `read_wiki_contents` for specific topics of interest
+3. **Quick Questions**: Use `ask_question` for specific queries without full navigation
+4. **Iterative Learning**: Combine structure, content, and questions for comprehensive understanding
+
+### Effective Questioning
+1. **Be Specific**: Ask targeted questions about specific features or implementations
+2. **Provide Context**: Include repository names and specific areas of interest
+3. **Progressive Detail**: Start with broad questions, then drill down into specifics
+4. **Comparative Queries**: Compare implementations across repositories when relevant
+
+### Repository Analysis
+1. **Overview First**: Get a high-level summary before diving into details
+2. **Architecture Focus**: Understand architectural patterns before implementation details
+3. **Documentation Priority**: Review official documentation before asking custom questions
+4. **Verification**: Cross-reference answers with actual repository code when possible
+
+<Tip>
+**Pro Tip**: Start with "Give me an overview of [owner/repository]" to understand the project's purpose and structure, then use `read_wiki_structure` to see what specific documentation is available.
+</Tip>
+
+## Example Prompts
+
+<AccordionGroup>
+  <Accordion title="Getting Started">
+    - "Give me a high-level overview of the `microsoft/vscode` repository"
+    - "What is the project structure of `vercel/next.js`?"
+    - "Show me the documentation structure for `facebook/react`"
+  </Accordion>
+
+  <Accordion title="Technical Questions">
+    - "How does state management work in `vuejs/vue`?"
+    - "Explain the authentication system in `supabase/supabase`"
+    - "What testing frameworks does `nestjs/nest` use?"
+  </Accordion>
+
+  <Accordion title="Debugging & Problem Solving">
+    - "I'm getting a null pointer exception in the payment module. What are the key functions related to payment processing in `acme-corp/ecommerce-app`?"
+    - "How do I handle errors in API routes in `nextjs/next.js`?"
+  </Accordion>
+
+  <Accordion title="Comparative Analysis">
+    - "Compare the state management approaches of `facebook/react` and `vuejs/vue`"
+    - "What are the differences between routing in `vercel/next.js` and `remix-run/remix`?"
+  </Accordion>
+</AccordionGroup>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Official DeepWiki MCP Documentation" icon="book" href="https://docs.devin.ai/work-with-devin/deepwiki-mcp">
+    Complete DeepWiki MCP server documentation
+  </Card>
+  <Card title="DeepWiki Platform" icon="globe" href="https://deepwiki.com">
+    Browse and explore GitHub repositories on DeepWiki
+  </Card>
+  <Card title="Cognition Labs Blog" icon="newspaper" href="https://cognition.ai/blog/deepwiki-mcp-server">
+    DeepWiki MCP server announcement and features
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Ask questions in our developer Slack community
+  </Card>
+</CardGroup>

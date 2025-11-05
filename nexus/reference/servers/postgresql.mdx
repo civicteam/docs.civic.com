@@ -1,6 +1,6 @@
 ---
 title: "PostgreSQL Server"
-description: "Connect to PostgreSQL databases with advanced security, query optimization, and database health monitoring"
+description: "Connect to PostgreSQL databases with advanced security features, query optimization, and database health monitoring. Supports both restricted (read-only with SQL validation) and unrestricted modes."
 icon: "server"
 ---
 
@@ -185,15 +185,6 @@ The PostgreSQL server requires a complete connection string with authentication:
     - **Connection Pooling**: Consider connection limits and pooling for high-traffic scenarios
   </Accordion>
 </AccordionGroup>
-
-### Server Configuration
-- **Access Mode**: Restricted (read-only with SQL validation) by default
-- **Transport**: HTTP-hosted with SSE (Server-Sent Events)
-- **Security**: Built-in SQL validation prevents data modification operations
-
-<Note>
-The PostgreSQL server uses Crystal DBA's secure implementation with advanced query validation and performance optimization features.
-</Note>
 
 <Warning>
 Ensure your PostgreSQL instance has the `pg_stat_statements` extension enabled for full performance monitoring capabilities.

@@ -1,0 +1,161 @@
+---
+title: Findymail
+description: Email validation and discovery service for finding work emails and verifying email deliverability
+icon: "server"
+---
+
+## Overview
+
+The Findymail server enables AI assistants to interact with [Findymail](https://findymail.com), providing email validation and discovery capabilities for finding work emails and verifying email deliverability. Built by [Meerkats AI](https://github.com/Meerkats-Ai), this server helps sales teams and business development professionals with contact discovery.
+
+## How to Add Findymail
+
+<Steps>
+  <Step title="Create Findymail Account">
+    1. Go to [https://findymail.com](https://findymail.com)
+    2. Sign up for an account or log in to your existing account
+  </Step>
+  <Step title="Generate API Key">
+    1. Navigate to your account settings
+    2. Go to **API Settings**
+    3. Generate a new API key
+    4. Copy the API key for use in Nexus
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Findymail server to your Nexus environment
+    2. Enter your API key when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Verify if john.doe@company.com is a valid email address" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Findymail uses separate credit pools for "finder" operations and "verifier" operations. Monitor your credit usage to avoid unexpected limits.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Email Discovery" icon="magnifying-glass">
+    Find email addresses using first name, last name, and company domain
+  </Card>
+  <Card title="Email Verification" icon="circle-check">
+    Verify if email addresses are valid and active
+  </Card>
+  <Card title="Company Data" icon="building">
+    Find detailed information about a company using its domain
+  </Card>
+  <Card title="Contact Enrichment" icon="user-plus">
+    Find phone numbers and LinkedIn URLs for contacts
+  </Card>
+</CardGroup>
+
+## Available Tools (5)
+
+<AccordionGroup>
+  <Accordion title="findyemail_verify_email">
+    Verify if an email address is valid and active.
+
+    - **Input**:
+      - `email` (required) - Email address to verify
+
+    - **Use Cases**:
+      - Validate email addresses before sending outreach
+      - Clean email lists by removing invalid addresses
+      - Check deliverability of collected emails
+  </Accordion>
+
+  <Accordion title="findyemail_find_email">
+    Find an email address using first name, last name, and domain information.
+
+    - **Input**:
+      - `firstName` (required) - First name of the person
+      - `lastName` (required) - Last name of the person
+      - `domain` (required) - Company domain name
+      - `webhook_url` (optional) - Optional webhook URL that will receive the result as callback
+
+    - **Use Cases**:
+      - Find specific contacts at target companies
+      - Locate decision-makers by name and company
+      - Build contact lists for outreach campaigns
+  </Accordion>
+
+  <Accordion title="findyemail_find_company_data">
+    Find detailed information about a company using its domain.
+
+    - **Input**:
+      - `domain` (required) - Company domain name
+
+    - **Use Cases**:
+      - Research companies before outreach
+      - Get company metadata and information
+      - Enrich company records in your CRM
+  </Accordion>
+
+  <Accordion title="findyemail_find_phone">
+    Find a phone number using LinkedIn profile URL.
+
+    - **Input**:
+      - `linkedInUrl` (required) - LinkedIn profile URL of the person
+
+    - **Use Cases**:
+      - Get phone numbers from LinkedIn profiles
+      - Enrich contact records with phone information
+      - Enable multi-channel outreach (email + phone)
+  </Accordion>
+
+  <Accordion title="findyemail_get_linkedin_url">
+    Find LinkedIn URL using name, designation, and company information.
+
+    - **Input**:
+      - `name` (optional) - Name of the person
+      - `designation` (optional) - Job title or designation of the person
+      - `companyName` (required) - Company name
+
+    - **Use Cases**:
+      - Find LinkedIn profiles for contacts
+      - Discover decision-makers by role and company
+      - Build contact profiles with LinkedIn data
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Email Verification" icon="circle-check">
+    - **Lead Validation**: "Verify if john.doe@company.com is a valid email address"
+    - **List Cleaning**: Validate email addresses before sending outreach campaigns
+    - **Deliverability Check**: Ensure emails are active before adding to CRM
+
+    **Example**: Use `findyemail_verify_email` to check if contact@example.com is deliverable
+  </Accordion>
+
+  <Accordion title="Contact Discovery" icon="magnifying-glass">
+    - **Specific Contacts**: "Find the email for Sarah Johnson at salesforce.com"
+    - **Executive Outreach**: "What's the email address for the CTO at stripe.com?"
+    - **Lead Building**: Build targeted contact lists for outreach campaigns
+
+    **Example**: Use `findyemail_find_email` with firstName="Sarah", lastName="Johnson", domain="salesforce.com"
+  </Accordion>
+
+  <Accordion title="Company Research" icon="building">
+    - **Company Info**: "Get company details for acme.com"
+    - **CRM Enrichment**: Enrich company records with metadata
+    - **Pre-Outreach Research**: Research companies before contacting them
+
+    **Example**: Use `findyemail_find_company_data` with domain="acme.com"
+  </Accordion>
+
+  <Accordion title="LinkedIn Enrichment" icon="linkedin">
+    - **Profile Lookup**: "Find phone number for linkedin.com/in/johndoe"
+    - **LinkedIn Discovery**: "Find LinkedIn URL for Sarah Johnson, VP Sales at Salesforce"
+    - **Multi-Channel Outreach**: Get both email and LinkedIn data for contacts
+
+    **Example**: Use `findyemail_get_linkedin_url` with companyName="Salesforce", name="Sarah Johnson", designation="VP Sales"
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+Findymail separates credits into "finder" credits and "verifier" credits. Each operation type consumes from its respective pool. Monitor your credit usage to avoid unexpected limits.
+</Note>

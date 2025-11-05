@@ -268,9 +268,9 @@ const config = {
 |Parameter |Required |Description |
 |-----------|----------|-------------|
 | `clientId` | Yes | Client ID from auth.civic.com |
-| `redirectUrl` | Yes | OAuth callback URL where Civic redirects after authentication |
+| `redirectUrl` | Yes | **OAuth 2.0 callback URL** - The backend endpoint where Civic redirects after authentication to complete the token exchange (e.g., `https://your-backend.com/auth/callback`). This URL must be registered in your Civic Auth dashboard under "Domains". |
 | `postLogoutRedirectUrl` | No | Where to redirect users after logout |
-| `loginSuccessUrl` | No | Redirect Single Page Applications back to frontend after successful authentication |
+| `loginSuccessUrl` | No | **Post-authentication redirect** - After your backend completes authentication, redirect the user to this URL (typically your frontend). Use this when your frontend (SPA) calls your backend to initiate login. If not set, the callback endpoint will return a success response instead of redirecting. |
 | `oauthServer` | No | OAuth server URL (useful for development/testing environments) |
 
 ## PKCE and Client Secrets

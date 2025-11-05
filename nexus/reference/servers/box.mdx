@@ -1,0 +1,170 @@
+---
+title: Box
+description: Securely connect AI agents to your enterprise content in Box. Access files, folders, collaborate, search, and use Box AI for intelligent document queries. Official Box MCP server.
+icon: "server"
+---
+
+## Overview
+
+The Box server securely connects AI agents to your enterprise content in Box. Built by [Box](https://www.box.com), this official MCP server enables AI assistants to access files, folders, collaborate, search, and use Box AI for intelligent document queries and metadata extraction.
+
+## How to Add Box
+
+<Steps>
+  <Step title="Create Box Account">
+    1. Go to [https://account.box.com/](https://account.box.com/)
+    2. Sign up for a free Box account or use your existing account
+    3. Upload files to your Box storage
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Box server to your Nexus environment through the server directory
+    2. Authorize Box when prompted using OAuth
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Show me my box files" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Box uses remotely-hosted MCP server with OAuth authorization. For detailed setup instructions, visit [Managing Box MCP Servers](https://support.box.com/hc/en-us/articles/43847256139923-Managing-Box-MCP-Servers).
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="File & Folder Navigation" icon="folder-open">
+    Browse folders, list contents, and search for files and folders across your Box account
+  </Card>
+  <Card title="Box AI - Document Q&A" icon="messages-question">
+    Ask questions about single files, multiple files, or entire Box Hubs using AI
+  </Card>
+  <Card title="Advanced Search" icon="magnifying-glass">
+    Search files by keywords or use SQL-like metadata queries for complex filtering
+  </Card>
+  <Card title="Box AI - Metadata Extraction" icon="sparkles">
+    Extract structured or freeform metadata from documents using AI-powered analysis
+  </Card>
+</CardGroup>
+
+## Available Tools (11)
+
+### User & File Operations
+
+<AccordionGroup>
+  <Accordion title="who_am_i">
+    Returns detailed information about the currently authenticated Box user
+    - **Input**: None
+    - **Use Cases**: Verify authentication, get user details
+  </Accordion>
+
+  <Accordion title="get_file_content">
+    Returns content of a file stored in Box
+    - **Input**: `file_id` - The ID of the file to retrieve content from
+    - **Use Cases**: Read file contents for analysis or processing
+  </Accordion>
+</AccordionGroup>
+
+### Search & Navigation
+
+<AccordionGroup>
+  <Accordion title="search_folders_by_name">
+    Searches for folders within Box by name using keyword matching
+    - **Input**: `name` - Folder name to search for
+    - **Use Cases**: Find folders by name across your Box account
+  </Accordion>
+
+  <Accordion title="list_folder_content_by_folder_id">
+    Lists files, folders, and web links in a folder
+    - **Input**: `folder_id` - The ID of the folder to list contents from
+    - **Use Cases**: Browse folder contents, navigate folder structure
+  </Accordion>
+
+  <Accordion title="search_files_keyword">
+    Searches for files using keywords. Supports metadata filters, file extension filtering, and field selection
+    - **Input**: `query` - Search query string
+    - **Use Cases**: Find files by keywords, filter by metadata or extensions
+  </Accordion>
+
+  <Accordion title="search_files_metadata">
+    Searches for files using SQL-like metadata queries. Supports complex filtering with parameters, field selection, and folder scoping
+    - **Input**: `query` - SQL-like metadata query
+    - **Use Cases**: Advanced file searches with metadata filtering, complex queries
+  </Accordion>
+</AccordionGroup>
+
+### Box AI - Question & Answer
+
+<AccordionGroup>
+  <Accordion title="ai_qa_single_file">
+    Asks a question to a single file using Box AI
+    - **Input**:
+      - `file_id` - The ID of the file to query
+      - `prompt` - Question to ask about the file
+    - **Use Cases**: Get insights from documents, ask questions about file content
+  </Accordion>
+
+  <Accordion title="ai_qa_multi_file">
+    Asks a question to multiple files using Box AI
+    - **Input**:
+      - `file_ids` - Array of file IDs to query
+      - `prompt` - Question to ask about the files
+    - **Use Cases**: Get insights across multiple documents, compare information
+  </Accordion>
+
+  <Accordion title="ai_qa_hub">
+    Asks a question to a Box Hub using Box AI
+    - **Input**:
+      - `hub_id` - The ID of the Box Hub to query
+      - `prompt` - Question to ask about the Hub
+    - **Use Cases**: Query collections of content, Hub-specific insights
+  </Accordion>
+</AccordionGroup>
+
+### Box AI - Metadata Extraction
+
+<AccordionGroup>
+  <Accordion title="ai_extract_freeform">
+    Extracts metadata from files using Box AI in freeform format without requiring predefined template structures
+    - **Input**:
+      - `file_id` - The ID of the file to extract metadata from
+      - `prompt` - Instructions for what metadata to extract
+    - **Use Cases**: Extract custom metadata, flexible data extraction without templates
+  </Accordion>
+
+  <Accordion title="ai_extract_structured">
+    Extracts structured metadata from files using Box AI based on either custom fields definition or an existing metadata template
+    - **Input**:
+      - `file_id` (required) - The ID of the file to extract metadata from
+      - `template_key` (optional) - The key of the metadata template to use
+    - **Use Cases**: Extract structured data based on templates, standardized metadata extraction
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="File & Folder Management" icon="folder">
+    - **User Info**: Get details about the authenticated user with `who_am_i`
+    - **Browse Content**: List folder contents with `list_folder_content_by_folder_id`
+    - **Search Folders**: Find folders by name with `search_folders_by_name`
+    - **Read Files**: Get file content with `get_file_content`
+  </Accordion>
+
+  <Accordion title="Advanced Search" icon="magnifying-glass">
+    - **Keyword Search**: Find files with `search_files_keyword`
+    - **Metadata Search**: Use SQL-like queries with `search_files_metadata` for complex filtering
+    - **Filter by Type**: Search by file extension and metadata properties
+  </Accordion>
+
+  <Accordion title="Box AI - Document Intelligence" icon="brain">
+    - **Single File Q&A**: Ask questions about a specific file with `ai_qa_single_file`
+    - **Multi-File Q&A**: Get insights across multiple files with `ai_qa_multi_file`
+    - **Hub Q&A**: Query Box Hub collections with `ai_qa_hub`
+    - **Freeform Extraction**: Extract custom metadata with `ai_extract_freeform`
+    - **Structured Extraction**: Extract template-based metadata with `ai_extract_structured`
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+Box supports OAuth authorization and provides secure access to your cloud storage. The server is remotely hosted by Box for optimal performance and security.
+</Note>

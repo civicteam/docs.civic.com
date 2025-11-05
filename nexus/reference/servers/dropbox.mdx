@@ -1,6 +1,6 @@
 ---
 title: "Dropbox Server"
-description: "Access and search files in your Dropbox with upload and search capabilities"
+description: "Access and manage files in your Dropbox"
 icon: "server"
 ---
 
@@ -75,50 +75,59 @@ The Dropbox server provides essential file management capabilities for your Drop
 
 ---
 
-## Available Tools (3)
+## Available Tools (13)
 
 <AccordionGroup>
-  <Accordion title="File Search & Discovery (2 tools)">
-    Comprehensive search capabilities for finding files across your Dropbox storage.
-
-    **Global and Targeted Search**
-    <AccordionGroup>
-      <Accordion title="search">
-        Search for files across your entire Dropbox account
-        - **Parameters**: query (required) - search term for file names and metadata
-        - **Scope**: Searches all accessible files and folders
-        - **Use Cases**: Find files by name, type, or content when location is unknown
-      </Accordion>
-      <Accordion title="search_file_db">
-        Search for files within a specific Dropbox folder
-        - **Parameters**: query (required), path (optional), max_results (optional)
-        - **Scope**: Limited to specified folder path for targeted results
-        - **Performance**: Faster searches when you know the general location
-      </Accordion>
-    </AccordionGroup>
-
-    <Info>
-      **Search Tips**: Use specific keywords, file extensions (.pdf, .docx), or partial file names for better results.
-    </Info>
+  <Accordion title="list_files">
+    List files in a folder with optional path parameter (default: root)
   </Accordion>
 
-  <Accordion title="File Management (1 tool)">
-    Upload and store new files directly in your Dropbox storage.
+  <Accordion title="upload_file">
+    Upload a file with path and base64 encoded content
+  </Accordion>
 
-    <AccordionGroup>
-      <Accordion title="upload_file">
-        Upload new files to your Dropbox with base64 encoded content
-        - **Parameters**: 
-          - path (required): Target location in Dropbox (e.g., "/documents/report.pdf")
-          - content (required): Base64 encoded file content
-        - **Supported Formats**: Any file type that can be base64 encoded
-        - **Use Cases**: Save generated documents, upload analysis results, store conversation outputs
-      </Accordion>
-    </AccordionGroup>
+  <Accordion title="download_file">
+    Download a file to local disk and return the file path. Files are saved to the "downloads" directory
+  </Accordion>
 
-    <Warning>
-      File content must be base64 encoded. Large files may have upload limits based on your Dropbox account tier.
-    </Warning>
+  <Accordion title="safe_delete_item">
+    Safely delete a file or folder with recycle bin support, confirmation, and audit logging
+  </Accordion>
+
+  <Accordion title="delete_item">
+    Legacy delete operation (deprecated, use safe_delete_item instead)
+  </Accordion>
+
+  <Accordion title="create_folder">
+    Create a new folder at the specified path
+  </Accordion>
+
+  <Accordion title="copy_item">
+    Copy a file or folder to a new location
+  </Accordion>
+
+  <Accordion title="move_item">
+    Move or rename a file or folder
+  </Accordion>
+
+  <Accordion title="get_file_metadata">
+    Get metadata for a file or folder
+  </Accordion>
+
+  <Accordion title="search_file_db">
+    Advanced search for files and folders with filtering capabilities including file extensions, categories, date ranges, content matching, and sorting options
+  </Accordion>
+
+  <Accordion title="get_sharing_link">
+    Create a shared link for a file or folder
+  </Accordion>
+
+  <Accordion title="get_account_info">
+    Get information about the connected Dropbox account
+  </Accordion>
+
+  <Accordion title="get_file_content">
+    Get the content of a file from Dropbox
   </Accordion>
 </AccordionGroup>
 
@@ -148,15 +157,7 @@ The Dropbox server uses OAuth2 authentication with specific file access scopes:
   </Accordion>
 </AccordionGroup>
 
-### Server Configuration
-- **Transport**: STDIO-hosted (requires Hub Bridge)
-- **Hub Bridge**: Uses `npx -y @civic/hub-bridge` for OAuth authentication
-- **File Encoding**: Base64 encoding required for file uploads
-- **Path Format**: Unix-style paths (e.g., "/folder/subfolder/file.ext")
 
-<Note>
-The Dropbox server requires Hub Bridge for secure OAuth token management and API interactions.
-</Note>
 
 ## Best Practices
 

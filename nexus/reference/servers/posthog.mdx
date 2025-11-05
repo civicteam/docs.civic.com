@@ -1,0 +1,157 @@
+---
+title: PostHog
+description: Access PostHog product analytics, feature flags, A/B experiments, dashboards, and insights. Track user behavior, manage feature rollouts, and analyze product metrics.
+icon: "server"
+---
+
+## Overview
+
+The PostHog server enables AI assistants to interact with [PostHog](https://posthog.com), an all-in-one product analytics platform that helps teams understand user behavior, test features, and make data-driven product decisions.
+
+## How to Add PostHog
+
+<Steps>
+  <Step title="Create PostHog Account">
+    1. Go to [https://posthog.com](https://posthog.com)
+    2. Sign up for an account or log in to your existing workspace
+  </Step>
+  <Step title="Create Personal API Key">
+    1. Go to **PostHog Settings > Personal API Keys** (not Project API Keys)
+    2. Click **Create Personal API Key**
+    3. Select **MCP Server preset** when creating the key
+    4. Copy the generated API key (starts with `phx_`)
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the PostHog server to your Nexus environment
+    2. Enter your Personal API key when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Show me the top 10 events in my project" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Use the MCP Server preset when creating your Personal API Key for optimal permissions and security.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Product Analytics" icon="chart-line">
+    Track events, analyze trends, and understand user behavior patterns
+  </Card>
+  <Card title="Feature Management" icon="toggle-on">
+    Create and manage feature flags for controlled rollouts
+  </Card>
+  <Card title="A/B Testing" icon="flask">
+    Run experiments to test product changes and measure impact
+  </Card>
+  <Card title="User Feedback" icon="comments">
+    Create surveys to gather user insights and satisfaction metrics
+  </Card>
+</CardGroup>
+
+## Available Tools
+
+### Analytics & Insights
+
+<AccordionGroup>
+  <Accordion title="get_trend">
+    Analyze event trends over time with customizable date ranges
+  </Accordion>
+
+  <Accordion title="create_funnel">
+    Track conversion funnels to understand user journeys
+  </Accordion>
+
+  <Accordion title="list_events">
+    Get all tracked events in your project
+  </Accordion>
+
+  <Accordion title="get_dashboards">
+    List all dashboards with their insights
+  </Accordion>
+
+  <Accordion title="create_insight">
+    Create new insights for data analysis
+  </Accordion>
+</AccordionGroup>
+
+### Feature Flags
+
+<AccordionGroup>
+  <Accordion title="list_feature_flags">
+    List all feature flags with their current status
+  </Accordion>
+
+  <Accordion title="create_feature_flag">
+    Create new feature flags for controlled rollouts
+  </Accordion>
+
+  <Accordion title="update_feature_flag">
+    Enable, disable, or modify feature flag settings
+  </Accordion>
+
+  <Accordion title="delete_feature_flag">
+    Remove feature flags that are no longer needed
+  </Accordion>
+</AccordionGroup>
+
+### Experiments
+
+<AccordionGroup>
+  <Accordion title="list_experiments">
+    List all A/B tests and their status
+  </Accordion>
+
+  <Accordion title="create_experiment">
+    Create new A/B tests to compare variations
+  </Accordion>
+
+  <Accordion title="get_experiment_results">
+    Retrieve results and performance metrics for experiments
+  </Accordion>
+</AccordionGroup>
+
+### Surveys
+
+<AccordionGroup>
+  <Accordion title="list_surveys">
+    List all surveys with response rates
+  </Accordion>
+
+  <Accordion title="create_survey">
+    Create NPS, feedback, or custom surveys
+  </Accordion>
+
+  <Accordion title="get_survey_responses">
+    Retrieve survey responses and analytics
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Analytics & Insights
+"Show me the trend of pageviews over the last 7 days" - Track product usage patterns.
+
+### Conversion Analysis
+"Create a funnel to track users from signup to first purchase" - Understand user journeys and drop-off points.
+
+### Feature Flags
+"Create a feature flag called 'new-checkout' for testing our new checkout flow" - Control feature rollouts safely.
+
+### A/B Testing
+"Create an A/B test to compare two button colors on our checkout page" - Optimize product decisions with data.
+
+### User Feedback
+"Create an NPS survey to measure customer satisfaction" - Gather user insights systematically.
+
+### Error Monitoring
+"Show me the most common errors in the last 24 hours" - Identify and prioritize bug fixes.
+
+### Dashboard Management
+"Create a new dashboard for our marketing metrics" - Organize insights by team or objective.
+
+<Note>
+PostHog provides comprehensive product analytics including event tracking, feature flags, experiments, and surveys all in one platform. Use Personal API Keys with the MCP Server preset for secure access.
+</Note>

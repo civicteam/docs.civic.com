@@ -1,0 +1,148 @@
+---
+title: Microsoft 365 Teams
+description: Microsoft Teams collaboration and messaging platform for workplace communication
+icon: "server"
+---
+
+## Overview
+
+The Microsoft 365 Teams server enables AI assistants to interact with [Microsoft Teams](https://www.microsoft.com/microsoft-teams/group-chat-software), providing channel messaging, team discovery, and cross-service workflow capabilities through Microsoft Graph API.
+
+## How to Add Microsoft 365 Teams
+
+The setup process varies depending on your Microsoft account type:
+
+<Warning>
+**Free Teams Users:** The Microsoft Teams MCP server API is incompatible with the free Teams app. You must have a Microsoft 365 Business license or Azure Cloud tenant to use this integration.
+</Warning>
+
+### Microsoft 365 Business Users
+
+For Microsoft 365 Business or Office 365 license holders, **admin approval is required** for first-time setup:
+
+<Steps>
+  <Step title="Initial Authorization Attempt">
+    Add the Microsoft 365 Teams server and attempt to authorize. Non-admin users will see a "Need admin approval" dialog indicating that Civic Nexus needs permission to access resources in your organization that only an admin can grant.
+  </Step>
+  <Step title="Admin Grants Consent (One-Time)">
+    Your Microsoft tenant administrator must configure consent in Microsoft Entra ID:
+
+    **Access Entra ID:**
+    - From Microsoft 365: Click the app launcher (grid icon) in the top-left corner of any Microsoft 365 app → Click **Admin** → From the left sidebar, click **Show All** → Under "Admin centers", select **Identity**
+    - From Azure Portal: Click the app launcher (grid icon) in the top-left corner → Select **Entra** from the Microsoft Cloud services
+
+    **Configure User Consent:**
+    1. In Entra ID, select **Enterprise apps** from the left sidebar
+    2. Under the "Security" section, click **Consent and permissions**
+    3. Click **User consent settings**
+    4. Select "Allow user consent for apps from verified publishers, for selected permissions" (This allows users to trigger authorization requests from Nexus, since Civic is a verified publisher)
+    5. Click **Save** (Important: Save before proceeding to the next step)
+    6. Click "Select permissions to classify as low impact" (This whitelists the specific permissions users are allowed to consent to. If prompted to save, click **Save** before moving on)
+    7. On the permissions screen, click **Add permissions** → Select **Microsoft Graph**
+    8. Select all **OpenId permissions** (required): `openid`, `profile`, `email`
+    9. Add the base permissions: `offline_access`, `User.Read`
+    10. Add Teams-specific permissions: `Team.ReadBasic.All`, `Channel.ReadBasic.All`, `TeamMember.Read.All`, `ChannelMessage.Read.All`, `ChannelMessage.Send`
+    11. Click **Add permissions** then **Save**
+  </Step>
+  <Step title="Wait and Retry">
+    Wait up to **1 hour** for changes to propagate, then retry authorization in Nexus.
+  </Step>
+  <Step title="Complete Authorization">
+    You'll now see a standard OAuth consent screen showing "Permissions requested" by Civic Nexus. The app will request permissions such as:
+    - Maintain access to data you have given it access to
+    - Read basic information of all teams
+    - Read the names and descriptions of all channels
+    - Read and send channel messages
+    - View your basic profile
+
+    Click **Accept** to complete the authorization and start using the Microsoft 365 Teams integration.
+  </Step>
+</Steps>
+
+<Note>
+**Alternative Setup Method:** The steps above use a proactive approach where admins configure permissions up-front. Alternatively, administrators can enable "Admin consent requests" (found in **Admin consent settings** within Entra ID). This allows users to trigger approval requests directly when they attempt to authorize, and admins can approve on-demand rather than pre-configuring permissions.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Team Communication" icon="comments">
+    Send messages to channels and engage with team members
+  </Card>
+  <Card title="Team Discovery" icon="users">
+    List teams, channels, and members across your workspace
+  </Card>
+  <Card title="Activity Monitoring" icon="chart-line">
+    Track channel activity and summarize recent discussions
+  </Card>
+  <Card title="Cross-Service Workflows" icon="diagram-project">
+    Combine Teams with Mail and OneDrive for powerful automation
+  </Card>
+</CardGroup>
+
+## Available Tools (6)
+
+<AccordionGroup>
+  <Accordion title="send_message">
+    Send standard or important messages to channels
+  </Accordion>
+
+  <Accordion title="send_channel_message">
+    Post messages to channels with optional formatting
+  </Accordion>
+
+  <Accordion title="list_members">
+    List all members of a team with roles and contact information
+  </Accordion>
+
+  <Accordion title="list_channels">
+    List all channels within a specific team
+  </Accordion>
+
+  <Accordion title="list_teams">
+    List all teams the user is a member of with metadata
+  </Accordion>
+
+  <Accordion title="get_user_profile">
+    Get detailed information about the current user's profile
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Basic Operations
+"Show me all the teams I'm a member of" - Discover your Teams workspace.
+
+### Channel Discovery
+"List all channels in the Civic Technologies team" - Explore team structure.
+
+### Message Monitoring
+"Show me the last 10 messages from the #general channel" - Review recent activity.
+
+### Team Communication
+"Post 'Meeting starts in 15 minutes!' to the #general channel" - Send quick updates.
+
+### Important Announcements
+"Send an important message to #announcements: 'Server maintenance scheduled for tonight at 10 PM'" - Flag critical messages.
+
+### Cross-Service Integration - Teams + Mail
+"Create a summary of today's #general messages and email it to me" - Combine Teams activity with email reporting.
+
+### Cross-Service Integration - Teams + OneDrive
+"Save today's #meeting-notes messages as a document in OneDrive" - Archive discussions to cloud storage.
+
+### Multi-Service Workflows
+"Generate an intelligence report of my Teams workspace (teams, channels, members, activity), email it to me, and post a summary to #general" - Create comprehensive automation across multiple Microsoft 365 services.
+
+<Note>
+**Channel IDs:** Channel IDs are long strings like `19:xxx@thread.tacv2`. The system retrieves these automatically when you reference channels by name.
+
+**Team IDs:** Team IDs are GUIDs. You can reference teams by name and the system will look them up automatically.
+</Note>
+
+<Warning>
+**Known Limitations:**
+- **Private chats:** Only channel messages are supported (not 1:1 or group chats)
+- **File attachments:** Cannot upload files directly to Teams (use OneDrive with share links instead)
+- **Channel/team creation:** Cannot create or delete channels or teams (read and message operations only)
+</Warning>
