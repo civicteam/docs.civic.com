@@ -1,0 +1,142 @@
+---
+title: Google Slides
+description: Create and manage Google Slides presentations
+icon: "server"
+---
+
+## Overview
+
+The Google Slides server enables AI assistants to interact with [Google Slides](https://slides.google.com), providing presentation creation, content management, batch update operations, and collaboration features through the Google Slides API.
+
+## How to Add Google Slides
+
+<Steps>
+  <Step title="Add Server">
+    Add the Google Slides server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in with your Google account and approve the OAuth consent request. No admin approval needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "Create a new presentation called 'Test Deck'" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Simple OAuth Consent:** Google Slides uses standard Google OAuth consent. Works with personal Google accounts and Google Workspace without special admin approval.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Presentation Management" icon="presentation-screen">
+    Create presentations and retrieve presentation details
+  </Card>
+  <Card title="Batch Updates" icon="wand-magic-sparkles">
+    Apply complex modifications using batch update API
+  </Card>
+  <Card title="Slide Operations" icon="window">
+    Get slide details and generate slide thumbnails
+  </Card>
+  <Card title="Collaboration" icon="comments">
+    Read, create, reply to, and resolve presentation comments
+  </Card>
+</CardGroup>
+
+## Available Tools (9)
+
+### Presentation Operations
+
+<AccordionGroup>
+  <Accordion title="create_presentation">
+    Create a new Google Slides presentation with optional title. Defaults to "Untitled Presentation" if title not provided. Returns presentation ID and URL.
+  </Accordion>
+
+  <Accordion title="get_presentation">
+    Get detailed information about a Google Slides presentation including title, slides count, and metadata.
+  </Accordion>
+
+  <Accordion title="batch_update_presentation">
+    Apply batch updates to a Google Slides presentation using a list of update requests. Enables complex modifications like adding slides, inserting text, updating layouts, and more in a single API call.
+  </Accordion>
+</AccordionGroup>
+
+### Slide Operations
+
+<AccordionGroup>
+  <Accordion title="get_page">
+    Get detailed information about a specific page (slide) in a presentation by page object ID, including elements and layout information.
+  </Accordion>
+
+  <Accordion title="get_page_thumbnail">
+    Generate a thumbnail URL for a specific page (slide) in a presentation. Supports three sizes: "LARGE", "MEDIUM" (default), or "SMALL".
+  </Accordion>
+</AccordionGroup>
+
+### Comment Operations
+
+<AccordionGroup>
+  <Accordion title="read_presentation_comments">
+    Read all comments from a Google Presentation including author, creation time, and content.
+  </Accordion>
+
+  <Accordion title="create_presentation_comment">
+    Create a new comment on a Google Presentation with specified content.
+  </Accordion>
+
+  <Accordion title="reply_to_presentation_comment">
+    Reply to a specific comment in a Google Presentation by comment ID.
+  </Accordion>
+
+  <Accordion title="resolve_presentation_comment">
+    Resolve a comment in a Google Presentation to mark it as complete.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Presentation Creation
+"Create a new presentation called 'Q4 Business Review'" - Generate new presentation decks.
+
+### Default Presentation
+"Create a blank presentation" - Creates "Untitled Presentation" by default.
+
+### Presentation Details
+"Get information about the Marketing Deck presentation" - View presentation metadata and slide count.
+
+### Batch Modifications
+"Add a new slide, insert title text, and update the layout" - Apply multiple changes in one operation using batch update API.
+
+### Slide Information
+"Show me details of slide 3 in the presentation" - Access specific slide elements and layout via page object ID.
+
+### Thumbnail Generation
+"Generate a large thumbnail for the first slide" - Create preview images of slides.
+
+### Medium Thumbnails
+"Get a thumbnail of slide 5" - Uses default MEDIUM size for balanced quality and file size.
+
+### Reading Comments
+"Show me all comments in the Product Launch deck" - View collaboration feedback on presentations.
+
+### Adding Comments
+"Add a comment saying 'Update metrics on this slide'" - Provide feedback on presentation content.
+
+### Comment Threads
+"Reply to comment ABC123 with 'Updated as requested'" - Engage in presentation discussions.
+
+### Resolving Comments
+"Mark comment XYZ789 as resolved" - Complete feedback cycles on presentations.
+
+<Note>
+**Batch Update API:** The batch_update_presentation tool accepts a list of update request objects following the Google Slides API batch update format. This enables complex operations like creating slides, adding shapes, inserting text, updating properties, and more in a single call.
+
+**Page Object IDs:** Slides are referenced by their unique page object IDs, which can be obtained from get_presentation or get_page operations.
+
+**Thumbnail Sizes:**
+- "LARGE": High resolution preview images
+- "MEDIUM": Balanced quality and size (default)
+- "SMALL": Compact preview images
+
+**Comment System:** Full comment lifecycle supported across presentation-level comments - read existing comments, create new ones, reply to threads, and resolve completed discussions.
+</Note>

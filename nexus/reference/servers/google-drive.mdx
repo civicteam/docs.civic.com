@@ -1,0 +1,95 @@
+---
+title: Google Drive
+description: Access and manage files and folders in Google Drive
+icon: "server"
+---
+
+## Overview
+
+The Google Drive server enables AI assistants to interact with [Google Drive](https://drive.google.com), providing file storage, search, and management capabilities including support for shared drives through the Google Drive API.
+
+## How to Add Google Drive
+
+<Steps>
+  <Step title="Add Server">
+    Add the Google Drive server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in with your Google account and approve the OAuth consent request. No admin approval needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "List my Google Drive files" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Simple OAuth Consent:** Google Drive uses standard Google OAuth consent. Works with personal Google accounts and Google Workspace without special admin approval.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="File Search" icon="magnifying-glass">
+    Search files and folders with Drive query operators
+  </Card>
+  <Card title="File Access" icon="file">
+    Read content from Google Docs, Sheets, Office files, and more
+  </Card>
+  <Card title="File Organization" icon="folder-tree">
+    List and navigate folders in My Drive and shared drives
+  </Card>
+  <Card title="File Creation" icon="file-plus">
+    Create new files with content or from URLs
+  </Card>
+</CardGroup>
+
+## Available Tools (4)
+
+<AccordionGroup>
+  <Accordion title="search_drive_files">
+    Search for files and folders using Google Drive search operators. Supports searching in My Drive, shared drives, and all accessible drives. Returns file details including ID, name, type, size, modified time, and Drive web link.
+  </Accordion>
+
+  <Accordion title="get_drive_file_content">
+    Retrieve content from files by ID. Automatically handles Google Docs, Sheets, Slides (exported as text/CSV), Office files (.docx, .xlsx, .pptx - parsed to extract text), and plain text files. Works with files in shared drives.
+  </Accordion>
+
+  <Accordion title="list_drive_items">
+    List files and folders in a specific location. Defaults to root folder but can list any folder including shared drive roots. Supports filtering to specific shared drives and configurable page sizes up to 100 items.
+  </Accordion>
+
+  <Accordion title="create_drive_file">
+    Create new files in Google Drive with direct content or by fetching from a URL. Supports custom MIME types and folder placement. Works in My Drive and shared drive folders.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### File Search
+"Find all PDF files modified in the last week" - Use Drive search operators to locate specific files.
+
+### Content Reading
+"Read the content of the project proposal document" - Extract text from Google Docs, Office files, or plain text.
+
+### Shared Drive Access
+"List all files in the Marketing shared drive" - Access team drives and shared folders.
+
+### Folder Navigation
+"Show me what's in my Documents folder" - Browse folder contents programmatically.
+
+### File Creation
+"Create a new text file with meeting notes" - Generate files directly in Drive.
+
+### URL Import
+"Create a file from this web page content" - Fetch content from URLs and save to Drive.
+
+### Office File Parsing
+"Extract text from the budget spreadsheet" - Read content from .xlsx, .docx, .pptx files.
+
+<Note>
+**Search Operators:** Supports Google Drive query syntax including `name contains 'text'`, `mimeType = 'application/pdf'`, `modifiedTime > '2024-01-01'`.
+
+**File Types:** Native Google files (Docs, Sheets, Slides) export as text/CSV. Office files are parsed to extract readable text. Binary files attempt UTF-8 decode.
+
+**Shared Drives:** Use `drive_id` parameter to specify shared drives. Set `include_items_from_all_drives: true` to search across all accessible drives.
+</Note>
