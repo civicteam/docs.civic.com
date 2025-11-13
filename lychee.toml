@@ -32,6 +32,9 @@ exclude = [
   '^https?://(www\.)?notion\.so',
   '^https?://(www\.)?chat\.mistral\.ai',
 
+  # Mintlify dashboard (returns intermittent 500 errors)
+  '^https?://dashboard\.mintlify\.com',
+
   # Contact addresses
   '^mailto:',
   '^tel:',
