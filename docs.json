@@ -281,6 +281,13 @@
             "pages": [
               "guides/add-auth-to-mcp"
             ]
+          },
+          {
+            "group": "Support",
+            "icon": "life-buoy",
+            "pages": [
+              "auth/troubleshooting"
+            ]
           }
         ],
         "global": {
