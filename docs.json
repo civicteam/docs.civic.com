@@ -160,7 +160,6 @@
           },
           {
             "group": "Support",
-            "icon": "lifebuoy",
             "pages": [
               "nexus/troubleshooting"
             ]
@@ -284,7 +283,6 @@
           },
           {
             "group": "Support",
-            "icon": "lifebuoy",
             "pages": [
               "auth/troubleshooting"
             ]
