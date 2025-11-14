@@ -32,7 +32,13 @@ pnpm install
 cp .env.example .env.local
 # Edit .env.local with your CIVIC_AUTH_CLIENT_ID and AI provider keys
 
-pnpm dev
+#make sure you have docker installed for the database
+docker-compose up -d
+
+#run the database migrations
+pnpm run db:migrate
+
+pnpm run dev
 ```
 
 <Accordion title="Required Environment Variables">
