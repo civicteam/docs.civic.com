@@ -47,7 +47,8 @@
               "index",
               "nexus/quickstart/index",
               "nexus/concepts/toolkits",
-              "nexus/reference/authorizations"
+              "nexus/reference/authorizations",
+              "nexus/changelog"
             ]
           },
           {
