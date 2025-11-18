@@ -60,7 +60,7 @@ For Microsoft 365 Business or Office 365 license holders, **admin approval is re
     11. Click **Add permissions** then **Save**
   </Step>
   <Step title="Wait and Retry">
-    Wait up to **1 hour** for changes to propagate, then retry authorization in Nexus.
+    **Important:** Microsoft Entra ID changes can take up to **1 hour** to propagate across all services. After your administrator completes the configuration, wait at least an hour before retrying authorization in Nexus. Attempting too early will result in permission errors.
   </Step>
   <Step title="Complete Authorization">
     You'll now see a standard OAuth consent screen showing "Permissions requested" by Civic Nexus. The app will request permissions such as:
@@ -155,7 +155,26 @@ For Microsoft 365 Business or Office 365 license holders, **admin approval is re
 **Channel IDs:** Channel IDs are long strings like `19:xxx@thread.tacv2`. The system retrieves these automatically when you reference channels by name.
 
 **Team IDs:** Team IDs are GUIDs. You can reference teams by name and the system will look them up automatically.
+
+**Office 365 Note:** Office 365 is the deprecated term for Microsoft 365. They refer to the same product platform.
 </Note>
+
+## Troubleshooting
+
+**Still seeing "Need admin approval" after administrator configured permissions?**
+Wait the full hour for Microsoft Entra ID changes to propagate. If the issue persists after one hour, verify that:
+- The administrator clicked **Save** after each configuration step
+- All required permissions were added (OpenId, base permissions, and Teams-specific permissions)
+- The "Allow user consent for apps from verified publishers" option was enabled
+
+**Still seeing consent dialogs after successful authorization?**
+This indicates missing permissions. Ask your administrator to review the permission list in Step 2 and ensure all required Teams permissions are whitelisted.
+
+**Free Teams compatibility error?**
+The Microsoft Teams API is incompatible with the free Teams app. You must have a Microsoft 365 Business license or Enterprise subscription to use this integration.
+
+**Cannot see teams or channels?**
+Verify you're a member of the teams you're trying to access. The MCP server only shows teams and channels you have access to.
 
 <Warning>
 **Known Limitations:**

@@ -50,6 +50,10 @@ For Microsoft 365 Business or Office 365 license holders, setup is straightforwa
 
 <Note>
 **Admin approval is NOT required for Mail.** Unlike other Microsoft 365 apps (SharePoint, Teams, etc.), the Mail server works with direct user consent for both personal and business accounts.
+
+**Personal vs Business Accounts:** Mail is the ONLY Microsoft 365 app that works with free outlook.com accounts. All other apps (SharePoint, Teams, Calendar, OneDrive, etc.) require a Microsoft 365 Business license.
+
+**Office 365 Note:** Office 365 is the deprecated term for Microsoft 365. They refer to the same product platform.
 </Note>
 
 ## What You Can Do
@@ -172,3 +176,11 @@ For Microsoft 365 Business or Office 365 license holders, setup is straightforwa
 
 **HTML and plain text:** Supports both HTML and plain text email formats.
 </Note>
+
+## Troubleshooting
+
+**Still seeing consent dialogs after authorization?**
+This means permissions are missing or incomplete. For Business accounts, verify that your administrator has granted the necessary permissions in Microsoft Entra ID. For Personal accounts, try disconnecting and reconnecting the server.
+
+**Authorization fails with "invalid_client" error?**
+Ensure you're using the correct account type. Personal outlook.com accounts cannot access other Microsoft 365 apps besides Mail.

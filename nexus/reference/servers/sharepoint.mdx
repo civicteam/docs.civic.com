@@ -61,7 +61,7 @@ For Microsoft 365 Business or Office 365 license holders, **admin approval is re
     11. Click **Add permissions** then **Save**
   </Step>
   <Step title="Wait and Retry">
-    Wait up to **1 hour** for changes to propagate, then retry authorization in Nexus.
+    **Important:** Microsoft Entra ID changes can take up to **1 hour** to propagate across all services. After your administrator completes the configuration, wait at least an hour before retrying authorization in Nexus. Attempting too early will result in permission errors.
   </Step>
   <Step title="Complete Authorization">
     You'll now see a standard OAuth consent screen showing "Permissions requested" by Civic Nexus. The app will request permissions such as:
@@ -194,10 +194,26 @@ For Microsoft 365 Business or Office 365 license holders, **admin approval is re
 "Create a modern page called 'Team Resources Hub'. Then create a news post titled 'Q4 Results Announcement' with a summary of key achievements and upcoming initiatives." - Publish content for teams.
 
 <Note>
-All Microsoft 365 apps require initial administrator approval before users can authorize them in Nexus.
+All Microsoft 365 apps (except Mail) require initial administrator approval before users can authorize them in Nexus.
 
 **Modern Pages:** Pages stay in draft status and must be published manually via the web interface.
+
+**Office 365 Note:** Office 365 is the deprecated term for Microsoft 365. They refer to the same product platform.
 </Note>
+
+## Troubleshooting
+
+**Still seeing "Need admin approval" after administrator configured permissions?**
+Wait the full hour for Microsoft Entra ID changes to propagate. If the issue persists after one hour, verify that:
+- The administrator clicked **Save** after each configuration step
+- All required permissions were added (OpenId, base permissions, and SharePoint-specific permissions)
+- The "Allow user consent for apps from verified publishers" option was enabled
+
+**Still seeing consent dialogs after successful authorization?**
+This indicates missing permissions. Ask your administrator to review the permission list in Step 2 and ensure all required SharePoint permissions are whitelisted.
+
+**"Access denied" errors when accessing sites?**
+Verify your account has been granted access to the SharePoint sites you're trying to interact with. The MCP server respects your existing SharePoint permissions.
 
 <Warning>
 **Known Limitations:**
