@@ -511,6 +511,33 @@ Field descriptions:
 | refreshToken    | The OAuth 2.0 refresh token, allowing a login session to be extended automatically without requiring user interaction. The Civic Auth SDK handles refresh automatically, so you do not need to do this. |
 | forwardedTokens | If the user authenticated using SSO (single-sign-on login) with a federated OAuth provider such as Google, this contains the OIDC and OAuth 2.0 tokens from that provider.                              |
 
+<Note>
+**Verifying tokens on your backend:**
+
+When sending the ID token from your frontend to your backend for verification, you can access it from the `userContext` object:
+
+```typescript
+const { idToken } = useUser();
+// Send idToken to your backend for verification
+```
+
+To verify the token signature on your backend, use the `@civic/auth-verify` library which automatically queries the Civic JWKS endpoint to fetch the public key:
+
+```bash
+npm install @civic/auth-verify
+```
+
+```typescript
+import { verify } from '@civic/auth-verify';
+
+// Verify the ID token
+const payload = await verify(idToken);
+console.log(payload); // Contains user information
+```
+
+For more details, see the [FAQ: How do I verify ID tokens on my backend?](/overview/faqs#how-do-i-verify-id-tokens-on-my-backend)
+</Note>
+
 #### Forwarded Tokens
 
 Use forwardedTokens if you need to make requests to the source provider, such as find out provider-specific information.

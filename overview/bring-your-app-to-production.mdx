@@ -5,8 +5,29 @@ icon: rocket
 public: true
 ---
 
+## Understanding App Modes
 
+On Civic Auth, apps can be in either **Sandbox** or **Production** mode. When you create a new app, it starts in **Sandbox mode** to allow you to develop and test your integration.
 
+### Sandbox Mode Limitations
+
+While in Sandbox mode, your app has the following limitations:
+
+- **Uses Civic's SSO credentials**: Your app uses Civic's OAuth credentials for providers like Google, rather than your own
+- **No billing required**: Payment information is not required during development
+- **Domain restrictions may not be enforced**: Production-level domain security is not fully enforced
+
+### Production Mode
+
+Once you launch your app to production:
+
+<Warning>
+  **This action is permanent**. Once an app is launched to production, it cannot be returned to Sandbox mode. Apps also cannot currently be deactivated or deleted by customers.
+</Warning>
+
+<Info>
+  **About Client IDs**: Your app's `clientId` remains the same whether your app is in Sandbox or Production mode (unless you choose to duplicate your app during launch). The app mode is a setting of your app, not a separate infrastructure environment. There is only one Civic Auth infrastructure that serves both Sandbox and Production apps.
+</Info>
 
 Once you've configured your App using the [Civic Auth Dashboard](https://auth.civic.com/dashboard), here are the steps you need to take to promote your app to production.
 
@@ -44,11 +65,19 @@ You now have two options of bringing your existing App to production: Convert an
 
 ### Convert
 
-Choose this option if you would like to keep the `clientId` and all the settings the same as in Sandbox mode.
+Choose this option to promote your existing app to Production mode. Your app keeps the same `clientId` and all settings - only the app mode changes from Sandbox to Production.
+
+<Check>
+  Use this option if you've been testing with the same `clientId` that you want to use in your live application.
+</Check>
 
 ### Duplicate
 
-This option copies all the App settings to a new App, creating a new clientId that you can then use in your production site.
+This option creates a new app (with a new `clientId`) in Production mode, copying all settings from your Sandbox app. Your original Sandbox app remains unchanged.
+
+<Check>
+  Use this option if you want to keep a separate Sandbox app for continued testing while having a distinct Production app with its own `clientId`.
+</Check>
 
 ## Enabling Crypto Wallets (Web3 Apps only)
 
