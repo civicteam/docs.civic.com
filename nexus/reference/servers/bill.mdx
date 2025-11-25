@@ -1,0 +1,370 @@
+---
+title: "Bill.com Server"
+description: "Access Bill.com Accounts Payable (AP) and Accounts Receivable (AR) for vendor management, bill payments, invoicing, and financial operations"
+icon: "server"
+---
+
+# Bill.com Server
+
+## Overview
+
+The Bill.com server provides comprehensive integration with [Bill.com](https://bill.com) accounting and payment services. This server enables AI assistants to manage vendors, bills, payments, customers, invoices, and complete AP/AR workflows programmatically.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to Bill.com">
+    Add the Bill.com server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Obtain Bill.com Credentials">
+    Get your AP/AR Sync Token and Developer Key from the Bill.com sandbox portal.
+  </Step>
+  <Step title="Test Connection">
+    Start with `list_vendors` or `list_bank_accounts` to verify the connection works properly.
+  </Step>
+</Steps>
+
+## Authentication Setup
+
+Bill.com uses **session-based authentication** with AP/AR Sync Tokens. Follow these steps to get your credentials:
+
+<Steps>
+  <Step title="Access Bill.com">
+    Sign in to your Bill.com account
+  </Step>
+
+  <Step title="Get Developer Key">
+    1. Navigate to **Settings** → **Sync & Integrations** → **Manage Developer Keys**
+    2. Click **Add Developer Key** to generate a new key (you can have up to 4)
+    3. Copy the generated **Developer Key**
+    4. Save this as your `BILL_DEV_KEY`
+  </Step>
+
+  <Step title="Create AP/AR Sync Token">
+    1. From the same **Sync & Integrations** page, go to the **Tokens** section
+    2. Click **Create AP/AR Sync Token**
+    3. Enter a descriptive name for your token (e.g., `nexus-integration`)
+       - This name becomes your `BILL_USERNAME`
+    4. Click **Create** and immediately copy the generated token value
+       - This value is your `BILL_PASSWORD`
+       - **Important**: Save this token immediately as it won't be shown again
+  </Step>
+
+  <Step title="Find Organization ID">
+    1. Your Organization ID is displayed on the **Sync & Integrations** page
+    2. It starts with `008`
+    3. Save this as your `BILL_ORGANIZATION_ID`
+  </Step>
+
+  <Step title="Enter Credentials in Nexus">
+    When adding the Bill.com server in Nexus, you'll be prompted for:
+    - **Developer Key**: Your `BILL_DEV_KEY` from Step 2
+    - **Token Name**: Your `BILL_USERNAME` from Step 3
+    - **Token Value**: Your `BILL_PASSWORD` from Step 3
+    - **Organization ID**: Your `BILL_ORGANIZATION_ID` from Step 4
+  </Step>
+</Steps>
+
+<Note>
+**Reference**: [Bill.com AP/AR Token-Based Sign In Documentation](https://developer.bill.com/docs/token-based-sign-in)
+</Note>
+
+### Credentials Summary
+
+| Bill.com Portal | Field in Nexus | Example |
+|----------------|----------------|---------|
+| Developer Key | Developer Key | `01XXX...` |
+| Sync Token Name | Token Name | `nexus-integration` |
+| Sync Token Value | Token Value | `02XXX-XXXXX-...` |
+| Organization ID | Organization ID | `008xxxxxxxxxxxxx` |
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Accounts Payable (AP)" icon="file-invoice-dollar">
+    Manage vendors, create and track bills, process payments
+  </Card>
+  <Card title="Accounts Receivable (AR)" icon="money-bill-wave">
+    Manage customers, create invoices, track payments received
+  </Card>
+  <Card title="Banking" icon="building-columns">
+    View and manage bank accounts for payments and deposits
+  </Card>
+  <Card title="Session Management" icon="key">
+    Automatic login and 48-hour session management with refresh
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Vendor Management" icon="truck">
+    - **Vendor Creation**: Add new vendors with complete profile information
+    - **Vendor Updates**: Modify vendor details, contact information, and status
+    - **Vendor Search**: Find vendors by name, status, or other criteria
+    - **Vendor Tracking**: Monitor active vendors and their payment history
+  </Accordion>
+
+  <Accordion title="Bill Processing" icon="file-invoice">
+    - **Bill Entry**: Create bills from vendor invoices with line items and due dates
+    - **Bill Tracking**: Monitor open bills, scheduled payments, and payment status
+    - **Bill Updates**: Modify bill amounts, due dates, or line item details
+    - **Bill Organization**: Filter bills by status, vendor, or date range
+  </Accordion>
+
+  <Accordion title="Payment Operations" icon="money-check-dollar">
+    - **Payment Creation**: Schedule payments for single or multiple bills
+    - **Payment Tracking**: Monitor payment status from scheduled to completed
+    - **Payment Cancellation**: Cancel scheduled payments before processing
+    - **Payment History**: Review completed payments and their associated bills
+  </Accordion>
+
+  <Accordion title="Customer & Invoice Management" icon="users">
+    - **Customer Profiles**: Create and manage customer records
+    - **Invoice Creation**: Generate invoices with line items and payment terms
+    - **Invoice Delivery**: Send invoices directly to customers via email
+    - **Revenue Tracking**: Monitor invoices by status, customer, or date
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (21)
+
+<Note>All tools support the complete Bill.com AP/AR API workflow with automatic session management.</Note>
+
+<AccordionGroup>
+  <Accordion title="Vendor Management (4 tools)">
+    Complete vendor lifecycle management for accounts payable.
+
+    <AccordionGroup>
+      <Accordion title="list_vendors">
+        List all vendors with optional filtering by name and active status
+        - **Parameters**: limit, offset, name, isActive
+        - **Use Cases**: Find active vendors, search by name, pagination
+      </Accordion>
+
+      <Accordion title="get_vendor">
+        Get detailed information about a specific vendor by ID
+        - **Parameters**: id (required)
+        - **Returns**: Complete vendor profile with contact details
+      </Accordion>
+
+      <Accordion title="create_vendor">
+        Create a new vendor with contact and payment information
+        - **Parameters**: name (required), email, phone, address, accountNumber, taxId, isActive
+        - **Use Cases**: Add new suppliers, onboard payment recipients
+      </Accordion>
+
+      <Accordion title="update_vendor">
+        Update existing vendor information
+        - **Parameters**: id (required), name, email, phone, address, accountNumber, taxId, isActive
+        - **Use Cases**: Update contact info, change vendor status
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Bill Management (5 tools)">
+    Complete bill tracking and management for accounts payable.
+
+    <AccordionGroup>
+      <Accordion title="list_bills">
+        List bills with filtering by status, vendor, and date range
+        - **Parameters**: limit, offset, status, vendorId, startDate, endDate
+        - **Statuses**: draft, open, scheduled, paid, void
+      </Accordion>
+
+      <Accordion title="get_bill">
+        Get detailed information about a specific bill including line items
+        - **Parameters**: id (required)
+        - **Returns**: Complete bill details with line items and totals
+      </Accordion>
+
+      <Accordion title="create_bill">
+        Create a new bill for a vendor with line items
+        - **Parameters**: vendorId (required), invoiceNumber, invoiceDate (required), dueDate (required), lineItems (required), description
+        - **Use Cases**: Record vendor invoices, schedule payments
+      </Accordion>
+
+      <Accordion title="update_bill">
+        Update existing bill details
+        - **Parameters**: id (required), invoiceNumber, invoiceDate, dueDate, lineItems, description
+        - **Use Cases**: Modify amounts, update due dates
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Payment Operations (5 tools)">
+    Payment processing and tracking for vendor payments.
+
+    <AccordionGroup>
+      <Accordion title="list_payments">
+        List payments with filtering by status, vendor, and date range
+        - **Parameters**: limit, offset, status, vendorId, startDate, endDate
+        - **Statuses**: scheduled, processing, completed, cancelled, failed
+      </Accordion>
+
+      <Accordion title="get_payment">
+        Get detailed information about a specific payment
+        - **Parameters**: id (required)
+        - **Returns**: Payment details, status, and associated bills
+      </Accordion>
+
+      <Accordion title="create_payment">
+        Create a new payment for a vendor
+        - **Parameters**: vendorId (required), amount (required), processDate (required), description, billIds
+        - **Use Cases**: Schedule vendor payments, pay multiple bills
+      </Accordion>
+
+      <Accordion title="cancel_payment">
+        Cancel a scheduled payment before it processes
+        - **Parameters**: id (required)
+        - **Use Cases**: Stop payments, correct payment errors
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Customer Management (3 tools)">
+    Customer records and accounts receivable operations.
+
+    <AccordionGroup>
+      <Accordion title="list_customers">
+        List all customers with optional filtering
+        - **Parameters**: limit, offset, name, isActive
+        - **Use Cases**: Find active customers, search by name
+      </Accordion>
+
+      <Accordion title="get_customer">
+        Get detailed information about a specific customer
+        - **Parameters**: id (required)
+        - **Returns**: Complete customer profile and contact details
+      </Accordion>
+
+      <Accordion title="create_customer">
+        Create a new customer record
+        - **Parameters**: name (required), email, phone, address, taxId, isActive
+        - **Use Cases**: Add new customers, onboard clients
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Invoice Management (4 tools)">
+    Invoice creation and management for accounts receivable.
+
+    <AccordionGroup>
+      <Accordion title="list_invoices">
+        List invoices with filtering by status, customer, and date
+        - **Parameters**: limit, offset, status, customerId, startDate, endDate
+        - **Statuses**: draft, sent, viewed, partiallyPaid, paid, void
+      </Accordion>
+
+      <Accordion title="get_invoice">
+        Get detailed information about a specific invoice
+        - **Parameters**: id (required)
+        - **Returns**: Invoice details with line items and payment status
+      </Accordion>
+
+      <Accordion title="create_invoice">
+        Create a new invoice for a customer
+        - **Parameters**: customerId (required), invoiceDate (required), dueDate (required), lineItems (required), invoiceNumber, description
+        - **Use Cases**: Bill customers, track receivables
+      </Accordion>
+
+      <Accordion title="send_invoice">
+        Send an invoice to the customer via email
+        - **Parameters**: id (required), emailMessage
+        - **Use Cases**: Deliver invoices, send payment reminders
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Banking (2 tools)">
+    Bank account information for payment processing.
+
+    <AccordionGroup>
+      <Accordion title="list_bank_accounts">
+        List all bank accounts with optional filtering
+        - **Parameters**: limit, offset, isActive
+        - **Use Cases**: View available accounts for payments
+      </Accordion>
+
+      <Accordion title="get_bank_account">
+        Get detailed information about a specific bank account
+        - **Parameters**: id (required)
+        - **Returns**: Account details and status
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+</AccordionGroup>
+
+## Example Workflows
+
+### Create and Pay a Vendor Bill
+
+```
+1. "Create a vendor named Acme Supplies with email billing@acme.com"
+2. "Create a bill for Acme Supplies dated 2025-11-20, due 2025-12-20, with a line item for Office Supplies at $500"
+3. "Schedule a payment for Acme Supplies for $500 to process on 2025-12-15"
+```
+
+### Customer Invoice Workflow
+
+```
+1. "Create a customer named ABC Corporation with email billing@abc.com"
+2. "Create an invoice for ABC Corporation dated today, due in 30 days, with consulting services for $5000"
+3. "Send the invoice to ABC Corporation with a message thanking them for their business"
+```
+
+### Monthly Bill Review
+
+```
+1. "List all open bills"
+2. "Show me bills due in the next 7 days"
+3. "Create payments for all bills due this week"
+```
+
+## Session Management
+
+The Bill.com server automatically manages authentication sessions:
+
+- **Session Duration**: 48 hours
+- **Auto-Refresh**: Sessions refresh automatically 5 minutes before expiration
+- **Re-authentication**: If a session expires, the server automatically logs in again
+
+You don't need to manage sessions manually - the server handles all authentication transparently.
+
+<Note>
+For more details about Bill.com's API, visit the [Bill.com Developer Portal](https://developer.bill.com).
+</Note>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Authentication Errors">
+    **Problem**: "Invalid credentials" or "Authentication failed"
+
+    **Solutions**:
+    - Verify your Developer Key is correct
+    - Ensure the Sync Token name and value match exactly
+    - Confirm the Organization ID starts with `008`
+    - Check that you're using sandbox credentials for the sandbox environment
+  </Accordion>
+
+  <Accordion title="Session Expired">
+    **Problem**: "Session expired" or "Please re-authenticate"
+
+    **Solutions**:
+    - The server will automatically re-authenticate
+    - If the issue persists, verify your sync token hasn't been revoked
+    - Ensure your sync token hasn't expired (tokens don't expire unless revoked)
+  </Accordion>
+
+  <Accordion title="Missing Permissions">
+    **Problem**: "Access denied" or "Insufficient permissions"
+
+    **Solutions**:
+    - Verify the sync token has AP/AR access permissions
+    - Ensure the token was created with the correct scopes
+    - Check that your sandbox account has the required access
+  </Accordion>
+</AccordionGroup>

@@ -81,6 +81,7 @@
                   "nexus/reference/servers/activecampaign",
                   "nexus/reference/servers/atlassian",
                   "nexus/reference/servers/aws-billing",
+                  "nexus/reference/servers/bill",
                   "nexus/reference/servers/box",
                   "nexus/reference/servers/clickup",
                   "nexus/reference/servers/coingecko",
