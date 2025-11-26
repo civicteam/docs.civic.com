@@ -29,6 +29,10 @@ Integrate Civic Nexus with OpenAI Agents SDK using the `hostedMcpTool()` approac
 
 ## Access Token Setup (Next.js + Civic Auth)
 
+<Note>
+**Why do I need a token?** OpenAI Agent Builder requires an access token upfront because it runs server-side without browser access for OAuth flows. [Learn more about Civic tokens](/nexus/concepts/tokens).
+</Note>
+
 <NextjsAccessTokenSetup />
 
 **Non-Next.js:** Forward a Bearer token from your frontend or validate incoming tokens server-side (see [/libraries/auth-verify](/libraries/auth-verify)).

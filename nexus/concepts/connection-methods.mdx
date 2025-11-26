@@ -114,17 +114,53 @@ Not all AI clients support all MCP features:
 - Local-only MCP support
 - Often development tools or older clients
 
-## Authentication Differences
+## Authentication Methods
 
-### Remote URL Authentication:
+Nexus supports two authentication approaches depending on how you're connecting:
+
+### Browser Authentication (Recommended)
+
+**For:** Claude Desktop, Cursor, VS Code, and other MCP-compatible agents
+
+When connecting through Remote URL or Hub Bridge, Nexus uses browser-based OAuth authentication:
+- You authenticate through your browser when connecting
+- Works with all MCP-compatible AI assistants
+- Secure OAuth flow with automatic token refresh
+- No manual token management required
+
+### Token-Based Authentication
+
+**For:** Services that require an access token upfront
+
+Some services and platforms cannot use browser-based OAuth flows and need a token provided upfront, such as OpenAI Agent Builder, n8n, Make.com, and custom applications.
+
+<Card title="Learn About Civic Tokens" icon="key" href="/nexus/concepts/tokens">
+  **Complete guide** to generating and using Civic tokens for automation platforms, agent builders, and custom integrations
+</Card>
+
+**Quick overview:**
+- Generate time-limited tokens (1-30 days) from your Nexus dashboard
+- Use tokens for server-side integrations that can't use browser OAuth
+- Tokens are profile-scoped and revocable at any time
+
+### Authentication Differences by Method
+
+**Remote URL Authentication:**
 - Your client handles OAuth directly
 - You authorize in your client's interface
 - Client manages token storage and refresh
 
-### Hub Bridge Authentication:
+**Hub Bridge Authentication:**
 - Bridge handles all OAuth flows
 - You authorize in your browser (opened by bridge)
 - Bridge manages tokens locally and refreshes automatically
+
+**Token-Based Authentication:**
+- You generate a token in Nexus dashboard
+- Provide the token to your service/platform
+- Token valid until expiration (1-30 days)
+- Manually refresh or regenerate as needed
+- [Complete token documentation](/nexus/concepts/tokens)
 
 ## When to Use Each Method
 
