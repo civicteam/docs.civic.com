@@ -17,15 +17,15 @@ Civic tokens provide a way to authenticate with Civic Nexus from services that d
 Civic tokens are temporary access tokens that grant permission to use your Civic Nexus MCP servers from external services. They are:
 
 - **Profile-scoped**: Each token is tied to a specific Civic Nexus profile (toolkit)
-- **Time-limited**: Tokens expire after a set period (1-30 days)
+- **Time-limited**: Tokens expire after 30 days
 - **Revocable**: You can revoke tokens at any time from your account settings
 - **Secure**: Tokens use industry-standard OAuth 2.0 token exchange (RFC 8693)
 
 ## When to Use Tokens vs Browser Auth
 
-### Use Browser Authentication (Default)
+### Use Browser Authentication
 
-Browser authentication is recommended for most use cases:
+Browser authentication works well for interactive use cases:
 
 <CardGroup cols={2}>
   <Card title="Desktop AI Agents" icon="desktop">
@@ -45,7 +45,7 @@ Generate a token when you need to:
     **OpenAI Agent Builder** - Requires token upfront for authentication
   </Card>
   <Card title="Automation Platforms" icon="workflow">
-    **n8n, Make.com, Zapier** - Workflow tools that run server-side
+    **n8n** and similar workflow tools that run server-side
   </Card>
   <Card title="Custom Applications" icon="code">
     **Server-to-server integrations** - Your own apps and services
@@ -56,10 +56,12 @@ Generate a token when you need to:
 </CardGroup>
 
 **Why these services need tokens:**
-- They run server-side without browser access for OAuth flows
-- They require credentials configured ahead of time
-- They can't trigger interactive authentication during execution
-- They need persistent authentication for scheduled/automated tasks
+
+Tokens are appropriate for background processes such as autonomous agents, scheduled tasks, or other unattended workflows. These services:
+- Run server-side without browser access for OAuth flows
+- Require credentials configured ahead of time
+- Can't trigger interactive authentication during execution
+- Need persistent authentication for automated operations
 
 ## How to Generate a Token
 
@@ -80,11 +82,8 @@ Generate a token when you need to:
     Click the **Generate token** button to open the token creation modal
   </Step>
 
-  <Step title="Set expiration period">
-    Choose how long the token should be valid (1-30 days). Consider:
-    - **Shorter expiration** (1-7 days) for better security
-    - **Longer expiration** (30 days) for convenience
-    - Your organization's security policies
+  <Step title="Token expiration">
+    Tokens are valid for 30 days from generation. The expiration date will be displayed when you create the token.
   </Step>
 
   <Step title="Copy and store securely">
@@ -113,7 +112,7 @@ When setting up an OpenAI agent that needs to access your Nexus tools:
 
   <Step title="Configure the connection">
     ```
-    MCP URL: https://nexus.civic.com/hub/mcp?profile=YOUR_PROFILE_NAME
+    MCP URL: https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=YOUR_PROFILE_NAME
     Authentication: Bearer token
     Token: YOUR_CIVIC_TOKEN_HERE
     ```
@@ -125,7 +124,11 @@ When setting up an OpenAI agent that needs to access your Nexus tools:
 </Steps>
 
 <Tip>
-**Profile parameter**: The `?profile=YOUR_PROFILE_NAME` in the URL determines which toolkit (set of MCP servers) the agent can access. Use the profile alias you created in Nexus.
+**URL parameters**:
+- `accountId` - Your Civic account ID
+- `profile` - The profile name (toolkit) that determines which MCP servers the agent can access
+
+Use the profile alias you created in Nexus.
 </Tip>
 
 ### n8n Workflows
@@ -139,7 +142,7 @@ To use Civic Nexus in your n8n automations:
 
   <Step title="Configure authentication">
     ```
-    URL: https://nexus.civic.com/hub/mcp?profile=YOUR_PROFILE_NAME
+    URL: https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=YOUR_PROFILE_NAME
     Authentication: Header Auth
     Header Name: Authorization
     Header Value: Bearer YOUR_CIVIC_TOKEN_HERE
@@ -151,31 +154,17 @@ To use Civic Nexus in your n8n automations:
   </Step>
 </Steps>
 
-### Make.com / Zapier
+### Other Automation Platforms
 
-Similar to n8n, use HTTP modules with Bearer token authentication:
+Similar to n8n, other workflow automation platforms can use Civic tokens with HTTP modules and Bearer token authentication. The general pattern is:
 
-<Tabs>
-  <Tab title="Make.com">
-    ```
-    Module: HTTP
-    URL: https://nexus.civic.com/hub/mcp?profile=YOUR_PROFILE_NAME
-    Headers:
-      Authorization: Bearer YOUR_CIVIC_TOKEN_HERE
-      Content-Type: application/json
-    ```
-  </Tab>
-
-  <Tab title="Zapier">
-    ```
-    Action: Webhooks by Zapier
-    URL: https://nexus.civic.com/hub/mcp?profile=YOUR_PROFILE_NAME
-    Headers:
-      Authorization: Bearer YOUR_CIVIC_TOKEN_HERE
-      Content-Type: application/json
-    ```
-  </Tab>
-</Tabs>
+```
+URL: https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=YOUR_PROFILE_NAME
+Authentication: Header Auth or Bearer Token
+Header Name: Authorization
+Header Value: Bearer YOUR_CIVIC_TOKEN_HERE
+Content-Type: application/json
+```
 
 ### Custom Applications
 
@@ -184,7 +173,7 @@ Include the token in the Authorization header of your HTTP requests:
 <Tabs>
   <Tab title="cURL">
     ```bash
-    curl https://nexus.civic.com/hub/mcp?profile=my-profile \
+    curl 'https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=my-profile' \
       -H "Authorization: Bearer YOUR_TOKEN_HERE" \
       -H "Content-Type: application/json" \
       -d '{
@@ -197,7 +186,7 @@ Include the token in the Authorization header of your HTTP requests:
 
   <Tab title="JavaScript">
     ```javascript
-    const response = await fetch('https://nexus.civic.com/hub/mcp?profile=my-profile', {
+    const response = await fetch('https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=my-profile', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.CIVIC_TOKEN}`,
@@ -232,7 +221,7 @@ Include the token in the Authorization header of your HTTP requests:
     }
 
     response = requests.post(
-        'https://nexus.civic.com/hub/mcp?profile=my-profile',
+        'https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=my-profile',
         headers=headers,
         json=payload
     )
@@ -246,9 +235,10 @@ Include the token in the Authorization header of your HTTP requests:
 
 ### Expiration
 
-- Tokens expire after the period you set during generation (1-30 days)
+- Tokens expire 30 days after generation
 - Expired tokens return a `401 Unauthorized` error
 - You'll receive no warning before expiration
+- The expiration date is shown when you generate the token
 
 ### Renewal
 
@@ -310,10 +300,10 @@ Tokens cannot be renewed. To continue access after expiration:
     - Test that the new token works before the old one expires
   </Accordion>
 
-  <Accordion title="Use shortest necessary expiration" icon="clock">
-    - **Testing/development**: 1-7 days
-    - **Short-term projects**: 7-14 days
-    - **Production (with rotation)**: 14-30 days
+  <Accordion title="Rotate tokens before expiration" icon="clock">
+    - Tokens are valid for 30 days
+    - Set reminders to rotate tokens before they expire
+    - Generate new tokens proactively to avoid service interruption
     - Consider your security policies and compliance requirements
   </Accordion>
 </AccordionGroup>
@@ -384,12 +374,12 @@ Tokens cannot be renewed. To continue access after expiration:
 
 | Feature | Browser Authentication | Token Authentication |
 |---------|----------------------|---------------------|
-| **Best for** | Desktop AI agents, interactive sessions | Automation platforms, server-side apps |
+| **Best for** | Desktop AI agents, interactive sessions | Background processes, autonomous agents, scheduled tasks |
 | **Setup** | Click connect → browser opens → authorize | Generate token → copy to service |
-| **Token management** | Automatic refresh | Manual generation every 1-30 days |
-| **Use cases** | Claude Desktop, VS Code, Cursor | OpenAI Agent Builder, n8n, Make, custom apps |
+| **Token management** | Automatic refresh | Manual generation every 30 days |
+| **Use cases** | Claude Desktop, VS Code, Cursor | OpenAI Agent Builder, n8n, custom apps |
 | **Security** | OAuth flow, automatic refresh | Manual rotation, environment variables |
-| **Expiration** | Auto-refreshed | Fixed expiration, no auto-renewal |
+| **Expiration** | Auto-refreshed | 30 days, no auto-renewal |
 | **Revocation** | Immediate via authorization page | Immediate via authorization page |
 
 ## Next Steps
