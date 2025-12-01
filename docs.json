@@ -46,7 +46,18 @@
             "pages": [
               "index",
               "nexus/quickstart/index",
-              "nexus/concepts/toolkits",
+              {
+                "group": "Core Concepts",
+                "icon": "lightbulb",
+                "pages": [
+                  "nexus/concepts/toolkits",
+                  "nexus/concepts/tokens",
+                  "nexus/concepts/connection-methods",
+                  "nexus/concepts/mcp",
+                  "nexus/concepts/oauth",
+                  "nexus/concepts/tools-resources-prompts"
+                ]
+              },
               "nexus/reference/authorizations",
               "nexus/changelog"
             ]
