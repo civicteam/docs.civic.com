@@ -17,9 +17,13 @@ Civic tokens provide a way to authenticate with Civic Nexus from services that d
 Civic tokens are temporary access tokens that grant permission to use your Civic Nexus MCP servers from external services. They are:
 
 - **Profile-scoped**: Each token is tied to a specific Civic Nexus profile (toolkit)
-- **Time-limited**: Tokens expire after 30 days
-- **Revocable**: You can revoke tokens at any time from your account settings
+- **Time-limited**: Tokens expire after a configurable period (up to 30 days)
+- **Delegated**: Tokens are delegated credentials that allow external services to act on your behalf
 - **Secure**: Tokens use industry-standard OAuth 2.0 token exchange (RFC 8693)
+
+<Note>
+**What is a delegated token?** A delegated token allows an external service or application to access your Civic Nexus resources on your behalf. The service acts with the same permissions you have, but the token is scoped to a specific profile (toolkit) to limit what resources can be accessed.
+</Note>
 
 ## When to Use Tokens vs Browser Auth
 
@@ -70,24 +74,20 @@ Tokens are appropriate for background processes such as autonomous agents, sched
     Go to [nexus.civic.com](https://nexus.civic.com) and click on the **Tools** menu, then select **Install**
   </Step>
 
-  <Step title="Choose MCP URL as your agent type">
-    In the **Guided** section, select **MCP URL** to see authentication options
+  <Step title="Select your toolkit">
+    Choose the profile (toolkit) you want to generate a token for. When you change the toolkit, the MCP URL will automatically update.
   </Step>
 
-  <Step title="Select token authentication">
-    Under **Step 2: Choose authentication method**, select **Generate a Civic token**
+  <Step title="Click Install">
+    Click the **Install** button to generate your token
   </Step>
 
-  <Step title="Generate the token">
-    Click the **Generate token** button to open the token creation modal
-  </Step>
-
-  <Step title="Token expiration">
-    Tokens are valid for 30 days from generation. The expiration date will be displayed when you create the token.
+  <Step title="Set token expiration">
+    Choose how long the token should be valid (up to 30 days). The expiration date will be displayed based on your selection.
   </Step>
 
   <Step title="Copy and store securely">
-    After clicking **Generate**, copy the token immediately and store it securely
+    After generating, copy the token immediately and store it securely
 
     <Warning>
       **Token displayed only once** - The token is only shown once. If you lose it, you'll need to generate a new one.
@@ -235,7 +235,7 @@ Include the token in the Authorization header of your HTTP requests:
 
 ### Expiration
 
-- Tokens expire 30 days after generation
+- You can configure token expiration up to a maximum of 30 days
 - Expired tokens return a `401 Unauthorized` error
 - You'll receive no warning before expiration
 - The expiration date is shown when you generate the token
@@ -259,7 +259,7 @@ Tokens cannot be renewed. To continue access after expiration:
 </Steps>
 
 <Tip>
-**Best Practice**: Set calendar reminders a few days before token expiration to avoid service interruption.
+**Best Practice**: Set calendar reminders a few days before token expiration to avoid service interruption. Consider using shorter expiration periods for better security.
 </Tip>
 
 ## Security Best Practices
@@ -301,10 +301,11 @@ Tokens cannot be renewed. To continue access after expiration:
   </Accordion>
 
   <Accordion title="Rotate tokens before expiration" icon="clock">
-    - Tokens are valid for 30 days
+    - Tokens can be configured for up to 30 days
     - Set reminders to rotate tokens before they expire
     - Generate new tokens proactively to avoid service interruption
-    - Consider your security policies and compliance requirements
+    - Use shorter expiration periods for better security
+    - Consider your organization's security policies and compliance requirements
   </Accordion>
 </AccordionGroup>
 
@@ -317,8 +318,8 @@ Tokens cannot be renewed. To continue access after expiration:
   <Card title="Use appropriate profiles" icon="toolbox">
     Create dedicated profiles for specific use cases with only necessary tools
   </Card>
-  <Card title="Revoke unused tokens" icon="ban">
-    Remove tokens from the [Authorizations page](/nexus/reference/authorizations) when no longer needed
+  <Card title="Use shorter expiration periods" icon="clock">
+    Configure tokens with shorter lifetimes when possible for better security
   </Card>
   <Card title="Monitor token usage" icon="chart-line">
     Check the Activity page for unexpected usage patterns
@@ -354,19 +355,19 @@ Tokens cannot be renewed. To continue access after expiration:
 
     **Solutions**:
     - Double-check the Authorization header: `Authorization: Bearer YOUR_TOKEN`
-    - Verify the MCP URL includes the profile parameter: `?profile=YOUR_PROFILE_NAME`
+    - Verify the MCP URL includes both accountId and profile parameters
     - Ensure Content-Type header is set: `Content-Type: application/json`
     - Test the token with a simple curl command first to isolate the issue
   </Accordion>
 
   <Accordion title="How do I know when my token expires?" icon="calendar">
-    **Answer**: Civic doesn't send expiration warnings
+    **Answer**: The expiration date is shown when you generate the token
 
     **Solutions**:
     - Set a calendar reminder when you generate the token
     - Note the expiration date in your documentation
     - Implement monitoring in your application to detect 401 errors
-    - Consider shorter expiration periods with more frequent rotation
+    - Use shorter expiration periods for sensitive integrations
   </Accordion>
 </AccordionGroup>
 
@@ -376,11 +377,10 @@ Tokens cannot be renewed. To continue access after expiration:
 |---------|----------------------|---------------------|
 | **Best for** | Desktop AI agents, interactive sessions | Background processes, autonomous agents, scheduled tasks |
 | **Setup** | Click connect → browser opens → authorize | Generate token → copy to service |
-| **Token management** | Automatic refresh | Manual generation every 30 days |
+| **Token management** | Automatic refresh | Manual generation (configurable up to 30 days) |
 | **Use cases** | Claude Desktop, VS Code, Cursor | OpenAI Agent Builder, n8n, custom apps |
 | **Security** | OAuth flow, automatic refresh | Manual rotation, environment variables |
-| **Expiration** | Auto-refreshed | 30 days, no auto-renewal |
-| **Revocation** | Immediate via authorization page | Immediate via authorization page |
+| **Expiration** | Auto-refreshed | Configurable (up to 30 days), no auto-renewal |
 
 ## Next Steps
 
@@ -389,7 +389,7 @@ Tokens cannot be renewed. To continue access after expiration:
     Set up a profile (toolkit) to organize your MCP servers before generating tokens
   </Card>
   <Card title="Manage Authorizations" icon="key" href="/nexus/reference/authorizations">
-    View and revoke tokens from your authorization dashboard
+    View your authorizations and connected services
   </Card>
   <Card title="OpenAI Agent Setup" icon="robot" href="/nexus/recipes/openai-agents">
     Complete guide to using Civic tokens with OpenAI Agent Builder
