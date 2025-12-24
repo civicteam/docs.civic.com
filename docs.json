@@ -59,6 +59,7 @@
                 ]
               },
               "nexus/reference/authorizations",
+              "nexus/billing",
               "nexus/changelog"
             ]
           },
