@@ -1,0 +1,350 @@
+---
+title: Box Community Edition
+description: Community-maintained Box MCP server with full CRUD capabilities for file uploads, deletions, moves, copies, shared links, and collaboration management.
+icon: "server"
+---
+
+## Overview
+
+The Box Community Edition server provides full file management capabilities for your Box account. Unlike the [official Box server](/nexus/reference/servers/box) (read-only + AI), this community-maintained server enables AI assistants to upload, delete, move, copy files, manage shared links, and view collaborations.
+
+<Note>
+**When to use which server:**
+- **Box (Official)**: Read files, search, and use Box AI for document Q&A and metadata extraction
+- **Box Community Edition**: Full file/folder management with create, update, and delete operations
+</Note>
+
+## How to Add Box Community Edition
+
+<Steps>
+  <Step title="Create Box Account">
+    1. Go to [https://account.box.com/](https://account.box.com/)
+    2. Sign up for a free Box account or use your existing account
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Box Community Edition server to your Nexus environment through the server directory
+    2. Authorize Box when prompted using OAuth
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "List files in my Box" or "Show my Box account info" to verify the connection works properly.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="File Management" icon="file">
+    Upload, download, copy, move, rename, and delete files in your Box account
+  </Card>
+  <Card title="Folder Operations" icon="folder">
+    Create, delete, copy, move, and rename folders with recursive listing support
+  </Card>
+  <Card title="Shared Links" icon="link">
+    Create, update, and remove shared links for files and folders with access controls
+  </Card>
+  <Card title="Box AI" icon="brain">
+    Ask questions about single or multiple files using Box AI
+  </Card>
+</CardGroup>
+
+## Available Tools (30)
+
+### User & Authentication
+
+<AccordionGroup>
+  <Accordion title="box_who_am_i">
+    Get information about the currently authenticated user
+    - **Input**: None
+    - **Use Cases**: Verify authentication, get user details
+  </Accordion>
+</AccordionGroup>
+
+### Box AI
+
+<AccordionGroup>
+  <Accordion title="box_ai_ask_file_single_tool">
+    Ask a question about a single file's content using Box AI
+    - **Input**:
+      - `file_id` - The ID of the file to query
+      - `prompt` - The question to ask about the file
+    - **Use Cases**: Get insights from documents, ask questions about file content
+  </Accordion>
+
+  <Accordion title="box_ai_ask_file_multi_tool">
+    Ask a question across multiple files using Box AI
+    - **Input**:
+      - `file_ids` - Array of file IDs to query
+      - `prompt` - The question to ask about the files
+    - **Use Cases**: Get insights across multiple documents, compare information
+  </Accordion>
+
+  <Accordion title="box_ai_ask_hub_tool">
+    Ask a question using Box AI Hub
+    - **Input**: `prompt` - The question to ask
+    - **Use Cases**: Query collections of content, Hub-specific insights
+  </Accordion>
+</AccordionGroup>
+
+### Search
+
+<AccordionGroup>
+  <Accordion title="box_search_tool">
+    Search for files and folders in Box
+    - **Input**: `query` - Search query string
+    - **Use Cases**: Find files by name or content
+  </Accordion>
+
+  <Accordion title="box_search_folder_by_name_tool">
+    Search for a folder by name in Box
+    - **Input**: `folder_name` - Name of the folder to search for
+    - **Use Cases**: Locate specific folders
+  </Accordion>
+</AccordionGroup>
+
+### File Operations
+
+<AccordionGroup>
+  <Accordion title="box_file_info_tool">
+    Retrieve information about a specific file
+    - **Input**: `file_id` - ID of the file
+    - **Use Cases**: Get file metadata, check file details
+  </Accordion>
+
+  <Accordion title="box_file_download_tool">
+    Download a file from Box
+    - **Input**: `file_id` - ID of the file to download
+    - **Use Cases**: Retrieve file content for processing
+  </Accordion>
+
+  <Accordion title="box_file_upload_tool">
+    Upload a file to Box
+    - **Input**:
+      - `file_content` - Content of the file to upload
+      - `file_name` - Name for the uploaded file
+      - `parent_folder_id` (optional) - ID of the parent folder (default: "0" for root)
+    - **Use Cases**: Store new files, backup content
+  </Accordion>
+
+  <Accordion title="box_file_copy_tool">
+    Copy a file to a new location
+    - **Input**:
+      - `file_id` - ID of the file to copy
+      - `destination_parent_folder_id` - ID of the destination folder
+      - `name` (optional) - New name for the copied file
+    - **Use Cases**: Duplicate files, create backups
+  </Accordion>
+
+  <Accordion title="box_file_move_tool">
+    Move a file to a new location
+    - **Input**:
+      - `file_id` - ID of the file to move
+      - `destination_parent_folder_id` - ID of the destination folder
+    - **Use Cases**: Organize files, relocate documents
+  </Accordion>
+
+  <Accordion title="box_file_delete_tool">
+    Delete a file from Box
+    - **Input**: `file_id` - ID of the file to delete
+    - **Use Cases**: Remove unwanted files
+  </Accordion>
+
+  <Accordion title="box_file_rename_tool">
+    Rename a file in Box
+    - **Input**:
+      - `file_id` - ID of the file to rename
+      - `new_name` - New name for the file
+    - **Use Cases**: Update file names, fix naming conventions
+  </Accordion>
+
+  <Accordion title="box_file_text_extract_tool">
+    Extract text content from a file
+    - **Input**: `file_id` - ID of the file to extract text from
+    - **Use Cases**: Get text from PDFs, documents for analysis
+  </Accordion>
+</AccordionGroup>
+
+### Folder Operations
+
+<AccordionGroup>
+  <Accordion title="box_folder_items_list_tool">
+    List items in a folder with optional recursive traversal
+    - **Input**:
+      - `folder_id` - ID of the folder to list items from
+      - `is_recursive` (optional) - Whether to recursively list subfolder contents
+      - `limit` (optional) - Maximum items per API call (default: 1000)
+    - **Use Cases**: Browse folder contents, explore structure
+  </Accordion>
+
+  <Accordion title="box_folder_info_tool">
+    Retrieve information about a specific folder
+    - **Input**: `folder_id` - ID of the folder
+    - **Use Cases**: Get folder metadata, check folder details
+  </Accordion>
+
+  <Accordion title="box_folder_create_tool">
+    Create a new folder
+    - **Input**:
+      - `name` - Name of the new folder
+      - `parent_folder_id` (optional) - ID of the parent folder (default: "0" for root)
+    - **Use Cases**: Organize content, create project folders
+  </Accordion>
+
+  <Accordion title="box_folder_delete_tool">
+    Delete a folder from Box
+    - **Input**:
+      - `folder_id` - ID of the folder to delete
+      - `recursive` (optional) - Whether to delete recursively (default: false)
+    - **Use Cases**: Remove empty folders, clean up structure
+  </Accordion>
+
+  <Accordion title="box_folder_copy_tool">
+    Copy a folder to a new location
+    - **Input**:
+      - `folder_id` - ID of the folder to copy
+      - `destination_parent_folder_id` - ID of the destination folder
+      - `name` (optional) - New name for the copied folder
+    - **Use Cases**: Duplicate folder structures, create templates
+  </Accordion>
+
+  <Accordion title="box_folder_move_tool">
+    Move a folder to a new location
+    - **Input**:
+      - `folder_id` - ID of the folder to move
+      - `destination_parent_folder_id` - ID of the destination folder
+    - **Use Cases**: Reorganize folder structure
+  </Accordion>
+
+  <Accordion title="box_folder_rename_tool">
+    Rename a folder
+    - **Input**:
+      - `folder_id` - ID of the folder to rename
+      - `new_name` - New name for the folder
+    - **Use Cases**: Update folder names
+  </Accordion>
+</AccordionGroup>
+
+### Shared Links
+
+<AccordionGroup>
+  <Accordion title="box_shared_link_file_create_or_update_tool">
+    Create or update a shared link for a file
+    - **Input**:
+      - `file_id` - ID of the file
+      - `access` (optional) - Access level: 'open', 'company', or 'collaborators'
+      - `can_download` (optional) - Whether the file can be downloaded
+      - `can_preview` (optional) - Whether the file can be previewed
+      - `can_edit` (optional) - Whether the file can be edited
+      - `password` (optional) - Password to protect the shared link
+      - `unshared_at` (optional) - Expiration date (ISO 8601 format)
+    - **Use Cases**: Share files externally, create time-limited access
+  </Accordion>
+
+  <Accordion title="box_shared_link_folder_create_or_update_tool">
+    Create or update a shared link for a folder
+    - **Input**: Same as file shared link tool, but with `folder_id`
+    - **Use Cases**: Share folders with teams, create project access links
+  </Accordion>
+
+  <Accordion title="box_shared_link_file_remove_tool">
+    Remove a shared link from a file (unshare)
+    - **Input**: `file_id` - ID of the file to unshare
+    - **Use Cases**: Revoke file access
+  </Accordion>
+
+  <Accordion title="box_shared_link_folder_remove_tool">
+    Remove a shared link from a folder (unshare)
+    - **Input**: `folder_id` - ID of the folder to unshare
+    - **Use Cases**: Revoke folder access
+  </Accordion>
+</AccordionGroup>
+
+### Collaborations
+
+<AccordionGroup>
+  <Accordion title="box_collaboration_list_by_folder_tool">
+    List all collaborations on a folder
+    - **Input**: `folder_id` - ID of the folder
+    - **Use Cases**: See who has access to a folder
+  </Accordion>
+
+  <Accordion title="box_collaboration_list_by_file_tool">
+    List all collaborations on a file
+    - **Input**: `file_id` - ID of the file
+    - **Use Cases**: See who has access to a file
+  </Accordion>
+</AccordionGroup>
+
+### Users & Groups
+
+<AccordionGroup>
+  <Accordion title="box_users_list_tool">
+    List users in the Box enterprise
+    - **Input**: None
+    - **Use Cases**: Get enterprise user list
+  </Accordion>
+
+  <Accordion title="box_users_search_by_name_or_email_tool">
+    Search for users by name or email
+    - **Input**: `query` - Name or email to search for
+    - **Use Cases**: Find specific users
+  </Accordion>
+
+  <Accordion title="box_groups_search_tool">
+    Search for groups in Box
+    - **Input**: `query` - Search query for groups
+    - **Use Cases**: Find enterprise groups
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="File Management" icon="file">
+    - **Upload Documents**: "Upload this report to the Q4 Reports folder"
+    - **Organize Files**: "Move all PDFs from Downloads to the Archive folder"
+    - **Clean Up**: "Delete the old draft files in the Temp folder"
+    - **Duplicate Files**: "Copy the template to a new project folder"
+  </Accordion>
+
+  <Accordion title="Folder Organization" icon="folder-tree">
+    - **Create Structure**: "Create a new folder called 'Q1 2025' in Projects"
+    - **Browse Content**: "List all files in the Contracts folder recursively"
+    - **Reorganize**: "Move the Archive folder into Completed Projects"
+  </Accordion>
+
+  <Accordion title="Sharing & Collaboration" icon="share">
+    - **Share Files**: "Create a shared link for this document that expires in 7 days"
+    - **Secure Sharing**: "Generate a password-protected link for the folder"
+    - **Check Access**: "Who has access to the Finance folder?"
+    - **Revoke Access**: "Remove the shared link from the old report"
+  </Accordion>
+
+  <Accordion title="Box AI Queries" icon="brain">
+    - **Document Q&A**: "What are the key terms in this contract?"
+    - **Multi-file Analysis**: "Summarize the main points across these three reports"
+    - **Extract Information**: "What is the total amount in this invoice?"
+  </Accordion>
+</AccordionGroup>
+
+## Security Guardrails
+
+The Box Community Edition server has built-in security constraints to prevent accidental or malicious operations:
+
+<Warning>
+**Default Security Restrictions:**
+- Public shared links ('open' access) are blocked - use 'company' or 'collaborators' instead
+- Recursive folder deletion is disabled to prevent accidental data loss
+- Uploading to the root folder is blocked - specify a parent folder
+- Malicious file types (.exe, .dll, .bat, etc.) cannot be uploaded or downloaded
+</Warning>
+
+## Known Limitations
+
+- **Root folder ID**: Use `"0"` to reference the root folder
+- **Folder IDs required**: Most operations require folder/file IDs - use search tools to find them first
+- **Box AI subscription**: AI features require Box AI to be enabled on your account
+- **Enterprise features**: Some features like user listing may require Box Enterprise
+
+<Tip>
+**Pro Tip**: Use search tools first to find file and folder IDs, then use those IDs for management operations.
+</Tip>
