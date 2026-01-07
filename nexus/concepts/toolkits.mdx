@@ -165,11 +165,19 @@ If you're using Nexus Chat or managing multiple toolkits, you can switch between
     you can prompt the LLM to preset it.
 
     The AI will automatically use these presets when calling those tools.
+    Presets act as hard overrides. The LLM cannot change them during tool execution.
 
     **Sample prompts:**
     - "From now on, in this toolkit, always use property ID xyz when using Google Analytics"
     - "Preset the log groups parameter to this list: [log-group-1, log-group-2, log-group-3] when executing log queries"
     - "Always use the production database connection for queries in this toolkit"
+
+    <Info>
+        Presets can even include interpolated parameters. For example, if you have a SQL query tool, you can preset the query parameter to a specific SQL statement.
+        This allows you to create specialized versions of generic tools.
+        An example prompt would be:
+        - "Please preset the Postgres execute_sql tool to get the total number of users from the users table with a given email domain"
+    </Info>
   </Accordion>
 
   <Accordion title="Toolkit Descriptions">
@@ -187,7 +195,7 @@ If you're using Nexus Chat or managing multiple toolkits, you can switch between
     </Note>
 
     **Sample prompts:**
-    - **Step 1:** "Please preset the Google Analytics create-report tool with the following report parameters: `<...>` and the following property id `<...>`"
+    - **Step 1:** "Please preset the Google Analytics create-report tool with the following report parameters: `...` and the following property id `...`"
     - **Step 2:** "Please rename the create-report tool to 'get-24h-web-funnel-statistics'"
   </Accordion>
 
