@@ -1,0 +1,182 @@
+---
+title: Mistral OCR
+description: Extract text and images from PDFs and images using Mistral's Pixtral OCR API. Supports URL-based and base64-encoded documents.
+icon: "server"
+---
+
+## Overview
+
+The Mistral OCR server uses Mistral's Pixtral model to extract text from images and PDF documents. It supports both URL-based documents and base64-encoded content, making it ideal for processing invoices, receipts, contracts, and other scanned documents.
+
+## How to Add Mistral OCR
+
+<Steps>
+  <Step title="Get Mistral API Key">
+    1. Go to [https://console.mistral.ai/](https://console.mistral.ai/)
+    2. Sign up or log in to your Mistral account
+    3. Navigate to **API Keys** in your account settings
+    4. Create a new API key or copy an existing one
+  </Step>
+  <Step title="Connect to Nexus">
+    1. Add the Mistral OCR server to your Nexus environment through the server directory
+    2. Enter your Mistral API key when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Extract text from this PDF: [URL]" to verify the connection works properly.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="PDF Text Extraction" icon="file-pdf">
+    Extract text content from PDF documents via URL or base64 encoding
+  </Card>
+  <Card title="Image OCR" icon="image">
+    Extract text from images including PNG, JPEG, WebP, and AVIF formats
+  </Card>
+  <Card title="Invoice Processing" icon="file-invoice">
+    Process invoices, receipts, and bills to extract amounts, dates, and vendor info
+  </Card>
+  <Card title="Document Analysis" icon="magnifying-glass">
+    Extract and analyze text from contracts, forms, and scanned documents
+  </Card>
+</CardGroup>
+
+## Available Tools (2)
+
+### OCR from URL
+
+<AccordionGroup>
+  <Accordion title="ocr_url">
+    Extract text from an image or PDF document via URL
+    - **Input**:
+      - `url` (required) - Public URL of the image or PDF document
+      - `type` (required) - Document type: `image` or `pdf`
+      - `includeImages` (optional) - Include base64-encoded images in response (default: false)
+    - **Use Cases**: Process publicly accessible documents, extract text from hosted files
+
+    <Warning>
+    If the URL does not have a clear file extension (.pdf, .png, .jpg, etc.), you must specify the document type explicitly. Do not guess - ask the user.
+    </Warning>
+  </Accordion>
+</AccordionGroup>
+
+### OCR from Base64
+
+<AccordionGroup>
+  <Accordion title="ocr_base64">
+    Extract text from a base64-encoded image or PDF document
+    - **Input**:
+      - `data` (required) - Base64-encoded image or PDF data (without data URI prefix)
+      - `mimeType` (required) - MIME type of the document
+      - `includeImages` (optional) - Include base64-encoded images in response (default: false)
+    - **Supported MIME Types**:
+      - `image/png`
+      - `image/jpeg`
+      - `image/webp`
+      - `image/avif`
+      - `application/pdf`
+    - **Use Cases**: Process documents from file uploads, extract text from embedded content
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Invoice & Receipt Processing" icon="file-invoice">
+    - **Extract Totals**: "What is the total amount on this invoice?"
+    - **Get Line Items**: "Extract all the line items from this receipt"
+    - **Vendor Info**: "Pull out the vendor name, date, and amount from this bill"
+    - **Batch Processing**: Process multiple invoices to extract payment details
+  </Accordion>
+
+  <Accordion title="Document Digitization" icon="file-lines">
+    - **PDF Conversion**: "Extract the text from this scanned PDF"
+    - **Form Processing**: "What are the values filled in on this form?"
+    - **Contract Analysis**: "Extract the key dates and parties from this contract"
+    - **Archive Search**: Enable searching through scanned document archives
+  </Accordion>
+
+  <Accordion title="Data Extraction" icon="table">
+    - **Contact Info**: "Find all phone numbers and email addresses in this document"
+    - **Dates & Deadlines**: "What are the dates mentioned in this document?"
+    - **Financial Data**: "Extract all monetary amounts from this statement"
+    - **Structured Output**: Convert unstructured documents into usable data
+  </Accordion>
+
+  <Accordion title="Image Text Extraction" icon="image">
+    - **Screenshots**: "What does this screenshot say?"
+    - **Photos of Documents**: "Read the text from this photo of the receipt"
+    - **Signage & Labels**: "What text is visible in this image?"
+    - **Handwritten Notes**: Extract text from photos of handwritten content
+  </Accordion>
+</AccordionGroup>
+
+## Sample Prompts
+
+### Basic OCR
+
+- "Extract the text from this PDF: https://example.com/invoice.pdf"
+- "What does this image say? https://example.com/receipt.png"
+- "OCR this document and give me the contents"
+
+### Invoice Processing
+
+- "Extract all the line items and totals from this invoice"
+- "What is the invoice number, date, and total amount?"
+- "Pull out the vendor details and payment terms"
+
+### Document Analysis
+
+- "Extract the text and summarize the key terms in this contract"
+- "What are all the dates mentioned in this document?"
+- "Find all contact information (emails, phone numbers) in this PDF"
+
+### With Embedded Images
+
+- "Extract the text and include any images from this PDF"
+- "OCR this document and return the embedded charts as images"
+
+## Security Guardrails
+
+The Mistral OCR server has built-in security constraints:
+
+### PII Redaction
+
+<Note>
+Personally identifiable information (SSN, credit cards, phone numbers, emails) detected in OCR output is automatically redacted to prevent data leakage.
+</Note>
+
+### Input Validation
+
+| Constraint | Description |
+|------------|-------------|
+| Base64 Size Limit | Blocks payloads over ~10MB to prevent memory exhaustion |
+| Block Internal URLs | Prevents SSRF attacks by blocking localhost and private IP ranges (10.x.x.x, 192.168.x.x, 172.16-31.x.x) |
+
+## Known Limitations
+
+### URL Requirements
+- URLs must be publicly accessible
+- Internal/private network URLs are blocked for security
+- URLs without clear file extensions require explicit `type` parameter
+
+### File Size
+- Base64-encoded documents are limited to ~10MB
+- For larger documents, use the `ocr_url` tool with a public URL
+
+### Document Types
+- Only supports images (PNG, JPEG, WebP, AVIF) and PDFs
+- Scanned documents with poor quality may have reduced accuracy
+- Handwritten text recognition may be limited
+
+### PII Handling
+- PII is automatically redacted from responses
+- If you need unredacted data, contact your administrator to adjust guardrails
+
+## Documentation
+
+- [Mistral AI Documentation](https://docs.mistral.ai/)
+- [Mistral API Reference](https://docs.mistral.ai/api/)
+- [Pixtral Vision Model](https://docs.mistral.ai/capabilities/vision/)
