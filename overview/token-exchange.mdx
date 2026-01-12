@@ -18,11 +18,11 @@ Both flows implement the [OAuth 2.0 Token Exchange (RFC 8693)](https://datatrack
 
 <Tabs>
   <Tab title="Civic Token Exchange">
-    **Best for:** Extending or modifying existing Civic tokens
+    **Best for:** Delegating tokens with reduced permissions
 
-    - **Scope Elevation**: Request additional scopes for a user who has already authenticated
-    - **Token Refresh**: Obtain a new access token with extended validity
-    - **Service-to-Service**: Backend services exchanging tokens on behalf of users
+    - **Scope Reduction**: Create tokens with fewer permissions for specific tasks or services
+    - **Agent Delegation**: Issue constrained tokens to AI agents or automated systems that cannot exceed their granted permissions
+    - **Least Privilege**: Follow security best practices by granting only the minimum required access for each operation
   </Tab>
 
   <Tab title="Federated Token Exchange">
