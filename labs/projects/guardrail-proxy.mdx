@@ -1,68 +1,37 @@
 ---
 title: Guardrail Proxy
-description: Wrap any MCP server in a configurable and flexible security layer
+description: Security policies that control what AI assistants can access and how they process data
 public: true
 ---
 
-**Flask Status: Distilling** 🧪
+**Flask status: Graduated to Nexus**
+
+<Note>
+**This feature has graduated!** Guardrails are now a core feature of Civic Nexus. For the complete documentation, see [Guardrails in Nexus](/nexus/concepts/guardrails).
+</Note>
 
 ## Overview
 
-The Guardrail Proxy implements security rules to filter and validate requests between AI assistants and MCP tools. It's designed to add LLM-specific safety controls without modifying the underlying MCP servers. This allows you to enforce policies like domain blocking, file size limits, and custom validation logic at the proxy layer.
+The Guardrail Proxy started as a labs project to implement security rules between AI assistants and MCP tools. It has since become a core feature of Nexus, available to all users.
 
-Think of it as a security checkpoint that all AI requests must pass through before reaching your tools. It can inspect, modify, or reject requests based on configurable rules.
+## What's available in Nexus
 
-## Getting Started
+- **Conversational management**: Add, list, and remove guardrails through natural language
+- **Request guardrails**: Block or validate parameters before tools execute
+- **Response guardrails**: Redact PII, transform data, and filter outputs
+- **Built-in protection**: Prompt injection detection, PII patterns, and unsafe file blocking
+- **Hierarchy controls**: Account, toolkit, and user-level policies
 
-[Contact us](https://civickey.typeform.com/to/uVH7CWJ5) for early access and setup assistance.
+## Get started
 
-## Key Features
+See the [Guardrails documentation](/nexus/concepts/guardrails) to:
+- Learn how guardrails work
+- View available guardrail templates
+- Add guardrails to your toolkits
+- Configure PII redaction and other protections
 
-- **Domain Filtering**: Block or allow access to specific domains
-- **Request Validation**: Validate parameters before forwarding to tools
-- **Content Limits**: Cap file sizes and directory traversal depth for LLM consumption
-- **Custom Security Rules**: Implement your own validation logic via hooks
-- **Response Processing**: Filter or modify responses before they reach the AI
+## Integration
 
-<Frame caption="Guardrail in Action - Protecting against prompt injection attempts">
-    <img
-        src="/images/labs/projects/mcp-hub/guardrail-example.png"
-        align="center"
-        className="image-60 image-rounded"
-    />
-</Frame>
-
-## Usage
-
-The Guardrail Proxy works as a hook within the Pass-through Proxy system:
-
-1. Configure your security rules in the guardrail hook
-2. Point the Pass-through Proxy at your target MCP server
-3. Configure the Pass-through Proxy to use the guardrail hook
-4. Connect your AI assistant to the Pass-through Proxy instead of directly to the MCP server
-
-Example use cases:
-- Limiting which websites an AI can fetch content from
-- Preventing directory traversal attacks
-- Blocking access to sensitive file types
-- Rate-limiting based on content type or size
-- Adding corporate security policies to public MCP tools
-
-[Contact us](https://civickey.typeform.com/to/uVH7CWJ5) for configuration examples and implementation guides.
-
-## Integration Notes
-
-The Guardrail Proxy is powered by the Pass-through Proxy infrastructure and can be combined with:
-- **MCP Hub** for centralized management of multiple guarded MCP servers
-- **Bodyguard** for additional prompt-level threat detection
-- Custom hooks for organization-specific security requirements
-
-## Status
-
-This flask is currently **distilling**: The guardrail system is functional and being tested with various security rule configurations. We're actively developing additional rule types and improving the configuration interface. Contact us if you'd like to implement custom security policies for your MCP tools.
-
-## Resources
-
-- [Configuration Guide](/labs/private/guardrail-proxy) - Security rules and deployment
-- GitHub Repository (private - [request access](https://civickey.typeform.com/to/uVH7CWJ5))
-- Guardrail Library (private - [request access](https://civickey.typeform.com/to/uVH7CWJ5))
+Guardrails integrate with all Nexus features:
+- **[MCP Hub](/labs/projects/mcp-hub)**: Centralized management for all your MCP servers
+- **[Bodyguard](/labs/projects/bodyguard)**: Additional prompt-level threat detection

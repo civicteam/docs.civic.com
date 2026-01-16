@@ -53,6 +53,7 @@
                   "nexus/concepts/toolkits",
                   "nexus/concepts/tokens",
                   "nexus/concepts/connection-methods",
+                  "nexus/concepts/guardrails",
                   "nexus/concepts/mcp",
                   "nexus/concepts/oauth",
                   "nexus/concepts/tools-resources-prompts"

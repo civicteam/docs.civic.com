@@ -1,16 +1,30 @@
 ---
-title: Guardrail Proxy
-description: Implementation details for Guardrail Proxy
+title: Guardrails
+description: Configuration guide for Nexus guardrails
 ---
 
-## Overview
+<Note>
+**Guardrails are now a core Nexus feature!** This documentation has moved to [Guardrails in Nexus](/nexus/concepts/guardrails).
+</Note>
 
-The guardrail system is functional and being tested with various security rule configurations. We're actively developing additional rule types and improving the configuration interface.
+## Quick reference
 
-## Resources
+Guardrails are managed through natural conversation with your AI assistant:
 
-- GitHub Repository: https://github.com/civicteam/mcp-tools (private - [request access](https://civickey.typeform.com/to/uVH7CWJ5))
-- GitHub Repository - Guardrail Library: https://github.com/civicteam/civic-mcp (private - [request access](https://civickey.typeform.com/to/uVH7CWJ5))
-- Security Rule Examples: Coming soon
+| Action | Example prompt |
+|--------|---------------|
+| List templates | "What guardrails can I add for Gmail?" |
+| Add guardrail | "Add a guardrail to block searches for 'password'" |
+| List active | "Show my active guardrails for GitHub" |
+| Remove | "Remove the password search guardrail" |
 
-[Contact us](https://civickey.typeform.com/to/uVH7CWJ5) if you'd like to implement custom security policies for your MCP tools.
+## Full documentation
+
+For complete documentation on:
+- How guardrails work
+- Request vs response guardrails
+- Built-in protection (PII, prompt injection)
+- Response processors for data optimization
+- The guardrail hierarchy
+
+See [Guardrails in Nexus](/nexus/concepts/guardrails).

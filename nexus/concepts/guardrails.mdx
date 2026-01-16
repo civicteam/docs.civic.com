@@ -1,0 +1,245 @@
+---
+title: Guardrails
+description: Security policies that control what AI assistants can access and how they process data
+icon: "shield-halved"
+---
+
+## What are guardrails?
+
+Guardrails are security policies that sit between your AI assistant and the tools it uses. They inspect, validate, and transform requests and responses to ensure your AI operates within safe boundaries.
+
+<Note>
+**Why guardrails matter:** When AI assistants have access to powerful tools, they need constraints that traditional security models don't provide. Guardrails protect against data exposure, accidental destructive actions, and prompt injection attacks.
+</Note>
+
+<Frame caption="Add guardrails to tools directly from the Nexus UI">
+  <img
+    src="/images/nexus/guardrails-ui.png"
+    className="image-60 image-rounded"
+    alt="Nexus UI showing guardrail options for GitHub tools"
+  />
+</Frame>
+
+## Managing guardrails
+
+Manage guardrails through the Nexus UI when adding tools to your toolkit, or through natural conversation with your AI assistant.
+
+### View available guardrails
+
+Ask your AI assistant:
+
+> "What guardrail templates are available for Gmail?"
+
+> "Show me guardrails I can add for the GitHub search_code tool"
+
+### Add a guardrail
+
+> "Add a guardrail to block searches containing 'password' and 'secret'"
+
+> "Set up PII redaction for Notion responses"
+
+The AI will find the appropriate template, ask for any required values, and create the guardrail for your toolkit.
+
+### List active guardrails
+
+> "What guardrails are currently active for my GitHub server?"
+
+### Remove a guardrail
+
+> "Remove the guardrail that blocks Gmail searches for passwords"
+
+## Why use guardrails?
+
+AI assistants are powerful but need appropriate constraints:
+
+| Risk | Guardrail solution |
+|------|-------------------|
+| AI reads sensitive data it shouldn't | Request guardrails block access to certain fields or patterns |
+| Tool responses contain PII | Response guardrails automatically redact sensitive data |
+| Prompt injection attempts | Built-in detection blocks malicious prompts |
+| Overwhelming context with large responses | Response processors truncate or transform data |
+| Accidental destructive actions | Block or require confirmation for write operations |
+
+### The AI is not a human
+
+When a human reads an email, they understand context and exercise judgment. An AI assistant:
+- Will happily read every email in your inbox if asked
+- Cannot distinguish between legitimate requests and prompt injection attacks
+- May expose sensitive data by including it in responses
+- Could execute destructive operations without understanding consequences
+
+### Scale amplifies risk
+
+What takes a human hours to do manually, an AI can do in seconds. A misconfigured tool that exposes one record is an incident. An AI iterating through thousands of records is a breach.
+
+## How guardrails work
+
+Guardrails are evaluated at two points in the tool execution pipeline:
+
+```
+Request → [Request guardrails] → Tool execution → [Response guardrails] → Response
+```
+
+### Request guardrails
+
+Evaluated **before** the tool runs. They can:
+- **Block** requests that violate policies
+- **Validate** parameters meet requirements
+- **Filter** which operations are allowed
+
+### Response guardrails
+
+Evaluated **after** the tool runs. They can:
+- **Redact** sensitive information from responses
+- **Transform** data (e.g., HTML to Markdown, JSON to CSV)
+- **Truncate** overly long responses
+- **Remove** specific fields from the output
+
+## Built-in protection
+
+Every Nexus account includes universal guardrails that are always active:
+
+<AccordionGroup>
+  <Accordion title="PII detection and redaction">
+    Automatically detects and can redact:
+    - Social Security Numbers (SSN)
+    - Credit card numbers
+    - Email addresses
+    - Phone numbers (international formats)
+    - IP addresses
+    - Passport numbers
+    - Driver's license numbers
+    - Bank account numbers (IBAN)
+    - Dates of birth
+  </Accordion>
+
+  <Accordion title="Prompt injection detection">
+    Based on [OWASP LLM01:2025](https://genai.owasp.org/llmrisk/llm01-prompt-injection/), detects:
+    - Direct instruction override attempts
+    - Role manipulation patterns
+    - Context escape attempts
+    - Jailbreak patterns
+  </Accordion>
+
+  <Accordion title="Unsafe file format blocking">
+    Prevents access to potentially dangerous file types:
+    - Executables (.exe, .dll, .sh, .bat)
+    - Scripts (.ps1, .vbs, .js)
+    - Archives (.zip, .rar, .7z)
+    - Office files with macros (.xlsm, .docm)
+    - System files (.msi, .deb, .rpm)
+  </Accordion>
+</AccordionGroup>
+
+## Guardrail hierarchy
+
+Guardrails operate at three levels, each with different scope:
+
+| Level | Scope | Example use case |
+|-------|-------|-----------------|
+| **Account** | Applies to all users and toolkits | Company-wide PII redaction policy |
+| **Toolkit** | Applies to a specific toolkit | Production toolkit blocks write operations |
+| **User** | Applies to a specific user | Individual's custom blocked terms |
+
+Higher levels cannot be overridden by lower levels. An account-level guardrail blocking access to `/etc/passwd` cannot be bypassed by a user-level guardrail.
+
+## Common guardrail examples
+
+<CardGroup cols={2}>
+  <Card title="Block sensitive search terms" icon="ban">
+    Prevent the AI from searching for passwords, secrets, or credentials.
+
+    > "Add a guardrail to block searches containing 'password', 'secret', 'api_key'"
+  </Card>
+
+  <Card title="Restrict to specific domains" icon="globe">
+    Only allow web fetching from approved domains.
+
+    > "Add a guardrail to only allow fetching from docs.example.com"
+  </Card>
+
+  <Card title="Redact PII in responses" icon="user-secret">
+    Automatically replace sensitive data with [REDACTED].
+
+    > "Enable PII redaction for email addresses in all responses"
+  </Card>
+
+  <Card title="Block destructive operations" icon="trash">
+    Prevent accidental data loss.
+
+    > "Add a guardrail to block the delete_repository tool on GitHub"
+  </Card>
+</CardGroup>
+
+## Response processors
+
+In addition to security guardrails, you can add **response processors** that optimize tool outputs for AI consumption. These reduce token usage and improve response quality.
+
+<CardGroup cols={2}>
+  <Card title="Retain specific fields" icon="filter">
+    Keep only the fields you need, removing unnecessary data.
+
+    > "Add a processor to retain only 'id', 'name', and 'status' from campaign responses"
+  </Card>
+
+  <Card title="Convert HTML to Markdown" icon="file-code">
+    Transform verbose HTML into compact Markdown.
+
+    > "Convert HTML responses to Markdown for the web scraper"
+  </Card>
+
+  <Card title="Remove metadata fields" icon="trash-can">
+    Strip internal fields like timestamps and IDs.
+
+    > "Remove 'created_at', 'updated_at', and 'internal_id' from responses"
+  </Card>
+
+  <Card title="Truncate long content" icon="scissors">
+    Abbreviate overly long text fields.
+
+    > "Truncate description fields to 500 characters"
+  </Card>
+</CardGroup>
+
+Response processors use the same management interface as guardrails - just ask your AI assistant to add them.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="You don't have permission to add guardrails">
+    Adding and removing guardrails requires account management permissions. Contact your account administrator or check your role.
+  </Accordion>
+
+  <Accordion title="Guardrail not triggering">
+    Ensure:
+    1. The guardrail is enabled (check with "list active guardrails")
+    2. The guardrail is scoped to the correct server and tool
+    3. The data matches the expected schema path
+  </Accordion>
+
+  <Accordion title="Too many false positives">
+    If guardrails are blocking legitimate requests:
+    1. Review the guardrail's value/pattern configuration
+    2. Consider using a more specific schema path
+    3. Remove and re-add with adjusted parameters
+  </Accordion>
+</AccordionGroup>
+
+## Best practices
+
+Guardrails complement authentication and authorization by controlling *how* tools are used, not just *who* can use them.
+
+<Steps>
+  <Step title="Start restrictive">
+    Begin with tight controls and loosen as needed. It's easier to relax rules than recover from a breach.
+  </Step>
+  <Step title="Layer defenses">
+    Combine multiple guardrail types for robust protection. Request validation + response redaction provides defense in depth.
+  </Step>
+  <Step title="Monitor triggers">
+    Track when guardrails activate to understand patterns and refine policies.
+  </Step>
+  <Step title="Document policies">
+    Make it clear why each guardrail exists so future team members understand the reasoning.
+  </Step>
+</Steps>
