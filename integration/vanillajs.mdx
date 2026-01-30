@@ -12,23 +12,48 @@ public: true
 - A Civic Auth Client ID (get it from [auth.civic.com](https://auth.civic.com))
 - Configure your redirect URL in the Civic Auth dashboard (typically `http://localhost:3000` for development)
 
+<Info>
+  If you plan to use Web3 features, select "Auth + Web3" from the tabs below.
+</Info>
+
 ### Installation
 
-**NPM**
-
+<Tabs>
+<Tab title="Auth">
 ```bash
 npm install @civic/auth
 ```
+</Tab>
+
+<Tab title="Auth + Web3">
+```bash
+npm install @civic/auth-web3
+```
+</Tab>
+</Tabs>
 
 <Tip>
 We highly recommend using [Vite](https://vitejs.dev/) for the best development experience with modern JavaScript features, fast hot reloading, and seamless ES module support.
 
+<Tabs>
+<Tab title="Auth">
 ```bash
 npm create vite@latest my-civic-app -- --template vanilla
 cd my-civic-app
 npm install
 npm install @civic/auth
 ```
+</Tab>
+
+<Tab title="Auth + Web3">
+```bash
+npm create vite@latest my-civic-app -- --template vanilla
+cd my-civic-app
+npm install
+npm install @civic/auth-web3
+```
+</Tab>
+</Tabs>
 
 </Tip>
 
@@ -60,6 +85,8 @@ npm install @civic/auth
 
 2. **JavaScript** (`main.js`):
 
+<Tabs>
+<Tab title="Auth">
 ```javascript
 import { CivicAuth } from "@civic/auth/vanillajs";
 
@@ -82,6 +109,33 @@ document.getElementById("logoutButton").addEventListener("click", async () => {
   await authClient?.logout();
 });
 ```
+</Tab>
+
+<Tab title="Auth + Web3">
+```javascript
+import { CivicAuth } from "@civic/auth-web3/vanillajs";
+
+// Initialize auth directly with top-level await
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+});
+
+// Sign in
+document.getElementById("loginButton").addEventListener("click", async () => {
+  try {
+    const { user } = await authClient.startAuthentication();
+  } catch (error) {
+    console.error("Authentication failed:", error);
+  }
+});
+
+// Sign out
+document.getElementById("logoutButton").addEventListener("click", async () => {
+  await authClient?.logout();
+});
+```
+</Tab>
+</Tabs>
 
 That's it\! Replace `YOUR_CLIENT_ID` with your actual client ID and you're done.
 
@@ -89,6 +143,8 @@ That's it\! Replace `YOUR_CLIENT_ID` with your actual client ID and you're done.
 
 If you prefer backend session management, you can configure the client to get login URLs from your Express backend. The magic is the `loginUrl` option:
 
+<Tabs>
+<Tab title="Auth">
 ```javascript
 import { CivicAuth } from "@civic/auth/vanillajs";
 
@@ -100,11 +156,29 @@ const authClient = await CivicAuth.create({
 // Now authentication works through your backend
 const { user } = await authClient.startAuthentication();
 ```
+</Tab>
+
+<Tab title="Auth + Web3">
+```javascript
+import { CivicAuth } from "@civic/auth-web3/vanillajs";
+
+// Configure client to use your backend for login URLs
+const authClient = await CivicAuth.create({
+  loginUrl: "https://your-backend.com/auth/login-url", // The magic!
+});
+
+// Now authentication works through your backend
+const { user } = await authClient.startAuthentication();
+```
+</Tab>
+</Tabs>
 
 ### Custom Backend Endpoints
 
 When using backend integration, you can customize the API endpoints that the client calls on your backend:
 
+<Tabs>
+<Tab title="Auth">
 ```javascript
 import { CivicAuth } from "@civic/auth/vanillajs";
 
@@ -117,6 +191,23 @@ const authClient = await CivicAuth.create({
   },
 });
 ```
+</Tab>
+
+<Tab title="Auth + Web3">
+```javascript
+import { CivicAuth } from "@civic/auth-web3/vanillajs";
+
+const authClient = await CivicAuth.create({
+  loginUrl: "https://your-backend.com/auth/login-url",
+  backendEndpoints: {
+    refresh: "/api/v1/auth/refresh", // default: "/auth/refresh"
+    logout: "/api/v1/auth/logout", // default: "/auth/logout"
+    user: "/api/v1/auth/user", // default: "/auth/user"
+  },
+});
+```
+</Tab>
+</Tabs>
 
 <Note>
   The `backendEndpoints` configuration is only used when `loginUrl` is provided. Each endpoint is optional - if not
@@ -171,6 +262,672 @@ const logout = async () => {
 
 - Use `authClient.getCurrentUser()` to retrieve current user information before logout
 - Use `authClient.isAuthenticated()` to check if user is currently logged in
+
+## Web3 Wallets
+
+<Info>
+  Web3 wallet functionality is available when using the `@civic/auth-web3` package. This enables embedded Ethereum and Solana wallets for your users.
+</Info>
+
+### Creating an Embedded Wallet
+
+When a user logs in, they don't have a Web3 wallet by default. You can create an embedded wallet for them:
+
+<Tabs>
+<Tab title="Ethereum">
+```javascript
+import { CivicAuth, userHasWallet } from "@civic/auth-web3/vanillajs";
+
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+});
+
+// After authentication
+const user = await authClient.getCurrentUser();
+
+if (user && !userHasWallet(user)) {
+  await user.createWallet();
+  console.log("Wallet created!");
+}
+```
+</Tab>
+
+<Tab title="Solana">
+```javascript
+import { CivicAuth, userHasWallet } from "@civic/auth-web3/vanillajs";
+
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+  blockchain: "solana", // Specify Solana
+});
+
+// After authentication
+const user = await authClient.getCurrentUser();
+
+if (user && !userHasWallet(user)) {
+  await user.createWallet();
+  console.log("Solana wallet created!");
+}
+```
+</Tab>
+</Tabs>
+
+### Accessing the Wallet
+
+Once a wallet is created, you can access it directly from the user object:
+
+<Tabs>
+<Tab title="Ethereum">
+```javascript
+const user = await authClient.getCurrentUser();
+
+if (userHasWallet(user)) {
+  const { address, wallet } = user.ethereum;
+  
+  console.log("Wallet address:", address);
+  
+  // Send a transaction
+  const hash = await wallet.sendTransaction({
+    to: "0x742d35Cc6635C0532925a3b8D1b5d2e36c6e7C1c",
+    value: "1000000000000000000" // 1 ETH in wei
+  });
+  
+  console.log("Transaction hash:", hash);
+}
+```
+</Tab>
+
+<Tab title="Solana">
+```javascript
+import { Connection, SystemProgram, Transaction, PublicKey } from "@solana/web3.js";
+
+const user = await authClient.getCurrentUser();
+
+if (userHasWallet(user)) {
+  const { address, wallet } = user.solana;
+  
+  console.log("Wallet address:", address);
+  
+  // Send SOL
+  const connection = new Connection("https://api.mainnet-beta.solana.com");
+  const transaction = new Transaction().add(
+    SystemProgram.transfer({
+      fromPubkey: wallet.publicKey,
+      toPubkey: new PublicKey("11111111111111111111111111111112"),
+      lamports: 1000000 // 0.001 SOL
+    })
+  );
+  
+  const signature = await wallet.sendTransaction(transaction, connection);
+  console.log("Transaction signature:", signature);
+}
+```
+</Tab>
+</Tabs>
+
+### Checking Wallet Balance
+
+<Tabs>
+<Tab title="Ethereum">
+```javascript
+// Using the built-in balance method
+const user = await authClient.getCurrentUser();
+
+if (userHasWallet(user)) {
+  const balance = await user.ethereum.wallet.getBalance();
+  console.log("Balance:", balance, "ETH");
+}
+```
+</Tab>
+
+<Tab title="Solana">
+```javascript
+import { Connection } from "@solana/web3.js";
+
+const user = await authClient.getCurrentUser();
+
+if (userHasWallet(user)) {
+  const connection = new Connection("https://api.mainnet-beta.solana.com");
+  const balance = await connection.getBalance(user.solana.wallet.publicKey);
+  console.log("Balance:", balance / 1e9, "SOL");
+}
+```
+</Tab>
+</Tabs>
+
+### Signing Messages
+
+<Tabs>
+<Tab title="Ethereum">
+```javascript
+const user = await authClient.getCurrentUser();
+
+if (userHasWallet(user)) {
+  const message = "Hello, Web3!";
+  const signature = await user.ethereum.wallet.signMessage(message);
+  console.log("Message signature:", signature);
+}
+```
+</Tab>
+
+<Tab title="Solana">
+```javascript
+const user = await authClient.getCurrentUser();
+
+if (userHasWallet(user)) {
+  const message = new TextEncoder().encode("Hello, Solana!");
+  const signature = await user.solana.wallet.signMessage(message);
+  console.log("Message signature:", signature);
+}
+```
+</Tab>
+</Tabs>
+
+### Complete Example
+
+Here's a complete example showing authentication and wallet creation:
+
+<Tabs>
+<Tab title="Ethereum">
+```javascript
+import { CivicAuth, userHasWallet } from "@civic/auth-web3/vanillajs";
+
+// Initialize with Ethereum support
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+});
+
+// Auth flow
+document.getElementById("loginButton").addEventListener("click", async () => {
+  try {
+    const { user } = await authClient.startAuthentication();
+    
+    // Create wallet if user doesn't have one
+    if (user && !userHasWallet(user)) {
+      console.log("Creating wallet...");
+      await user.createWallet();
+    }
+    
+    // Display wallet info
+    if (userHasWallet(user)) {
+      document.getElementById("walletAddress").textContent = user.ethereum.address;
+      
+      const balance = await user.ethereum.wallet.getBalance();
+      document.getElementById("walletBalance").textContent = `${balance} ETH`;
+    }
+    
+  } catch (error) {
+    console.error("Authentication failed:", error);
+  }
+});
+
+// Send transaction
+document.getElementById("sendButton").addEventListener("click", async () => {
+  const user = await authClient.getCurrentUser();
+  
+  if (userHasWallet(user)) {
+    const recipient = document.getElementById("recipient").value;
+    const amount = document.getElementById("amount").value;
+    
+    try {
+      const hash = await user.ethereum.wallet.sendTransaction({
+        to: recipient,
+        value: (parseFloat(amount) * 1e18).toString() // Convert ETH to wei
+      });
+      
+      console.log("Transaction sent:", hash);
+    } catch (error) {
+      console.error("Transaction failed:", error);
+    }
+  }
+});
+```
+</Tab>
+
+<Tab title="Solana">
+```javascript
+import { CivicAuth, userHasWallet } from "@civic/auth-web3/vanillajs";
+import { Connection, SystemProgram, Transaction, PublicKey } from "@solana/web3.js";
+
+// Initialize with Solana support
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+  blockchain: "solana",
+});
+
+const connection = new Connection("https://api.mainnet-beta.solana.com");
+
+// Auth flow
+document.getElementById("loginButton").addEventListener("click", async () => {
+  try {
+    const { user } = await authClient.startAuthentication();
+    
+    // Create wallet if user doesn't have one
+    if (user && !userHasWallet(user)) {
+      console.log("Creating Solana wallet...");
+      await user.createWallet();
+    }
+    
+    // Display wallet info
+    if (userHasWallet(user)) {
+      document.getElementById("walletAddress").textContent = user.solana.address;
+      
+      const balance = await connection.getBalance(user.solana.wallet.publicKey);
+      document.getElementById("walletBalance").textContent = `${balance / 1e9} SOL`;
+    }
+    
+  } catch (error) {
+    console.error("Authentication failed:", error);
+  }
+});
+
+// Send transaction
+document.getElementById("sendButton").addEventListener("click", async () => {
+  const user = await authClient.getCurrentUser();
+  
+  if (userHasWallet(user)) {
+    const recipient = document.getElementById("recipient").value;
+    const amount = parseFloat(document.getElementById("amount").value);
+    
+    try {
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: user.solana.wallet.publicKey,
+          toPubkey: new PublicKey(recipient),
+          lamports: amount * 1e9 // Convert SOL to lamports
+        })
+      );
+      
+      const signature = await user.solana.wallet.sendTransaction(transaction, connection);
+      console.log("Transaction sent:", signature);
+    } catch (error) {
+      console.error("Transaction failed:", error);
+    }
+  }
+});
+```
+</Tab>
+</Tabs>
+
+### Multi-Chain Configuration
+
+Unlike React apps that use Wagmi for chain management, vanilla JavaScript handles chain configuration directly. You can configure multiple chains and switch between them:
+
+<Tabs>
+<Tab title="Ethereum/EVM">
+```javascript
+import { CivicAuth } from "@civic/auth-web3/vanillajs";
+import { mainnet, sepolia, polygon } from "@civic/auth-web3/chains";
+
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+  chains: [mainnet, sepolia, polygon],
+  defaultChain: mainnet,
+  transports: {
+    [mainnet.id]: {
+      http: ["https://eth-mainnet.g.alchemy.com/v2/YOUR-API-KEY"],
+    },
+    [sepolia.id]: {
+      http: ["https://eth-sepolia.g.alchemy.com/v2/YOUR-API-KEY"],
+    },
+    [polygon.id]: {
+      http: ["https://polygon-mainnet.g.alchemy.com/v2/YOUR-API-KEY"],
+      webSocket: ["wss://polygon-mainnet.g.alchemy.com/v2/YOUR-API-KEY"],
+    },
+  },
+});
+
+// Switch chains programmatically
+await authClient.switchChain(sepolia.id);
+
+// Get current chain
+const currentChain = await authClient.getCurrentChain();
+console.log("Current chain:", currentChain.name);
+```
+</Tab>
+
+<Tab title="Solana">
+```javascript
+import { CivicAuth } from "@civic/auth-web3/vanillajs";
+
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+  blockchain: "solana",
+  networks: {
+    mainnet: {
+      rpcUrl: "https://api.mainnet-beta.solana.com",
+      websocketUrl: "wss://api.mainnet-beta.solana.com",
+    },
+    devnet: {
+      rpcUrl: "https://api.devnet.solana.com",
+      websocketUrl: "wss://api.devnet.solana.com",
+    },
+    testnet: {
+      rpcUrl: "https://api.testnet.solana.com",
+      websocketUrl: "wss://api.testnet.solana.com",
+    },
+  },
+  defaultNetwork: "mainnet",
+});
+
+// Switch networks
+await authClient.switchNetwork("devnet");
+
+// Get current network
+const currentNetwork = await authClient.getCurrentNetwork();
+console.log("Current network:", currentNetwork);
+```
+</Tab>
+</Tabs>
+
+### Advanced Chain Configuration
+
+For more control over chain behavior, you can configure additional options:
+
+```javascript
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+  chains: [
+    {
+      id: 1,
+      name: "Ethereum",
+      nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+      rpcUrls: {
+        default: { http: ["https://your-custom-rpc.com"] },
+        public: { http: ["https://ethereum.publicnode.com"] },
+      },
+      blockExplorers: {
+        default: { name: "Etherscan", url: "https://etherscan.io" },
+      },
+    },
+    // Custom L2 or testnet
+    {
+      id: 31337,
+      name: "Local Chain",
+      nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+      rpcUrls: {
+        default: { http: ["http://127.0.0.1:8545"] },
+      },
+    },
+  ],
+});
+```
+
+### Event Handling
+
+Since vanilla JS doesn't have reactive hooks like React, comprehensive event handling is crucial for building responsive UIs:
+
+#### Authentication Events
+
+```javascript
+// User authentication state changes
+authClient.on("user", (user) => {
+  if (user) {
+    console.log("User logged in:", user.name);
+    document.getElementById("userInfo").style.display = "block";
+    document.getElementById("loginButton").style.display = "none";
+  } else {
+    console.log("User logged out");
+    document.getElementById("userInfo").style.display = "none";
+    document.getElementById("loginButton").style.display = "block";
+  }
+});
+
+// Authentication completed successfully
+authClient.on("authenticated", (user) => {
+  console.log("Authentication successful");
+  // Auto-create wallet for new users
+  if (!userHasWallet(user)) {
+    user.createWallet();
+  }
+});
+
+// Authentication failed
+authClient.on("authError", (error) => {
+  console.error("Authentication failed:", error);
+  document.getElementById("errorMessage").textContent = error.message;
+});
+
+// User logged out
+authClient.on("unauthenticated", () => {
+  console.log("User signed out");
+  clearWalletUI();
+});
+```
+
+#### Wallet Events
+
+```javascript
+// Wallet created for user
+authClient.on("walletCreated", (walletInfo) => {
+  console.log("Wallet created:", walletInfo.address);
+  document.getElementById("walletAddress").textContent = walletInfo.address;
+  updateBalance(); // Refresh balance display
+});
+
+// Wallet connected/ready to use
+authClient.on("walletConnected", (wallet) => {
+  console.log("Wallet connected:", wallet.address);
+  document.getElementById("walletStatus").textContent = "Connected";
+  document.getElementById("sendButton").disabled = false;
+});
+
+// Wallet disconnected
+authClient.on("walletDisconnected", () => {
+  console.log("Wallet disconnected");
+  document.getElementById("walletStatus").textContent = "Disconnected";
+  document.getElementById("sendButton").disabled = true;
+});
+
+// Wallet operation failed
+authClient.on("walletError", (error) => {
+  console.error("Wallet error:", error);
+  document.getElementById("walletError").textContent = error.message;
+});
+```
+
+#### Chain & Network Events
+
+```javascript
+// Chain changed (Ethereum)
+authClient.on("chainChanged", (chainId) => {
+  console.log("Chain changed to:", chainId);
+  updateUIForChain(chainId);
+  updateBalance(); // Balance might be different on new chain
+});
+
+// Network changed (Solana)
+authClient.on("networkChanged", (network) => {
+  console.log("Network changed to:", network);
+  updateUIForNetwork(network);
+  updateBalance();
+});
+
+// Account changed (user switched wallets)
+authClient.on("accountsChanged", (accounts) => {
+  if (accounts.length === 0) {
+    console.log("No accounts available");
+  } else {
+    console.log("Active account:", accounts[0]);
+    document.getElementById("walletAddress").textContent = accounts[0];
+    updateBalance();
+  }
+});
+```
+
+#### Transaction Events
+
+```javascript
+// Transaction started
+authClient.on("transactionStarted", (txInfo) => {
+  console.log("Transaction started:", txInfo.hash);
+  document.getElementById("txStatus").textContent = "Sending...";
+  document.getElementById("txHash").textContent = txInfo.hash;
+});
+
+// Transaction confirmed
+authClient.on("transactionConfirmed", (txInfo) => {
+  console.log("Transaction confirmed:", txInfo.hash);
+  document.getElementById("txStatus").textContent = "Confirmed";
+  updateBalance(); // Refresh balance after transaction
+});
+
+// Transaction failed
+authClient.on("transactionFailed", (error) => {
+  console.error("Transaction failed:", error);
+  document.getElementById("txStatus").textContent = "Failed: " + error.message;
+});
+
+// Transaction pending (waiting for confirmation)
+authClient.on("transactionPending", (txInfo) => {
+  console.log("Transaction pending:", txInfo.hash);
+  document.getElementById("txStatus").textContent = "Pending confirmation...";
+});
+```
+
+#### Balance Events
+
+```javascript
+// Balance changed (useful for real-time updates)
+authClient.on("balanceChanged", (balanceInfo) => {
+  console.log("Balance updated:", balanceInfo);
+  const { balance, symbol, address } = balanceInfo;
+  document.getElementById("balance").textContent = `${balance} ${symbol}`;
+});
+```
+
+#### Connection Events
+
+```javascript
+// Initial connection established
+authClient.on("connect", () => {
+  console.log("Connected to Civic Auth");
+  document.getElementById("connectionStatus").textContent = "Connected";
+});
+
+// Connection lost
+authClient.on("disconnect", () => {
+  console.log("Disconnected from Civic Auth");
+  document.getElementById("connectionStatus").textContent = "Disconnected";
+});
+
+// Reconnected after connection loss
+authClient.on("reconnect", () => {
+  console.log("Reconnected to Civic Auth");
+  document.getElementById("connectionStatus").textContent = "Reconnected";
+  // Refresh user state
+  authClient.getCurrentUser().then(updateUserUI);
+});
+```
+
+#### Complete Event-Driven Example
+
+```javascript
+// Set up comprehensive event handling
+function setupEventListeners() {
+  // Authentication flow
+  authClient.on("authenticated", async (user) => {
+    updateUserUI(user);
+    if (!userHasWallet(user)) {
+      await user.createWallet();
+    }
+  });
+
+  authClient.on("walletCreated", (walletInfo) => {
+    updateWalletUI(walletInfo);
+    updateBalance();
+  });
+
+  // Real-time updates
+  authClient.on("balanceChanged", updateBalanceUI);
+  authClient.on("chainChanged", handleChainChange);
+  authClient.on("transactionConfirmed", () => {
+    showNotification("Transaction confirmed!");
+    updateBalance();
+  });
+
+  // Error handling
+  authClient.on("authError", handleAuthError);
+  authClient.on("walletError", handleWalletError);
+  authClient.on("transactionFailed", handleTransactionError);
+}
+
+// Helper functions
+function updateUserUI(user) {
+  document.getElementById("userName").textContent = user.name;
+  document.getElementById("userEmail").textContent = user.email;
+}
+
+function updateWalletUI(walletInfo) {
+  document.getElementById("walletAddress").textContent = walletInfo.address;
+  document.getElementById("walletSection").style.display = "block";
+}
+
+function updateBalanceUI(balanceInfo) {
+  document.getElementById("balance").textContent = 
+    `${balanceInfo.balance} ${balanceInfo.symbol}`;
+}
+
+function handleChainChange(chainId) {
+  const chainName = getChainName(chainId);
+  document.getElementById("currentChain").textContent = chainName;
+  updateBalance(); // Balance might be different on new chain
+}
+
+// Initialize events
+setupEventListeners();
+```
+
+### Configuration Options Reference
+
+| Field          | Type     | Default     | Description                                               |
+| -------------- | -------- | ----------- | --------------------------------------------------------- |
+| `blockchain`   | string   | `ethereum`  | Choose `"ethereum"` or `"solana"`                        |
+| `chains`       | Chain[]  | `[mainnet]` | Array of supported chains (Ethereum only)                |
+| `defaultChain` | Chain    | First chain | Default chain to use                                      |
+| `transports`   | object   | Public RPCs | RPC configurations per chain                              |
+| `networks`     | object   | Mainnet     | Network configurations (Solana only)                     |
+| `autoConnect`  | boolean  | `true`      | Automatically connect wallet after authentication        |
+
+### Simple Configuration (Single Chain)
+
+For simple single-chain apps, you can use the minimal configuration:
+
+<Tabs>
+<Tab title="Ethereum Mainnet">
+```javascript
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+  // Uses Ethereum mainnet by default
+});
+```
+</Tab>
+
+<Tab title="Ethereum Testnet">
+```javascript
+import { sepolia } from "@civic/auth-web3/chains";
+
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+  defaultChain: sepolia,
+});
+```
+</Tab>
+
+<Tab title="Solana Devnet">
+```javascript
+const authClient = await CivicAuth.create({
+  clientId: "YOUR_CLIENT_ID",
+  blockchain: "solana",
+  defaultNetwork: "devnet",
+});
+```
+</Tab>
+</Tabs>
+
+<Info>
+  **Security Note**: Embedded wallets are non-custodial. Neither Civic nor your application ever has access to the wallet's private keys. The wallet is generated and managed securely by our infrastructure partners.
+</Info>
 
 ## Troubleshooting
 
