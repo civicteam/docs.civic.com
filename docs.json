@@ -201,6 +201,7 @@
               },
               "overview/faqs",
               "overview/authentication-flows",
+              "overview/token-exchange",
               "overview/changelog"
             ]
           },
