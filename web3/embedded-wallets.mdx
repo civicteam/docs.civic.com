@@ -114,6 +114,15 @@ Civic's wallets are EOA (Externally Owned Account) wallets, rather than smart co
 
 ### **Recovery**
 
-Our wallet provider includes a recovery feature, ensuring that funds are not lost in case of a service interruption with Civic.
+Civic embedded wallets use **automatic recovery** through reauthentication. Unlike traditional wallets that require seed phrases or manual backups, your users' wallets are recovered transparently when they log in again with their registered identity (email or phone).
 
-For more details on the security and recovery features of Civic wallets, please refer to the documentation provided by our service provider.
+**Key points:**
+- No seed phrases or recovery codes to manage
+- Wallets are automatically accessible after reauthentication via SSO
+- Recovery is handled seamlessly by our wallet provider [MetaKeep](https://metakeep.xyz/)
+
+<Warning>
+  MetaKeep does not provide traditional recovery mechanisms like seed phrase export or manual backup options. Wallet access is tied exclusively to the user's identity provider authentication.
+</Warning>
+
+If you need additional user-controlled backup options (such as recovery codes or key export), please contact [MetaKeep support](https://metakeep.xyz/) directly to inquire about their roadmap for these features.
