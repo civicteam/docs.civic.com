@@ -1,0 +1,237 @@
+---
+title: OpenClaw Setup
+description: Securely connect OpenClaw to Civic Nexus for Gmail, Calendar, and 100+ integrations
+icon: "claw"
+---
+
+<Callout icon="shield-check" color="green">
+  This guide sets up Civic Nexus as an MCP gateway for OpenClaw, giving you secure, revocable access to external services without storing credentials on your machine.
+</Callout>
+
+## Why Use Nexus with OpenClaw?
+
+- **No browser automation** — explicit authorization instead of implicit access
+- **No credentials on host** — tokens live in Nexus, not on your machine
+- **Lower token usage** — more cost-effective than browser-based approaches
+- **Instant revocation** — disable access anytime from Nexus
+- **Centralized control** — manage all permissions in one place
+
+## Quick Setup
+
+The fastest way to get started is using our pre-configured OpenClaw toolkit prompt.
+
+<Steps>
+  <Step title="Open the setup prompt in Nexus">
+    Visit the OpenClaw toolkit configuration:
+
+    <Card title="OpenClaw Quick Setup" icon="wand-magic-sparkles" href="https://nexus.civic.com/web/accounts/a2ae6632-f4cb-405a-8de1-b58d63c5ef43/profiles/7260dfca-89e6-4e53-a42a-120df1675501">
+      Launch the pre-configured OpenClaw toolkit in Nexus
+    </Card>
+
+    This creates a toolkit with Gmail and Google Calendar in **safety mode** (read-only by default).
+  </Step>
+  <Step title="Authorize the services">
+    Follow the prompts to authorize Gmail and Calendar access. You'll be redirected to Google to grant permissions.
+  </Step>
+  <Step title="Copy your MCP URL and token">
+    After setup, Nexus provides:
+    - **MCP Gateway URL** — safe to share (not secret)
+    - **Access Token** — keep this private
+
+    Copy both values.
+  </Step>
+  <Step title="Configure OpenClaw">
+    Add the credentials to your OpenClaw environment. Create or edit `~/.openclaw/workspace/.env`:
+
+    ```bash
+    NEXUS_URL="https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=openclaw"
+    NEXUS_TOKEN="your-access-token"
+    ```
+
+    Or configure via `~/.openclaw/openclaw.json`:
+
+    ```json
+    {
+      "skills": {
+        "entries": {
+          "nexus-mcp-bridge": {
+            "enabled": true,
+            "env": {
+              "NEXUS_URL": "your-mcp-url",
+              "NEXUS_TOKEN": "your-access-token"
+            }
+          }
+        }
+      }
+    }
+    ```
+  </Step>
+  <Step title="Verify the connection">
+    In OpenClaw, ask:
+
+    ```text
+    List the MCP tools I have access to
+    ```
+
+    You should see Gmail and Calendar tools listed.
+  </Step>
+</Steps>
+
+## What's Included in Safety Mode
+
+The quick setup configures these defaults:
+
+| Service | Allowed | Blocked |
+|---------|---------|---------|
+| **Gmail** | Read emails, search, create drafts | Send emails |
+| **Calendar** | View events, check availability | Create, modify, delete events |
+
+<Accordion title="Why safety mode?">
+  Safety mode prevents accidental actions while you're getting familiar with the integration. You can enable full access anytime by modifying the toolkit filters in Nexus.
+</Accordion>
+
+## Manual Setup
+
+If you prefer to configure everything yourself or want different permissions:
+
+<Steps>
+  <Step title="Create a Nexus account">
+    Go to [nexus.civic.com](https://nexus.civic.com) and sign in.
+  </Step>
+  <Step title="Create a new toolkit">
+    1. Click **Create Toolkit**
+    2. Name it (e.g., "openclaw" or "my-assistant")
+    3. Switch to this toolkit for the following steps
+  </Step>
+  <Step title="Add MCP servers">
+    Add the tools you want OpenClaw to access:
+
+    - **Gmail** (`gmail`) — email access
+    - **Google Calendar** (`calendar`) — calendar access
+    - **Google Drive** (`google-drive`) — file access
+    - **PostgreSQL** (`postgresql`) — database queries
+    - [See all 100+ available servers](/nexus/reference/servers)
+  </Step>
+  <Step title="Configure filters (optional)">
+    Use Hook Filters to restrict specific actions:
+
+    **Gmail read-only:**
+    ```json
+    {"disabled": ["send_gmail_message"]}
+    ```
+
+    **Calendar read-only:**
+    ```json
+    {"disabled": ["create_event", "modify_event", "delete_event"]}
+    ```
+
+    Or enable full access by leaving filters empty.
+  </Step>
+  <Step title="Generate your access token">
+    In your Nexus profile settings, generate a **private access token**.
+
+    <Callout icon="lock" color="red">
+      Never share this token or paste it into chat. Store it securely.
+    </Callout>
+  </Step>
+  <Step title="Configure OpenClaw">
+    Add credentials to `~/.openclaw/workspace/.env`:
+
+    ```bash
+    NEXUS_URL="your-mcp-gateway-url"
+    NEXUS_TOKEN="your-access-token"
+    ```
+  </Step>
+</Steps>
+
+## Authorization Flow
+
+When OpenClaw tries to use a tool for the first time, you'll see an authorization prompt:
+
+<Steps>
+  <Step title="OpenClaw requests access">
+    Ask OpenClaw something like:
+
+    ```text
+    Check any meetings I have tomorrow
+    ```
+  </Step>
+  <Step title="Approve in Nexus">
+    OpenClaw will provide an authorization link. Open it and approve access in your browser.
+  </Step>
+  <Step title="Confirm completion">
+    Return to OpenClaw and say:
+
+    ```text
+    Done
+    ```
+
+    OpenClaw now has access to that service.
+  </Step>
+</Steps>
+
+## Managing Access
+
+You stay in control at all times.
+
+### View active permissions
+
+In Nexus, go to **Authorizations** to see all active connections.
+
+### Revoke access
+
+Click **Revoke** on any authorization to immediately disable access. No host login required — revocation is instant.
+
+### Modify filters
+
+Edit your toolkit's Hook Filters to enable or disable specific actions without revoking the entire connection.
+
+## Installing the Skill
+
+For the best experience, install the Nexus MCP Bridge skill:
+
+```bash
+clawhub install nexus-mcp-bridge
+```
+
+This skill teaches OpenClaw how to use Nexus tools and handles the connection automatically.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="'NEXUS_TOKEN environment variable is required'">
+    Make sure you've added the token to your `.env` file:
+
+    ```bash
+    export NEXUS_TOKEN="your-token-here"
+    ```
+
+    Then restart OpenClaw.
+  </Accordion>
+  <Accordion title="'Authorization required' error">
+    Some tools need OAuth authorization on first use. Click the authorization URL provided and complete the flow, then tell OpenClaw "Done".
+  </Accordion>
+  <Accordion title="Token expired">
+    Tokens last approximately 30 days. Generate a fresh token from your Nexus profile settings if you see authentication errors.
+  </Accordion>
+  <Accordion title="Connection timeout">
+    API calls through Nexus can take 10-15 seconds due to server-side processing. This is normal.
+  </Accordion>
+</AccordionGroup>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Available MCP Servers" icon="server" href="/nexus/reference/servers">
+    Browse all 100+ integrations
+  </Card>
+  <Card title="Toolkits" icon="toolbox" href="/nexus/concepts/toolkits">
+    Learn how toolkits organize your tools
+  </Card>
+  <Card title="Security" icon="shield" href="/nexus/reference/security">
+    How Nexus keeps your data safe
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Ask questions in our developer Slack
+  </Card>
+</CardGroup>

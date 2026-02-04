@@ -78,6 +78,7 @@
                 "pages": [
                   "nexus/quickstart/clients/cursor",
                   "nexus/quickstart/clients/goose",
+                  "nexus/quickstart/clients/openclaw",
                   "nexus/quickstart/clients/vscode",
                   "nexus/quickstart/clients/windsurf",
                   "nexus/quickstart/clients/claude-code",
