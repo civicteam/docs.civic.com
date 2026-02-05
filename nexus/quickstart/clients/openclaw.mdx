@@ -1,7 +1,7 @@
 ---
-title: OpenClaw Setup
-description: Control OpenClaw's cloud API access via Civic Nexus MCP Gateway
-icon: "claw"
+title: "OpenClaw Setup"
+description: "Control OpenClaw's cloud API access via Civic Nexus MCP Gateway"
+icon: "crab"
 ---
 
 <Callout icon="shield-check" color="green">
@@ -52,6 +52,7 @@ icon: "claw"
   If you are logged into Nexus on the OpenClaw host machine, OpenClaw could potentially open your browser and perform authentication on your behalf, granting itself unauthorized access.
 
   **Safe Setup:**
+
   - ✅ Configure and authorize Nexus toolkit on a **different machine**
   - ✅ Use OpenClaw on a separate machine that is NOT logged into Nexus
   - ✅ Authorize OpenClaw's requests via links sent to your email or accessed on another device
@@ -98,13 +99,11 @@ The fastest way to get started is using our pre-configured OpenClaw toolkit prom
     <Callout icon="triangle-exclamation" color="yellow">
       Perform this step on a **different machine** than the one running OpenClaw.
     </Callout>
-
     Visit the OpenClaw toolkit configuration:
 
     <Card title="OpenClaw Quick Setup" icon="wand-magic-sparkles" href="https://nexus.civic.com/web/accounts/a2ae6632-f4cb-405a-8de1-b58d63c5ef43/profiles/7260dfca-89e6-4e53-a42a-120df1675501">
       Launch the pre-configured OpenClaw toolkit in Nexus
     </Card>
-
     This creates a toolkit with Gmail and Google Calendar in **safety mode** (read-only by default).
   </Step>
   <Step title="Authorize the services">
@@ -112,6 +111,7 @@ The fastest way to get started is using our pre-configured OpenClaw toolkit prom
   </Step>
   <Step title="Copy your MCP URL and token">
     After setup, Nexus provides:
+
     - **MCP Gateway URL** — safe to share (not secret)
     - **Access Token** — keep this private (expires after 30 days)
 
@@ -158,10 +158,10 @@ The fastest way to get started is using our pre-configured OpenClaw toolkit prom
 
 The quick setup configures these defaults with least-privilege OAuth scopes:
 
-| Service | Allowed | Blocked |
-|---------|---------|---------|
-| **Gmail** | Read emails, search, create drafts | Send emails |
-| **Calendar** | View events, check availability | Create, modify, delete events |
+| Service      | Allowed                            | Blocked                       |
+| ------------ | ---------------------------------- | ----------------------------- |
+| **Gmail**    | Read emails, search, create drafts | Send emails                   |
+| **Calendar** | View events, check availability    | Create, modify, delete events |
 
 <Accordion title="Why safety mode?">
   Safety mode uses least-privilege OAuth scopes while you're getting familiar with the integration. When OpenClaw needs elevated permissions (e.g., to send an email), it will send you an authorization link. You can approve elevation requests as needed or enable full access by modifying the toolkit's OAuth scopes in Nexus.
@@ -176,7 +176,6 @@ If you prefer to configure everything yourself or want different permissions:
     <Callout icon="triangle-exclamation" color="yellow">
       Use a different machine than where OpenClaw runs.
     </Callout>
-
     Go to [nexus.civic.com](https://nexus.civic.com) and sign in.
   </Step>
   <Step title="Create a new toolkit">
@@ -242,6 +241,7 @@ When OpenClaw tries to use a service or needs elevated permissions:
   </Step>
   <Step title="Nexus validates the request">
     Nexus checks:
+
     - Is the MCP server authorized in this toolkit?
     - Does the OAuth scope allow this operation?
     - Do any guardrails block this request?
@@ -298,7 +298,6 @@ If you are logged into Nexus locally, OpenClaw could potentially open your brows
    - Create and configure your Nexus toolkit
    - Authorize MCP servers and OAuth scopes
    - Set up guardrails and parameter presets
-
 2. **OpenClaw runtime machine** — The machine running OpenClaw should:
    - NEVER have an active Nexus login session
    - Only have the MCP gateway URL and access token (via `.env` file)
@@ -346,6 +345,7 @@ If you are logged into Nexus locally, OpenClaw could potentially open your brows
 ### Shared Security Responsibility
 
 **Nexus provides:**
+
 - OAuth token management and storage
 - MCP server authorization enforcement
 - OAuth scope enforcement (least-privilege, elevation requests)
@@ -354,6 +354,7 @@ If you are logged into Nexus locally, OpenClaw could potentially open your brows
 - Immediate token revocation capability
 
 **You are responsible for:**
+
 - Selecting and configuring AI agent software (OpenClaw)
 - Securing the OpenClaw runtime environment (host machine)
 - Never logging into Nexus on the OpenClaw host machine
@@ -375,6 +376,7 @@ If you are logged into Nexus locally, OpenClaw could potentially open your brows
 4. **Re-authorize carefully** — When creating new toolkit, review all settings and start with minimal permissions
 
 **Limitations:**
+
 - Nexus cannot detect if OpenClaw has been compromised
 - Nexus cannot emergency-stop an OpenClaw session (use toolkit deletion or authorization revocation)
 - Nexus cannot detect if OpenClaw has direct OAuth grants outside Nexus
@@ -395,6 +397,7 @@ If you are logged into Nexus locally, OpenClaw could potentially open your brows
 - Access managed via `nexus.civic.com` from a **separate machine** (never log into Nexus on OpenClaw host)
 
 **Example Workflow:**
+
 1. OpenClaw requests calendar data via MCP gateway
 2. Nexus validates MCP server authorization and OAuth scope
 3. If not authorized, Nexus sends you an approval link (access on different device/email)
