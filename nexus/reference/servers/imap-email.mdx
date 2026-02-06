@@ -6,10 +6,10 @@ icon: "server"
 
 ## Overview
 
-The IMAP Email server provides read and management access to any IMAP-compatible email provider including Gmail, Outlook, Yahoo, and self-hosted servers. It supports searching, reading, organizing, and managing emails across folders.
+The IMAP Email server provides read and management access to any IMAP-compatible email provider, including self-hosted servers. It supports searching, reading, organizing, and managing emails across folders.
 
 <Note>
-**Read-only by design:** This server cannot send or compose emails. It is designed for reading and managing existing emails only. For sending email via Gmail, use the [Google Gmail](/nexus/reference/servers/gmail) server. For Outlook/Microsoft 365, use the [Microsoft 365 Mail](/nexus/reference/servers/ms365-mail) server.
+**Read-only by design:** This server cannot send or compose emails. It is designed for reading and managing existing emails only.
 </Note>
 
 ## How to Add IMAP Email
@@ -20,7 +20,7 @@ The IMAP Email server provides read and management access to any IMAP-compatible
   </Step>
   <Step title="Configure Credentials">
     Provide your IMAP connection details:
-    - **IMAP host** — your email provider's IMAP server (e.g. `imap.gmail.com`, `imap.mail.yahoo.com`, `outlook.office365.com`)
+    - **IMAP host** — your email provider's IMAP server
     - **Username** — your email address
     - **Password** — your password or app-specific password
     - **Port** — usually 993 for SSL (default)
@@ -31,10 +31,7 @@ The IMAP Email server provides read and management access to any IMAP-compatible
 </Steps>
 
 <Warning>
-**App-specific passwords required for 2FA accounts:**
-- **Gmail**: Go to Google Account → Security → 2-Step Verification → App passwords
-- **Yahoo**: Go to Account Info → Account Security → Generate app password
-- **Outlook/Microsoft 365**: Consider using the [Microsoft 365 Mail](/nexus/reference/servers/ms365-mail) server instead for OAuth-based access
+**App-specific passwords:** Some email providers with 2FA enabled require app-specific passwords instead of your regular password. Check your email provider's security settings if you have trouble connecting.
 </Warning>
 
 ## What You Can Do
