@@ -21,14 +21,22 @@ The Slack server enables AI assistants to interact with your [Slack](https://sla
     1. In your app settings, click **OAuth & Permissions** in the left menu
     2. Under **Scopes > Bot Token Scopes**, add all required access permissions
     3. Scroll up and click **Install to [workspace]**
-    4. Copy the **Bot User OAuth Token** that appears
+    4. Invite the bot to the requisite channels:
+       - Open the Slack channel where you want the bot to work
+       - Click on the channel name at the top to open channel details
+       - Go to the **Integrations** tab
+       - Click **Add apps** and select your bot
+       - Alternatively, you can type `/invite @YourBotName` in any channel to add it
+    5. Restart Slack to ensure the changes take effect
+    6. Copy the **Bot User OAuth Token** that appears
   </Step>
   <Step title="Connect to Nexus">
     1. Add the Slack server to your Nexus environment through the server directory
     2. Paste your **Bot User OAuth Token** in the Slack settings in Nexus
   </Step>
   <Step title="Test Connection">
-    Start with a simple command like `list channels` or `get recent messages from #general` to verify the connection works properly.
+    1. Start with a simple command like `list channels` or `get recent messages from #general` to verify the connection works properly.
+    2. You will then be prompted to authorize the connection with Slack. This is where you will need to use your bot token.
   </Step>
 </Steps>
 
@@ -117,5 +125,5 @@ If you have difficulty prompting the bot to update OAuth token, go to **Nexus > 
 - **Channel Overview**: "Show me all available channels"
 
 <Note>
-The Slack server requires appropriate workspace permissions and bot token configuration to access channels and send messages.
+The Slack server requires appropriate workspace permissions and bot token configuration to access channels and send messages. Remember to invite your bot to any channels you want it to access.
 </Note>
