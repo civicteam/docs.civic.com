@@ -113,6 +113,7 @@
                   "nexus/reference/servers/google-slides",
                   "nexus/reference/servers/hubspot",
                   "nexus/reference/servers/hunter-io",
+                  "nexus/reference/servers/imap-email",
                   "nexus/reference/servers/linear",
                   "nexus/reference/servers/mistral-ocr",
                   "nexus/reference/servers/monday",
