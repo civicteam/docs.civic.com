@@ -127,6 +127,8 @@ When setting up an OpenAI agent that needs to access your Nexus tools:
 **URL parameters**:
 - `accountId` - Your Civic account ID
 - `profile` - The profile name (toolkit) that determines which MCP servers the agent can access
+- `lock` - Whether to lock the session to the specified profile (`true` by default when a profile is set, `false` to allow profile switching)
+- `skills` - Comma-separated list of skill aliases to load into the session
 
 Use the profile alias you created in Nexus.
 </Tip>
@@ -385,16 +387,16 @@ Tokens cannot be renewed. To continue access after expiration:
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Create Your First Profile" icon="toolbox" href="/nexus/concepts/toolkits">
-    Set up a profile (toolkit) to organize your MCP servers before generating tokens
+  <Card title="Installing into an agent" icon="robot" href="/nexus/quickstart/clients/agents">
+    Learn about profile locking, skills, and other agent-specific configuration
   </Card>
-  <Card title="Manage Authorizations" icon="key" href="/nexus/reference/authorizations">
+  <Card title="Create your first toolkit" icon="toolbox" href="/nexus/concepts/toolkits">
+    Set up a toolkit to organize your MCP servers before generating tokens
+  </Card>
+  <Card title="Manage authorizations" icon="key" href="/nexus/reference/authorizations">
     View your authorizations and connected services
   </Card>
-  <Card title="OpenAI Agent Setup" icon="robot" href="/nexus/recipes/openai-agents">
+  <Card title="OpenAI Agent setup" icon="robot" href="/nexus/recipes/openai-agents">
     Complete guide to using Civic tokens with OpenAI Agent Builder
-  </Card>
-  <Card title="Security Guide" icon="shield" href="/nexus/reference/security">
-    Learn more about Nexus security and best practices
   </Card>
 </CardGroup>
