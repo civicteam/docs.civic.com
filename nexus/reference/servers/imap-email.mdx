@@ -1,0 +1,152 @@
+---
+title: IMAP Email
+description: Read and manage emails from any IMAP-compatible email provider
+icon: "server"
+---
+
+## Overview
+
+The IMAP Email server provides read and management access to any IMAP-compatible email provider, including self-hosted servers. It supports searching, reading, organizing, and managing emails across folders.
+
+<Note>
+**Read-only by design:** This server cannot send or compose emails. It is designed for reading and managing existing emails only.
+</Note>
+
+## How to Add IMAP Email
+
+<Steps>
+  <Step title="Add Server">
+    Add the IMAP Email server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Configure Credentials">
+    Provide your IMAP connection details:
+    - **IMAP host** — your email provider's IMAP server
+    - **Username** — your email address
+    - **Password** — your password or app-specific password
+    - **Port** — usually 993 for SSL (default)
+  </Step>
+  <Step title="Test Connection">
+    Try "List all my email folders" to verify the connection works.
+  </Step>
+</Steps>
+
+<Warning>
+**App-specific passwords:** Some email providers with 2FA enabled require app-specific passwords instead of your regular password. Check your email provider's security settings if you have trouble connecting.
+</Warning>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Email Search & Reading" icon="magnifying-glass">
+    Search with multiple filters and read full email content including headers
+  </Card>
+  <Card title="Folder Management" icon="folder-open">
+    List folders, check status, and navigate your mailbox structure
+  </Card>
+  <Card title="Attachments" icon="paperclip">
+    List and download attachments from any email
+  </Card>
+  <Card title="Email Organization" icon="arrows-up-down-left-right">
+    Move, copy, delete, flag, and mark emails as read/unread
+  </Card>
+</CardGroup>
+
+## Available Tools (12)
+
+### Folder Operations
+
+<AccordionGroup>
+  <Accordion title="list_folders">
+    List all folders/mailboxes in the account. Use this to discover available folder names before other operations.
+  </Accordion>
+
+  <Accordion title="get_folder_status">
+    Get folder statistics including total message count, unread count, and recent messages.
+  </Accordion>
+</AccordionGroup>
+
+### Reading Emails
+
+<AccordionGroup>
+  <Accordion title="list_emails">
+    List emails in a folder with pagination. Returns email UIDs, subjects, senders, and dates.
+  </Accordion>
+
+  <Accordion title="get_email">
+    Fetch complete email content including subject, sender, recipients, body, and metadata.
+  </Accordion>
+
+  <Accordion title="get_email_headers">
+    Lightweight header-only fetch for quick previews without downloading full message content.
+  </Accordion>
+</AccordionGroup>
+
+### Searching
+
+<AccordionGroup>
+  <Accordion title="search_emails">
+    Advanced search with multiple filters including sender, recipient, subject, body text, date range, read/unread status, and flagged state.
+  </Accordion>
+</AccordionGroup>
+
+### Attachments
+
+<AccordionGroup>
+  <Accordion title="list_attachments">
+    List attachment metadata (filename, size, type) for a specific email.
+  </Accordion>
+
+  <Accordion title="get_attachment">
+    Download a specific attachment from an email by its index.
+  </Accordion>
+</AccordionGroup>
+
+### Managing Emails
+
+<AccordionGroup>
+  <Accordion title="delete_emails">
+    Delete one or more emails. By default moves to Trash; use `permanent=true` for permanent deletion.
+  </Accordion>
+
+  <Accordion title="move_emails">
+    Move one or more emails to a different folder.
+  </Accordion>
+
+  <Accordion title="copy_emails">
+    Copy one or more emails to a different folder while keeping the originals.
+  </Accordion>
+
+  <Accordion title="mark_emails">
+    Mark emails as read/unread or flagged/unflagged. Supports batch operations on multiple UIDs.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Inbox overview
+"Show me my latest 10 emails" — List recent messages with subjects and senders.
+
+### Unread triage
+"List all unread emails in my inbox" — Quickly see what needs attention.
+
+### Targeted search
+"Find all emails from john@example.com with 'invoice' in the subject since January 1st" — Combine multiple search filters.
+
+### Attachment retrieval
+"List attachments in email UID 12345 and download the PDF" — Discover and download file attachments.
+
+### Bulk organization
+"Move emails 123, 456, and 789 to the Archive folder" — Batch operations for efficient inbox management.
+
+### Flagging important messages
+"Flag email UID 12345 as important and mark emails 100, 101, 102 as read" — Update message status in bulk.
+
+<Note>
+**Email UIDs:** Most operations use email UIDs (unique identifiers). Use `list_emails` or `search_emails` first to get UIDs before reading or managing specific emails.
+
+**Folder names:** Use `list_folders` to discover available folder names. Common folders include INBOX, Sent, Drafts, Trash, and Archive, but names vary by provider.
+
+**Batch operations:** Delete, move, copy, and mark operations support multiple UIDs at once for efficiency.
+
+**Date format:** Use YYYY-MM-DD format for date searches (e.g. `2025-01-15`).
+</Note>
