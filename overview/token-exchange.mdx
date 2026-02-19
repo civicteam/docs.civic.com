@@ -5,6 +5,10 @@ icon: "arrows-repeat"
 public: true
 ---
 
+<Info>
+  Token Exchange is currently in **preview**. The API and behavior may change as we continue to refine the feature.
+</Info>
+
 Token exchange allows you to exchange tokens for Civic Auth access tokens, enabling seamless integration between different authentication systems and Civic-powered applications.
 
 Civic Auth supports two token exchange scenarios:
@@ -34,12 +38,32 @@ Both flows implement the [OAuth 2.0 Token Exchange (RFC 8693)](https://datatrack
   </Tab>
 </Tabs>
 
+## Configuration
+
+Token Exchange can be set up in the Civic Auth Dashboard under **Setup > Token Exchange**.
+
+<Frame>
+  <img src="/images/token-exchange-config.png" alt="Token Exchange configuration in the Civic Auth Dashboard"/>
+</Frame>
+
 ## Quick Start
 
 ### Prerequisites
 
 1. A Civic Auth application with client credentials (client ID and secret)
 2. For federated exchange: An external identity provider configured in the Civic Auth Dashboard
+
+### Request Parameters
+
+| Parameter | Required | Description |
+|-----------|----------|-------------|
+| `grant_type` | Yes | Must be `urn:ietf:params:oauth:grant-type:token-exchange` |
+| `client_id` | Yes | Your Civic Auth client ID |
+| `client_secret` | Yes | Your Civic Auth client secret (or use Basic auth) |
+| `subject_token` | Yes | The JWT access token to exchange (Civic or external) |
+| `subject_token_type` | Yes | Must be `urn:ietf:params:oauth:token-type:access_token` |
+| `scope` | No | Space-delimited scopes to request |
+| `expires_in` | No | Requested token TTL in seconds |
 
 ### Basic Token Exchange Request
 
@@ -50,23 +74,28 @@ curl -X POST https://auth.civic.com/oauth/token \
   -d "client_id=YOUR_CLIENT_ID" \
   -d "client_secret=YOUR_CLIENT_SECRET" \
   -d "subject_token=EXTERNAL_OR_CIVIC_JWT" \
+  -d "subject_token_type=urn:ietf:params:oauth:token-type:access_token" \
   -d "scope=openid"
+```
+
+### Response
+
+```json
+{
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "scope": "openid profile"
+}
 ```
 
 ## Civic Token Exchange
 
-Exchange an existing Civic access token for a new token, typically to request different scopes or extend the token's validity.
+Exchange an existing Civic access token for a new token with different scopes or expiration. The `sub` claim from the original token is preserved in the exchanged token.
 
-### Request Parameters
+### Configuration
 
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `grant_type` | Yes | Must be `urn:ietf:params:oauth:grant-type:token-exchange` |
-| `client_id` | Yes | Your Civic Auth client ID |
-| `client_secret` | Yes | Your Civic Auth client secret (or use Basic auth) |
-| `subject_token` | Yes | The Civic JWT access token to exchange |
-| `scope` | No | Space-delimited scopes to request (must be subset of original) |
-| `expires_in` | No | Requested token TTL in seconds |
+Enable Civic Token Exchange by toggling it on in the Dashboard under **Setup > Token Exchange**.
 
 ### Example: TypeScript
 
@@ -82,6 +111,7 @@ async function exchangeCivicToken(existingToken: string): Promise<string> {
       client_id: process.env.CIVIC_CLIENT_ID!,
       client_secret: process.env.CIVIC_CLIENT_SECRET!,
       subject_token: existingToken,
+      subject_token_type: 'urn:ietf:params:oauth:token-type:access_token',
       scope: 'openid profile',
     }),
   });
@@ -91,65 +121,29 @@ async function exchangeCivicToken(existingToken: string): Promise<string> {
 }
 ```
 
-### Response
-
-```json
-{
-  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "token_type": "Bearer",
-  "expires_in": 3600,
-  "scope": "openid profile"
-}
-```
-
 ## Federated Token Exchange
 
-Exchange tokens from external identity providers for Civic access tokens. This enables users who authenticate with providers like Google, Auth0, or Azure AD to seamlessly access Civic-powered applications.
+Exchange tokens from external identity providers for Civic access tokens. Unlike Civic token exchange, the external user's `sub` is mapped to a new or existing Civic Auth user, and the resulting token contains the Civic user's `sub`.
 
 ### How It Works
 
-```
-┌─────────────────┐
-│   Your App      │
-└────────┬────────┘
-         │ 1. User authenticates with Google/Auth0/etc.
-         ▼
-┌─────────────────┐
-│ External IdP    │
-│ (Google, Auth0) │
-└────────┬────────┘
-         │ 2. Returns access_token (JWT)
-         ▼
-┌─────────────────┐
-│   Your App      │
-└────────┬────────┘
-         │ 3. Exchange external token for Civic token
-         │    POST /oauth/token
-         │    subject_token=<external_jwt>
-         ▼
-┌─────────────────┐
-│  Civic Auth     │
-│  Server         │
-└────────┬────────┘
-         │ 4. Validates external token
-         │ 5. Creates/links user account
-         │ 6. Returns Civic access_token
-         ▼
-┌─────────────────┐
-│   Your App      │
-│ (uses Civic     │
-│  token)         │
-└─────────────────┘
+```mermaid
+sequenceDiagram
+    participant App as Your App
+    participant IdP as External IdP<br/>(Google, Auth0)
+    participant Civic as Civic Auth Server
+
+    App->>IdP: 1. User authenticates
+    IdP-->>App: 2. Returns access_token (JWT)
+    App->>Civic: 3. Exchange external token<br/>POST /oauth/token<br/>subject_token=<external_jwt>
+    Civic->>Civic: 4. Validates external token
+    Civic->>Civic: 5. Creates/links user account
+    Civic-->>App: 6. Returns Civic access_token
 ```
 
 ### Configuration
 
-Before using federated token exchange, configure your external identity provider in the Civic Auth Dashboard:
-
-1. Navigate to **Setup > Token Exchange** in the Dashboard
-2. Click **Add Provider**
-3. Select a preset (Google, Auth0, Azure AD) or choose Custom
-4. Configure the provider settings:
+Add one or more external identity providers in the Dashboard under **Setup > Token Exchange > Add Provider**. Select a preset (Google, Auth0, Azure AD) or choose Custom, then configure the provider settings:
 
 | Setting | Description |
 |---------|-------------|
@@ -159,18 +153,6 @@ Before using federated token exchange, configure your external identity provider
 | **Static Public Key** | Alternative to JWKS: paste the provider's public key in PEM format |
 | **Default Scopes** | Scopes to grant in the Civic token (space-separated) |
 | **Max Token TTL** | Maximum token validity in seconds (60-86400) |
-| **User ID Claim** | Claim name containing the unique user identifier (default: `sub`) |
-| **Email Claim** | Claim name containing the user's email (default: `email`) |
-
-### Request Parameters
-
-| Parameter | Required | Description |
-|-----------|----------|-------------|
-| `grant_type` | Yes | Must be `urn:ietf:params:oauth:grant-type:token-exchange` |
-| `client_id` | Yes | Your Civic Auth client ID |
-| `client_secret` | Yes | Your Civic Auth client secret |
-| `subject_token` | Yes | The external provider's JWT access token |
-| `scope` | No | Space-delimited scopes to request |
 
 ### Example: React with Google OAuth
 
@@ -194,6 +176,7 @@ function LoginButton() {
           client_id: 'YOUR_CIVIC_CLIENT_ID',
           client_secret: 'YOUR_CIVIC_CLIENT_SECRET',
           subject_token: googleResponse.access_token,
+          subject_token_type: 'urn:ietf:params:oauth:token-type:access_token',
           scope: 'openid email',
         }),
       });
@@ -234,6 +217,7 @@ app.post('/api/exchange-token', async (req, res) => {
       body: new URLSearchParams({
         grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
         subject_token: externalToken,
+        subject_token_type: 'urn:ietf:params:oauth:token-type:access_token',
         scope: 'openid email profile',
       }),
     });
@@ -251,7 +235,7 @@ app.post('/api/exchange-token', async (req, res) => {
 });
 ```
 
-## Provider Configuration Examples
+### Provider Configuration Examples
 
 <AccordionGroup>
   <Accordion title="Google">
@@ -262,14 +246,12 @@ app.post('/api/exchange-token', async (req, res) => {
       "jwksUri": "https://www.googleapis.com/oauth2/v3/certs",
       "acceptedAlgorithms": ["RS256"],
       "defaultScopes": "openid email",
-      "userIdClaim": "sub",
-      "emailClaim": "email",
       "maxTokenTtl": 3600
     }
     ```
 
     <Info>
-    The `audience` should be your Google OAuth client ID. Google's `sub` claim is stable and unique per user across all Google services.
+    The `audience` should be your Google OAuth client ID.
     </Info>
   </Accordion>
 
@@ -281,14 +263,12 @@ app.post('/api/exchange-token', async (req, res) => {
       "jwksUri": "https://YOUR_TENANT.auth0.com/.well-known/jwks.json",
       "acceptedAlgorithms": ["RS256"],
       "defaultScopes": "openid email",
-      "userIdClaim": "sub",
-      "emailClaim": "email",
       "maxTokenTtl": 7200
     }
     ```
 
     <Info>
-    Replace `YOUR_TENANT` with your Auth0 tenant name. The `audience` should match your Auth0 API identifier. Auth0's `sub` format is `{connection}|{user_id}` (e.g., `google-oauth2|108234567890123456789`).
+    Replace `YOUR_TENANT` with your Auth0 tenant name. The `audience` should match your Auth0 API identifier.
     </Info>
   </Accordion>
 
@@ -300,14 +280,12 @@ app.post('/api/exchange-token', async (req, res) => {
       "jwksUri": "https://login.microsoftonline.com/YOUR_TENANT_ID/discovery/v2.0/keys",
       "acceptedAlgorithms": ["RS256"],
       "defaultScopes": "openid email profile",
-      "userIdClaim": "oid",
-      "emailClaim": "preferred_username",
       "maxTokenTtl": 3600
     }
     ```
 
     <Info>
-    Replace `YOUR_TENANT_ID` with your Azure AD tenant ID (GUID). Use `oid` (object ID) instead of `sub` for stable user identification. The `sub` claim in Azure AD can vary by application.
+    Replace `YOUR_TENANT_ID` with your Azure AD tenant ID (GUID).
     </Info>
   </Accordion>
 
@@ -319,8 +297,6 @@ app.post('/api/exchange-token', async (req, res) => {
       "jwksUri": "https://YOUR_DOMAIN.okta.com/oauth2/v1/keys",
       "acceptedAlgorithms": ["RS256"],
       "defaultScopes": "openid email profile",
-      "userIdClaim": "sub",
-      "emailClaim": "email",
       "maxTokenTtl": 3600
     }
     ```
@@ -343,24 +319,26 @@ app.post('/api/exchange-token', async (req, res) => {
   </Accordion>
 </AccordionGroup>
 
-## User Account Linking
+### User Account Linking
 
 When a user performs federated token exchange for the first time, Civic Auth automatically:
 
 1. **Creates a new user account** if no existing account matches the external user
 2. **Links to an existing account** if a user with the same verified email exists (when email linking is enabled)
 
-### Identity Mapping
+### Default Claim Mapping
 
-Civic Auth uses the external user's unique identifier (from the `sub` claim by default) combined with the provider's issuer URL to create a stable identity mapping:
+Civic Auth automatically maps the following claims from the external token to the Civic user account:
 
-| Provider | User ID | Internal Mapping |
-|----------|---------|------------------|
-| Google | `108234567890123456789` | `https://accounts.google.com` + `sub` |
-| Auth0 | `google-oauth2\|108234` | `https://tenant.auth0.com/` + `sub` |
-| Azure AD | `00000000-0000-...` | `https://login.microsoftonline.com/{tenant}/v2.0` + `oid` |
+| Claim | Type | Description |
+|-------|------|-------------|
+| `sub` | string | External user ID. Used as the principal identifier for user identity matching. |
+| `email` | string | Lowercased. Only mapped if present in the external token. |
+| `email_verified` | boolean | Only mapped if present in the external token. |
+| `name` | string | Only mapped if present in the external token. |
+| `picture` | string | Only mapped if present in the external token. |
 
-This ensures:
+The `sub` claim combined with the provider's issuer URL creates a stable identity mapping, ensuring:
 - The same external user always maps to the same Civic account
 - Different external users never collide
 - Users can link multiple external providers to a single Civic account
@@ -382,7 +360,7 @@ Content-Type: application/x-www-form-urlencoded
 | `client_id` | string | Yes | Your Civic client ID |
 | `client_secret` | string | Yes* | Your Civic client secret |
 | `subject_token` | string | Yes | The JWT to exchange |
-| `subject_token_type` | string | No | Token type (default: `urn:ietf:params:oauth:token-type:access_token`) |
+| `subject_token_type` | string | Yes | Must be `urn:ietf:params:oauth:token-type:access_token` |
 | `scope` | string | No | Space-delimited requested scopes |
 | `expires_in` | number | No | Requested token TTL in seconds |
 
@@ -480,35 +458,9 @@ Civic Auth caches external provider JWKS for performance and reliability:
   </Accordion>
 
   <Accordion title='"Missing user identifier claim"'>
-    - Verify the `userIdClaim` configuration matches the claim name in the external token
-    - Some providers use non-standard claim names (e.g., Azure AD uses `oid`)
+    - Ensure the external token contains a `sub` claim with the user's unique identifier
   </Accordion>
 </AccordionGroup>
-
-### Debug Mode
-
-Include the `X-Debug: true` header in your requests to receive additional error details:
-
-```bash
-curl -X POST https://auth.civic.com/oauth/token \
-  -H "X-Debug: true" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "..."
-```
-
-## Rate Limits
-
-Token exchange requests are subject to the following rate limits:
-
-| Tier | Requests per minute | Burst |
-|------|---------------------|-------|
-| Free | 60 | 10 |
-| Pro | 300 | 50 |
-| Enterprise | Custom | Custom |
-
-<Info>
-Exceeding rate limits returns a `429 Too Many Requests` response with a `Retry-After` header.
-</Info>
 
 ## Related Documentation
 
