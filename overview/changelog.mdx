@@ -5,6 +5,36 @@ icon: "pen"
 public: true
 ---
 
+<Update label="February 13, 2026" description="Auth Server v1.2.21">
+
+**Bug Fixes**
+- Fixed federated token exchange `sub` claim to use the correct account identifier
+- Fixed federated token exchange userinfo endpoint to return proper OIDC claims
+- Extracted standard OIDC claims (name, email, picture, etc.) from external tokens during federated token exchange
+
+**Security**
+- Dependency upgrade to address a high-severity vulnerability
+
+</Update>
+
+<Update label="February 9, 2026" description="Auth Server v1.2.20">
+
+**Improvements**
+- Internal infrastructure and analytics improvements
+
+</Update>
+
+<Update label="February 9, 2026" description="Apps v0.2.82">
+
+**Improvements**
+- Next.js 16 compatibility updates
+
+**Bug Fixes**
+- Fixed SSR hydration mismatches in useUser hook and login app
+- Fixed cross-origin SecurityError in MessageHandler logging
+
+</Update>
+
 <Update label="February 4, 2026" description="Auth Server v1.2.19">
 
 **Security**

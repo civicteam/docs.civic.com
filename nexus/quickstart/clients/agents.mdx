@@ -1,0 +1,162 @@
+---
+title: "Installing into an agent"
+description: "Connect autonomous agents, automation platforms, and custom applications to Civic Nexus"
+icon: "robot"
+---
+
+<Note>
+This guide covers agents and automated clients that run unattended. For interactive clients like Claude Desktop or Cursor, see the [Supported Clients](/nexus/reference/client-compatibility) page.
+</Note>
+
+## Overview
+
+Agents — autonomous AI systems, workflow automations, and custom applications — connect to Nexus the same way interactive clients do, but typically need tighter controls. Unlike a human user who can switch toolkits or approve actions on the fly, agents should stay focused on their assigned task.
+
+This page covers the configuration options that matter most for agent deployments: **profile locking**, **skills**, and **URL parameters**.
+
+## Connection URL
+
+All agents connect to the same base URL:
+
+```
+https://nexus.civic.com/hub/mcp
+```
+
+### Query parameters
+
+| Parameter | Type | Description |
+|---|---|---|
+| `accountId` | `string` | Your Civic account ID (for multi-account users) |
+| `profile` | `string` | Toolkit alias to use (e.g. `support`, `marketing`) |
+| `lock` | `"true"` \| `"false"` | Lock the session to the specified toolkit (default: `true` when a profile is set) |
+| `skills` | `string` | Comma-separated list of skill aliases to load |
+
+### Example URLs
+
+```
+# Use the "sales-agent" toolkit, locked (default)
+https://nexus.civic.com/hub/mcp?profile=sales-agent
+
+# Use the "assistant" toolkit but allow the AI to switch
+https://nexus.civic.com/hub/mcp?profile=assistant&lock=false
+
+# Specify a toolkit and load additional skills
+https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,triage
+
+# Use a specific organization account
+https://nexus.civic.com/hub/mcp?profile=ops&accountId=org_abc123
+```
+
+## Profile locking
+
+When you specify a toolkit in the connection URL, the session is **locked to that toolkit by default**. This is a safety and predictability feature designed for agent deployments.
+
+### What locking does
+
+When a toolkit is locked:
+
+- The **`switch_profile` tool is hidden** — it doesn't appear in the AI's tool list
+- **Toolkit switching is blocked** — if the AI attempts to call it anyway, it receives an error
+- **Guardrail management is disabled** — the AI cannot modify its own safety constraints
+- The lock **persists for the entire session**
+
+### Why locking is the default
+
+Agents typically serve a specific purpose. If you deploy a customer support agent using the `support` toolkit, you don't want a prompt injection or unexpected user request to cause it to switch to a `billing` toolkit with different tools and permissions.
+
+Locking enforces a "stay in your lane" semantic — the AI can only use the tools in the toolkit it was given.
+
+### Unlocking with `lock=false`
+
+Add `lock=false` to the connection URL to allow the AI to switch toolkits during the session:
+
+```
+https://nexus.civic.com/hub/mcp?profile=default&lock=false
+```
+
+When unlocked:
+- The `switch_profile` tool is available to the AI
+- The AI can see all available toolkits on the account
+- The AI (or the user) can switch between toolkits during the conversation
+- **Guardrail management tools become available** — the AI can modify or remove its own safety constraints
+
+<Warning>
+**Security risk**: An unlocked agent can remove its own guardrails, switch to toolkits with broader permissions, and access tools it was not originally intended to use. Only use `lock=false` when you trust the environment — for example, interactive sessions with a human in the loop. Never unlock agents that are user-facing or exposed to untrusted input.
+</Warning>
+
+### When to use each
+
+| Scenario | Recommendation |
+|----------|---------------|
+| Single-purpose agents (support bots, data pipelines) | **Locked** (default) — keep the agent focused |
+| Interactive assistants where users need flexibility | **Unlocked** (`lock=false`) — let users switch contexts |
+| User-facing agents where security matters | **Locked** (default) — prevent toolkit escape |
+| AI that needs to discover the right toolkit for a task | **Unlocked** (`lock=false`) — allow exploration |
+
+### Quick reference
+
+| Toolkit specified? | `lock` parameter | Result |
+|---|---|---|
+| No | Any | Unlocked (no toolkit to lock to) |
+| Yes | Omitted | **Locked** (default) |
+| Yes | `lock=true` | **Locked** |
+| Yes | `lock=false` | **Unlocked** |
+
+## Skills
+
+You can pre-load skills into an agent session using the `skills` query parameter. Skills are reusable AI capabilities that encode business knowledge and workflows.
+
+```
+https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
+```
+
+Skills are resolved from SKILL-type profiles on the account. If a skill alias doesn't match any profile, it is silently ignored.
+
+## Authentication
+
+Agents can authenticate in several ways depending on the deployment model:
+
+<CardGroup cols={2}>
+  <Card title="Civic tokens" icon="key" href="/nexus/concepts/tokens">
+    Generate a time-limited token for agents that can't do browser-based OAuth. Best for OpenAI Agent Builder, n8n, and custom apps.
+  </Card>
+  <Card title="OAuth / MCP auth" icon="lock">
+    For agents embedded in apps where users log in via browser. The Hub implements the [MCP authorization spec](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization).
+  </Card>
+</CardGroup>
+
+See the [Civic tokens](/nexus/concepts/tokens) page for detailed instructions on generating and using tokens.
+
+## Best practices
+
+<AccordionGroup>
+  <Accordion title="Lock toolkits in production" icon="lock">
+    Always lock toolkits in production agent deployments. This prevents the AI from switching to unintended toolkits and ensures predictable behavior.
+  </Accordion>
+  <Accordion title="Create dedicated toolkits for agents" icon="toolbox">
+    Don't reuse your interactive toolkits for agents. Create purpose-built toolkits with only the tools the agent needs. This follows the principle of least privilege and reduces AI confusion from having too many tools.
+  </Accordion>
+  <Accordion title="Use guardrails" icon="shield">
+    Apply [guardrails](/nexus/concepts/guardrails) to agent toolkits to constrain tool usage. For example, make a support agent's email tool read-only, or block destructive database operations.
+  </Accordion>
+  <Accordion title="Monitor with audit logs" icon="chart-line">
+    All tool calls made by agents are logged. Use audit logs to verify agents are behaving as expected and to debug issues.
+  </Accordion>
+</AccordionGroup>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Create a toolkit" icon="toolbox" href="/nexus/concepts/toolkits">
+    Set up a focused toolkit for your agent
+  </Card>
+  <Card title="Civic tokens" icon="key" href="/nexus/concepts/tokens">
+    Generate authentication tokens for agents
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/nexus/concepts/guardrails">
+    Constrain tool usage for safer agent deployments
+  </Card>
+  <Card title="Get help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Ask questions in our developer Slack
+  </Card>
+</CardGroup>

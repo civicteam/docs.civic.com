@@ -86,6 +86,7 @@
                   "nexus/quickstart/clients/gemini"
                 ]
               },
+              "nexus/quickstart/clients/agents",
               "nexus/quickstart/clients/mistral-lechat",
               {
                 "group": "MCP Servers",
