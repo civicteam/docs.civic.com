@@ -158,6 +158,14 @@
                   "nexus/recipes/openai-sdk",
                   "nexus/recipes/python-pydantic"
                 ]
+              },
+              {
+                "group": "Native Integration",
+                "icon": "puzzle-piece",
+                "pages": [
+                  "nexus/developers/native-integration/index",
+                  "nexus/developers/native-integration/civic-auth-capability"
+                ]
               }
             ]
           },
