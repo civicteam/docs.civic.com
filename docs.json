@@ -164,6 +164,7 @@
                 "icon": "puzzle-piece",
                 "pages": [
                   "nexus/developers/native-integration/index",
+                  "nexus/developers/native-integration/authorization",
                   "nexus/developers/native-integration/civic-auth-capability"
                 ]
               }
