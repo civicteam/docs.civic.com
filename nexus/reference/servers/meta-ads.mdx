@@ -1,0 +1,344 @@
+---
+title: Meta Ads
+description: Manage Facebook and Instagram advertising campaigns, analyze performance metrics, create audiences, and control ad creatives
+icon: "server"
+---
+
+## Overview
+
+The Meta Ads server enables AI assistants to manage advertising campaigns across [Facebook](https://facebook.com) and [Instagram](https://instagram.com) through the Meta Marketing API. It provides comprehensive ad management capabilities including campaign creation, audience targeting, creative management, and performance analytics. Built by [wipsoft](https://github.com/wipsoft/meta-mcp).
+
+## How to Add Meta Ads
+
+<Steps>
+  <Step title="Add Server">
+    Add the Meta Ads server to your Nexus environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Connect your Meta account using Facebook Login and approve the OAuth consent request to grant access to your ad accounts.
+  </Step>
+  <Step title="Test Connection">
+    Try "Verify my Meta ad account setup" or "List my active campaigns" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Facebook Login for Business:** Meta Ads uses Facebook OAuth for authentication. You'll need a Meta Business account with access to an ad account.
+
+**Experimental Status:** This server is marked as EXPERIMENTAL and uses the Meta Marketing API v23.0.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Campaign Management" icon="bullhorn">
+    Create, update, pause, resume, and delete ad campaigns with full budget and objective control
+  </Card>
+  <Card title="Analytics & Insights" icon="chart-line">
+    Analyze performance metrics, compare campaigns, track attribution, and export reports
+  </Card>
+  <Card title="Audience Targeting" icon="users">
+    Build custom audiences, create lookalikes, estimate reach, and manage targeting
+  </Card>
+  <Card title="Creative Management" icon="palette">
+    Create ad creatives, upload assets, preview ads, validate compliance, and A/B test
+  </Card>
+</CardGroup>
+
+## Available Tools (49)
+
+### Campaign Management (8)
+
+<AccordionGroup>
+  <Accordion title="list_campaigns">
+    Retrieve a paginated list of all campaigns for a Meta ad account. Filter by status (ACTIVE, PAUSED, DELETED, ARCHIVED) and view key campaign details including budget, objective, and timing.
+  </Accordion>
+
+  <Accordion title="create_campaign">
+    Create a new Meta ad campaign with a specified objective, name, and budget. Supports daily or lifetime budgets, scheduling, special ad categories, and bid strategies. Campaigns are created in PAUSED status by default.
+  </Accordion>
+
+  <Accordion title="update_campaign">
+    Update an existing campaign's settings including name, status, budget, or schedule. Only provided fields are updated.
+  </Accordion>
+
+  <Accordion title="get_campaign">
+    Retrieve full details for a specific campaign by ID including status, objective, budget, and timing.
+  </Accordion>
+
+  <Accordion title="pause_campaign">
+    Instantly pause a campaign to stop ad delivery and spending. Use for emergency stops, budget control, or temporary suspensions.
+  </Accordion>
+
+  <Accordion title="resume_campaign">
+    Reactivate a previously paused campaign to resume ad delivery and spending.
+  </Accordion>
+
+  <Accordion title="delete_campaign">
+    Permanently delete a campaign and all its associated ad sets and ads. This action cannot be undone.
+  </Accordion>
+
+  <Accordion title="check_campaign_readiness">
+    Check if a campaign is ready for ad set creation. Returns a readiness report with issues, requirements, and recommendations. Use before creating ad sets to avoid common errors.
+  </Accordion>
+</AccordionGroup>
+
+### Ad Set Management (3)
+
+<AccordionGroup>
+  <Accordion title="list_ad_sets">
+    List all ad sets for a given campaign or ad account. Filter by status and paginate results. Returns details including budget, targeting, and optimization settings.
+  </Accordion>
+
+  <Accordion title="create_ad_set_enhanced">
+    Create a new ad set with advanced validation and helpful error messages. Specify campaign, name, budget, optimization goal, billing event, targeting, and promoted object. Returns the new ad set ID or detailed error guidance.
+  </Accordion>
+
+  <Accordion title="list_campaign_ad_sets">
+    List all ad sets within a specific campaign with a summary of active/paused counts and total daily budget.
+  </Accordion>
+</AccordionGroup>
+
+### Ad Management (1)
+
+<AccordionGroup>
+  <Accordion title="list_ads">
+    List all ads for a given campaign, ad set, or ad account. Filter by status and paginate results. Returns ad details including creative, status, and timing.
+  </Accordion>
+</AccordionGroup>
+
+### Analytics & Insights (5)
+
+<AccordionGroup>
+  <Accordion title="get_insights">
+    Retrieve performance metrics for campaigns, ad sets, or individual ads. Supports customizable date ranges, metric selection, and data breakdowns by dimensions like age, gender, and placement.
+  </Accordion>
+
+  <Accordion title="get_campaign_performance">
+    Get performance insights specific to a campaign with campaign-specific defaults. Simplified version of get_insights.
+  </Accordion>
+
+  <Accordion title="compare_performance">
+    Compare performance metrics across multiple campaigns, ad sets, or ads (2-10 items) to identify top performers and optimization opportunities.
+  </Accordion>
+
+  <Accordion title="get_attribution_data">
+    Get attribution data for campaigns including conversion tracking and attribution windows.
+  </Accordion>
+
+  <Accordion title="export_insights">
+    Export ad insights data in CSV or JSON format for external analysis, reporting, and data warehousing.
+  </Accordion>
+</AccordionGroup>
+
+### Audience Management (7)
+
+<AccordionGroup>
+  <Accordion title="list_audiences">
+    List all custom audiences in the ad account. Filter by type (custom, lookalike, saved).
+  </Accordion>
+
+  <Accordion title="create_custom_audience">
+    Create a custom audience from customer data, website traffic, or app activity. Supports multiple subtypes including WEBSITE, APP, and OFFLINE_CONVERSION.
+  </Accordion>
+
+  <Accordion title="create_lookalike_audience">
+    Create a lookalike audience based on an existing custom audience to reach new potential customers. Configure country and audience ratio (1%-20% of population).
+  </Accordion>
+
+  <Accordion title="estimate_audience_size">
+    Estimate the size of an audience based on targeting parameters including demographics, interests, behaviors, and custom audiences.
+  </Accordion>
+
+  <Accordion title="update_custom_audience">
+    Update custom audience settings and configuration.
+  </Accordion>
+
+  <Accordion title="delete_audience">
+    Get guidance on audience deletion process. Deleting an audience is permanent and cannot be undone.
+  </Accordion>
+
+  <Accordion title="get_audience_insights">
+    Get guidance on retrieving audience demographic insights including age distribution, gender, location, and interest affinity.
+  </Accordion>
+</AccordionGroup>
+
+### Creative Management (16)
+
+<AccordionGroup>
+  <Accordion title="list_creatives">
+    List all ad creatives in an ad account to see existing creatives, their formats, and content.
+  </Accordion>
+
+  <Accordion title="create_ad_creative">
+    Create a new ad creative with images, videos, text, and call-to-action buttons. Supports both image and video creatives with Meta API v23.0 compliance.
+  </Accordion>
+
+  <Accordion title="validate_creative_setup">
+    Validate ad creative parameters before creation to catch errors early. Checks required fields and URL validity.
+  </Accordion>
+
+  <Accordion title="validate_creative_enhanced">
+    Enhanced creative validation with comprehensive checks including page permissions, image accessibility, and Meta API compliance.
+  </Accordion>
+
+  <Accordion title="preview_ad">
+    Generate HTML preview of how an ad creative will appear in different placements (desktop feed, mobile feed, Instagram, Stories).
+  </Accordion>
+
+  <Accordion title="upload_image_from_url">
+    Upload an image from a URL to Meta and get the image_hash for v23.0 API compliance.
+  </Accordion>
+
+  <Accordion title="upload_creative_asset">
+    Get guidance on uploading creative assets (images/videos) to Meta with step-by-step instructions and technical requirements.
+  </Accordion>
+
+  <Accordion title="setup_ab_test">
+    Get comprehensive guidance on setting up A/B tests for ad creatives including best practices and metrics to track.
+  </Accordion>
+
+  <Accordion title="get_creative_performance">
+    Get guidance on analyzing creative performance metrics and optimization strategies.
+  </Accordion>
+
+  <Accordion title="update_creative">
+    Get information about creative update limitations - creatives cannot be modified after creation, provides alternative approaches.
+  </Accordion>
+
+  <Accordion title="delete_creative">
+    Get guidance on creative deletion process and impact, with safety checks to avoid disrupting active campaigns.
+  </Accordion>
+
+  <Accordion title="get_creative_best_practices">
+    Get comprehensive best practices for creating high-performing ad creatives with platform-specific guidelines.
+  </Accordion>
+
+  <Accordion title="troubleshoot_creative_issues">
+    Diagnose and fix common creative creation and performance issues with specific solutions and recommendations.
+  </Accordion>
+
+  <Accordion title="analyze_account_creatives">
+    Analyze all creatives in an account to identify patterns, performance insights, and optimization opportunities.
+  </Accordion>
+
+  <Accordion title="check_api_v23_compliance">
+    Check if creative parameters are compliant with Meta Marketing API v23.0 requirements and get recommendations.
+  </Accordion>
+
+  <Accordion title="get_meta_error_codes">
+    Get detailed reference for Meta Marketing API error codes, subcodes, and specific solutions for troubleshooting.
+  </Accordion>
+</AccordionGroup>
+
+### Helper & Reference (3)
+
+<AccordionGroup>
+  <Accordion title="get_meta_api_reference">
+    Get a reference guide for valid Meta Marketing API parameters including allowed optimization goals, billing events, and their valid combinations.
+  </Accordion>
+
+  <Accordion title="get_quick_fixes">
+    Get targeted troubleshooting tips for common Meta Ads API errors with likely causes and next steps.
+  </Accordion>
+
+  <Accordion title="verify_account_setup">
+    Verify that a Meta ad account is ready for ad creation. Checks account access, payment method, Facebook pages, and active campaigns.
+  </Accordion>
+</AccordionGroup>
+
+### OAuth & Authentication (6)
+
+<AccordionGroup>
+  <Accordion title="generate_auth_url">
+    Generate OAuth authorization URL for Meta to redirect users for authentication.
+  </Accordion>
+
+  <Accordion title="exchange_code_for_token">
+    Exchange OAuth authorization code for an access token.
+  </Accordion>
+
+  <Accordion title="refresh_to_long_lived_token">
+    Exchange a short-lived token for a long-lived token (~60 days).
+  </Accordion>
+
+  <Accordion title="generate_system_user_token">
+    Generate a system user token for server-to-server automation.
+  </Accordion>
+
+  <Accordion title="get_token_info">
+    Get information about the current access token including expiration time, scopes, and associated user.
+  </Accordion>
+
+  <Accordion title="validate_token">
+    Validate the current access token and check API connectivity.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Campaign Launch
+"Create a new traffic campaign called 'Spring Sale 2025' with a $50 daily budget" - Set up a new advertising campaign with objective and budget.
+
+### Performance Review
+"Show me the performance of my active campaigns for the last 30 days" - Analyze campaign metrics with custom date ranges.
+
+### A/B Testing
+"Compare performance between campaigns 123 and 456 on click-through rate and cost per click" - Compare metrics across campaigns to find top performers.
+
+### Audience Building
+"Create a lookalike audience based on my top customers targeting the US at 1%" - Build lookalike audiences to reach new potential customers.
+
+### Creative Setup
+"Create an ad creative with my product image, 'Shop Now' CTA, and link to my store" - Build ad creatives with images, text, and call-to-action buttons.
+
+### Budget Control
+"Pause all my active campaigns immediately" - Emergency stop ad delivery across campaigns.
+
+### Reporting
+"Export last month's campaign insights as CSV" - Export performance data for external analysis.
+
+### Account Health
+"Verify my ad account is set up correctly for creating ads" - Check account readiness including payment methods and page access.
+
+<Note>
+**Budget Format:** All budget values are specified in account currency cents (e.g., $50.00 = 5000).
+
+**Campaign Objectives:** Uses Meta's Outcome-Driven Ad Experience (ODAE) format: OUTCOME_APP_PROMOTION, OUTCOME_AWARENESS, OUTCOME_ENGAGEMENT, OUTCOME_LEADS, OUTCOME_SALES, OUTCOME_TRAFFIC.
+
+**Creative Limitations:** Ad creatives cannot be modified after creation. To make changes, create a new creative and update the ad to use it.
+
+**API Version:** This server uses Meta Marketing API v23.0. Use `check_api_v23_compliance` to verify your parameters are compliant.
+</Note>
+
+## Troubleshooting
+
+### Permission Issues After Connecting
+
+Meta's OAuth flow sometimes does not prompt for ads permissions during authorization. If you've connected successfully but still receive permission errors, you'll need to grant ad account access manually.
+
+<Warning>
+This is a known issue with Meta's OAuth — the ad account must explicitly grant your user account the proper permissions, which can't always be done through the OAuth flow alone.
+</Warning>
+
+<AccordionGroup>
+  <Accordion title="Option 1: Grant permissions via Business Manager (Recommended)">
+    1. Go to [Meta Business Settings](https://business.facebook.com/settings)
+    2. Navigate to **Users** > **People** in the left sidebar
+    3. Find yourself in the list and click your name
+    4. Click **Assign Assets**
+    5. Select the **Ad Accounts** tab
+    6. Find your ad account and select it
+    7. Make sure you have **Manage campaigns** or **Full control** permission selected
+  </Accordion>
+
+  <Accordion title="Option 2: Direct Ad Account Access">
+    1. Go to [Meta Ads Manager](https://adsmanager.facebook.com)
+    2. In the account selector, find your ad account
+    3. Click the account settings
+    4. Go to **Ad Account Roles**
+    5. Make sure your account has **Admin** or **Advertiser** role
+  </Accordion>
+</AccordionGroup>
+
+After making these changes in Business Manager, the permissions should propagate and you can reconnect the server.
