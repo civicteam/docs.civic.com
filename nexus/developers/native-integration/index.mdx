@@ -1,0 +1,22 @@
+---
+title: Native Integration
+description: Integrate Civic Nexus directly into third-party applications and MCP clients
+icon: "puzzle-piece"
+---
+
+Civic Nexus can be integrated natively into third-party applications — MCP clients, AI agents, developer tools, and more. Native integrations go beyond simply connecting to Nexus as an end user; they allow your application to handle authentication flows, manage tool calls, and deliver a seamless experience to your users.
+
+## What is a native integration?
+
+A native integration embeds Civic Nexus capabilities directly into your application's runtime. Instead of relying on the LLM to surface authorization links and wait for manual user action, your application can intercept these flows, handle them programmatically, and return results transparently.
+
+## Available integration guides
+
+<CardGroup cols={1}>
+  <Card title="Authorization" icon="lock" href="/nexus/developers/native-integration/authorization">
+    Understand how access tokens work, set up your organization, and connect your app to the Nexus MCP endpoint using Civic Auth or Token Exchange.
+  </Card>
+  <Card title="Implementing civic:rest-auth" icon="shield-check" href="/nexus/developers/native-integration/civic-auth-capability">
+    Handle authentication automatically in your MCP client — intercept auth-required responses, redirect users, poll for completion, and resume tool calls without LLM involvement.
+  </Card>
+</CardGroup>
