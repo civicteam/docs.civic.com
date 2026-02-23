@@ -19,7 +19,25 @@ The Slack server enables AI assistants to interact with your [Slack](https://sla
   </Step>
   <Step title="Configure OAuth Permissions">
     1. In your app settings, click **OAuth & Permissions** in the left menu
-    2. Under **Scopes > Bot Token Scopes**, add all required access permissions
+    2. Under **Scopes > Bot Token Scopes**, add the required access permissions
+
+    <Info>
+    **Required OAuth Scopes**
+
+    For the test commands below to work, add these minimum Bot Token Scopes:
+    - `channels:read` - List and view basic channel information
+    - `channels:history` - Read message history from public channels
+
+    Depending on your use case, you may also want to add:
+    - `chat:write` - Post messages to channels
+    - `users:read` - View basic user information  
+    - `reactions:read` - View emoji reactions
+    - `reactions:write` - Add emoji reactions to messages
+    - `files:read` - Access file content
+
+    You can always add more scopes later by returning to the **OAuth & Permissions** page in your Slack app settings.
+    </Info>
+
     3. Scroll up and click **Install to [workspace]**
     4. Invite the bot to the requisite channels:
        - Open the Slack channel where you want the bot to work

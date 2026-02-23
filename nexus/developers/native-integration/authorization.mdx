@@ -1,0 +1,109 @@
+---
+title: "Authorization"
+description: "How authentication and authorization work when connecting to Civic Nexus as a third-party application"
+icon: "lock"
+---
+
+Civic Nexus exposes its capabilities through a single MCP endpoint at `https://nexus.civic.com/hub/mcp`. Every request to this endpoint must carry a valid access token issued by **Civic Auth** (`auth.civic.com`).
+
+## How access tokens work
+
+Access tokens are JWTs issued by Civic Auth. Each token is scoped to a specific **application** (identified by a `CLIENT_ID`), which determines what a user is allowed to do — which tools they can call, which third-party services they can connect, and what data they can access.
+
+Civic provides its own native app for managing Nexus access (e.g. at [nexus.civic.com/web](https://nexus.civic.com/web)), but third-party applications typically want to manage users within their own product experience.
+
+## What you need to do
+
+To connect your application to Nexus with your own user management, you need to complete two steps:
+
+### 1. Create an Organization and link your Client ID
+
+Set up a **Civic Nexus Organization** and link your existing Civic Auth `CLIENT_ID` to it. This associates your application's users with your organization in Nexus, so that access decisions, tool authorizations, and user data are scoped correctly.
+
+<Steps>
+  <Step title="Register a Civic Auth application">
+    If you don't already have one, register at [auth.civic.com](https://auth.civic.com) to get a Client ID and Client Secret.
+  </Step>
+  <Step title="Create a Nexus Organization">
+    Create an organization at [nexus.civic.com](https://nexus.civic.com).
+  </Step>
+  <Step title="Link your Client ID">
+    In your Nexus organization, go to **Settings → Integration** and link your Civic Auth Client ID. Once linked, tokens issued for your application will be recognized by Nexus.
+
+    <Frame caption="The Integration settings page for a Nexus organization">
+      <img src="/images/nexus/link-civic-auth-integration.png" alt="Civic Auth integration settings showing a linked Client ID and public access controls" />
+    </Frame>
+
+    The Integration page has two sections:
+
+    - **Civic Auth** — Link your organization to a [Civic Auth](https://auth.civic.com) application by entering your Client ID. Once linked, the status shows "Linked" along with the Client ID. You can update to a different Client ID or unlink at any time.
+    - **Public access** — Controls whether new users can join your organization automatically. By default, users must be invited (their access token must have both a matching email and Client ID). Enabling public access allows any user who authenticates with your Client ID to join automatically with an `END_USER` role.
+
+    <Note>
+    The Integration page is only available for organization accounts and requires an **Owner** or **Admin** role.
+    </Note>
+  </Step>
+</Steps>
+
+### 2. Obtain Civic Auth tokens for your users
+
+You have two options depending on your architecture:
+
+<Tabs>
+  <Tab title="Option A: Integrate Civic Auth directly">
+    **Best for:** Applications that don't have an existing identity provider.
+
+    Integrate [Civic Auth](/auth) as your application's authentication layer. Users sign in through Civic Auth, and your app receives access tokens that work directly with Nexus.
+
+    This is the simplest path — the tokens Civic Auth issues are already valid for the Nexus MCP endpoint with no additional exchange needed.
+  </Tab>
+  <Tab title="Option B: Token Exchange">
+    **Best for:** Applications that already have their own authentication system (e.g. Google, Auth0, Azure AD, or a custom identity provider).
+
+    Use the [Token Exchange](/overview/token-exchange) endpoint to swap tokens from your existing identity provider for Civic Auth access tokens. This follows the [OAuth 2.0 Token Exchange (RFC 8693)](https://datatracker.ietf.org/doc/html/rfc8693) standard.
+
+    At a high level:
+    1. Your user authenticates with your existing identity provider
+    2. Your backend exchanges that token for a Civic access token via `POST https://auth.civic.com/oauth/token`
+    3. The Civic access token is used to connect to Nexus
+
+    For the full integration guide — including key generation, JWKS setup, JWT claims, and code examples — see the [Token Exchange](/overview/token-exchange) guide.
+
+    #### Scoping access via token exchange
+
+    The token exchange grant supports two optional Nexus-specific parameters that can be passed during the exchange to narrow the scope of the resulting access token:
+
+    | Parameter | Description |
+    |-----------|-------------|
+    | `nexus_account` | Account identifier to include as a claim in the exchanged token. |
+    | `nexus_profile` | Profile (toolkit) identifier to include as a claim in the exchanged token. |
+
+    Since a linked Civic Auth organization is already scoped to the account by default (via the Client ID), these parameters are primarily useful for restricting access to a **specific profile or toolkit** within the account — for example, limiting a user or agent to a single toolkit rather than the entire organization.
+  </Tab>
+</Tabs>
+
+## Using the access token
+
+Once you have a Civic access token, pass it in the `Authorization` header when connecting to the Nexus MCP endpoint:
+
+```
+POST https://nexus.civic.com/hub/mcp
+Content-Type: application/json
+Authorization: Bearer <civic-access-token>
+```
+
+If your organization has multiple profiles configured, include the `x-civic-profile` header to scope requests:
+
+```
+x-civic-profile: default
+```
+
+## Summary
+
+| Step | What | Where |
+|------|------|-------|
+| Register an app | Get a Client ID and Secret | [auth.civic.com](https://auth.civic.com) |
+| Create an org | Set up your Nexus Organization | [nexus.civic.com](https://nexus.civic.com) |
+| Link Client ID to org | Associate your app with your org | Nexus Settings → Integration |
+| Get tokens | Civic Auth directly **or** Token Exchange | See options above |
+| Connect to Nexus | `Authorization: Bearer <token>` | `https://nexus.civic.com/hub/mcp` |
