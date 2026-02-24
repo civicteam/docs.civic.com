@@ -207,4 +207,72 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
     Currently, Civic Auth does not natively support blocking specific wallets or users.
 
   </Accordion>
+  <Accordion title="How do I verify ID tokens on my backend?">
+
+    When integrating Civic Auth, you may need to verify the ID token on your backend to authenticate API requests from your frontend.
+
+    ### Getting the ID Token
+
+    The ID token is exposed on the `userContext` object in your frontend integration:
+
+    ```typescript
+    import { useUser } from "@civic/auth/react";
+
+    function MyComponent() {
+      const { idToken } = useUser();
+
+      // Send the idToken to your backend
+      fetch('/api/protected', {
+        headers: {
+          'Authorization': `Bearer ${idToken}`
+        }
+      });
+    }
+    ```
+
+    ### Verifying the Token Signature
+
+    To verify the token signature on your backend, use the `@civic/auth-verify` library. This library automatically queries the Civic JWKS endpoint to fetch the public key and verify the token:
+
+    ```bash
+    npm install @civic/auth-verify
+    ```
+
+    **Basic verification:**
+
+    ```typescript
+    import { verify } from '@civic/auth-verify';
+
+    // In your backend API route
+    const token = req.headers.authorization?.replace('Bearer ', '');
+
+    try {
+      const payload = await verify(token);
+      console.log('User authenticated:', payload);
+      // Payload contains user information like id, email, name, etc.
+    } catch (error) {
+      console.error('Token verification failed:', error);
+      // Return 401 Unauthorized
+    }
+    ```
+
+    **Verifying with client ID validation:**
+
+    ```typescript
+    import { verify } from '@civic/auth-verify';
+
+    const payload = await verify(token, {
+      clientId: 'YOUR_CLIENT_ID' // Ensures token was issued for your app
+    });
+    ```
+
+    The `@civic/auth-verify` library handles all the complexity of:
+    - Fetching the JWKS (JSON Web Key Set) from Civic's endpoint
+    - Caching the keys for performance
+    - Verifying the token signature using the public key
+    - Validating token expiration and claims
+
+    For more details, see the [React integration Token Fields section](/integration/react#token-fields).
+
+  </Accordion>
 </AccordionGroup>
