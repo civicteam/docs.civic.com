@@ -97,7 +97,9 @@ Before diving in, pick the path that matches your blockchain and setup. The hook
 <Info>
   **Creating vs using a wallet**
 
-  Civic Auth automatically provisions a wallet for new users via `createWallet()` or the `useAutoConnect()` hook. The table above describes how to *use* an already-provisioned wallet in your UI — no additional "create" call is needed in the components that read wallet data.
+  A wallet is **not created automatically** — your code must trigger creation. The recommended approach is to call `useAutoConnect()` (Ethereum/EVM), which handles both creation and connection for new users in one step. Alternatively, you can call `createWallet()` manually for either chain.
+
+  Only once a wallet exists can you use the hooks in the table above to read its address, balance, or send transactions. See the [Ethereum](/web3/ethereum-evm#creating-a-wallet) and [Solana](/web3/solana#creating-a-wallet) guides for full creation examples.
 </Info>
 
 ## Using the Wallet
