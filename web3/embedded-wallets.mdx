@@ -94,6 +94,139 @@ Follow these guides to set up Web3 wallets for your users:
   </Card>
 </CardGroup>
 
+## Server-Side Integration
+
+For server-side frameworks such as ExpressJS, use `@civic/auth-web3` to access embedded wallet addresses after authentication.
+
+Full working example: [express-with-wallet](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/server/express-with-wallet)
+
+### Installation
+
+```bash
+npm install @civic/auth-web3
+```
+
+### Setup
+
+Configure `CivicAuth` with cookie-based storage per request, and attach it to each Express request via middleware:
+
+```typescript
+import express, { Request, Response, NextFunction } from "express";
+import cookieParser from "cookie-parser";
+import { CookieStorage, CivicAuth } from "@civic/auth-web3/server";
+
+const app = express();
+app.use(cookieParser());
+
+const config = {
+  clientId: process.env.CLIENT_ID!,
+  redirectUrl: "http://localhost:3001/auth/callback",
+  postLogoutRedirectUrl: "http://localhost:3001/",
+};
+
+class ExpressCookieStorage extends CookieStorage {
+  constructor(private req: Request, private res: Response) {
+    super({ secure: process.env.NODE_ENV === "production" });
+  }
+
+  async get(key: string): Promise<string | null> {
+    return this.req.cookies[key];
+  }
+
+  async set(key: string, value: string): Promise<void> {
+    this.res.cookie(key, value, this.settings);
+  }
+
+  async clear(): Promise<void> {
+    for (const key in this.req.cookies) {
+      this.res.clearCookie(key);
+    }
+  }
+
+  async delete(key: string): Promise<void> {
+    this.res.clearCookie(key);
+  }
+}
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  req.storage = new ExpressCookieStorage(req, res);
+  req.civicAuth = new CivicAuth(req.storage, config);
+  next();
+});
+```
+
+### Authentication Flow
+
+```typescript
+app.get("/", async (req: Request, res: Response) => {
+  const url = await req.civicAuth.buildLoginUrl();
+  res.redirect(url.toString());
+});
+
+app.get("/auth/callback", async (req: Request, res: Response) => {
+  const { code, state } = req.query as { code: string; state: string };
+  await req.civicAuth.resolveOAuthAccessCode(code, state);
+  res.redirect("/admin/dashboard");
+});
+```
+
+### Retrieving the Wallet Address
+
+Once the user is authenticated, use `getWallets()` from `@civic/auth-web3/server` to retrieve the user's embedded wallet address(es):
+
+```typescript
+import { getWallets } from "@civic/auth-web3/server";
+
+app.get("/admin/dashboard", async (req: Request, res: Response) => {
+  const user = await req.civicAuth.getUser();
+  const tokens = await req.civicAuth.getTokens();
+
+  if (!user) return res.status(401).send("Unauthorized");
+
+  const userDetails = {
+    ...user,
+    idToken: tokens?.idToken || "",
+  };
+
+  const wallets = await getWallets(userDetails);
+
+  res.json({
+    user: user.name,
+    walletAddresses: wallets.map((wallet) => wallet.walletAddress),
+  });
+});
+```
+
+`getWallets()` returns an array of wallet objects, each with a `walletAddress` property.
+
+<Warning>
+  Do not decode the ID token JWT to retrieve the wallet address, and there is no `user.wallet` property — always use `getWallets()` from `@civic/auth-web3/server`.
+</Warning>
+
+### Auth Middleware
+
+```typescript
+const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.civicAuth.isLoggedIn()) return res.status(401).send("Unauthorized");
+  next();
+};
+
+app.use("/admin", authMiddleware);
+```
+
+### TypeScript: Extending the Request Type
+
+```typescript
+declare global {
+  namespace Express {
+    interface Request {
+      storage: ExpressCookieStorage;
+      civicAuth: CivicAuth;
+    }
+  }
+}
+```
+
 ## About Embedded Wallets
 
 ### What are Embedded Wallets?
