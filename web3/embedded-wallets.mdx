@@ -72,14 +72,33 @@ Choose your framework for instructions on how to integrate Civic Auth Web3 into 
   If you are interested in using Civic's Web3 wallet feature in other environments, please contact us in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw).
 </Info>
 
-<CardGroup cols={3}>
-  <Card title="React" href="/integration/react" img="/images/auth/web3/react.png">
+<CardGroup cols={3}>\n  <Card title="React" href="/integration/react" img="/images/auth/web3/react.png">
     
   </Card>
   <Card title="Next.js" href="/integration/nextjs" img="/images/auth/web3/next.png">
     
   </Card>
 </CardGroup>
+
+## Choosing Your Integration
+
+Before diving in, pick the path that matches your blockchain and setup. The hooks and packages you use **depend entirely on this choice** — mixing them up is the most common source of errors.
+
+| Scenario | Chain | Package | Hooks to interact with the wallet | Full guide |
+|---|---|---|---|---|
+| **Ethereum / EVM** | Ethereum + 18 other EVM chains | `@civic/auth-web3/wagmi` | `useAccount()`, `useBalance()`, `useSendTransaction()` from **`wagmi`** | [Ethereum & EVM →](/web3/ethereum-evm) |
+| **Solana — without wallet-adapter** | Solana | `@civic/auth-web3/react` | `useWallet({ type: "solana" })` from **`@civic/auth-web3/react`** | [Solana →](/web3/solana) |
+| **Solana — with wallet-adapter** | Solana | `@solana/wallet-adapter-react` + `@civic/auth-web3` | `useWallet()` + `useConnection()` from **`@solana/wallet-adapter-react`** | [Solana → Wallet Adapter](/web3/solana#using-the-wallet-with-the-solana-wallet-adapter) |
+
+<Warning>
+  **`@solana/wallet-adapter-react` is Solana-only.** Do not use it in Ethereum/EVM integrations. For Ethereum, use `wagmi` hooks exclusively.
+</Warning>
+
+<Info>
+  **Creating vs using a wallet**
+
+  Civic Auth automatically provisions a wallet for new users via `createWallet()` or the `useAutoConnect()` hook. The table above describes how to *use* an already-provisioned wallet in your UI — no additional "create" call is needed in the components that read wallet data.
+</Info>
 
 ## Using the Wallet
 
