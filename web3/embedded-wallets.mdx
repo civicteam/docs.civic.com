@@ -97,9 +97,13 @@ Before diving in, pick the path that matches your blockchain and setup. The hook
 <Info>
   **Creating vs using a wallet**
 
-  A wallet is **not created automatically** — your code must trigger creation. The recommended approach is to call `useAutoConnect()` (Ethereum/EVM), which handles both creation and connection for new users in one step. Alternatively, you can call `createWallet()` manually for either chain.
+  New users don't have a wallet by default. Before the hooks in the table above will return an address or balance, a wallet must be created. How that happens depends on your integration:
 
-  Only once a wallet exists can you use the hooks in the table above to read its address, balance, or send transactions. See the [Ethereum](/web3/ethereum-evm#creating-a-wallet) and [Solana](/web3/solana#creating-a-wallet) guides for full creation examples.
+  - **Ethereum/EVM**: call `createWallet()` then connect via wagmi, or use `useAutoConnect()` which handles both steps in one.
+  - **Solana without wallet-adapter**: call `createWallet()` explicitly after the user logs in.
+  - **Solana with wallet-adapter**: wallet creation is triggered by the user selecting Civic Auth in the `WalletMultiButton` modal — no explicit `createWallet()` call is needed in your code.
+
+  See the [Ethereum](/web3/ethereum-evm#creating-a-wallet) and [Solana](/web3/solana#creating-a-wallet) guides for full examples.
 </Info>
 
 ## Using the Wallet
