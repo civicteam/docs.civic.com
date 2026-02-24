@@ -33,7 +33,7 @@ public: true
 
   Civic Auth supports Google as an authentication provider. However, Civic is working to add support for other major OIDC-compliant providers, such as Microsoft and Apple. Once available, these can be configured within your integration setup.
 
-  Contact our team in our [developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and let us know which provider you’d like to see added.
+  Contact our team in our [developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and let us know which provider you'd like to see added.
 
   </Accordion>
   <Accordion title="Can my users connect their existing self-managed wallets?">
@@ -70,7 +70,7 @@ public: true
   </Accordion>
   <Accordion title="What happens if users lose their SSO access?">
 
-    If a user loses access to their SSO (e.g., Google login), Civic Auth’s wallet provider includes a recovery feature to restore wallet access, which works independently of Civic’s infrastructure. Recovery is managed through the provider. Contact our team in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) so that we can initiate the wallet recovery process.
+    If a user loses access to their SSO (e.g., Google login), Civic Auth's wallet provider includes a recovery feature to restore wallet access, which works independently of Civic's infrastructure. Recovery is managed through the provider. Contact our team in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) so that we can initiate the wallet recovery process.
 
   </Accordion>
   <Accordion title="Can I test Civic Auth before going live in production?">
@@ -174,7 +174,7 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
   </Step>
 </Steps>
 
-  If you’ve completed the steps above and still encounter issues, contact Civic in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and provide the following details to help us investigate further:
+  If you've completed the steps above and still encounter issues, contact Civic in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and provide the following details to help us investigate further:
 
   * A clear description of exactly what you're trying to achieve and the issue you're encountering in doing so
 
@@ -205,6 +205,14 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
   <Accordion title="Can I restrict certain wallets or block specific users?">
 
     Currently, Civic Auth does not natively support blocking specific wallets or users.
+
+  </Accordion>
+  <Accordion title="What are &quot;signatures&quot; in Civic Auth?">
+
+    In Civic Auth, signatures are used to verify the authenticity of authentication tokens and blockchain operations:
+
+    1. When logging in with Civic, the signatures of the auth tokens are verified against Civic's JWKS public key to prove they come from Civic.
+    2. When using Civic's Web3 features, the user is asked to sign blockchain transactions or messages using an email code and a non-custodial wallet private key, to prove they authorised the transaction.
 
   </Accordion>
 </AccordionGroup>
