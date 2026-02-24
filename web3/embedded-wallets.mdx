@@ -81,6 +81,32 @@ Choose your framework for instructions on how to integrate Civic Auth Web3 into 
   </Card>
 </CardGroup>
 
+## Choosing Your Integration
+
+Before diving in, pick the path that matches your blockchain and setup. The hooks and packages you use **depend entirely on this choice** — mixing them up is the most common source of errors.
+
+| Scenario | Chain | Package | Hooks to interact with the wallet | Full guide |
+|---|---|---|---|---|
+| **Ethereum / EVM** | Ethereum + 18 other EVM chains | `@civic/auth-web3/wagmi` | `useAccount()`, `useBalance()`, `useSendTransaction()` from **`wagmi`** | [Ethereum & EVM →](/web3/ethereum-evm) |
+| **Solana — without wallet-adapter** | Solana | `@civic/auth-web3/react` | `useWallet({ type: "solana" })` from **`@civic/auth-web3/react`** | [Solana →](/web3/solana) |
+| **Solana — with wallet-adapter** | Solana | `@solana/wallet-adapter-react` + `@civic/auth-web3` | `useWallet()` + `useConnection()` from **`@solana/wallet-adapter-react`** | [Solana → Wallet Adapter](/web3/solana#using-the-wallet-with-the-solana-wallet-adapter) |
+
+<Warning>
+  **`@solana/wallet-adapter-react` is Solana-only.** Do not use it in Ethereum/EVM integrations. For Ethereum, use `wagmi` hooks exclusively.
+</Warning>
+
+<Info>
+  **Creating vs using a wallet**
+
+  New users don't have a wallet by default. Before the hooks in the table above will return an address or balance, a wallet must be created. How that happens depends on your integration:
+
+  - **Ethereum/EVM**: call `createWallet()` then connect via wagmi, or use `useAutoConnect()` which handles both steps in one.
+  - **Solana without wallet-adapter**: call `createWallet()` explicitly after the user logs in.
+  - **Solana with wallet-adapter**: wallet creation is triggered by the user selecting Civic Auth in the `WalletMultiButton` modal — no explicit `createWallet()` call is needed in your code.
+
+  See the [Ethereum](/web3/ethereum-evm#creating-a-wallet) and [Solana](/web3/solana#creating-a-wallet) guides for full examples.
+</Info>
+
 ## Using the Wallet
 
 Follow these guides to set up Web3 wallets for your users:
