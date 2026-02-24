@@ -33,7 +33,7 @@ public: true
 
   Civic Auth supports Google as an authentication provider. However, Civic is working to add support for other major OIDC-compliant providers, such as Microsoft and Apple. Once available, these can be configured within your integration setup.
 
-  Contact our team in our [developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and let us know which provider you’d like to see added.
+  Contact our team in our [developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and let us know which provider you'd like to see added.
 
   </Accordion>
   <Accordion title="Can my users connect their existing self-managed wallets?">
@@ -70,7 +70,7 @@ public: true
   </Accordion>
   <Accordion title="What happens if users lose their SSO access?">
 
-    If a user loses access to their SSO (e.g., Google login), Civic Auth’s wallet provider includes a recovery feature to restore wallet access, which works independently of Civic’s infrastructure. Recovery is managed through the provider. Contact our team in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) so that we can initiate the wallet recovery process.
+    If a user loses access to their SSO (e.g., Google login), Civic Auth's wallet provider includes a recovery feature to restore wallet access, which works independently of Civic's infrastructure. Recovery is managed through the provider. Contact our team in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) so that we can initiate the wallet recovery process.
 
   </Accordion>
   <Accordion title="Can I test Civic Auth before going live in production?">
@@ -155,7 +155,12 @@ public: true
   </Accordion>
   <Accordion title="How can I monitor usage for Civic Auth?">
 
-  Civic Auth provides usage data, including logins from the user account and wallet creation events, via the developer dashboard at [https://auth.civic.com](https://auth.civic.com).
+  Civic Auth provides usage data via the developer dashboard at [https://auth.civic.com](https://auth.civic.com). The following events are available:
+
+  - **Login events**: Track when users log in to your application.
+  - **Wallet creation events**: Track when embedded wallets are provisioned for users.
+
+  **What Civic Auth does not provide:** Civic Auth does not offer a way for app developers to measure custom in-app analytics (e.g. user flows, feature usage, screen views). For that, you should integrate a dedicated analytics solution such as [Mixpanel](https://mixpanel.com/), [Amplitude](https://amplitude.com/), or [PostHog](https://posthog.com/).
 
   </Accordion>
   <Accordion title="How do I debug Civic Auth integration issues?">
@@ -174,7 +179,7 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
   </Step>
 </Steps>
 
-  If you’ve completed the steps above and still encounter issues, contact Civic in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and provide the following details to help us investigate further:
+  If you've completed the steps above and still encounter issues, contact Civic in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and provide the following details to help us investigate further:
 
   * A clear description of exactly what you're trying to achieve and the issue you're encountering in doing so
 
