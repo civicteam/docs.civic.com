@@ -155,7 +155,12 @@ public: true
   </Accordion>
   <Accordion title="How can I monitor usage for Civic Auth?">
 
-  Civic Auth provides usage data, including logins from the user account and wallet creation events, via the developer dashboard at [https://auth.civic.com](https://auth.civic.com).
+  Civic Auth provides usage data via the developer dashboard at [https://auth.civic.com](https://auth.civic.com). The following events are available:
+
+  - **Login events**: Track when users log in to your application.
+  - **Wallet creation events**: Track when embedded wallets are provisioned for users.
+
+  **What Civic Auth does not provide:** Civic Auth does not offer a way for app developers to measure custom in-app analytics (e.g. user flows, feature usage, screen views). For that, you should integrate a dedicated analytics solution such as [Mixpanel](https://mixpanel.com/), [Amplitude](https://amplitude.com/), or [PostHog](https://posthog.com/).
 
   </Accordion>
   <Accordion title="How do I debug Civic Auth integration issues?">
