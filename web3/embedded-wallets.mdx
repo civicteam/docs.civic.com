@@ -17,6 +17,10 @@ The **Civic Auth Web3 SDK** ( [@civic/auth-web3](https://www.npmjs.com/package/@
   Right now, we only support embedded wallets, which are generated on behalf of the user by our non-custodial wallet partner. Neither Civic nor your app ever has access to the wallets' private keys.
 </Info>
 
+<Warning>
+  **Note:** Embedded wallets are not currently supported when X (Twitter) is enabled as a login method. This is because X does not return email addresses, which are required for embedded wallet provisioning. This limitation will be resolved in a future update using composable logins.
+</Warning>
+
 ## Quick Start
 
 Sign up for Civic Auth at [auth.civic.com](https://auth.civic.com) and make sure to select the "Web3 wallet" option.
@@ -120,6 +124,137 @@ Follow these guides to set up Web3 wallets for your users:
   </Card>
 </CardGroup>
 
+## Server-Side Integration
+
+To access a user's embedded wallet address on the server side, use `getWallets()` from `@civic/auth-web3/server`. A full working example is available here: [express-with-wallet](https://github.com/civicteam/civic-auth-examples/tree/main/packages/civic-auth/server/express-with-wallet).
+
+**Installation**
+
+```bash
+npm install @civic/auth @civic/auth-web3
+```
+
+**Setup**
+
+Configure `CivicAuth` with cookie-based storage per request, and attach it to each Express request via middleware:
+
+```typescript
+import express, { Request, Response, NextFunction } from "express";
+import cookieParser from "cookie-parser";
+import { CookieStorage, CivicAuth } from "@civic/auth/server";
+
+const app = express();
+app.use(cookieParser());
+
+const config = {
+  clientId: process.env.CLIENT_ID!,
+  redirectUrl: "http://localhost:3001/auth/callback",
+  postLogoutRedirectUrl: "http://localhost:3001/",
+};
+
+class ExpressCookieStorage extends CookieStorage {
+  constructor(private req: Request, private res: Response) {
+    super({ secure: process.env.NODE_ENV === "production" });
+  }
+
+  async get(key: string): Promise<string | null> {
+    return this.req.cookies[key];
+  }
+
+  async set(key: string, value: string): Promise<void> {
+    this.res.cookie(key, value, this.settings);
+  }
+
+  async clear(): Promise<void> {
+    for (const key in this.req.cookies) {
+      this.res.clearCookie(key);
+    }
+  }
+
+  async delete(key: string): Promise<void> {
+    this.res.clearCookie(key);
+  }
+}
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  req.storage = new ExpressCookieStorage(req, res);
+  req.civicAuth = new CivicAuth(req.storage, config);
+  next();
+});
+```
+
+**Authentication Flow**
+
+```typescript
+app.get("/", async (req: Request, res: Response) => {
+  const url = await req.civicAuth.buildLoginUrl();
+  res.redirect(url.toString());
+});
+
+app.get("/auth/callback", async (req: Request, res: Response) => {
+  const { code, state } = req.query as { code: string; state: string };
+  await req.civicAuth.resolveOAuthAccessCode(code, state);
+  res.redirect("/admin/dashboard");
+});
+```
+
+**Retrieving the Wallet Address**
+
+Once the user is authenticated, use `getWallets()` from `@civic/auth-web3/server` to retrieve the user's embedded wallet address(es):
+
+```typescript
+import { getWallets } from "@civic/auth-web3/server";
+
+app.get("/admin/dashboard", async (req: Request, res: Response) => {
+  const user = await req.civicAuth.getUser();
+  const tokens = await req.civicAuth.getTokens();
+
+  if (!user) return res.status(401).send("Unauthorized");
+
+  const userDetails = {
+    ...user,
+    idToken: tokens?.idToken || "",
+  };
+
+  const wallets = await getWallets(userDetails);
+
+  res.json({
+    user: user.name,
+    walletAddresses: wallets.map((wallet) => wallet.walletAddress),
+  });
+});
+```
+
+`getWallets()` returns an array of wallet objects, each with a `walletAddress` property.
+
+<Warning>
+  Do not decode the ID token JWT to retrieve the wallet address, and there is no `user.wallet` property — always use `getWallets()` from `@civic/auth-web3/server`.
+</Warning>
+
+**Auth Middleware**
+
+```typescript
+const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.civicAuth.isLoggedIn()) return res.status(401).send("Unauthorized");
+  next();
+};
+
+app.use("/admin", authMiddleware);
+```
+
+**TypeScript: Extending the Request Type**
+
+```typescript
+declare global {
+  namespace Express {
+    interface Request {
+      storage: ExpressCookieStorage;
+      civicAuth: CivicAuth;
+    }
+  }
+}
+```
+
 ## About Embedded Wallets
 
 ### What are Embedded Wallets?
@@ -137,6 +272,10 @@ The Civic Embedded Wallet Service is non-custodial, meaning neither Civic nor Ci
 Each wallet is linked to a user's SSO (Single Sign-On) provider, such as Google, ensuring that only authenticated users can sign transactions.
 
 Civic's wallets are EOA (Externally Owned Account) wallets, rather than smart contract (AKA account abstraction) wallets. This has benefits in terms of simplicity and lower gas costs. However, they can be upgraded to support account abstraction, for example to support gas sponsorship. Contact us in [our developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) if you're interested in this feature.
+
+<Info>
+  Metakeep uses industry-standard security measures such as Hardware Security Modules (HSMs) and FIPS 140-2-validated cryptographic silicon to maintain strict key isolation. Each wallet is linked to the user's email, and signatures require user consent. This design ensures that Metakeep cannot take control of a user's wallet or move assets without their approval — preserving true non-custodianship by design. The private keys never leave the secure hardware; even MetaKeep operators do not have access to the raw key data.
+</Info>
 
 ### **Recovery**
 
