@@ -18,7 +18,7 @@ You could use Civic's `embeddedWallet()` wagmi connector alongside other connect
 Neither Civic nor your app ever has access to the wallets' private keys.
 </Info>
 
-Here’s a basic example:
+Here's a basic example:
 
 <Check>
 Complete examples can be found on github:
@@ -150,7 +150,7 @@ const createWallet = () => {
 }
 ```
 
-then initiate the connection to the embedded wallet using Wagmi’s `connect` method.
+then initiate the connection to the embedded wallet using Wagmi's `connect` method.
 
 ```
 const { connectors, connect } = useConnect();
@@ -390,3 +390,7 @@ import { mainnet, polygon } from "viem/chains";
     }
 }}>
 ```
+
+<Note>
+  If you are having trouble connecting to the default RPC endpoints (e.g. timeouts, failed transactions), you can specify a custom RPC provider here. Find an alternative RPC endpoint for your chain and add it using the configuration above.
+</Note>
