@@ -213,6 +213,9 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
 
     1. When logging in with Civic, the signatures of the auth tokens are verified against Civic's JWKS public key to prove they come from Civic.
     2. When using Civic's Web3 features, the user is asked to sign blockchain transactions or messages using an email code and a non-custodial wallet private key, to prove they authorised the transaction.
+  <Accordion title="Does Civic Auth support multi-factor authentication (MFA)?">
+
+    MFA is not currently supported by Civic Auth. Authentication is handled via passkeys, email magic links, and social login providers (Google, Apple, X, etc.). These methods are inherently phishing-resistant and do not require a separate MFA step.
 
   </Accordion>
 </AccordionGroup>
