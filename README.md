@@ -37,7 +37,7 @@ Welcome to the Civic documentation repository\! This site powers our customer-fa
 
 ### For Non-Developers (Quick edits)
 
-Use the [Mintlify Web Editor](https://mintlify.com/docs/web-editor) for quick updates:
+Use the [Mintlify Web Editor](https://mintlify.com/docs/quickstart) for quick updates:
 
 1. Navigate to the [Mintlify dashboard](https://dashboard.mintlify.com/civic/civic)
 2. Select your documentation project
