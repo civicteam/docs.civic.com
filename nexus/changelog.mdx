@@ -5,6 +5,28 @@ icon: "pen"
 public: true
 ---
 
+<Update label="March 03, 2026" description="v0.1.106">
+
+**Features**
+- Linked skills support for profiles, allowing skills to be shared and reused across profiles
+- Automations can now use skills, enabling more powerful automated workflows
+- Disposable email addresses are now blocked during sign-up to improve account security
+
+**Improvements**
+- Improved handling of Unix epoch timestamps in the convert-timestamp tool
+- Updated scopes for better access control across integrations
+
+**Bug fixes**
+- Fixed an issue where long-running responses could be cut off prematurely
+- Fixed PayPal integration tool permissions
+- Fixed code-mode tool list not refreshing correctly after changes
+- Fixed skill persistence in code-mode so skills are retained between sessions
+- Fixed login issues for some users using client credentials authentication
+- Fixed app ordering and navigation in certain configurations
+- Fixed the single recipient only guardrail to correctly use allowlisting
+
+</Update>
+
 <Update label="February 27, 2026" description="v0.1.105">
 
 **Features**
