@@ -55,8 +55,8 @@ Want to integrate Civic into an existing Next.js project? Follow the guide below
 <Note>
 **Prerequisites:**
 1. **Next.js 14+ project** with App Router (Pages Router also supported)
-2. Civic account - [Create account](https://nexus.civic.com)
-3. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
+2. Civic account - [Create account](https://app.civic.com)
+3. Connect services at [app.civic.com](https://app.civic.com) (GitHub, Slack, etc.)
 4. Node.js 18+ installed
 5. Complete Civic Auth setup (see Access Token Setup below)
 </Note>
@@ -109,7 +109,7 @@ export const getCivicTools = async () => {
 
   try {
     const transport = new StreamableHTTPClientTransport(
-      new URL('https://nexus.civic.com/hub/mcp'), {
+      new URL('https://app.civic.com/hub/mcp'), {
         requestInit: {
           headers: {
             Authorization: `Bearer ${accessToken}`
@@ -204,7 +204,7 @@ const result = streamText({
   </Accordion>
   <Accordion title="Civic Endpoint">
     ```
-    https://nexus.civic.com/hub/mcp
+    https://app.civic.com/hub/mcp
     ```
   </Accordion>
 </AccordionGroup>
@@ -216,7 +216,7 @@ const result = streamText({
     Clone [ai-chatbot](https://github.com/civicteam/ai-chatbot) for a working example with UI, authentication, and streaming
   </Step>
   <Step title="Connect Your Services">
-    Visit [nexus.civic.com](https://nexus.civic.com) to connect GitHub, Slack, Notion, and other services
+    Visit [app.civic.com](https://app.civic.com) to connect GitHub, Slack, Notion, and other services
   </Step>
   <Step title="Test Tool Calls">
     Run locally and ask your AI to "list my GitHub repos" or "search Slack messages"

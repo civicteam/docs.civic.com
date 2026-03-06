@@ -19,7 +19,7 @@ This page covers the configuration options that matter most for agent deployment
 All agents connect to the same base URL:
 
 ```
-https://nexus.civic.com/hub/mcp
+https://app.civic.com/hub/mcp
 ```
 
 ### Query parameters
@@ -35,16 +35,16 @@ https://nexus.civic.com/hub/mcp
 
 ```
 # Use the "sales-agent" toolkit, locked (default)
-https://nexus.civic.com/hub/mcp?profile=sales-agent
+https://app.civic.com/hub/mcp?profile=sales-agent
 
 # Use the "assistant" toolkit but allow the AI to switch
-https://nexus.civic.com/hub/mcp?profile=assistant&lock=false
+https://app.civic.com/hub/mcp?profile=assistant&lock=false
 
 # Specify a toolkit and load additional skills
-https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,triage
+https://app.civic.com/hub/mcp?profile=support&skills=escalation,triage
 
 # Use a specific organization account
-https://nexus.civic.com/hub/mcp?profile=ops&accountId=org_abc123
+https://app.civic.com/hub/mcp?profile=ops&accountId=org_abc123
 ```
 
 ## Profile locking
@@ -71,7 +71,7 @@ Locking enforces a "stay in your lane" semantic — the AI can only use the tool
 Add `lock=false` to the connection URL to allow the AI to switch toolkits during the session:
 
 ```
-https://nexus.civic.com/hub/mcp?profile=default&lock=false
+https://app.civic.com/hub/mcp?profile=default&lock=false
 ```
 
 When unlocked:
@@ -107,7 +107,7 @@ When unlocked:
 You can pre-load skills into an agent session using the `skills` query parameter. Skills are reusable AI capabilities that encode business knowledge and workflows.
 
 ```
-https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
+https://app.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
 ```
 
 Skills are resolved from SKILL-type profiles on the account. If a skill alias doesn't match any profile, it is silently ignored.

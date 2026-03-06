@@ -73,7 +73,7 @@ access_token = "..."
 
 # Connect to Civic MCP Hub with Bearer auth
 server = MCPServerStreamableHTTP(
-    "https://nexus.civic.com/hub/mcp",
+    "https://app.civic.com/hub/mcp",
     headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
 )
 
@@ -103,7 +103,7 @@ async def search(body: dict, civic = Depends(civic_auth_dep)):
     access_token = tokens["access_token"]
     # Create a server per request (or reuse within a lifespan context)
     server = MCPServerStreamableHTTP(
-        "https://nexus.civic.com/hub/mcp",
+        "https://app.civic.com/hub/mcp",
         headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
     )
     agent = Agent("openai:gpt-4o", toolsets=[server])
@@ -123,7 +123,7 @@ from civic_auth.core import CivicAuth
 async def search():
     access_token = session.get(CivicAuth.ACCESS_TOKEN_KEY)
     server = MCPServerStreamableHTTP(
-        "https://nexus.civic.com/hub/mcp",
+        "https://app.civic.com/hub/mcp",
         headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
     )
     agent = Agent("openai:gpt-4o", toolsets=[server])
@@ -145,7 +145,7 @@ def search(request):
     access_token = request.session.get(CivicAuth.ACCESS_TOKEN_KEY)
     payload = json.loads(request.body)
     server = MCPServerStreamableHTTP(
-        "https://nexus.civic.com/hub/mcp",
+        "https://app.civic.com/hub/mcp",
         headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
     )
     agent = Agent("openai:gpt-4o", toolsets=[server])

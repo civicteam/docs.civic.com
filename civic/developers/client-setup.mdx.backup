@@ -20,8 +20,8 @@ All development tools require:
   <Card title="Node.js 18+" icon="node" href="https://nodejs.org">
     Required for the Hub Bridge - check with node --version
   </Card>
-  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
-    Create account and select your tools at nexus.civic.com
+  <Card title="Civic Account" icon="user" href="https://app.civic.com">
+    Create account and select your tools at app.civic.com
   </Card>
 </CardGroup>
 
@@ -33,7 +33,7 @@ Some development tools now support direct HTTP connections:
 
 <Steps>
   <Step title="Get MCP URL">
-    Sign in to nexus.civic.com and copy: https://nexus.civic.com/hub/mcp
+    Sign in to app.civic.com and copy: https://app.civic.com/hub/mcp
   </Step>
   <Step title="Configure Client">
     Add the URL as an HTTP endpoint in your client settings
@@ -176,13 +176,13 @@ Most development tools still require the **Hub Bridge** method:
 
 <Steps>
   <Step title="Get MCP URL">
-    Sign in to [nexus.civic.com](https://nexus.civic.com) and copy: https://nexus.civic.com/hub/mcp
+    Sign in to [app.civic.com](https://app.civic.com) and copy: https://app.civic.com/hub/mcp
   </Step>
 
   <Step title="Add to VS Code">
     1. Open VS Code Settings (File > Preferences > Settings)
     2. Search for "MCP"
-    3. Add server with Type: **http**, URL: https://nexus.civic.com/hub/mcp
+    3. Add server with Type: **http**, URL: https://app.civic.com/hub/mcp
   </Step>
 
   <Step title="Test Connection">
@@ -296,7 +296,7 @@ Most development tools still require the **Hub Bridge** method:
 
 <Steps>
   <Step title="Get MCP URL">
-    Sign in to [nexus.civic.com](https://nexus.civic.com) and copy: https://nexus.civic.com/hub/mcp
+    Sign in to [app.civic.com](https://app.civic.com) and copy: https://app.civic.com/hub/mcp
   </Step>
 
   <Step title="Configure Goose">
@@ -306,7 +306,7 @@ Most development tools still require the **Hub Bridge** method:
       servers:
         civic:
           type: http
-          url: https://nexus.civic.com/hub/mcp
+          url: https://app.civic.com/hub/mcp
           name: "Civic"
     ```
   </Step>
@@ -404,7 +404,7 @@ export CIVIC_BRIDGE_AUTH_TIMEOUT=300
     **Error:** OAuth flows fail or loop indefinitely
     
     **Solution:**
-    - Create account at [nexus.civic.com](https://nexus.civic.com) first
+    - Create account at [app.civic.com](https://app.civic.com) first
     - Check that default browser is set correctly
     - Corporate networks: try from personal network initially
     - Clear browser cache for civic.com domains
@@ -417,7 +417,7 @@ export CIVIC_BRIDGE_AUTH_TIMEOUT=300
   <Step title="Check the Basics">
     - Node.js version: node --version (must be 18+)
     - Hub Bridge status: npx @civic/hub-bridge --help
-    - Network connectivity to nexus.civic.com
+    - Network connectivity to app.civic.com
   </Step>
   
   <Step title="Try Debugging">
@@ -469,7 +469,7 @@ This allows different projects to have different MCP server configurations.
 - **Hub Bridge runs locally** - tokens never leave your machine except to make API calls
 - **Tokens are encrypted** using OS-level key storage
 - **OAuth scopes are minimal** - only request necessary permissions
-- **Revoke access anytime** at nexus.civic.com
+- **Revoke access anytime** at app.civic.com
 
 <Card title="Security Details" icon="shield-check" href="/civic/reference/security">
   Complete security documentation and compliance information
