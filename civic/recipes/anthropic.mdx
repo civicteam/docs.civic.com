@@ -21,8 +21,8 @@ Integrate Civic with Anthropic's Messages API using the **native MCP connector**
 <Note>
 **Prerequisites:**
 1. **Node.js 18+ project** (Next.js 14+ or any Node.js framework)
-2. Civic account - [Create account](https://nexus.civic.com)
-3. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
+2. Civic account - [Create account](https://app.civic.com)
+3. Connect services at [app.civic.com](https://app.civic.com) (GitHub, Slack, etc.)
 4. Anthropic API Key - Get yours at [console.anthropic.com](https://console.anthropic.com)
 5. Complete Civic Auth setup (see Access Token Setup below)
 </Note>
@@ -88,7 +88,7 @@ async function createMessage(userMessage: string) {
     mcp_servers: [
       {
         type: 'url',
-        url: 'https://nexus.civic.com/hub/mcp',
+        url: 'https://app.civic.com/hub/mcp',
         name: 'civic',
         authorization_token: accessToken,
       },
@@ -148,7 +148,7 @@ export async function POST(req: NextRequest) {
       mcp_servers: [
         {
           type: 'url',
-          url: 'https://nexus.civic.com/hub/mcp',
+          url: 'https://app.civic.com/hub/mcp',
           name: 'civic',
           authorization_token: accessToken,
         },
@@ -185,7 +185,7 @@ const stream = await client.messages.create({
   mcp_servers: [
     {
       type: 'url',
-      url: 'https://nexus.civic.com/hub/mcp',
+      url: 'https://app.civic.com/hub/mcp',
       name: 'civic',
       authorization_token: accessToken,
     },
@@ -212,7 +212,7 @@ Restrict which tools Claude can use:
 mcp_servers: [
   {
     type: 'url',
-    url: 'https://nexus.civic.com/hub/mcp',
+    url: 'https://app.civic.com/hub/mcp',
     name: 'civic',
     authorization_token: accessToken,
     tool_configuration: {
@@ -248,7 +248,7 @@ mcp_servers: [
     mcp_servers: [
       {
         type: 'url',
-        url: 'https://nexus.civic.com/hub/mcp',
+        url: 'https://app.civic.com/hub/mcp',
         name: 'civic',
         authorization_token: accessToken, // Civic access token
       },
@@ -315,7 +315,7 @@ Amazon Bedrock and Google Vertex integrations are not yet supported.
     Try "list my GitHub repos" or "search Slack messages about X"
   </Step>
   <Step title="Connect More Services">
-    Visit [nexus.civic.com](https://nexus.civic.com) to connect additional tools
+    Visit [app.civic.com](https://app.civic.com) to connect additional tools
   </Step>
   <Step title="Configure Tool Access">
     Use tool_configuration to restrict which tools Claude can use

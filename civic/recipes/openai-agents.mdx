@@ -21,8 +21,8 @@ Integrate Civic with OpenAI Agents SDK using the `hostedMcpTool()` approach. Thi
 <Note>
 **Prerequisites:**
 1. **Node.js 18+ project** (Next.js 14+ or any Node.js framework)
-2. Civic account - [Create account](https://nexus.civic.com)
-3. Connect services at [nexus.civic.com](https://nexus.civic.com) (GitHub, Slack, etc.)
+2. Civic account - [Create account](https://app.civic.com)
+3. Connect services at [app.civic.com](https://app.civic.com) (GitHub, Slack, etc.)
 4. OpenAI API Key - Get yours at [platform.openai.com](https://platform.openai.com)
 5. Complete Civic Auth setup (see Access Token Setup below)
 </Note>
@@ -86,7 +86,7 @@ async function createCivicAgent() {
     tools: [
       hostedMcpTool({
         serverLabel: 'civic',
-        serverUrl: 'https://nexus.civic.com/hub/mcp',
+        serverUrl: 'https://app.civic.com/hub/mcp',
         authorization: {
           type: 'bearer',
           token: accessToken
@@ -157,7 +157,7 @@ export async function POST(req: NextRequest) {
       tools: [
         hostedMcpTool({
           serverLabel: 'civic',
-          serverUrl: 'https://nexus.civic.com/hub/mcp',
+          serverUrl: 'https://app.civic.com/hub/mcp',
           authorization: {
             type: 'bearer',
             token: accessToken
@@ -215,7 +215,7 @@ const agent = new Agent({
   tools: [
     hostedMcpTool({
       serverLabel: 'civic',
-      serverUrl: 'https://nexus.civic.com/hub/mcp',
+      serverUrl: 'https://app.civic.com/hub/mcp',
       authorization: {
         type: 'bearer',
         token: accessToken
@@ -267,7 +267,7 @@ const agent = new Agent({
   </Accordion>
   <Accordion title="Civic Endpoint">
     ```
-    https://nexus.civic.com/hub/mcp
+    https://app.civic.com/hub/mcp
     ```
   </Accordion>
 </AccordionGroup>
@@ -289,7 +289,7 @@ const agent = new Agent({
     Try "list my GitHub repos" or "search Slack messages about X"
   </Step>
   <Step title="Connect More Services">
-    Visit [nexus.civic.com](https://nexus.civic.com) to connect additional tools
+    Visit [app.civic.com](https://app.civic.com) to connect additional tools
   </Step>
   <Step title="Add Streaming">
     Implement real-time responses with the stream option
