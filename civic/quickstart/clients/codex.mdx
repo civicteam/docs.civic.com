@@ -50,6 +50,38 @@ Codex uses Model Context Protocol (MCP) to talk to external tools. Civic exposes
   </Step>
 </Steps>
 
+## Connecting via Remote URL (HTTP)
+
+If you prefer not to use the Hub Bridge, Codex supports connecting to Civic directly over HTTP — either via the CLI or the desktop app.
+
+### Option A — CLI
+
+**Step 1** — Register the remote MCP server:
+
+```bash
+codex mcp add civic --transport http https://nexus.civic.com/hub/mcp
+```
+
+**Step 2** — Launch Codex:
+
+```bash
+codex
+```
+
+**Step 3** — Run `/mcp`, select `civic`, and follow the browser sign-in flow to authorize.
+
+### Option B — Desktop App
+
+You can also register the MCP server via the Codex desktop app UI:
+
+1. Open **Settings → MCP Servers → Add Server → Streamable HTTP**
+2. Paste your `CIVIC_URL` and `CIVIC_TOKEN`
+3. Save — you are ready to go.
+
+**Use Remote URL when:** you cannot run local Node.js processes, prefer no local software, or connect from multiple devices.
+
+**Use Hub Bridge when:** you need offline capability or your environment restricts outbound HTTPS to remote MCP servers.
+
 ## Verify the Connection
 
 - In Codex, run `/mcp` again to check that `civic` shows as `connected`
@@ -77,4 +109,3 @@ Codex uses Model Context Protocol (MCP) to talk to external tools. Civic exposes
     Ask setup questions in our developer Slack
   </Card>
 </CardGroup>
-
