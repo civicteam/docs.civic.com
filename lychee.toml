@@ -39,6 +39,9 @@ exclude = [
   '^mailto:',
   '^tel:',
 
+  # civic.com fragments (client-side rendered, not detectable by lychee)
+  '^https?://(www\.)?civic\.com/#',
+
   # Application protocol links
   '^cursor://',
   '^vscode:',
