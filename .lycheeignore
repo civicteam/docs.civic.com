@@ -34,7 +34,7 @@ https://github.com/civicteam/mcp-tools
 https://github.com/civicteam/bodyguard
 # Private labs links
 # not deployed yet
-https://nexus.civic.com/bodyguard/ui
+https://app.civic.com/bodyguard/ui
 # NPM page returning error
 https://www.npmjs.com/package/@civic/auth-mcp#-framework-agnostic-usage
 # WebAuthn.io timing out in CI. Skipping for now.
