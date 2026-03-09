@@ -10,6 +10,12 @@ Civic can be integrated natively into third-party applications — MCP clients, 
 
 A native integration embeds Civic capabilities directly into your application's runtime. Instead of relying on the LLM to surface authorization links and wait for manual user action, your application can intercept these flows, handle them programmatically, and return results transparently.
 
+## OpenAI Strict Mode
+
+<Warning>
+Not all Civic tool schemas are compatible with OpenAI's [`strict: true` structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs). If using the Responses API, ensure `strict` is set to `false` when calling Civic tools.
+</Warning>
+
 ## Available integration guides
 
 <CardGroup cols={1}>
