@@ -160,3 +160,67 @@ See the [Civic tokens](/civic/concepts/tokens) page for detailed instructions on
     Ask questions in our developer Slack
   </Card>
 </CardGroup>
+
+## LangChain (LangGraph)
+
+You can connect a LangGraph agent to Civic using the `langchain-mcp-adapters` package, which bridges LangGraph's tool interface with Civic's Streamable HTTP MCP transport.
+
+### Prerequisites
+
+* Python 3.11+
+* A Civic account with a configured toolkit
+* A Civic token generated from [nexus.civic.com](https://nexus.civic.com/)
+* An LLM API key (e.g. Anthropic)
+
+### Installation
+
+```
+pip install langgraph langchain-anthropic langchain-mcp-adapters
+```
+
+### Connecting to Civic
+
+Use `MultiServerMCPClient` to connect your agent to the Civic MCP hub over Streamable HTTP, then pass the discovered tools to your LangGraph graph:
+
+```python
+import os
+from langchain_anthropic import ChatAnthropic
+from langchain_mcp_adapters.client import MultiServerMCPClient
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import MessagesState, StateGraph, START
+from langgraph.prebuilt import ToolNode, tools_condition
+
+async def create_agent():
+    client = MultiServerMCPClient({
+        "civic-nexus": {
+            "transport": "streamable_http",
+            "url": os.environ["CIVIC_URL"],
+            "headers": {"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+        }
+    })
+    tools = await client.get_tools()
+    model = ChatAnthropic(model="claude-sonnet-4-5").bind_tools(tools)
+
+    def call_model(state: MessagesState):
+        return {"messages": [model.invoke(state["messages"])]}
+
+    graph = (
+        StateGraph(MessagesState)
+        .add_node("agent", call_model)
+        .add_node("tools", ToolNode(tools))
+        .add_edge(START, "agent")
+        .add_conditional_edges("agent", tools_condition)
+        .add_edge("tools", "agent")
+        .compile(checkpointer=MemorySaver())
+    )
+    return graph
+```
+
+### Environment Variables
+
+| Variable | Description |
+| --- | --- |
+| `CIVIC_URL` | Your full Civic toolkit URL (e.g. `https://nexus.civic.com/hub/mcp?accountId=...&profile=...`) |
+| `CIVIC_TOKEN` | A Civic token generated from [nexus.civic.com](https://nexus.civic.com/) |
+
+A complete reference implementation including a FastAPI chat UI is available at [github.com/titus-civic/langchain-nexus-reference-implementation](https://github.com/titus-civic/langchain-nexus-reference-implementation).
