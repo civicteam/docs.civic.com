@@ -231,6 +231,12 @@ const agent = new Agent({
 });
 ```
 
+## Strict Mode
+
+<Warning>
+Not all Civic tool schemas are compatible with OpenAI's [`strict: true` structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs). Ensure `strict` is set to `false` on the Responses API when using Civic tools.
+</Warning>
+
 ## Key Advantages
 
 <CardGroup cols={2}>
