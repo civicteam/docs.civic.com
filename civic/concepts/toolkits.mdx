@@ -139,6 +139,20 @@ If you're using Civic Chat or managing multiple toolkits, you can switch between
     Toolkit URLs are tied to your account's authentication. Team members will need their own toolkit configurations, but you can share the concept and tool combinations.
   </Accordion>
 
+  <Accordion title="Connecting the Same Service with Multiple Accounts">
+    Each toolkit maintains its own set of authorizations. This means you can connect the same MCP server (for example, Slack) to multiple toolkits using different credentials — such as one toolkit for your own workspace and another for a client's workspace.
+
+    **To connect the same service with different credentials across toolkits:**
+
+    1. Switch to the first toolkit using the toolkit selector in the top navigation.
+    2. Add the MCP server for the service.
+    3. Go to Authorizations, find the MCP you just installed and click on it. When it opens you will see a card that says Level: Authorization access level. Click the drop down and select Toolkit level.
+    4. Complete the OAuth authorization flow. The credentials are stored against this toolkit only.
+    5. Switch to your second toolkit and repeat steps 2-4 with the different account credentials.
+
+    Each toolkit stores its authorizations independently, so updating or revoking access in one toolkit does not affect the others.
+  </Accordion>
+
   <Accordion title="Default vs Toolkit URLs">
     - **Default URL:** Gives access to ALL your connected tools
     - **Toolkit URL:** Gives access to ONLY the tools in that specific toolkit
