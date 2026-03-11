@@ -1,0 +1,30 @@
+---
+title: IMAP
+description: Read, search, and manage email via the IMAP protocol
+icon: "server"
+---
+
+## Overview
+
+The IMAP server enables AI assistants to access and manage email accounts using the IMAP protocol, supporting reading, searching, organizing, and deleting messages across any IMAP-compatible email provider.
+
+<Card title="Add to Civic" icon="plus" href="https://nexus.civic.com">
+  Connect IMAP at nexus.civic.com
+</Card>
+
+## Available Tools (11)
+
+| Tool | Description |
+|------|-------------|
+| `copy_emails` | Copy emails to a different folder, keeping originals in place |
+| `delete_emails` | Delete emails by UID (soft delete to Trash or permanent) |
+| `get_attachment` | Download a specific attachment by filename from an email |
+| `get_email` | Fetch complete email content including body, all headers, and CC/BCC recipients |
+| `get_email_headers` | Lightweight header-only fetch (subject, sender, date, Message-ID, etc.) |
+| `get_folder_status` | Retrieve folder statistics including total messages and unread count |
+| `list_attachments` | List attachment metadata for an email (filename, MIME type, size) |
+| `list_emails` | List emails in a folder with pagination, returning newest first |
+| `list_folders` | List all folders and mailboxes in the IMAP account |
+| `mark_emails` | Mark emails as read/unread or flagged/unflagged |
+| `move_emails` | Move emails to a different folder, removing them from the source |
+| `search_emails` | Advanced email search with filters for sender, subject, date, body, and flags |

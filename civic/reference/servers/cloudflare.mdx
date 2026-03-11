@@ -1,0 +1,142 @@
+---
+title: Cloudflare
+description: "Connect to Cloudflare's suite of developer and security tools including Workers, AI Gateway, CASB, Radar, and more"
+icon: "server"
+---
+
+## Overview
+
+Cloudflare's MCP suite gives AI assistants access to 14 specialized servers spanning infrastructure management, security observability, developer tooling, and global internet intelligence. Connect to the servers you need to manage Workers, inspect audit logs, analyze DNS, scan URLs, and more — all from within Civic.
+
+<Card title="Add to Civic" icon="plus" href="https://nexus.civic.com">
+  Connect Cloudflare at nexus.civic.com
+</Card>
+
+## cloudflare-ai-gateway
+
+Monitor and manage Cloudflare AI Gateway — the proxy layer for AI provider requests.
+
+| Tool | Description |
+|------|-------------|
+| `accounts_list` | List all accounts in your Cloudflare account |
+| `list_gateways` | List AI gateways |
+| `list_logs` | List logs for a gateway |
+| `get_log_details` | Get details for a single log entry |
+| `get_log_request_body` | Get the request body for a log entry |
+| `get_log_response_body` | Get the response body for a log entry |
+| `set_active_account` | Set the active account for subsequent tool calls |
+
+## cloudflare-audit-logs
+
+Query audit logs across your Cloudflare account to track actor activity and configuration changes.
+
+| Tool | Description |
+|------|-------------|
+| `accounts_list` | List all accounts in your Cloudflare account |
+| `auditlogs_by_account_id` | Find audit logs for an account within a time slice |
+| `set_active_account` | Set the active account for subsequent tool calls |
+
+## cloudflare-autorag
+
+Search documents stored in Cloudflare AutoRAG vector stores using semantic or AI-powered search.
+
+| Tool | Description |
+|------|-------------|
+| `accounts_list` | List all accounts in your Cloudflare account |
+| `list_rags` | List AutoRAG vector stores |
+| `search` | Search documents using AutoRAG |
+| `ai_search` | AI-powered search over AutoRAG documents |
+| `set_active_account` | Set the active account for subsequent tool calls |
+
+## cloudflare-browser-rendering
+
+Render web pages in a headless browser to retrieve HTML, Markdown, or screenshots.
+
+| Tool | Description |
+|------|-------------|
+| `accounts_list` | List all accounts in your Cloudflare account |
+| `get_url_html_content` | Get a page's raw HTML content |
+| `get_url_markdown` | Get a page converted to Markdown |
+| `get_url_screenshot` | Take a screenshot of a page |
+| `set_active_account` | Set the active account for subsequent tool calls |
+
+## cloudflare-casb
+
+Inspect SaaS integration assets and security findings via Cloudflare CASB (Cloud Access Security Broker).
+
+| Tool | Description |
+|------|-------------|
+| `accounts_list` | List all accounts in your Cloudflare account |
+| `integrations_list` | List all Cloudflare One integrations |
+| `integration_by_id` | Analyze a specific integration by ID |
+| `assets_list` | List all discovered assets |
+| `assets_search` | Search assets by keyword |
+| `asset_by_id` | Get a specific asset by ID |
+| `assets_by_integration_id` | List assets for a specific integration |
+| `assets_by_category_id` | List assets by category |
+| `asset_categories_list` | List all asset categories |
+| `asset_categories_by_type` | Filter asset categories by type |
+| `asset_categories_by_vendor` | List asset categories by vendor |
+| `asset_categories_by_vendor_and_type` | Filter asset categories by vendor and type |
+| `set_active_account` | Set the active account for subsequent tool calls |
+
+## cloudflare-documentation
+
+Search Cloudflare's official documentation and access migration guides.
+
+| Tool | Description |
+|------|-------------|
+| `search_cloudflare_documentation` | Search Cloudflare docs for any product or feature |
+| `migrate_pages_to_workers_guide` | Read the Pages-to-Workers migration guide |
+
+## cloudflare-observability
+
+Query Workers Observability logs and metrics, and inspect Worker code.
+
+| Tool | Description |
+|------|-------------|
+| `accounts_list` | List all accounts in your Cloudflare account |
+| `workers_list` | List all Workers in the account |
+| `workers_get_worker` | Get details for a specific Worker |
+| `workers_get_worker_code` | Get the source code of a Worker |
+| `query_worker_observability` | Query Workers Observability logs and metrics |
+| `observability_keys` | Find field keys in Workers Observability data |
+| `observability_values` | Find field values in Workers Observability data |
+| `search_cloudflare_documentation` | Search Cloudflare documentation |
+| `migrate_pages_to_workers_guide` | Read the Pages-to-Workers migration guide |
+| `set_active_account` | Set the active account for subsequent tool calls |
+
+## cloudflare-radar
+
+Access Cloudflare Radar's global internet intelligence including traffic trends, attack data, domain rankings, and IP/AS details.
+
+| Tool | Description |
+|------|-------------|
+| `accounts_list` | List all accounts in your Cloudflare account |
+| `get_http_data` | Retrieve HTTP traffic trends |
+| `get_l3_attack_data` | Retrieve network layer (L3) attack trends |
+| `get_l7_attack_data` | Retrieve application layer (L7) attack trends |
+| `get_dns_queries_data` | Retrieve DNS query trends from the 1.1.1.1 resolver |
+| `get_internet_quality_data` | Get bandwidth, latency, and DNS response time data |
+| `get_traffic_anomalies` | Get traffic anomalies and outages |
+| `get_domains_ranking` | Get top or trending domains |
+| `get_ip_details` | Get information about an IP address |
+| `scan_url` | Submit a URL for scanning |
+| `set_active_account` | Set the active account for subsequent tool calls |
+
+## cloudflare-workers-bindings
+
+Manage Cloudflare Workers and their storage bindings: D1 databases, KV namespaces, R2 buckets, and Hyperdrive configurations.
+
+| Tool | Description |
+|------|-------------|
+| `accounts_list` | List all accounts in your Cloudflare account |
+| `workers_list` | List all Workers in the account |
+| `workers_get_worker` | Get details for a specific Worker |
+| `d1_databases_list` | List all D1 databases |
+| `d1_database_query` | Run a SQL query against a D1 database |
+| `kv_namespaces_list` | List all KV namespaces |
+| `r2_buckets_list` | List all R2 buckets |
+| `hyperdrive_configs_list` | List Hyperdrive configurations |
+| `search_cloudflare_documentation` | Search Cloudflare documentation |
+| `set_active_account` | Set the active account for subsequent tool calls |

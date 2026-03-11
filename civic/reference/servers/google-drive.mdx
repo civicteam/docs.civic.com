@@ -45,6 +45,10 @@ The Google Drive server enables AI assistants to interact with [Google Drive](ht
 
 ## Available Tools (4)
 
+<Note>
+**Security note:** This server does not include file deletion tools. `create_drive_file` can write new files to any accessible folder including shared drives. For automated agents in shared drive environments, consider guardrails to restrict folder destinations. See [Guardrails](/civic/concepts/guardrails).
+</Note>
+
 <AccordionGroup>
   <Accordion title="search_drive_files">
     Search for files and folders using Google Drive search operators. Supports searching in My Drive, shared drives, and all accessible drives. Returns file details including ID, name, type, size, modified time, and Drive web link.

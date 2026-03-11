@@ -1,0 +1,44 @@
+---
+title: Grafana
+description: Observability platform for dashboards, metrics, logs, traces, alerting, and incident management
+icon: "server"
+---
+
+## Overview
+
+The Grafana server provides access to Grafana's full observability stack, including dashboards, Prometheus metrics, Loki logs, Tempo traces, Pyroscope profiles, alert rules, incidents, and OnCall scheduling.
+
+<Card title="Add to Civic" icon="plus" href="https://nexus.civic.com">
+  Connect Grafana at nexus.civic.com
+</Card>
+
+## Available Tools (56)
+
+| Tool | Description |
+|------|-------------|
+| `search_dashboards` | Search for Grafana dashboards by a query string |
+| `get_dashboard_by_uid` | Retrieve the complete dashboard JSON for a specific dashboard by UID |
+| `get_dashboard_summary` | Get a compact summary of a dashboard without the full JSON |
+| `get_dashboard_panel_queries` | Retrieve panel queries and information from a Grafana dashboard |
+| `update_dashboard` | Create or update a dashboard using full JSON or patch operations |
+| `list_datasources` | List available Grafana datasources, optionally filtered by type |
+| `query_prometheus` | Query Prometheus using a PromQL expression (instant or range) |
+| `list_prometheus_metric_names` | List metric names in a Prometheus datasource |
+| `query_loki_logs` | Execute a LogQL query against a Loki datasource |
+| `list_loki_label_names` | List all available label names in a Loki datasource |
+| `create_alert_rule` | Create a new Grafana alert rule |
+| `update_alert_rule` | Update an existing Grafana alert rule by UID |
+| `delete_alert_rule` | Delete a Grafana alert rule by UID |
+| `list_alert_rules` | List Grafana alert rules with summary including state and labels |
+| `list_contact_points` | List Grafana notification contact points |
+| `get_annotations` | Fetch Grafana annotations using filters |
+| `create_annotation` | Create a new annotation on a dashboard or panel |
+| `generate_deeplink` | Generate deeplink URLs for dashboards, panels, or Explore queries |
+| `list_incidents` | List Grafana incidents with optional filtering |
+| `get_incident` | Get a single incident by ID |
+| `create_incident` | Create a new Grafana incident |
+| `add_activity_to_incident` | Add a note to an existing incident's timeline |
+| `list_oncall_schedules` | List Grafana OnCall schedules, optionally filtered by team |
+| `get_current_oncall_users` | Get the users currently on-call for a specific schedule |
+| `find_error_pattern_logs` | Search Loki logs for elevated error patterns vs the last day's average |
+| `find_slow_requests` | Search Tempo datasources for slow requests |

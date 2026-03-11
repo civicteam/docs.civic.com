@@ -65,6 +65,10 @@ The Google Calendar server enables AI assistants to interact with [Google Calend
   </Accordion>
 </AccordionGroup>
 
+<Warning>
+**High-risk tools:** `delete_event` permanently removes calendar events. `modify_event` can alter attendee lists, times, and conference details. For automated agents, consider adding guardrails to block these tools or restrict them to specific calendars. See [Guardrails](/civic/concepts/guardrails).
+</Warning>
+
 ### Event Modification
 
 <AccordionGroup>
