@@ -1,0 +1,467 @@
+# Civic Docs Revamp — Living Plan
+
+**Branch:** `dev/docs-revamp-civic-hub`
+**Goal:** Reframe developer docs around the ICP and Civic's actual product story. Enable any developer to go live in under 10 minutes.
+**Status:** Structure approved, partial implementation in progress.
+
+---
+
+## Context: ICP
+
+**ICP 1: Agent Builders With Real Data at Risk**
+- Technically capable devs connecting agents to Google Workspace (Gmail, Drive, Calendar)
+- Want: least-privilege access, auditability, instant revocation — without building their own security layer
+- Fear: over-permissioning, prompt injection, breaking production, racking up API bills
+- Secondary fear: no audit trail, can't trace what agent did, can't kill it fast
+- Size: 1–50 employees, < $1k/month budget
+- Lives on: GitHub, X, YouTube, LinkedIn
+
+---
+
+## Product Truth (Source of Record)
+
+**Civic** = security layer for AI agents. Control plane providing compliance and guardrails to make tool-using agents safe, auditable, and compliant.
+
+**Four pillars:**
+1. **Connectivity** — Connect agents to **85** MCP servers (not "70+" or "100+")
+2. **Auditability** — Civic Chat returns: aggregated summary, line-by-line tool calls with timestamps, or CSV export (up to 5,000 lines)
+3. **Access Control** — Guardrails per tool/server/toolkit; OAuth scope enforcement; secret management
+4. **Safety** — Instant revocation at any granularity. By design via Chat only (not API) to prevent agents self-revoking
+
+**Civic Hub** = the MCP gateway. Controls agent connections, enforces guardrails and auditability, handles revocation. Core infrastructure, not a separate product name.
+
+**Civic Chat** = Primary control plane (NOT a demo/test interface). Three agent modes:
+- **Configurator Agent**: set up toolkits, guardrails, secrets via natural language
+- **Audit Agent**: query audit logs, summaries, CSV exports
+- **Revocation Agent**: instantly revoke access at any granularity
+- Endpoint is protected — separated from the AI agent layer by design
+- Consumes credits (same pool as tool calls)
+- Accessible at nexus.civic.com when logged in
+
+**Secret Management**: Civic stores OAuth tokens, API keys, Bearer tokens on behalf of devs/builders/users. Secrets are never exposed to the AI agent — only accessible by tools communicating through the Hub. Added via UI or Configurator Agent.
+
+**Hub Bridge**: Legacy local proxy for clients that don't support HTTP streaming. **Do NOT feature** — mention only for specific edge cases (clients with no HTTP streaming support).
+
+**Civic Auth**: Separate product (user authentication for apps). Integrated into main product but keeps its own tab in docs. Keep tab structure as-is.
+
+**Free Trial**: 10,000 credits, 14 days (whichever comes first). Paid plans: $25/mo (30k credits), $99/mo (100k), $199/mo (450k). Credits consumed by tool calls and Configurator Agent chat.
+
+**nexus.civic.com**: Current product URL. Leave as-is in all docs (rename planned later, not our concern now).
+
+**Onboarding**: Users go through an onboarding flow at nexus.civic.com where they select their AI agent framework and tools. After onboarding, they can configure guardrails in chat or UI, access audit trails via chat (UI coming soon), trigger revocation in chat or UI.
+
+---
+
+## Toolkits vs Skills (critical distinction)
+
+**Toolkits (Profiles)**: A collection of MCP servers organized for a specific workflow. Defines *what tools* are available. Types: CHAT, SCHEDULED, SKILL. One active at a time — switching replaces the entire context.
+
+**Skills** (loaded via `load-skill` tool): A reusable AI capability with detailed instructions + business context. Defines *how* to use tools. Loaded *on top of* the current toolkit without replacing it. Multiple skills can be active simultaneously.
+
+| | Toolkit | Skill |
+|---|---|---|
+| What it is | A set of tools (MCP servers) | A set of instructions/context |
+| How it works | Switch **to** it | Load **on top of** current toolkit |
+| Purpose | Defines *what tools* are available | Defines *how* to use them |
+| Replaces context? | Yes | No — layers on top |
+| Multiple at once? | No | Yes |
+| Example | "Support" toolkit with Gmail + Slack | "Escalation Procedures" skill |
+
+**Toolkit URL params** (from `agents.mdx` — accurate, keep):
+- `profile` — toolkit alias
+- `lock` — default true when profile set; hides switch_profile tool, blocks guardrail modification
+- `skills` — comma-separated skill aliases to pre-load
+- `accountId` — for multi-account users
+
+---
+
+## Platform Features to Document (Standalone Tools)
+
+From the tools reference (`/Users/titus/Code/scratchpad/mcp-tools-reference.md`):
+
+**`memory-access-memory`**: Persistent cross-session semantic memory. Actions: `write` (keywords: use `GLOBAL_USER_STATE` for global persistence), `search` (UUID or semantic query), `delete` (by UUID). Search before writing to avoid duplicates. Hide `memory-clear-all` and `memory-internal-debug` from end users via Hook_Filter.
+
+**`store-save`**: Temporary/permanent file store returning a download URL. Patterns: (1) raw content + MIME type + optional TTL (1d/7d/30d/permanent), (2) resourceUri auto-fetch, (3) `ref:store://...` prefix for piping data between tool calls. Civic auto-stores oversized outputs and returns store:// reference.
+
+**Memory vs Store**: Memory = agent's brain (long-term knowledge). Store = agent's clipboard (data pipeline).
+
+**`load-skill`**: Loads a skill profile into the current session.
+**`help`**: Guided platform help with semantic search over Civic documentation.
+**`continue_job`**: Resumes a job after browser auth interruption.
+
+**EXCLUDED intentionally**: `task-manage-tasks` (scheduling) — handled at the agent layer, not documented in Civic docs.
+
+---
+
+## Approved Navigation Structure (Civic Tab Only)
+
+Auth and Labs tabs are out of scope for this revamp.
+
+```
+Civic Tab
+│
+├── [Introduction]                 ← no group label, just the page
+│   └── index                      REWRITE: security-first, 4 pillars, 85 servers
+│
+├── Quickstart                     "Go live in 10 minutes"
+│   ├── quickstart/index           REWRITE: 3 paths (Chat / Integrate / Try now)
+│   ├── quickstart/civic-chat      REWRITE: Control Plane (configure/audit/revoke)
+│   └── quickstart/credentials     NEW PAGE
+│
+├── Integrate                      flat list — all connection points, no sub-groups
+│   ├── recipes/langchain          NEW PAGE (extracted from agents.mdx)
+│   ├── recipes/vercel-ai-sdk      existing, minor updates
+│   ├── recipes/anthropic          ✅ updated (beta header fixed)
+│   ├── recipes/openai-agents      existing
+│   ├── recipes/openai-sdk         existing
+│   ├── recipes/python-pydantic    existing
+│   ├── clients/claude-desktop     existing, good
+│   ├── clients/claude-web         existing
+│   ├── clients/cursor             existing
+│   ├── clients/vscode             existing
+│   ├── clients/claude-code        existing
+│   ├── clients/goose              existing
+│   ├── clients/openclaw           existing, needs accuracy fixes
+│   ├── clients/gemini             ✅ written
+│   ├── clients/jetbrains          ✅ written (mcp-remote bridge, Node 20+)
+│   ├── clients/windsurf           ✅ written (native HTTP, serverUrl)
+│   ├── clients/mistral-lechat     existing
+│   ├── clients/chatgpt            ✅ written (honest: dev mode / admin only)
+│   ├── clients/codex              UPDATE: HTTP primary, Hub Bridge demoted to legacy note
+│   └── clients/agents             UPDATE: rename "Agent Deployment", remove LangChain section
+│
+├── Security                       NEW top-level group (ICP's core concern)
+│   ├── concepts/guardrails        existing, solid — minor additions
+│   ├── concepts/secret-management NEW PAGE
+│   ├── concepts/audit             NEW PAGE
+│   ├── concepts/revocation        NEW PAGE
+│   ├── concepts/prompt-injection  GRADUATE from labs/concepts/prompt-injection
+│   └── reference/security         existing, move from Reference group
+│
+├── Authentication
+│   ├── concepts/oauth             existing
+│   ├── concepts/tokens            existing
+│   ├── native-integration/index   new builders → use Civic Auth
+│   ├── native-integration/authorization
+│   └── native-integration/civic-auth-capability  existing auth → token exchange
+│
+├── Organize & Scale
+│   ├── concepts/toolkits          existing, needs skills comparison added
+│   ├── concepts/skills            NEW PAGE
+│   ├── organizations              existing — currently NOT in nav, add it
+│   └── reference/authorizations   existing, move from Getting Started
+│
+└── Reference
+    ├── reference/client-compatibility  UPDATE: remove Experimental labels
+    ├── concepts/mcp               existing
+    ├── concepts/tools-resources-prompts  existing
+    ├── concepts/connection-methods  existing (mention Hub Bridge here as edge case)
+    ├── concepts/hooks             GRADUATE from labs/concepts/hooks
+    ├── MCP Servers (sub-group)
+    │   ├── reference/servers      UPDATE: fix server count to 85
+    │   └── [all 85 individual server pages — see below for Google Workspace updates]
+    ├── troubleshooting            existing
+    ├── billing                    UPDATE: fix duplicate accordion, add Configurator credit note
+    └── changelog                  existing
+```
+
+---
+
+## New Pages: Content Briefs
+
+### `quickstart/credentials.mdx`
+**Title**: "Get Your Credentials"
+**Purpose**: Answer "what do I actually need before I can connect?" in one place.
+**Content**:
+- Your MCP URL: `https://nexus.civic.com/hub/mcp` (always the same base)
+- URL params: `?profile=your-toolkit` to lock to a specific toolkit, `?accountId=` for orgs
+- How to get a Civic token (for agents/automation): nexus.civic.com → Settings → Tokens → Generate
+- Token expiry: 30 days, must regenerate
+- OAuth vs Token: OAuth = for interactive clients (Claude Desktop etc.); Token = for agents/automation
+- For new builders: recommend Civic Auth to identify users → links to Auth tab
+- For existing auth providers: token exchange → links to Authentication section
+- Quick table: client type → recommended credential method
+
+### `recipes/langchain.mdx`
+**Title**: "LangChain / LangGraph"
+**Purpose**: First-class integration guide for LangChain, extracted and expanded from agents.mdx
+**Content** (source: agents.mdx LangChain section at line 164):
+- Prerequisites: Python 3.11+, Civic account + token, LLM API key
+- Install: `pip install langgraph langchain-anthropic langchain-mcp-adapters`
+- Full code example using `MultiServerMCPClient` with `streamable_http` transport
+- Environment variables: `CIVIC_URL` (full URL with params), `CIVIC_TOKEN`
+- Note on toolkit locking for production agents: use `?profile=your-toolkit` in CIVIC_URL
+- Reference implementation: github.com/titus-civic/langchain-nexus-reference-implementation
+- Links to: Agent Deployment page (profile locking), Guardrails, Audit
+
+### `concepts/secret-management.mdx`
+**Title**: "Secret Management"
+**Purpose**: Explain how Civic stores and isolates secrets — a core safety value prop.
+**Content**:
+- What Civic manages: OAuth tokens, API keys, Bearer tokens, custom credentials
+- The isolation guarantee: secrets are never passed to the AI agent; only the Hub can access them to make tool calls
+- How to add secrets: via nexus.civic.com UI or via Configurator Agent in Civic Chat
+- Supported credential types with examples (OAuth via authorization flow, API key via input, Bearer token via input)
+- What the agent sees vs what the Hub sees (diagram or comparison)
+- Rotation: OAuth tokens auto-refresh; API keys require manual update; tokens expire in 30 days
+- What happens on revocation: the credential is severed immediately at the Hub level
+- Why this matters for the ICP: your agent can't leak what it never saw
+
+### `concepts/audit.mdx`
+**Title**: "Audit & Observability"
+**Purpose**: Explain what's logged, how to access it, and why it answers the "what did my agent do?" question.
+**Content**:
+- What gets logged: every tool call, tool name, parameters, response, timestamp, user/agent identity
+- Three ways to query (all via Civic Chat):
+  1. Aggregated summary: "Show me a summary of what my agent did this week"
+  2. Line-by-line: "Show me every tool call from the last 24 hours with timestamps"
+  3. CSV export: "Export my audit log as CSV" — up to 5,000 lines per export
+- Why audit is Chat-only (for now): UI coming soon
+- Retention: data retained for ~30 days
+- Example Chat prompts for common audit queries
+- What audit can answer: which tools fired, what parameters were passed, what responses came back, when exactly
+- Connecting audit to incident response: if something went wrong, here's how to trace it
+- Note: audit is at the Hub level — local agent actions (file system, terminal) are not captured
+
+### `concepts/revocation.mdx`
+**Title**: "Revocation & Kill Switch"
+**Purpose**: Explain granular revocation — Civic's answer to "can you kill it when it goes wrong?"
+**Content**:
+- Revocation is **instant** — no delay, no grace period
+- Four levels of revocation (most surgical to most nuclear):
+  1. **Single tool** — add a blocking guardrail to one tool (e.g., block `delete_event` on Calendar)
+  2. **Partial server** — add guardrails that block specific operations on one server
+  3. **Full server connection** — revoke the OAuth/API credential for one MCP server
+  4. **Entire toolkit** — delete the toolkit, all connections severed simultaneously
+- **Why Chat-only** (not API): if revocation were available via API, a compromised agent could revoke its own constraints or another agent's access. The human-in-the-loop requirement is by design.
+- How to revoke via Civic Chat:
+  - "Block the delete_event tool on Google Calendar" → guardrail-based
+  - "Revoke my Gmail connection" → OAuth severance
+  - "Delete my production-agent toolkit" → nuclear option
+- How to revoke via UI: nexus.civic.com → Authorizations → Revoke
+- Incident response pattern:
+  1. Immediately revoke the relevant connection or toolkit
+  2. Check audit log to understand what happened
+  3. Review guardrails before re-authorizing
+  4. Re-authorize with minimum required scope
+- Note: revocation applies at the Hub layer — local agent actions (file system etc.) outside Civic scope
+
+### `concepts/skills.mdx`
+**Title**: "Skills"
+**Purpose**: Document the Skills system as distinct from Toolkits.
+**Content**:
+- What a skill is: a set of instructions, business context, terminology, and workflows that the AI loads on top of its current toolkit
+- How it differs from a Toolkit (see Toolkits vs Skills table above)
+- Use cases: "PR Reviewer" (knows your code review standards), "Pipeline Summary" (knows your Salesforce schema), "Support Agent" (knows your escalation policies)
+- How to create a skill: in nexus.civic.com, create a new profile of type SKILL, add instructions
+- How to load a skill:
+  - Via URL param: `?skills=pr-reviewer,canned-responses`
+  - Via Chat: ask the Configurator Agent to load a skill
+  - Via `load-skill` tool directly
+- Multiple skills can be active simultaneously — they layer
+- Skills persist for the duration of the session
+- Best practices: keep skills focused on one domain; write instructions in second person ("You are..."); include examples of correct behavior
+
+---
+
+## Pages to Update: Specific Changes Needed
+
+### `index.mdx` (overview)
+- Open with ICP pain, not feature list: "Your agent can read every email. Can you prove it only read what it was supposed to?"
+- Four pillars as the structure (Connectivity, Auditability, Access Control, Safety)
+- Remove connectivity-first lead
+- Add: secret management, auditability, revocation to the "What you get" section
+- Fix "70+" → "85" servers
+- Fix line 187: remove "Hub Bridge" reference
+- Remove tab examples (For Teams, For Marketing, For RevOps) — replace with agent builder examples
+
+### `quickstart/index.mdx`
+- Three clear paths: (1) Civic Chat — zero setup, try now; (2) Integrate — pick your framework/client; (3) Build with an SDK — code-first
+- Remove "Experimental" labels from Claude Desktop (line 53) and Claude.ai (line 56)
+- Remove Hub Bridge as a featured method — mention only in footnote for edge cases
+- Add link to credentials page as a prerequisite step
+
+### `quickstart/civic-chat.mdx`
+- New framing: "Your Control Plane" not "Fastest way to get started"
+- Three sections: Configurator Agent, Audit Agent, Revocation Agent
+- Configurator Agent examples:
+  - "Create a toolkit for my support agent with Gmail and Slack, read-only"
+  - "Add a guardrail to block the delete_event tool on my Calendar server"
+  - "Add my Notion API key to my secrets"
+  - "Show me my active guardrails"
+- Audit Agent examples:
+  - "What did my agent do in the last 24 hours?"
+  - "Show me every tool call from yesterday with timestamps"
+  - "Export my audit log as a CSV"
+  - "Did my agent try to delete anything this week?"
+- Revocation Agent examples:
+  - "Block the send_email tool on my Gmail server immediately"
+  - "Revoke all access for my production-agent toolkit"
+  - "Remove Google Calendar from my agent's permissions"
+- Why Chat-only for revocation: by design — the endpoint is protected so the agent can't revoke its own constraints
+- Fix duplicate image (steps 2 and 3 both use /images/steps/welcome/02.png)
+- Keep: sign-up steps, but reframe as "logging in to your control plane"
+
+### `quickstart/clients/codex.mdx`
+- Make Remote URL the primary method (it already exists in the file as "Option A/B")
+- Hub Bridge section: move to bottom, label as "Legacy / offline-only"
+- Primary setup is already in file: `codex mcp add civic --transport http https://nexus.civic.com/hub/mcp`
+
+### `quickstart/clients/agents.mdx`
+- Rename title: "Agent Deployment"
+- Remove LangChain section entirely (moving to recipes/langchain.mdx)
+- Keep everything else: profile locking, URL params table, skills pre-loading, authentication, best practices
+- Update description to reflect it's about deploying any agent (not framework-specific)
+
+### `civic/billing.mdx`
+- Remove duplicate "How do I change or remove my payment method?" accordion (second one at line 209)
+- Add note about Configurator Agent credit consumption: "Civic Chat — including Configurator, Audit, and Revocation commands — consumes credits from the same pool as tool calls"
+- Typical Configurator usage credit cost: add an example row to the usage table
+
+### `civic/reference/client-compatibility.mdx`
+- Remove "Experimental" labels from Claude Desktop (lines 24, 46, 183) and Claude.ai (lines 25, 47, 184)
+
+### `civic/reference/servers/google-analytics.mdx`
+- Remove "EXPERIMENTAL" label (line 28) — GA Data API is released
+
+### `web3/solana.mdx`
+- Remove "Early Access" label (line 8)
+
+### `civic/quickstart/clients/openclaw.mdx`
+- Line 44: Fix "Civic authorizes servers, not individual tool calls" — guardrails DO operate at individual tool level
+- Line 33: Expand audit description — add CSV export (up to 5,000 lines), aggregation view, line-by-line detail
+- Line 193: Fix server count "100+" → "85"
+
+### `overview/login-options.mdx`
+- Line 28: Remove "Microsoft (coming soon)" — no longer planned
+
+### `concepts/toolkits.mdx`
+- Add comparison table / link to new skills.mdx page
+- Make the Toolkit vs Skill distinction clear
+
+---
+
+## Files to Delete or Remove from Nav
+
+| File | Action | Reason |
+|---|---|---|
+| `civic/configuring-tools.mdx` | **Delete** | Ghost page — placeholder images (placehold.co), outdated content (Discord, GitLab, Airtable not in 85 servers) |
+| `ai-prompts/no-code/bolt.mdx` | **Delete** | Bolt integration no longer planned |
+| `labs/projects/mcp-hub.mdx` | **Remove from nav** (keep file for redirects) | Hub graduated to main product |
+| `civic/quickstart/hub-bridge.mdx` | **Remove from nav** (keep file for redirects) | Legacy only — mention in troubleshooting |
+| `civic/developers/client-setup.mdx` | **Remove from nav** | Content absorbed into Integrate section pages |
+| `civic/developers/integrations/index.mdx` | **Remove from nav** | Absorbed into Integrate section |
+| `civic/ai-prompts/nextjs.mdx` (Civic tab group) | **Remove from nav** | Single-page group, link from relevant recipe instead |
+
+---
+
+## Files to Graduate from Labs
+
+| Source | Destination | Notes |
+|---|---|---|
+| `labs/concepts/prompt-injection.mdx` | `civic/concepts/prompt-injection.mdx` | Copy content, update nav in docs.json, leave labs entry pointing to new location |
+| `labs/concepts/hooks.mdx` | `civic/concepts/hooks.mdx` | Same process |
+| `labs/projects/mcp-hub.mdx` | Retire | Extract any unique content into main docs first |
+
+---
+
+## Guardrails: High-Risk Tools by Server
+
+When updating Google Workspace server reference pages, add guardrail callouts for:
+
+**google-calendar**: `delete_event`, `modify_event` (can modify attendees)
+**google-gmail**: `delete_gmail_filter`, `create_gmail_filter`; NOTE: no `send_gmail_message` tool exists — `draft_gmail_message` only (architectural, not scope-limited)
+**google-sheets**: `modify_sheet_values` with `clear_values: true`
+**google-drive**: any file deletion tools
+**google-docs**: `batch_update_doc`, `find_and_replace_doc` (bulk destructive)
+
+---
+
+## Disclaimer Status (All Resolved)
+
+| Item | Status |
+|---|---|
+| Claude Desktop "Experimental" | Fix in quickstart/index.mdx and client-compatibility.mdx |
+| Claude.ai "Experimental" | Fix in same files |
+| Google Analytics "EXPERIMENTAL" | Fix in reference/servers/google-analytics.mdx |
+| Solana "Early Access" | Fix in web3/solana.mdx |
+| ChatGPT "Coming soon Q1 2026" | ✅ Rewritten as honest status page |
+| JetBrains "Coming soon" | ✅ Full setup guide written |
+| Windsurf "Coming soon" | ✅ Full setup guide written |
+| Gemini "Coming soon" | ✅ Full setup guide written |
+| Anthropic beta header | ✅ Updated to `mcp-client-2025-11-20` |
+| Microsoft login "coming soon" | Remove from login-options.mdx |
+| Bolt "Coming Soon" | Delete bolt.mdx |
+| Civic Auth "beta" | Keep — still accurate |
+| Token Exchange "preview" | Keep — still accurate |
+
+---
+
+## Technical Notes
+
+**JetBrains**: Does NOT support direct HTTP MCP — uses `npx mcp-remote` as a local stdio→HTTP bridge. Node 20+ required. Config via UI (Settings > Tools > AI Assistant > MCP) or `.jb-mcp.json`.
+
+**Windsurf**: Native Streamable HTTP support. Config: `~/.codeium/windsurf/mcp_config.json` with `serverUrl` field.
+
+**Gemini CLI**: Native HTTP support via `httpUrl` field in `~/.gemini/settings.json` or `.gemini/settings.json`.
+
+**Codex**: Both methods already documented in codex.mdx. Option A: `codex mcp add civic --transport http https://nexus.civic.com/hub/mcp`. Option B: Settings → MCP Servers → Add Server → Streamable HTTP → paste CIVIC_URL and CIVIC_TOKEN. Just needs Hub Bridge demoted to legacy.
+
+**Anthropic SDK**: MCP still in public beta. Current header: `anthropic-beta: mcp-client-2025-11-20`. Header still required as of early 2026.
+
+**LangChain/LangGraph**: Uses `langchain-mcp-adapters` package, `MultiServerMCPClient` with `streamable_http` transport. Env vars: `CIVIC_URL` (full URL with params), `CIVIC_TOKEN`. Reference impl: github.com/titus-civic/langchain-nexus-reference-implementation.
+
+---
+
+## Work Log
+
+### ✅ Completed
+- Full doc audit (all pages reviewed)
+- ICP alignment analysis
+- Accuracy issues identified
+- Tools reference reviewed (85 servers, Standalone Tools catalogued)
+- Structural plan approved by Titus
+- `civic/quickstart/clients/jetbrains.mdx` — full setup guide written
+- `civic/quickstart/clients/windsurf.mdx` — full setup guide written
+- `civic/quickstart/clients/gemini.mdx` — full setup guide written
+- `civic/quickstart/clients/chatgpt.mdx` — honest status page written
+- `civic/recipes/anthropic.mdx` — beta header updated to `mcp-client-2025-11-20`
+- All 32 server stub pages created (cloudflare.mdx grouped, bill.mdx grouped, stripe, mongodb, mysql, mssql, redshift, elasticsearch, apify, intercom, trello, asana, meta-ads, google-ads, twitter, bluesky, mixpanel, grafana, tempo, firecrawl, tavily, paypal-official, quickbooks-online, servicetitan, shopify-storefront, cardpointe, insperity, canva, webflow, home-assistant, imap, socket)
+
+### 🔲 To Do (suggested order)
+
+**Immediate structural changes:**
+1. Update `docs.json` — implement the full new navigation structure
+2. Delete `civic/configuring-tools.mdx` and `ai-prompts/no-code/bolt.mdx`
+3. Graduate `labs/concepts/prompt-injection.mdx` → `civic/concepts/prompt-injection.mdx`
+4. Graduate `labs/concepts/hooks.mdx` → `civic/concepts/hooks.mdx`
+
+**New pages:**
+5. Create `civic/quickstart/credentials.mdx`
+6. Create `civic/recipes/langchain.mdx` (extract + expand from agents.mdx)
+7. Create `civic/concepts/secret-management.mdx`
+8. Create `civic/concepts/audit.mdx`
+9. Create `civic/concepts/revocation.mdx`
+10. Create `civic/concepts/skills.mdx`
+
+**Major rewrites:**
+11. Rewrite `civic/index.mdx` — security-first, four pillars
+12. Rewrite `civic/quickstart/index.mdx` — three paths, remove Experimental labels
+13. Rewrite `civic/quickstart/civic-chat.mdx` — Control Plane framing
+
+**Updates:**
+14. Update `civic/quickstart/clients/codex.mdx` — HTTP primary, Hub Bridge legacy
+15. Update `civic/quickstart/clients/agents.mdx` — rename, remove LangChain section
+16. Update `civic/billing.mdx` — remove duplicate accordion, add Configurator credit note
+17. Update `civic/reference/client-compatibility.mdx` — remove Experimental labels
+18. Update `civic/reference/servers/google-analytics.mdx` — remove Experimental
+19. Update `web3/solana.mdx` — remove Early Access
+20. Update `civic/quickstart/clients/openclaw.mdx` — fix 3 accuracy issues
+21. Update `overview/login-options.mdx` — remove Microsoft coming soon
+22. Update `civic/concepts/toolkits.mdx` — add Skills comparison
+23. Update `civic/reference/servers.mdx` — fix count to 85
+24. Add guardrail callouts to Google Workspace server pages (Calendar, Gmail, Sheets, Drive, Docs)
+25. Add `civic/organizations` to nav (currently missing)
+
+**Labs cleanup:**
+26. Remove `labs/projects/mcp-hub.mdx` from nav

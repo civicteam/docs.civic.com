@@ -1,0 +1,50 @@
+---
+title: Hooks
+description: Middleware pattern for intercepting and processing MCP requests and responses
+public: true
+---
+
+## Overview
+
+Hooks provide a middleware layer for intercepting and processing MCP requests and responses. They enable you to add custom logic, security rules, or transformations without modifying the underlying MCP servers.
+
+## How Hooks Work
+
+```
+AI Agent → [Request Hook] → Civic Hub → MCP Server
+                                              ↓
+AI Agent ← [Response Hook] ← Civic Hub ← MCP Server
+```
+
+Each hook in the chain can:
+- **Inspect** the request/response data
+- **Modify** parameters or results
+- **Block** requests based on custom rules
+- **Enrich** data with additional context
+
+## Common Hook Patterns
+
+- **Security Filtering**: Validate requests against security policies before they reach the server
+- **Rate Limiting**: Control request frequency and volume
+- **Data Transformation**: Modify request/response formats
+- **Audit Logging**: Record all tool interactions (built into Civic Hub)
+- **Content Filtering**: Remove or redact sensitive information from responses
+
+## Guardrails as Hooks
+
+Civic's [Guardrails](/civic/concepts/guardrails) system is implemented as a hook layer at the Hub. When you add a guardrail to block a specific tool, Civic installs a request hook that intercepts calls to that tool and returns a blocked response before the call reaches the server.
+
+This means guardrails have **zero latency impact** on allowed calls — the hook only fires on matched tool calls.
+
+## Hook Scope
+
+Hooks apply at the toolkit level. A hook configured on your `support-agent` toolkit applies to all tool calls made through that toolkit.
+
+<CardGroup cols={2}>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Guardrails are hooks — pre-built for common security rules
+  </Card>
+  <Card title="Prompt Injection" icon="shield-halved" href="/civic/concepts/prompt-injection">
+    Hooks as a defense layer against injection attacks
+  </Card>
+</CardGroup>

@@ -1,0 +1,128 @@
+---
+title: Bill.com
+description: "Connect to Bill.com for accounts payable, accounts receivable, and expense management"
+icon: "server"
+---
+
+## Overview
+
+Bill.com's MCP servers give AI assistants access to two complementary platforms: the core AP/AR product for managing bills, invoices, vendors, customers, and payments, and the Spend & Expense product for corporate card management, budgets, reimbursements, and transactions.
+
+<Card title="Add to Civic" icon="plus" href="https://nexus.civic.com">
+  Connect Bill.com at nexus.civic.com
+</Card>
+
+## bill-ap-ar
+
+Full accounts payable and accounts receivable management — create and manage bills, invoices, vendors, customers, payments, and approval workflows.
+
+| Tool | Description |
+|------|-------------|
+| `get_organization_info` | Get information about the current Bill.com organization |
+| `list_vendors` | List vendors with filtering and pagination |
+| `get_vendor` | Get details for a specific vendor |
+| `create_vendor` | Create a new vendor |
+| `update_vendor` | Update an existing vendor |
+| `archive_vendor` | Archive (soft-delete) a vendor |
+| `restore_vendor` | Restore an archived vendor |
+| `create_vendor_bank_account` | Add a bank account to a vendor |
+| `get_vendor_bank_account` | Get the bank account for a vendor |
+| `delete_vendor_bank_account` | Delete a vendor's bank account |
+| `get_vendor_payment_options` | Get available payment methods and delivery options for a vendor |
+| `list_bills` | List bills (AP) with filtering and pagination |
+| `get_bill` | Get details for a specific bill |
+| `create_bill` | Create a new bill for a vendor |
+| `update_bill` | Update an existing bill |
+| `archive_bill` | Archive a bill |
+| `restore_bill` | Restore an archived bill |
+| `approve_bill` | Approve a bill pending approval |
+| `deny_bill` | Deny a bill pending approval |
+| `list_pending_bill_approvals` | List bills awaiting the current user's approval |
+| `list_bill_approval_policies` | List bill approval policies |
+| `create_bill_approval_policy` | Create a bill approval policy |
+| `update_bill_approval_policy` | Update a bill approval policy |
+| `delete_bill_approval_policy` | Delete a bill approval policy |
+| `list_recurring_bills` | List recurring bill templates |
+| `get_recurring_bill` | Get a specific recurring bill template |
+| `create_recurring_bill` | Create a recurring bill template |
+| `update_recurring_bill` | Update a recurring bill template |
+| `archive_recurring_bill` | Archive a recurring bill template |
+| `restore_recurring_bill` | Restore an archived recurring bill template |
+| `list_payments` | List payments with filtering and pagination |
+| `get_payment` | Get details for a specific payment |
+| `create_payment` | Create a new vendor payment |
+| `cancel_payment` | Cancel a scheduled payment |
+| `void_payment` | Void a payment that has begun processing |
+| `list_customers` | List customers with filtering and pagination |
+| `get_customer` | Get details for a specific customer |
+| `create_customer` | Create a new customer |
+| `update_customer` | Update an existing customer |
+| `archive_customer` | Archive a customer |
+| `restore_customer` | Restore an archived customer |
+| `create_customer_bank_account` | Add a bank account to a customer |
+| `list_customer_bank_accounts` | List bank accounts for a customer |
+| `delete_customer_bank_account` | Delete a customer's bank account |
+| `set_customer_charge_authorization` | Enable or disable charging a customer's bank account |
+| `charge_customer` | Charge a customer's bank account for invoices |
+| `list_invoices` | List invoices (AR) with filtering and pagination |
+| `get_invoice` | Get details for a specific invoice |
+| `create_invoice` | Create a new customer invoice |
+| `update_invoice` | Update an existing invoice |
+| `archive_invoice` | Archive an invoice |
+| `restore_invoice` | Restore an archived invoice |
+| `send_invoice` | Send an invoice to a customer by email |
+| `generate_invoice_payment_link` | Generate an online payment link for an invoice |
+| `list_recurring_invoices` | List recurring invoice templates |
+| `get_recurring_invoice` | Get a specific recurring invoice template |
+| `create_recurring_invoice` | Create a recurring invoice template |
+| `update_recurring_invoice` | Update a recurring invoice template |
+| `list_receivable_payments` | List payments received from customers |
+| `get_receivable_payment` | Get details for a specific receivable payment |
+| `list_credit_memos` | List credit memos |
+| `get_credit_memo` | Get a specific credit memo |
+| `create_credit_memo` | Create a new credit memo for a customer |
+| `update_credit_memo` | Update an existing credit memo |
+| `archive_credit_memo` | Archive a credit memo |
+| `restore_credit_memo` | Restore an archived credit memo |
+| `list_vendor_credits` | List vendor credits |
+| `get_vendor_credit` | Get a specific vendor credit |
+| `create_vendor_credit` | Create a vendor credit |
+| `update_vendor_credit` | Update an existing vendor credit |
+| `archive_vendor_credit` | Archive a vendor credit |
+| `list_bank_accounts` | List bank accounts in the organization |
+| `get_bank_account` | Get details for a specific bank account |
+| `list_chart_of_accounts` | List chart of accounts |
+| `get_chart_of_account` | Get a specific chart of account |
+| `create_chart_of_account` | Create a new chart of account entry |
+| `update_chart_of_account` | Update a chart of account entry |
+| `archive_chart_of_account` | Archive a chart of account |
+| `restore_chart_of_account` | Restore an archived chart of account |
+| `list_users` | List users in the organization |
+| `get_user` | Get a specific user |
+| `create_user` | Create a new user |
+| `update_user` | Update an existing user |
+| `delete_user` | Delete a user |
+| `list_user_roles` | List available user roles |
+| `list_departments` | List departments |
+| `list_employees` | List employees |
+| `list_accounting_classes` | List accounting classes |
+| `list_items` | List items (products/services) |
+| `list_jobs` | List jobs/projects |
+| `list_locations` | List locations |
+
+## bill-spend-expense
+
+Corporate card and expense management — track spending, manage budgets, review transactions, and process reimbursements.
+
+| Tool | Description |
+|------|-------------|
+| `list_cards` | List all corporate cards |
+| `get_card` | Get details for a specific card |
+| `list_transactions` | List all transactions |
+| `get_transaction` | Get details for a specific transaction |
+| `list_budgets` | List all budgets |
+| `get_budget` | Get details for a specific budget |
+| `list_reimbursements` | List all reimbursement requests |
+| `get_reimbursement` | Get details for a specific reimbursement |
+| `list_users` | List all users in the Spend & Expense account |
+| `get_user` | Get details for a specific user |

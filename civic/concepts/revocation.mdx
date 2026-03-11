@@ -1,0 +1,96 @@
+---
+title: Revocation & Kill Switch
+description: Instant, granular revocation at any level — from a single tool to an entire toolkit
+icon: "ban"
+---
+
+## Overview
+
+Revocation is **instant** — no delay, no grace period. When you revoke access, the next tool call fails immediately.
+
+Civic supports four levels of revocation, from surgical to nuclear.
+
+## Four Levels of Revocation
+
+| Level | What It Does | When to Use |
+|-------|-------------|-------------|
+| **Single tool (guardrail)** | Blocks one specific tool | Agent used `delete_event` when it shouldn't have |
+| **Partial server** | Blocks specific operations on one server | Restrict Calendar to read-only without removing it |
+| **Full server connection** | Severs OAuth/API credential for one server | Compromised or unnecessary server access |
+| **Entire toolkit** | Deletes the toolkit — all connections severed | Emergency: stop the agent entirely |
+
+## Revoke via Civic Chat
+
+All revocation is available through [Civic Chat](https://nexus.civic.com).
+
+**Single tool (guardrail):**
+```
+"Block the delete_event tool on Google Calendar"
+"Prevent my agent from sending emails"
+"Block all write operations on Google Sheets"
+```
+
+**Full server:**
+```
+"Revoke my Gmail connection"
+"Remove Google Calendar from my agent's permissions"
+```
+
+**Entire toolkit:**
+```
+"Delete my production-agent toolkit"
+"Revoke all access for my support-agent toolkit"
+```
+
+## Revoke via UI
+
+1. Go to [nexus.civic.com](https://nexus.civic.com) → **Authorizations**
+2. Find the server or toolkit
+3. Click **Revoke**
+
+## Why Revocation Is Chat-Only
+
+Revocation is not available via API by design.
+
+If revocation were accessible through the same API that agents use, a compromised agent could revoke its own constraints — or another agent's access. The human-in-the-loop requirement is an architectural security guarantee, not a limitation.
+
+**The agent cannot revoke its own guardrails.**
+
+## Incident Response Pattern
+
+<Steps>
+  <Step title="Revoke immediately">
+    Don't investigate first — stop the agent. Use Civic Chat: *"Revoke all access for my [toolkit-name] toolkit"*
+  </Step>
+  <Step title="Check the audit log">
+    *"Show me every tool call from [toolkit-name] in the last 24 hours"* — understand what happened.
+  </Step>
+  <Step title="Assess the blast radius">
+    Which tools fired? What parameters? What data was accessed or modified?
+  </Step>
+  <Step title="Add guardrails before re-authorizing">
+    Block the specific tools that caused the problem. Then re-authorize the connection.
+  </Step>
+  <Step title="Re-authorize with minimum scope">
+    Re-connect with the minimum OAuth scopes required for the intended workflow.
+  </Step>
+</Steps>
+
+<Note>
+Revocation operates at the **Hub layer**. Local agent actions (file system, terminal, etc.) outside Civic's scope are not affected.
+</Note>
+
+<CardGroup cols={2}>
+  <Card title="Audit Logs" icon="list-check" href="/civic/concepts/audit">
+    Trace what your agent did
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Proactively block tools before problems occur
+  </Card>
+  <Card title="Civic Chat" icon="message" href="/civic/quickstart/civic-chat">
+    Your control plane for audit, config, and revocation
+  </Card>
+  <Card title="Secret Management" icon="vault" href="/civic/concepts/secret-management">
+    How credentials are stored and isolated
+  </Card>
+</CardGroup>

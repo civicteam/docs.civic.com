@@ -1,0 +1,113 @@
+---
+title: LangChain / LangGraph
+description: Connect a LangGraph agent to Civic using the langchain-mcp-adapters package
+icon: "link-simple"
+---
+
+## Overview
+
+Connect a LangGraph agent to Civic using the `langchain-mcp-adapters` package, which bridges LangGraph's tool interface with Civic's Streamable HTTP MCP transport.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
+    Create a free account and generate a token at nexus.civic.com
+  </Card>
+  <Card title="Python 3.11+" icon="python">
+    Python 3.11 or later required
+  </Card>
+</CardGroup>
+
+You'll also need an LLM API key (e.g. Anthropic).
+
+## Installation
+
+```bash
+pip install langgraph langchain-anthropic langchain-mcp-adapters
+```
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `CIVIC_URL` | Your full Civic URL — include profile and accountId params for production |
+| `CIVIC_TOKEN` | A Civic token from [nexus.civic.com](https://nexus.civic.com) → Settings → Tokens |
+| `ANTHROPIC_API_KEY` | Your Anthropic API key |
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit&lock=true
+CIVIC_TOKEN=your_civic_token
+ANTHROPIC_API_KEY=your_anthropic_key
+```
+
+## Connect to Civic
+
+Use `MultiServerMCPClient` to connect your agent to Civic over Streamable HTTP, then pass the discovered tools to your LangGraph graph:
+
+```python
+import os
+from langchain_anthropic import ChatAnthropic
+from langchain_mcp_adapters.client import MultiServerMCPClient
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import MessagesState, StateGraph, START
+from langgraph.prebuilt import ToolNode, tools_condition
+
+async def create_agent():
+    client = MultiServerMCPClient({
+        "civic-nexus": {
+            "transport": "streamable_http",
+            "url": os.environ["CIVIC_URL"],
+            "headers": {"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+        }
+    })
+    tools = await client.get_tools()
+    model = ChatAnthropic(model="claude-sonnet-4-5").bind_tools(tools)
+
+    def call_model(state: MessagesState):
+        return {"messages": [model.invoke(state["messages"])]}
+
+    graph = (
+        StateGraph(MessagesState)
+        .add_node("agent", call_model)
+        .add_node("tools", ToolNode(tools))
+        .add_edge(START, "agent")
+        .add_conditional_edges("agent", tools_condition)
+        .add_edge("tools", "agent")
+        .compile(checkpointer=MemorySaver())
+    )
+    return graph
+```
+
+## Production Checklist
+
+Before deploying, set a locked profile URL so the agent can't switch toolkits:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit&lock=true
+```
+
+<Note>
+`lock=true` hides the `switch_profile` tool and blocks guardrail modification. Required for production agents. See [Agent Deployment](/civic/quickstart/clients/agents) for full URL parameter reference.
+</Note>
+
+## Reference Implementation
+
+A complete reference implementation including a FastAPI chat UI is available at [github.com/titus-civic/langchain-nexus-reference-implementation](https://github.com/titus-civic/langchain-nexus-reference-implementation).
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="rocket" href="/civic/quickstart/clients/agents">
+    Profile locking, URL params, and multi-agent patterns
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Block specific tools your agent shouldn't use
+  </Card>
+  <Card title="Audit" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token setup and URL parameter reference
+  </Card>
+</CardGroup>

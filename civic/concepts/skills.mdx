@@ -1,0 +1,76 @@
+---
+title: Skills
+description: Reusable AI capabilities that load on top of your current toolkit
+icon: "graduation-cap"
+---
+
+## Overview
+
+A **Skill** is a set of instructions, business context, terminology, and workflows that the AI loads on top of its current toolkit — without replacing it.
+
+Skills define *how* to use your tools. Toolkits define *which* tools are available. They work together.
+
+## Skills vs Toolkits
+
+| | Toolkit | Skill |
+|---|---|---|
+| What it is | A set of tools (MCP servers) | A set of instructions/context |
+| How it works | Switch **to** it | Load **on top of** current toolkit |
+| Purpose | Defines *what tools* are available | Defines *how* to use them |
+| Replaces context? | Yes | No — layers on top |
+| Multiple at once? | No | Yes |
+| Example | "Support" toolkit with Gmail + Slack | "Escalation Procedures" skill |
+
+## Use Cases
+
+- **PR Reviewer** — knows your code review standards, branch naming, and required approvals
+- **Pipeline Summary** — knows your Salesforce schema, deal stages, and reporting format
+- **Support Agent** — knows your escalation policies, response templates, and tone guidelines
+- **Incident Response** — knows your runbook, on-call rotation, and communication protocol
+
+## How to Create a Skill
+
+1. Go to [nexus.civic.com](https://nexus.civic.com)
+2. Navigate to **Toolkits** → **New Toolkit**
+3. Set the type to **SKILL**
+4. Add instructions (second person: "You are...", "When a user asks...")
+5. Include examples of correct behavior
+6. Save and note the alias
+
+## How to Load a Skill
+
+**Via URL parameter:**
+```
+https://nexus.civic.com/hub/mcp?skills=pr-reviewer,canned-responses
+```
+
+**Via Civic Chat (Configurator Agent):**
+```
+"Load the escalation-procedures skill"
+"Activate the pr-reviewer and canned-responses skills"
+```
+
+**Via the `load-skill` tool directly** (if available in your toolkit).
+
+## Multiple Skills Stack
+
+Skills layer — multiple can be active simultaneously. If you load `pr-reviewer` and `canned-responses`, both sets of instructions are active at once.
+
+Skills persist for the duration of the session.
+
+## Writing Good Skills
+
+- **Stay focused** — one skill, one domain. Don't combine PR review with incident response.
+- **Use second person** — "You are a PR reviewer for [company]. You..." not "The assistant should..."
+- **Include examples** — show the AI what a good response looks like, not just what to do
+- **Reference toolkit tools** — "When the user asks for a PR summary, use the `github__list_pull_requests` tool"
+- **Handle edge cases** — what should the agent do when it can't find what the user asked for?
+
+<CardGroup cols={2}>
+  <Card title="Toolkits" icon="layer-group" href="/civic/concepts/toolkits">
+    Configure which tools are available
+  </Card>
+  <Card title="Agent Deployment" icon="rocket" href="/civic/quickstart/clients/agents">
+    URL params for pre-loading skills
+  </Card>
+</CardGroup>

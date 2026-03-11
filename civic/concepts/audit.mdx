@@ -1,0 +1,107 @@
+---
+title: Audit & Observability
+description: Every tool call your agent makes is logged. Here's how to access it.
+icon: "list-check"
+---
+
+## Overview
+
+Every tool call routed through Civic is logged: the tool name, parameters, response, timestamp, and agent identity. When something goes wrong — or you just need to know what your agent did — the audit log is your answer.
+
+## What Gets Logged
+
+For every tool call, Civic records:
+- **Tool name** — e.g., `gmail__list_messages`
+- **Parameters** — the inputs passed to the tool
+- **Response** — the result returned
+- **Timestamp** — exact time of execution
+- **Agent identity** — which toolkit/session initiated the call
+
+<Note>
+Audit operates at the **Hub layer**. Local agent actions outside Civic's scope (file system writes, terminal commands, etc.) are not captured.
+</Note>
+
+## How to Query Audit Logs
+
+All audit access is via [Civic Chat](https://nexus.civic.com). Three modes:
+
+### Aggregated Summary
+
+Get a high-level view of what your agent did:
+
+```
+"Show me a summary of what my agent did this week"
+"What tools did my support agent use yesterday?"
+"Which servers has my agent called in the last 7 days?"
+```
+
+### Line-by-Line Detail
+
+Every tool call with full parameters and timestamps:
+
+```
+"Show me every tool call from the last 24 hours with timestamps"
+"What parameters did my agent pass to the send_email tool today?"
+"Did my agent try to delete anything this week?"
+```
+
+### CSV Export
+
+For incident analysis or compliance reporting:
+
+```
+"Export my audit log as a CSV"
+"Export the last 1,000 tool calls to CSV"
+```
+
+Up to **5,000 lines** per export.
+
+<Note>
+Audit UI is coming soon. Until then, all audit queries are via Civic Chat.
+</Note>
+
+## Incident Response Pattern
+
+If an agent behaves unexpectedly:
+
+<Steps>
+  <Step title="Revoke first">
+    Go to Civic Chat: *"Revoke all access for my [toolkit-name] toolkit"*. Instant effect — no grace period.
+  </Step>
+  <Step title="Pull the audit log">
+    *"Show me every tool call from [toolkit-name] in the last 24 hours"*
+  </Step>
+  <Step title="Identify the blast radius">
+    Review which tools fired, what parameters were passed, and what data was accessed.
+  </Step>
+  <Step title="Review guardrails before re-authorizing">
+    Add blocking guardrails for any tools that shouldn't have fired. Then re-authorize.
+  </Step>
+</Steps>
+
+## Audit Retention
+
+Logs are retained for approximately **30 days**.
+
+## Example: Tracing an Unexpected Email
+
+```
+You: "Did my agent send any emails today?"
+Civic: "Your agent called draft_gmail_message 3 times today at 09:14, 11:32, and 14:07.
+        No send_email calls were made — Gmail's send function is not available in this toolkit."
+```
+
+<CardGroup cols={2}>
+  <Card title="Revocation" icon="ban" href="/civic/concepts/revocation">
+    Kill agent access instantly
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Block specific tools proactively
+  </Card>
+  <Card title="Civic Chat" icon="message" href="/civic/quickstart/civic-chat">
+    Your control plane for audit, config, and revocation
+  </Card>
+  <Card title="Secret Management" icon="vault" href="/civic/concepts/secret-management">
+    How credentials are stored and isolated
+  </Card>
+</CardGroup>

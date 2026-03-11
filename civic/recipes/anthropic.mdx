@@ -95,7 +95,7 @@ async function createMessage(userMessage: string) {
     ],
   }, {
     headers: {
-      'anthropic-beta': 'mcp-client-2025-04-04',
+      'anthropic-beta': 'mcp-client-2025-11-20',
     },
   });
 
@@ -105,7 +105,7 @@ async function createMessage(userMessage: string) {
 
 **Key Points:**
 - Add `mcp_servers` parameter to your messages.create() call
-- Include the beta header: `"anthropic-beta": "mcp-client-2025-04-04"`
+- Include the beta header: `"anthropic-beta": "mcp-client-2025-11-20"`
 - Pass your Civic access token as `authorization_token`
 - That's it! No tool looping, no MCP client setup
 
@@ -155,7 +155,7 @@ export async function POST(req: NextRequest) {
       ],
     }, {
       headers: {
-        'anthropic-beta': 'mcp-client-2025-04-04',
+        'anthropic-beta': 'mcp-client-2025-11-20',
       },
     });
 
@@ -193,7 +193,7 @@ const stream = await client.messages.create({
   stream: true,
 }, {
   headers: {
-    'anthropic-beta': 'mcp-client-2025-04-04',
+    'anthropic-beta': 'mcp-client-2025-11-20',
   },
 });
 
@@ -258,7 +258,7 @@ mcp_servers: [
   <Accordion title="Required Beta Header">
     ```typescript
     headers: {
-      'anthropic-beta': 'mcp-client-2025-04-04',
+      'anthropic-beta': 'mcp-client-2025-11-20',
     }
     ```
   </Accordion>

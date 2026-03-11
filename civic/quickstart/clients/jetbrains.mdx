@@ -5,43 +5,103 @@ icon: "command"
 ---
 
 <Note>
-  JetBrains IDE setup instructions coming soon...
+  Requires JetBrains IDE 2025.2 or later with AI Assistant enabled, and Node.js 20+.
 </Note>
 
-## Overview
-
-JetBrains IDEs (IntelliJ IDEA, PyCharm, WebStorm, etc.) require the Hub Bridge method for connecting to Civic MCP servers.
-
-## Configuration Required
-
-JetBrains IDEs need manual MCP server configuration with these settings:
-
-```json
-{
-  "name": "Civic",
-  "type": "stdio", 
-  "command": "npx",
-  "args": ["-y", "@civic/hub-bridge"]
-}
-```
-
-## Coming Soon
-
-Detailed setup instructions with IDE-specific screenshots and configuration steps are being prepared.
-
-## Resources
+## Prerequisites
 
 <CardGroup cols={2}>
-  <Card title="Hub Bridge Guide" icon="bridge" href="/civic/quickstart/hub-bridge">
-    Essential Hub Bridge setup for JetBrains IDEs
+  <Card title="JetBrains IDE 2025.2+" icon="command" href="https://www.jetbrains.com">
+    IntelliJ IDEA, PyCharm, WebStorm, or any JetBrains IDE with AI Assistant
   </Card>
-  <Card title="Client Compatibility" icon="table" href="/civic/reference/client-compatibility">
-    JetBrains MCP support details
+  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
+    Create a free account and configure your tools at nexus.civic.com
   </Card>
+</CardGroup>
+
+<Info>
+  JetBrains AI Assistant connects to remote MCP servers via a local `mcp-remote` bridge. Node.js 20+ is required.
+</Info>
+
+## Setup
+
+JetBrains IDEs support MCP configuration via the UI or a JSON config file. Both methods connect to the same Civic endpoint.
+
+<Tabs>
+  <Tab title="UI (Recommended)">
+    <Steps>
+      <Step title="Open MCP Settings">
+        Go to **Settings** (or **Preferences** on macOS) → **Tools** → **AI Assistant** → **Model Context Protocol (MCP)**
+      </Step>
+      <Step title="Add a new server">
+        Click **+** to add a new MCP server and fill in:
+
+        - **Name:** `Civic`
+        - **Command:** `npx`
+        - **Arguments:** `-y mcp-remote https://nexus.civic.com/hub/mcp`
+      </Step>
+      <Step title="Save and connect">
+        Click **OK** to save. JetBrains will launch the bridge and connect to Civic automatically.
+      </Step>
+      <Step title="Authorize">
+        On first use, a browser window will open for Civic authentication. Complete the OAuth flow, then return to your IDE.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="JSON Config">
+    Create or edit `.jb-mcp.json` in your project root (or your global JetBrains config directory):
+
+    ```json
+    {
+      "servers": [
+        {
+          "name": "Civic",
+          "command": "npx",
+          "args": ["-y", "mcp-remote@latest", "https://nexus.civic.com/hub/mcp"]
+        }
+      ]
+    }
+    ```
+
+    Restart your IDE after saving.
+  </Tab>
+</Tabs>
+
+## Test Your Connection
+
+Open AI Assistant and try:
+
+```
+"What MCP tools do I have available?"
+"List my GitHub repositories"
+"Check my Google Calendar for today"
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Node.js version error">
+    `mcp-remote` requires Node.js 20 or later. Check your version with `node --version` and upgrade if needed.
+  </Accordion>
+  <Accordion title="Authentication browser window doesn't open">
+    Try running the connection manually from terminal:
+    ```bash
+    npx -y mcp-remote https://nexus.civic.com/hub/mcp
+    ```
+    Complete the auth flow there, then restart the IDE.
+  </Accordion>
+  <Accordion title="AI Assistant not showing MCP option">
+    MCP support requires JetBrains IDE 2025.2+. Update your IDE and ensure the AI Assistant plugin is installed and enabled.
+  </Accordion>
+</AccordionGroup>
+
+## Need Help?
+
+<CardGroup cols={2}>
   <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
-    Common JetBrains connection issues
+    Common connection issues and solutions
   </Card>
   <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Join our developer community for JetBrains setup help
+    Ask in our developer Slack
   </Card>
 </CardGroup>
