@@ -61,7 +61,7 @@ The Google Gmail server enables AI assistants to interact with [Gmail](https://m
   </Accordion>
 
   <Accordion title="send_gmail_message">
-    Send an email using your Gmail account with recipient, subject, and plain text body.
+    Send an email using your Gmail account. Required: `subject`, `body`. Optional: `to`, `cc`, `bcc`, `body_format` (plain/html), `from_name`, `from_email` (Send As alias). For replies: `thread_id`, `in_reply_to`, `references`. Supports `attachments` by file path or base64 content.
   </Accordion>
 
   <Accordion title="draft_gmail_message">
@@ -80,6 +80,10 @@ The Google Gmail server enables AI assistants to interact with [Gmail](https://m
     Retrieve multiple threads in batch (up to 25 threads). Useful for analyzing conversations at scale.
   </Accordion>
 </AccordionGroup>
+
+<Warning>
+**High-risk tools:** `send_gmail_message` sends email directly from your account. `manage_gmail_label` (with delete action) and `batch_modify_gmail_message_labels` can bulk-archive or trash messages. For automated agents, consider adding guardrails to block `send_gmail_message` or restrict bulk label operations. See [Guardrails](/civic/concepts/guardrails).
+</Warning>
 
 ### Label Management
 

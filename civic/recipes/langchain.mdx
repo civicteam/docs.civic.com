@@ -1,25 +1,17 @@
 ---
 title: LangChain / LangGraph
-description: Connect a LangGraph agent to Civic using the langchain-mcp-adapters package
-icon: "link-simple"
+description: Connect a LangGraph agent to Civic's MCP Hub using streamable HTTP transport
+icon: "code"
 ---
-
-## Overview
 
 Connect a LangGraph agent to Civic using the `langchain-mcp-adapters` package, which bridges LangGraph's tool interface with Civic's Streamable HTTP MCP transport.
 
 ## Prerequisites
 
-<CardGroup cols={2}>
-  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
-    Create a free account and generate a token at nexus.civic.com
-  </Card>
-  <Card title="Python 3.11+" icon="python">
-    Python 3.11 or later required
-  </Card>
-</CardGroup>
-
-You'll also need an LLM API key (e.g. Anthropic).
+- Python 3.11+
+- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic token (generate from Settings → Tokens)
+- An LLM API key (e.g. Anthropic)
 
 ## Installation
 
@@ -29,21 +21,24 @@ pip install langgraph langchain-anthropic langchain-mcp-adapters
 
 ## Environment Variables
 
-| Variable | Description |
-|----------|-------------|
-| `CIVIC_URL` | Your full Civic URL — include profile and accountId params for production |
-| `CIVIC_TOKEN` | A Civic token from [nexus.civic.com](https://nexus.civic.com) → Settings → Tokens |
-| `ANTHROPIC_API_KEY` | Your Anthropic API key |
-
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit&lock=true
-CIVIC_TOKEN=your_civic_token
-ANTHROPIC_API_KEY=your_anthropic_key
+# Your full Civic toolkit URL (include profile param for production agents)
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+
+# Civic token generated from nexus.civic.com → Settings → Tokens
+CIVIC_TOKEN=your-civic-token
+
+# Your LLM provider key
+ANTHROPIC_API_KEY=your-anthropic-key
 ```
 
-## Connect to Civic
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
 
-Use `MultiServerMCPClient` to connect your agent to Civic over Streamable HTTP, then pass the discovered tools to your LangGraph graph:
+## Connecting to Civic
+
+Use `MultiServerMCPClient` to connect your agent to the Civic MCP Hub over Streamable HTTP, then pass the discovered tools to your LangGraph graph:
 
 ```python
 import os
@@ -79,35 +74,78 @@ async def create_agent():
     return graph
 ```
 
-## Production Checklist
+## Running the Agent
 
-Before deploying, set a locked profile URL so the agent can't switch toolkits:
+```python
+import asyncio
 
-```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit&lock=true
+async def main():
+    agent = await create_agent()
+    config = {"configurable": {"thread_id": "session-1"}}
+
+    result = await agent.ainvoke(
+        {"messages": [{"role": "user", "content": "What events do I have today?"}]},
+        config=config
+    )
+    print(result["messages"][-1].content)
+
+asyncio.run(main())
 ```
 
-<Note>
-`lock=true` hides the `switch_profile` tool and blocks guardrail modification. Required for production agents. See [Agent Deployment](/civic/quickstart/clients/agents) for full URL parameter reference.
-</Note>
+## Production Configuration
+
+### Lock to a Toolkit
+
+For production agents, always lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+When a profile is specified, the session is locked by default — the agent cannot switch toolkits or modify its own guardrails. This prevents prompt injection attacks from escaping the defined tool scope.
+
+### Multi-Account Setup
+
+For organization accounts, include the `accountId` parameter:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=support&accountId=org_abc123
+```
+
+### Pre-load Skills
+
+Load specific Skills at session start using the `skills` parameter:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
+```
+
+## Environment Variable Reference
+
+| Variable | Description |
+|---|---|
+| `CIVIC_URL` | Full Civic toolkit URL including profile and any URL parameters |
+| `CIVIC_TOKEN` | Civic token from nexus.civic.com → Settings → Tokens |
 
 ## Reference Implementation
 
-A complete reference implementation including a FastAPI chat UI is available at [github.com/titus-civic/langchain-nexus-reference-implementation](https://github.com/titus-civic/langchain-nexus-reference-implementation).
+A complete reference implementation including a FastAPI chat UI, streaming responses, and production patterns is available at:
+
+[github.com/titus-civic/langchain-nexus-reference-implementation](https://github.com/titus-civic/langchain-nexus-reference-implementation)
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Agent Deployment" icon="rocket" href="/civic/quickstart/clients/agents">
-    Profile locking, URL params, and multi-agent patterns
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
   </Card>
   <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
-    Block specific tools your agent shouldn't use
+    Constrain what tools your LangGraph agent can use
   </Card>
-  <Card title="Audit" icon="list-check" href="/civic/concepts/audit">
-    Query what your agent did
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
   </Card>
   <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
-    Token setup and URL parameter reference
+    Token generation and URL parameter reference
   </Card>
 </CardGroup>

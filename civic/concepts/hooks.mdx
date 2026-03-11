@@ -1,50 +1,56 @@
 ---
 title: Hooks
 description: Middleware pattern for intercepting and processing MCP requests and responses
-public: true
+icon: "code-branch"
 ---
-
-## Overview
 
 Hooks provide a middleware layer for intercepting and processing MCP requests and responses. They enable you to add custom logic, security rules, or transformations without modifying the underlying MCP servers.
 
 ## How Hooks Work
 
 ```
-AI Agent → [Request Hook] → Civic Hub → MCP Server
-                                              ↓
-AI Agent ← [Response Hook] ← Civic Hub ← MCP Server
+AI Assistant → [Request Hook] → MCP Server
+                                     ↓
+AI Assistant ← [Response Hook] ← MCP Server
 ```
 
 Each hook in the chain can:
-- **Inspect** the request/response data
+
+- **Inspect** the request or response data
 - **Modify** parameters or results
 - **Block** requests based on custom rules
 - **Enrich** data with additional context
 
 ## Common Hook Patterns
 
-- **Security Filtering**: Validate requests against security policies before they reach the server
-- **Rate Limiting**: Control request frequency and volume
-- **Data Transformation**: Modify request/response formats
-- **Audit Logging**: Record all tool interactions (built into Civic Hub)
-- **Content Filtering**: Remove or redact sensitive information from responses
+| Pattern | Description |
+|---|---|
+| **Security Filtering** | Validate requests against security policies before forwarding |
+| **Rate Limiting** | Control request frequency and volume |
+| **Data Transformation** | Modify request or response formats |
+| **Audit Logging** | Record all tool interactions for compliance |
+| **Content Filtering** | Remove or redact sensitive information from responses |
+| **Tool Filtering** | Block specific tools from appearing in the agent's tool list |
 
-## Guardrails as Hooks
+## Hooks and Guardrails
 
-Civic's [Guardrails](/civic/concepts/guardrails) system is implemented as a hook layer at the Hub. When you add a guardrail to block a specific tool, Civic installs a request hook that intercepts calls to that tool and returns a blocked response before the call reaches the server.
+Civic's [Guardrails](/civic/concepts/guardrails) system is built on the hook architecture. When you configure guardrails — blocking specific tools, presetting parameters, or filtering responses — these are implemented as hooks applied to the request pipeline.
 
-This means guardrails have **zero latency impact** on allowed calls — the hook only fires on matched tool calls.
+For most use cases, the Guardrails UI and Configurator Agent provide sufficient control without needing to write custom hooks directly.
 
-## Hook Scope
+## Practical Example: Filtering Tools
 
-Hooks apply at the toolkit level. A hook configured on your `support-agent` toolkit applies to all tool calls made through that toolkit.
+One common use of hooks is filtering which tools the AI can see. For example, to hide internal platform tools like `memory-clear-all` from end users while keeping them accessible to the platform:
+
+A `Hook_Filter` configuration can remove specific tools from the list returned to the agent, making them invisible without disabling them at the server level.
+
+## Learn More
 
 <CardGroup cols={2}>
   <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
-    Guardrails are hooks — pre-built for common security rules
+    Higher-level security configuration built on the hook architecture
   </Card>
-  <Card title="Prompt Injection" icon="shield-halved" href="/civic/concepts/prompt-injection">
-    Hooks as a defense layer against injection attacks
+  <Card title="Prompt Injection" icon="lock" href="/civic/concepts/prompt-injection">
+    How hooks and guardrails defend against prompt injection attacks
   </Card>
 </CardGroup>

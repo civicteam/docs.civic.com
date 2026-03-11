@@ -30,7 +30,7 @@ icon: "lobster"
 - **OAuth token management** — Tokens issued and stored server-side in Civic, never exposed to OpenClaw
 - **MCP server authorization** — You authorize MCP servers (e.g., "Gmail", "Google Calendar") that OpenClaw can access
 - **OAuth scope enforcement** — Least-privilege OAuth scopes (e.g., read-only Gmail initially) enforced at protocol level
-- **API request/response logging** — Audit trail of requests and responses that pass through the MCP gateway (retained ~30 days)
+- **API request/response logging** — Complete audit trail of every tool call: tool name, parameters, response, and timestamp. Queryable via Civic Chat (aggregated summary, line-by-line detail, or CSV export up to 5,000 lines). Retained ~30 days.
 - **Guardrails at protocol layer** — Block requests that violate configured rules (e.g., block write operations, size limits)
 - **Instant token revocation** — Terminate cloud API access immediately by revoking authorizations or deleting toolkit
 
@@ -41,7 +41,7 @@ icon: "lobster"
 - **Network scanning tools** — Capabilities like nmap, port scanning happen outside MCP protocol
 - **Headless browser actions** — Web automation that bypasses MCP gateway entirely
 - **OpenClaw's other Skills** — Any non-MCP capabilities OpenClaw has installed
-- **Which specific MCP tools are called** — Civic authorizes servers, not individual tool calls within them
+- **Actions outside the MCP protocol** — Civic guardrails operate at the tool level within the Hub, but OpenClaw's local capabilities (file system, terminal) are outside Civic's visibility
 - **Self-installation of MCP servers** — Unless restricted to a specific toolkit, OpenClaw can add MCP servers without user approval
 
 <Callout icon="triangle-exclamation" color="red">
@@ -190,10 +190,10 @@ If you prefer to configure everything yourself or want different permissions:
     - **Google Calendar** (`calendar`) — calendar access
     - **Google Drive** (`google-drive`) — file access
     - **PostgreSQL** (`postgresql`) — database queries
-    - [See all 100+ available servers](/civic/reference/servers)
+    - [See all 85 available servers](/civic/reference/servers)
 
     <Callout icon="info" color="blue">
-      Civic authorizes at the MCP server level (e.g., "Gmail"), not individual tools within them. Use OAuth scopes and guardrails for finer control.
+      Civic authorizes OAuth connections at the MCP server level (e.g., "Gmail"). Use guardrails to control access at the individual tool level within each server.
     </Callout>
   </Step>
   <Step title="Configure OAuth scopes">
@@ -440,7 +440,7 @@ If you are logged into Civic locally, OpenClaw could potentially open your brows
 
 <CardGroup cols={2}>
   <Card title="Available MCP Servers" icon="server" href="/civic/reference/servers">
-    Browse all 100+ integrations
+    Browse all 85 integrations
   </Card>
   <Card title="Toolkits" icon="toolbox" href="/civic/concepts/toolkits">
     Learn how toolkits organize your tools

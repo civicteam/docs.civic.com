@@ -80,61 +80,6 @@ Inspect SaaS integration assets and security findings via Cloudflare CASB (Cloud
 | `asset_categories_by_vendor_and_type` | Filter asset categories by vendor and type |
 | `set_active_account` | Set the active account for subsequent tool calls |
 
-## cloudflare-container
-
-Run commands and manage files inside a Cloudflare-hosted container environment.
-
-| Tool | Description |
-|------|-------------|
-| `container_initialize` | Start or restart the container |
-| `container_ping` | Check container liveness |
-| `container_exec` | Run a command in the container |
-| `container_files_list` | List the working directory file tree |
-| `container_file_read` | Read a file or directory |
-| `container_file_write` | Write a file to the working directory |
-| `container_file_delete` | Delete a file from the working directory |
-
-## cloudflare-dex
-
-Manage and analyze Cloudflare Digital Experience Monitoring (DEX) tests, fleet status, and remote device captures.
-
-| Tool | Description |
-|------|-------------|
-| `accounts_list` | List all accounts in your Cloudflare account |
-| `dex_list_tests` | List all configured DEX tests |
-| `dex_test_statistics` | Analyze DEX test results by quartile |
-| `dex_http_test_details` | Get time series results for an HTTP DEX test |
-| `dex_traceroute_test_details` | Get time series results for a traceroute DEX test |
-| `dex_traceroute_test_network_path` | Get aggregate network path data for a traceroute test |
-| `dex_traceroute_test_result_network_path` | Get hop-by-hop network path for a specific result |
-| `dex_fleet_status_live` | Get real-time fleet device status |
-| `dex_fleet_status_logs` | Get raw fleet status device logs |
-| `dex_fleet_status_over_time` | Get aggregate device status time series |
-| `dex_list_colos` | List Cloudflare colos by usage |
-| `dex_list_warp_change_events` | View WARP toggle and config change events |
-| `dex_list_remote_capture_eligible_devices` | List devices eligible for remote captures |
-| `dex_list_remote_captures` | List existing remote captures (PCAPs and WARP Diags) |
-| `dex_create_remote_pcap` | Create a remote packet capture for a device |
-| `dex_create_remote_warp_diag` | Create a remote WARP diagnostic for a device |
-| `dex_analyze_warp_diag` | Analyze a WARP diagnostic capture for common issues |
-| `dex_list_remote_warp_diag_contents` | List files in a WARP diag archive |
-| `dex_explore_remote_warp_diag_output` | Read a specific file from a WARP diag archive |
-| `set_active_account` | Set the active account for subsequent tool calls |
-
-## cloudflare-dns-analytics
-
-Inspect DNS query analytics, zone settings, and account DNS configuration.
-
-| Tool | Description |
-|------|-------------|
-| `accounts_list` | List all accounts in your Cloudflare account |
-| `zones_list` | List all zones under an account |
-| `zone_details` | Get details for a specific zone |
-| `dns_report` | Fetch a DNS report for a zone over a date range |
-| `show_account_dns_settings` | Show DNS settings for the current account |
-| `show_zone_dns_settings` | Show DNS settings for a specific zone |
-| `set_active_account` | Set the active account for subsequent tool calls |
-
 ## cloudflare-documentation
 
 Search Cloudflare's official documentation and access migration guides.
@@ -143,16 +88,6 @@ Search Cloudflare's official documentation and access migration guides.
 |------|-------------|
 | `search_cloudflare_documentation` | Search Cloudflare docs for any product or feature |
 | `migrate_pages_to_workers_guide` | Read the Pages-to-Workers migration guide |
-
-## cloudflare-logpush
-
-List and inspect Logpush jobs configured on your Cloudflare account.
-
-| Tool | Description |
-|------|-------------|
-| `accounts_list` | List all accounts in your Cloudflare account |
-| `logpush_jobs_by_account_id` | Get all Logpush jobs for an account |
-| `set_active_account` | Set the active account for subsequent tool calls |
 
 ## cloudflare-observability
 
@@ -182,17 +117,9 @@ Access Cloudflare Radar's global internet intelligence including traffic trends,
 | `get_l3_attack_data` | Retrieve network layer (L3) attack trends |
 | `get_l7_attack_data` | Retrieve application layer (L7) attack trends |
 | `get_dns_queries_data` | Retrieve DNS query trends from the 1.1.1.1 resolver |
-| `get_email_routing_data` | Retrieve email routing trends |
-| `get_email_security_data` | Retrieve email security trends |
 | `get_internet_quality_data` | Get bandwidth, latency, and DNS response time data |
-| `get_internet_speed_data` | Get bandwidth, latency, jitter, and packet loss summaries |
 | `get_traffic_anomalies` | Get traffic anomalies and outages |
-| `get_ai_data` | Retrieve AI-related traffic and model usage data |
 | `get_domains_ranking` | Get top or trending domains |
-| `get_domain_rank_details` | Get ranking details for a specific domain |
-| `get_internet_services_ranking` | Get top internet services by category |
-| `get_as_details` | Get autonomous system details by ASN |
-| `list_autonomous_systems` | List autonomous systems |
 | `get_ip_details` | Get information about an IP address |
 | `scan_url` | Submit a URL for scanning |
 | `set_active_account` | Set the active account for subsequent tool calls |
@@ -206,41 +133,10 @@ Manage Cloudflare Workers and their storage bindings: D1 databases, KV namespace
 | `accounts_list` | List all accounts in your Cloudflare account |
 | `workers_list` | List all Workers in the account |
 | `workers_get_worker` | Get details for a specific Worker |
-| `workers_get_worker_code` | Get the source code of a Worker |
 | `d1_databases_list` | List all D1 databases |
-| `d1_database_get` | Get a specific D1 database |
-| `d1_database_create` | Create a new D1 database |
-| `d1_database_delete` | Delete a D1 database |
 | `d1_database_query` | Run a SQL query against a D1 database |
 | `kv_namespaces_list` | List all KV namespaces |
-| `kv_namespace_get` | Get details of a KV namespace |
-| `kv_namespace_create` | Create a new KV namespace |
-| `kv_namespace_update` | Update a KV namespace title |
-| `kv_namespace_delete` | Delete a KV namespace |
 | `r2_buckets_list` | List all R2 buckets |
-| `r2_bucket_get` | Get details of an R2 bucket |
-| `r2_bucket_create` | Create a new R2 bucket |
-| `r2_bucket_delete` | Delete an R2 bucket |
 | `hyperdrive_configs_list` | List Hyperdrive configurations |
-| `hyperdrive_config_get` | Get a Hyperdrive configuration |
-| `hyperdrive_config_edit` | Edit a Hyperdrive configuration |
-| `hyperdrive_config_delete` | Delete a Hyperdrive configuration |
 | `search_cloudflare_documentation` | Search Cloudflare documentation |
-| `migrate_pages_to_workers_guide` | Read the Pages-to-Workers migration guide |
-| `set_active_account` | Set the active account for subsequent tool calls |
-
-## cloudflare-workers-builds
-
-List and inspect build history and logs for Cloudflare Workers.
-
-| Tool | Description |
-|------|-------------|
-| `accounts_list` | List all accounts in your Cloudflare account |
-| `workers_list` | List all Workers in the account |
-| `workers_get_worker` | Get details for a specific Worker |
-| `workers_get_worker_code` | Get the source code of a Worker |
-| `workers_builds_list_builds` | List builds for a Worker |
-| `workers_builds_get_build` | Get details for a specific build |
-| `workers_builds_get_build_logs` | Get logs for a specific build |
-| `workers_builds_set_active_worker` | Set the active Worker for subsequent build calls |
 | `set_active_account` | Set the active account for subsequent tool calls |

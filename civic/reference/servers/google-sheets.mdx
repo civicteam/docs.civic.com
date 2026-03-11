@@ -65,6 +65,10 @@ The Google Sheets server enables AI assistants to interact with [Google Sheets](
   </Accordion>
 </AccordionGroup>
 
+<Warning>
+**High-risk tool:** `modify_sheet_values` with `clear_values: true` permanently erases data from the specified range. For automated agents, consider adding a guardrail to block or require confirmation for clear operations. See [Guardrails](/civic/concepts/guardrails).
+</Warning>
+
 ### Data Operations
 
 <AccordionGroup>

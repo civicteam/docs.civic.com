@@ -59,26 +59,26 @@
             "group": "Integrate",
             "icon": "plug",
             "pages": [
-              "civic/recipes/langchain",
-              "civic/recipes/vercel-ai-sdk",
+              "civic/quickstart/clients/agents",
               "civic/recipes/anthropic",
-              "civic/recipes/openai-agents",
-              "civic/recipes/openai-sdk",
-              "civic/recipes/python-pydantic",
+              "civic/quickstart/clients/chatgpt",
+              "civic/quickstart/clients/claude-code",
               "civic/quickstart/clients/claude-desktop",
               "civic/quickstart/clients/claude-web",
-              "civic/quickstart/clients/cursor",
-              "civic/quickstart/clients/vscode",
-              "civic/quickstart/clients/claude-code",
-              "civic/quickstart/clients/goose",
-              "civic/quickstart/clients/openclaw",
-              "civic/quickstart/clients/gemini",
-              "civic/quickstart/clients/jetbrains",
-              "civic/quickstart/clients/windsurf",
-              "civic/quickstart/clients/mistral-lechat",
-              "civic/quickstart/clients/chatgpt",
               "civic/quickstart/clients/codex",
-              "civic/quickstart/clients/agents"
+              "civic/quickstart/clients/cursor",
+              "civic/quickstart/clients/gemini",
+              "civic/quickstart/clients/goose",
+              "civic/quickstart/clients/jetbrains",
+              "civic/recipes/langchain",
+              "civic/quickstart/clients/mistral-lechat",
+              "civic/recipes/openai-agents",
+              "civic/recipes/openai-sdk",
+              "civic/quickstart/clients/openclaw",
+              "civic/recipes/python-pydantic",
+              "civic/recipes/vercel-ai-sdk",
+              "civic/quickstart/clients/vscode",
+              "civic/quickstart/clients/windsurf"
             ]
           },
           {
@@ -95,7 +95,7 @@
           },
           {
             "group": "Authentication",
-            "icon": "key",
+            "icon": "lock",
             "pages": [
               "civic/concepts/oauth",
               "civic/concepts/tokens",
@@ -105,8 +105,8 @@
             ]
           },
           {
-            "group": "Advanced Configuration",
-            "icon": "layer-group",
+            "group": "Organize and Scale",
+            "icon": "toolbox",
             "pages": [
               "civic/concepts/toolkits",
               "civic/concepts/skills",
@@ -330,7 +330,7 @@
             ]
           },
           {
-            "group": "Libraries & Tools",
+            "group": "Libraries and Tools",
             "icon": "code",
             "pages": [
               "libraries/auth-verify"
@@ -376,9 +376,7 @@
             "pages": [
               "labs/concepts/mcp",
               "labs/concepts/guardrails",
-              "labs/concepts/prompt-injection",
               "labs/concepts/auth-strategies",
-              "labs/concepts/hooks",
               "labs/concepts/rag"
             ]
           },
