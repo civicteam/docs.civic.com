@@ -24,8 +24,8 @@ exclude = [
   # GitHub line numbers
   'github\.com.*#L[0-9]+',
 
-  # Social media (often rate-limited)
-  '^https?://(www\.)?(twitter|x|linkedin)\.com',
+  # Social media (often rate-limited or block bots)
+  '^https?://(www\.)?(twitter|x|linkedin|facebook|instagram)\.com',
 
   # AI services that block bots
   '^https?://(www\.)?claude\.ai',
