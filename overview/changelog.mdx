@@ -5,6 +5,72 @@ icon: "pen"
 public: true
 ---
 
+<Update label="March 11, 2026" description="auth-server-1.2.24">
+
+**Features**
+- Added support for MCP (Model Context Protocol) clients, enabling proper OAuth authorization for tools like Gemini CLI
+
+**Bug fixes**
+- Fixed an error that could occur when MCP clients attempted to connect via OAuth authorization
+
+</Update>
+
+<Update label="March 10, 2026" description="auth-server-1.2.23">
+
+**Features**
+- Added support for `civic_account` and `civic_profile` claims in token exchange requests
+- When both legacy and new claim formats are present, the new `civic_*` claims now take priority
+
+</Update>
+
+<Update label="March 10, 2026" description="apps-0.2.89">
+
+**Features**
+- Added support for `civic_account` and `civic_profile` claims in token exchange
+
+</Update>
+
+<Update label="March 06, 2026" description="apps-0.2.88">
+
+**Bug fixes**
+- Fixed an issue where custom logo uploads were not displaying correctly
+- Fixed an issue preventing cleanup of previously uploaded files when replacing them
+
+**Security**
+- Updated dependencies to address known vulnerabilities
+
+</Update>
+
+<Update label="February 13, 2026" description="Auth Server v1.2.21">
+
+**Bug Fixes**
+- Fixed federated token exchange `sub` claim to use the correct account identifier
+- Fixed federated token exchange userinfo endpoint to return proper OIDC claims
+- Extracted standard OIDC claims (name, email, picture, etc.) from external tokens during federated token exchange
+
+**Security**
+- Dependency upgrade to address a high-severity vulnerability
+
+</Update>
+
+<Update label="February 9, 2026" description="Auth Server v1.2.20">
+
+**Improvements**
+- Internal infrastructure and analytics improvements
+
+</Update>
+
+<Update label="February 9, 2026" description="Apps v0.2.82">
+
+**Improvements**
+- Next.js 16 compatibility updates
+
+**Bug Fixes**
+- Fixed SSR hydration mismatches in useUser hook and login app
+- Fixed cross-origin SecurityError in MessageHandler logging
+
+</Update>
+
 <Update label="February 4, 2026" description="Auth Server v1.2.19">
 
 **Security**
