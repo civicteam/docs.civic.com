@@ -300,3 +300,76 @@ HubSpot has strict rate limits that vary by account tier. Use batch operations w
 <Tip>
 **Pro Tip**: Start with read operations to understand your data structure before implementing create/update operations. Use the HubSpot UI to verify API changes during development.
 </Tip>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **57 server-specific guardrails** across 13 operations.
+
+<Note>
+HubSpot guardrails are especially important for batch operations — `hubspot-batch-create-objects`, `hubspot-batch-update-objects`, and `hubspot-batch-read-objects` can affect large volumes of CRM records in a single call. Size limits and object type restrictions help prevent accidental bulk changes or data exfiltration.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Block Create Object Types | `hubspot-batch-create-objects` | Request | Blocks creation of specific object types |
+| Limit Batch Create Size | `hubspot-batch-create-objects` | Request | Limits batch create size |
+| Block Property History | `hubspot-batch-read-objects` | Request | Blocks access to property history |
+| Filter Batch Read Objects | `hubspot-batch-read-objects` | Response | Filters objects by criteria in batch read |
+| Limit Batch Read Size | `hubspot-batch-read-objects` | Request | Limits batch read size |
+| Redact Batch Read Properties | `hubspot-batch-read-objects` | Response | Redacts sensitive properties from batch read results |
+| Restrict Batch Read Types | `hubspot-batch-read-objects` | Request | Restricts object types for batch read |
+| Block Object Type Associations | `hubspot-create-association` | Request | Blocks associations between certain object types |
+| Limit Association IDs | `hubspot-create-association` | Request | Limits associations to specific object IDs |
+| Restrict Association Types | `hubspot-create-association` | Request | Restricts association types allowed |
+| Block Update Object Types | `hubspot-batch-update-objects` | Request | Blocks updates to specific object types |
+| Limit Batch Update Size | `hubspot-batch-update-objects` | Request | Limits batch update size |
+| Restrict Update Properties | `hubspot-batch-update-objects` | Request | Restricts which properties can be updated |
+| Restrict Engagement Types | `hubspot-create-engagement` | Request | Restricts engagement types to NOTE and TASK only |
+| Block Create Property Types | `hubspot-create-property` | Request | Blocks creation of properties for certain object types |
+| Hide Engagement Owner | `hubspot-get-engagement` | Response | Hides owner information from engagements |
+| Redact Engagement Content | `hubspot-get-engagement` | Response | Redacts engagement content/metadata |
+| Restrict Engagement IDs | `hubspot-get-engagement` | Request | Restricts to specific engagement IDs |
+| Block Page Types | `hubspot-get-link` | Request | Blocks access to certain page types |
+| Restrict Link Object Types | `hubspot-get-link` | Request | Restricts to specific object types for links |
+| Block Get Property | `hubspot-get-property` | Request | Blocks access to specific properties |
+| Restrict Get Property Type | `hubspot-get-property` | Request | Restricts get property by object type |
+| Filter Schemas by Type | `hubspot-get-schemas` | Response | Filters custom object schemas by type |
+| Filter Account ID | `hubspot-get-user-details` | Response | Filters account ID information |
+| Hide Permission Scopes | `hubspot-get-user-details` | Response | Hides specific permission scopes |
+| Redact Token Details | `hubspot-get-user-details` | Response | Redacts API token and access token details |
+| Redact User Emails | `hubspot-get-user-details` | Response | Redacts user email addresses |
+| Hide Workflow Actions | `hubspot-get-workflow` | Response | Hides workflow actions |
+| Restrict Workflow IDs | `hubspot-get-workflow` | Request | Restricts to specific workflow IDs |
+| Limit Association Pagination | `hubspot-list-associations` | Request | Limits pagination size for associations |
+| Restrict List Association Types | `hubspot-list-associations` | Request | Restricts to specific object types |
+| Block Archived Objects | `hubspot-list-objects` | Request | Blocks access to archived objects |
+| Filter Data by Pattern | `hubspot-list-objects` | Response | Filters any data matching regex patterns (including financial data) |
+| Filter Objects by Owner | `hubspot-list-objects` | Response | Filters objects by owner or team |
+| Hide Custom Properties | `hubspot-list-objects` | Response | Hides sensitive custom properties |
+| Limit List Results | `hubspot-list-objects` | Request | Limits maximum results per page |
+| Redact Contact PII | `hubspot-list-objects` | Response | Redacts PII from contact objects |
+| Restrict List Properties | `hubspot-list-objects` | Request | Restricts properties that can be requested |
+| Restrict Object Types | `hubspot-list-objects` | Request | Restricts to specific object types only |
+| Block Hidden Properties | `hubspot-list-properties` | Request | Blocks access to hidden properties |
+| Filter Property Definitions | `hubspot-list-properties` | Response | Filters sensitive property definitions |
+| Restrict List Properties Types | `hubspot-list-properties` | Request | Restricts to specific object types |
+| Filter Workflows by Type | `hubspot-list-workflows` | Response | Filters workflows by type |
+| Hide Workflows by Name | `hubspot-list-workflows` | Response | Hides workflows by name pattern |
+| Limit Workflow Pagination | `hubspot-list-workflows` | Request | Limits pagination size for workflows |
+| Block Search Operators | `hubspot-search-objects` | Request | Blocks certain operators like regex or contains |
+| Filter by Data Classification | `hubspot-search-objects` | Response | Filters results by data classification |
+| Hide Pipeline Objects | `hubspot-search-objects` | Response | Hides objects from specific pipelines |
+| Limit Filter Groups | `hubspot-search-objects` | Request | Limits number of filter groups |
+| Redact Search PII | `hubspot-search-objects` | Response | Redacts PII from search results |
+| Restrict Search Object Types | `hubspot-search-objects` | Request | Restricts searchable object types |
+| Search Result Limit | `hubspot-search-objects` | Request | Enforces maximum search result limit |
+| Block Owner Changes | `hubspot-update-engagement` | Request | Blocks changes to engagement owner |
+| Limit Association Modifications | `hubspot-update-engagement` | Request | Limits association modifications in engagements |
+| Restrict Update Engagement IDs | `hubspot-update-engagement` | Request | Restricts which engagements can be updated |
+| Restrict Property Modification | `hubspot-update-property` | Request | Restricts which properties can be modified |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my HubSpot server."
+</Tip>

@@ -1,0 +1,72 @@
+---
+title: Request Guardrails
+description: Block sensitive data from being sent to tools before they execute
+icon: "shield-check"
+---
+
+Request guardrails are evaluated **before** a tool call executes. They inspect the outgoing request and block it if it contains sensitive or dangerous content — preventing that data from ever leaving the Civic Hub.
+
+## Available Request Guardrails
+
+### Block PII in Requests
+
+Blocks any request that contains personally identifiable information, including:
+
+- Social Security Numbers (SSN)
+- Email addresses
+- Phone numbers (international formats)
+- IP addresses
+- Passport numbers
+- Driver's license numbers
+- Bank account numbers (IBAN)
+- Dates of birth
+
+Use this to prevent agents from inadvertently passing customer data as tool parameters.
+
+> "Add a guardrail to block PII in requests on my Salesforce server"
+
+---
+
+### Block Credit Cards in Requests
+
+Specifically blocks requests containing credit card numbers from being sent to any tool. Covers major card formats (Visa, Mastercard, Amex, Discover).
+
+> "Block credit card numbers from being sent in any request on my CRM server"
+
+---
+
+### Block SSN in Requests
+
+Specifically blocks requests containing Social Security Numbers. More targeted than the full PII guardrail — use this when you need SSN blocking without restricting other PII types.
+
+> "Add a guardrail to block SSNs from being sent to my database"
+
+---
+
+### Block Prompt Injection in Requests
+
+Detects and blocks prompt injection payloads before they reach a tool. Based on [OWASP LLM01:2025](https://genai.owasp.org/llmrisk/llm01-prompt-injection/), this guardrail catches:
+
+- Direct instruction override attempts ("ignore all previous instructions")
+- Role manipulation patterns ("you are now...")
+- Context escape attempts
+- Encoded and obfuscated injection payloads
+- Jailbreak patterns
+
+This is especially important for tools that accept user-supplied input — an attacker could embed injection payloads in a document, email, or form field that the agent then processes.
+
+> "Enable prompt injection blocking on my Gmail server"
+
+---
+
+## How to configure
+
+Ask the Configurator Agent:
+
+> "Block PII from being sent in any requests on my HubSpot server"
+
+> "Add SSN blocking to all tools on my PostgreSQL server"
+
+Or configure via the Civic UI: open your toolkit → select the MCP server → Guardrails → Request → Add Guardrail.
+
+Request guardrails can be scoped to a specific tool, an entire server, or applied globally across all tools in a toolkit.

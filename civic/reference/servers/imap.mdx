@@ -28,3 +28,34 @@ The IMAP server enables AI assistants to access and manage email accounts using 
 | `mark_emails` | Mark emails as read/unread or flagged/unflagged |
 | `move_emails` | Move emails to a different folder, removing them from the source |
 | `search_emails` | Advanced email search with filters for sender, subject, date, body, and flags |
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **14 server-specific guardrails** across 6 operations.
+
+<Note>
+IMAP has a rich, operationally-specific guardrail set — covering batch size limits, deletion protection, verified sender enforcement, and sensitive search term blocking.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Maximum Copy Batch Size | `copy_emails` | Request | Limits copies to max 50 per operation |
+| Delete Folder Restriction | `delete_emails` | Request | Restricts which folders emails can be deleted from |
+| Maximum Delete Batch Size | `delete_emails` | Request | Limits deletes to max 10 per operation |
+| Prevent Permanent Deletion | `delete_emails` | Request | Forces soft-delete to trash instead of permanent deletion |
+| Protect INBOX from Deletion | `delete_emails` | Request | Prevents deleting directly from INBOX |
+| Attachment Verified Senders Only | `get_attachment` | Response | Blocks attachment downloads from unverified senders |
+| Email Verified Senders Only | `get_email` | Response | Blocks email content from unverified senders |
+| List Emails Verified Senders Only | `list_emails` | Response | Redacts email list content from unverified senders |
+| Maximum Mark Batch Size | `mark_emails` | Request | Limits marks to max 100 per operation |
+| Allowed Destination Folders | `move_emails` | Request | Restricts which folders emails can be moved to |
+| Maximum Move Batch Size | `move_emails` | Request | Limits moves to max 50 per operation |
+| Protected Source Folders | `move_emails` | Request | Prevents moving emails out of protected folders |
+| Block Common Sensitive Terms in Search | `search_emails` | Request | Blocks searches for passwords, SSN, credit cards, API keys, etc. |
+| Block Custom Sensitive Terms in Search | `search_emails` | Request | Blocks searches for org-specific sensitive terms |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my IMAP server."
+</Tip>

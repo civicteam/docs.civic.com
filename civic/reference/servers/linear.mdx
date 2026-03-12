@@ -239,3 +239,28 @@ Always verify team IDs, user IDs, and state IDs using the list tools before crea
 <Tip>
 **Pro Tip**: Use descriptive issue titles and markdown-formatted descriptions for better searchability and team communication.
 </Tip>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **12 server-specific guardrails** across 8 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Block Issue Creation in Non-Vetted Teams | `create_issue` | Request | Prevent creating issues in teams that are not vetted |
+| Block Project Creation in Non-Vetted Teams | `create_project` | Request | Prevent creating projects in teams that are not vetted |
+| Restrict to Vetted Project Names | `get_project` | Request | Only allow queries for whitelisted Linear project names |
+| Restrict to Vetted Team Names | `get_team` | Request | Only allow queries for whitelisted Linear team names |
+| Block Email Addresses in Searches | `get_user` | Request | Prevent searching for users by email address |
+| Filter Issues to Vetted Projects | `list_issues` | Response | Redact issues that don't belong to vetted projects |
+| Restrict to Vetted Team IDs | `list_issue_statuses` | Request | Only allow queries for whitelisted Linear team IDs |
+| Filter Projects to Vetted List | `list_projects` | Response | Redact projects that are not on the vetted list |
+| Redact User Admin Status | `list_users` | Response | Redact admin status from user data to prevent privilege discovery |
+| Redact User Last Seen Status | `list_users` | Response | Redact last seen timestamps to protect user privacy |
+| Restrict to Vetted Project IDs | `update_project` | Request | Only allow operations on whitelisted Linear project IDs |
+| Redact Workspace URLs | *(all operations)* | Response | Redact Linear workspace URLs to prevent workspace enumeration |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Linear server."
+</Tip>

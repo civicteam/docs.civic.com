@@ -192,3 +192,61 @@ Always verify file paths and ensure you have appropriate permissions before uplo
 <Tip>
 **Pro Tip**: Combine search operations with upload operations - search for existing files first to avoid duplicates, then upload new versions with updated names.
 </Tip>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **55 server-specific guardrails** across 9 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Copy Item - Allowed Source Folders Only | `copy_item` | Request | Restricts copying items from whitelisted source directories only |
+| Copy Item - Allowed Destination Folders Only | `copy_item` | Request | Restricts copying items to whitelisted destination directories only |
+| Create Folder - Allowed Parent Paths Only | `create_folder` | Request | Restricts folder creation to whitelisted parent directories |
+| Block Deprecated Delete Item Operation | `delete_item` | Request | Blocks the deprecated delete_item operation (use safe_delete_item instead) |
+| Download File - Allowed Folders Only | `download_file` | Response | Blocks downloading files from non-allowed directories |
+| Download File - Block Malicious Formats | `download_file` | Response | Blocks downloading files with potentially malicious extensions |
+| Download File - Email Domain Filter | `download_file` | Response | Blocks downloading files from paths with non-approved email domains |
+| Get File Content - Allowed Folders Only | `get_file_content` | Response | Blocks access to file content from non-allowed directories |
+| Get File Content - Block Malicious Formats | `get_file_content` | Response | Blocks access to files with potentially malicious extensions |
+| Get File Content - Email Domain Filter | `get_file_content` | Response | Blocks access to file content from paths with non-approved email domains |
+| Get File Metadata - Allowed Folders Only | `get_file_metadata` | Response | Blocks access to file metadata from non-allowed directories |
+| Get File Metadata - Email Domain Filter | `get_file_metadata` | Response | Blocks access to file metadata from paths with non-approved email domains |
+| List Files - Allowed Folders Only | `list_files` | Response | Redacts files/folders from non-allowed directories in list results |
+| List Files - Block Malicious Formats | `list_files` | Response | Redacts files with potentially malicious extensions |
+| List Files - Email Domain Filter | `list_files` | Response | Redacts files from paths containing non-approved email domains |
+| Move Item - Allowed Source Folders Only | `move_item` | Request | Restricts moving items from whitelisted source directories only |
+| Move Item - Allowed Destination Folders Only | `move_item` | Request | Restricts moving items to whitelisted destination directories only |
+| Safe Delete Item - Allowed Folders Only | `safe_delete_item` | Request | Restricts deletions to whitelisted directories only |
+| Block Regex Search Patterns | `search` | Request | Prevents searches containing regex patterns or wildcards |
+| Block Sensitive Search Terms | `search` | Request | Prevents searching for passwords, keys, credentials and other sensitive terms |
+| Filter Large Files | `search` | Response | Hides files above a certain size threshold |
+| Filter Sensitive Extensions | `search` | Response | Redacts files with sensitive extensions like .key, .pem, .env |
+| Filter Sensitive Folders | `search` | Response | Filters out files from specific sensitive folders in search results |
+| Redact Sensitive Paths | `search` | Response | Redacts file paths containing sensitive patterns |
+| Search Path Restrictions | `search` | Request | Limits search to specific folder paths or prefixes |
+| Block Sensitive File Patterns | `search_file_db` | Request | Prevents searches for sensitive file patterns |
+| Block System Folder Search | `search_file_db` | Request | Prevents searches in system or hidden folders |
+| Filter Shared Files | `search_file_db` | Response | Filters out shared or collaborative files from results |
+| Filter Unauthorized Folders | `search_file_db` | Response | Filters results from unauthorized folders |
+| Maximum Results Limit | `search_file_db` | Request | Limits maximum results to prevent data exfiltration |
+| Minimum Query Specificity | `search_file_db` | Request | Requires minimum query length to prevent broad searches |
+| Redact File Previews | `search_file_db` | Response | Redacts file preview content from search results |
+| Search DB Path Restrictions | `search_file_db` | Request | Restricts folder search to allowed directories |
+| Search File DB - Allowed Folders Only | `search_file_db` | Response | Redacts search results from non-allowed directories |
+| Search File DB - Block Malicious Formats | `search_file_db` | Response | Redacts search results with potentially malicious file extensions |
+| Search File DB - Email Domain Filter | `search_file_db` | Response | Redacts search results from paths with non-approved email domains |
+| Allowed File Types | `upload_file` | Request | Restricts uploads to specific file types only |
+| Block Root Directory Upload | `upload_file` | Request | Prevents uploading files directly to the root directory |
+| Block Sensitive Upload Extensions | `upload_file` | Request | Prevents uploads with sensitive file extensions |
+| File Naming Convention | `upload_file` | Request | Enforces specific file naming patterns for uploads |
+| Prevent File Overwrite | `upload_file` | Request | Blocks uploads that would overwrite existing files |
+| Upload File - Allowed Folders Only | `upload_file` | Request | Restricts file uploads to whitelisted directories only |
+| Upload File - Block Malicious Formats | `upload_file` | Request | Blocks uploading files with potentially malicious extensions |
+| Upload Path Restrictions | `upload_file` | Request | Restricts file uploads to specific allowed directories |
+| Upload Size Limit | `upload_file` | Request | Limits the size of uploaded files |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Dropbox server."
+</Tip>

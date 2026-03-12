@@ -52,11 +52,15 @@
             "pages": [
               "civic/quickstart/index",
               "civic/quickstart/civic-chat",
-              "civic/quickstart/credentials"
+              "civic/quickstart/credentials",
+              "civic/reference/client-compatibility",
+              "civic/concepts/connection-methods",
+              "civic/billing",
+              "civic/changelog"
             ]
           },
           {
-            "group": "Integrate",
+            "group": "Integration",
             "icon": "plug",
             "pages": [
               "civic/quickstart/clients/agents",
@@ -85,11 +89,23 @@
             "group": "Security",
             "icon": "shield",
             "pages": [
-              "civic/concepts/guardrails",
-              "civic/concepts/secret-management",
               "civic/concepts/audit",
-              "civic/concepts/revocation",
+              {
+                "group": "Guardrails",
+                "icon": "shield-halved",
+                "pages": [
+                  "civic/concepts/guardrails",
+                  "civic/concepts/guardrails/request",
+                  "civic/concepts/guardrails/blocking",
+                  "civic/concepts/guardrails/parameters",
+                  "civic/concepts/guardrails/redaction",
+                  "civic/concepts/guardrails/transforms"
+                ]
+              },
+              "civic/concepts/hooks",
               "civic/concepts/prompt-injection",
+              "civic/concepts/revocation",
+              "civic/concepts/secret-management",
               "civic/reference/security"
             ]
           },
@@ -97,32 +113,17 @@
             "group": "Authentication",
             "icon": "lock",
             "pages": [
-              "civic/concepts/oauth",
-              "civic/concepts/tokens",
-              "civic/developers/native-integration/index",
               "civic/developers/native-integration/authorization",
-              "civic/developers/native-integration/civic-auth-capability"
+              "civic/concepts/tokens",
+              "civic/developers/native-integration/civic-auth-capability",
+              "civic/developers/native-integration/index",
+              "civic/concepts/oauth"
             ]
           },
           {
-            "group": "Organize and Scale",
-            "icon": "toolbox",
+            "group": "Connectivity",
+            "icon": "plug",
             "pages": [
-              "civic/concepts/toolkits",
-              "civic/concepts/skills",
-              "civic/organizations",
-              "civic/reference/authorizations"
-            ]
-          },
-          {
-            "group": "Reference",
-            "icon": "book",
-            "pages": [
-              "civic/reference/client-compatibility",
-              "civic/concepts/mcp",
-              "civic/concepts/tools-resources-prompts",
-              "civic/concepts/connection-methods",
-              "civic/concepts/hooks",
               {
                 "group": "MCP Servers",
                 "icon": "server",
@@ -200,9 +201,25 @@
                   "civic/reference/servers/webflow"
                 ]
               },
-              "civic/troubleshooting",
-              "civic/billing",
-              "civic/changelog"
+              "civic/concepts/toolkits",
+              "civic/concepts/tools-resources-prompts",
+              "civic/concepts/mcp"
+            ]
+          },
+          {
+            "group": "Advanced Configuration",
+            "icon": "toolbox",
+            "pages": [
+              "civic/reference/authorizations",
+              "civic/organizations",
+              "civic/concepts/skills"
+            ]
+          },
+          {
+            "group": "Reference",
+            "icon": "book",
+            "pages": [
+              "civic/troubleshooting"
             ]
           }
         ]
@@ -384,7 +401,6 @@
             "group": "🔓Integration",
             "pages": [
               "labs/private/getting-started",
-              "labs/private/mcp-hub",
               "labs/private/x402-mcp",
               "labs/private/guardrail-proxy",
               "labs/private/bodyguard",

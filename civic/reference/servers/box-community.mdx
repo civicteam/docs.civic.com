@@ -348,3 +348,26 @@ The Box Community Edition server has built-in security constraints to prevent ac
 <Tip>
 **Pro Tip**: Use search tools first to find file and folder IDs, then use those IDs for management operations.
 </Tip>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **10 server-specific guardrails** across 6 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Block Malicious File Downloads | `box_file_download_tool` | Response | Blocks downloading files with potentially malicious extensions |
+| Block Malicious File Upload Extensions | `box_file_upload_tool` | Request | Blocks uploading files with potentially malicious extensions |
+| Block Root Directory Upload | `box_file_upload_tool` | Request | Prevents uploading files directly to the root directory |
+| Block Root Folder Creation | `box_folder_create_tool` | Request | Prevents creating folders directly in the root directory |
+| Block Recursive Folder Deletion | `box_folder_delete_tool` | Request | Prevents recursive folder deletion which could cause data loss |
+| Block Public Shared Links | `box_shared_link_file_create_or_update_tool` | Request | Prevents creating shared links with 'open' (public) access |
+| Require Expiration on Shared Links | `box_shared_link_file_create_or_update_tool` | Request | Requires an expiration date to be set on all shared links |
+| Require Password on Shared Links | `box_shared_link_file_create_or_update_tool` | Request | Requires a password to be set on all shared links |
+| Block Public Folder Shared Links | `box_shared_link_folder_create_or_update_tool` | Request | Prevents creating folder shared links with 'open' (public) access |
+| Block Enterprise User Listing | `box_users_list_tool` | Request | Blocks listing all users in the Box enterprise |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Box Community Edition server."
+</Tip>

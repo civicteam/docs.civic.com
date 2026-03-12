@@ -101,3 +101,26 @@ ServiceTitan is a field service management platform for running home and commerc
 | `update_pricebook_equipment` | Update an existing equipment item in the pricebook |
 | `update_pricebook_material` | Update an existing material item in the pricebook |
 | `update_pricebook_service` | Update an existing service item in the pricebook |
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **6 server-specific guardrails** across 4 operations.
+
+<Note>
+All guardrails are response-side PII/privacy focused — covering customers, callers, locations, form data, and technician access control.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Redact Caller Information | `list_calls` | Response | Redacts caller phone numbers and personal info |
+| Redact Call Recording URLs | `list_calls` | Response | Redacts call recording URLs and transcripts |
+| Redact Customer PII | `list_customers` | Response | Redacts phone numbers, emails, addresses |
+| Redact Form Responses | `list_forms` | Response | Redacts sensitive form submission data |
+| Redact Location Addresses | `list_locations` | Response | Redacts street addresses from location data |
+| Filter Technicians by Business Unit | `list_technicians` | Response | Redacts technicians from non-authorized business units |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my ServiceTitan server."
+</Tip>

@@ -180,3 +180,24 @@ Personally identifiable information (SSN, credit cards, phone numbers, emails) d
 - [Mistral AI Documentation](https://docs.mistral.ai/)
 - [Mistral API Reference](https://docs.mistral.ai/api/)
 - [Pixtral Vision Model](https://docs.mistral.ai/capabilities/vision/)
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **4 server-specific guardrails** across 2 operations.
+
+<Note>
+Covers both security (SSRF protection, payload size limits) and privacy (PII redaction from extracted text).
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| OCR Base64 - Maximum Payload Size | `ocr_base64` | Request | Blocks base64 payloads over ~10MB to prevent memory exhaustion |
+| OCR Base64 - Redact PII from Extracted Text | `ocr_base64` | Response | Redacts SSN, credit cards, phones, emails from OCR output |
+| OCR URL - Block Internal Network URLs | `ocr_url` | Request | Blocks SSRF attacks — prevents localhost/private IP URLs |
+| OCR URL - Redact PII from Extracted Text | `ocr_url` | Response | Redacts PII from URL-based OCR output |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Mistral OCR server."
+</Tip>

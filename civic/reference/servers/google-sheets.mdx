@@ -153,3 +153,49 @@ The Google Sheets server enables AI assistants to interact with [Google Sheets](
 
 **Multi-Sheet Creation:** create_spreadsheet can initialize multiple sheets at once by providing a list of sheet names.
 </Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **42 server-specific guardrails** across 7 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Block Sheet Creation in Protected Spreadsheets | `create_sheet` | Request | Prevents adding new sheets to specific protected spreadsheets |
+| Limit Sheet Creation Count | `create_spreadsheet` | Request | Caps the number of sheets that can be created in a new spreadsheet |
+| Block Comments on Protected Spreadsheets | `create_spreadsheet_comment` | Request | Prevents creating comments on specific protected spreadsheets |
+| Block Comments with URLs | `create_spreadsheet_comment` | Request | Prevents creating comments containing URLs or external links |
+| Limit Comment Length | `create_spreadsheet_comment` | Request | Caps the maximum length of comment content |
+| Block Specific Spreadsheet IDs | `get_spreadsheet_info` | Request | Denies access to blocklisted spreadsheets by their IDs |
+| Hide Sensitive Sheet Names | `get_spreadsheet_info` | Response | Redacts sheet names containing sensitive keywords |
+| Filter Sensitive Spreadsheet Names | `list_spreadsheets` | Response | Hides spreadsheets containing sensitive keywords in their names |
+| Hide Old Spreadsheets | `list_spreadsheets` | Response | Filters out spreadsheets older than a specified date |
+| Limit Spreadsheet Results | `list_spreadsheets` | Request | Caps the maximum number of spreadsheets returned |
+| Restrict to Allowed Spreadsheets | `list_spreadsheets` | Request | Only allows listing/accessing spreadsheets in a whitelist |
+| Block Formula Injection | `modify_sheet_values` | Request | Prevents writing formulas or scripts that could be malicious |
+| Block Modification of Protected Spreadsheets | `modify_sheet_values` | Request | Prevents any modification to specific critical spreadsheets |
+| Block Protected Range Modification | `modify_sheet_values` | Request | Prevents editing specific protected ranges |
+| Limit Write Data Size | `modify_sheet_values` | Request | Caps the amount of data that can be written in a single request |
+| Prevent Data Overwrite | `modify_sheet_values` | Request | Only allows writing to empty cells, prevents overwriting existing data |
+| Prevent Large Range Clear | `modify_sheet_values` | Request | Blocks clearing ranges exceeding a maximum cell count |
+| Restrict Input Option to RAW | `modify_sheet_values` | Request | Forces value_input_option to RAW to prevent formula evaluation |
+| Block Content Access for Dangerous Formats | `read_sheet_values` | Response | Blocks accessing content of files with dangerous formats |
+| Block Full Spreadsheet Read | `read_sheet_values` | Request | Prevents reading entire spreadsheet with unbounded ranges |
+| Block Reading Specific Sheet Names | `read_sheet_values` | Request | Prevents reading from sheets with certain names |
+| Filter Formula Values | `read_sheet_values` | Response | Hides formulas to prevent revealing business logic |
+| Hide Cells Matching Patterns | `read_sheet_values` | Response | Redacts cells containing values matching specified regex patterns |
+| Redact PII in Cells | `read_sheet_values` | Response | Masks PII like SSNs, emails, and phone numbers in cells |
+| Restrict Range Size | `read_sheet_values` | Request | Limits the maximum number of cells that can be read in a single request |
+| Block Comments from Protected Spreadsheets | `read_spreadsheet_comments` | Request | Prevents reading comments from specific sensitive spreadsheets |
+| Filter Comments by Allowed Authors | `read_spreadsheet_comments` | Response | Redacts comments from authors not in allowed list |
+| Filter Sensitive Comments | `read_spreadsheet_comments` | Response | Redacts comments containing sensitive keywords |
+| Hide Commenter Identity | `read_spreadsheet_comments` | Response | Removes email addresses and names from comment data |
+| Limit to Recent Comments | `read_spreadsheet_comments` | Response | Only shows comments from within a specified time period |
+| Block Replies to Old Comments | `reply_to_spreadsheet_comment` | Request | Prevents replying to comments older than a specified time period |
+| Limit Reply Length | `reply_to_spreadsheet_comment` | Request | Caps the maximum length of reply content |
+| Author Only Comment Resolution | `resolve_spreadsheet_comment` | Request | Only allows the original comment author to resolve their comments |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Google Sheets server."
+</Tip>

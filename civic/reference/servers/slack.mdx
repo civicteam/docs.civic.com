@@ -144,3 +144,23 @@ If you have difficulty prompting the bot to update OAuth token, go to **Civic > 
 <Note>
 The Slack server requires appropriate workspace permissions and bot token configuration to access channels and send messages. Remember to invite your bot to any channels you want it to access.
 </Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **3 server-specific guardrails** across all operations.
+
+<Note>
+Slack's server-specific guardrails are scoped versions of the universal guardrails — the same rules applied explicitly at the Slack server level, covering all operations rather than individual tools.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Block PII in Requests | *(all operations)* | Request | Prevents sending PII in request parameters — Slack-scoped version |
+| Redact Credit Card Numbers | *(all operations)* | Response | Redacts credit card numbers from Slack responses |
+| Redact Email Addresses | *(all operations)* | Response | Redacts email addresses from Slack responses |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Slack server."
+</Tip>

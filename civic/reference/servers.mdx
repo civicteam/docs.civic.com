@@ -4,156 +4,291 @@ description: All 85 MCP servers available through Civic
 icon: "server"
 ---
 
-# MCP Servers
+Civic connects AI agents to **85 MCP servers** across productivity, communication, development, databases, finance, analytics, and more. Authentication for every server is handled by the Civic Hub.
 
-Civic connects AI agents to **85 MCP servers** — covering productivity, communication, development, databases, analytics, and more. Each server provides specialized tools and capabilities, with authentication handled by the Civic Hub.
+<CardGroup cols={4}>
+  <Card title="~200 tools" icon="wrench">
+    Across all 85 servers
+  </Card>
+  <Card title="~5,000 parameters" icon="sliders">
+    Configurable inputs across all tools
+  </Card>
+  <Card title="~1,000 guardrails" icon="shield-check">
+    Server-specific guardrails across 35 servers
+  </Card>
+  <Card title="50 universal" icon="shield-halved">
+    Servers covered by the 14 universal guardrails only
+  </Card>
+</CardGroup>
 
-## What are Civic Servers?
+## Google Workspace
 
-Civic servers are MCP (Model Context Protocol) compatible integrations that allow AI assistants to interact with external services. Each server acts as a bridge between AI systems and popular platforms, providing:
+<CardGroup cols={3}>
+  <Card title="Gmail" icon="envelope" href="/civic/reference/servers/gmail">
+    Email management, drafts, filters, labels, and search
+  </Card>
+  <Card title="Google Calendar" icon="calendar" href="/civic/reference/servers/google-calendar">
+    Events, scheduling, attendees, and availability
+  </Card>
+  <Card title="Google Drive" icon="hard-drive" href="/civic/reference/servers/google-drive">
+    File management, sharing, and permissions
+  </Card>
+  <Card title="Google Docs" icon="file-lines" href="/civic/reference/servers/google-docs">
+    Document creation, editing, and batch updates
+  </Card>
+  <Card title="Google Sheets" icon="table" href="/civic/reference/servers/google-sheets">
+    Spreadsheet read/write, formulas, and data ranges
+  </Card>
+  <Card title="Google Slides" icon="presentation-screen" href="/civic/reference/servers/google-slides">
+    Presentation management and slide operations
+  </Card>
+  <Card title="Google Analytics" icon="chart-line" href="/civic/reference/servers/google-analytics">
+    Traffic reports, conversions, and audience data
+  </Card>
+  <Card title="Google Ads" icon="rectangle-ad" href="/civic/reference/servers/google-ads">
+    Campaign management, keywords, and performance data
+  </Card>
+</CardGroup>
 
-- **Structured Tool Access**: Well-defined tools with clear input/output schemas
-- **Resource Management**: Direct access to platform data and endpoints  
-- **Authentication Handling**: Secure credential management for external services
-- **Consistent Interface**: Standardized interaction patterns across all platforms
+## Microsoft 365
 
-## Available Servers
+<CardGroup cols={3}>
+  <Card title="Outlook Mail" icon="envelope" href="/civic/reference/servers/ms365-mail">
+    Email, attachments, folders, and shared mailboxes
+  </Card>
+  <Card title="Teams" icon="users" href="/civic/reference/servers/ms365-teams">
+    Channel messaging and team collaboration
+  </Card>
+  <Card title="SharePoint" icon="sitemap" href="/civic/reference/servers/sharepoint">
+    Site management, document libraries, and lists
+  </Card>
+</CardGroup>
 
-### Available Servers by Category
+## CRM & Sales
 
-<Note>Each server provides multiple tools and capabilities for comprehensive integration.</Note>
-
-#### 🎯 CRM & Sales
-
-<CardGroup cols={2}>
-  <Card title="ActiveCampaign" icon="envelope" href="/civic/reference/servers/activecampaign">
-    Marketing automation, email campaigns, contact management, and CRM workflows
+<CardGroup cols={3}>
+  <Card title="Salesforce" icon="cloud" href="/civic/reference/servers/salesforce">
+    Enterprise CRM with SOQL querying and cross-object search
   </Card>
   <Card title="HubSpot" icon="hubspot" href="/civic/reference/servers/hubspot">
-    Complete CRM platform with contact management, deals, and marketing automation
+    Contacts, deals, pipelines, and marketing automation
   </Card>
   <Card title="Pipedrive" icon="chart-line" href="/civic/reference/servers/pipedrive">
-    Sales CRM with pipeline management, deals, contacts, and organizations
+    Sales pipeline, deals, contacts, and organizations
   </Card>
-  <Card title="Salesforce" icon="cloud" href="/civic/reference/servers/salesforce">
-    Enterprise CRM with advanced querying, analytics, and cross-object search
+  <Card title="ActiveCampaign" icon="bolt" href="/civic/reference/servers/activecampaign">
+    Email campaigns, automations, and contact management
   </Card>
-</CardGroup>
-
-#### 💬 Communication & Collaboration
-
-<CardGroup cols={2}>
-  <Card title="Slack" icon="slack" href="/civic/reference/servers/slack">
-    Team communication, channel management, messaging, and workspace collaboration
-  </Card>
-  <Card title="Microsoft 365 Mail" icon="envelope" href="/civic/reference/servers/ms365-mail">
-    Outlook email management with attachments, folders, and shared mailboxes
-  </Card>
-  <Card title="Microsoft 365 Teams" icon="users" href="/civic/reference/servers/ms365-teams">
-    Channel messaging, team collaboration, and cross-service workflows
-  </Card>
-  <Card title="Postmark" icon="paper-plane" href="/civic/reference/servers/postmark">
-    Transactional email delivery with templates and delivery tracking
+  <Card title="Intercom" icon="comment-dots" href="/civic/reference/servers/intercom">
+    Customer messaging, conversations, and support tickets
   </Card>
 </CardGroup>
 
-#### 💻 Project Management & Documentation
+## Project Management
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
   <Card title="Atlassian" icon="jira" href="/civic/reference/servers/atlassian">
-    Jira and Confluence integration with Rovo-powered search and project management
+    Jira issues and Confluence pages with Rovo search
+  </Card>
+  <Card title="Linear" icon="circle-dot" href="/civic/reference/servers/linear">
+    Issue tracking and project management for dev teams
   </Card>
   <Card title="ClickUp" icon="check-square" href="/civic/reference/servers/clickup">
-    Task management, sprint planning, documentation sync, and team collaboration
+    Tasks, sprints, docs, and team collaboration
   </Card>
-  <Card title="GitHub" icon="github" href="/civic/reference/servers/github">
-    Repository management, issue tracking, pull requests, and development workflows
+  <Card title="Monday.com" icon="grid-2" href="/civic/reference/servers/monday">
+    Boards, items, columns, and workflow automation
   </Card>
-  <Card title="Linear" icon="grid" href="/civic/reference/servers/linear">
-    Issue tracking and project management for software teams
+  <Card title="Asana" icon="list-check" href="/civic/reference/servers/asana">
+    Tasks, projects, goals, and portfolio management
   </Card>
-  <Card title="Monday.com" icon="calendar" href="/civic/reference/servers/monday">
-    Work management platform with boards, workflows, and team collaboration
+  <Card title="Trello" icon="trello" href="/civic/reference/servers/trello">
+    Boards, cards, lists, and member management
   </Card>
   <Card title="Notion" icon="notion" href="/civic/reference/servers/notion">
-    Database operations, page management, content creation, and knowledge management
+    Databases, pages, and knowledge management
   </Card>
-  <Card title="SharePoint" icon="sharepoint" href="/civic/reference/servers/sharepoint">
-    Site management, document libraries, lists, and content publishing
+  <Card title="Tempo" icon="clock" href="/civic/reference/servers/tempo">
+    Time tracking and workload management for Jira
   </Card>
 </CardGroup>
 
-#### ☁️ Cloud Storage & Infrastructure
+## Communication
 
-<CardGroup cols={2}>
-  <Card title="AWS Billing" icon="aws" href="/civic/reference/servers/aws-billing">
-    Cost management, optimization recommendations, and budget monitoring
+<CardGroup cols={3}>
+  <Card title="Slack" icon="slack" href="/civic/reference/servers/slack">
+    Channels, messages, files, and workspace management
   </Card>
+  <Card title="Postmark" icon="paper-plane" href="/civic/reference/servers/postmark">
+    Transactional email delivery with templates and tracking
+  </Card>
+  <Card title="IMAP" icon="inbox" href="/civic/reference/servers/imap">
+    Generic IMAP email access for any mail provider
+  </Card>
+</CardGroup>
+
+## Databases
+
+<CardGroup cols={3}>
+  <Card title="PostgreSQL" icon="database" href="/civic/reference/servers/postgresql">
+    Queries, schema inspection, and health monitoring
+  </Card>
+  <Card title="MySQL" icon="database" href="/civic/reference/servers/mysql">
+    Queries, table management, and schema operations
+  </Card>
+  <Card title="SQL Server" icon="database" href="/civic/reference/servers/mssql">
+    Microsoft SQL Server queries and schema inspection
+  </Card>
+  <Card title="MongoDB" icon="database" href="/civic/reference/servers/mongodb">
+    Document queries, aggregations, and collection management
+  </Card>
+  <Card title="Elasticsearch" icon="magnifying-glass" href="/civic/reference/servers/elasticsearch">
+    Full-text search, index management, and aggregations
+  </Card>
+  <Card title="Redshift" icon="database" href="/civic/reference/servers/redshift">
+    Amazon Redshift queries and cluster management
+  </Card>
+</CardGroup>
+
+## Finance & Payments
+
+<CardGroup cols={3}>
+  <Card title="Stripe" icon="stripe" href="/civic/reference/servers/stripe">
+    Payments, customers, subscriptions, and payouts
+  </Card>
+  <Card title="PayPal" icon="paypal" href="/civic/reference/servers/paypal-official">
+    Orders, payments, subscriptions, and transaction history
+  </Card>
+  <Card title="Square" icon="square" href="/civic/reference/servers/square">
+    Payments, orders, catalog, and customer management
+  </Card>
+  <Card title="Bill.com" icon="file-invoice-dollar" href="/civic/reference/servers/bill">
+    AP/AR, invoices, vendors, and spend & expense management
+  </Card>
+  <Card title="CardPointe" icon="credit-card" href="/civic/reference/servers/cardpointe">
+    Payment processing, profiles, and transaction management
+  </Card>
+  <Card title="QuickBooks Online" icon="receipt" href="/civic/reference/servers/quickbooks-online">
+    Accounting, invoices, expenses, and financial reports
+  </Card>
+</CardGroup>
+
+## Analytics & Monitoring
+
+<CardGroup cols={3}>
+  <Card title="PostHog" icon="chart-bar" href="/civic/reference/servers/posthog">
+    Product analytics, feature flags, and experiments
+  </Card>
+  <Card title="Mixpanel" icon="chart-mixed" href="/civic/reference/servers/mixpanel">
+    Event analytics, funnels, and user behavior
+  </Card>
+  <Card title="Grafana" icon="gauge" href="/civic/reference/servers/grafana">
+    Dashboards, alerts, and observability data
+  </Card>
+  <Card title="Sentry" icon="bug" href="/civic/reference/servers/sentry">
+    Error tracking and performance monitoring
+  </Card>
+  <Card title="CoinGecko" icon="coins" href="/civic/reference/servers/coingecko">
+    Cryptocurrency prices, market data, and coin info
+  </Card>
+</CardGroup>
+
+## Marketing & Social
+
+<CardGroup cols={3}>
+  <Card title="Meta Ads" icon="meta" href="/civic/reference/servers/meta-ads">
+    Facebook and Instagram ad campaigns and analytics
+  </Card>
+  <Card title="Twitter / X" icon="twitter" href="/civic/reference/servers/twitter">
+    Posts, threads, search, and account management
+  </Card>
+  <Card title="Bluesky" icon="cloud" href="/civic/reference/servers/bluesky">
+    Posts, feeds, follows, and AT Protocol access
+  </Card>
+</CardGroup>
+
+## AI & Web Intelligence
+
+<CardGroup cols={3}>
+  <Card title="Firecrawl" icon="spider" href="/civic/reference/servers/firecrawl">
+    Web scraping, crawling, and structured data extraction
+  </Card>
+  <Card title="Tavily" icon="magnifying-glass" href="/civic/reference/servers/tavily">
+    AI-optimized web search with summarized results
+  </Card>
+  <Card title="Apify" icon="robot" href="/civic/reference/servers/apify">
+    Web scraping actors, datasets, and automation runs
+  </Card>
+  <Card title="Mistral OCR" icon="file-image" href="/civic/reference/servers/mistral-ocr">
+    Document and image OCR with structured output
+  </Card>
+  <Card title="Replicate" icon="sparkles" href="/civic/reference/servers/replicate">
+    AI model execution for image, video, and audio
+  </Card>
+  <Card title="Context7" icon="book" href="/civic/reference/servers/context7">
+    Library docs and code examples via semantic search
+  </Card>
+  <Card title="DeepWiki" icon="book-open" href="/civic/reference/servers/deepwiki">
+    GitHub repository documentation and code understanding
+  </Card>
+</CardGroup>
+
+## Storage & Content
+
+<CardGroup cols={3}>
   <Card title="Box" icon="box" href="/civic/reference/servers/box">
-    Cloud storage with AI-powered document analysis and file management
+    Cloud storage with AI-powered document analysis
+  </Card>
+  <Card title="Box Community" icon="box" href="/civic/reference/servers/box-community">
+    Extended Box operations via community MCP server
   </Card>
   <Card title="Dropbox" icon="dropbox" href="/civic/reference/servers/dropbox">
     File storage, sharing, and collaboration
   </Card>
-  <Card title="PostgreSQL" icon="database" href="/civic/reference/servers/postgresql">
-    Advanced database operations with query optimization and health monitoring
+  <Card title="Canva" icon="pen-nib" href="/civic/reference/servers/canva">
+    Design creation, templates, and asset management
+  </Card>
+  <Card title="Webflow" icon="window" href="/civic/reference/servers/webflow">
+    CMS content, collections, and site publishing
   </Card>
 </CardGroup>
 
-#### 📊 Analytics & Monitoring
+## Infrastructure & Automation
 
-<CardGroup cols={2}>
-  <Card title="CoinGecko" icon="bitcoin" href="/civic/reference/servers/coingecko">
-    Cryptocurrency data, market analysis, and price tracking
+<CardGroup cols={3}>
+  <Card title="Cloudflare" icon="shield" href="/civic/reference/servers/cloudflare">
+    14 servers: Workers, DNS, AI Gateway, CASB, Radar, Browser Rendering, and more
   </Card>
-  <Card title="PostHog" icon="chart-bar" href="/civic/reference/servers/posthog">
-    Product analytics with feature flags, experiments, and user insights
-  </Card>
-  <Card title="Sentry" icon="bug" href="/civic/reference/servers/sentry">
-    Error tracking and performance monitoring for applications
-  </Card>
-</CardGroup>
-
-#### 🤖 AI & Development Tools
-
-<CardGroup cols={2}>
-  <Card title="Context7" icon="book" href="/civic/reference/servers/context7">
-    Library documentation and code examples with RAG-powered search
+  <Card title="AWS Billing" icon="aws" href="/civic/reference/servers/aws-billing">
+    Cost management, recommendations, and budget monitoring
   </Card>
   <Card title="n8n" icon="workflow" href="/civic/reference/servers/n8n">
-    Workflow automation with AI-assisted building and validation
+    Workflow automation with AI-assisted building
   </Card>
-  <Card title="Replicate" icon="sparkles" href="/civic/reference/servers/replicate">
-    AI model execution for image, video, and audio generation
+  <Card title="Home Assistant" icon="house" href="/civic/reference/servers/home-assistant">
+    Smart home devices, automations, and states
+  </Card>
+  <Card title="Socket" icon="plug" href="/civic/reference/servers/socket">
+    Real-time data streaming and event handling
   </Card>
 </CardGroup>
 
-#### 📧 Email Intelligence
+## Business Operations
 
-<CardGroup cols={2}>
-  <Card title="Findymail" icon="search" href="/civic/reference/servers/findymail">
-    Email verification and contact discovery for sales prospecting
+<CardGroup cols={3}>
+  <Card title="Shopify Storefront" icon="bag-shopping" href="/civic/reference/servers/shopify-storefront">
+    Products, collections, cart, and checkout operations
+  </Card>
+  <Card title="ServiceTitan" icon="wrench" href="/civic/reference/servers/servicetitan">
+    Field service management, jobs, and scheduling
+  </Card>
+  <Card title="Insperity" icon="building" href="/civic/reference/servers/insperity">
+    HR services, employee data, and payroll management
+  </Card>
+  <Card title="Findymail" icon="at" href="/civic/reference/servers/findymail">
+    Email verification and contact discovery
   </Card>
   <Card title="Hunter.io" icon="crosshairs" href="/civic/reference/servers/hunter-io">
-    Professional email discovery with confidence scoring and domain research
+    Professional email discovery and domain research
   </Card>
 </CardGroup>
-
-*New servers are added regularly. Check back for updates.*
-
-## Getting Started
-
-1. **Browse Available Servers**: Each server page provides detailed information about capabilities and use cases
-2. **Review Tool Documentation**: Understand the specific tools and functions available
-3. **Check Authentication Requirements**: Some servers require API keys or OAuth setup
-4. **Explore Use Case Examples**: See practical applications and implementation patterns
-
-## Server Structure
-
-Each Civic server follows a consistent structure:
-- **Server Metadata**: Name, publisher, version, and classification
-- **Tool Catalog**: Complete list of available functions with descriptions
-- **Resource Access**: Direct endpoints for data retrieval
-- **Authentication**: Required credentials and setup instructions
-
-This standardized structure ensures consistent integration and usage patterns across all Civic servers.

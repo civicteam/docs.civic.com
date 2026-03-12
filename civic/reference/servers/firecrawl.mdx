@@ -22,3 +22,22 @@ The Firecrawl server provides tools for web crawling and content extraction. Scr
 | `firecrawl_map` | Map a website to discover all indexed URLs before deciding what to scrape |
 | `firecrawl_extract` | Extract structured information from web pages using LLM capabilities |
 | `firecrawl_search` | Search the web and optionally extract content from the results |
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **2 server-specific guardrails** across 2 operations.
+
+<Note>
+Both guardrails are token-efficiency response transforms (auto-applied), not security guardrails.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Crawl - Retain Markdown and URL Only | `firecrawl_crawl` | Response | Strips all fields except markdown + url from crawl results — auto-applied |
+| Scrape - Retain Markdown and URL Only | `firecrawl_scrape` | Response | Strips all fields except markdown + url from scrape results — auto-applied |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Firecrawl server."
+</Tip>

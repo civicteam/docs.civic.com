@@ -17,3 +17,32 @@ MySQL is a widely used open-source relational database. Connect it to Civic to l
 | Tool | Description |
 |------|-------------|
 | `mysql_query` | Execute SQL queries against the MySQL database. SELECT is always enabled; INSERT, UPDATE, DELETE, and DDL are enabled based on security configuration |
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **16 server-specific guardrails** across 2 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Block Dynamic SQL Construction | `mysql_query` | Request | Prevents queries using CONCAT, CHAR functions, hex literals, DECODE, UNHEX |
+| Block Function Execution | `mysql_query` | Request | Prevents execution of stored procedures and functions with side effects |
+| Block Query Stacking | `mysql_query` | Request | Prevents multiple queries in a single request by blocking semicolons |
+| Block SQL Comments | `mysql_query` | Request | Prevents queries containing SQL comments (--, /* */, or #) |
+| Block System Tables Access | `mysql_query` | Request | Prevents access to MySQL system catalogs (mysql.*, information_schema) |
+| Block Write Operations | `mysql_query` | Request | Prevents all data modification (INSERT, UPDATE, DELETE, etc.) and DDL commands |
+| Enforce Basic SQL Character Set | `mysql_query` | Request | Restricts queries to alphanumeric plus basic SQL characters |
+| Enforce Custom Character Set | `mysql_query` | Request | Restricts queries to a user-defined character set |
+| Limit JOIN Complexity | `mysql_query` | Request | Limits the number of JOINs allowed in a query |
+| Protect Sensitive Columns | `mysql_query` | Request | Blocks queries that reference specified column names |
+| Protect Tables (Anti-Aliasing) | `mysql_query` | Request | Blocks access to specified tables regardless of aliasing or obfuscation |
+| Query Length Limit | `mysql_query` | Request | Limits SQL query length to prevent resource exhaustion |
+| Restrict SELECT * Usage | `mysql_query` | Request | Controls use of SELECT * wildcards |
+| Result Row Limit | `mysql_query` | Response | Limits the number of rows returned |
+| Block Table Schema Access | `read_resource` | Request | Prevents access to schema details of specified tables |
+| Filter Table Listings | `read_resource` | Response | Filters specified tables from table listings |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my MySQL server."
+</Tip>

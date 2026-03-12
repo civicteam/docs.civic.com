@@ -140,3 +140,49 @@ The Google Slides server enables AI assistants to interact with [Google Slides](
 
 **Comment System:** Full comment lifecycle supported across presentation-level comments - read existing comments, create new ones, reply to threads, and resolve completed discussions.
 </Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **37 server-specific guardrails** across 8 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Allowed Element Types | `batch_update_presentation` | Request | Restricts the types of elements that can be added to presentations |
+| Blocked Update Request Types | `batch_update_presentation` | Request | Prevents specific types of batch update operations |
+| Block External URLs | `batch_update_presentation` | Request | Prevents insertion of external images and links |
+| Block Text Replacement | `batch_update_presentation` | Request | Prevents text replacement operations that could expose sensitive data |
+| Maximum Batch Requests | `batch_update_presentation` | Request | Limits the number of requests per batch update operation |
+| Protected Presentation IDs | `batch_update_presentation` | Request | Prevents modifications to critical presentations |
+| Block Comment URLs | `create_presentation_comment` | Request | Prevents comments containing URLs or external links |
+| Comment Rate Limit | `create_presentation_comment` | Request | Limits the number of comments that can be created per hour |
+| Maximum Comment Length | `create_presentation_comment` | Request | Limits comment content to a maximum character count |
+| Protected Comment Presentations | `create_presentation_comment` | Request | Prevents commenting on protected presentations |
+| Blocked Page IDs | `get_page` | Request | Denies access to specific page IDs |
+| Content Pattern Filter | `get_page` | Response | Redacts text content matching specific patterns |
+| Filter Page Speaker Notes | `get_page` | Response | Removes speaker notes from slide details |
+| Hide Embedded Links | `get_page` | Response | Redacts embedded links and URLs from slide content |
+| Protected Presentation Pages | `get_page` | Request | Blocks access to pages in protected presentations |
+| Block Protected Presentation Thumbnails | `get_page_thumbnail` | Request | Prevents thumbnail generation for protected presentations |
+| Maximum Thumbnail Size | `get_page_thumbnail` | Request | Restricts thumbnail size to prevent detailed viewing |
+| Block Content Access for Dangerous Formats | `get_presentation` | Response | Blocks accessing content of files with dangerous formats |
+| Blocked Presentation IDs | `get_presentation` | Request | Denies access to specific presentation IDs on a blocklist |
+| Hide Presentation Metadata | `get_presentation` | Response | Hides metadata fields like owner and creation date |
+| Redact Speaker Notes | `get_presentation` | Response | Hides speaker notes from presentation responses |
+| Restrict to Allowed Presentations | `get_presentation` | Request | Only allows accessing presentations in a whitelist |
+| Sensitive Content Filter | `get_presentation` | Response | Redacts slides containing sensitive keywords |
+| Active Comments Only | `read_presentation_comments` | Response | Shows only active discussions, hiding resolved or deleted comments |
+| Blocked Comment Presentations | `read_presentation_comments` | Request | Prevents reading comments from specific presentations |
+| Filter Comments by Allowed Authors | `read_presentation_comments` | Response | Redacts comments from authors not in the allowed list |
+| Hide Commenter Identity | `read_presentation_comments` | Response | Removes email addresses and names from comments |
+| Recent Comments Only | `read_presentation_comments` | Response | Limits comments to those from the last X days |
+| Sensitive Comment Filter | `read_presentation_comments` | Response | Redacts comments containing sensitive keywords |
+| Inappropriate Reply Filter | `reply_to_presentation_comment` | Request | Blocks replies containing offensive language |
+| Maximum Reply Length | `reply_to_presentation_comment` | Request | Limits reply content to a maximum character count |
+| Author Only Comment Resolution | `resolve_presentation_comment` | Request | Only allows comment authors to resolve their own comments |
+| Protected Resolution Presentations | `resolve_presentation_comment` | Request | Prevents resolving comments in protected presentations |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Google Slides server."
+</Tip>

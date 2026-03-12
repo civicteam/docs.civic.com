@@ -159,3 +159,39 @@ The Notion server provides comprehensive integration with [Notion](https://notio
 <Note>
 The Notion server requires appropriate workspace permissions and OAuth2 authentication to access and modify content in your Notion workspace.
 </Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **19 server-specific guardrails** across 11 operations.
+
+<Note>
+Rich guardrail set — combining allowlist controls (approved pages/databases), sensitive content filters on reads, protected content on writes, and batch size limits.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Approved Comment Pages | `create-a-comment` | Request | Restricts comments to approved pages only |
+| Protected Blocks | `delete-a-block` | Request | Prevents deletion of protected blocks |
+| Retrieve Block Children Sensitive Content Filter | `get-block-children` | Response | Redacts sensitive content from block children |
+| Approved Move Database Targets | `move-page` | Request | Restricts page moves to approved databases |
+| Approved Move Targets | `move-page` | Request | Restricts page moves to approved parent pages |
+| Protected Pages (Move) | `move-page` | Request | Prevents moving protected pages |
+| Protected Pages (Update) | `patch-page` | Request | Prevents updates to protected pages |
+| Approved Databases | `post-database-query` | Request | Only allows querying approved databases |
+| Approved Database Parents | `post-page` | Request | Restricts page creation to approved databases |
+| Approved Page Parents | `post-page` | Request | Restricts page creation to approved parent pages |
+| Search Sensitive Content Filter | `post-search` | Response | Redacts sensitive content from search results |
+| Search Term Filter | `post-search` | Request | Prevents searching for sensitive terms |
+| Approved Data Sources | `query-data-source` | Request | Only allows querying approved data sources |
+| Page Property Filter | `query-data-source` | Response | Filters results by property values |
+| Query Sensitive Content Filter | `query-data-source` | Response | Redacts sensitive content from query results |
+| Retrieve Block Sensitive Content Filter | `retrieve-a-block` | Response | Redacts sensitive content from block retrieval |
+| Approved Pages (Retrieve) | `retrieve-a-page` | Request | Restricts retrieval to approved pages only |
+| Protected Data Sources | `update-a-data-source` | Request | Prevents updates to protected databases |
+| Batch Operation Size Limit | *(all operations)* | Request | Limits number of operations in batch requests |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Notion server."
+</Tip>

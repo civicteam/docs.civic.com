@@ -294,3 +294,31 @@ CoinGecko API has rate limits. For high-frequency access or commercial use, cons
 <Tip>
 **Pro Tip**: Use `get_search` to find exact coin IDs before using other tools. Many tools require specific CoinGecko coin IDs rather than symbols.
 </Tip>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **11 server-specific guardrails** across 7 operations.
+
+<Note>
+All guardrails restrict crypto access to an approved allowlist — both at request and response level across all major endpoints. Ideal for controlling which assets a team can interact with.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Restrict to Vetted Coin IDs | `get_id_coins` | Request | Allowlist for coin ID queries |
+| Restrict Simple Price to Vetted Coins | `get_simple_price` | Request | Allowlist for price queries |
+| Restrict Coins History to Vetted Coins | `get_coins_history` | Request | Allowlist for historical data |
+| Restrict Market Chart to Vetted Coins | `get_range_coins_market_chart` | Request | Allowlist for market chart queries |
+| Restrict OHLC to Vetted Coins | `get_range_coins_ohlc` | Request | Allowlist for candlestick queries |
+| Restrict Search to Vetted Coins | `get_search` | Request | Allowlist for search queries |
+| Filter Search Results to Vetted Coins | `get_search` | Response | Redacts non-vetted coins from search results |
+| Filter Market Data to Vetted Coins | `get_coins_markets` | Response | Redacts non-vetted coins from market data |
+| Filter Trending to Vetted Coins | `get_search_trending` | Response | Redacts non-vetted coins from trending |
+| Filter New Coins to Vetted List | `get_new_coins_list` | Response | Redacts non-vetted coins from new listings |
+| Filter Gainers/Losers to Vetted Coins | `get_coins_top_gainers_losers` | Response | Redacts non-vetted coins from gainers/losers |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my CoinGecko server."
+</Tip>

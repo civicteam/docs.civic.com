@@ -1,48 +1,112 @@
 ---
-title: Hooks
-description: Middleware pattern for intercepting and processing MCP requests and responses
+title: Hooks Configuration
+description: Customize how tools behave using profile data hooks
 icon: "code-branch"
 ---
 
-Hooks provide a middleware layer for intercepting and processing MCP requests and responses. They enable you to add custom logic, security rules, or transformations without modifying the underlying MCP servers.
+In Civic, **hooks** are profile data configurations that customize how tools behave. They let you pre-fill parameters, filter visible tools, rename tools, clone them with different defaults, and override descriptions — all without touching the underlying MCP servers.
 
-## How Hooks Work
+Configure hooks via the `manage-profile-data` tool or by asking the Configurator Agent directly.
+
+## Hook Types
+
+There are 5 hook categories:
+
+### `Hook_Parameter` — Auto-fill Tool Parameters
+
+Pre-populate tool inputs so you don't have to specify them every time.
+
+**Example** — always use a specific Notion page ID:
 
 ```
-AI Assistant → [Request Hook] → MCP Server
-                                     ↓
-AI Assistant ← [Response Hook] ← MCP Server
+Action: update
+Category: Hook_Parameter
+MCP Server: notion
+Tool: create_page
+Key: page_id
+Value: "abc123-workspace"
 ```
 
-Each hook in the chain can:
+You can also use **interpolated templates** with `${placeholder}` syntax:
 
-- **Inspect** the request or response data
-- **Modify** parameters or results
-- **Block** requests based on custom rules
-- **Enrich** data with additional context
+```json
+{ "template": "SELECT * FROM users WHERE email = '${email}'", "escape": "sql" }
+```
 
-## Common Hook Patterns
+---
 
-| Pattern | Description |
-|---|---|
-| **Security Filtering** | Validate requests against security policies before forwarding |
-| **Rate Limiting** | Control request frequency and volume |
-| **Data Transformation** | Modify request or response formats |
-| **Audit Logging** | Record all tool interactions for compliance |
-| **Content Filtering** | Remove or redact sensitive information from responses |
-| **Tool Filtering** | Block specific tools from appearing in the agent's tool list |
+### `Hook_Filter` — Show/Hide Tools
 
-## Hooks and Guardrails
+Control which tools from a server are visible to the AI.
 
-Civic's [Guardrails](/civic/concepts/guardrails) system is built on the hook architecture. When you configure guardrails — blocking specific tools, presetting parameters, or filtering responses — these are implemented as hooks applied to the request pipeline.
+**Example** — only allow specific GitHub tools:
 
-For most use cases, the Guardrails UI and Configurator Agent provide sufficient control without needing to write custom hooks directly.
+```
+Action: update
+Category: Hook_Filter
+MCP Server: github
+Value: { "enabled": ["create_issue", "search_repositories"] }
+```
 
-## Practical Example: Filtering Tools
+Or to block specific tools:
 
-One common use of hooks is filtering which tools the AI can see. For example, to hide internal platform tools like `memory-clear-all` from end users while keeping them accessible to the platform:
+```json
+{ "disabled": ["send_gmail_message", "delete_event"] }
+```
 
-A `Hook_Filter` configuration can remove specific tools from the list returned to the agent, making them invisible without disabling them at the server level.
+---
+
+### `Hook_Alias` — Rename Tools
+
+Give tools a friendlier or more context-specific name.
+
+```
+Action: update
+Category: Hook_Alias
+MCP Server: postgresql
+Tool: execute_sql
+Value: "run-query"
+```
+
+---
+
+### `Hook_Clone` — Duplicate Tools with Different Names
+
+Create multiple versions of the same tool, each pre-configured differently.
+
+**Example** — two versions of `list_events`:
+
+```json
+["my-events", "team-events"]
+```
+
+Then use `Hook_Parameter` on each clone to set different `calendar_id` values.
+
+---
+
+### `Hook_CustomDescription` — Override Tool Descriptions
+
+Change what the AI sees as the tool's description — useful for schema hints or environment-specific guidance.
+
+```
+Action: update
+Category: Hook_CustomDescription
+MCP Server: postgresql
+Tool: execute_sql
+Value: "Runs a SQL query against the production DB. Schema: users(id, email, created_at)..."
+```
+
+---
+
+## How to Configure
+
+Ask the Configurator Agent in natural language:
+
+- *"Set the default GitHub repository to `my-org/my-repo`"*
+- *"Filter the Gmail tools to hide the send tool"*
+- *"Clone the PostgreSQL query tool into `get-pipeline-summary` and `get-stalled-deals`"*
+
+Or use the `manage-profile-data` tool directly with `action: describe` and a `category` to see live examples for any hook type.
 
 ## Learn More
 
