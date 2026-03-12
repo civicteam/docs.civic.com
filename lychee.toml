@@ -35,9 +35,15 @@ exclude = [
   # Mintlify dashboard (returns intermittent 500 errors)
   '^https?://dashboard\.mintlify\.com',
 
+  # Civic Auth dashboard (returns 500 to bot requests)
+  '^https?://auth\.civic\.com',
+
   # Contact addresses
   '^mailto:',
   '^tel:',
+
+  # civic.com fragments (client-side rendered, not detectable by lychee)
+  '^https?://(www\.)?civic\.com/#',
 
   # Application protocol links
   '^cursor://',
