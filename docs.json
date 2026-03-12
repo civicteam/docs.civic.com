@@ -114,6 +114,7 @@
                   "civic/reference/servers/google-slides",
                   "civic/reference/servers/hubspot",
                   "civic/reference/servers/hunter-io",
+                  "civic/reference/servers/imap-email",
                   "civic/reference/servers/linear",
                   "civic/reference/servers/meta-ads",
                   "civic/reference/servers/mistral-ocr",
