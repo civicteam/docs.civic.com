@@ -71,6 +71,7 @@
               "civic/quickstart/clients/claude-web",
               "civic/quickstart/clients/codex",
               "civic/quickstart/clients/cursor",
+              "civic/recipes/deepagents",
               "civic/quickstart/clients/gemini",
               "civic/quickstart/clients/goose",
               "civic/quickstart/clients/jetbrains",
