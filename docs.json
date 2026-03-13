@@ -64,26 +64,44 @@
             "icon": "plug",
             "pages": [
               "civic/quickstart/clients/agents",
-              "civic/recipes/anthropic",
-              "civic/quickstart/clients/chatgpt",
-              "civic/quickstart/clients/claude-code",
-              "civic/quickstart/clients/claude-desktop",
-              "civic/quickstart/clients/claude-web",
-              "civic/quickstart/clients/codex",
-              "civic/quickstart/clients/cursor",
-              "civic/recipes/deepagents",
-              "civic/quickstart/clients/gemini",
-              "civic/quickstart/clients/goose",
-              "civic/quickstart/clients/jetbrains",
-              "civic/recipes/langchain",
-              "civic/quickstart/clients/mistral-lechat",
-              "civic/recipes/openai-agents",
-              "civic/recipes/openai-sdk",
-              "civic/quickstart/clients/openclaw",
-              "civic/recipes/python-pydantic",
-              "civic/recipes/vercel-ai-sdk",
-              "civic/quickstart/clients/vscode",
-              "civic/quickstart/clients/windsurf"
+              {
+                "group": "AI Agents & Chat Tools",
+                "icon": "message",
+                "pages": [
+                  "civic/quickstart/clients/claude-web",
+                  "civic/quickstart/clients/claude-desktop",
+                  "civic/quickstart/clients/claude-code",
+                  "civic/quickstart/clients/chatgpt",
+                  "civic/quickstart/clients/mistral-lechat",
+                  "civic/quickstart/clients/gemini",
+                  "civic/quickstart/clients/openclaw",
+                  "civic/recipes/deepagents"
+                ]
+              },
+              {
+                "group": "Agent Frameworks & SDKs",
+                "icon": "brackets-curly",
+                "pages": [
+                  "civic/recipes/anthropic",
+                  "civic/recipes/openai-sdk",
+                  "civic/recipes/openai-agents",
+                  "civic/recipes/langchain",
+                  "civic/recipes/python-pydantic",
+                  "civic/recipes/vercel-ai-sdk"
+                ]
+              },
+              {
+                "group": "Code Editors & Coding Agents",
+                "icon": "code",
+                "pages": [
+                  "civic/quickstart/clients/vscode",
+                  "civic/quickstart/clients/cursor",
+                  "civic/quickstart/clients/windsurf",
+                  "civic/quickstart/clients/jetbrains",
+                  "civic/quickstart/clients/codex",
+                  "civic/quickstart/clients/goose"
+                ]
+              }
             ]
           },
           {
@@ -107,18 +125,19 @@
               "civic/concepts/prompt-injection",
               "civic/concepts/revocation",
               "civic/concepts/secret-management",
-              "civic/reference/security"
-            ]
-          },
-          {
-            "group": "Authentication",
-            "icon": "lock",
-            "pages": [
-              "civic/developers/native-integration/authorization",
-              "civic/concepts/tokens",
-              "civic/developers/native-integration/civic-auth-capability",
-              "civic/developers/native-integration/index",
-              "civic/concepts/oauth"
+              "civic/reference/security",
+              {
+                "group": "Authentication & Authorization",
+                "icon": "lock",
+                "pages": [
+                  "civic/reference/authorizations",
+                  "civic/developers/native-integration/authorization",
+                  "civic/concepts/tokens",
+                  "civic/developers/native-integration/civic-auth-capability",
+                  "civic/developers/native-integration/overview",
+                  "civic/concepts/oauth"
+                ]
+              }
             ]
           },
           {
@@ -204,14 +223,7 @@
               },
               "civic/concepts/toolkits",
               "civic/concepts/tools-resources-prompts",
-              "civic/concepts/mcp"
-            ]
-          },
-          {
-            "group": "Advanced Configuration",
-            "icon": "toolbox",
-            "pages": [
-              "civic/reference/authorizations",
+              "civic/concepts/mcp",
               "civic/organizations",
               "civic/concepts/skills"
             ]
