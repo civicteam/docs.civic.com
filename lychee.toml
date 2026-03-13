@@ -51,6 +51,9 @@ exclude = [
 
   # npm packages (often rate-limited in CI)
   '^https?://www\.npmjs\.com/package/',
+
+  # caniuse.com (frequently times out in CI)
+  '^https?://caniuse\.com',
 ]
 
 # Exclude all private IPs
