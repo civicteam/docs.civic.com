@@ -212,6 +212,20 @@ If you're experiencing any issues integrating Civic Auth, follow the troubleshoo
     Currently, Civic Auth does not natively support blocking specific wallets or users.
 
   </Accordion>
+  <Accordion title="How do I verify ID tokens on my backend?">
+
+    Use the [`@civic/auth-verify`](/libraries/auth-verify) library to verify ID tokens on your backend. It handles JWKS discovery, key caching, and signature verification automatically.
+
+    The ID token is available from the `useUser()` hook:
+
+    ```typescript
+    const { idToken } = useUser();
+    // Send idToken to your backend in an Authorization header
+    ```
+
+    See the full [@civic/auth-verify documentation](/libraries/auth-verify) for installation, usage examples, and configuration options.
+
+  </Accordion>
   <Accordion title="What are &quot;signatures&quot; in Civic Auth?">
 
     In Civic Auth, signatures are used to verify the authenticity of authentication tokens and blockchain operations:
