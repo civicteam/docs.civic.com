@@ -24,8 +24,8 @@ exclude = [
   # GitHub line numbers
   'github\.com.*#L[0-9]+',
 
-  # Social media (often rate-limited)
-  '^https?://(www\.)?(twitter|x|linkedin)\.com',
+  # Social media (often rate-limited or block bots)
+  '^https?://(www\.)?(twitter|x|linkedin|facebook|instagram)\.com',
 
   # AI services that block bots
   '^https?://(www\.)?claude\.ai',
@@ -35,9 +35,15 @@ exclude = [
   # Mintlify dashboard (returns intermittent 500 errors)
   '^https?://dashboard\.mintlify\.com',
 
+  # Civic Auth dashboard (returns 500 to bot requests)
+  '^https?://auth\.civic\.com',
+
   # Contact addresses
   '^mailto:',
   '^tel:',
+
+  # civic.com fragments (client-side rendered, not detectable by lychee)
+  '^https?://(www\.)?civic\.com/#',
 
   # Application protocol links
   '^cursor://',
@@ -45,6 +51,9 @@ exclude = [
 
   # npm packages (often rate-limited in CI)
   '^https?://www\.npmjs\.com/package/',
+
+  # caniuse.com (frequently times out in CI)
+  '^https?://caniuse\.com',
 ]
 
 # Exclude all private IPs
