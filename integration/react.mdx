@@ -514,11 +514,11 @@ Field descriptions:
 <Note>
 **Verifying tokens on your backend:**
 
-When sending the ID token from your frontend to your backend for verification, you can access it from the `userContext` object:
+When sending the access token from your frontend to your backend for verification, you can access it from the `userContext` object:
 
 ```typescript
-const { idToken } = useUser();
-// Send idToken to your backend for verification
+const { accessToken, idToken } = useUser();
+// Send accessToken and/or idToken to your backend for verification
 ```
 
 To verify the token signature on your backend, use the `@civic/auth-verify` library which automatically queries the Civic JWKS endpoint to fetch the public key:
@@ -530,7 +530,8 @@ npm install @civic/auth-verify
 ```typescript
 import { verify } from '@civic/auth-verify';
 
-// Verify the ID token
+// Verify the access token and id tokens
+await verify(accessToken);
 const payload = await verify(idToken);
 console.log(payload); // Contains user information
 ```
