@@ -4,6 +4,8 @@ description: Connect Claude.ai web interface to Civic
 icon: "globe"
 ---
 
+import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
+
 <Note>
   Claude.ai web interface supports direct MCP server connections. You'll need a Claude Pro or Team plan to access MCP connectors.
 </Note>
@@ -19,27 +21,15 @@ icon: "globe"
   </Card>
 </CardGroup>
 
-## Step 1: Copy the MCP URL
+## Step 1: Set Up Your Civic Account
 
-<Steps>
-  <Step title="Visit nexus.civic.com">
-    Open [nexus.civic.com](https://nexus.civic.com) and sign in with your Civic account.
-  </Step>
-  <Step title="Select your tools">
-    Browse and select the MCP servers you want to connect (GitHub, Slack, Dropbox, etc.)
-  </Step>
-  <Step title="Copy the MCP URL">
-    Copy this URL: `https://nexus.civic.com/hub/mcp`
-    
-    <Frame caption="Civic homepage showing available tools">
-      <img
-        className="rounded-lg"
-        src="/images/steps/claude/01.png"
-        alt="Civic homepage"
-      />
-    </Frame>
-  </Step>
-</Steps>
+If you haven't already, create your account and select your tools at nexus.civic.com:
+
+<OnboardingSteps />
+
+<Note>
+The MCP URL (`https://nexus.civic.com/hub/mcp`) is the same for every Civic user. What makes it yours is authentication — when you click **Connect** in Claude.ai, a browser window opens to nexus.civic.com and links that session to your account and toolkit.
+</Note>
 
 ## Step 2: Add MCP Server in Claude.ai
 

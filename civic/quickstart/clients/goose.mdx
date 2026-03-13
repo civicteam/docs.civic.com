@@ -4,6 +4,8 @@ description: Connect Goose autonomous developer agent to Civic
 icon: "terminal"
 ---
 
+import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
+
 ## Overview
 
 Goose (Block's autonomous developer agent) now supports direct remote HTTP endpoints for connecting to Civic MCP servers with full OAuth2 support.
@@ -22,16 +24,16 @@ Goose (Block's autonomous developer agent) now supports direct remote HTTP endpo
 ## Setup with Remote HTTP Endpoint
 
 <Steps>
-  <Step title="Get your MCP URL">
-    1. Sign in to [nexus.civic.com](https://nexus.civic.com)
-    2. Select the MCP servers you want to use
-    3. Copy the MCP URL: `https://nexus.civic.com/hub/mcp`
+  <Step title="Set up your Civic account">
+    If you haven't already, complete onboarding at nexus.civic.com:
+
+    <OnboardingSteps />
   </Step>
 
   <Step title="Configure Goose">
     Add the Civic MCP server to your Goose configuration:
 
-    1. Open your Goose configuration file (typically `~/.config/goose/config.yaml` or project-specific `.goose/config.yaml`)
+    1. Open your Goose configuration file — typically `~/.config/goose/config.yaml` (global) or `.goose/config.yaml` in your project root
     2. Add the following MCP server configuration:
 
     ```yaml
@@ -70,15 +72,13 @@ Goose (Block's autonomous developer agent) now supports direct remote HTTP endpo
     Goose should respond with the list of available Civic tools.
   </Step>
 
-  <Step title="Authenticate Services">
-    When you first use a tool that requires authentication:
-    1. Goose will prompt you to authorize access
-    2. A browser window will open for OAuth authentication
-    3. Sign in to the service and authorize access
-    4. Return to Goose when complete
+  <Step title="Authenticate with Civic">
+    On the first tool call, Goose opens a browser window to nexus.civic.com. Sign in with your Civic account to authorize the session. This is a one-time OAuth flow — credentials are cached after the first login.
+
+    Individual services (GitHub, Slack, etc.) will each prompt for their own OAuth authorization the first time you use them.
 
     <Note>
-      Authentication is handled securely by Civic. Your credentials are never exposed to Goose or stored locally.
+      Your service credentials are never exposed to Goose or stored locally. Civic manages OAuth tokens on your behalf.
     </Note>
   </Step>
 </Steps>

@@ -4,6 +4,9 @@ description: Connect Claude Desktop to Civic in 5 minutes
 icon: "desktop"
 ---
 
+import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
+import HubBridgeInfo from '/snippets/_hub-bridge-what-is.mdx'
+
 <Note>
   This guide covers Claude Desktop setup. For other AI clients, see our [client compatibility guide](/civic/reference/client-compatibility).
 </Note>
@@ -21,27 +24,15 @@ Before you begin, make sure you have:
   </Card>
 </CardGroup>
 
-## Step 1: Copy the MCP URL
+## Step 1: Set Up Your Civic Account
 
-<Steps>
-  <Step title="Visit nexus.civic.com">
-    Open [nexus.civic.com](https://nexus.civic.com) and sign in with your Civic account.
-  </Step>
-  <Step title="Select your tools">
-    Browse and select the MCP servers you want to connect (GitHub, Slack, Dropbox, etc.)
-  </Step>
-  <Step title="Copy the MCP URL">
-    Copy this URL: `https://nexus.civic.com/hub/mcp`
-    
-    <Frame caption="Civic homepage showing available tools">
-      <img
-        className="rounded-lg"
-        src="/images/steps/claude/01.png"
-        alt="Civic homepage"
-      />
-    </Frame>
-  </Step>
-</Steps>
+If you haven't already, create your account and select your tools at nexus.civic.com:
+
+<OnboardingSteps />
+
+<Note>
+The MCP URL (`https://nexus.civic.com/hub/mcp`) is the same for every Civic user. What makes it yours is authentication — when you click **Connect** in Claude Desktop, a browser window opens to nexus.civic.com and links that session to your account and toolkit.
+</Note>
 
 ## Step 2: Add MCP Server in Claude Desktop
 
@@ -128,6 +119,8 @@ Claude will handle the connection process and guide you through any required aut
 
 If you don't have Claude Pro, Team, or Enterprise, you won't have access to MCP connectors in the UI. Use Hub Bridge instead:
 
+<HubBridgeInfo />
+
 <Warning>
 **Free Claude users**: The MCP connector UI is only available on paid Claude plans. Use this method if you're on the free plan.
 </Warning>
@@ -163,9 +156,7 @@ If you don't have Claude Pro, Team, or Enterprise, you won't have access to MCP 
   </Step>
   
   <Step title="First-time setup">
-    When you first use an MCP command:
-    1. Create account at **[nexus.civic.com](https://nexus.civic.com)** and select your tools
-    2. The Hub Bridge will handle authentication automatically
+    When you first use an MCP command, Hub Bridge opens a browser window to nexus.civic.com. Sign in to authenticate. If you haven't created a Civic account yet, you'll be walked through tool selection during sign-up.
   </Step>
 </Steps>
 

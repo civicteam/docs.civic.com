@@ -4,6 +4,8 @@ description: Connect Google's Gemini CLI to Civic
 icon: "google"
 ---
 
+import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
+
 ## Prerequisites
 
 <CardGroup cols={2}>
@@ -14,6 +16,14 @@ icon: "google"
     Create a free account and configure your tools at nexus.civic.com
   </Card>
 </CardGroup>
+
+If you haven't set up Civic yet:
+
+<OnboardingSteps />
+
+<Note>
+**Authentication**: Gemini CLI uses OAuth. The first time you run a tool call, you'll be redirected to nexus.civic.com in your browser to sign in and authorize. After that, credentials are cached and subsequent sessions don't require a browser.
+</Note>
 
 ## Setup
 
@@ -62,7 +72,7 @@ Start a Gemini CLI session and try:
 "Check my Google Calendar for today"
 ```
 
-On first use you'll be redirected to complete the Civic OAuth flow in your browser.
+On first use, Gemini CLI will redirect you to complete the Civic OAuth flow in your browser. After authenticating once, the session is cached — you won't need to re-authenticate on subsequent runs.
 
 ## Troubleshooting
 

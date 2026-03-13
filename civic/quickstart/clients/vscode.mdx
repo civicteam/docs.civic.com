@@ -4,20 +4,25 @@ description: Connect VS Code to Civic with MCP extension support in 3 minutes
 icon: "code"
 ---
 
+import HubBridgeInfo from '/snippets/_hub-bridge-what-is.mdx'
+import AuthCallout from '/snippets/_auth-method-callout.mdx'
+
 ## Prerequisites
 
 <CardGroup cols={2}>
-  <Card title="VS Code" icon="code" href="https://code.visualstudio.com">
-    Download and install VS Code (free)
+  <Card title="VS Code 1.99+" icon="code" href="https://code.visualstudio.com">
+    MCP is built into VS Code 1.99 and later. No extension needed.
   </Card>
-  <Card title="Node.js 18+" icon="code" href="https://nodejs.org">
-    Required for the Hub Bridge - check with `node --version`
+  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
+    Create a free account and configure your tools at nexus.civic.com
   </Card>
 </CardGroup>
 
+<AuthCallout />
+
 ## Setup Options
 
-VS Code now supports both local Hub Bridge and direct remote HTTP endpoints.
+VS Code supports both direct remote HTTP (recommended) and Hub Bridge.
 
 ### Option 1: Remote HTTP Endpoint (Direct Connection)
 
@@ -39,8 +44,12 @@ VS Code now supports both local Hub Bridge and direct remote HTTP endpoints.
     5. Save the configuration
   </Step>
 
-  <Step title="Enable MCP Features">
-    In VS Code Settings, search for "MCP" and enable the required MCP extension options
+  <Step title="Authenticate">
+    On first use of any MCP tool, VS Code opens a browser window to nexus.civic.com. Sign in with your Civic account — this links the session to your account and toolkit. No token needed.
+
+    <Note>
+      MCP is built into VS Code 1.99+. If you're on an older version, install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) which includes MCP support.
+    </Note>
   </Step>
 
   <Step title="Test Connection">
@@ -49,6 +58,8 @@ VS Code now supports both local Hub Bridge and direct remote HTTP endpoints.
 </Steps>
 
 ### Option 2: Hub Bridge (Local Connection)
+
+<HubBridgeInfo />
 
 <Steps>
   <Step title="Click 'Add to VS Code'">
@@ -158,7 +169,7 @@ Install Node.js 18 or later from [nodejs.org](https://nodejs.org) and restart VS
 </Accordion>
 
 <Accordion title="MCP settings not found">
-Make sure you have the MCP extension installed. Some VS Code versions require additional extensions for MCP support.
+MCP is built into VS Code 1.99 and later — no extension needed. If you're on an older version, install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot). Check your VS Code version via **Help → About**.
 </Accordion>
 
 <Accordion title="Authentication window doesn't open">

@@ -4,6 +4,9 @@ description: Connect Cursor AI code editor to Civic in 3 minutes
 icon: "code"
 ---
 
+import HubBridgeInfo from '/snippets/_hub-bridge-what-is.mdx'
+import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
+
 ## Prerequisites
 
 <CardGroup cols={2}>
@@ -11,9 +14,15 @@ icon: "code"
     Download and install Cursor (free tier works)
   </Card>
   <Card title="Node.js 18+" icon="code" href="https://nodejs.org">
-    Required for the Hub Bridge - check with `node --version`
+    Required for Hub Bridge - check with `node --version`
   </Card>
 </CardGroup>
+
+<HubBridgeInfo />
+
+<Note>
+Cursor doesn't support remote HTTP MCP natively, so this setup uses Hub Bridge as the local proxy.
+</Note>
 
 ## Setup Steps
 
@@ -41,10 +50,11 @@ icon: "code"
   </Step>
   
   <Step title="First-Time Authentication">
-    The first time you use any MCP command, the Hub Bridge will:
-    - Automatically download and install itself
-    - Handle authentication directly in the chat interface  
-    - Let you select which tools to connect from nexus.civic.com
+    The first time you use any MCP command, Hub Bridge downloads itself (once, ~30 seconds) and opens a browser window to nexus.civic.com. Sign in to link the session to your account.
+
+    If you haven't set up Civic yet, the onboarding takes about 2 minutes:
+
+    <OnboardingSteps />
   </Step>
 </Steps>
 
@@ -146,12 +156,12 @@ You can add new tools directly in your Cursor chat:
 
 ```
 "Connect me to GitHub"
-"Add Slack to my available tools"  
+"Add Slack to my available tools"
 "I need access to PostgreSQL"
 "Show me what tools are available to connect"
 ```
 
-Cursor will handle the connection process and guide you through any required authentication steps.
+This works because Hub Bridge exposes Civic's Configurator Agent, which handles adding, removing, and configuring MCP servers via natural language. You don't need to touch nexus.civic.com directly.
 
 ### Removing Tools
 
