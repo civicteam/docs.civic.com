@@ -4,45 +4,59 @@ icon: "code"
 public: true
 ---
 
-import { Callout } from 'nextra/components'
+import V0Prompt from '/snippets/v0.mdx';
+import HowToUseBasic from '/snippets/_how-to-use-basic.mdx';
+import Web3UpsellNote from '/snippets/_web3-upsell-note.mdx';
+import SupportedAiAssistants from '/snippets/_supported-ai-assistants.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
 
-# V0 Integration - Coming Soon
+Use this prompt with your preferred AI assistant (Claude, ChatGPT, etc.) to automatically integrate Civic Auth into your V0 project - without V0 suggesting Supabase as an alternative!
 
-<Callout type="info" emoji="🚧">
-  **We're testing the waters!**
-  
-  We're currently working on perfecting the AI prompt for V0 integration to ensure it works seamlessly with Civic Auth. Our team is testing various scenarios to make sure the integration is smooth and reliable.
-  
-  **Please check back here soon** - we'll have the V0 prompt ready shortly!
-</Callout>
+<HowToUseBasic />
 
-## What to Expect
+## Integration Prompt
 
-When the V0 prompt is ready, it will help you:
+<V0Prompt />
 
-- **Automatically integrate Civic Auth** into your V0 projects
-- **Handle V0-specific configurations** for Vercel's hosted environment
-- **Set up proper domain registration** for V0's platform
-- **Implement authentication components** optimized for V0's component-based workflow
+<Web3UpsellNote />
 
-## In the Meantime
+<Note>
+  **Need help?** If you encounter any issues during the LLM-assisted integration, you can always fall back to the [manual integration guide](/integration/nextjs).
+</Note>
 
-While you wait for the V0-specific prompt, you can:
+## What the AI Assistant Will Do
 
-1. **Get your Civic Auth setup ready**:
-   - Visit [auth.civic.com](https://auth.civic.com) to create your account
-   - Create a new application to get your Client ID
-   - Prepare your V0 app's domain for registration
+When you use this prompt with V0, the AI assistant will:
 
-2. **Check out our other prompts**:
-   - [Lovable](/ai-prompts/no-code/lovable) - Ready now!
-   - [React](/ai-prompts/react) - For general React projects
-   - [Next.js](/ai-prompts/nextjs) - For Next.js applications
+1. **Fetch the documentation** using curl from the official Civic Auth docs
+2. **Analyze your V0 project** structure and requirements  
+3. **Install dependencies** and configure your Next.js app for V0's environment
+4. **Set up authentication** with proper middleware and routes
+5. **Configure domain settings** for V0's Vercel-hosted environment
+6. **Implement authentication UI** for login/logout functionality
+7. **Handle V0-specific considerations** like environment variables and deployment
 
-## Stay Updated
+## Why This Prompt Works with V0
 
-Follow our [changelog](/overview/changelog) or join our [Slack community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) to be notified when the V0 prompt is available.
+This prompt is specifically designed to prevent V0 from suggesting Supabase or other authentication alternatives. It includes:
 
----
+- **Explicit instructions** to use only Civic Auth
+- **V0-specific domain configuration** for Vercel hosting
+- **Clear rejection** of Supabase and other auth providers
+- **V0 environment setup** instructions for proper deployment
 
-*Need immediate help with V0 integration? Feel free to reach out to our team via the [contact form](https://civickey.typeform.com/req-custom) for personalized assistance.*
+## Show Us What You Built! 🚀
+
+We'd love to see what amazing projects you're building with Civic Auth and V0!
+
+**Share your creations:**
+- Join our [Slack community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and show off your project
+- Get help from other developers and our team  
+- Share feedback and feature requests
+- Connect with the Civic developer community
+
+**Built something cool?** We feature awesome community projects on our social channels and blog!
+
+<SupportedAiAssistants />
+
+<AiAssistantRequirements />

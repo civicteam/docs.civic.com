@@ -1,0 +1,41 @@
+---
+title: Troubleshooting
+description: Solutions for common Civic Auth issues
+icon: "wrench"
+---
+
+## Issues Testing Locally
+
+### Local Network Access Permissions
+
+<AccordionGroup>
+  <Accordion title="Allow local network access prompt when testing on localhost" icon="network-wired">
+    **Symptoms:** OAuth flow fails when testing Civic Auth login on localhost
+
+    **Cause:** Recent Chrome browser restrictions prevent redirects from remote sites (like the Civic OAuth server) to local ones without explicit permission.
+
+    **Solution:**
+
+    When testing Civic Auth in your local development environment on `localhost`, you may see a browser prompt asking you to "Allow local network access". This prompt appears because the OAuth flow redirects from the remote Civic OAuth server back to your local application.
+
+    <Frame caption="Chrome local network access prompt">
+      <img
+        src="/images/local-network-access-prompt.png"
+        alt="Local network access permission prompt in Chrome"
+      />
+    </Frame>
+
+    **To resolve this:**
+    1. Click **Allow** when the browser prompts you for local network access permission
+    2. This will enable the OAuth redirect flow to complete successfully
+    3. You only need to allow this once per browser session
+
+    <Info>
+      This is a security feature in modern browsers to protect users from malicious websites accessing local network resources. The Civic Auth SDK has been updated to properly request this permission when needed.
+    </Info>
+
+    <Note>
+      This issue only affects local development on `localhost`. Production deployments on public domains are not affected.
+    </Note>
+  </Accordion>
+</AccordionGroup>

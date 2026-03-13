@@ -1,0 +1,11 @@
+```ts
+import { getTokens } from "@civic/auth/nextjs";
+
+const { accessToken } = await getTokens();
+const headers = {
+  Authorization: `Bearer ${accessToken}`,
+  'Content-Type': 'application/json',
+};
+```
+
+

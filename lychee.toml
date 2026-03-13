@@ -12,7 +12,8 @@ max_concurrency = 10
 user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 # Accept these status codes
-accept = [200, 204, 206, 301, 302, 307, 308]
+# 403 added for npmjs.com which returns this for bot detection
+accept = [200, 204, 206, 301, 302, 307, 308, 403, 429]
 
 # Exclude these patterns
 exclude = [
@@ -23,14 +24,36 @@ exclude = [
   # GitHub line numbers
   'github\.com.*#L[0-9]+',
 
-  # Social media (often rate-limited)
-  '^https?://(www\.)?(twitter|x|linkedin)\.com',
+  # Social media (often rate-limited or block bots)
+  '^https?://(www\.)?(twitter|x|linkedin|facebook|instagram)\.com',
 
-  # Email addresses
+  # AI services that block bots
+  '^https?://(www\.)?claude\.ai',
+  '^https?://(www\.)?notion\.so',
+  '^https?://(www\.)?chat\.mistral\.ai',
+
+  # Mintlify dashboard (returns intermittent 500 errors)
+  '^https?://dashboard\.mintlify\.com',
+
+  # Civic Auth dashboard (returns 500 to bot requests)
+  '^https?://auth\.civic\.com',
+
+  # Contact addresses
   '^mailto:',
-
-  # Tel links
   '^tel:',
+
+  # civic.com fragments (client-side rendered, not detectable by lychee)
+  '^https?://(www\.)?civic\.com/#',
+
+  # Application protocol links
+  '^cursor://',
+  '^vscode:',
+
+  # npm packages (often rate-limited in CI)
+  '^https?://www\.npmjs\.com/package/',
+
+  # caniuse.com (frequently times out in CI)
+  '^https?://caniuse\.com',
 ]
 
 # Exclude all private IPs

@@ -230,6 +230,55 @@ export function MyComponent() {
   </Tab>
 </Tabs>
 
+You can also pass `onSignIn` and `onSignOut` callbacks to the `useUser` hook to trigger actions when the user signs in or out:
+
+<Tabs>
+  <Tab title="Auth">
+```ts MyComponent.ts
+import { useUser } from "@civic/auth/react";
+
+export function MyComponent() {
+  const { user } = useUser({
+    onSignIn: () => {
+      console.log("User signed in");
+      // do something here
+    },
+    onSignOut: () => {
+      console.log("User signed out");
+      // do something here
+    }
+  });
+
+  if (!user) return <div>User not logged in</div>
+
+  return <div>Hello { user.name }!</div>
+}
+```
+  </Tab>
+  <Tab title="Auth + Web3">
+```ts MyComponent.ts
+import { useUser } from "@civic/auth-web3/react";
+
+export function MyComponent() {
+  const { user } = useUser({
+    onSignIn: () => {
+      console.log("User signed in");
+      // do something here
+    },
+    onSignOut: () => {
+      console.log("User signed out");
+      // do something here
+    }
+  });
+
+  if (!user) return <div>User not logged in</div>
+
+  return <div>Hello { user.name }!</div>
+}
+```
+  </Tab>
+</Tabs>
+
 <Info>
   We use `name` as an example here, but you can call any user object property from the user fields schema, as shown [below](/integration/react#base-user-fields).
 </Info>
@@ -306,6 +355,73 @@ The display mode indicates where the Civic login UI will be displayed. The follo
 * `redirect`: the UI redirects the current URL to a Civic login screen, then redirects back to your site when login is complete
 
 * `new_tab`: the UI opens in a new tab or popup window (depending on browser preferences), and after login is complete, the tab or popup closes to return the user to your site
+
+### Redirecting Users After Login
+
+<Note>
+  **Important:** The `loginSuccessUrl` configuration parameter is **not supported** for React or other frontend-only Single Page Applications (SPAs). 
+  
+  Since we don't know whether you want to use client-side routing (and which router library you're using) or perform a full page redirect, you should handle post-login navigation using the `onSignIn` hook.
+</Note>
+
+Here are examples of how to redirect users after successful login:
+
+**Option 1: Using React Router**
+
+```tsx
+import { CivicAuthProvider } from "@civic/auth/react";
+import { useNavigate } from "react-router-dom";
+
+function App() {
+  const navigate = useNavigate();
+
+  const handleSignIn = (error?: Error) => {
+    if (error) {
+      console.error("Login failed:", error);
+      return;
+    }
+    
+    // Redirect to dashboard after successful login
+    navigate("/dashboard");
+  };
+
+  return (
+    <CivicAuthProvider 
+      clientId="YOUR_CLIENT_ID"
+      onSignIn={handleSignIn}
+    >
+      {/* Your app content */}
+    </CivicAuthProvider>
+  );
+}
+```
+
+**Option 2: Using Full Page Redirect**
+
+```tsx
+import { CivicAuthProvider } from "@civic/auth/react";
+
+function App() {
+  const handleSignIn = (error?: Error) => {
+    if (error) {
+      console.error("Login failed:", error);
+      return;
+    }
+    
+    // Full page redirect after successful login
+    window.location.href = "/dashboard";
+  };
+
+  return (
+    <CivicAuthProvider 
+      clientId="YOUR_CLIENT_ID"
+      onSignIn={handleSignIn}
+    >
+      {/* Your app content */}
+    </CivicAuthProvider>
+  );
+}
+```
 
 ## API
 
@@ -394,6 +510,34 @@ Field descriptions:
 | accessToken     | The OAuth 2.0 access token, allowing a client to make API calls to Civic Auth on behalf of the user.                                                                                                    |
 | refreshToken    | The OAuth 2.0 refresh token, allowing a login session to be extended automatically without requiring user interaction. The Civic Auth SDK handles refresh automatically, so you do not need to do this. |
 | forwardedTokens | If the user authenticated using SSO (single-sign-on login) with a federated OAuth provider such as Google, this contains the OIDC and OAuth 2.0 tokens from that provider.                              |
+
+<Note>
+**Verifying tokens on your backend:**
+
+When sending the access token from your frontend to your backend for verification, you can access it from the `userContext` object:
+
+```typescript
+const { accessToken, idToken } = useUser();
+// Send accessToken and/or idToken to your backend for verification
+```
+
+To verify the token signature on your backend, use the `@civic/auth-verify` library which automatically queries the Civic JWKS endpoint to fetch the public key:
+
+```bash
+npm install @civic/auth-verify
+```
+
+```typescript
+import { verify } from '@civic/auth-verify';
+
+// Verify the access token and id tokens
+await verify(accessToken);
+const payload = await verify(idToken);
+console.log(payload); // Contains user information
+```
+
+For complete backend verification examples and details, see the [`@civic/auth-verify` documentation](/libraries/auth-verify).
+</Note>
 
 #### Forwarded Tokens
 

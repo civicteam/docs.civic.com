@@ -5,6 +5,122 @@ icon: "pen"
 public: true
 ---
 
+<Update label="March 11, 2026" description="auth-server-1.2.24">
+
+**Features**
+- Added support for MCP (Model Context Protocol) clients, enabling proper OAuth authorization for tools like Gemini CLI
+
+**Bug fixes**
+- Fixed an error that could occur when MCP clients attempted to connect via OAuth authorization
+
+</Update>
+
+<Update label="March 10, 2026" description="auth-server-1.2.23">
+
+**Features**
+- Added support for `civic_account` and `civic_profile` claims in token exchange requests
+- When both legacy and new claim formats are present, the new `civic_*` claims now take priority
+
+</Update>
+
+<Update label="March 10, 2026" description="apps-0.2.89">
+
+**Features**
+- Added support for `civic_account` and `civic_profile` claims in token exchange
+
+</Update>
+
+<Update label="March 06, 2026" description="apps-0.2.88">
+
+**Bug fixes**
+- Fixed an issue where custom logo uploads were not displaying correctly
+- Fixed an issue preventing cleanup of previously uploaded files when replacing them
+
+**Security**
+- Updated dependencies to address known vulnerabilities
+
+</Update>
+
+<Update label="February 13, 2026" description="Auth Server v1.2.21">
+
+**Bug Fixes**
+- Fixed federated token exchange `sub` claim to use the correct account identifier
+- Fixed federated token exchange userinfo endpoint to return proper OIDC claims
+- Extracted standard OIDC claims (name, email, picture, etc.) from external tokens during federated token exchange
+
+**Security**
+- Dependency upgrade to address a high-severity vulnerability
+
+</Update>
+
+<Update label="February 9, 2026" description="Auth Server v1.2.20">
+
+**Improvements**
+- Internal infrastructure and analytics improvements
+
+</Update>
+
+<Update label="February 9, 2026" description="Apps v0.2.82">
+
+**Improvements**
+- Next.js 16 compatibility updates
+
+**Bug Fixes**
+- Fixed SSR hydration mismatches in useUser hook and login app
+- Fixed cross-origin SecurityError in MessageHandler logging
+
+</Update>
+
+<Update label="February 4, 2026" description="Auth Server v1.2.19">
+
+**Security**
+- Security hardening and vulnerability fixes across the authentication infrastructure
+
+</Update>
+
+<Update label="February 2, 2026" description="Auth Server v1.2.18">
+
+**Improvements**
+- Added support for `mcp:tools` scope in Dynamic Client Registration, enabling MCP tool authorization through the `/reg` endpoint
+
+**Security**
+- Addressed security vulnerabilities to improve platform safety
+
+</Update>
+
+<Update label="September 26th, 2025" description="OAuth 2.0 Enhancements & Session Improvements" tags={["OAuth", "Sessions", "SDK", "Enhancement"]}>
+
+🔄 **Dynamic Client Registration support**
+Connect Civic auth to any AI server or MCP server with our new Dynamic Client Registration support. Perfect for modern, flexible authentication flows.
+
+🔐 **OAuth client-credentials flow**
+Now supporting the OAuth client-credentials flow for secure server-to-server authentication scenarios.
+
+⚡ **Major session refresh improvements**
+The Civic Auth SDK brings significant API improvements with faster session refreshes. Sessions now refresh quickly on page load and automatically in the background when users navigate back to protected pages.
+
+🎨 **Enhanced UserButton UI**
+Improved the UserButton component with better visual design and user experience.
+
+</Update>
+
+<Update label="October 2025" description="Token Exchange & Security" tags={["OAuth", "Security"]}>
+
+🔄 **Token exchange (RFC 8693)**
+Exchange one access token for another with different permissions or audience. Perfect for delegating access between services while maintaining security.
+
+🔒 **Enhanced cross-origin security**
+Added COEP and CORP headers for better security and compatibility with modern web standards.
+
+</Update>
+
+<Update label="August 21st, 2025" description="Passkey Authentication" tags={["Passkey", "Authentication", "Security"]}>
+
+🔑 **Passkey login is here!**
+We now support passkey as a login method! After enabling passkey, you can prompt users to create a passkey to login to your site, making login faster and more secure. Say goodbye to passwords and hello to the future of authentication.
+
+</Update>
+
 <Update label="August 6th, 2025" description="React Frontend + Any Backend Support" tags={["React", "SDK", "Enhancement"]}>
 
 🔗 **Mix and match React with any backend**

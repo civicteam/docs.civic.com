@@ -19,6 +19,12 @@ import PythonSdkWarning from '/snippets/_python-sdk-warning.mdx';
 pip install "civic-auth[flask]"
 ```
 
+Or, if you're using the `uv` package manager:
+
+```bash
+uv add "civic-auth[flask]"
+```
+
 ## 2. Configure your App
 
 Your app will need the following configuration:
@@ -232,3 +238,22 @@ Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum
 </Info>
 
 The examples above use PKCE authentication, which is handled entirely by the Civic Auth SDK and suitable for most applications.
+
+### Access Tokens
+
+Retrieve tokens from session (or via a CivicAuth instance if exposed):
+
+```python
+from flask import session
+from civic_auth.core import CivicAuth  # for key names
+
+@app.route("/tokens")
+@civic_auth_required
+async def tokens():
+    return {
+        "access_token": session.get(CivicAuth.ACCESS_TOKEN_KEY),
+        "id_token": session.get(CivicAuth.ID_TOKEN_KEY),
+        "refresh_token": session.get(CivicAuth.REFRESH_TOKEN_KEY),
+        "token_type": "Bearer",
+    }
+```

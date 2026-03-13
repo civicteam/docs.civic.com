@@ -38,21 +38,202 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Auth",
+        "tab": "Civic",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Getting Started",
+            "icon": "rocket",
             "pages": [
               "index",
+              "civic/quickstart/index",
+              {
+                "group": "Core Concepts",
+                "icon": "lightbulb",
+                "pages": [
+                  "civic/concepts/toolkits",
+                  "civic/concepts/tokens",
+                  "civic/concepts/connection-methods",
+                  "civic/concepts/guardrails",
+                  "civic/concepts/mcp",
+                  "civic/concepts/oauth",
+                  "civic/concepts/tools-resources-prompts"
+                ]
+              },
+              "civic/reference/authorizations",
+              "civic/billing",
+              "civic/changelog"
+            ]
+          },
+          {
+            "group": "Supported Clients",
+            "icon": "desktop",
+            "pages": [
+              "civic/quickstart/civic-chat",
+              "civic/quickstart/clients/openclaw",
+              "civic/quickstart/clients/claude-web",
+              "civic/quickstart/clients/claude-desktop",
+              {
+                "group": "More Clients",
+                "icon": "ellipsis",
+                "pages": [
+                  "civic/quickstart/clients/cursor",
+                  "civic/quickstart/clients/goose",
+                  "civic/quickstart/clients/vscode",
+                  "civic/quickstart/clients/windsurf",
+                  "civic/quickstart/clients/claude-code",
+                  "civic/quickstart/clients/codex",
+                  "civic/quickstart/clients/jetbrains",
+                  "civic/quickstart/clients/gemini"
+                ]
+              },
+              "civic/quickstart/clients/agents",
+              "civic/quickstart/clients/mistral-lechat",
+              {
+                "group": "MCP Servers",
+                "icon": "server",
+                "pages": [
+                  "civic/reference/servers",
+                  "civic/reference/servers/activecampaign",
+                  "civic/reference/servers/atlassian",
+                  "civic/reference/servers/aws-billing",
+                  "civic/reference/servers/box",
+                  "civic/reference/servers/box-community",
+                  "civic/reference/servers/clickup",
+                  "civic/reference/servers/coingecko",
+                  "civic/reference/servers/context7",
+                  "civic/reference/servers/deepwiki",
+                  "civic/reference/servers/dropbox",
+                  "civic/reference/servers/findymail",
+                  "civic/reference/servers/github",
+                  "civic/reference/servers/gmail",
+                  "civic/reference/servers/google-analytics",
+                  "civic/reference/servers/google-calendar",
+                  "civic/reference/servers/google-docs",
+                  "civic/reference/servers/google-drive",
+                  "civic/reference/servers/google-sheets",
+                  "civic/reference/servers/google-slides",
+                  "civic/reference/servers/hubspot",
+                  "civic/reference/servers/hunter-io",
+                  "civic/reference/servers/imap-email",
+                  "civic/reference/servers/linear",
+                  "civic/reference/servers/meta-ads",
+                  "civic/reference/servers/mistral-ocr",
+                  "civic/reference/servers/monday",
+                  "civic/reference/servers/ms365-mail",
+                  "civic/reference/servers/sharepoint",
+                  "civic/reference/servers/ms365-teams",
+                  "civic/reference/servers/n8n",
+                  "civic/reference/servers/notion",
+                  "civic/reference/servers/pipedrive",
+                  "civic/reference/servers/postgresql",
+                  "civic/reference/servers/posthog",
+                  "civic/reference/servers/postmark",
+                  "civic/reference/servers/replicate",
+                  "civic/reference/servers/salesforce",
+                  "civic/reference/servers/sentry",
+                  "civic/reference/servers/slack",
+                  "civic/reference/servers/square"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Developers",
+            "icon": "code",
+            "pages": [
+              {
+                "group": "IDE Setup",
+                "icon": "code",
+                "pages": [
+                  "civic/developers/client-setup",
+                  "civic/quickstart/hub-bridge"
+                ]
+              },
+              {
+                "group": "AI SDKs",
+                "icon": "plug",
+                "pages": [
+                  "civic/developers/integrations/index",
+                  "civic/recipes/vercel-ai-sdk",
+                  "civic/recipes/openai-agents",
+                  "civic/recipes/anthropic",
+                  "civic/recipes/openai-sdk",
+                  "civic/recipes/python-pydantic"
+                ]
+              },
+              {
+                "group": "Native Integration",
+                "icon": "puzzle-piece",
+                "pages": [
+                  "civic/developers/native-integration/index",
+                  "civic/developers/native-integration/authorization",
+                  "civic/developers/native-integration/civic-auth-capability"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Reference",
+            "icon": "book",
+            "pages": [
+              "civic/reference/client-compatibility",
+              "civic/reference/security"
+            ]
+          },
+          {
+            "group": "AI Prompts",
+            "icon": "robot",
+            "pages": [
+              "civic/ai-prompts/nextjs"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "civic/troubleshooting"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Auth",
+        "global": {
+          "anchors": [
+            {
+              "anchor": "About us",
+              "icon": "circle-info",
+              "href": "https://www.civic.com/about"
+            },
+            {
+              "anchor": "Blog",
+              "icon": "newspaper",
+              "href": "https://www.civic.com/blog"
+            },
+            {
+              "anchor": "Join Our Community",
+              "icon": "slack",
+              "href": "https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw"
+            }
+          ]
+        },
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "auth/index",
               "overview/pricing",
               "overview/bring-your-app-to-production",
               {
                 "group": "Login Options",
                 "icon": "arrow-right-to-bracket",
-                "pages": ["overview/login-options", "overview/passkeys"]
+                "pages": [
+                  "overview/login-options",
+                  "overview/passkeys"
+                ]
               },
               "overview/faqs",
               "overview/authentication-flows",
+              "overview/token-exchange",
               "overview/changelog"
             ]
           },
@@ -75,14 +256,16 @@
               {
                 "group": "Web3",
                 "icon": "wallet",
-                "pages": ["ai-prompts/web3/solana", "ai-prompts/web3/ethereum"]
+                "pages": [
+                  "ai-prompts/web3/solana",
+                  "ai-prompts/web3/ethereum"
+                ]
               },
               {
                 "group": "No-code Platforms",
                 "icon": "wand-magic-sparkles",
                 "pages": [
                   "ai-prompts/no-code/lovable",
-                  "ai-prompts/no-code/bolt",
                   "ai-prompts/no-code/v0",
                   "ai-prompts/no-code/replit"
                 ]
@@ -118,7 +301,9 @@
               {
                 "group": "Mobile",
                 "icon": "mobile-screen-button",
-                "pages": ["integration/mobile/react-native"]
+                "pages": [
+                  "integration/mobile/react-native"
+                ]
               },
               "integration/other",
               "integration/error-codes"
@@ -133,46 +318,43 @@
               {
                 "group": "Mobile",
                 "icon": "mobile",
-                "pages": ["web3/mobile/solana"]
+                "pages": [
+                  "web3/mobile/solana"
+                ]
               }
             ]
           },
           {
             "group": "Libraries & Tools",
             "icon": "code",
-            "pages": ["libraries/auth-verify"]
+            "pages": [
+              "libraries/auth-verify"
+            ]
           },
           {
             "group": "Guides",
-            "pages": ["guides/add-auth-to-mcp"]
+            "pages": [
+              "guides/add-auth-to-mcp"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "auth/troubleshooting"
+            ]
           }
-        ],
-        "global": {
-          "anchors": [
-            {
-              "anchor": "About us",
-              "href": "https://www.civic.com/about",
-              "icon": "circle-info"
-            },
-            {
-              "anchor": "Blog",
-              "href": "https://www.civic.com/blog",
-              "icon": "newspaper"
-            },
-            {
-              "anchor": "Join Our Community",
-              "href": "https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw",
-              "icon": "slack"
-            }
-          ]
-        }
+        ]
       },
       {
         "tab": "Labs",
         "groups": [
           {
             "group": " ",
-            "pages": ["labs", "labs/flask-status", "labs/feedback"]
+            "pages": [
+              "labs",
+              "labs/flask-status",
+              "labs/feedback"
+            ]
           },
           {
             "group": "Flasks",
@@ -226,8 +408,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Try Auth",
-      "href": "https://auth.civic.com/dashboard?utm_source=docs&utm_medium=hero-nav"
+      "label": "Try Civic",
+      "href": "https://nexus.civic.com?utm_source=docs&utm_medium=hero-nav"
     }
   },
   "footer": {
@@ -236,5 +418,19 @@
       "linkedin": "https://www.linkedin.com/company/civic-technologies",
       "youtube": "https://www.youtube.com/@CivicTechnologies"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/nexus/quickstart/nexus-chat",
+      "destination": "/civic/quickstart/civic-chat"
+    },
+    {
+      "source": "/civic/quickstart/nexus-chat",
+      "destination": "/civic/quickstart/civic-chat"
+    },
+    {
+      "source": "/nexus/:path*",
+      "destination": "/civic/:path*"
+    }
+  ]
 }

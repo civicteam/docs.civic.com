@@ -1,0 +1,14 @@
+<Callout icon="shield-check" color="green">
+  Minimal Next.js setup for Civic Auth
+</Callout>
+
+1. Add `createCivicAuthPlugin` to `next.config.ts` with your `clientId`
+2. Create `src/app/api/auth/[...civicauth]/route.ts` exporting `handler()`
+3. Add `src/middleware.ts` using `authMiddleware()`
+4. On the server, call `getTokens()` and use `accessToken` as a Bearer token
+
+<Note>
+  Full guide: [/integration/nextjs](/integration/nextjs)
+</Note>
+
+

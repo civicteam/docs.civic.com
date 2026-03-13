@@ -59,7 +59,7 @@
     },
     {
       "parameters": {
-        "sseEndpoint": "https://ai.civic.com/api/hub/mcp",
+        "sseEndpoint": "https://nexus.civic.com/api/hub/mcp",
         "authentication": "headerAuth"
       },
       "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
