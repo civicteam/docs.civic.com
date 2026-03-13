@@ -212,7 +212,8 @@
             "icon": "toolbox",
             "pages": [
               "civic/reference/authorizations",
-              "civic/organizations"
+              "civic/organizations",
+              "civic/concepts/skills"
             ]
           },
           {
