@@ -29,6 +29,63 @@ When you first connect a service to Civic:
   />
 </Frame>
 
+## Credential Visibility
+
+Every credential has a **visibility** level that determines who can see and use it:
+
+| Visibility | Who can use it | UI label |
+|------------|----------------|----------|
+| **User** | Only the owning user, within the owning account | "User" |
+| **Organization** | Any user in the account | "Organization" |
+
+- A **User** credential belongs to one person in one account. Even if a user belongs to multiple accounts, the credential is scoped to the account where it was created.
+- An **Organization** credential is shared across all users in the account. Only admins and owners can promote a credential to Organization visibility.
+
+## Profile Assignment
+
+Credentials can be **assigned** to one or more profiles (toolkits). Assignment controls which profiles can discover the credential when a tool needs authentication.
+
+A credential can be:
+- **Assigned** to specific profiles — only those profiles will discover it during resolution
+- **Unassigned** — available to any profile, subject to visibility rules
+
+Assignment is independent of visibility. For example, a User credential can be assigned to multiple profiles (but only the owning user can use it), and an Organization credential can be assigned to specific profiles (limiting which profiles discover it, even though any user in the account could use it).
+
+## How Credentials Are Resolved
+
+When a profile needs a credential — for example, to call a tool that requires GitHub OAuth — the system searches for a reusable credential using a priority-based resolution system.
+
+Resolution priority (first match wins):
+
+| Priority | Description | Visibility | Assigned? |
+|----------|-------------|------------|-----------|
+| 1 | Assigned to the active skill profile | User | Yes |
+| 2 | Assigned to the base toolkit profile | User | Yes |
+| 3 | Assigned to the active skill profile | Organization | Yes |
+| 4 | Assigned to the base toolkit profile | Organization | Yes |
+| 5 | Not assigned to any requesting profile | User | No |
+| 6 | Not assigned to any requesting profile | Organization | No |
+
+**Rules:**
+- User-visibility credentials are only visible to the owning user.
+- Organization-visibility credentials can come from a different user (shared credentials).
+- Within the same priority level, the most recently created credential wins.
+- The credential's granted scopes must be a superset of the required scopes.
+
+### Locked profiles restrict credential access
+
+When a profile is [locked](/civic/quickstart/clients/agents#profile-locking) — for example, when using a profile-scoped token or an API key — **priorities 5 and 6 are excluded**. This means only credentials explicitly assigned to the profile are available.
+
+If an unassigned credential exists that would have matched, the system returns a **"promotion required"** message instead of prompting for fresh authentication:
+
+> "A matching credential exists but is not assigned to this profile. An account admin can assign it through the authorization management UI."
+
+No auth URL is provided in this case. The user or an account admin must assign the existing credential to the profile through the web UI.
+
+<Warning>
+**Rollout note:** If you are using profile-scoped tokens (e.g. via token exchange with a `civic_profile` claim), credentials that were previously resolved automatically may now require explicit assignment. Review your credential assignments in the authorizations dashboard to ensure your profiles have the credentials they need.
+</Warning>
+
 ## Managing Your Authorizations
 
 ### Full Control Over Access
@@ -90,6 +147,15 @@ Civic and your AI assistants cannot:
 - **Exceed your permissions** - AI has the same limits as your user account
 - **Access unrelated services** - Only services you've specifically connected
 - **Persist beyond revocation** - Access stops immediately when revoked
+
+### What admins can do
+
+| Action | User credential (own) | Organization credential | Requirement |
+|--------|----------------------|------------------------|-------------|
+| View | Yes | Yes | Member+ |
+| Revoke (delete) | Yes | Yes | Admin/Owner for Organization |
+| Change visibility | Yes | — | Admin/Owner to promote to Organization |
+| Assign to profiles | Yes | Yes | Admin/Owner |
 
 ## Security and Privacy
 
