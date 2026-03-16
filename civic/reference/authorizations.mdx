@@ -29,6 +29,41 @@ When you first connect a service to Civic:
   />
 </Frame>
 
+## Credential Visibility
+
+Every credential has a **visibility** level that determines who can see and use it:
+
+| Visibility | Who can use it | UI label |
+|------------|----------------|----------|
+| **User** | Only the owning user, within the owning account | "User" |
+| **Organization** | Any user in the account | "Organization" |
+
+- A **User** credential belongs to one person in one account. Even if a user belongs to multiple accounts, the credential is scoped to the account where it was created.
+- An **Organization** credential is shared across all users in the account. Only admins and owners can promote a credential to Organization visibility.
+
+## Profile Assignment
+
+Credentials can be **assigned** to one or more profiles (toolkits). How assignment affects credential discovery depends on whether the profile is locked or unlocked:
+
+- **Unlocked profiles** discover all credentials in the account that match the required provider and scopes, regardless of whether they are assigned. Assignment is optional and has no effect on discovery.
+- **Locked profiles** (e.g. when using a profile-scoped token) discover **only** credentials that have been explicitly assigned to the profile. Unassigned credentials are invisible to locked profiles.
+
+Assignment is independent of visibility — a User credential can be assigned to multiple profiles (but only the owning user can use it), and an Organization credential can be assigned to specific profiles.
+
+## Locked Profiles Restrict Credential Access
+
+When a profile is [locked](/civic/quickstart/clients/agents#profile-locking) — for example, when using a profile-scoped token — only credentials explicitly **assigned** to the profile are discovered. Unassigned credentials are not resolved, even if they would otherwise match.
+
+If an unassigned credential exists that would have matched, the system returns a **"promotion required"** message instead of prompting for fresh authentication:
+
+> "A matching credential exists but is not assigned to this profile. An account admin can assign it through the authorization management UI."
+
+No auth URL is provided in this case. The user or an account admin must assign the existing credential to the profile through the web UI.
+
+<Warning>
+**Rollout note:** If you are using profile-scoped tokens (e.g. via token exchange with a `civic_profile` claim), credentials that were previously resolved automatically may now require explicit assignment. Review your credential assignments in the authorizations dashboard to ensure your profiles have the credentials they need.
+</Warning>
+
 ## Managing Your Authorizations
 
 ### Full Control Over Access
@@ -90,6 +125,15 @@ Civic and your AI assistants cannot:
 - **Exceed your permissions** - AI has the same limits as your user account
 - **Access unrelated services** - Only services you've specifically connected
 - **Persist beyond revocation** - Access stops immediately when revoked
+
+### What admins can do
+
+| Action | User credential (own) | Organization credential | Requirement |
+|--------|----------------------|------------------------|-------------|
+| View | Yes | Yes | Member+ |
+| Revoke (delete) | Yes | Yes | Admin/Owner for Organization |
+| Change visibility | Yes | — | Admin/Owner to promote to Organization |
+| Assign to profiles | Yes | Yes | Admin/Owner |
 
 ## Security and Privacy
 

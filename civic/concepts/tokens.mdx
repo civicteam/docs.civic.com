@@ -233,6 +233,16 @@ Include the token in the Authorization header of your HTTP requests:
   </Tab>
 </Tabs>
 
+## Credential Access with Tokens
+
+Civic tokens always result in a **locked profile**. This means the token can only access credentials that have been explicitly [assigned to the profile](/civic/reference/authorizations#profile-assignment). Unassigned credentials — even ones that would otherwise match — are not available.
+
+<Warning>
+**If you are rolling out token-based access for an existing profile**, credentials that were previously resolved automatically (because the profile was unlocked) may now require explicit assignment. Check the authorizations dashboard to ensure your profile has the credentials it needs before switching to token authentication.
+</Warning>
+
+New credentials authenticated through a token session are automatically assigned to the token's profile.
+
 ## Token Expiration & Renewal
 
 ### Expiration
