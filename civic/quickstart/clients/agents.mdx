@@ -58,7 +58,7 @@ When a toolkit is locked:
 - The **`switch_profile` tool is hidden** — it doesn't appear in the AI's tool list
 - **Toolkit switching is blocked** — if the AI attempts to call it anyway, it receives an error
 - **Guardrail management is disabled** — the AI cannot modify its own safety constraints
-- **Credential access is restricted** — only credentials [explicitly assigned](/civic/reference/authorizations#profile-assignment) to the profile are available. Unassigned credentials are not resolved, even if they would otherwise match.
+- **Credential access is restricted** — only credentials [explicitly assigned](/civic/reference/authorizations#profile-assignment) to the profile are discovered. Unassigned credentials are invisible to locked profiles, even if they would match. (Unlocked profiles discover all matching credentials regardless of assignment.)
 - The lock **persists for the entire session**
 
 <Note>

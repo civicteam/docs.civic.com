@@ -43,17 +43,16 @@ Every credential has a **visibility** level that determines who can see and use 
 
 ## Profile Assignment
 
-Credentials can be **assigned** to one or more profiles (toolkits). Assignment controls which profiles can discover the credential when a tool needs authentication.
+Credentials can be **assigned** to one or more profiles (toolkits). How assignment affects credential discovery depends on whether the profile is locked or unlocked:
 
-A credential can be:
-- **Assigned** to specific profiles — only those profiles will discover it during resolution
-- **Unassigned** — available to any profile, subject to visibility rules
+- **Unlocked profiles** discover all credentials in the account that match the required provider and scopes, regardless of whether they are assigned. Assignment is optional and has no effect on discovery.
+- **Locked profiles** (e.g. when using a profile-scoped token) discover **only** credentials that have been explicitly assigned to the profile. Unassigned credentials are invisible to locked profiles.
 
-Assignment is independent of visibility. For example, a User credential can be assigned to multiple profiles (but only the owning user can use it), and an Organization credential can be assigned to specific profiles (limiting which profiles discover it, even though any user in the account could use it).
+Assignment is independent of visibility — a User credential can be assigned to multiple profiles (but only the owning user can use it), and an Organization credential can be assigned to specific profiles.
 
 ## Locked Profiles Restrict Credential Access
 
-When a profile is [locked](/civic/quickstart/clients/agents#profile-locking) — for example, when using a profile-scoped token — only credentials explicitly **assigned** to the profile are available. Unassigned credentials are not resolved, even if they would otherwise match.
+When a profile is [locked](/civic/quickstart/clients/agents#profile-locking) — for example, when using a profile-scoped token — only credentials explicitly **assigned** to the profile are discovered. Unassigned credentials are not resolved, even if they would otherwise match.
 
 If an unassigned credential exists that would have matched, the system returns a **"promotion required"** message instead of prompting for fresh authentication:
 
