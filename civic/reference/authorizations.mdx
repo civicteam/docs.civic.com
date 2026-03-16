@@ -51,30 +51,9 @@ A credential can be:
 
 Assignment is independent of visibility. For example, a User credential can be assigned to multiple profiles (but only the owning user can use it), and an Organization credential can be assigned to specific profiles (limiting which profiles discover it, even though any user in the account could use it).
 
-## How Credentials Are Resolved
+## Locked Profiles Restrict Credential Access
 
-When a profile needs a credential — for example, to call a tool that requires GitHub OAuth — the system searches for a reusable credential using a priority-based resolution system.
-
-Resolution priority (first match wins):
-
-| Priority | Description | Visibility | Assigned? |
-|----------|-------------|------------|-----------|
-| 1 | Assigned to the active skill profile | User | Yes |
-| 2 | Assigned to the base toolkit profile | User | Yes |
-| 3 | Assigned to the active skill profile | Organization | Yes |
-| 4 | Assigned to the base toolkit profile | Organization | Yes |
-| 5 | Not assigned to any requesting profile | User | No |
-| 6 | Not assigned to any requesting profile | Organization | No |
-
-**Rules:**
-- User-visibility credentials are only visible to the owning user.
-- Organization-visibility credentials can come from a different user (shared credentials).
-- Within the same priority level, the most recently created credential wins.
-- The credential's granted scopes must be a superset of the required scopes.
-
-### Locked profiles restrict credential access
-
-When a profile is [locked](/civic/quickstart/clients/agents#profile-locking) — for example, when using a profile-scoped token or an API key — **priorities 5 and 6 are excluded**. This means only credentials explicitly assigned to the profile are available.
+When a profile is [locked](/civic/quickstart/clients/agents#profile-locking) — for example, when using a profile-scoped token — only credentials explicitly **assigned** to the profile are available. Unassigned credentials are not resolved, even if they would otherwise match.
 
 If an unassigned credential exists that would have matched, the system returns a **"promotion required"** message instead of prompting for fresh authentication:
 
