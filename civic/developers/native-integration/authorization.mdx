@@ -79,6 +79,10 @@ You have two options depending on your architecture:
     | `civic_profile` | Profile (toolkit) identifier to include as a claim in the exchanged token. |
 
     Since a linked Civic Auth organization is already scoped to the account by default (via the Client ID), these parameters are primarily useful for restricting access to a **specific profile or toolkit** within the account — for example, limiting a user or agent to a single toolkit rather than the entire organization.
+
+    <Warning>
+    **Credential locking:** When `civic_profile` is present in the exchanged token, the profile is automatically **locked**. A locked profile can only access credentials that have been explicitly [assigned to it](/civic/reference/authorizations#profile-assignment) — unassigned credentials are not resolved. New credentials authenticated through the scoped token are automatically assigned to the profile. If you are migrating to profile-scoped tokens, review your credential assignments to ensure existing credentials are assigned to the relevant profiles.
+    </Warning>
   </Tab>
 </Tabs>
 

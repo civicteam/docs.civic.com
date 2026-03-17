@@ -58,7 +58,12 @@ When a toolkit is locked:
 - The **`switch_profile` tool is hidden** — it doesn't appear in the AI's tool list
 - **Toolkit switching is blocked** — if the AI attempts to call it anyway, it receives an error
 - **Guardrail management is disabled** — the AI cannot modify its own safety constraints
+- **Credential access is restricted** — only credentials [explicitly assigned](/civic/reference/authorizations#profile-assignment) to the profile are discovered. Unassigned credentials are invisible to locked profiles, even if they would match. (Unlocked profiles discover all matching credentials regardless of assignment.)
 - The lock **persists for the entire session**
+
+<Note>
+When a locked profile needs a credential that exists but isn't assigned, the system will not prompt for fresh authentication. Instead, it returns a message asking an account admin to assign the credential to the profile. See [credential resolution](/civic/reference/authorizations#locked-profiles-restrict-credential-access) for details.
+</Note>
 
 ### Why locking is the default
 
@@ -101,6 +106,19 @@ When unlocked:
 | Yes | Omitted | **Locked** (default) |
 | Yes | `lock=true` | **Locked** |
 | Yes | `lock=false` | **Unlocked** |
+
+### When is a profile automatically locked?
+
+In addition to the `lock` URL parameter, profiles are automatically locked in these scenarios:
+
+| Scenario | Lock behavior |
+|----------|--------------|
+| `civic_profile` claim in JWT token | Always locked |
+| `END_USER` role | Always locked (cannot be overridden) |
+
+<Note>
+Tokens issued via [token exchange](/overview/token-exchange) with a `civic_profile` claim always result in a locked profile. Credentials authenticated through a profile-scoped token are automatically assigned to that profile.
+</Note>
 
 ## Skills
 
