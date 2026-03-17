@@ -87,7 +87,21 @@
                   "civic/recipes/openai-agents",
                   "civic/recipes/langchain",
                   "civic/recipes/python-pydantic",
-                  "civic/recipes/vercel-ai-sdk"
+                  "civic/recipes/pydantic-ai",
+                  "civic/recipes/vercel-ai-sdk",
+                  "civic/recipes/google-adk",
+                  "civic/recipes/crewai",
+                  "civic/recipes/agno",
+                  "civic/recipes/llamaindex",
+                  "civic/recipes/autogen",
+                  "civic/recipes/haystack",
+                  "civic/recipes/smolagents",
+                  "civic/recipes/dspy",
+                  "civic/recipes/semantic-kernel",
+                  "civic/recipes/camel-ai",
+                  "civic/recipes/mastra",
+                  "civic/recipes/dify",
+                  "civic/recipes/flowise"
                 ]
               },
               {

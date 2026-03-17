@@ -1,0 +1,124 @@
+---
+title: Haystack
+description: Connect a Haystack pipeline to Civic's MCP Hub using streamable HTTP transport
+icon: "code"
+---
+
+Connect a [Haystack](https://haystack.deepset.ai/) pipeline to Civic using `MCPTool` from the Haystack MCP integration. Because `MCPTool` wraps one named tool at a time, you first discover available tool names via the raw MCP client, then create a tool object for each.
+
+## Prerequisites
+
+- Python 3.11+
+- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic token and an Anthropic API key
+
+## Installation
+
+```bash
+pip install haystack-ai haystack-integrations anthropic-haystack mcp python-dotenv
+```
+
+## Environment Variables
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_TOKEN=your-civic-token
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Haystack's `MCPTool` wraps a single named tool. First discover all tool names using the raw `mcp` client, then create `MCPTool` instances and pass them to `AnthropicChatGenerator`:
+
+```python
+import os
+import asyncio
+from dotenv import load_dotenv
+from mcp.client.streamable_http import streamablehttp_client
+from mcp import ClientSession
+from haystack_integrations.tools.mcp import MCPTool, StreamableHttpServerInfo
+from haystack.utils import Secret
+from haystack_integrations.components.generators.anthropic import AnthropicChatGenerator
+from haystack.dataclasses import ChatMessage
+
+load_dotenv()
+
+CIVIC_URL = os.environ["CIVIC_URL"]
+CIVIC_TOKEN = os.environ["CIVIC_TOKEN"]
+
+async def get_tool_names():
+    """Discover available tool names from the Civic MCP Hub."""
+    headers = {"Authorization": f"Bearer {CIVIC_TOKEN}"}
+    async with streamablehttp_client(CIVIC_URL, headers=headers) as (r, w, _):
+        async with ClientSession(r, w) as session:
+            await session.initialize()
+            result = await session.list_tools()
+            return [t.name for t in result.tools]
+
+def build_pipeline(tool_names):
+    server_info = StreamableHttpServerInfo(
+        url=CIVIC_URL,
+        token=Secret.from_env_var("CIVIC_TOKEN"),
+    )
+    civic_tools = [MCPTool(name=name, server_info=server_info) for name in tool_names]
+
+    generator = AnthropicChatGenerator(
+        model="claude-sonnet-4-6",
+        tools=civic_tools,
+    )
+    return generator, civic_tools
+
+def main():
+    tool_names = asyncio.run(get_tool_names())
+    print(f"{len(tool_names)} tools discovered")
+
+    generator, _ = build_pipeline(tool_names)
+
+    messages = [
+        ChatMessage.from_system("You are a helpful assistant with access to Civic tools."),
+        ChatMessage.from_user("What events do I have today?"),
+    ]
+    response = generator.run(messages=messages)
+    print(response["replies"][0].text)
+
+main()
+```
+
+<Note>
+`MCPTool` wraps a single named tool — not a server. You must discover tool names first using the raw `mcp` package, then create one `MCPTool` per name. Import `AnthropicChatGenerator` from `haystack_integrations.components.generators.anthropic` (requires the `anthropic-haystack` package).
+</Note>
+
+## Production Configuration
+
+For production agents, lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+## Reference Implementation
+
+<Card title="haystack-reference-implementation-civic" icon="github" href="https://github.com/titus-civic/haystack-reference-implementation-civic">
+  Complete implementation with FastAPI chat UI and deployment guide
+</Card>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

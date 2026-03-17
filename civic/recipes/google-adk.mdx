@@ -1,0 +1,135 @@
+---
+title: Google ADK
+description: Connect a Google ADK agent to Civic's MCP Hub using streamable HTTP transport
+icon: "code"
+---
+
+Connect a [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/) agent to Civic using `McpToolset` with Streamable HTTP transport. Google ADK natively supports Gemini models; for Claude, register `LiteLlm` as shown below.
+
+## Prerequisites
+
+- Python 3.11+
+- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic token and an Anthropic API key
+
+## Installation
+
+```bash
+pip install google-adk litellm python-dotenv
+```
+
+## Environment Variables
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_TOKEN=your-civic-token
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Google ADK's built-in Anthropic support requires Vertex AI. To use Claude directly with the Anthropic API, register `LiteLlm` with the ADK model registry:
+
+```python
+import os
+import asyncio
+from dotenv import load_dotenv
+from google.adk.agents import Agent
+from google.adk.tools.mcp_tool import McpToolset
+from google.adk.tools.mcp_tool.mcp_session_manager import StreamableHTTPConnectionParams
+from google.adk.models.lite_llm import LiteLlm
+from google.adk.models.registry import LLMRegistry
+
+load_dotenv()
+
+# Required: register LiteLlm to use non-Gemini models
+LLMRegistry.register(LiteLlm)
+
+root_agent = Agent(
+    model=LiteLlm(model="anthropic/claude-sonnet-4-6"),
+    name="civic_assistant",
+    instruction="You are a helpful assistant with access to Civic tools.",
+    tools=[
+        McpToolset(
+            connection_params=StreamableHTTPConnectionParams(
+                url=os.environ["CIVIC_URL"],
+                headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+            ),
+        )
+    ],
+)
+```
+
+## Running the Agent
+
+Google ADK uses a `Runner` to execute agents. Sessions are managed via `InMemorySessionService`:
+
+```python
+from google.adk.runners import Runner
+from google.adk.sessions import InMemorySessionService
+from google.genai import types
+
+async def main():
+    session_service = InMemorySessionService()
+    runner = Runner(
+        agent=root_agent,
+        app_name="my-app",
+        session_service=session_service,
+    )
+    await session_service.create_session(
+        app_name="my-app", user_id="user-1", session_id="session-1"
+    )
+
+    message = types.Content(
+        role="user",
+        parts=[types.Part(text="What events do I have today?")],
+    )
+    async for event in runner.run_async(
+        user_id="user-1", session_id="session-1", new_message=message
+    ):
+        if event.is_final_response():
+            for part in event.content.parts:
+                if part.text:
+                    print(part.text)
+
+asyncio.run(main())
+```
+
+<Note>
+Use `types.Part(text=...)` — not `types.Part.from_text(...)`. The `from_text` class method does not exist in the current Google Gen AI SDK.
+</Note>
+
+## Production Configuration
+
+For production agents, lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+## Reference Implementation
+
+<Card title="google-adk-reference-implementation-civic" icon="github" href="https://github.com/titus-civic/google-adk-reference-implementation-civic">
+  Complete implementation with ADK web UI, FastAPI chat server, and deployment guide
+</Card>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

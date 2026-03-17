@@ -1,0 +1,103 @@
+---
+title: Agno
+description: Connect an Agno agent to Civic's MCP Hub using streamable HTTP transport
+icon: "code"
+---
+
+Connect an [Agno](https://docs.agno.com/) agent to Civic using `MCPTools` with Streamable HTTP transport. Agno's `MCPTools` context manager handles connection lifecycle and exposes all discovered tools to your agent.
+
+## Prerequisites
+
+- Python 3.11+
+- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic token and an Anthropic API key
+
+## Installation
+
+```bash
+pip install agno anthropic python-dotenv
+```
+
+## Environment Variables
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_TOKEN=your-civic-token
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Use `MCPTools` as an async context manager to connect to the Civic Hub and pass the tools to your agent:
+
+```python
+import os
+import asyncio
+from dotenv import load_dotenv
+from agno.agent import Agent
+from agno.tools.mcp import MCPTools
+from agno.tools.mcp.params import StreamableHTTPClientParams
+from agno.models.anthropic import Claude
+
+load_dotenv()
+
+async def main():
+    async with MCPTools(
+        server_params=StreamableHTTPClientParams(
+            url=os.environ["CIVIC_URL"],
+            headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+        ),
+        transport="streamable-http",
+    ) as mcp_tools:
+        agent = Agent(
+            model=Claude(id="claude-sonnet-4-6"),
+            tools=[mcp_tools],
+            instructions="You are a helpful assistant with access to Civic tools.",
+        )
+        response = await agent.arun(
+            "What events do I have today?",
+            stream=False,
+        )
+        print(response.content)
+
+asyncio.run(main())
+```
+
+<Note>
+Use `server_params=StreamableHTTPClientParams(...)` — not `params=`. Also set `transport="streamable-http"` explicitly.
+</Note>
+
+## Production Configuration
+
+For production agents, lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+## Reference Implementation
+
+<Card title="agno-reference-implementation-civic" icon="github" href="https://github.com/titus-civic/agno-reference-implementation-civic">
+  Complete implementation with FastAPI chat UI and deployment guide
+</Card>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

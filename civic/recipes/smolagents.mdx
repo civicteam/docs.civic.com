@@ -1,0 +1,102 @@
+---
+title: smolagents
+description: Connect a smolagents agent to Civic's MCP Hub using streamable HTTP transport
+icon: "code"
+---
+
+Connect a [smolagents](https://huggingface.co/docs/smolagents/) agent from Hugging Face to Civic using `MCPClient` with Streamable HTTP transport. smolagents' MCP client discovers all available tools and exposes them to a `CodeAgent`.
+
+## Prerequisites
+
+- Python 3.11+
+- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic token and an Anthropic API key
+
+## Installation
+
+```bash
+pip install "smolagents[mcp]" litellm python-dotenv
+```
+
+## Environment Variables
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_TOKEN=your-civic-token
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Pass a single config dict to `MCPClient` with the transport key set to `"streamable-http"` (hyphen, not underscore):
+
+```python
+import os
+from dotenv import load_dotenv
+from smolagents import CodeAgent, LiteLLMModel
+from smolagents.mcp_client import MCPClient
+
+load_dotenv()
+
+mcp_client = MCPClient(
+    {
+        "transport": "streamable-http",  # hyphen required — not streamable_http
+        "url": os.environ["CIVIC_URL"],
+        "headers": {"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+    }
+)
+tools = mcp_client.get_tools()
+print(f"{len(tools)} tools loaded")
+
+model = LiteLLMModel(model_id="anthropic/claude-sonnet-4-6")
+agent = CodeAgent(tools=tools, model=model)
+```
+
+<Note>
+The transport key must be `"streamable-http"` with a hyphen. Using `"streamable_http"` with an underscore will fail. Pass a flat dict to `MCPClient` — not a nested `{"server_name": {...}}` structure.
+</Note>
+
+## Running the Agent
+
+```python
+result = agent.run("What events do I have today?")
+print(result)
+
+# Always disconnect when done
+mcp_client.disconnect()
+```
+
+## Production Configuration
+
+For production agents, lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+## Reference Implementation
+
+<Card title="smolagents-reference-implementation-civic" icon="github" href="https://github.com/titus-civic/smolagents-reference-implementation-civic">
+  Complete implementation with FastAPI chat UI and deployment guide
+</Card>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>
