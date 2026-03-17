@@ -4,6 +4,36 @@ description: Three paths to go live with Civic in under 10 minutes
 icon: "bolt"
 ---
 
+## Zero to First Tool Call
+
+The fastest path: sign up, get a token, make a call.
+
+<Steps>
+  <Step title="Sign up">
+    Go to [nexus.civic.com](https://nexus.civic.com) and create a free account. You get 10,000 credits and 14 days.
+  </Step>
+  <Step title="Complete onboarding">
+    Select your AI framework and tools. On the **Install** step, you'll see your MCP URL.
+  </Step>
+  <Step title="Generate a token">
+    On the Install screen, choose **Generate a Civic token** (best for automation) and copy it.
+  </Step>
+  <Step title="Make your first call">
+    Pass the token as a Bearer header and the MCP URL to your agent or client:
+
+    ```bash
+    curl -X POST https://nexus.civic.com/hub/mcp \
+      -H "Authorization: Bearer $CIVIC_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d '{"jsonrpc":"2.0","method":"tools/list","params":{},"id":1}'
+    ```
+
+    You should see the list of tools available in your configured toolkit.
+  </Step>
+</Steps>
+
+---
+
 ## Choose Your Path
 
 ### Path 1 — Civic Chat (Zero Setup)
