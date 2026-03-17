@@ -1,0 +1,140 @@
+---
+title: CrewAI
+description: Connect a CrewAI agent to Civic's MCP Hub using streamable HTTP transport
+icon: "people-group"
+---
+
+Connect a [CrewAI](https://docs.crewai.com/) agent to Civic using `MCPClient` with HTTP transport. CrewAI's MCP integration wraps discovered tools with `MCPToolWrapper` to make them usable by CrewAI agents.
+
+## Prerequisites
+
+- Python 3.11+
+- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic token and an Anthropic API key
+
+## Installation
+
+```bash
+pip install crewai anthropic python-dotenv
+```
+
+## Environment Variables
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_TOKEN=your-civic-token
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Use `MCPClient` with `HTTPTransport` to connect, then wrap the discovered tools with `MCPToolWrapper`:
+
+```python
+import os
+import asyncio
+from dotenv import load_dotenv
+from crewai import Agent, Task, Crew, LLM
+from crewai.mcp.client import MCPClient, HTTPTransport
+from crewai.tools.mcp_tool_wrapper import MCPToolWrapper
+
+load_dotenv()
+
+CIVIC_URL = os.environ["CIVIC_URL"]
+CIVIC_TOKEN = os.environ["CIVIC_TOKEN"]
+
+SERVER_PARAMS = {
+    "url": CIVIC_URL,
+    "headers": {"Authorization": f"Bearer {CIVIC_TOKEN}"},
+    "transport": "streamable-http",
+}
+
+async def get_civic_tools():
+    transport = HTTPTransport(
+        url=CIVIC_URL,
+        headers={"Authorization": f"Bearer {CIVIC_TOKEN}"},
+        streamable=True,
+    )
+    async with MCPClient(transport=transport) as client:
+        raw_tools = await client.list_tools()
+    return [
+        MCPToolWrapper(
+            mcp_server_params=SERVER_PARAMS,
+            tool_name=t["name"],
+            tool_schema=t.get("inputSchema", {}),
+            server_name="civic",
+        )
+        for t in raw_tools
+    ]
+```
+
+<Note>
+`MCPServerAdapter` was removed in CrewAI v1.6.1. Use `MCPClient` + `HTTPTransport` + `MCPToolWrapper` as shown above.
+</Note>
+
+## Running the Agent
+
+```python
+async def main():
+    tools = await get_civic_tools()
+
+    llm = LLM(
+        model="anthropic/claude-sonnet-4-6",
+        api_key=os.environ["ANTHROPIC_API_KEY"],
+    )
+
+    assistant = Agent(
+        role="Personal Assistant",
+        goal="Help the user with their tasks using available tools",
+        backstory="You are a capable assistant with access to the user's connected services through Civic.",
+        tools=tools,
+        llm=llm,
+    )
+
+    task = Task(
+        description="What events do I have today?",
+        expected_output="A list of today's calendar events.",
+        agent=assistant,
+    )
+
+    crew = Crew(agents=[assistant], tasks=[task])
+    result = crew.kickoff()
+    print(result)
+
+asyncio.run(main())
+```
+
+## Production Configuration
+
+For production agents, lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+## Reference Implementation
+
+<Card title="crewai-reference-implementation-civic" icon="github" href="https://github.com/titus-civic/crewai-reference-implementation-civic">
+  Complete implementation with FastAPI chat UI and deployment guide
+</Card>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

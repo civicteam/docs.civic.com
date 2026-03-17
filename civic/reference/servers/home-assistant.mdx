@@ -1,0 +1,60 @@
+---
+title: Home Assistant
+description: Control smart home devices and automations through Home Assistant
+icon: "server"
+---
+
+## Overview
+
+The Home Assistant server enables AI assistants to interact with your [Home Assistant](https://www.home-assistant.io) smart home, providing control over lights, climate, switches, locks, and todo lists, as well as real-time visibility into device states.
+
+<Card title="Add to Civic" icon="plus" href="https://nexus.civic.com">
+  Connect Home Assistant at nexus.civic.com
+</Card>
+
+## Available Tools (10)
+
+| Tool | Description |
+|------|-------------|
+| `GetDateTime` | Provides the current date and time |
+| `GetLiveContext` | Provides real-time information about the current state of devices, sensors, entities, or areas |
+| `HassCancelAllTimers` | Cancels all timers, optionally scoped to an area |
+| `HassClimateSetTemperature` | Sets the target temperature of a climate device or entity |
+| `HassLightSet` | Sets the brightness percentage or color of a light |
+| `HassListAddItem` | Add an item to a todo list |
+| `HassListCompleteItem` | Mark an item on a todo list as complete |
+| `HassTurnOff` | Turns off or closes a device or entity |
+| `HassTurnOn` | Turns on, opens, or presses a device or entity |
+| `todo_get_items` | Query a todo list to find items, filtered by status |
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **15 server-specific guardrails** across 6 operations.
+
+<Note>
+All 15 guardrails are request-time controls focused on physical-world safety — preventing AI from controlling sensitive areas, floors, or security-critical devices (locks, garage doors, gates).
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Climate Control - Allowed Areas Only | `HassClimateSetTemperature` | Request | Restricts climate control to specific areas only |
+| Maximum Temperature Limit | `HassClimateSetTemperature` | Request | Prevents setting temperature above a max threshold |
+| Minimum Temperature Limit | `HassClimateSetTemperature` | Request | Prevents setting temperature below a min threshold |
+| Light Control - Allowed Areas Only | `HassLightSet` | Request | Restricts light control to specific areas only |
+| Maximum Brightness Limit | `HassLightSet` | Request | Prevents setting brightness above a max threshold |
+| Minimum Brightness Limit | `HassLightSet` | Request | Prevents setting brightness below a min threshold |
+| Allowed Todo Lists Only | `HassListAddItem` | Request | Restricts todo additions to specific lists |
+| Allowed Todo Lists Only (Complete) | `HassListCompleteItem` | Request | Restricts completing items to specific lists |
+| Allowed Areas Only (Turn Off) | `HassTurnOff` | Request | Restricts turn-off to allowed areas/rooms |
+| Allowed Floors Only (Turn Off) | `HassTurnOff` | Request | Restricts turn-off to specific floors |
+| Block Critical Device Classes (Turn Off) | `HassTurnOff` | Request | Blocks turn-off for locks, doors, garage, gates |
+| Allowed Areas Only | `HassTurnOn` | Request | Restricts turn-on to allowed areas/rooms |
+| Allowed Device Classes Only | `HassTurnOn` | Request | Only permits explicitly allowed device classes |
+| Allowed Floors Only | `HassTurnOn` | Request | Restricts turn-on to specific floors |
+| Block Critical Device Classes | `HassTurnOn` | Request | Blocks turn-on for locks, doors, garage, gates |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Home Assistant server."
+</Tip>

@@ -1,34 +1,104 @@
 ---
 title: Gemini CLI Setup
-description: Connect Google's Gemini CLI tool to Civic
+description: Connect Google's Gemini CLI to Civic
 icon: "google"
 ---
 
-<Note>
-  Gemini CLI setup instructions coming soon...
-</Note>
+import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
 
-## Overview
-
-Gemini CLI requires the Hub Bridge method for connecting to Civic MCP servers.
-
-## Coming Soon
-
-Detailed setup instructions for Gemini CLI configuration are being prepared.
-
-## Resources
+## Prerequisites
 
 <CardGroup cols={2}>
-  <Card title="Hub Bridge Guide" icon="bridge" href="/civic/quickstart/hub-bridge">
-    Essential Hub Bridge setup for CLI tools
+  <Card title="Gemini CLI" icon="terminal" href="https://github.com/google-gemini/gemini-cli">
+    Install the Gemini CLI (`npm install -g @google/gemini-cli`)
   </Card>
-  <Card title="Client Compatibility" icon="table" href="/civic/reference/client-compatibility">
-    Gemini CLI MCP support details
+  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
+    Create a free account and configure your tools at nexus.civic.com
   </Card>
+</CardGroup>
+
+If you haven't set up Civic yet:
+
+<OnboardingSteps />
+
+<Note>
+**Authentication**: Gemini CLI uses OAuth. The first time you run a tool call, you'll be redirected to nexus.civic.com in your browser to sign in and authorize. After that, credentials are cached and subsequent sessions don't require a browser.
+</Note>
+
+## Setup
+
+Gemini CLI supports remote MCP servers via `httpUrl` — no local bridge required.
+
+<Tabs>
+  <Tab title="Global config (~/.gemini)">
+    Add Civic to your user-level Gemini settings at `~/.gemini/settings.json`:
+
+    ```json
+    {
+      "mcpServers": {
+        "civic": {
+          "httpUrl": "https://nexus.civic.com/hub/mcp"
+        }
+      }
+    }
+    ```
+
+    This makes Civic available in all your Gemini CLI sessions.
+  </Tab>
+  <Tab title="Project config (.gemini)">
+    Add a project-scoped config at `.gemini/settings.json` in your project root:
+
+    ```json
+    {
+      "mcpServers": {
+        "civic": {
+          "httpUrl": "https://nexus.civic.com/hub/mcp"
+        }
+      }
+    }
+    ```
+
+    Project config takes precedence over global config when both exist.
+  </Tab>
+</Tabs>
+
+## Test Your Connection
+
+Start a Gemini CLI session and try:
+
+```
+"What MCP tools do I have available?"
+"List my GitHub repositories"
+"Check my Google Calendar for today"
+```
+
+On first use, Gemini CLI will redirect you to complete the Civic OAuth flow in your browser. After authenticating once, the session is cached — you won't need to re-authenticate on subsequent runs.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="MCP server not found">
+    Confirm the `settings.json` is valid JSON and saved at the correct path. Run `gemini` from the project directory if using project-scoped config.
+  </Accordion>
+  <Accordion title="Authentication error">
+    Delete the cached credentials and re-authenticate:
+    ```bash
+    rm -rf ~/.gemini/auth_cache
+    ```
+    Then start a new session — the OAuth flow will run again on the next request.
+  </Accordion>
+  <Accordion title="Tools not available after connecting">
+    Visit [nexus.civic.com](https://nexus.civic.com) to confirm your toolkit has MCP servers configured. An empty toolkit will result in no tools being available.
+  </Accordion>
+</AccordionGroup>
+
+## Need Help?
+
+<CardGroup cols={2}>
   <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
-    Common CLI tool connection issues
+    Common connection issues and solutions
   </Card>
   <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Join our developer community for Gemini CLI help
+    Ask in our developer Slack
   </Card>
 </CardGroup>

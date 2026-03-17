@@ -309,3 +309,49 @@ The GitHub server provides direct access to GitHub data through resource endpoin
     </Tip>
   </Accordion>
 </AccordionGroup>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **30 server-specific guardrails** across 13 operations.
+
+<Note>
+GitHub has a strong "vetted org/repo" access control theme — many guardrails restrict all operations to pre-approved organizations and repositories.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Redact Commit Author Email | `get_commit` | Response | Redacts author email addresses from commit data |
+| Redact Owned Private Repos Count | `get_me` | Response | Redacts information about owned private repositories |
+| Redact Private Gists Count | `get_me` | Response | Redacts information about private gists |
+| Redact Total Private Repos Count | `get_me` | Response | Redacts information about total private repositories |
+| Redact User Email Addresses | `get_me` | Response | Redacts email addresses from user data |
+| Redact User Location | `get_me` | Response | Redacts user location data |
+| Redact User Real Name | `get_me` | Response | Redacts user's real name |
+| Redact Team Member Email | `get_team_members` | Response | Redacts email addresses from team member data |
+| Restrict Team Access to Vetted Orgs | `get_team_members` | Request | Only allows team operations on vetted organizations |
+| Redact Issue Author Information | `issue_read` | Response | Redacts author information from issues |
+| Filter Branches to Vetted List | `list_branches` | Response | Redacts non-vetted branches from branch listings |
+| Filter Commits to Vetted Authors | `list_commits` | Response | Redacts commits from non-vetted authors |
+| Filter Issues to Vetted Repos | `list_issues` | Response | Redacts issues from non-vetted repositories |
+| Filter Notifications to Vetted Repos | `list_notifications` | Response | Redacts notifications from non-vetted repositories |
+| Filter Pull Requests to Vetted Repos | `list_pull_requests` | Response | Redacts pull requests from non-vetted repositories |
+| Redact PR Author Information | `pull_request_read` | Response | Redacts author information from pull requests |
+| Filter Code Search Results | `search_code` | Response | Redacts code results from non-vetted repositories |
+| Restrict Code Search | `search_code` | Request | Only allows code searches within vetted repositories |
+| Filter Issue Search Results | `search_issues` | Response | Redacts issues from non-vetted repositories in search results |
+| Restrict Issue Search | `search_issues` | Request | Only allows searching issues within vetted repositories |
+| Filter Pull Request Search Results | `search_pull_requests` | Response | Redacts PRs from non-vetted repositories in search results |
+| Restrict Pull Request Search | `search_pull_requests` | Request | Only allows searching PRs within vetted repositories |
+| Filter Repository Search Results | `search_repositories` | Response | Redacts non-vetted repositories from search results |
+| Restrict Repository Search | `search_repositories` | Request | Only allows searching within vetted repositories |
+| Filter User Search Results | `search_users` | Response | Redacts users outside vetted organizations from search results |
+| Redact Email from User Search | `search_users` | Response | Redacts email addresses from user search results |
+| Redact Private Repositories | *(all operations)* | Response | Redacts private repository information from all responses |
+| Restrict to Vetted Organizations | *(all operations)* | Request | Only allows operations on repositories from whitelisted organizations |
+| Restrict to Vetted Repositories | *(all operations)* | Request | Only allows operations on whitelisted repositories |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my GitHub server."
+</Tip>

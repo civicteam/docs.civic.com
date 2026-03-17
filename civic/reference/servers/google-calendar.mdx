@@ -65,6 +65,10 @@ The Google Calendar server enables AI assistants to interact with [Google Calend
   </Accordion>
 </AccordionGroup>
 
+<Warning>
+**High-risk tools:** `delete_event` permanently removes calendar events. `modify_event` can alter attendee lists, times, and conference details. For automated agents, consider adding guardrails to block these tools or restrict them to specific calendars. See [Guardrails](/civic/concepts/guardrails).
+</Warning>
+
 ### Event Modification
 
 <AccordionGroup>
@@ -122,3 +126,50 @@ The Google Calendar server enables AI assistants to interact with [Google Calend
 
 **Attendees:** Specify attendee email addresses to send calendar invitations automatically.
 </Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **39 server-specific guardrails** across 4 operations.
+
+<Note>
+`delete_event` and `modify_event` are high-risk operations. Use the "Block Delete Event" and "Protected Calendars From Modification" guardrails to prevent automated agents from removing or altering calendar events without human approval.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Allowed Event Locations | `create_event` | Request | Only allows certain locations or blocks sensitive ones |
+| Blocked Event Attendees | `create_event` | Request | Prevents creating events with specific email domains or addresses |
+| Block Event Attachments | `create_event` | Request | Prevents creating events with Drive file attachments |
+| Block Google Meet Creation | `create_event` | Request | Prevents creating events with Google Meet video conferences |
+| Create Event Allowed Calendars | `create_event` | Request | Only allows creating events in specific calendar IDs |
+| Create Event Verified Domains Only | `create_event` | Request | Blocks creating events if any attendee is not from a verified email domain |
+| Event Blackout Periods | `create_event` | Request | Blocks creating events during restricted time periods |
+| Maximum Attendees Per Event | `create_event` | Request | Limits the number of attendees that can be added to an event |
+| Block Delete Event | `delete_event` | Request | Blocks all delete_event operations for security |
+| Protected Calendars From Deletion | `delete_event` | Request | Prevents deletion of events in specific calendar IDs |
+| Protect Recurring Events | `delete_event` | Request | Blocks deletion of event series |
+| Protect VIP Events | `delete_event` | Request | Prevents deletion of events with certain important attendees |
+| Allowed Calendar IDs | `get_events` | Request | Only allows querying specific calendar IDs |
+| Blocked Calendars for Event Retrieval | `get_events` | Request | Prevents reading events from specific calendar IDs |
+| Event Content Filter | `get_events` | Response | Redacts sensitive information from event description and location |
+| Event Description Filter | `get_events` | Response | Redacts event descriptions containing sensitive keywords |
+| Event Search Keyword Filter | `get_events` | Request | Prevents searching for events with sensitive keywords |
+| Event Time Range Restriction | `get_events` | Request | Limits how far back or forward events can be searched |
+| Get Event Verified Attendees Only | `get_events` | Response | Blocks get_events if no allowed email or domain is found in attendee list |
+| Hide Event Attendees | `get_events` | Response | Redacts attendee information from event results |
+| Hide Event Details | `get_events` | Response | Redacts sensitive fields from single event retrieval |
+| Maximum Events Limit | `get_events` | Request | Caps the maximum number of events that can be returned |
+| Sensitive Event Filter | `get_events` | Response | Hides events containing sensitive information from results |
+| List Verified Calendars Only | `list_calendars` | Response | Redacts calendars not in the allowed names or IDs list |
+| Block Past Event Modifications | `modify_event` | Request | Prevents changing historical events |
+| Keep Google Meet | `modify_event` | Request | Prevents removing Google Meet from events |
+| Modify Event Verified Attendees Only | `modify_event` | Request | Blocks modify_event if any attendee is not from a verified email domain |
+| Protected Calendars From Modification | `modify_event` | Request | Prevents modifying events in specific calendar IDs |
+| Protect Event Attendees | `modify_event` | Request | Prevents adding or removing certain attendees |
+| Restricted Time Changes | `modify_event` | Request | Blocks moving events to restricted time periods |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Google Calendar server."
+</Tip>

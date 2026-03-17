@@ -525,3 +525,52 @@ Pipedrive has API rate limits that vary by plan. Use batch operations when possi
 <Tip>
 **Pro Tip**: Start with read operations (`get_pipelines`, `get_deals`, `get_persons`) to understand your Pipedrive structure before implementing create/update operations.
 </Tip>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **32 server-specific guardrails** across 15 operations.
+
+<Note>
+32 specific guardrails — comprehensive deletion blocking across all entity types, owner/pipeline-based response filtering, batch size controls, and financial data redaction.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Limit Batch Create Activities Size | `batch_create_activities` | Request | Caps activities per batch |
+| Limit Batch Create Deals Size | `batch_create_deals` | Request | Caps deals per batch |
+| Limit Batch Create Organizations Size | `batch_create_organizations` | Request | Caps orgs per batch |
+| Limit Batch Create Persons Size | `batch_create_persons` | Request | Caps persons per batch |
+| Limit Batch Delete Deals Size | `batch_delete_deals` | Request | Caps deals deleted per batch |
+| Limit Batch Update Deals Size | `batch_update_deals` | Request | Caps deals updated per batch |
+| Restrict Activity Types | `create_activity` | Request | Allowlist for activity types |
+| Restrict Deal Visibility Settings | `create_deal` | Request | Restricts to approved visibility values |
+| Restrict to Vetted Stage IDs | `create_deal` | Request | Allowlist for pipeline stages |
+| Restrict Organization Visibility | `create_organization` | Request | Restricts to approved visibility values |
+| Restrict Person Visibility | `create_person` | Request | Restricts to approved visibility values |
+| Block Activity Deletion | `delete_activity` | Request | Prevents activity deletion |
+| Block Deal Deletion | `delete_deal` | Request | Prevents deal deletion |
+| Block Note Deletion | `delete_note` | Request | Prevents note deletion |
+| Block Organization Deletion | `delete_organization` | Request | Prevents org deletion |
+| Block Person Deletion | `delete_person` | Request | Prevents person deletion |
+| Block Pipeline Deletion | `delete_pipeline` | Request | Prevents pipeline deletion |
+| Block Stage Deletion | `delete_stage` | Request | Prevents stage deletion |
+| Filter Activities by User | `get_activities` | Response | Redacts activities from non-vetted users |
+| Redact Deal Financial Data | `get_deal` | Response | Redacts deal value field |
+| Filter Deals by Owner | `get_deals` | Response | Redacts deals from non-vetted owners |
+| Filter Deals by Pipeline | `get_deals` | Response | Redacts deals from non-vetted pipelines |
+| Limit Deals Pagination Size | `get_deals` | Request | Caps results per page |
+| Restrict to Vetted Pipeline IDs | `get_deals` | Request | Allowlist for pipeline queries |
+| Restrict to Vetted User IDs | `get_deals` | Request | Allowlist for user queries |
+| Filter Notes by User | `get_notes` | Response | Redacts notes from non-vetted users |
+| Filter Organizations by Owner | `get_organizations` | Response | Redacts orgs from non-vetted owners |
+| Filter Persons by Owner | `get_persons` | Response | Redacts persons from non-vetted owners |
+| Limit Persons Pagination Size | `get_persons` | Request | Caps results per page |
+| Limit Search Results Size | `search_items` | Request | Caps search result count |
+| Restrict Pipeline Modification | `update_pipeline` | Request | Allowlist for modifiable pipelines |
+| Redact Email Addresses | *(all operations)* | Response | Redacts emails from all responses |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Pipedrive server."
+</Tip>

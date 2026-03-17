@@ -1,230 +1,146 @@
 ---
 title: "Welcome to Civic"
-description: "Connect your AI assistant to dozens of MCP servers with hundreds of tools"
-icon: "crab"
+description: "The security layer for AI agents. Connect to 85 MCP servers with guardrails, audit logs, and instant revocation."
+icon: "octopus"
 ---
 
-## What is Civic?
+Your agent can read every email. Can you prove it only read what it was supposed to?
 
-**Civic connects your AI assistant to all your tools** - GitHub, Slack, Dropbox, databases, and dozens of other services. Your AI can finally do real work instead of just answering questions.
+Civic is the security layer for AI agents — a control plane that makes tool-using agents safe, auditable, and compliant. Connect your agent to 85 MCP servers and stay in control of every tool call.
 
-## How It Works
+<CardGroup cols={2}>
+  <Card title="Start in Civic Chat" icon="sparkles" href="https://nexus.civic.com">
+    Zero setup. Configure, audit, and revoke from your control plane.
+  </Card>
+  <Card title="Integrate your agent" icon="plug" href="/civic/quickstart">
+    Connect via HTTP — LangChain, Vercel AI SDK, Anthropic SDK, and more.
+  </Card>
+</CardGroup>
 
-### Easiest Way: Try It Directly in Civic Chat
+## Four Pillars
 
-<Steps>
-  <Step title="Sign up at nexus.civic.com">
-    Create your account and browse dozens of available MCP servers (GitHub, Slack, Dropbox, etc.)
+Civic is built on four pillars: **Connectivity** to 85 MCP servers, **Auditability** of every tool call, **Access Control** through 1,000 guardrail rules, and **Safety** via instant revocation at any granularity. Together they form a security layer that sits between your agent and the tools it uses — so you stay in control without slowing anything down.
 
-    <Frame caption="Sign up and browse tools">
-      <img
-        className="rounded-lg"
-        src="/images/steps/welcome/01.png"
-        alt="Civic directory showing available tools"
-      />
-    </Frame>
-  </Step>
-  <Step title="Click 'Chat' to test immediately">
-    Use the built-in chat interface - no setup required, start testing tools right away
+<div style={{margin: '24px 0', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(124, 59, 237, 0.25)'}}>
+  <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '16px 24px', background: 'rgba(124, 59, 237, 0.06)', borderBottom: '1px solid rgba(124, 59, 237, 0.15)'}}>
+    <span style={{padding: '6px 14px', borderRadius: '6px', background: 'rgba(124, 59, 237, 0.12)', fontSize: '13px', fontWeight: '600'}}>Your AI Agent</span>
+    <span style={{color: '#7C3BED', fontSize: '18px'}}>→</span>
+    <span style={{padding: '6px 14px', borderRadius: '6px', background: 'rgba(124, 59, 237, 0.28)', fontSize: '13px', fontWeight: '700', color: '#7C3BED'}}>Civic Hub</span>
+    <span style={{color: '#7C3BED', fontSize: '18px'}}>→</span>
+    <span style={{padding: '6px 14px', borderRadius: '6px', background: 'rgba(124, 59, 237, 0.12)', fontSize: '13px', fontWeight: '600'}}>85 MCP Servers</span>
+  </div>
+  <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)'}}>
+    <div style={{padding: '20px', borderRight: '1px solid rgba(124, 59, 237, 0.15)', textAlign: 'center'}}>
+      <div style={{fontSize: '22px', marginBottom: '8px'}}>🔌</div>
+      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Connectivity</div>
+      <div style={{fontSize: '12px', opacity: 0.5}}>85 MCP servers</div>
+    </div>
+    <div style={{padding: '20px', borderRight: '1px solid rgba(124, 59, 237, 0.15)', textAlign: 'center'}}>
+      <div style={{fontSize: '22px', marginBottom: '8px'}}>📊</div>
+      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Auditability</div>
+      <div style={{fontSize: '12px', opacity: 0.5}}>Every call logged</div>
+    </div>
+    <div style={{padding: '20px', borderRight: '1px solid rgba(124, 59, 237, 0.15)', textAlign: 'center'}}>
+      <div style={{fontSize: '22px', marginBottom: '8px'}}>🛡️</div>
+      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Access Control</div>
+      <div style={{fontSize: '12px', opacity: 0.5}}>1,000 guardrail rules</div>
+    </div>
+    <div style={{padding: '20px', textAlign: 'center'}}>
+      <div style={{fontSize: '22px', marginBottom: '8px'}}>⚡</div>
+      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Safety</div>
+      <div style={{fontSize: '12px', opacity: 0.5}}>Instant revocation</div>
+    </div>
+  </div>
+</div>
 
-    <Frame caption="Built-in Civic chat interface">
-      <img
-        className="rounded-lg"
-        src="/images/steps/welcome/02.png"
-        alt="Civic chat interface ready to use"
-      />
-    </Frame>
-  </Step>
-  <Step title="Ask for what you need">
-    Request tools and authorizations directly in chat: "Connect me to GitHub", "Check my Slack messages"
+### Connectivity
 
-    <Frame caption="Tool authorization in chat">
-      <img
-        className="rounded-lg"
-        src="/images/steps/welcome/04.png"
-        alt="OAuth authorization flow in chat"
-      />
-    </Frame>
-  </Step>
-  <Step title="Start working">
-    Your AI assistant can now access your tools - all within the Civic interface
+Connect to **85 MCP servers** — Google Workspace, Slack, GitHub, databases, CRMs, and more. Civic handles OAuth, secrets, and authentication so your agent never touches raw credentials.
 
-    <Frame caption="AI using your connected tools">
-      <img
-        className="rounded-lg"
-        src="/images/steps/welcome/05.png"
-        alt="AI assistant showing results from connected tools"
-      />
-    </Frame>
-  </Step>
-</Steps>
+<Card title="Browse all 85 MCP servers" icon="server" href="/civic/reference/servers">
+  Google Calendar, Gmail, Sheets, Drive, Docs, Slack, GitHub, PostgreSQL, HubSpot, and 76 more
+</Card>
 
-### Optional: Connect External AI Clients
+### Auditability
 
-Once you've tested in Civic chat, you can connect external clients like Claude and development tools for convenience.
+Every tool call is logged: tool name, parameters, response, timestamp, and agent identity. Query your audit log in plain English via Civic Chat.
 
-<Note>
-  **No server management, no API keys to juggle, no complex configurations.**
-</Note>
+- **Aggregated summary**: "Show me what my agent did this week"
+- **Line-by-line detail**: "Show every tool call from yesterday with timestamps"
+- **CSV export**: Up to 5,000 lines per export
 
-<CardGroup cols={3}>
+### Access Control
+
+With **1,000 guardrail rules**, set precise controls per tool, per server, or per toolkit. OAuth scope enforcement ensures agents get least-privilege access. Secrets — OAuth tokens, API keys, Bearer tokens — are stored in Civic and never exposed to the agent layer.
+
+<Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+  Block specific tools, enforce read-only scopes, set parameter presets the agent cannot override
+</Card>
+
+### Safety
+
+Revoke access instantly at any granularity — a single tool, a server connection, or an entire toolkit. Revocation is available via Civic Chat and the UI, not the API. An agent cannot revoke its own constraints.
+
+<Card title="Revocation" icon="x" href="/civic/concepts/revocation">
+  Kill switch at any level — from one tool to the entire toolkit
+</Card>
+
+## What Civic Protects
+
+<CardGroup cols={2}>
+  <Card title="Secret Management" icon="key" href="/civic/concepts/secret-management">
+    OAuth tokens, API keys, and Bearer tokens stored in Civic. The agent never sees them — only the Hub can use them to make tool calls.
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Complete log of every tool call. Queryable via Civic Chat. CSV export up to 5,000 lines. Retained ~30 days.
+  </Card>
+  <Card title="Guardrails" icon="shield-halved" href="/civic/concepts/guardrails">
+    Block tools, enforce read-only access, preset parameters. Works at the tool, server, and toolkit level.
+  </Card>
+  <Card title="Prompt Injection Defense" icon="lock" href="/civic/concepts/prompt-injection">
+    Toolkit locking prevents a compromised agent from switching contexts or removing its own guardrails.
+  </Card>
+</CardGroup>
+
+## Your Control Plane: Civic Chat
+
+Civic Chat at [nexus.civic.com](https://nexus.civic.com) is not a demo interface — it's your control plane. Three agent modes:
+
+- **Configurator Agent**: Set up toolkits, guardrails, and secrets via natural language
+- **Audit Agent**: Query logs, get summaries, export CSV
+- **Revocation Agent**: Instantly revoke access at any granularity
+
+The endpoint is separated from the AI agent layer by design. Your production agents cannot call it.
+
+<Card title="Civic Chat — Your Control Plane" icon="terminal" href="/civic/quickstart/civic-chat">
+  Configure, audit, and revoke without writing code
+</Card>
+
+## Integrate Your Agent
+
+Connect any MCP-compatible agent or client to `https://nexus.civic.com/hub/mcp`.
+
+<CardGroup cols={2}>
+  <Card title="LangChain / LangGraph" icon="code" href="/civic/recipes/langchain">
+    Python agents with streamable HTTP transport
+  </Card>
+  <Card title="Vercel AI SDK" icon="code" href="/civic/recipes/vercel-ai-sdk">
+    TypeScript agents and Next.js apps
+  </Card>
+  <Card title="Anthropic SDK" icon="code" href="/civic/recipes/anthropic">
+    Direct Anthropic SDK with MCP beta header
+  </Card>
   <Card title="Claude Desktop" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
-    **2 minutes** - Most popular AI client
-  </Card>
-  <Card title="VS Code" icon="code" href="/civic/quickstart/clients/vscode">
-    **2 minutes** - Development IDE integration
-  </Card>
-  <Card title="Cursor" icon="cursor-click" href="/civic/quickstart/clients/cursor">
-    **2 minutes** - AI-powered code editor
+    Interactive client, 2-minute setup
   </Card>
 </CardGroup>
 
-## Ready to Get Started?
+## Pricing
 
-<CardGroup cols={2}>
-  <Card title="Try Civic Chat Now" icon="sparkles" href="https://nexus.civic.com">
-    **Fastest way** - No setup required, start using tools immediately
-  </Card>
-  <Card title="Connect Your AI Client" icon="plug" href="/civic/quickstart">
-    **For convenience** - Use ChatGPT, Claude, or development tools
-  </Card>
-</CardGroup>
+Free trial: 10,000 credits, 14 days. Paid plans from $25/month.
 
-<Note>
-  **Start with Civic chat first** - Test all tools directly in our interface, then optionally connect external AI clients for convenience.
-</Note>
-
-## What You Can Do
-
-Once connected, your AI can work with all your tools:
-
-<Tabs>
-  <Tab title="For Developers">
-    ```
-    "Check my open GitHub pull requests"
-    "Create an issue for the login bug with debugging details"
-    "Send a Slack message when the deployment finishes"
-    ```
-  </Tab>
-  <Tab title="For Teams">
-    ```
-    "Summarize today's Slack messages in #general"
-    "Create a report from our PostgreSQL sales data"
-    "Find all files updated in Dropbox this week"
-    ```
-  </Tab>
-  <Tab title="For Marketing">
-    ```
-    "Update our ActiveCampaign email list with new signups"
-    "Create HubSpot contact records from this lead sheet"
-    "Send campaign performance data to our Slack marketing channel"
-    "Generate a report of this month's Mailchimp engagement metrics"
-    ```
-  </Tab>
-  <Tab title="For RevOps">
-    ```
-    "Sync CRM data with our HubSpot revenue tracking"
-    "Create Linear tickets for sales process improvements"
-    "Update Airtable with quarterly pipeline metrics"
-    "Send weekly revenue summary to #revenue-ops Slack"
-    ```
-  </Tab>
-</Tabs>
-
-## Organize Tools with Toolkits
-
-Create focused groups of tools for specific workflows instead of overwhelming your AI with every available service.
-
-<Note>
-  **Why toolkits matter:** When AI assistants have access to too many tools at once, they often choose the wrong ones or get confused. Toolkits solve this by creating focused, task-specific tool groups.
-</Note>
-
-<CardGroup cols={2}>
-  <Card title="Marketing Analytics" icon="chart-bar">
-    **Google Analytics + Notion + Slack** for pulling data, documenting insights, and sharing reports
-  </Card>
-  <Card title="Developer Debugging" icon="bug">
-    **GitHub + PostgreSQL + Notion** for investigating issues, querying databases, and documenting solutions
-  </Card>
-</CardGroup>
-
-<Card title="Learn About Toolkits" icon="toolbox" href="/civic/concepts/toolkits">
-  Create focused tool groups that help your AI work more effectively on specific tasks
-</Card>
-
-## Security
-
-<Note>
-  Your data security is our top priority. Civic is designed for more secure infrastructure with encrypted credential management and proactive server security reviews.
-</Note>
-
-🔒 **Secure by Design** - All tokens encrypted, automatic refresh, stringent infrastructure\
-⚡ **Full Control** - Revoke app access instantly, changes apply immediately\
-🛡️ **Encrypted Ease of Development** - Streamlined development with stringent security standards
-
-<Card title="Security Details" icon="shield-check" href="/civic/reference/security">
-  Learn about our security architecture, compliance, and best practices
-</Card>
-
-## All Supported Clients
-
-### Primary AI Assistants
-
-<CardGroup cols={3}>
-  <Card title="Claude Desktop" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
-    **Available** • Direct connector • 2 mins
-  </Card>
-  <Card title="Claude.ai" icon="globe" href="/civic/quickstart/clients/claude-web">
-    **Available** • Direct connector • 2 mins
-  </Card>
-  <Card title="Mistral LeChat" icon="sparkles" href="/civic/quickstart/clients/mistral-lechat">
-    **Available** • Direct connector • 2 mins
-  </Card>
-</CardGroup>
-
-### Development Tools
-
-<Card title="Developer Setup Guide" icon="code" href="/civic/developers/client-setup">
-  **Cursor, VS Code, JetBrains IDEs, and more** - Advanced setup guides for development environments
-</Card>
-
-<Info>
-  **Primary vs Development:** Primary clients offer simple direct connector setup. Development tools require Hub Bridge configuration but offer the same functionality.
-</Info>
-
-## Get Started Right Now
-
-<Card title="Try Civic Chat Instantly" icon="rocket" href="https://nexus.civic.com">
-  **Zero setup required** - Sign up and start using hundreds of tools in our built-in chat interface
-</Card>
-
-<Card title="Or Connect External Clients" icon="plug" href="/civic/quickstart">
-  Step-by-step guides for ChatGPT, Claude, VS Code, and more
-</Card>
-
-## Available Tools & Services
-
-Connect to dozens of popular MCP servers with hundreds of tools:
-
-<CardGroup cols={2}>
-  <Card title="GitHub" icon="server" href="/civic/reference/servers/github">
-    Manage repos, create issues, review PRs
-  </Card>
-  <Card title="Slack" icon="server" href="/civic/reference/servers/slack">
-    Send messages, search conversations
-  </Card>
-  <Card title="Dropbox" icon="server" href="/civic/reference/servers/dropbox">
-    Access files, upload documents
-  </Card>
-  <Card title="Notion" icon="server" href="/civic/reference/servers/notion">
-    Manage databases, create pages
-  </Card>
-</CardGroup>
-
-**Plus:** ActiveCampaign, PostgreSQL, HubSpot, Airtable, Linear, and many more.
-
-<Card title="Browse All Available Tools" icon="server" href="/civic/reference/servers">
-  Complete directory of MCP servers with setup guides
+<Card title="Billing & Credits" icon="credit-card" href="/civic/billing">
+  Credits consumed by tool calls and Civic Chat (Configurator, Audit, Revocation)
 </Card>
 
 ## Need Help?
@@ -233,7 +149,7 @@ Connect to dozens of popular MCP servers with hundreds of tools:
   <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
     Common setup issues and solutions
   </Card>
-  <Card title="Contact Support" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Get help with your specific setup
+  <Card title="Developer Community" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Ask questions and get support
   </Card>
 </CardGroup>

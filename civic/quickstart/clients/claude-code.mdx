@@ -10,13 +10,18 @@ icon: "terminal"
 
 ## Overview
 
-Claude Code (Anthropic's command-line coding assistant) uses Model Context Protocol (MCP) to talk to external tools. Civic exposes its functionality through the `@civic/hub-bridge` MCP server, which you can register with the Claude CLI.
+Claude Code (Anthropic's command-line coding assistant) uses Model Context Protocol (MCP) to talk to external tools. Claude Code supports **direct HTTP connections** to Civic — no local bridge required.
 
 ## Prerequisites
 
 - Anthropic Claude CLI (`claude`) installed and authenticated
-- Node.js 18 or newer (required for `npx @civic/hub-bridge`)
-- Civic account with access to Hub Bridge
+- A Civic account — [create one free at nexus.civic.com](https://nexus.civic.com)
+
+import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
+import HubBridgeInfo from '/snippets/_hub-bridge-what-is.mdx'
+import AuthCallout from '/snippets/_auth-method-callout.mdx'
+
+<AuthCallout />
 
 ## Quick Setup
 
@@ -54,7 +59,7 @@ Claude Code supports two connection methods. Choose the one that works best for 
         /mcp
         ```
 
-        Select the `civic` server and follow the browser sign-in flow to authorize Civic. Once the login completes, Claude confirms that the server is available for tool execution.
+        Select the `civic` server. A browser window opens to nexus.civic.com — sign in with your Civic account. Once complete, Claude confirms the server is `connected` and ready to use.
       </Step>
     </Steps>
   </Tab>
@@ -62,7 +67,9 @@ Claude Code supports two connection methods. Choose the one that works best for 
   <Tab title="Hub Bridge (Alternative)">
     ### Local Bridge Connection
 
-    If you prefer using the Hub Bridge or encounter issues with HTTP transport, you can use the local bridge method.
+    <HubBridgeInfo />
+
+    Use this method if you run into issues with the HTTP transport path above.
 
     <Steps>
       <Step title="Register the Civic server">

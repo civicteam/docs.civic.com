@@ -1,5 +1,5 @@
 ---
-title: Guardrails
+title: Guardrails Overview
 description: Security policies that control what AI assistants can access and how they process data
 icon: "shield-halved"
 ---
@@ -76,9 +76,21 @@ What takes a human hours to do manually, an AI can do in seconds. A misconfigure
 
 Guardrails are evaluated at two points in the tool execution pipeline:
 
-```
-Request → [Request guardrails] → Tool execution → [Response guardrails] → Response
-```
+<div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px',padding:'20px 24px',background:'rgba(124,59,237,0.04)',borderRadius:'8px',border:'1px solid rgba(124,59,237,0.15)',margin:'16px 0'}}>
+  <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+    <span style={{padding:'8px 16px',borderRadius:'6px',background:'rgba(124,59,237,0.10)',fontSize:'13px',fontWeight:'600',whiteSpace:'nowrap'}}>Request</span>
+    <span style={{color:'#7C3BED',fontSize:'16px'}}>→</span>
+    <span style={{padding:'8px 16px',borderRadius:'6px',background:'rgba(124,59,237,0.25)',fontSize:'13px',fontWeight:'700',color:'#7C3BED',whiteSpace:'nowrap'}}>Request Guardrails</span>
+    <span style={{color:'#7C3BED',fontSize:'16px'}}>→</span>
+    <span style={{padding:'8px 16px',borderRadius:'6px',background:'rgba(124,59,237,0.10)',fontSize:'13px',fontWeight:'600',whiteSpace:'nowrap'}}>Tool Execution</span>
+  </div>
+  <span style={{color:'#7C3BED',fontSize:'20px',lineHeight:'1'}}>↓</span>
+  <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+    <span style={{padding:'8px 16px',borderRadius:'6px',background:'rgba(124,59,237,0.25)',fontSize:'13px',fontWeight:'700',color:'#7C3BED',whiteSpace:'nowrap'}}>Response Guardrails</span>
+    <span style={{color:'#7C3BED',fontSize:'16px'}}>→</span>
+    <span style={{padding:'8px 16px',borderRadius:'6px',background:'rgba(124,59,237,0.10)',fontSize:'13px',fontWeight:'600',whiteSpace:'nowrap'}}>Response</span>
+  </div>
+</div>
 
 ### Request guardrails
 
@@ -95,41 +107,44 @@ Evaluated **after** the tool runs. They can:
 - **Truncate** overly long responses
 - **Remove** specific fields from the output
 
-## Built-in protection
+## Available guardrails
 
-Every Civic account includes universal guardrails that are always active:
+There are 14 guardrails available out of the box, in three categories. All can be scoped to a specific tool, an entire server, or applied globally across all tools in a toolkit.
 
-<AccordionGroup>
-  <Accordion title="PII detection and redaction">
-    Automatically detects and can redact:
-    - Social Security Numbers (SSN)
-    - Credit card numbers
-    - Email addresses
-    - Phone numbers (international formats)
-    - IP addresses
-    - Passport numbers
-    - Driver's license numbers
-    - Bank account numbers (IBAN)
-    - Dates of birth
-  </Accordion>
+### Request guardrails
 
-  <Accordion title="Prompt injection detection">
-    Based on [OWASP LLM01:2025](https://genai.owasp.org/llmrisk/llm01-prompt-injection/), detects:
-    - Direct instruction override attempts
-    - Role manipulation patterns
-    - Context escape attempts
-    - Jailbreak patterns
-  </Accordion>
+Applied before a tool executes — blocks sensitive data from being sent.
 
-  <Accordion title="Unsafe file format blocking">
-    Prevents access to potentially dangerous file types:
-    - Executables (.exe, .dll, .sh, .bat)
-    - Scripts (.ps1, .vbs, .js)
-    - Archives (.zip, .rar, .7z)
-    - Office files with macros (.xlsm, .docm)
-    - System files (.msi, .deb, .rpm)
-  </Accordion>
-</AccordionGroup>
+| Guardrail | What it blocks |
+|---|---|
+| **Block PII in Requests** | SSNs, emails, phone numbers, IPs, passport numbers, and more |
+| **Block Credit Cards in Requests** | Credit card numbers in any format |
+| **Block SSN in Requests** | Social Security Numbers specifically |
+| **Block Prompt Injection in Requests** | Jailbreaks, role overrides, encoded injection payloads |
+
+### Response guardrails
+
+Applied after a tool executes — redacts sensitive data from responses.
+
+| Guardrail | What it redacts |
+|---|---|
+| **Redact PII from Responses** | SSNs, emails, phone numbers, IPs, and more |
+| **Redact Credit Card Numbers** | Credit card numbers from any response |
+| **Redact Email Addresses** | Email addresses specifically |
+| **Redact IP Addresses** | IPv4 and IPv6 addresses |
+| **Redact Phone Numbers** | International phone number formats |
+| **Redact Social Security Numbers** | SSNs specifically |
+| **Redact Prompt Injection from Responses** | Injection patterns embedded in tool-returned data |
+
+### Response transforms
+
+Applied after a tool executes — reshapes data to reduce token usage.
+
+| Transform | What it does |
+|---|---|
+| **JSON to CSV** | Converts JSON arrays to CSV format |
+| **Remove Fields** | Strips specified fields from responses |
+| **Retain Fields** | Keeps only specified fields, discards the rest |
 
 ## Guardrail hierarchy
 

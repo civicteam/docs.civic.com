@@ -1,0 +1,114 @@
+---
+title: CAMEL-AI
+description: Connect a CAMEL-AI agent to Civic's MCP Hub using streamable HTTP transport
+icon: "network-wired"
+---
+
+Connect a [CAMEL-AI](https://docs.camel-ai.org/) agent to Civic using `MCPToolkit` with an HTTP-based `MCPClient`. CAMEL-AI's toolkit discovers all Civic tools and exposes them to a `ChatAgent`.
+
+## Prerequisites
+
+- Python 3.11+
+- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic token and an Anthropic API key
+
+## Installation
+
+```bash
+pip install camel-ai anthropic python-dotenv
+```
+
+## Environment Variables
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_TOKEN=your-civic-token
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Create an `MCPClient` with a `ServerConfig`, then connect the toolkit explicitly before use:
+
+```python
+import os
+import asyncio
+from dotenv import load_dotenv
+from camel.toolkits.mcp_toolkit import MCPToolkit
+from camel.utils.mcp_client import MCPClient, ServerConfig
+from camel.agents import ChatAgent
+from camel.models import ModelFactory
+from camel.types import ModelPlatformType
+
+load_dotenv()
+
+async def main():
+    client = MCPClient(
+        config=ServerConfig(
+            url=os.environ["CIVIC_URL"],
+            headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+        )
+    )
+    toolkit = MCPToolkit(clients=[client])
+
+    await toolkit.connect()
+    try:
+        tools = toolkit.get_tools()
+        print(f"{len(tools)} tools loaded")
+
+        model = ModelFactory.create(
+            model_platform=ModelPlatformType.ANTHROPIC,
+            model_type="claude-sonnet-4-6",
+        )
+        agent = ChatAgent(
+            system_message="You are a helpful assistant with access to Civic tools.",
+            model=model,
+            tools=tools,
+        )
+
+        response = agent.step("What events do I have today?")
+        print(response.msgs[0].content)
+    finally:
+        await toolkit.disconnect()
+
+asyncio.run(main())
+```
+
+<Note>
+Use `await toolkit.connect()` and `await toolkit.disconnect()` — `MCPToolkit` does not have a `connection()` async context manager method. Always disconnect in a `finally` block to avoid hanging connections.
+</Note>
+
+## Production Configuration
+
+For production agents, lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+## Reference Implementation
+
+<Card title="camel-ai-reference-implementation-civic" icon="github" href="https://github.com/titus-civic/camel-ai-reference-implementation-civic">
+  Complete implementation with FastAPI chat UI and deployment guide
+</Card>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

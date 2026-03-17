@@ -43,3 +43,10 @@ https://webauthn.io/
 # Example/placeholder URLs in documentation
 https://myapp.com/.*
 https://myapp.com
+
+# Civic MCP Hub endpoint — returns 401 by design (auth required)
+https://nexus.civic.com/hub/mcp.*
+
+# Self-referential docs links in skill prompt snippets — valid once branch is deployed
+https://docs.civic.com/civic/recipes/.*
+https://docs.civic.com/civic/quickstart/credentials

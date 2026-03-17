@@ -1,0 +1,109 @@
+---
+title: Using Civic Skills
+description: Reusable AI capabilities that layer instructions on top of your toolkit
+icon: "book"
+---
+
+A Skill is a set of instructions, business context, terminology, and workflows that the AI loads on top of its current toolkit. Skills teach the agent *how* to use tools — not which tools are available.
+
+## Skills vs Toolkits
+
+Skills and Toolkits work together but serve different purposes:
+
+| | Toolkit | Skill |
+|---|---|---|
+| What it is | A set of tools (MCP servers) | A set of instructions and business context |
+| How it works | Switch **to** it | Load **on top of** current toolkit |
+| Purpose | Defines *what tools* are available | Defines *how* to use them |
+| Replaces current context? | Yes | No — layers on top |
+| Multiple active at once? | No | Yes |
+| Example | "Support" toolkit with Gmail + Slack | "Escalation Procedures" skill |
+
+A toolkit switch replaces the entire tool context. Loading a skill adds domain knowledge and workflow instructions without removing any tools.
+
+<Card title="Toolkits" icon="toolbox" href="/civic/concepts/toolkits">
+  How to create and manage toolkits
+</Card>
+
+## Use Cases
+
+**PR Reviewer** — Load your code review standards, naming conventions, and style guide. The agent knows how you review PRs before it looks at a single diff.
+
+**Pipeline Summary** — Load your Salesforce stage definitions, deal naming conventions, and reporting format. The agent produces consistent summaries without re-explanation each session.
+
+**Support Agent** — Load your escalation policies, SLA thresholds, and tone guidelines. The agent handles routine cases and escalates correctly without needing to re-read the playbook each time.
+
+**Onboarding Companion** — Load your new hire checklist, internal tool guides, and team contacts. The agent walks new team members through setup consistently.
+
+## How to Create a Skill
+
+1. Log in to [nexus.civic.com](https://nexus.civic.com)
+2. Click **Create Profile** (or "Create Toolkit")
+3. Set the profile type to **SKILL**
+4. Give it an alias (e.g. `pr-reviewer`, `escalation-procedures`)
+5. Add your instructions in the content field
+
+**Writing effective skill instructions:**
+- Write in second person: "You are a code reviewer who follows these standards..."
+- Include examples of correct and incorrect behavior
+- Be specific about terminology unique to your business
+- Keep each skill focused on one domain — multiple skills can be loaded simultaneously
+
+## How to Load a Skill
+
+### Via URL Parameter
+
+Include the `skills` parameter when connecting your agent:
+
+```
+https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
+```
+
+Multiple skills are comma-separated. They load in the order specified.
+
+### Via Configurator Agent in Civic Chat
+
+```
+"Load the escalation-procedures skill for this session"
+```
+
+```
+"Add the pr-reviewer skill to the current context"
+```
+
+### Via the load-skill Tool
+
+If your agent has access to the `load-skill` tool, it can be instructed to load skills dynamically:
+
+```
+"Use the load-skill tool to load the pipeline-summary skill"
+```
+
+## Multiple Active Skills
+
+Skills layer — multiple skills can be active simultaneously without conflict. Each adds its instructions to the agent's context.
+
+If instructions from two skills conflict, the later-loaded skill typically takes precedence, but it is better practice to keep skills non-overlapping.
+
+## Session Scope
+
+Skills persist for the duration of the session. They are not automatically persisted to the toolkit configuration unless you explicitly save them there.
+
+## Best Practices
+
+- **One domain per skill** — A skill that covers code review AND customer support AND data analysis is too broad. Split it.
+- **Second person voice** — "You are..." establishes persona clearly and consistently.
+- **Include examples** — "When a user asks about X, respond with Y" is more effective than abstract principles.
+- **Avoid instructions that duplicate guardrails** — Guardrails are enforced at the protocol level and cannot be overridden. Skill instructions are guidelines that the LLM follows. Don't rely on skill instructions for security-critical constraints.
+
+<CardGroup cols={2}>
+  <Card title="Toolkits" icon="toolbox" href="/civic/concepts/toolkits">
+    The tool layer that Skills build on top of
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Protocol-level constraints that complement Skill instructions
+  </Card>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Using skills and toolkits in production agent deployments
+  </Card>
+</CardGroup>

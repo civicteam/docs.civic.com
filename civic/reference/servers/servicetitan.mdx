@@ -1,0 +1,126 @@
+---
+title: ServiceTitan
+description: Field service management — jobs, customers, technicians, estimates, invoices, memberships, campaigns, and dispatching
+icon: "server"
+---
+
+## Overview
+
+ServiceTitan is a field service management platform for running home and commercial service businesses. Connect it to Civic to let your AI agent manage the full service lifecycle: from booking and dispatching to invoicing, memberships, and marketing campaign tracking.
+
+<Card title="Add to Civic" icon="plus" href="https://nexus.civic.com">
+  Connect ServiceTitan at nexus.civic.com
+</Card>
+
+## Available Tools (83)
+
+| Tool | Description |
+|------|-------------|
+| `assign_technician` | Assign a technician to an appointment |
+| `cancel_job` | Cancel a job |
+| `cancel_membership` | Cancel a membership subscription |
+| `convert_booking_to_job` | Convert a booking into a job |
+| `convert_lead_to_booking` | Convert a lead to a booking |
+| `create_appointment` | Create an appointment/time slot for a job |
+| `create_booking` | Create a booking/service request |
+| `create_campaign` | Create a marketing campaign |
+| `create_contact` | Add a contact person to a customer account |
+| `create_customer` | Create a new customer in ServiceTitan |
+| `create_customer_note` | Add a note to a customer record |
+| `create_estimate` | Create an estimate/proposal for a job |
+| `create_installed_equipment` | Record equipment installed at a customer location |
+| `create_invoice` | Create an invoice for completed work on a job |
+| `create_job` | Create a new job/work order |
+| `create_job_note` | Add a note to a job |
+| `create_lead` | Create a new lead |
+| `create_location` | Create a new service location for a customer |
+| `create_marketing_cost` | Record a marketing expense for ROI tracking |
+| `create_membership` | Create a service membership/subscription for a customer |
+| `create_payment` | Record a payment from a customer |
+| `create_pricebook_equipment` | Create a new equipment item in the pricebook |
+| `create_pricebook_material` | Create a new material item in the pricebook |
+| `create_pricebook_service` | Create a new service item in the pricebook |
+| `create_tag` | Create a new tag for categorizing records |
+| `create_technician_shift` | Create a technician shift/schedule entry |
+| `dismiss_booking` | Dismiss/cancel a booking that will not be converted to a job |
+| `dismiss_estimate` | Mark an estimate as dismissed/declined |
+| `dismiss_lead` | Dismiss a lead that won't convert to business |
+| `get_booking` | Get detailed booking information |
+| `get_call_response_metrics` | Get call response time analytics by campaign or source |
+| `get_campaign_performance` | Get detailed performance metrics for a campaign |
+| `get_customer` | Get detailed customer information including locations and contacts |
+| `get_invoice_details` | Get full invoice details |
+| `get_job` | Get job details including customer and notes |
+| `get_job_appointments` | Get all appointments for a job |
+| `get_job_estimates` | Get all estimates for a job |
+| `get_job_invoice` | Get the invoice for a job |
+| `get_lead` | Get detailed lead information |
+| `get_location` | Get details of a specific customer location |
+| `get_membership_types` | List available membership plans and their pricing |
+| `get_pricebook_item` | Get full details of a specific pricebook item |
+| `get_report` | Run a custom ServiceTitan report by report ID |
+| `get_revenue_report` | Get revenue breakdown by business unit, campaign, or time period |
+| `hold_job` | Put a job on hold |
+| `list_bookings` | List bookings with campaign attribution |
+| `list_business_units` | List all business units (locations) |
+| `list_calls` | List calls with details on response times and outcomes |
+| `list_campaign_categories` | List marketing campaign categories |
+| `list_campaigns` | List marketing campaigns with performance data |
+| `list_categories` | List all pricebook categories |
+| `list_contacts` | List contacts for a customer |
+| `list_customers` | List customers with contact info and location |
+| `list_dispatch_zones` | List dispatch zones for technician routing |
+| `list_estimates` | List all estimates/proposals for total sales analysis |
+| `list_installed_equipment` | List equipment installed at customer locations |
+| `list_job_types` | List available job types and categories |
+| `list_jobs` | List jobs with enriched data including customer info |
+| `list_leads` | List leads with campaign attribution |
+| `list_locations` | List customer locations/service addresses |
+| `list_marketing_costs` | Get marketing costs by date range |
+| `list_memberships` | List recurring service memberships and subscription plans |
+| `list_reports` | List available custom reports in ServiceTitan |
+| `list_tags` | List available tags/labels |
+| `list_technician_shifts` | List technician shifts/schedules for capacity planning |
+| `list_technicians` | List technicians with business unit assignment |
+| `list_tracking_numbers` | List call tracking numbers and their associated campaigns |
+| `reschedule_appointment` | Reschedule an existing appointment to a new time |
+| `search_customers` | Search customers by name, phone, email, or address |
+| `search_jobs` | Search for jobs by customer name, phone, or address |
+| `search_pricebook` | Search across services, materials, and equipment in the pricebook |
+| `sell_estimate` | Mark an estimate as sold/approved by customer |
+| `unassign_technician` | Remove a technician from an appointment |
+| `update_booking` | Update a booking's information before conversion to a job |
+| `update_campaign` | Update a marketing campaign |
+| `update_customer` | Update an existing customer's information |
+| `update_estimate` | Update an estimate's name, summary, or line items |
+| `update_installed_equipment` | Update installed equipment information |
+| `update_job` | Update an existing job's information |
+| `update_lead` | Update a lead's information |
+| `update_location` | Update a service location's information |
+| `update_membership` | Update a membership's status or details |
+| `update_pricebook_equipment` | Update an existing equipment item in the pricebook |
+| `update_pricebook_material` | Update an existing material item in the pricebook |
+| `update_pricebook_service` | Update an existing service item in the pricebook |
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **6 server-specific guardrails** across 4 operations.
+
+<Note>
+All guardrails are response-side PII/privacy focused — covering customers, callers, locations, form data, and technician access control.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Redact Caller Information | `list_calls` | Response | Redacts caller phone numbers and personal info |
+| Redact Call Recording URLs | `list_calls` | Response | Redacts call recording URLs and transcripts |
+| Redact Customer PII | `list_customers` | Response | Redacts phone numbers, emails, addresses |
+| Redact Form Responses | `list_forms` | Response | Redacts sensitive form submission data |
+| Redact Location Addresses | `list_locations` | Response | Redacts street addresses from location data |
+| Filter Technicians by Business Unit | `list_technicians` | Response | Redacts technicians from non-authorized business units |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my ServiceTitan server."
+</Tip>

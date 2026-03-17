@@ -14,7 +14,7 @@ You get access to all of Civic, and your cost is based solely on usage. Start fr
 
     **30,000** credits per month
 
-    - Connect to 70+ apps
+    - Connect to 85 MCP servers
     - Top up credits as needed:
     - \$10 / 15,000 credits
     - \$50 / 100,000 credits
@@ -26,7 +26,7 @@ You get access to all of Civic, and your cost is based solely on usage. Start fr
 
     **100,000** credits per month
 
-    - Connect to 70+ apps
+    - Connect to 85 MCP servers
     - Top up credits as needed:
     - \$10 / 15,000 credits
     - \$50 / 100,000 credits
@@ -38,7 +38,7 @@ You get access to all of Civic, and your cost is based solely on usage. Start fr
 
     **450,000** credits per month
 
-    - Connect to 70+ apps
+    - Connect to 85 MCP servers
     - Top up credits as needed:
     - \$10 / 15,000 credits
     - \$50 / 100,000 credits
@@ -74,6 +74,10 @@ You can consume credits in two ways. Both draw from the same credit balance.
   </Card>
 </CardGroup>
 
+<Note>
+**Civic Chat consumes credits.** All Civic Chat interactions — including Configurator Agent (setting up toolkits and guardrails), Audit Agent (querying logs), and Revocation Agent commands — draw from the same credit pool as tool calls made by your agents.
+</Note>
+
 ---
 
 ## What's Included in a Credit?
@@ -90,6 +94,7 @@ Credits measure end-to-end execution cost of a Civic workflow:
 | Task                                      | Credits    |
 | ----------------------------------------- | ---------- |
 | Basic conversation (simple Q&A, no tools) | ~20-50     |
+| Configurator Agent command (e.g. "Add a guardrail to block delete_event") | ~50-150 |
 | Checking your calendar                    | ~150       |
 | Writing and reviewing code                | ~100-300   |
 | GitHub pull request review                | ~200-400   |
@@ -204,20 +209,6 @@ Go to **Billing** \> **"Manage Billing"** in the Stripe portal. Your access cont
 
     - Slack #ask-civic channel: [join here](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw)
     - Email: [support@civic.com](mailto:support@civic.com)
-  </Accordion>
-  
-  <Accordion title="How do I change or remove my payment method?">
-    To add, change, or remove your Civic payment method:
-
-    1. Click on your profile in the bottom left corner
-    2. Go to **Settings** > **Billing**
-    3. Click **Manage Billing**
-    4. In the Stripe billing portal, you'll be able to:
-       - Add additional payment methods
-       - Select a default payment method
-       - Delete payment methods you no longer require
-
-    <Note>You must have at least one valid payment method on file if you're on a paid plan.</Note>
   </Accordion>
   
   <Accordion title="My payment method failed. What should I do?">

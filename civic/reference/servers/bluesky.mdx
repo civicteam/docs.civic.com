@@ -1,0 +1,49 @@
+---
+title: Bluesky
+description: Post, interact, and manage your presence on the Bluesky social media platform.
+icon: "server"
+---
+
+## Overview
+
+The Bluesky server enables AI assistants to interact with the Bluesky AT Protocol API to create and manage posts, follow users, browse timelines, and engage with content through likes, reposts, and replies.
+
+<Card title="Add to Civic" icon="plus" href="https://nexus.civic.com">
+  Connect Bluesky at nexus.civic.com
+</Card>
+
+## Available Tools (25)
+
+| Tool | Description |
+|------|-------------|
+| `check_auth_status` | Check if the current session is authenticated |
+| `delete_post` | Delete a post created by the authenticated user |
+| `follow_user` | Follow a user by handle |
+| `get_author_feed` | Get posts from a specific user |
+| `get_followers` | Get users who follow an account |
+| `get_follows` | Get users followed by an account |
+| `get_likes` | Get likes for a post |
+| `get_post` | Get a specific post by record key |
+| `get_post_thread` | Get a full conversation thread |
+| `get_posts` | Get multiple posts by their URIs |
+| `get_profile` | Get a user profile |
+| `get_reposted_by` | Get users who reposted a post |
+| `get_timeline` | Get posts from your home timeline |
+| `like_post` | Like a post |
+| `mute_user` | Mute a user |
+| `repost` | Repost another user's post |
+| `resolve_handle` | Resolve a handle to a DID |
+| `send_image` | Send a post with a single image |
+| `send_images` | Send a post with multiple images (up to 4) |
+| `send_post` | Send a text post to Bluesky |
+| `send_video` | Send a post with a video |
+| `unfollow_user` | Unfollow a user |
+| `unlike_post` | Unlike a previously liked post |
+| `unmute_user` | Unmute a previously muted user |
+| `unrepost` | Remove a repost of another user's post |
+
+---
+
+## Guardrails
+
+This server supports all [14 universal guardrails](/civic/concepts/guardrails). No server-specific guardrails are available.

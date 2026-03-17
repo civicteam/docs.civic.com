@@ -36,9 +36,13 @@ AI: [Uses GitHub MCP server] "You have 3 open PRs: 'Add user auth' needs review,
 2. **MCP Clients** = AI assistants that want to use tools (like Claude)
 3. **MCP Protocol** = The language they use to talk to each other
 
-```
-Your AI (Client) ←→ MCP Protocol ←→ Your Tools (Servers)
-```
+<div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',padding:'20px 24px',background:'rgba(124,59,237,0.04)',borderRadius:'8px',border:'1px solid rgba(124,59,237,0.15)',margin:'16px 0',flexWrap:'wrap'}}>
+  <span style={{padding:'8px 16px',borderRadius:'6px',background:'rgba(124,59,237,0.10)',fontSize:'13px',fontWeight:'600'}}>Your AI (Client)</span>
+  <span style={{color:'#7C3BED',fontSize:'16px'}}>↔</span>
+  <span style={{padding:'8px 16px',borderRadius:'6px',background:'rgba(124,59,237,0.25)',fontSize:'13px',fontWeight:'700',color:'#7C3BED'}}>MCP Protocol</span>
+  <span style={{color:'#7C3BED',fontSize:'16px'}}>↔</span>
+  <span style={{padding:'8px 16px',borderRadius:'6px',background:'rgba(124,59,237,0.10)',fontSize:'13px',fontWeight:'600'}}>Your Tools (Servers)</span>
+</div>
 
 When you ask your AI to "create a GitHub issue," here's what happens:
 1. AI says "I need to use the GitHub tool"

@@ -184,3 +184,38 @@ This means permissions are missing or incomplete. For Business accounts, verify 
 
 **Authorization fails with "invalid_client" error?**
 Ensure you're using the correct account type. Personal outlook.com accounts cannot access other Microsoft 365 apps besides Mail.
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **18 server-specific guardrails** across 6 operations.
+
+<Note>
+Unlike the Google tools, MS365 Mail has no security/blocking guardrails — all 18 tool-specific guardrails are response transforms focused on reducing token usage and improving readability.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| HTML to Markdown Email Converter (Get) | `get-mail-message` | Response | Converts HTML email body to Markdown for better readability |
+| Remove Unnecessary Mail Metadata (Get) | `get-mail-message` | Response | Removes internal tracking fields (conversationId, webLink, flags, etc.) to reduce token usage |
+| Retain Only Essential Mail Fields (Get) | `get-mail-message` | Response | Keeps only essential fields (id, subject, from, dates, body, etc.) |
+| HTML to Markdown Email Converter (Shared Mailbox Get) | `get-shared-mailbox-message` | Response | Converts HTML email body to Markdown for shared mailboxes |
+| Remove Unnecessary Mail Metadata (Shared Mailbox Get) | `get-shared-mailbox-message` | Response | Removes tracking/unused fields from shared mailbox messages |
+| Retain Only Essential Mail Fields (Shared Mailbox Get) | `get-shared-mailbox-message` | Response | Keeps only essential fields for shared mailbox messages |
+| HTML to Markdown Email Converter (Folder List) | `list-mail-folder-messages` | Response | Converts HTML email bodies to Markdown when listing folder messages |
+| Remove Unnecessary Mail Metadata (Folder List) | `list-mail-folder-messages` | Response | Removes tracking/unused fields from folder message lists |
+| Retain Only Essential Mail Fields (Folder List) | `list-mail-folder-messages` | Response | Keeps only essential fields when listing folder messages |
+| HTML to Markdown Email Converter (List) | `list-mail-messages` | Response | Converts HTML email bodies to Markdown when listing messages |
+| Remove Unnecessary Mail Metadata (List) | `list-mail-messages` | Response | Removes tracking/unused fields from message lists |
+| Retain Only Essential Mail Fields (List) | `list-mail-messages` | Response | Keeps only essential fields when listing messages |
+| HTML to Markdown Email Converter (Shared Mailbox Folder List) | `list-shared-mailbox-folder-messages` | Response | Converts HTML email bodies to Markdown for shared mailbox folder lists |
+| Remove Unnecessary Mail Metadata (Shared Mailbox Folder List) | `list-shared-mailbox-folder-messages` | Response | Removes tracking/unused fields from shared mailbox folder message lists |
+| Retain Only Essential Mail Fields (Shared Mailbox Folder List) | `list-shared-mailbox-folder-messages` | Response | Keeps only essential fields for shared mailbox folder message lists |
+| HTML to Markdown Email Converter (Shared Mailbox List) | `list-shared-mailbox-messages` | Response | Converts HTML email bodies to Markdown for shared mailbox message lists |
+| Remove Unnecessary Mail Metadata (Shared Mailbox List) | `list-shared-mailbox-messages` | Response | Removes tracking/unused fields from shared mailbox message lists |
+| Retain Only Essential Mail Fields (Shared Mailbox List) | `list-shared-mailbox-messages` | Response | Keeps only essential fields for shared mailbox message lists |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Microsoft 365 Mail server."
+</Tip>

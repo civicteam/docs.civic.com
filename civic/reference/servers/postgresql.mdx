@@ -189,3 +189,40 @@ The PostgreSQL server requires a complete connection string with authentication:
 <Warning>
 Ensure your PostgreSQL instance has the `pg_stat_statements` extension enabled for full performance monitoring capabilities.
 </Warning>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **22 server-specific guardrails** across 8 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Restrict Health Analysis Types | `analyze_db_health` | Request | Restricts database health analysis to specified metric types |
+| Index Analysis Query Limit | `analyze_query_indexes` | Request | Limits queries analyzed for index recommendations |
+| Block Dynamic SQL Construction | `execute_sql` | Request | Prevents queries using \|\|, CONCAT, CHR/CHAR functions, hex literals |
+| Block Function Execution | `execute_sql` | Request | Prevents execution of stored procedures and functions |
+| Block Query Stacking | `execute_sql` | Request | Prevents multiple queries by blocking semicolons |
+| Block SQL Comments | `execute_sql` | Request | Prevents queries containing SQL comments (-- or /* */) |
+| Block System Tables Access | `execute_sql` | Request | Prevents access to PostgreSQL system catalogs (pg_*, information_schema) |
+| Block Write Operations | `execute_sql` | Request | Prevents all data modification and DDL commands |
+| Enforce Basic SQL Character Set | `execute_sql` | Request | Restricts queries to alphanumeric plus basic SQL characters |
+| Enforce Custom Character Set | `execute_sql` | Request | Restricts queries to a user-defined character set |
+| Limit JOIN Complexity | `execute_sql` | Request | Limits the number of JOINs allowed in a query |
+| Protect Sensitive Columns | `execute_sql` | Request | Blocks queries referencing specified column names |
+| Protect Tables (Anti-Aliasing) | `execute_sql` | Request | Blocks access to specified tables regardless of aliasing |
+| Query Length Limit | `execute_sql` | Request | Limits SQL query length to prevent resource exhaustion |
+| Restrict SELECT * Usage | `execute_sql` | Request | Controls use of SELECT * wildcards |
+| Result Row Limit | `execute_sql` | Response | Limits the number of rows returned |
+| Block EXPLAIN ANALYZE on Write Operations | `explain_query` | Request | Prevents EXPLAIN ANALYZE from executing write operations |
+| Block Table Details Access | `get_object_details` | Request | Prevents access to details of specified tables |
+| Top Queries Result Limit | `get_top_queries` | Request | Limits the number of queries returned from performance monitoring |
+| Block Schema Object Enumeration | `list_objects` | Request | Prevents listing objects in specified schemas |
+| Filter Schema Listings | `list_schemas` | Response | Filters specified schemas from schema listings |
+| Block PII in Requests | *(all operations)* | Request | Prevents sending PII in request parameters (postgres-specific instance) |
+| Block Prompt Injection in Requests | *(all operations)* | Request | Prevents prompt injection attacks (postgres-specific instance) |
+| Redact PII from Responses | *(all operations)* | Response | Automatically redacts PII from all responses (postgres-specific instance) |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my PostgreSQL server."
+</Tip>

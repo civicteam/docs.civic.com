@@ -61,7 +61,7 @@ The Google Gmail server enables AI assistants to interact with [Gmail](https://m
   </Accordion>
 
   <Accordion title="send_gmail_message">
-    Send an email using your Gmail account with recipient, subject, and plain text body.
+    Send an email using your Gmail account. Required: `subject`, `body`. Optional: `to`, `cc`, `bcc`, `body_format` (plain/html), `from_name`, `from_email` (Send As alias). For replies: `thread_id`, `in_reply_to`, `references`. Supports `attachments` by file path or base64 content.
   </Accordion>
 
   <Accordion title="draft_gmail_message">
@@ -80,6 +80,10 @@ The Google Gmail server enables AI assistants to interact with [Gmail](https://m
     Retrieve multiple threads in batch (up to 25 threads). Useful for analyzing conversations at scale.
   </Accordion>
 </AccordionGroup>
+
+<Warning>
+**High-risk tools:** `send_gmail_message` sends email directly from your account. `manage_gmail_label` (with delete action) and `batch_modify_gmail_message_labels` can bulk-archive or trash messages. For automated agents, consider adding guardrails to block `send_gmail_message` or restrict bulk label operations. See [Guardrails](/civic/concepts/guardrails).
+</Warning>
 
 ### Label Management
 
@@ -134,3 +138,42 @@ The Google Gmail server enables AI assistants to interact with [Gmail](https://m
 
 **Label Operations:** Archiving removes the INBOX label. Deleting adds the TRASH label. System labels like INBOX, SENT, TRASH cannot be deleted.
 </Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **21 server-specific guardrails** across 8 operations.
+
+<Note>
+There is no `send_gmail_message` tool for creating new outbound email from scratch — `draft_gmail_message` is used instead, keeping a human in the loop before sending. The `send_gmail_message` guardrails below apply to reply sending via thread operations.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Batch Protected Labels | `batch_modify_gmail_message_labels` | Request | Prevents batch adding or removing protected labels |
+| Prevent Batch Adding Protected Label | `batch_modify_gmail_message_labels` | Request | Prevents adding a protected label to multiple emails via batch modification |
+| Draft Content Filter | `draft_gmail_message` | Request | Prevents creating drafts with sensitive content |
+| Message Content Filter | `get_gmail_message_content` | Response | Filters out email messages containing sensitive information |
+| Single Message Verified Senders Only | `get_gmail_message_content` | Response | Blocks single message content from non-verified sender domains |
+| Batch Messages Verified Senders Only | `get_gmail_messages_content_batch` | Response | Redacts batch message content from non-verified sender domains |
+| Thread Content Filter | `get_gmail_thread_content` | Response | Filters thread content containing sensitive information |
+| Thread Verified Senders Only | `get_gmail_thread_content` | Response | Blocks thread content from non-verified sender domains |
+| Batch Threads Verified Senders Only | `get_gmail_threads_content_batch` | Response | Redacts batch thread content from non-verified sender domains |
+| Prevent Adding Protected Label | `modify_gmail_message_labels` | Request | Prevents adding a protected label to emails |
+| Protected Labels | `modify_gmail_message_labels` | Request | Prevents adding or removing protected labels |
+| Allowed Email Labels | `search_gmail_messages` | Request | Only allows viewing emails with specific labels |
+| Block Common Sensitive Terms in Search | `search_gmail_messages` | Request | Prevents searching for emails with commonly sensitive terms (password, SSN, credit card, etc.) |
+| Block Custom Sensitive Terms in Search | `search_gmail_messages` | Request | Prevents searching for emails with organisation-specific sensitive terms |
+| Required Search Labels | `search_gmail_messages` | Request | Requires specific labels to be included in search queries |
+| Safe Email Search | `search_gmail_messages` | Request | Prevents searching for emails with sensitive terms |
+| Search Results Filter | `search_gmail_messages` | Response | Filters search results containing sensitive information |
+| Approved Email Domains | `send_gmail_message` | Request | Restricts email sending to a list of approved domains |
+| Maximum Recipients | `send_gmail_message` | Request | Limits the number of email recipients |
+| Send to Verified Recipients Only | `send_gmail_message` | Request | Only allows sending emails to verified recipient domains |
+| Sensitive Content Filter | `send_gmail_message` | Request | Prevents sending emails containing sensitive information |
+| Single Recipient Only | `send_gmail_message` | Request | Only allows sending emails to a specific recipient (allowlist) |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Gmail server."
+</Tip>

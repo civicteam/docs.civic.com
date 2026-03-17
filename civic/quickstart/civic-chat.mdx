@@ -1,22 +1,18 @@
 ---
-title: Civic Chat
-description: Use Civic tools directly in our built-in chat interface - no setup required
-icon: "sparkles"
+title: Civic Control Plane
+description: Configure toolkits, query audit logs, and revoke access via natural language at nexus.civic.com
+icon: "terminal"
 ---
 
-<Note>
-  **Fastest way to get started** - No client setup, no configuration. Just sign up and start using hundreds of tools immediately.
-</Note>
+Civic Chat at [nexus.civic.com](https://nexus.civic.com) is your control plane for AI agent security — not a general-purpose AI assistant. It is purpose-built for three tasks: configuring your Hub, querying audit logs, and revoking access.
 
-## What is Civic Chat?
+<Warning>
+**Civic Chat is restricted to control-plane tasks only.** Requests outside of configuration, audit, and revocation are blocked. All Civic Chat commands consume credits from the same pool as your agents' tool calls — use it deliberately.
+</Warning>
 
-Civic Chat is the built-in chat interface at [nexus.civic.com](https://nexus.civic.com) that lets you:
-- Test all MCP servers instantly without any setup
-- Connect to tools with simple conversational commands
-- Handle authentication flows seamlessly
-- Start working with your tools in under 2 minutes
+Three specialized agents are available, each purpose-built for a different control task.
 
-<Frame caption="Civic Chat interface ready to use">
+<Frame caption="Civic Chat — control plane for your AI agents">
   <img
     className="rounded-lg"
     src="/images/steps/welcome/02.png"
@@ -24,11 +20,11 @@ Civic Chat is the built-in chat interface at [nexus.civic.com](https://nexus.civ
   />
 </Frame>
 
-## Get Started in 2 Minutes
+## Sign In
 
 <Steps>
-  <Step title="Sign up at nexus.civic.com">
-    Create your free account at [nexus.civic.com](https://nexus.civic.com)
+  <Step title="Create your account">
+    Visit [nexus.civic.com](https://nexus.civic.com) and sign up. Your free trial includes 10,000 credits valid for 14 days.
 
     <img
       className="rounded-lg"
@@ -37,38 +33,14 @@ Civic Chat is the built-in chat interface at [nexus.civic.com](https://nexus.civ
     />
   </Step>
 
-  <Step title="Click 'Chat' to start">
-    Once logged in, click the **Chat** button to open the built-in interface
-
-    <Note>
-      No downloads, no configuration files, no API keys needed
-    </Note>
+  <Step title="Complete onboarding">
+    Select your AI agent framework and the tools you want to connect. After onboarding, you land in the Chat interface.
   </Step>
 
-  <Step title="Connect tools conversationally">
-    Simply ask for what you need:
-    - "Connect me to GitHub"
-    - "Add Slack to my tools"
-    - "I need access to Dropbox"
-    - "Show me available MCP servers"
+  <Step title="Choose your agent">
+    You now have access to the Configurator Agent, Audit Agent, and Revocation Agent — each described below.
 
-    <Frame caption="Connecting tools through conversation">
-      <img
-        className="rounded-lg"
-        src="/images/steps/welcome/02.png"
-        alt="Tool connection in Civic Chat"
-      />
-    </Frame>
-  </Step>
-
-  <Step title="Authorize when prompted">
-    When connecting a new service:
-    1. Civic Chat will provide an authorization link
-    2. Click the link to authenticate with the service
-    3. Return to chat when complete
-    4. Start using your connected tools immediately
-
-    <Frame caption="OAuth authorization flow">
+    <Frame caption="OAuth authorization when connecting a new service">
       <img
         className="rounded-lg"
         src="/images/steps/welcome/04.png"
@@ -78,141 +50,128 @@ Civic Chat is the built-in chat interface at [nexus.civic.com](https://nexus.civ
   </Step>
 </Steps>
 
-## What You Can Do
+---
 
-Once connected, use natural language to work with your tools:
+## Configurator Agent
 
-<Tabs>
-  <Tab title="Development">
-    ```
-    "List my GitHub repositories"
-    "Create an issue for the login bug"
-    "Show me open pull requests"
-    "Check the CI status of my latest commit"
-    ```
-  </Tab>
-  <Tab title="Communication">
-    ```
-    "What are the latest messages in #general?"
-    "Send a Slack message to the team"
-    "Show me unread emails"
-    "Draft a response to the latest email"
-    ```
-  </Tab>
-  <Tab title="Documents">
-    ```
-    "What files are in my Dropbox?"
-    "Search for the quarterly report"
-    "Create a new document called 'Meeting Notes'"
-    "Show me recently modified files"
-    ```
-  </Tab>
-  <Tab title="Marketing">
-    ```
-    "Add these contacts to my ActiveCampaign list"
-    "Show me the latest email campaign stats"
-    "Create a new tag for conference attendees"
-    "Update the CRM with these leads"
-    ```
-  </Tab>
-</Tabs>
+Set up toolkits, add guardrails, and manage secrets via natural language. Changes take effect immediately in the Hub.
 
-## Managing Your Tools
+**Example prompts:**
 
-### View Connected Tools
-
-Ask Civic Chat to show your current setup:
 ```
-"What tools do I have connected?"
-"Show me my available MCP servers"
-"List my authorized services"
+"Create a toolkit for my support agent with Gmail and Slack, read-only"
 ```
 
-### Add More Tools
-
-Connect new services anytime:
 ```
-"Connect me to PostgreSQL"
-"Add Notion to my tools"
-"I need access to Linear"
-"Show me all available MCP servers"
+"Add a guardrail to block the delete_event tool on my Calendar server"
 ```
 
-### Remove Tools
-
-Disconnect services you no longer need:
 ```
-"Disconnect from Slack"
-"Remove my GitHub authorization"
-"Revoke access to Dropbox"
+"Add my Notion API key to my secrets"
 ```
 
-## Why Start with Civic Chat?
+```
+"Show me my active guardrails"
+```
 
-<CardGroup cols={2}>
-  <Card title="Zero Setup" icon="zap">
-    No installation, no configuration files, no technical knowledge required
-  </Card>
-  <Card title="Test Everything" icon="test-tube">
-    Try all MCP servers and features before setting up external clients
-  </Card>
-  <Card title="Instant Access" icon="clock">
-    Start using tools in under 2 minutes - just sign up and chat
-  </Card>
-  <Card title="Browser-Based" icon="globe">
-    Works on any device with a web browser - desktop, tablet, or mobile
-  </Card>
-</CardGroup>
-
-## Optional: Connect External Clients
-
-After testing in Civic Chat, you can optionally connect external AI clients for convenience:
-
-<CardGroup cols={3}>
-  <Card title="Claude Desktop" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
-    Desktop app integration
-  </Card>
-  <Card title="Claude.ai" icon="globe" href="/civic/quickstart/clients/claude-web">
-    Web interface integration
-  </Card>
-  <Card title="Mistral LeChat" icon="sparkles" href="/civic/quickstart/clients/mistral-lechat">
-    Mistral's AI assistant
-  </Card>
-</CardGroup>
+```
+"Clone my production toolkit and add a guardrail blocking send_gmail_message"
+```
 
 <Note>
-**Civic Chat is always available** - Even if you connect external clients, you can always return to Civic Chat for testing new tools or troubleshooting.
+Configurator Agent commands consume credits from the same pool as tool calls.
 </Note>
 
-## Security & Privacy
+---
 
-<Info>
-All conversations and tool interactions in Civic Chat are:
-- **Encrypted** in transit and at rest
-- **Private** to your account only
-- **Secure** with OAuth2 authentication for external services
-- **Revocable** at any time through your account settings
-</Info>
+## Audit Agent
 
-## Get Started Now
+Query your agent's complete activity log. The Audit Agent can answer questions about what your agent did, when, and with what parameters.
 
-<Card title="Open Civic Chat" icon="rocket" href="https://nexus.civic.com">
-  **Click here to start** - Sign up and begin using hundreds of tools in our built-in chat interface
+**What's logged:** every tool call, tool name, parameters, response, timestamp, and agent identity. Retained for approximately 30 days.
+
+**Example prompts:**
+
+```
+"What did my agent do in the last 24 hours?"
+```
+
+```
+"Show me every tool call from yesterday with timestamps"
+```
+
+```
+"Export my audit log as a CSV"
+```
+
+```
+"Did my agent try to delete anything this week?"
+```
+
+```
+"Show me a summary of tool usage for the production-agent toolkit this month"
+```
+
+Three output formats available:
+- **Aggregated summary** — high-level overview of what happened
+- **Line-by-line detail** — every tool call with full parameters and responses
+- **CSV export** — up to 5,000 lines per export, downloadable
+
+<Note>
+Audit access is currently via Civic Chat only. A UI view is coming soon.
+</Note>
+
+---
+
+## Revocation Agent
+
+Revoke access instantly at any granularity. Revocation is immediate — no delay, no grace period.
+
+**Example prompts:**
+
+```
+"Block the send_email tool on my Gmail server immediately"
+```
+
+```
+"Revoke all access for my production-agent toolkit"
+```
+
+```
+"Remove Google Calendar from my agent's permissions"
+```
+
+```
+"Block the delete_event tool on Calendar but keep the rest"
+```
+
+**Why Chat-only for revocation:** The Civic Chat endpoint is separated from the AI agent layer by design. If revocation were available via the same API your agent calls, a compromised agent could revoke its own constraints or another agent's access. The human-in-the-loop requirement is intentional.
+
+You can also revoke via the UI at nexus.civic.com → Authorizations → Revoke.
+
+---
+
+## Credits
+
+Civic Chat — including all Configurator, Audit, and Revocation commands — consumes credits from the same pool as tool calls made by your agents.
+
+<Card title="Billing and Credits" icon="credit-card" href="/civic/billing">
+  Free trial: 10,000 credits, 14 days. Paid plans from $25/month.
 </Card>
 
-## Need Help?
+## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="Quick Start Guide" icon="book" href="/civic/quickstart">
-    Step-by-step setup instructions
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Learn what guardrails can and can't do
   </Card>
-  <Card title="Available Tools" icon="server" href="/civic/reference/servers">
-    Browse all MCP servers you can connect
+  <Card title="Audit and Observability" icon="list-check" href="/civic/concepts/audit">
+    Full reference for audit logs and CSV export
   </Card>
-  <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
-    Common issues and solutions
+  <Card title="Revocation" icon="x" href="/civic/concepts/revocation">
+    Four levels of revocation from surgical to nuclear
   </Card>
-  <Card title="Get Support" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Join our developer community
+  <Card title="Secret Management" icon="key" href="/civic/concepts/secret-management">
+    How Civic stores and isolates credentials
   </Card>
 </CardGroup>

@@ -1,0 +1,59 @@
+---
+title: Microsoft SQL Server
+description: Microsoft SQL Server — create and manage tables, read and write data, and create indexes
+icon: "server"
+---
+
+## Overview
+
+Microsoft SQL Server is a relational database management system. Connect it to Civic to let your AI agent inspect schemas, run queries, and manage tables and indexes in your MSSQL databases.
+
+<Card title="Add to Civic" icon="plus" href="https://nexus.civic.com">
+  Connect Microsoft SQL Server at nexus.civic.com
+</Card>
+
+## Available Tools (8)
+
+| Tool | Description |
+|------|-------------|
+| `create_index` | Create an index on one or more columns in a table |
+| `create_table` | Create a new table with specified columns and types |
+| `describe_table` | Describe the schema (columns and types) of a table |
+| `drop_table` | Drop a table from the database |
+| `insert_data` | Insert one or more records into a table |
+| `list_table` | List tables in the database, optionally filtered by schema |
+| `read_data` | Execute a SELECT query against a table |
+| `update_data` | Update rows in a table using a WHERE clause |
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **24 server-specific guardrails** across 3 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Block System Table Name Creation | `create_table` | Request | Prevents creating tables with names that could shadow system tables (sys*, dbo.*, etc.) |
+| Protect Tables from DROP | `drop_table` | Request | Prevents DROP TABLE operations on critical tables |
+| Limit INSERT to Specific Tables | `insert_data` | Request | Restricts INSERT operations to a user-defined list of allowed tables |
+| Block Dynamic T-SQL Construction | `read_data` | Request | Prevents queries using string concatenation, CONCAT, CHAR/NCHAR functions, hex literals |
+| Block EXEC/EXECUTE | `read_data` | Request | Prevents use of EXEC/EXECUTE for dynamic SQL or stored procedure execution |
+| Block Extended Stored Procedures | `read_data` | Request | Prevents execution of dangerous extended stored procedures (xp_cmdshell, xp_regwrite, etc.) |
+| Block External Data Access | `read_data` | Request | Prevents OPENROWSET, OPENDATASOURCE, and OPENQUERY |
+| Block Query Stacking | `read_data` | Request | Prevents multiple queries in a single request by blocking semicolons |
+| Block System Stored Procedures | `read_data` | Request | Prevents execution of system stored procedures (sp_configure, sp_addlinkedserver, etc.) |
+| Block System Tables Access | `read_data` | Request | Prevents access to MS-SQL system catalogs (sys.*, INFORMATION_SCHEMA, master, msdb, tempdb) |
+| Block T-SQL Comments | `read_data` | Request | Prevents queries containing SQL comments (-- or /* */) |
+| Enforce Basic T-SQL Character Set | `read_data` | Request | Restricts queries to alphanumeric plus basic SQL characters |
+| Enforce Custom Character Set | `read_data` | Request | Restricts queries to a user-defined character set |
+| Limit JOIN Complexity | `read_data` | Request | Limits the number of JOINs allowed in a query |
+| Protect Sensitive Columns | `read_data` | Request | Blocks queries that reference specified column names |
+| Protect Tables (Anti-Aliasing) | `read_data` | Request | Blocks access to specified tables regardless of aliasing or obfuscation |
+| Query Length Limit | `read_data` | Request | Limits SQL query length to prevent resource exhaustion |
+| Restrict SELECT * Usage | `read_data` | Request | Controls use of SELECT * wildcards |
+| Limit UPDATE to Specific Tables | `update_data` | Request | Restricts UPDATE operations to a user-defined list of allowed tables |
+| Require WHERE Clause on UPDATE | `update_data` | Request | Ensures UPDATE statements include a WHERE clause to prevent bulk updates |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Microsoft SQL Server server."
+</Tip>

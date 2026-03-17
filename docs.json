@@ -3,13 +3,13 @@
   "theme": "mint",
   "name": "Civic Docs",
   "colors": {
-    "primary": "#CB86AB",
-    "light": "#CB86AB",
-    "dark": "#CB86AB"
+    "primary": "#7C3BED",
+    "light": "#7C3BED",
+    "dark": "#7C3BED"
   },
   "background": {
     "color": {
-      "dark": "#11111b"
+      "dark": "#030711"
     }
   },
   "integrations": {
@@ -41,154 +41,211 @@
         "tab": "Civic",
         "groups": [
           {
-            "group": "Getting Started",
+            "group": " ",
+            "pages": [
+              "index"
+            ]
+          },
+          {
+            "group": "Quickstart",
             "icon": "rocket",
             "pages": [
-              "index",
               "civic/quickstart/index",
-              {
-                "group": "Core Concepts",
-                "icon": "lightbulb",
-                "pages": [
-                  "civic/concepts/toolkits",
-                  "civic/concepts/tokens",
-                  "civic/concepts/connection-methods",
-                  "civic/concepts/guardrails",
-                  "civic/concepts/mcp",
-                  "civic/concepts/oauth",
-                  "civic/concepts/tools-resources-prompts"
-                ]
-              },
-              "civic/reference/authorizations",
+              "civic/quickstart/civic-chat",
+              "civic/quickstart/credentials",
+              "civic/reference/client-compatibility",
+              "civic/concepts/connection-methods",
               "civic/billing",
               "civic/changelog"
             ]
           },
           {
-            "group": "Supported Clients",
-            "icon": "desktop",
+            "group": "Integration",
+            "icon": "plug",
             "pages": [
-              "civic/quickstart/civic-chat",
-              "civic/quickstart/clients/openclaw",
-              "civic/quickstart/clients/claude-web",
-              "civic/quickstart/clients/claude-desktop",
+              "civic/quickstart/clients/agents",
               {
-                "group": "More Clients",
-                "icon": "ellipsis",
+                "group": "AI Agents & Chat Tools",
+                "icon": "message",
                 "pages": [
-                  "civic/quickstart/clients/cursor",
-                  "civic/quickstart/clients/goose",
-                  "civic/quickstart/clients/vscode",
-                  "civic/quickstart/clients/windsurf",
+                  "civic/quickstart/clients/claude-web",
+                  "civic/quickstart/clients/claude-desktop",
                   "civic/quickstart/clients/claude-code",
-                  "civic/quickstart/clients/codex",
-                  "civic/quickstart/clients/jetbrains",
-                  "civic/quickstart/clients/gemini"
+                  "civic/quickstart/clients/chatgpt",
+                  "civic/quickstart/clients/mistral-lechat",
+                  "civic/quickstart/clients/gemini",
+                  "civic/quickstart/clients/openclaw",
+                  "civic/recipes/deepagents"
                 ]
               },
-              "civic/quickstart/clients/agents",
-              "civic/quickstart/clients/mistral-lechat",
+              {
+                "group": "Agent Frameworks & SDKs",
+                "icon": "brackets-curly",
+                "pages": [
+                  "civic/recipes/anthropic",
+                  "civic/recipes/openai-sdk",
+                  "civic/recipes/openai-agents",
+                  "civic/recipes/langchain",
+                  "civic/recipes/python-pydantic",
+                  "civic/recipes/pydantic-ai",
+                  "civic/recipes/vercel-ai-sdk",
+                  "civic/recipes/google-adk",
+                  "civic/recipes/crewai",
+                  "civic/recipes/agno",
+                  "civic/recipes/llamaindex",
+                  "civic/recipes/autogen",
+                  "civic/recipes/haystack",
+                  "civic/recipes/smolagents",
+                  "civic/recipes/dspy",
+                  "civic/recipes/semantic-kernel",
+                  "civic/recipes/camel-ai",
+                  "civic/recipes/mastra",
+                  "civic/recipes/dify",
+                  "civic/recipes/flowise"
+                ]
+              },
+              {
+                "group": "Code Editors & Coding Agents",
+                "icon": "code",
+                "pages": [
+                  "civic/quickstart/clients/vscode",
+                  "civic/quickstart/clients/cursor",
+                  "civic/quickstart/clients/windsurf",
+                  "civic/quickstart/clients/jetbrains",
+                  "civic/quickstart/clients/codex",
+                  "civic/quickstart/clients/goose"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Security",
+            "icon": "shield",
+            "pages": [
+              "civic/concepts/audit",
+              {
+                "group": "Guardrails",
+                "icon": "shield-halved",
+                "pages": [
+                  "civic/concepts/guardrails",
+                  "civic/concepts/guardrails/request",
+                  "civic/concepts/guardrails/blocking",
+                  "civic/concepts/guardrails/parameters",
+                  "civic/concepts/guardrails/redaction",
+                  "civic/concepts/guardrails/transforms"
+                ]
+              },
+              "civic/concepts/hooks",
+              "civic/concepts/prompt-injection",
+              "civic/concepts/revocation",
+              "civic/concepts/secret-management",
+              "civic/reference/security",
+              {
+                "group": "Authentication & Authorization",
+                "icon": "lock",
+                "pages": [
+                  "civic/reference/authorizations",
+                  "civic/developers/native-integration/authorization",
+                  "civic/concepts/tokens",
+                  "civic/developers/native-integration/civic-auth-capability",
+                  "civic/developers/native-integration/overview",
+                  "civic/concepts/oauth"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Connectivity",
+            "icon": "plug",
+            "pages": [
               {
                 "group": "MCP Servers",
                 "icon": "server",
                 "pages": [
                   "civic/reference/servers",
                   "civic/reference/servers/activecampaign",
+                  "civic/reference/servers/apify",
+                  "civic/reference/servers/asana",
                   "civic/reference/servers/atlassian",
                   "civic/reference/servers/aws-billing",
+                  "civic/reference/servers/bill",
+                  "civic/reference/servers/bluesky",
                   "civic/reference/servers/box",
                   "civic/reference/servers/box-community",
+                  "civic/reference/servers/canva",
+                  "civic/reference/servers/cardpointe",
                   "civic/reference/servers/clickup",
+                  "civic/reference/servers/cloudflare",
                   "civic/reference/servers/coingecko",
                   "civic/reference/servers/context7",
                   "civic/reference/servers/deepwiki",
                   "civic/reference/servers/dropbox",
+                  "civic/reference/servers/elasticsearch",
                   "civic/reference/servers/findymail",
+                  "civic/reference/servers/firecrawl",
                   "civic/reference/servers/github",
                   "civic/reference/servers/gmail",
+                  "civic/reference/servers/google-ads",
                   "civic/reference/servers/google-analytics",
                   "civic/reference/servers/google-calendar",
                   "civic/reference/servers/google-docs",
                   "civic/reference/servers/google-drive",
                   "civic/reference/servers/google-sheets",
                   "civic/reference/servers/google-slides",
+                  "civic/reference/servers/grafana",
+                  "civic/reference/servers/home-assistant",
                   "civic/reference/servers/hubspot",
                   "civic/reference/servers/hunter-io",
-                  "civic/reference/servers/imap-email",
+                  "civic/reference/servers/imap",
+                  "civic/reference/servers/insperity",
+                  "civic/reference/servers/intercom",
                   "civic/reference/servers/linear",
                   "civic/reference/servers/meta-ads",
                   "civic/reference/servers/mistral-ocr",
+                  "civic/reference/servers/mixpanel",
                   "civic/reference/servers/monday",
+                  "civic/reference/servers/mongodb",
                   "civic/reference/servers/ms365-mail",
-                  "civic/reference/servers/sharepoint",
                   "civic/reference/servers/ms365-teams",
+                  "civic/reference/servers/mssql",
+                  "civic/reference/servers/mysql",
                   "civic/reference/servers/n8n",
                   "civic/reference/servers/notion",
+                  "civic/reference/servers/paypal-official",
                   "civic/reference/servers/pipedrive",
                   "civic/reference/servers/postgresql",
                   "civic/reference/servers/posthog",
                   "civic/reference/servers/postmark",
+                  "civic/reference/servers/quickbooks-online",
+                  "civic/reference/servers/redshift",
                   "civic/reference/servers/replicate",
                   "civic/reference/servers/salesforce",
                   "civic/reference/servers/sentry",
+                  "civic/reference/servers/servicetitan",
+                  "civic/reference/servers/sharepoint",
+                  "civic/reference/servers/shopify-storefront",
                   "civic/reference/servers/slack",
-                  "civic/reference/servers/square"
-                ]
-              }
-            ]
-          },
-          {
-            "group": "Developers",
-            "icon": "code",
-            "pages": [
-              {
-                "group": "IDE Setup",
-                "icon": "code",
-                "pages": [
-                  "civic/developers/client-setup",
-                  "civic/quickstart/hub-bridge"
+                  "civic/reference/servers/socket",
+                  "civic/reference/servers/square",
+                  "civic/reference/servers/stripe",
+                  "civic/reference/servers/tavily",
+                  "civic/reference/servers/tempo",
+                  "civic/reference/servers/trello",
+                  "civic/reference/servers/twitter",
+                  "civic/reference/servers/webflow"
                 ]
               },
-              {
-                "group": "AI SDKs",
-                "icon": "plug",
-                "pages": [
-                  "civic/developers/integrations/index",
-                  "civic/recipes/vercel-ai-sdk",
-                  "civic/recipes/openai-agents",
-                  "civic/recipes/anthropic",
-                  "civic/recipes/openai-sdk",
-                  "civic/recipes/python-pydantic"
-                ]
-              },
-              {
-                "group": "Native Integration",
-                "icon": "puzzle-piece",
-                "pages": [
-                  "civic/developers/native-integration/index",
-                  "civic/developers/native-integration/authorization",
-                  "civic/developers/native-integration/civic-auth-capability"
-                ]
-              }
+              "civic/concepts/toolkits",
+              "civic/concepts/tools-resources-prompts",
+              "civic/concepts/mcp",
+              "civic/organizations",
+              "civic/concepts/skills",
+              "civic/concepts/setup-skill"
             ]
           },
           {
             "group": "Reference",
             "icon": "book",
-            "pages": [
-              "civic/reference/client-compatibility",
-              "civic/reference/security"
-            ]
-          },
-          {
-            "group": "AI Prompts",
-            "icon": "robot",
-            "pages": [
-              "civic/ai-prompts/nextjs"
-            ]
-          },
-          {
-            "group": "Support",
             "pages": [
               "civic/troubleshooting"
             ]
@@ -318,7 +375,7 @@
             ]
           },
           {
-            "group": "Libraries & Tools",
+            "group": "Libraries and Tools",
             "icon": "code",
             "pages": [
               "libraries/auth-verify"
@@ -352,7 +409,6 @@
           {
             "group": "Flasks",
             "pages": [
-              "labs/projects/mcp-hub",
               "labs/projects/x402-mcp",
               "labs/projects/guardrail-proxy",
               "labs/projects/bodyguard",
@@ -365,9 +421,7 @@
             "pages": [
               "labs/concepts/mcp",
               "labs/concepts/guardrails",
-              "labs/concepts/prompt-injection",
               "labs/concepts/auth-strategies",
-              "labs/concepts/hooks",
               "labs/concepts/rag"
             ]
           },
@@ -375,7 +429,6 @@
             "group": "🔓Integration",
             "pages": [
               "labs/private/getting-started",
-              "labs/private/mcp-hub",
               "labs/private/x402-mcp",
               "labs/private/guardrail-proxy",
               "labs/private/bodyguard",

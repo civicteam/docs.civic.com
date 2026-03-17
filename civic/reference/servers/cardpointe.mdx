@@ -1,0 +1,30 @@
+---
+title: CardPointe
+description: Payment processing — authorize, capture, void, refund, profile management, and reporting
+icon: "server"
+---
+
+## Overview
+
+CardPointe is a payment processing platform for authorizing credit card transactions, managing stored payment profiles, and retrieving financial settlement reports. Connect it to Civic to let your AI agent handle card payments and post-authorization operations.
+
+<Card title="Add to Civic" icon="plus" href="https://nexus.civic.com">
+  Connect CardPointe at nexus.civic.com
+</Card>
+
+## Available Tools (6)
+
+| Tool | Description |
+|------|-------------|
+| `mcp__civic__cardpointe-authorize_payment` | Authorize a credit card payment; returns a retref for use with manage_transaction |
+| `mcp__civic__cardpointe-bin_lookup` | Look up card info by BIN (first 6–8 digits) |
+| `mcp__civic__cardpointe-inquire` | Query transaction or merchant account information |
+| `mcp__civic__cardpointe-manage_profile` | Manage stored payment profiles for recurring or future payments |
+| `mcp__civic__cardpointe-manage_reporting` | Get financial reports (funding or settlement) |
+| `mcp__civic__cardpointe-manage_transaction` | Perform post-authorization operations (capture, void, refund) |
+
+---
+
+## Guardrails
+
+This server supports all [14 universal guardrails](/civic/concepts/guardrails). No server-specific guardrails are available.

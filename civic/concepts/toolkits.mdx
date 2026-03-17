@@ -1,5 +1,5 @@
 ---
-title: Toolkits
+title: Agent Toolkits
 description: Create focused groups of MCP servers for specific tasks and workflows
 icon: "toolbox"
 ---
@@ -11,6 +11,25 @@ Toolkits allow you to create focused groups of MCP servers that work together fo
 <Note>
 **Why use toolkits?** When AI assistants have access to too many tools at once, they can struggle to choose the right ones. Toolkits solve this by creating focused, task-specific tool groups.
 </Note>
+
+## Toolkits vs Skills
+
+Toolkits and Skills are complementary but distinct. Understanding the difference prevents confusion when building agent workflows.
+
+| | Toolkit | Skill |
+|---|---|---|
+| What it is | A set of tools (MCP servers) | A set of instructions and business context |
+| How it works | Switch **to** it | Load **on top of** the current toolkit |
+| Purpose | Defines *what tools* are available | Defines *how* to use them |
+| Replaces current context? | Yes | No — layers on top |
+| Multiple active at once? | No | Yes |
+| Example | "Support" toolkit with Gmail + Slack | "Escalation Procedures" skill |
+
+A Skill does not replace your toolkit — it adds domain knowledge and workflow instructions on top of whatever toolkit is currently active. Multiple Skills can be loaded simultaneously.
+
+<Card title="Skills" icon="book" href="/civic/concepts/skills">
+  Learn how to create and load Skills for reusable AI capabilities
+</Card>
 
 <Frame caption="Organize your MCP tools into focused, task-specific groups">
   <img

@@ -24,8 +24,6 @@ The Google Analytics server enables AI assistants to interact with [Google Analy
 
 <Note>
 **Simple OAuth Consent:** Google Analytics uses standard Google OAuth consent. Works with personal Google accounts and Google Workspace without special admin approval.
-
-**Experimental Status:** This server is marked as EXPERIMENTAL and uses the Google Analytics Data API v1 beta.
 </Note>
 
 ## What You Can Do
@@ -138,3 +136,52 @@ The Google Analytics server enables AI assistants to interact with [Google Analy
 
 **Ordering:** Use OrderBy objects to sort by dimensions (with order_type: ALPHANUMERIC, CASE_INSENSITIVE, NUMERIC) or metrics in ascending/descending order.
 </Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **41 server-specific guardrails** across 6 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Filter Account IDs | `get_account_summaries` | Response | Filters out specific account IDs from results |
+| Filter Industry Vertical | `get_account_summaries` | Response | Filters properties by industry vertical |
+| Hide Property IDs | `get_account_summaries` | Response | Hides property IDs for restricted properties |
+| Limit Accounts Returned | `get_account_summaries` | Response | Limits number of accounts returned |
+| Redact Admin Emails | `get_account_summaries` | Response | Redacts email addresses of account administrators |
+| Block Sensitive Properties | `get_custom_dimensions_and_metrics` | Request | Blocks access to properties with sensitive data |
+| Filter Custom Dimensions | `get_custom_dimensions_and_metrics` | Response | Filters custom dimensions by name pattern including PII-related dimensions |
+| Restrict Custom Dimension Properties | `get_custom_dimensions_and_metrics` | Request | Restricts to specific property IDs |
+| Block Property Patterns | `get_property_details` | Request | Blocks properties matching certain patterns |
+| Restrict Property IDs | `get_property_details` | Request | Restricts to approved property IDs only |
+| Block Ads Property Patterns | `list_google_ads_links` | Request | Blocks access to certain property patterns |
+| Redact Conversion Tracking | `list_google_ads_links` | Response | Redacts conversion tracking details |
+| Restrict Ads Link Properties | `list_google_ads_links` | Request | Restricts Google Ads links to specific property IDs only |
+| Block Realtime Revenue Metrics | `run_realtime_report` | Request | Blocks revenue and conversion metrics |
+| Block Sensitive Dimension Combinations | `run_realtime_report` | Request | Blocks sensitive dimension combinations |
+| Filter Realtime PII | `run_realtime_report` | Response | Filters rows containing PII |
+| Filter Realtime Revenue | `run_realtime_report` | Response | Filters revenue and monetary metrics |
+| Hide Realtime Geo Details | `run_realtime_report` | Response | Hides geographic data below country level |
+| Limit Realtime Dimensions | `run_realtime_report` | Request | Limits number of dimensions requested |
+| Limit Realtime Metrics | `run_realtime_report` | Request | Limits number of metrics requested |
+| Realtime Row Limit | `run_realtime_report` | Request | Enforces maximum row limit |
+| Redact Realtime User IDs | `run_realtime_report` | Response | Redacts user identifiers from results |
+| Restrict Realtime Properties | `run_realtime_report` | Request | Restricts realtime reports to specific property IDs |
+| Block Report Dimension Combinations | `run_report` | Request | Blocks sensitive dimension combinations |
+| Block User-Scoped Dimensions | `run_report` | Request | Blocks user-scoped dimensions |
+| Filter IP Addresses | `run_report` | Response | Filters IP address information |
+| Filter Report PII | `run_report` | Response | Filters PII from dimension values |
+| Filter Transaction IDs | `run_report` | Response | Filters transaction IDs |
+| Hide Report Geo Details | `run_report` | Response | Hides detailed geographic information |
+| Limit Report Dimensions | `run_report` | Request | Limits number of dimensions |
+| Limit Report Metrics | `run_report` | Request | Limits number of metrics |
+| Redact Report Emails | `run_report` | Response | Redacts email and phone dimensions |
+| Redact Report User IDs | `run_report` | Response | Redacts user identifiers |
+| Report Row Limit | `run_report` | Request | Enforces maximum row limit |
+| Restrict Report Properties | `run_report` | Request | Restricts reports to approved property IDs |
+| Redact Phone Numbers | *(all operations)* | Response | Redacts phone numbers (international formats) from responses |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Google Analytics server."
+</Tip>

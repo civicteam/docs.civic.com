@@ -224,3 +224,31 @@ The Sentry server uses OAuth2 authentication with Sentry's API:
 <Warning>
 Always verify organization and project slugs using the discovery tools before performing operations on specific resources.
 </Warning>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **15 server-specific guardrails** across 12 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Analyze Issue - Allowed Projects Only | `analyze_issue_with_seer` | Request | Restricts AI issue analysis to issues from whitelisted projects |
+| Create DSN - Allowed Projects Only | `create_dsn` | Request | Restricts DSN creation to whitelisted projects |
+| Block Project Creation | `create_project` | Request | Prevents project creation operations entirely |
+| Block Team Creation | `create_team` | Request | Prevents team creation operations entirely |
+| Find DSNs - Allowed Projects Only | `find_dsns` | Request | Restricts DSN discovery to whitelisted projects |
+| Find Projects - Allowed Projects Only | `find_projects` | Response | Filters project list to show only whitelisted projects |
+| Find Releases - Allowed Projects Only | `find_releases` | Response | Filters release list to show only releases from whitelisted projects |
+| Find Teams - Allowed Teams Only | `find_teams` | Response | Filters team list to show only whitelisted teams |
+| Get Issue Details - Allowed Projects Only | `get_issue_details` | Request | Restricts issue detail access to issues from whitelisted projects |
+| Search Issues - Allowed Projects Only | `search_issues` | Response | Filters issue search results to whitelisted projects only |
+| Update Issue - Allowed Projects Only | `update_issue` | Request | Restricts issue updates to issues from whitelisted projects |
+| Update Project - Allowed Projects Only | `update_project` | Request | Restricts project updates to whitelisted projects |
+| Allowed Organizations Only | *(all operations)* | Request | Restricts Sentry access to whitelisted organizations across all operations |
+| Allowed Projects Only (By Slug) | *(all operations)* | Request | Restricts access to whitelisted Sentry projects by projectSlug parameter |
+| Allowed Projects Only (By Slug or ID) | *(all operations)* | Request | Restricts access to whitelisted Sentry projects by projectSlugOrId parameter |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Sentry server."
+</Tip>
