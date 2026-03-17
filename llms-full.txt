@@ -1,0 +1,654 @@
+# Civic Docs — Full Content for AI Agents
+
+> This file contains the essential content from docs.civic.com for AI-assisted integration of Civic (MCP security layer for agents), Civic Auth (user authentication), and Civic Labs (experimental projects). For a concise index of all pages, see llms.txt.
+
+---
+
+# PART 1: CIVIC — MCP SECURITY LAYER FOR AI AGENTS
+
+## What is Civic?
+
+Civic is a security layer for AI agents. It provides a hosted MCP gateway (Civic Hub) that sits between your AI agent and 85 real-world MCP servers.
+
+**Four pillars:**
+
+1. **Connectivity** — Connect agents to 85 MCP servers covering Google Workspace, CRM, databases, finance, analytics, communication, dev tools, and more
+2. **Auditability** — Every tool call is logged with tool name, parameters, response, timestamp, and agent identity. Query via Civic Chat: get an aggregated summary, line-by-line tool calls with timestamps, or CSV export (up to 5,000 lines)
+3. **Access Control** — 1,000 guardrail rules across 85 servers; per-tool/server/toolkit guardrails; OAuth scope enforcement; secret management
+4. **Safety** — Instant revocation at any granularity (tool → server operations → server → entire toolkit). By design, revocation is only accessible via Civic Chat to prevent agents self-revoking
+
+**Key URLs:**
+- Product: https://nexus.civic.com
+- MCP endpoint: `https://nexus.civic.com/hub/mcp`
+- Docs: https://docs.civic.com
+
+---
+
+## Quickstart
+
+### Step 1 — Sign up
+Go to https://nexus.civic.com and create a free account. You get 10,000 credits and 14 days.
+
+### Step 2 — Complete onboarding
+Select your AI framework and tools. On the Install step, you'll see your MCP URL.
+
+### Step 3 — Generate a token
+On the Install screen, choose **Generate a Civic token** (recommended for automation) and copy it.
+
+### Step 4 — Make your first call
+
+```bash
+curl -X POST https://nexus.civic.com/hub/mcp \
+  -H "Authorization: Bearer $CIVIC_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","method":"tools/list","params":{},"id":1}'
+```
+
+---
+
+## Connection Reference
+
+### MCP URL
+
+```
+https://nexus.civic.com/hub/mcp
+```
+
+### URL Parameters
+
+| Parameter   | Type               | Description                                                            |
+|-------------|--------------------|------------------------------------------------------------------------|
+| `profile`   | `string`           | Toolkit alias to use (e.g. `support`, `marketing`)                     |
+| `lock`      | `"true"` / `"false"` | Lock session to toolkit (default: `true` when profile is set)        |
+| `skills`    | `string`           | Comma-separated skill aliases to pre-load                              |
+| `accountId` | `string`           | Your Civic account ID (for multi-account users)                        |
+
+### Example URLs
+
+```
+# Use the "sales-agent" toolkit, locked (default)
+https://nexus.civic.com/hub/mcp?profile=sales-agent
+
+# Allow toolkit switching
+https://nexus.civic.com/hub/mcp?profile=assistant&lock=false
+
+# Toolkit + pre-loaded skills
+https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,triage
+
+# Specific organization account
+https://nexus.civic.com/hub/mcp?profile=ops&accountId=org_abc123
+```
+
+### Authentication
+
+**Option 1 — Civic Token (recommended for agents)**
+
+Generate a bearer token at nexus.civic.com during onboarding or in Settings. Pass it as:
+
+```
+Authorization: Bearer $CIVIC_TOKEN
+```
+
+Python:
+```python
+import os
+
+headers = {
+    "Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}",
+    "Content-Type": "application/json"
+}
+url = os.environ["CIVIC_URL"]  # https://nexus.civic.com/hub/mcp?profile=your-toolkit
+```
+
+TypeScript:
+```typescript
+const headers = {
+  Authorization: `Bearer ${process.env.CIVIC_TOKEN}`,
+};
+const url = process.env.CIVIC_URL; // https://nexus.civic.com/hub/mcp?profile=your-toolkit
+```
+
+**Option 2 — OAuth (for interactive/user-facing apps)**
+
+The Hub implements standard OAuth 2.0. Your client initiates the flow and receives a session token automatically. See the MCP authorization spec: https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization
+
+---
+
+## Agent Deployment
+
+Agents (autonomous AI systems, automation platforms, custom applications) connect to Civic the same way interactive clients do, but need tighter controls.
+
+### Profile Locking
+
+When you specify a toolkit in the connection URL, the session is locked to that toolkit by default.
+
+**When locked:**
+- The `switch_profile` tool is hidden — it doesn't appear in the AI's tool list
+- Toolkit switching is blocked — if the AI attempts it, it receives an error
+- Guardrail management is disabled — the AI cannot modify its own safety constraints
+- The lock persists for the entire session
+
+**Why:** Prevents prompt injection or unexpected user requests from switching the agent to a different toolkit with unintended tools and permissions.
+
+**When to lock vs unlock:**
+
+| Scenario | Recommendation |
+|----------|---------------|
+| Single-purpose agents (support bots, data pipelines) | Locked (default) |
+| Interactive assistants where users need flexibility | Unlocked (`lock=false`) |
+| User-facing agents exposed to untrusted input | Locked (default) |
+| AI that needs to discover the right toolkit | Unlocked (`lock=false`) |
+
+**Warning:** An unlocked agent can remove its own guardrails, switch to broader-permission toolkits, and access unintended tools. Never use `lock=false` for user-facing agents exposed to untrusted input.
+
+### Skills Pre-loading
+
+Pre-load skills at session start via the `skills` URL parameter:
+
+```
+https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
+```
+
+Skills are resolved from SKILL-type profiles on the account. Unrecognized aliases are silently ignored.
+
+---
+
+## Toolkits vs Skills
+
+| | Toolkit | Skill |
+|---|---|---|
+| What it is | A set of MCP servers (tools) | A set of instructions/context |
+| How it works | Switch **to** it | Load **on top of** current toolkit |
+| Purpose | Defines *what tools* are available | Defines *how* to use them |
+| Replaces context? | Yes | No — layers on top |
+| Multiple at once? | No | Yes |
+| Example | "Support" toolkit with Gmail + Slack | "Escalation Procedures" skill |
+
+**Toolkit URL params:**
+- `profile` — toolkit alias
+- `lock` — default true when profile set
+- `skills` — comma-separated skill aliases to pre-load
+- `accountId` — for multi-account users
+
+---
+
+## Framework Integration Guides
+
+### Anthropic SDK
+
+MCP is in public beta. Required header: `anthropic-beta: mcp-client-2025-11-20`
+
+TypeScript:
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const response = await client.messages.create(
+  {
+    model: "claude-opus-4-5",
+    max_tokens: 1024,
+    tools: [
+      {
+        type: "mcp",
+        server_label: "civic",
+        server_url: process.env.CIVIC_URL,
+        authorization_token: process.env.CIVIC_TOKEN,
+      },
+    ],
+    messages: [{ role: "user", content: "List my upcoming calendar events" }],
+  },
+  {
+    headers: {
+      "anthropic-beta": "mcp-client-2025-11-20",
+    },
+  }
+);
+```
+
+Note: Use `client.messages.create` (NOT `client.beta.messages`). The field is `authorization_token`, not `{ type: 'bearer', token }`.
+
+### OpenAI Agents SDK
+
+```typescript
+import { Agent, hostedMcpTool, run } from "@openai/agents";
+
+const agent = new Agent({
+  name: "Civic Agent",
+  tools: [
+    hostedMcpTool({
+      serverLabel: "civic",
+      serverUrl: process.env.CIVIC_URL,
+      authorization: process.env.CIVIC_TOKEN,  // plain string, NOT { type: 'bearer', token }
+    }),
+  ],
+});
+
+const result = await run(agent, "List my upcoming calendar events");
+```
+
+Note: `openai` is bundled as a dependency of `@openai/agents` — no separate install needed.
+
+### OpenAI SDK (manual function calling)
+
+```python
+from openai import OpenAI
+from mcp import ClientSession
+from mcp.client.streamable_http import streamablehttp_client
+
+client = OpenAI()
+
+async with streamablehttp_client(
+    url=os.environ["CIVIC_URL"],
+    headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"}
+) as (read, write, _):
+    async with ClientSession(read, write) as session:
+        await session.initialize()
+        tools_result = await session.list_tools()
+        # Convert to OpenAI function format and run tool loop...
+```
+
+### LangChain / LangGraph
+
+```python
+from langchain_mcp_adapters.client import MultiServerMCPClient
+from langgraph.prebuilt import create_react_agent
+
+client = MultiServerMCPClient({
+    "civic": {
+        "url": os.environ["CIVIC_URL"],
+        "transport": "streamable_http",
+        "headers": {"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+    }
+})
+
+tools = await client.get_tools()
+agent = create_react_agent("claude-opus-4-5", tools)
+result = await agent.ainvoke({"messages": [{"role": "user", "content": "..."}]})
+```
+
+Package: `langchain-mcp-adapters`. Env vars: `CIVIC_URL` (full URL with params), `CIVIC_TOKEN`.
+
+### Vercel AI SDK
+
+v5 (`"ai"` package):
+```typescript
+import { experimental_createMCPClient, generateText } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+
+const mcpClient = await experimental_createMCPClient({
+  transport: {
+    type: "sse",
+    url: process.env.CIVIC_URL,
+    headers: { Authorization: `Bearer ${process.env.CIVIC_TOKEN}` },
+  },
+});
+
+const tools = await mcpClient.tools();
+const result = await generateText({
+  model: anthropic("claude-opus-4-5"),
+  tools,
+  prompt: "List my upcoming calendar events",
+});
+```
+
+v6+: `experimental_createMCPClient` moves to `"@ai-sdk/mcp"`.
+
+### Pydantic AI
+
+```python
+from pydantic_ai import Agent
+from pydantic_ai.mcp import MCPServerStreamableHTTP
+
+civic_server = MCPServerStreamableHTTP(
+    url=os.environ["CIVIC_URL"],
+    headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+)
+
+agent = Agent("claude-opus-4-5", mcp_servers=[civic_server])
+
+async with agent.run_mcp_servers():
+    result = await agent.run("List my upcoming calendar events")
+```
+
+---
+
+## Available MCP Servers (85 total)
+
+**Google Workspace:** gmail, google-calendar, google-drive, google-docs, google-sheets, google-slides, google-ads, google-analytics
+
+**CRM & Sales:** salesforce, hubspot, pipedrive, activecampaign, intercom
+
+**Project Management:** asana, linear, monday, clickup, trello, notion, atlassian (Jira/Confluence)
+
+**Databases:** postgresql, mysql, mongodb, mssql, redshift, elasticsearch
+
+**Communication:** slack, ms365-mail, ms365-teams, imap, imap-email, bluesky, twitter, postmark
+
+**Finance & Payments:** stripe, square, paypal-official, quickbooks-online, bill, cardpointe, aws-billing
+
+**Developer Tools:** github, cloudflare, grafana, sentry, context7, deepwiki, n8n, replicate
+
+**Analytics & Data:** mixpanel, posthog, google-analytics
+
+**Files & Storage:** dropbox, box, box-community, sharepoint
+
+**Commerce:** shopify-storefront, webflow, canva
+
+**Other:** firecrawl, tavily, apify, home-assistant, servicetitan, socket, hunter-io, findymail, mistral-ocr, coingecko, insperity, tempo
+
+Each server page at `https://docs.civic.com/civic/reference/servers/{server-name}` lists available tools and applicable guardrails.
+
+---
+
+## Security: Guardrails
+
+### 14 Built-in Guardrails
+
+**Request Guardrails** (block before tool executes):
+1. Block PII in Requests
+2. Block Credit Cards in Requests
+3. Block SSN in Requests
+4. Block Prompt Injection in Requests
+
+**Response Guardrails** (redact after tool executes):
+5. Redact PII from Responses
+6. Redact Credit Card Numbers
+7. Redact Email Addresses
+8. Redact IP Addresses
+9. Redact Phone Numbers
+10. Redact Social Security Numbers
+11. Redact Prompt Injection from Responses
+
+**Response Transforms** (reshape data):
+12. JSON to CSV Transform
+13. Remove Fields Transform
+14. Retain Fields Transform
+
+In addition to the 14 universal guardrails, 35 servers have server-specific guardrails (~1,000 rules total). High-risk tools with guardrails include:
+- **google-calendar**: `delete_event`, `modify_event`
+- **google-gmail**: `delete_gmail_filter`, `create_gmail_filter` (note: no `send_gmail_message` — `draft_gmail_message` only)
+- **google-sheets**: `modify_sheet_values` with `clear_values: true`
+- **google-docs**: `batch_update_doc`, `find_and_replace_doc`
+
+Guardrails are managed via Civic Chat (natural language) or the nexus.civic.com UI.
+
+---
+
+## Security: Audit Logs
+
+- **What's logged:** Every tool call — tool name, input parameters, response, timestamp, agent identity
+- **Retention:** ~30 days
+- **Access:** Query via Civic Chat (UI coming soon)
+- **Output formats:** Aggregated summary, line-by-line with timestamps, CSV export (up to 5,000 lines)
+
+Query examples in Civic Chat:
+- "What did my agent do in the last hour?"
+- "Show me all Gmail tool calls from yesterday"
+- "Export last week's tool calls as CSV"
+
+---
+
+## Security: Revocation
+
+Instant revocation — no delay, no waiting. Four levels of granularity:
+
+1. **Block a single tool** — e.g., disable `send_gmail_message` while keeping the rest of Gmail
+2. **Restrict server operations** — e.g., make an entire server read-only
+3. **Block an entire server** — e.g., disable the Stripe server completely
+4. **Revoke the entire toolkit** — cut off the agent from all tools at once
+
+Revocation is accessible via Civic Chat or the nexus.civic.com UI. By design it is NOT accessible via the agent API — agents cannot self-revoke.
+
+---
+
+## Security: Secret Management
+
+Civic stores credentials on behalf of developers and users:
+- OAuth tokens (from OAuth flows)
+- API keys and Bearer tokens (added manually)
+
+**Core guarantee:** Secrets are never passed to or visible to the AI agent. The isolation flow:
+
+```
+AI Agent → Civic Hub (validates, applies guardrails, injects credential) → External service → Civic Hub → AI Agent (result only)
+```
+
+Secrets are added via the nexus.civic.com UI or via the Configurator Agent in Civic Chat ("Add my Stripe API key").
+
+---
+
+## Civic Chat (Control Plane)
+
+Civic Chat at nexus.civic.com is the primary control plane — not a demo or test interface.
+
+**Three specialized agents:**
+
+1. **Configurator Agent** — Set up toolkits, guardrails, secrets via natural language. Example: "Create a support toolkit with Gmail and Slack, and add a guardrail to block PII in requests"
+2. **Audit Agent** — Query audit logs. Example: "What did my agent do yesterday?" or "Export last week's tool calls as CSV"
+3. **Revocation Agent** — Instantly revoke access. Example: "Block all Gmail writes" or "Revoke the entire support toolkit"
+
+**Important restrictions:**
+- Civic Chat only handles these three categories — configuration, audit, revocation
+- Requests outside these tasks are blocked by design
+- Consumes credits from the same pool as tool calls
+- The Chat endpoint is protected and separated from the agent layer
+
+---
+
+## Billing
+
+- **Free trial:** 10,000 credits, 14 days (whichever comes first)
+- **Starter:** $25/month — 30,000 credits
+- **Pro:** $99/month — 100,000 credits
+- **Business:** $199/month — 450,000 credits
+
+Credits are consumed by tool calls and Configurator Agent chat interactions.
+
+---
+
+# PART 2: CIVIC AUTH — USER AUTHENTICATION
+
+## What is Civic Auth?
+
+Civic Auth is a separate product for adding user authentication to web and mobile applications. Currently in beta.
+
+**Features:**
+- Email, Google, and wallet sign-in
+- Optional embedded Web3 wallets (auto-created for users)
+- Multichain: Solana, Base, Ethereum, Polygon, Arbitrum, BSC, and other EVM chains
+
+**Sign up:** https://auth.civic.com (get your Client ID in under a minute)
+
+## Installation
+
+```bash
+npm install @civic/auth        # Web (React, Next.js, Node.js, Vanilla JS)
+pip install civic-auth         # Python (FastAPI, Flask, Django)
+npm install @civic/auth-web3   # Web3 wallet support
+```
+
+## Quick Integration (Next.js)
+
+```typescript
+// app/api/auth/[...civicauth]/route.ts
+import { handler } from "@civic/auth/nextjs";
+export const GET = handler;
+export const POST = handler;
+```
+
+```typescript
+// middleware.ts
+import { authMiddleware } from "@civic/auth/nextjs";
+export default authMiddleware();
+export const config = { matcher: ["/((?!_next|favicon.ico).*)"] };
+```
+
+```tsx
+// app/layout.tsx
+import { CivicAuthProvider } from "@civic/auth/nextjs";
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <CivicAuthProvider>{children}</CivicAuthProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+## Quick Integration (React)
+
+```tsx
+import { CivicAuthProvider, UserButton } from "@civic/auth/react";
+
+function App() {
+  return (
+    <CivicAuthProvider clientId={process.env.REACT_APP_CIVIC_CLIENT_ID}>
+      <UserButton />
+    </CivicAuthProvider>
+  );
+}
+```
+
+## Quick Integration (Python / FastAPI)
+
+```python
+from fastapi import FastAPI
+from civic_auth.integrations.fastapi import CivicAuth
+
+app = FastAPI()
+civic = CivicAuth(client_id=os.environ["CIVIC_CLIENT_ID"])
+
+@app.get("/protected")
+async def protected(user=Depends(civic.get_user)):
+    return {"user": user}
+```
+
+## Framework Support
+
+| Framework | Package | Guide |
+|-----------|---------|-------|
+| React | `@civic/auth/react` | https://docs.civic.com/integration/react |
+| Next.js | `@civic/auth/nextjs` | https://docs.civic.com/integration/nextjs |
+| Node.js | `@civic/auth` | https://docs.civic.com/integration/nodejs |
+| Express | `@civic/auth` | https://docs.civic.com/integration/nodejs/express |
+| Fastify | `@civic/auth` | https://docs.civic.com/integration/nodejs/fastify |
+| Hono | `@civic/auth` | https://docs.civic.com/integration/nodejs/hono |
+| FastAPI | `civic-auth` | https://docs.civic.com/integration/python/fastapi |
+| Flask | `civic-auth` | https://docs.civic.com/integration/python/flask |
+| Django | `civic-auth` | https://docs.civic.com/integration/python/django |
+| React Native | `@civic/auth` | https://docs.civic.com/integration/mobile/react-native |
+| Vanilla JS | `@civic/auth` | https://docs.civic.com/integration/vanillajs |
+| Other (OIDC/OAuth2) | Any OIDC client | https://docs.civic.com/integration/other |
+
+## Web3 Wallets
+
+```typescript
+import { CivicAuthProvider } from "@civic/auth-web3/react";
+import { useWallet } from "@civic/auth-web3/react";
+
+function App() {
+  return (
+    <CivicAuthProvider clientId="your-client-id">
+      <WalletComponent />
+    </CivicAuthProvider>
+  );
+}
+
+function WalletComponent() {
+  const { wallet } = useWallet();
+  return <div>Address: {wallet?.address}</div>;
+}
+```
+
+Supported chains: Solana, Ethereum, Base, Polygon, Arbitrum, BSC, and other EVM-compatible chains.
+
+---
+
+# PART 3: CIVIC LABS — EXPERIMENTAL PROJECTS
+
+## What is Civic Labs?
+
+Civic Labs is where Civic explores ideas in digital identity, agentic AI, and authorization. Projects are called "flasks" and are at various stages of development. All are open to community feedback and contribution.
+
+**Focus areas:** Model Context Protocol (MCP) tools and AI security.
+
+## Flask Projects
+
+### MCP Hub
+A hosted MCP Manager that unifies and orchestrates multiple MCP servers with a focus on auth and security. The production foundation for Civic Hub.
+- Docs: https://docs.civic.com/labs/projects/mcp-hub
+
+### Guardrail Proxy
+Wrap any MCP server in a configurable, flexible security layer. Lets you add guardrails to MCP servers that don't natively support them.
+- Docs: https://docs.civic.com/labs/projects/guardrail-proxy
+
+### Bodyguard
+LLM-based threat detection for prompts and tool calls. Detects prompt injection, jailbreak attempts, and other adversarial inputs before they reach your tools.
+- Docs: https://docs.civic.com/labs/projects/bodyguard
+
+### Pass-through Proxy
+A middleware hook system for MCP servers. Powers guardrails and other cross-cutting concerns.
+- Docs: https://docs.civic.com/labs/projects/passthrough-proxy
+
+### Civic Knowledge
+AI assistant for optimizing internal operations and processes. Demonstrates RAG over organizational knowledge.
+- Docs: https://docs.civic.com/labs/projects/civic-knowledge
+
+### x402-mcp
+x402 payment protocol integration for MCP. Enables micropayments for agent tool calls.
+- Docs: https://docs.civic.com/labs/projects/x402-mcp
+
+## Labs Concepts
+
+- **MCP**: What is MCP and why it matters for AI applications → https://docs.civic.com/labs/concepts/mcp
+- **Guardrails**: Guardrails as a protection layer → https://docs.civic.com/labs/concepts/guardrails
+- **Prompt Injection**: Understanding prompt injection attacks and LLM safety → https://docs.civic.com/labs/concepts/prompt-injection
+- **Auth Strategies**: OAuth2, granular permissions, and consent flows → https://docs.civic.com/labs/concepts/auth-strategies
+- **Hooks**: Middleware layer around MCP APIs → https://docs.civic.com/labs/concepts/hooks
+- **RAG**: Retrieval strategies for LLMs → https://docs.civic.com/labs/concepts/rag
+
+## Getting Started with Labs
+
+Visit https://docs.civic.com/labs/private/getting-started to try out experimental projects.
+
+To contribute or give feedback: https://docs.civic.com/labs/feedback
+
+---
+
+# KEY FACTS FOR AI AGENTS
+
+## Most Common Integration Pattern
+
+1. Sign up at https://nexus.civic.com
+2. Complete onboarding (select framework + tools)
+3. Generate a Civic token
+4. Set env vars: `CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit` and `CIVIC_TOKEN=your-token`
+5. Connect using your framework's MCP client with `Authorization: Bearer $CIVIC_TOKEN`
+
+## Critical Distinctions
+
+- **Civic Hub** = the MCP gateway (core infrastructure)
+- **Civic Chat** = the control plane UI at nexus.civic.com (configuration, audit, revocation)
+- **Civic Auth** = separate user authentication product (not the same as Civic Hub)
+- **Toolkit** = a set of MCP servers (switch between them, one active at a time)
+- **Skill** = a set of instructions that layers ON TOP of the current toolkit
+- **Profile locking** = default ON when `profile` param is set; prevents agents from modifying their own guardrails or switching toolkits
+
+## Numbers to Know
+
+- 85 MCP servers
+- ~200 tools available
+- ~5,000 tool parameters
+- ~1,000 server-specific guardrail rules (across 35 servers)
+- 14 universal guardrails
+- Free trial: 10,000 credits, 14 days
+- Audit log retention: ~30 days
+
+## Support
+
+- Developer Slack: https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw
+- Troubleshooting: https://docs.civic.com/civic/troubleshooting
