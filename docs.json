@@ -239,7 +239,8 @@
               "civic/concepts/tools-resources-prompts",
               "civic/concepts/mcp",
               "civic/organizations",
-              "civic/concepts/skills"
+              "civic/concepts/skills",
+              "civic/concepts/setup-skill"
             ]
           },
           {
