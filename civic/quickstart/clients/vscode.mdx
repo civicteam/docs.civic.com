@@ -13,8 +13,8 @@ import AuthCallout from '/snippets/_auth-method-callout.mdx'
   <Card title="VS Code 1.99+" icon="code" href="https://code.visualstudio.com">
     MCP is built into VS Code 1.99 and later. No extension needed.
   </Card>
-  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
-    Create a free account and configure your tools at nexus.civic.com
+  <Card title="Civic Account" icon="user" href="https://app.civic.com">
+    Create a free account and configure your tools at app.civic.com
   </Card>
 </CardGroup>
 
@@ -27,10 +27,10 @@ VS Code supports both direct remote HTTP (recommended) and Hub Bridge.
 ### Option 1: Remote HTTP Endpoint (Direct Connection)
 
 <Steps>
-  <Step title="Visit nexus.civic.com">
-    1. Sign in to [nexus.civic.com](https://nexus.civic.com)
+  <Step title="Visit app.civic.com">
+    1. Sign in to [app.civic.com](https://app.civic.com)
     2. Select the MCP servers you want to use
-    3. Copy the MCP URL: `https://nexus.civic.com/hub/mcp`
+    3. Copy the MCP URL: `https://app.civic.com/hub/mcp`
   </Step>
 
   <Step title="Add to VS Code Settings">
@@ -40,12 +40,12 @@ VS Code supports both direct remote HTTP (recommended) and Hub Bridge.
     4. Configure:
        - **Name**: Civic
        - **Type**: http
-       - **URL**: `https://nexus.civic.com/hub/mcp`
+       - **URL**: `https://app.civic.com/hub/mcp`
     5. Save the configuration
   </Step>
 
   <Step title="Authenticate">
-    On first use of any MCP tool, VS Code opens a browser window to nexus.civic.com. Sign in with your Civic account — this links the session to your account and toolkit. No token needed.
+    On first use of any MCP tool, VS Code opens a browser window to app.civic.com. Sign in with your Civic account — this links the session to your account and toolkit. No token needed.
 
     <Note>
       MCP is built into VS Code 1.99+. If you're on an older version, install the [GitHub Copilot extension](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) which includes MCP support.
@@ -84,7 +84,7 @@ VS Code supports both direct remote HTTP (recommended) and Hub Bridge.
     The first time you use any MCP command, the Hub Bridge will:
     - Automatically download and install itself
     - Handle authentication directly in the chat interface
-    - Let you select which tools to connect from nexus.civic.com
+    - Let you select which tools to connect from app.civic.com
   </Step>
 </Steps>
 

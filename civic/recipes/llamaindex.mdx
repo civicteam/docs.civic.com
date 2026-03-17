@@ -9,7 +9,7 @@ Connect a [LlamaIndex](https://docs.llamaindex.ai/) agent to Civic using `BasicM
 ## Prerequisites
 
 - Python 3.11+
-- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
 - A Civic token and an Anthropic API key
 
 ## Installation
@@ -21,7 +21,7 @@ pip install llama-index llama-index-tools-mcp llama-index-llms-anthropic python-
 ## Environment Variables
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
 CIVIC_TOKEN=your-civic-token
 ANTHROPIC_API_KEY=your-anthropic-key
 ```
@@ -74,7 +74,7 @@ Pass the URL as a positional argument to `BasicMCPClient` — using `url=` as a 
 For production agents, lock to a specific toolkit using the `profile` URL parameter:
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-production-toolkit
 ```
 
 ## Reference Implementation

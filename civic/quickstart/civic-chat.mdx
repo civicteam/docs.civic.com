@@ -1,10 +1,10 @@
 ---
 title: Civic Control Plane
-description: Configure toolkits, query audit logs, and revoke access via natural language at nexus.civic.com
+description: Configure toolkits, query audit logs, and revoke access via natural language at app.civic.com
 icon: "terminal"
 ---
 
-Civic Chat at [nexus.civic.com](https://nexus.civic.com) is your control plane for AI agent security — not a general-purpose AI assistant. It is purpose-built for three tasks: configuring your Hub, querying audit logs, and revoking access.
+Civic Chat at [app.civic.com](https://app.civic.com) is your control plane for AI agent security — not a general-purpose AI assistant. It is purpose-built for three tasks: configuring your Hub, querying audit logs, and revoking access.
 
 <Warning>
 **Civic Chat is restricted to control-plane tasks only.** Requests outside of configuration, audit, and revocation are blocked. All Civic Chat commands consume credits from the same pool as your agents' tool calls — use it deliberately.
@@ -24,7 +24,7 @@ Three specialized agents are available, each purpose-built for a different contr
 
 <Steps>
   <Step title="Create your account">
-    Visit [nexus.civic.com](https://nexus.civic.com) and sign up. Your free trial includes 10,000 credits valid for 14 days.
+    Visit [app.civic.com](https://app.civic.com) and sign up. Your free trial includes 10,000 credits valid for 14 days.
 
     <img
       className="rounded-lg"
@@ -147,7 +147,7 @@ Revoke access instantly at any granularity. Revocation is immediate — no delay
 
 **Why Chat-only for revocation:** The Civic Chat endpoint is separated from the AI agent layer by design. If revocation were available via the same API your agent calls, a compromised agent could revoke its own constraints or another agent's access. The human-in-the-loop requirement is intentional.
 
-You can also revoke via the UI at nexus.civic.com → Authorizations → Revoke.
+You can also revoke via the UI at app.civic.com → Authorizations → Revoke.
 
 ---
 

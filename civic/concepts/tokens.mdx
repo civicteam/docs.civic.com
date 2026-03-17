@@ -71,7 +71,7 @@ Tokens are appropriate for background processes such as autonomous agents, sched
 
 <Steps>
   <Step title="Navigate to Install page">
-    Go to [nexus.civic.com](https://nexus.civic.com) and click on the **Tools** menu, then select **Install**
+    Go to [app.civic.com](https://app.civic.com) and click on the **Tools** menu, then select **Install**
   </Step>
 
   <Step title="Select your toolkit">
@@ -112,7 +112,7 @@ When setting up an OpenAI agent that needs to access your Civic tools:
 
   <Step title="Configure the connection">
     ```
-    MCP URL: https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=YOUR_PROFILE_NAME
+    MCP URL: https://app.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=YOUR_PROFILE_NAME
     Authentication: Bearer token
     Token: YOUR_CIVIC_TOKEN_HERE
     ```
@@ -144,7 +144,7 @@ To use Civic in your n8n automations:
 
   <Step title="Configure authentication">
     ```
-    URL: https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=YOUR_PROFILE_NAME
+    URL: https://app.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=YOUR_PROFILE_NAME
     Authentication: Header Auth
     Header Name: Authorization
     Header Value: Bearer YOUR_CIVIC_TOKEN_HERE
@@ -161,7 +161,7 @@ To use Civic in your n8n automations:
 Similar to n8n, other workflow automation platforms can use Civic tokens with HTTP modules and Bearer token authentication. The general pattern is:
 
 ```
-URL: https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=YOUR_PROFILE_NAME
+URL: https://app.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=YOUR_PROFILE_NAME
 Authentication: Header Auth or Bearer Token
 Header Name: Authorization
 Header Value: Bearer YOUR_CIVIC_TOKEN_HERE
@@ -175,7 +175,7 @@ Include the token in the Authorization header of your HTTP requests:
 <Tabs>
   <Tab title="cURL">
     ```bash
-    curl 'https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=my-profile' \
+    curl 'https://app.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=my-profile' \
       -H "Authorization: Bearer YOUR_TOKEN_HERE" \
       -H "Content-Type: application/json" \
       -d '{
@@ -188,7 +188,7 @@ Include the token in the Authorization header of your HTTP requests:
 
   <Tab title="JavaScript">
     ```javascript
-    const response = await fetch('https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=my-profile', {
+    const response = await fetch('https://app.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=my-profile', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.CIVIC_TOKEN}`,
@@ -223,7 +223,7 @@ Include the token in the Authorization header of your HTTP requests:
     }
 
     response = requests.post(
-        'https://nexus.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=my-profile',
+        'https://app.civic.com/hub/mcp?accountId=YOUR_ACCOUNT_ID&profile=my-profile',
         headers=headers,
         json=payload
     )

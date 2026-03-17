@@ -28,7 +28,7 @@ pip install "pydantic-ai-slim[mcp]"
     ```bash
     # .env
     CIVIC_TOKEN=your-civic-token-here
-    CIVIC_URL=https://nexus.civic.com/hub/mcp
+    CIVIC_URL=https://app.civic.com/hub/mcp
     ```
 
     ```python
@@ -87,7 +87,7 @@ pip install "pydantic-ai-slim[mcp]"
             access_token = tokens["access_token"]
 
             server = MCPServerStreamableHTTP(
-                "https://nexus.civic.com/hub/mcp",
+                "https://app.civic.com/hub/mcp",
                 headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
             )
             agent = Agent("openai:gpt-4o", toolsets=[server])
@@ -110,7 +110,7 @@ pip install "pydantic-ai-slim[mcp]"
         async def chat():
             access_token = session.get(CivicAuth.ACCESS_TOKEN_KEY)
             server = MCPServerStreamableHTTP(
-                "https://nexus.civic.com/hub/mcp",
+                "https://app.civic.com/hub/mcp",
                 headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
             )
             agent = Agent("openai:gpt-4o", toolsets=[server])
@@ -133,7 +133,7 @@ pip install "pydantic-ai-slim[mcp]"
             access_token = request.session.get(CivicAuth.ACCESS_TOKEN_KEY)
             payload = json.loads(request.body)
             server = MCPServerStreamableHTTP(
-                "https://nexus.civic.com/hub/mcp",
+                "https://app.civic.com/hub/mcp",
                 headers={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"},
             )
             agent = Agent("openai:gpt-4o", toolsets=[server])

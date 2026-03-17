@@ -18,8 +18,8 @@ Civic is a security layer for AI agents. It provides a hosted MCP gateway (Civic
 4. **Safety** — Instant revocation at any granularity (tool → server operations → server → entire toolkit). By design, revocation is only accessible via Civic Chat to prevent agents self-revoking
 
 **Key URLs:**
-- Product: https://nexus.civic.com
-- MCP endpoint: `https://nexus.civic.com/hub/mcp`
+- Product: https://app.civic.com
+- MCP endpoint: `https://app.civic.com/hub/mcp`
 - Docs: https://docs.civic.com
 
 ---
@@ -27,7 +27,7 @@ Civic is a security layer for AI agents. It provides a hosted MCP gateway (Civic
 ## Quickstart
 
 ### Step 1 — Sign up
-Go to https://nexus.civic.com and create a free account. You get 10,000 credits and 14 days.
+Go to https://app.civic.com and create a free account. You get 10,000 credits and 14 days.
 
 ### Step 2 — Complete onboarding
 Select your AI framework and tools. On the Install step, you'll see your MCP URL.
@@ -38,7 +38,7 @@ On the Install screen, choose **Generate a Civic token** (recommended for automa
 ### Step 4 — Make your first call
 
 ```bash
-curl -X POST https://nexus.civic.com/hub/mcp \
+curl -X POST https://app.civic.com/hub/mcp \
   -H "Authorization: Bearer $CIVIC_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"tools/list","params":{},"id":1}'
@@ -51,7 +51,7 @@ curl -X POST https://nexus.civic.com/hub/mcp \
 ### MCP URL
 
 ```
-https://nexus.civic.com/hub/mcp
+https://app.civic.com/hub/mcp
 ```
 
 ### URL Parameters
@@ -67,23 +67,23 @@ https://nexus.civic.com/hub/mcp
 
 ```
 # Use the "sales-agent" toolkit, locked (default)
-https://nexus.civic.com/hub/mcp?profile=sales-agent
+https://app.civic.com/hub/mcp?profile=sales-agent
 
 # Allow toolkit switching
-https://nexus.civic.com/hub/mcp?profile=assistant&lock=false
+https://app.civic.com/hub/mcp?profile=assistant&lock=false
 
 # Toolkit + pre-loaded skills
-https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,triage
+https://app.civic.com/hub/mcp?profile=support&skills=escalation,triage
 
 # Specific organization account
-https://nexus.civic.com/hub/mcp?profile=ops&accountId=org_abc123
+https://app.civic.com/hub/mcp?profile=ops&accountId=org_abc123
 ```
 
 ### Authentication
 
 **Option 1 — Civic Token (recommended for agents)**
 
-Generate a bearer token at nexus.civic.com during onboarding or in Settings. Pass it as:
+Generate a bearer token at app.civic.com during onboarding or in Settings. Pass it as:
 
 ```
 Authorization: Bearer $CIVIC_TOKEN
@@ -97,7 +97,7 @@ headers = {
     "Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}",
     "Content-Type": "application/json"
 }
-url = os.environ["CIVIC_URL"]  # https://nexus.civic.com/hub/mcp?profile=your-toolkit
+url = os.environ["CIVIC_URL"]  # https://app.civic.com/hub/mcp?profile=your-toolkit
 ```
 
 TypeScript:
@@ -105,7 +105,7 @@ TypeScript:
 const headers = {
   Authorization: `Bearer ${process.env.CIVIC_TOKEN}`,
 };
-const url = process.env.CIVIC_URL; // https://nexus.civic.com/hub/mcp?profile=your-toolkit
+const url = process.env.CIVIC_URL; // https://app.civic.com/hub/mcp?profile=your-toolkit
 ```
 
 **Option 2 — OAuth (for interactive/user-facing apps)**
@@ -146,7 +146,7 @@ When you specify a toolkit in the connection URL, the session is locked to that 
 Pre-load skills at session start via the `skills` URL parameter:
 
 ```
-https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
+https://app.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
 ```
 
 Skills are resolved from SKILL-type profiles on the account. Unrecognized aliases are silently ignored.
@@ -371,7 +371,7 @@ In addition to the 14 universal guardrails, 35 servers have server-specific guar
 - **google-sheets**: `modify_sheet_values` with `clear_values: true`
 - **google-docs**: `batch_update_doc`, `find_and_replace_doc`
 
-Guardrails are managed via Civic Chat (natural language) or the nexus.civic.com UI.
+Guardrails are managed via Civic Chat (natural language) or the app.civic.com UI.
 
 ---
 
@@ -398,7 +398,7 @@ Instant revocation — no delay, no waiting. Four levels of granularity:
 3. **Block an entire server** — e.g., disable the Stripe server completely
 4. **Revoke the entire toolkit** — cut off the agent from all tools at once
 
-Revocation is accessible via Civic Chat or the nexus.civic.com UI. By design it is NOT accessible via the agent API — agents cannot self-revoke.
+Revocation is accessible via Civic Chat or the app.civic.com UI. By design it is NOT accessible via the agent API — agents cannot self-revoke.
 
 ---
 
@@ -414,13 +414,13 @@ Civic stores credentials on behalf of developers and users:
 AI Agent → Civic Hub (validates, applies guardrails, injects credential) → External service → Civic Hub → AI Agent (result only)
 ```
 
-Secrets are added via the nexus.civic.com UI or via the Configurator Agent in Civic Chat ("Add my Stripe API key").
+Secrets are added via the app.civic.com UI or via the Configurator Agent in Civic Chat ("Add my Stripe API key").
 
 ---
 
 ## Civic Chat (Control Plane)
 
-Civic Chat at nexus.civic.com is the primary control plane — not a demo or test interface.
+Civic Chat at app.civic.com is the primary control plane — not a demo or test interface.
 
 **Three specialized agents:**
 
@@ -623,16 +623,16 @@ To contribute or give feedback: https://docs.civic.com/labs/feedback
 
 ## Most Common Integration Pattern
 
-1. Sign up at https://nexus.civic.com
+1. Sign up at https://app.civic.com
 2. Complete onboarding (select framework + tools)
 3. Generate a Civic token
-4. Set env vars: `CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit` and `CIVIC_TOKEN=your-token`
+4. Set env vars: `CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit` and `CIVIC_TOKEN=your-token`
 5. Connect using your framework's MCP client with `Authorization: Bearer $CIVIC_TOKEN`
 
 ## Critical Distinctions
 
 - **Civic Hub** = the MCP gateway (core infrastructure)
-- **Civic Chat** = the control plane UI at nexus.civic.com (configuration, audit, revocation)
+- **Civic Chat** = the control plane UI at app.civic.com (configuration, audit, revocation)
 - **Civic Auth** = separate user authentication product (not the same as Civic Hub)
 - **Toolkit** = a set of MCP servers (switch between them, one active at a time)
 - **Skill** = a set of instructions that layers ON TOP of the current toolkit

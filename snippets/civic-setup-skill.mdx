@@ -16,7 +16,7 @@ Ask if they haven't said. The setup path depends entirely on which client or fra
 **OAuth (browser sign-in)** — for interactive clients:
 Claude Desktop, Claude.ai, Cursor, VS Code, Windsurf, JetBrains IDEs, Goose, Gemini CLI, OpenAI Codex
 
-No manual token needed. When the user adds the MCP URL to their client and connects, a browser window opens to nexus.civic.com. They sign in and the client handles the rest automatically.
+No manual token needed. When the user adds the MCP URL to their client and connects, a browser window opens to app.civic.com. They sign in and the client handles the rest automatically.
 
 **Civic Token (Bearer auth)** — for agent frameworks and automation:
 LangChain, LangGraph, Pydantic AI, Anthropic SDK, OpenAI Agents SDK, OpenAI SDK, Vercel AI SDK, Google ADK, CrewAI, Agno, LlamaIndex, AutoGen, Haystack, smolagents, DSPy, Semantic Kernel, CAMEL-AI, Mastra, Dify, Flowise, and any custom code
@@ -27,9 +27,9 @@ Requires generating a token and passing it as a Bearer Authorization header with
 
 **For interactive clients (OAuth):**
 
-1. The MCP URL to add: `https://nexus.civic.com/hub/mcp`
+1. The MCP URL to add: `https://app.civic.com/hub/mcp`
 2. Add this URL in the client's MCP settings (the exact location varies by client)
-3. Connect — the client opens a browser to nexus.civic.com
+3. Connect — the client opens a browser to app.civic.com
 4. Sign in and the session is established — no token management needed
 
 Direct them to the specific setup guide for their client at:
@@ -38,7 +38,7 @@ Direct them to the specific setup guide for their client at:
 **For agent frameworks (Civic Token):**
 
 Step 1 — Generate a Civic token:
-- Go to nexus.civic.com and log in
+- Go to app.civic.com and log in
 - Complete the onboarding flow if new: select your framework and tools
 - On the **Install** step, look below the MCP URL for "Generate a Civic token" (described as best for automation platforms)
 - Click **Generate token** and copy it immediately — it is not shown again
@@ -46,7 +46,7 @@ Step 1 — Generate a Civic token:
 
 Step 2 — Set environment variables:
 ```
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
 CIVIC_TOKEN=your-token-here
 ANTHROPIC_API_KEY=your-llm-key
 ```
@@ -85,8 +85,8 @@ Same token generation as above. In the tool's MCP node settings, set the URL to 
 
 ## Key URLs
 
-- **MCP endpoint**: `https://nexus.civic.com/hub/mcp`
-- **Dashboard and onboarding**: https://nexus.civic.com
+- **MCP endpoint**: `https://app.civic.com/hub/mcp`
+- **Dashboard and onboarding**: https://app.civic.com
 - **Full credentials guide**: https://docs.civic.com/civic/quickstart/credentials
 - **All client setup guides**: https://docs.civic.com/civic/quickstart
 - **Troubleshooting**: https://docs.civic.com/civic/troubleshooting
@@ -94,13 +94,13 @@ Same token generation as above. In the tool's MCP node settings, set the URL to 
 
 ## Common Issues
 
-**Authentication errors** — Token may be expired (30-day expiry). Regenerate at nexus.civic.com: go to the Install step in onboarding and generate a new token.
+**Authentication errors** — Token may be expired (30-day expiry). Regenerate at app.civic.com: go to the Install step in onboarding and generate a new token.
 
-**No tools available** — The MCP URL may be missing a `profile` parameter. Check that `CIVIC_URL` includes `?profile=your-toolkit`. The toolkit must be configured at nexus.civic.com.
+**No tools available** — The MCP URL may be missing a `profile` parameter. Check that `CIVIC_URL` includes `?profile=your-toolkit`. The toolkit must be configured at app.civic.com.
 
 **Connection refused or transport errors** — Civic uses Streamable HTTP transport. If the framework is trying to connect via SSE or stdio, switch it to Streamable HTTP (sometimes called `streamable-http` or `streamableHTTP`).
 
-**Wrong tool count** — The connected profile/toolkit may not include the expected tools. Check the toolkit configuration at nexus.civic.com.
+**Wrong tool count** — The connected profile/toolkit may not include the expected tools. Check the toolkit configuration at app.civic.com.
 
 **Framework-specific errors** — Each framework has known integration quirks. Refer the user to the recipe page for their framework (links above) which documents verified working patterns.
 ```

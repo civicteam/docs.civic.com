@@ -1,6 +1,6 @@
 ### Generate a Civic Token
 
-1. Log in to [nexus.civic.com](https://nexus.civic.com)
+1. Log in to [app.civic.com](https://app.civic.com)
 2. Click your account name in the bottom left
 3. Go to **Settings → Tokens**
 4. Click **Generate Token** and copy it immediately — it won't be shown again
@@ -13,13 +13,13 @@ Never commit your token to source control. Store it in environment variables or 
 
 ```bash
 CIVIC_TOKEN=your-civic-token-here
-CIVIC_URL=https://nexus.civic.com/hub/mcp
+CIVIC_URL=https://app.civic.com/hub/mcp
 ```
 
 For production agents, lock to a specific toolkit by appending a `profile` parameter:
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit-alias
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit-alias
 ```
 
 ### Use the Token

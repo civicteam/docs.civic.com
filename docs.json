@@ -455,7 +455,7 @@
     "primary": {
       "type": "button",
       "label": "Try Civic",
-      "href": "https://nexus.civic.com?utm_source=docs&utm_medium=hero-nav"
+      "href": "https://app.civic.com?utm_source=docs&utm_medium=hero-nav"
     }
   },
   "footer": {

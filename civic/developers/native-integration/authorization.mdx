@@ -4,13 +4,13 @@ description: "How authentication and authorization work when connecting to Civic
 icon: "lock"
 ---
 
-Civic exposes its capabilities through a single MCP endpoint at `https://nexus.civic.com/hub/mcp`. Every request to this endpoint must carry a valid access token issued by **Civic Auth** (`auth.civic.com`).
+Civic exposes its capabilities through a single MCP endpoint at `https://app.civic.com/hub/mcp`. Every request to this endpoint must carry a valid access token issued by **Civic Auth** (`auth.civic.com`).
 
 ## How access tokens work
 
 Access tokens are JWTs issued by Civic Auth. Each token is scoped to a specific **application** (identified by a `CLIENT_ID`), which determines what a user is allowed to do — which tools they can call, which third-party services they can connect, and what data they can access.
 
-Civic provides its own native app for managing Civic access (e.g. at [nexus.civic.com/web](https://nexus.civic.com/web)), but third-party applications typically want to manage users within their own product experience.
+Civic provides its own native app for managing Civic access (e.g. at [app.civic.com/web](https://app.civic.com/web)), but third-party applications typically want to manage users within their own product experience.
 
 ## What you need to do
 
@@ -25,7 +25,7 @@ Set up a **Civic Organization** and link your existing Civic Auth `CLIENT_ID` to
     If you don't already have one, register at [auth.civic.com](https://auth.civic.com) to get a Client ID and Client Secret.
   </Step>
   <Step title="Create a Civic Organization">
-    Create an organization at [nexus.civic.com](https://nexus.civic.com).
+    Create an organization at [app.civic.com](https://app.civic.com).
   </Step>
   <Step title="Link your Client ID">
     In your Civic organization, go to **Settings → Integration** and link your Civic Auth Client ID. Once linked, tokens issued for your application will be recognized by Civic.
@@ -91,7 +91,7 @@ You have two options depending on your architecture:
 Once you have a Civic access token, pass it in the `Authorization` header when connecting to the Civic MCP endpoint:
 
 ```
-POST https://nexus.civic.com/hub/mcp
+POST https://app.civic.com/hub/mcp
 Content-Type: application/json
 Authorization: Bearer <civic-access-token>
 ```
@@ -107,7 +107,7 @@ x-civic-profile: default
 | Step | What | Where |
 |------|------|-------|
 | Register an app | Get a Client ID and Secret | [auth.civic.com](https://auth.civic.com) |
-| Create an org | Set up your Civic Organization | [nexus.civic.com](https://nexus.civic.com) |
+| Create an org | Set up your Civic Organization | [app.civic.com](https://app.civic.com) |
 | Link Client ID to org | Associate your app with your org | Civic Settings → Integration |
 | Get tokens | Civic Auth directly **or** Token Exchange | See options above |
-| Connect to Civic | `Authorization: Bearer <token>` | `https://nexus.civic.com/hub/mcp` |
+| Connect to Civic | `Authorization: Bearer <token>` | `https://app.civic.com/hub/mcp` |

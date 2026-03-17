@@ -9,7 +9,7 @@ Connect a [DeepAgents](https://github.com/titus-civic/deepagents-reference-imple
 ## Prerequisites
 
 - Python 3.11+
-- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
 - A Civic token (generate from Settings → Tokens)
 - An Anthropic API key
 
@@ -31,9 +31,9 @@ pip install deepagents langchain-mcp-adapters langchain-anthropic fastapi uvicor
 
 ```bash
 # Your full Civic toolkit URL (include profile param for production agents)
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit&lock=true
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit&lock=true
 
-# Civic token generated from nexus.civic.com → Settings → Tokens
+# Civic token generated from app.civic.com → Settings → Tokens
 CIVIC_TOKEN=your-civic-token
 
 # Anthropic API key
@@ -117,7 +117,7 @@ uv run uvicorn main:app --reload
 For production agents, always lock to a specific toolkit using the `profile` and `lock` URL parameters:
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit&lock=true
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-production-toolkit&lock=true
 ```
 
 When locked, the agent cannot switch toolkits or modify its own guardrails — preventing prompt injection attacks from escaping the defined tool scope.
@@ -127,7 +127,7 @@ When locked, the agent cannot switch toolkits or modify its own guardrails — p
 For organization accounts, include the `accountId` parameter:
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=support&accountId=org_abc123
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=support&accountId=org_abc123
 ```
 
 ### Pre-load Skills
@@ -135,7 +135,7 @@ CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=support&accountId=org_abc123
 Load specific Skills at session start using the `skills` parameter:
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
 ```
 
 ## Environment Variable Reference
@@ -143,7 +143,7 @@ CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=support&skills=escalation,cann
 | Variable | Description |
 |---|---|
 | `CIVIC_URL` | Full Civic toolkit URL including profile and any URL parameters |
-| `CIVIC_TOKEN` | Civic token from nexus.civic.com → Settings → Tokens |
+| `CIVIC_TOKEN` | Civic token from app.civic.com → Settings → Tokens |
 | `ANTHROPIC_API_KEY` | Anthropic API key for the Claude model |
 
 ## Reference Implementation

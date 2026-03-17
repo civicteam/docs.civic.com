@@ -5,7 +5,7 @@
 ## Getting Started with Civic (MCP Hub)
 
 - [Get Started](https://docs.civic.com/civic/quickstart): Sign up, get a token, make a first tool call in under 10 minutes
-- [Civic Control Plane (Chat)](https://docs.civic.com/civic/quickstart/civic-chat): Configure toolkits, query audit logs, revoke access via natural language at nexus.civic.com
+- [Civic Control Plane (Chat)](https://docs.civic.com/civic/quickstart/civic-chat): Configure toolkits, query audit logs, revoke access via natural language at app.civic.com
 - [Credentials & URL Parameters](https://docs.civic.com/civic/quickstart/credentials): MCP URL, toolkit params, token generation
 - [Agent Deployment](https://docs.civic.com/civic/quickstart/clients/agents): Profile locking, URL params, skills pre-loading, authentication for autonomous agents
 - [Client Compatibility](https://docs.civic.com/civic/reference/client-compatibility): Full matrix of supported clients and connection methods

@@ -36,7 +36,7 @@
 - **Revocation Agent**: instantly revoke access at any granularity
 - Endpoint is protected — separated from the AI agent layer by design
 - Consumes credits (same pool as tool calls)
-- Accessible at nexus.civic.com when logged in
+- Accessible at app.civic.com when logged in
 
 **Secret Management**: Civic stores OAuth tokens, API keys, Bearer tokens on behalf of devs/builders/users. Secrets are never exposed to the AI agent — only accessible by tools communicating through the Hub. Added via UI or Configurator Agent.
 
@@ -46,9 +46,9 @@
 
 **Free Trial**: 10,000 credits, 14 days (whichever comes first). Paid plans: $25/mo (30k credits), $99/mo (100k), $199/mo (450k). Credits consumed by tool calls and Configurator Agent chat.
 
-**nexus.civic.com**: Current product URL. Leave as-is in all docs (rename planned later, not our concern now).
+**app.civic.com**: Current product URL. Leave as-is in all docs (rename planned later, not our concern now).
 
-**Onboarding**: Users go through an onboarding flow at nexus.civic.com where they select their AI agent framework and tools. After onboarding, they can configure guardrails in chat or UI, access audit trails via chat (UI coming soon), trigger revocation in chat or UI.
+**Onboarding**: Users go through an onboarding flow at app.civic.com where they select their AI agent framework and tools. After onboarding, they can configure guardrails in chat or UI, access audit trails via chat (UI coming soon), trigger revocation in chat or UI.
 
 ---
 
@@ -173,9 +173,9 @@ Civic Tab
 **Title**: "Get Your Credentials"
 **Purpose**: Answer "what do I actually need before I can connect?" in one place.
 **Content**:
-- Your MCP URL: `https://nexus.civic.com/hub/mcp` (always the same base)
+- Your MCP URL: `https://app.civic.com/hub/mcp` (always the same base)
 - URL params: `?profile=your-toolkit` to lock to a specific toolkit, `?accountId=` for orgs
-- How to get a Civic token (for agents/automation): nexus.civic.com → Settings → Tokens → Generate
+- How to get a Civic token (for agents/automation): app.civic.com → Settings → Tokens → Generate
 - Token expiry: 30 days, must regenerate
 - OAuth vs Token: OAuth = for interactive clients (Claude Desktop etc.); Token = for agents/automation
 - For new builders: recommend Civic Auth to identify users → links to Auth tab
@@ -200,7 +200,7 @@ Civic Tab
 **Content**:
 - What Civic manages: OAuth tokens, API keys, Bearer tokens, custom credentials
 - The isolation guarantee: secrets are never passed to the AI agent; only the Hub can access them to make tool calls
-- How to add secrets: via nexus.civic.com UI or via Configurator Agent in Civic Chat
+- How to add secrets: via app.civic.com UI or via Configurator Agent in Civic Chat
 - Supported credential types with examples (OAuth via authorization flow, API key via input, Bearer token via input)
 - What the agent sees vs what the Hub sees (diagram or comparison)
 - Rotation: OAuth tokens auto-refresh; API keys require manual update; tokens expire in 30 days
@@ -238,7 +238,7 @@ Civic Tab
   - "Block the delete_event tool on Google Calendar" → guardrail-based
   - "Revoke my Gmail connection" → OAuth severance
   - "Delete my production-agent toolkit" → nuclear option
-- How to revoke via UI: nexus.civic.com → Authorizations → Revoke
+- How to revoke via UI: app.civic.com → Authorizations → Revoke
 - Incident response pattern:
   1. Immediately revoke the relevant connection or toolkit
   2. Check audit log to understand what happened
@@ -253,7 +253,7 @@ Civic Tab
 - What a skill is: a set of instructions, business context, terminology, and workflows that the AI loads on top of its current toolkit
 - How it differs from a Toolkit (see Toolkits vs Skills table above)
 - Use cases: "PR Reviewer" (knows your code review standards), "Pipeline Summary" (knows your Salesforce schema), "Support Agent" (knows your escalation policies)
-- How to create a skill: in nexus.civic.com, create a new profile of type SKILL, add instructions
+- How to create a skill: in app.civic.com, create a new profile of type SKILL, add instructions
 - How to load a skill:
   - Via URL param: `?skills=pr-reviewer,canned-responses`
   - Via Chat: ask the Configurator Agent to load a skill
@@ -305,7 +305,7 @@ Civic Tab
 ### `quickstart/clients/codex.mdx`
 - Make Remote URL the primary method (it already exists in the file as "Option A/B")
 - Hub Bridge section: move to bottom, label as "Legacy / offline-only"
-- Primary setup is already in file: `codex mcp add civic --transport http https://nexus.civic.com/hub/mcp`
+- Primary setup is already in file: `codex mcp add civic --transport http https://app.civic.com/hub/mcp`
 
 ### `quickstart/clients/agents.mdx`
 - Rename title: "Agent Deployment"
@@ -405,7 +405,7 @@ When updating Google Workspace server reference pages, add guardrail callouts fo
 
 **Gemini CLI**: Native HTTP support via `httpUrl` field in `~/.gemini/settings.json` or `.gemini/settings.json`.
 
-**Codex**: Both methods already documented in codex.mdx. Option A: `codex mcp add civic --transport http https://nexus.civic.com/hub/mcp`. Option B: Settings → MCP Servers → Add Server → Streamable HTTP → paste CIVIC_URL and CIVIC_TOKEN. Just needs Hub Bridge demoted to legacy.
+**Codex**: Both methods already documented in codex.mdx. Option A: `codex mcp add civic --transport http https://app.civic.com/hub/mcp`. Option B: Settings → MCP Servers → Add Server → Streamable HTTP → paste CIVIC_URL and CIVIC_TOKEN. Just needs Hub Bridge demoted to legacy.
 
 **Anthropic SDK**: MCP still in public beta. Current header: `anthropic-beta: mcp-client-2025-11-20`. Header still required as of early 2026.
 
