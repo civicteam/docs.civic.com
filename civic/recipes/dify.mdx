@@ -9,7 +9,7 @@ Connect [Dify](https://dify.ai/) workflows and chatbots to Civic's MCP Hub. Dify
 ## Prerequisites
 
 - A Dify account (cloud at [dify.ai](https://dify.ai) or self-hosted)
-- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
 - A Civic token
 
 ## Get Your Credentials
@@ -30,7 +30,7 @@ You need your Civic MCP URL and a Civic token before configuring Dify.
     Select **MCP** as the tool type and enter your Civic MCP URL:
 
     ```
-    https://nexus.civic.com/hub/mcp?profile=your-toolkit
+    https://app.civic.com/hub/mcp?profile=your-toolkit
     ```
 
     Set the authentication header:
@@ -55,7 +55,7 @@ You need your Civic MCP URL and a Civic token before configuring Dify.
 For production apps, lock to a specific toolkit by adding the `profile` parameter to your MCP URL:
 
 ```
-https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+https://app.civic.com/hub/mcp?profile=your-production-toolkit
 ```
 
 When a profile is set, the session is locked — the agent cannot switch toolkits or modify its own guardrails.

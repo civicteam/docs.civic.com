@@ -18,7 +18,7 @@ Integrate Civic with Anthropic's Messages API using the **native MCP connector**
 
 ## Prerequisites
 
-- Civic account at [nexus.civic.com](https://nexus.civic.com) with at least one MCP server connected
+- Civic account at [app.civic.com](https://app.civic.com) with at least one MCP server connected
 - Anthropic API key from [console.anthropic.com](https://console.anthropic.com)
 
 ## Installation
@@ -43,7 +43,7 @@ Choose the path that matches your use case:
     # .env
     ANTHROPIC_API_KEY=your_anthropic_api_key
     CIVIC_TOKEN=your-civic-token-here
-    CIVIC_URL=https://nexus.civic.com/hub/mcp
+    CIVIC_URL=https://app.civic.com/hub/mcp
     ```
   </Tab>
   <Tab title="Next.js App (Civic Auth)">
@@ -120,7 +120,7 @@ Choose the path that matches your use case:
         mcp_servers: [
           {
             type: 'url',
-            url: 'https://nexus.civic.com/hub/mcp',
+            url: 'https://app.civic.com/hub/mcp',
             name: 'civic',
             authorization_token: accessToken,
           },

@@ -9,7 +9,7 @@ Connect a [smolagents](https://huggingface.co/docs/smolagents/) agent from Huggi
 ## Prerequisites
 
 - Python 3.11+
-- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
 - A Civic token and an Anthropic API key
 
 ## Installation
@@ -21,7 +21,7 @@ pip install "smolagents[mcp]" litellm python-dotenv
 ## Environment Variables
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
 CIVIC_TOKEN=your-civic-token
 ANTHROPIC_API_KEY=your-anthropic-key
 ```
@@ -75,7 +75,7 @@ mcp_client.disconnect()
 For production agents, lock to a specific toolkit using the `profile` URL parameter:
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-production-toolkit
 ```
 
 ## Reference Implementation

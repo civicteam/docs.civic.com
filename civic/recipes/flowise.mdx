@@ -9,7 +9,7 @@ Connect [Flowise](https://flowiseai.com/) agents to Civic's MCP Hub. Flowise sup
 ## Prerequisites
 
 - A Flowise instance (cloud or self-hosted)
-- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
 - A Civic token
 
 ## Get Your Credentials
@@ -31,7 +31,7 @@ You need your Civic MCP URL and a Civic token before configuring Flowise.
   </Step>
   <Step title="Configure the MCP server">
     In the MCP Tool node settings:
-    - **MCP Server URL**: `https://nexus.civic.com/hub/mcp?profile=your-toolkit`
+    - **MCP Server URL**: `https://app.civic.com/hub/mcp?profile=your-toolkit`
     - **Transport**: `Streamable HTTP`
     - **Headers**: Add `Authorization` with value `Bearer your-civic-token`
   </Step>
@@ -48,7 +48,7 @@ You need your Civic MCP URL and a Civic token before configuring Flowise.
 For production flows, lock to a specific toolkit by adding the `profile` parameter to your MCP URL:
 
 ```
-https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+https://app.civic.com/hub/mcp?profile=your-production-toolkit
 ```
 
 When a profile is set, the session is locked — the agent cannot switch toolkits or modify its own guardrails.

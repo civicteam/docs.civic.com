@@ -14,8 +14,8 @@ icon: "command"
   <Card title="JetBrains IDE 2025.2+" icon="command" href="https://www.jetbrains.com">
     IntelliJ IDEA, PyCharm, WebStorm, or any JetBrains IDE with AI Assistant
   </Card>
-  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
-    Create a free account and configure your tools at nexus.civic.com
+  <Card title="Civic Account" icon="user" href="https://app.civic.com">
+    Create a free account and configure your tools at app.civic.com
   </Card>
 </CardGroup>
 
@@ -38,7 +38,7 @@ JetBrains IDEs support MCP configuration via the UI or a JSON config file. Both 
 
         - **Name:** `Civic`
         - **Command:** `npx`
-        - **Arguments:** `-y mcp-remote https://nexus.civic.com/hub/mcp`
+        - **Arguments:** `-y mcp-remote https://app.civic.com/hub/mcp`
       </Step>
       <Step title="Save and connect">
         Click **OK** to save. JetBrains will launch the bridge and connect to Civic automatically.
@@ -57,7 +57,7 @@ JetBrains IDEs support MCP configuration via the UI or a JSON config file. Both 
         {
           "name": "Civic",
           "command": "npx",
-          "args": ["-y", "mcp-remote@latest", "https://nexus.civic.com/hub/mcp"]
+          "args": ["-y", "mcp-remote@latest", "https://app.civic.com/hub/mcp"]
         }
       ]
     }
@@ -86,7 +86,7 @@ Open AI Assistant and try:
   <Accordion title="Authentication browser window doesn't open">
     Try running the connection manually from terminal:
     ```bash
-    npx -y mcp-remote https://nexus.civic.com/hub/mcp
+    npx -y mcp-remote https://app.civic.com/hub/mcp
     ```
     Complete the auth flow there, then restart the IDE.
   </Accordion>

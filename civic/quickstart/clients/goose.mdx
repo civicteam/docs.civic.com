@@ -16,8 +16,8 @@ Goose (Block's autonomous developer agent) now supports direct remote HTTP endpo
   <Card title="Goose" icon="terminal" href="https://github.com/block/goose">
     Install Goose autonomous developer agent
   </Card>
-  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
-    Create a free account on nexus.civic.com
+  <Card title="Civic Account" icon="user" href="https://app.civic.com">
+    Create a free account on app.civic.com
   </Card>
 </CardGroup>
 
@@ -25,7 +25,7 @@ Goose (Block's autonomous developer agent) now supports direct remote HTTP endpo
 
 <Steps>
   <Step title="Set up your Civic account">
-    If you haven't already, complete onboarding at nexus.civic.com:
+    If you haven't already, complete onboarding at app.civic.com:
 
     <OnboardingSteps />
   </Step>
@@ -41,7 +41,7 @@ Goose (Block's autonomous developer agent) now supports direct remote HTTP endpo
       servers:
         civic:
           type: http
-          url: https://nexus.civic.com/hub/mcp
+          url: https://app.civic.com/hub/mcp
           name: "Civic"
     ```
 
@@ -73,7 +73,7 @@ Goose (Block's autonomous developer agent) now supports direct remote HTTP endpo
   </Step>
 
   <Step title="Authenticate with Civic">
-    On the first tool call, Goose opens a browser window to nexus.civic.com. Sign in with your Civic account to authorize the session. This is a one-time OAuth flow — credentials are cached after the first login.
+    On the first tool call, Goose opens a browser window to app.civic.com. Sign in with your Civic account to authorize the session. This is a one-time OAuth flow — credentials are cached after the first login.
 
     Individual services (GitHub, Slack, etc.) will each prompt for their own OAuth authorization the first time you use them.
 

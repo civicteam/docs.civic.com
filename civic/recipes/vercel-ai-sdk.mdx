@@ -38,7 +38,7 @@ pnpm dev
 ### Prerequisites
 
 1. Next.js 14+ project with App Router
-2. Civic account at [nexus.civic.com](https://nexus.civic.com) with at least one MCP server connected
+2. Civic account at [app.civic.com](https://app.civic.com) with at least one MCP server connected
 3. Node.js 18+
 
 ### Installation
@@ -91,7 +91,7 @@ export const getCivicTools = async () => {
 
   try {
     const transport = new StreamableHTTPClientTransport(
-      new URL('https://nexus.civic.com/hub/mcp'), {
+      new URL('https://app.civic.com/hub/mcp'), {
         requestInit: {
           headers: {
             Authorization: `Bearer ${accessToken}`
@@ -152,7 +152,7 @@ const result = streamText({
     Clone [ai-chatbot](https://github.com/civicteam/ai-chatbot) for a working example with UI, auth, and streaming
   </Step>
   <Step title="Connect Your Services">
-    Visit [nexus.civic.com](https://nexus.civic.com) to connect GitHub, Slack, Notion, and other services
+    Visit [app.civic.com](https://app.civic.com) to connect GitHub, Slack, Notion, and other services
   </Step>
   <Step title="Test Tool Calls">
     Run locally and ask your AI to "list my GitHub repos" or "search Slack messages"

@@ -17,7 +17,7 @@ icon: "wrench"
     - Check that you're signed into your Claude account
     - Remove and re-add the Civic connector with fresh URL
     - Clear browser cache and cookies for claude.ai
-    - Verify the MCP URL is correct: `https://nexus.civic.com/hub/mcp`
+    - Verify the MCP URL is correct: `https://app.civic.com/hub/mcp`
     
     **For ChatGPT (when available):**
     - Ensure you have ChatGPT Plus or Enterprise
@@ -30,7 +30,7 @@ icon: "wrench"
     **Symptoms:** Connector connects but tools return "Unauthorized" errors
     
     **Solutions:**
-    - Visit [nexus.civic.com](https://nexus.civic.com) and ensure you've authorized the specific services (GitHub, Slack, etc.)
+    - Visit [app.civic.com](https://app.civic.com) and ensure you've authorized the specific services (GitHub, Slack, etc.)
     - Check that your service accounts haven't revoked access
     - Re-authorize individual services: ask your AI "Connect me to GitHub"
     - Verify you have the required permissions (repo access, workspace membership, etc.)
@@ -44,8 +44,8 @@ icon: "wrench"
     **Symptoms:** "Connector not found", "Invalid URL", or "Service unavailable" when adding connector
     
     **Solutions:**
-    - Double-check the MCP URL is exactly: `https://nexus.civic.com/hub/mcp`
-    - Ensure you have created an account at [nexus.civic.com](https://nexus.civic.com)
+    - Double-check the MCP URL is exactly: `https://app.civic.com/hub/mcp`
+    - Ensure you have created an account at [app.civic.com](https://app.civic.com)
     - Check your internet connection and try again
     - Corporate firewall may be blocking - try from personal network
     - Wait a few minutes and retry (temporary service issues)
@@ -55,7 +55,7 @@ icon: "wrench"
     **Symptoms:** Connector works but specific tools return "Not Found" errors
     
     **Solutions:**
-    - Check that you selected the required MCP servers at nexus.civic.com
+    - Check that you selected the required MCP servers at app.civic.com
     - Some tools require specific service permissions - re-authorize the service
     - Try asking: "What MCP servers are available?" to see current connections
     - Service may be temporarily unavailable - try again later
@@ -91,7 +91,7 @@ icon: "wrench"
     
     **Solutions:**
     - Restart your client completely after initial setup
-    - Check nexus.civic.com - make sure you selected MCP servers
+    - Check app.civic.com - make sure you selected MCP servers
     - Ask your AI: "What MCP tools are available?" to verify connection
     - Complete OAuth flows for each service you want to use
   </Accordion>
@@ -105,7 +105,7 @@ icon: "wrench"
     
     **Solutions:**
     - Check system clock is accurate (OAuth tokens are time-sensitive)
-    - Clear browser cookies for civic.com and nexus.civic.com
+    - Clear browser cookies for civic.com and app.civic.com
     - Remove and re-add the connector in your client
   </Accordion>
   
@@ -113,7 +113,7 @@ icon: "wrench"
     **Symptoms:** "Invalid scope", "Access denied", or "Token expired" for GitHub/Slack/etc.
     
     **Solutions:**
-    - Revisit nexus.civic.com and re-authorize the specific service
+    - Revisit app.civic.com and re-authorize the specific service
     - Check service account permissions (e.g., GitHub org access, Slack workspace admin)
     - Some services require re-authorization after permission changes
     - Token may have been revoked - re-authorize to generate new one
@@ -123,7 +123,7 @@ icon: "wrench"
     **Symptoms:** "Unauthorized" or "Forbidden" errors when using MCP commands
     
     **Solutions:**
-    - Service tokens may have expired - re-authorize at nexus.civic.com
+    - Service tokens may have expired - re-authorize at app.civic.com
     - Check rate limits - wait a few minutes and try again
     - Verify you have required permissions (repo access, channel membership, etc.)
     - Contact admin if using workspace/organization accounts
@@ -270,10 +270,10 @@ Test connectivity to Civic services:
 
 ```bash
 # Test basic connectivity
-curl -I https://nexus.civic.com
+curl -I https://app.civic.com
 
 # Test MCP endpoint (should return 405 Method Not Allowed - that's correct)
-curl -I https://nexus.civic.com/hub/mcp
+curl -I https://app.civic.com/hub/mcp
 ```
 
 ### Reset Everything
@@ -285,7 +285,7 @@ If nothing else works, complete reset:
     Remove Civic connector from client
   </Step>
   <Step title="Clear Browser Data">
-    Clear cookies/data for civic.com and nexus.civic.com
+    Clear cookies/data for civic.com and app.civic.com
   </Step>
   <Step title="Restart">
     Restart client and browser

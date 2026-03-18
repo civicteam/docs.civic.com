@@ -9,7 +9,7 @@ Connect a [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/) 
 ## Prerequisites
 
 - Python 3.11+
-- A Civic account at [nexus.civic.com](https://nexus.civic.com) with a configured toolkit
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
 - A Civic token and an Anthropic API key
 
 ## Installation
@@ -23,7 +23,7 @@ pip install "semantic-kernel" "anthropic" "pydantic>=2.0.0,<3.0.0" python-dotenv
 ## Environment Variables
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
 CIVIC_TOKEN=your-civic-token
 ANTHROPIC_API_KEY=your-anthropic-key
 ```
@@ -87,7 +87,7 @@ The `name` parameter is required for `MCPStreamableHttpPlugin`. Use `kernel.invo
 For production agents, lock to a specific toolkit using the `profile` URL parameter:
 
 ```bash
-CIVIC_URL=https://nexus.civic.com/hub/mcp?profile=your-production-toolkit
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-production-toolkit
 ```
 
 ## Reference Implementation

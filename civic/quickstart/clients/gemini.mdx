@@ -12,8 +12,8 @@ import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
   <Card title="Gemini CLI" icon="terminal" href="https://github.com/google-gemini/gemini-cli">
     Install the Gemini CLI (`npm install -g @google/gemini-cli`)
   </Card>
-  <Card title="Civic Account" icon="user" href="https://nexus.civic.com">
-    Create a free account and configure your tools at nexus.civic.com
+  <Card title="Civic Account" icon="user" href="https://app.civic.com">
+    Create a free account and configure your tools at app.civic.com
   </Card>
 </CardGroup>
 
@@ -22,7 +22,7 @@ If you haven't set up Civic yet:
 <OnboardingSteps />
 
 <Note>
-**Authentication**: Gemini CLI uses OAuth. The first time you run a tool call, you'll be redirected to nexus.civic.com in your browser to sign in and authorize. After that, credentials are cached and subsequent sessions don't require a browser.
+**Authentication**: Gemini CLI uses OAuth. The first time you run a tool call, you'll be redirected to app.civic.com in your browser to sign in and authorize. After that, credentials are cached and subsequent sessions don't require a browser.
 </Note>
 
 ## Setup
@@ -37,7 +37,7 @@ Gemini CLI supports remote MCP servers via `httpUrl` — no local bridge require
     {
       "mcpServers": {
         "civic": {
-          "httpUrl": "https://nexus.civic.com/hub/mcp"
+          "httpUrl": "https://app.civic.com/hub/mcp"
         }
       }
     }
@@ -52,7 +52,7 @@ Gemini CLI supports remote MCP servers via `httpUrl` — no local bridge require
     {
       "mcpServers": {
         "civic": {
-          "httpUrl": "https://nexus.civic.com/hub/mcp"
+          "httpUrl": "https://app.civic.com/hub/mcp"
         }
       }
     }
@@ -88,7 +88,7 @@ On first use, Gemini CLI will redirect you to complete the Civic OAuth flow in y
     Then start a new session — the OAuth flow will run again on the next request.
   </Accordion>
   <Accordion title="Tools not available after connecting">
-    Visit [nexus.civic.com](https://nexus.civic.com) to confirm your toolkit has MCP servers configured. An empty toolkit will result in no tools being available.
+    Visit [app.civic.com](https://app.civic.com) to confirm your toolkit has MCP servers configured. An empty toolkit will result in no tools being available.
   </Accordion>
 </AccordionGroup>
 
