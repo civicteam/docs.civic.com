@@ -50,3 +50,8 @@ https://app.civic.com/hub/mcp.*
 # Self-referential docs links in skill prompt snippets — valid once branch is deployed
 https://docs.civic.com/civic/recipes/.*
 https://docs.civic.com/civic/quickstart/credentials
+
+# nexus-demo app folders not yet published (planned in civicteam/civic-mcp#2653)
+https://github.com/civicteam/nexus-demo/tree/main/apps/civic-auth-demo
+https://github.com/civicteam/nexus-demo/tree/main/apps/better-auth-demo
+https://github.com/civicteam/nexus-demo/tree/main/apps/google-auth-demo
