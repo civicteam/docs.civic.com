@@ -16,6 +16,7 @@ https://github.com/.*#L[0-9]+
 # Known problematic domains that may block automated requests
 https://medium.com/.*
 https://www.coinbase.com/.*
+https://portal.cdp.coinbase.com/.*
 
 # Civic-specific patterns (adjust as needed)
 # SEC links disallow redirects
