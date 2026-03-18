@@ -63,6 +63,7 @@
             "group": "Integration",
             "icon": "plug",
             "pages": [
+              "civic/developers/native-integration/authorization",
               "civic/quickstart/clients/agents",
               {
                 "group": "AI Agents & Chat Tools",
@@ -145,7 +146,6 @@
                 "icon": "lock",
                 "pages": [
                   "civic/reference/authorizations",
-                  "civic/developers/native-integration/authorization",
                   "civic/concepts/tokens",
                   "civic/developers/native-integration/civic-auth-capability",
                   "civic/developers/native-integration/overview",
