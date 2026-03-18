@@ -1,8 +1,10 @@
 ---
-title: "Authorization"
-description: "How authentication and authorization work when connecting to Civic as a third-party application"
+title: "Authentication Options"
+description: "How to authenticate your app's users with Civic — using Civic Auth directly or via token exchange with a third-party provider"
 icon: "lock"
 ---
+
+This guide is for **app builders** who want to connect their own application to Civic — where your app has its own users and you need each user to get their own Civic access. If you just need a token to plug into a third-party agent platform (like OpenAI Agent Builder or n8n), see [Civic Tokens](/civic/concepts/tokens) instead.
 
 Civic exposes its capabilities through a single MCP endpoint at `https://app.civic.com/hub/mcp`. Every request to this endpoint must carry a valid access token issued by **Civic Auth** (`auth.civic.com`).
 
@@ -12,83 +14,151 @@ Access tokens are JWTs issued by Civic Auth. Each token is scoped to a specific 
 
 Civic provides its own native app for managing Civic access (e.g. at [app.civic.com/web](https://app.civic.com/web)), but third-party applications typically want to manage users within their own product experience.
 
-## What you need to do
+## Setting up your integration
 
-To connect your application to Civic with your own user management, you need to complete two steps:
+The **Settings → Integration** page in your Civic account provides a guided setup that walks you through connecting your app to Civic. The setup has three steps:
 
-### 1. Create an Organization and link your Client ID
+<Frame caption="The Integration page guides you through connecting authentication, configuring your auth provider, and setting up access controls.">
+  <img src="/images/civic/integration-guided-setup.png" alt="Civic Integration page showing the three-step guided setup: Connect authentication, Configure auth provider, and Configure access" />
+</Frame>
 
-Set up a **Civic Organization** and link your existing Civic Auth `CLIENT_ID` to it. This associates your application's users with your organization in Civic, so that access decisions, tool authorizations, and user data are scoped correctly.
+<Note>
+The Integration page requires an **Owner** or **Admin** role. Personal accounts will be prompted to convert to an organization first.
+</Note>
 
-<Steps>
-  <Step title="Register a Civic Auth application">
-    If you don't already have one, register at [auth.civic.com](https://auth.civic.com) to get a Client ID and Client Secret.
-  </Step>
-  <Step title="Create a Civic Organization">
-    Create an organization at [app.civic.com](https://app.civic.com).
-  </Step>
-  <Step title="Link your Client ID">
-    In your Civic organization, go to **Settings → Integration** and link your Civic Auth Client ID. Once linked, tokens issued for your application will be recognized by Civic.
+### Step 1: Connect authentication
 
-    <Frame caption="The Integration settings page for a Civic organization">
-      <img src="/images/civic/link-civic-auth-integration.png" alt="Civic Auth integration settings showing a linked Client ID and public access controls" />
-    </Frame>
+Create or link a Civic Auth application to your account. You have two options:
 
-    The Integration page has two sections:
+- **Create new auth connection** — Civic automatically creates a Civic Auth application, securely stores the credentials, links the Client ID to your account, and enables public access. This is the fastest way to get started.
+- **Link existing** — If you already have a Civic Auth application registered at [auth.civic.com](https://auth.civic.com), enter your Client ID and Client Secret to link it. The secret is stored encrypted and used to manage token exchange configuration on your behalf.
 
-    - **Civic Auth** — Link your organization to a [Civic Auth](https://auth.civic.com) application by entering your Client ID. Once linked, the status shows "Linked" along with the Client ID. You can update to a different Client ID or unlink at any time.
-    - **Public access** — Controls whether new users can join your organization automatically. By default, users must be invited (their access token must have both a matching email and Client ID). Enabling public access allows any user who authenticates with your Client ID to join automatically with an `END_USER` role.
+Once connected, the Integration page displays your credentials (`CIVIC_CLIENT_ID` and, for the token exchange path, `CIVIC_CLIENT_SECRET`) as environment variables ready to copy into your app's `.env` file.
 
-    <Note>
-    The Integration page is only available for organization accounts and requires an **Owner** or **Admin** role.
-    </Note>
-  </Step>
-</Steps>
+### Step 2: Configure your auth provider
 
-### 2. Obtain Civic Auth tokens for your users
-
-You have two options depending on your architecture:
+Choose how your application authenticates users. This determines how Civic verifies your users' identity.
 
 <Tabs>
-  <Tab title="Option A: Integrate Civic Auth directly">
-    **Best for:** Applications that don't have an existing identity provider.
+  <Tab title="Civic Auth (simplest)">
+    **Best for:** Applications that don't have an existing identity provider, or that want the simplest integration path.
 
-    Integrate [Civic Auth](/auth) as your application's authentication layer. Users sign in through Civic Auth, and your app receives access tokens that work directly with Civic.
+    With Civic Auth, your users' tokens work directly with Civic — no token exchange setup is needed. Use [`@civic/auth`](https://www.npmjs.com/package/@civic/auth) in your app and the user's session token is automatically valid for Civic API calls.
 
-    This is the simplest path — the tokens Civic Auth issues are already valid for the Civic MCP endpoint with no additional exchange needed.
+    No additional configuration is required for this path.
+
+    See the [Civic Auth demo](https://github.com/civicteam/nexus-demo/tree/main/apps/civic-auth-demo) for a complete working example.
   </Tab>
-  <Tab title="Option B: Token Exchange">
-    **Best for:** Applications that already have their own authentication system (e.g. Google, Auth0, Azure AD, or a custom identity provider).
+  <Tab title="Third-party provider">
+    **Best for:** Applications that already have their own authentication system.
 
-    Use the [Token Exchange](/overview/token-exchange) endpoint to swap tokens from your existing identity provider for Civic Auth access tokens. This follows the [OAuth 2.0 Token Exchange (RFC 8693)](https://datatracker.ietf.org/doc/html/rfc8693) standard.
+    Choose this path if your app uses any of the following:
+    - **[Auth.js](https://authjs.dev/)** (NextAuth) — any Auth.js provider (Google, GitHub, email, etc.)
+    - **[Better Auth](https://www.better-auth.com/)** — any Better Auth provider
+    - **Google OAuth** directly
+    - **Auth0**, **Azure AD / Entra ID**, **Okta**, or any other OIDC-compliant identity provider
 
-    At a high level:
-    1. Your user authenticates with your existing identity provider
-    2. Your backend exchanges that token for a Civic access token via `POST https://auth.civic.com/oauth/token`
-    3. The Civic access token is used to connect to Civic
+    Configure the identity provider your app uses directly from the Integration page. Each provider needs:
 
-    For the full integration guide — including key generation, JWKS setup, JWT claims, and code examples — see the [Token Exchange](/overview/token-exchange) guide.
+    - **Issuer URL** — Where tokens come from (e.g. `https://accounts.google.com`)
+    - **JWKS endpoint or public key** — To verify token signatures
 
-    #### Scoping access via token exchange
+    The Integration page provides presets for common providers (Google, Auth0) or you can configure a custom provider. This configures the [Token Exchange](/overview/token-exchange) flow so that tokens from your identity provider can be exchanged for Civic access tokens.
 
-    The token exchange grant supports two optional Civic-specific parameters that can be passed during the exchange to narrow the scope of the resulting access token:
+    <Note>
+    Provider configuration is managed through the Civic UI — you do not need to configure token exchange separately at auth.civic.com.
+    </Note>
 
-    | Parameter | Description |
-    |-----------|-------------|
-    | `civic_account` | Account identifier to include as a claim in the exchanged token. |
-    | `civic_profile` | Profile (toolkit) identifier to include as a claim in the exchanged token. |
-
-    Since a linked Civic Auth organization is already scoped to the account by default (via the Client ID), these parameters are primarily useful for restricting access to a **specific profile or toolkit** within the account — for example, limiting a user or agent to a single toolkit rather than the entire organization.
-
-    <Warning>
-    **Credential locking:** When `civic_profile` is present in the exchanged token, the profile is automatically **locked**. A locked profile can only access credentials that have been explicitly [assigned to it](/civic/reference/authorizations#profile-assignment) — unassigned credentials are not resolved. New credentials authenticated through the scoped token are automatically assigned to the profile. If you are migrating to profile-scoped tokens, review your credential assignments to ensure existing credentials are assigned to the relevant profiles.
-    </Warning>
+    Working examples:
+    - [Auth.js (NextAuth)](https://github.com/civicteam/nexus-demo/tree/main/apps/federated-auth-demo) — federated token exchange with Auth.js providers
+    - [Better Auth](https://github.com/civicteam/nexus-demo/tree/main/apps/better-auth-demo) — federated token exchange with Better Auth
+    - [Google OAuth](https://github.com/civicteam/nexus-demo/tree/main/apps/google-auth-demo) — direct Google OAuth integration
   </Tab>
 </Tabs>
 
-## Using the access token
+### Step 3: Configure access
 
-Once you have a Civic access token, pass it in the `Authorization` header when connecting to the Civic MCP endpoint:
+Control whether new users can join your account automatically:
+
+- **Public access enabled** — Any user who authenticates via your configured provider can access your account with an `END_USER` role.
+- **Public access disabled** (default) — Only invited users can access the account. Their access token must have both a matching email and Client ID.
+
+## Connecting to Civic
+
+Once setup is complete, your app needs to obtain a Civic access token **for each user** and use it to connect to the MCP endpoint. There are two ways to do this.
+
+### Using `@civic/mcp-client` (recommended)
+
+The [`@civic/mcp-client`](https://www.npmjs.com/package/@civic/mcp-client) SDK handles authentication and token exchange for you — each user gets their own scoped connection. The code differs slightly depending on your auth provider.
+
+<Tabs>
+  <Tab title="Civic Auth">
+    ```typescript
+    import { getUser } from "@civic/auth/nextjs";
+    const user = await getUser();
+
+    const client = new CivicMcpClient({
+      auth: { token: user.idToken },
+    });
+    ```
+  </Tab>
+  <Tab title="Auth.js / Better Auth / Google / Other">
+    ```typescript
+    const client = new CivicMcpClient({
+      auth: {
+        tokenExchange: {
+          clientId: process.env.CIVIC_CLIENT_ID,
+          clientSecret: process.env.CIVIC_CLIENT_SECRET,
+          subjectToken: () => getSessionToken(), // from your auth provider
+        },
+      },
+      civicProfile: "default", // optional: scope to a specific profile
+    });
+    ```
+
+    The `subjectToken` function should return a JWT from your identity provider (e.g. the session token from Auth.js, Better Auth, or a Google ID token). The SDK handles the token exchange automatically.
+  </Tab>
+</Tabs>
+
+Then use the client with your AI SDK:
+
+```typescript
+const tools = await client.getTools(vercelAIAdapter());
+const result = streamText({
+  model,
+  messages,
+  tools,
+});
+```
+
+<CardGroup cols={2}>
+  <Card title="Civic Auth demo" icon="shield-check" href="https://github.com/civicteam/nexus-demo/tree/main/apps/civic-auth-demo">
+    Direct Civic Auth integration — simplest path
+  </Card>
+  <Card title="Auth.js demo" icon="key" href="https://github.com/civicteam/nexus-demo/tree/main/apps/federated-auth-demo">
+    Federated token exchange with Auth.js (NextAuth)
+  </Card>
+  <Card title="Better Auth demo" icon="lock" href="https://github.com/civicteam/nexus-demo/tree/main/apps/better-auth-demo">
+    Federated token exchange with Better Auth
+  </Card>
+  <Card title="Google OAuth demo" icon="google" href="https://github.com/civicteam/nexus-demo/tree/main/apps/google-auth-demo">
+    Direct Google OAuth token exchange
+  </Card>
+</CardGroup>
+
+### Direct API access
+
+If you are not using `@civic/mcp-client` (e.g. from a non-JavaScript stack or a custom MCP client), your backend needs to obtain a Civic access token for each user and pass it when calling the hub.
+
+<Note>
+This is different from [Civic Tokens](/civic/concepts/tokens), which are single-user tokens generated manually from the Install page for use with agent platforms. The flow described here is programmatic and per-user — your app exchanges each user's identity token for a Civic access token at runtime.
+</Note>
+
+**If using Civic Auth:** The access token from your Civic Auth session is already valid — pass it directly.
+
+**If using a third-party provider:** Your backend exchanges each user's identity token for a Civic access token via the [Token Exchange](/overview/token-exchange) endpoint (`POST https://auth.civic.com/oauth/token`). See the [Token Exchange](/overview/token-exchange) guide for the full protocol details, including request parameters, provider configuration examples, and code samples.
+
+Once you have a Civic access token, pass it in the `Authorization` header:
 
 ```
 POST https://app.civic.com/hub/mcp
@@ -96,18 +166,32 @@ Content-Type: application/json
 Authorization: Bearer <civic-access-token>
 ```
 
-If your organization has multiple profiles configured, include the `x-civic-profile` header to scope requests:
+If your account has multiple profiles configured, include the `x-civic-profile` header to scope requests:
 
 ```
 x-civic-profile: default
 ```
 
+#### Scoping access via token exchange
+
+The token exchange grant supports two optional parameters to narrow the scope of the resulting access token:
+
+| Parameter | Description |
+|-----------|-------------|
+| `civic_account` | Account identifier to include as a claim in the exchanged token. |
+| `civic_profile` | Profile (toolkit) identifier to include as a claim in the exchanged token. |
+
+Since a linked Civic Auth application is already scoped to the account by default (via the Client ID), these parameters are primarily useful for restricting access to a **specific profile or toolkit** within the account — for example, limiting a user or agent to a single toolkit rather than the entire organization.
+
+<Warning>
+**Credential locking:** When `civic_profile` is present in the exchanged token, the profile is automatically **locked**. A locked profile can only access credentials that have been explicitly [assigned to it](/civic/reference/authorizations#profile-assignment) — unassigned credentials are not resolved. New credentials authenticated through the scoped token are automatically assigned to the profile. If you are migrating to profile-scoped tokens, review your credential assignments to ensure existing credentials are assigned to the relevant profiles.
+</Warning>
+
 ## Summary
 
 | Step | What | Where |
 |------|------|-------|
-| Register an app | Get a Client ID and Secret | [auth.civic.com](https://auth.civic.com) |
-| Create an org | Set up your Civic Organization | [app.civic.com](https://app.civic.com) |
-| Link Client ID to org | Associate your app with your org | Civic Settings → Integration |
-| Get tokens | Civic Auth directly **or** Token Exchange | See options above |
-| Connect to Civic | `Authorization: Bearer <token>` | `https://app.civic.com/hub/mcp` |
+| Connect authentication | Create or link a Civic Auth app | Civic Settings → Integration |
+| Configure provider | Civic Auth directly **or** add a third-party provider | Civic Settings → Integration |
+| Configure access | Enable or restrict public user access | Civic Settings → Integration |
+| Integrate | Use `@civic/mcp-client` (recommended) or call the API directly | See above |
