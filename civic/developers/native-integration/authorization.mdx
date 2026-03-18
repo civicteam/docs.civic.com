@@ -4,6 +4,8 @@ description: "How authentication and authorization work when connecting to Civic
 icon: "lock"
 ---
 
+This guide is for **app builders** who want to connect their own application to Civic — where your app has its own users and you need each user to get their own Civic access. If you just need a token to plug into a third-party agent platform (like OpenAI Agent Builder or n8n), see [Civic Tokens](/civic/concepts/tokens) instead.
+
 Civic exposes its capabilities through a single MCP endpoint at `https://app.civic.com/hub/mcp`. Every request to this endpoint must carry a valid access token issued by **Civic Auth** (`auth.civic.com`).
 
 ## How access tokens work
@@ -83,11 +85,11 @@ Control whether new users can join your account automatically:
 
 ## Connecting to Civic
 
-Once setup is complete, there are two ways to connect your app to the Civic MCP endpoint.
+Once setup is complete, your app needs to obtain a Civic access token **for each user** and use it to connect to the MCP endpoint. There are two ways to do this.
 
 ### Using `@civic/mcp-client` (recommended)
 
-The [`@civic/mcp-client`](https://www.npmjs.com/package/@civic/mcp-client) SDK handles authentication and token exchange for you. The code differs slightly depending on your auth provider.
+The [`@civic/mcp-client`](https://www.npmjs.com/package/@civic/mcp-client) SDK handles authentication and token exchange for you — each user gets their own scoped connection. The code differs slightly depending on your auth provider.
 
 <Tabs>
   <Tab title="Civic Auth">
@@ -146,11 +148,15 @@ const result = streamText({
 
 ### Direct API access
 
-If you are not using `@civic/mcp-client` (e.g. from a non-JavaScript stack or a custom MCP client), you need to obtain a Civic access token yourself and pass it directly.
+If you are not using `@civic/mcp-client` (e.g. from a non-JavaScript stack or a custom MCP client), your backend needs to obtain a Civic access token for each user and pass it when calling the hub.
+
+<Note>
+This is different from [Civic Tokens](/civic/concepts/tokens), which are single-user tokens generated manually from the Install page for use with agent platforms. The flow described here is programmatic and per-user — your app exchanges each user's identity token for a Civic access token at runtime.
+</Note>
 
 **If using Civic Auth:** The access token from your Civic Auth session is already valid — pass it directly.
 
-**If using a third-party provider:** Exchange your provider's token for a Civic access token via the [Token Exchange](/overview/token-exchange) endpoint (`POST https://auth.civic.com/oauth/token`). See the [Token Exchange](/overview/token-exchange) guide for the full protocol details, including request parameters, provider configuration examples, and code samples.
+**If using a third-party provider:** Your backend exchanges each user's identity token for a Civic access token via the [Token Exchange](/overview/token-exchange) endpoint (`POST https://auth.civic.com/oauth/token`). See the [Token Exchange](/overview/token-exchange) guide for the full protocol details, including request parameters, provider configuration examples, and code samples.
 
 Once you have a Civic access token, pass it in the `Authorization` header:
 
