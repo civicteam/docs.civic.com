@@ -168,12 +168,19 @@ There is no `send_gmail_message` tool for creating new outbound email from scrat
 | Required Search Labels | `search_gmail_messages` | Request | Requires specific labels to be included in search queries |
 | Safe Email Search | `search_gmail_messages` | Request | Prevents searching for emails with sensitive terms |
 | Search Results Filter | `search_gmail_messages` | Response | Filters search results containing sensitive information |
-| Approved Email Domains | `send_gmail_message` | Request | Restricts email sending to a list of approved domains |
+| Approved Email Domains | `send_gmail_message` | Request | Restricts sending to addresses ending in approved domains (e.g. `@civic.com`). Uses `ends_with` — the right choice for domain-level allow lists. |
 | Maximum Recipients | `send_gmail_message` | Request | Limits the number of email recipients |
-| Send to Verified Recipients Only | `send_gmail_message` | Request | Only allows sending emails to verified recipient domains |
+| Send to Verified Recipients Only | `send_gmail_message` | Request | Allows sending only to exact recipient addresses. Uses `matches` for precise per-address control — use **Approved Email Domains** instead if you want to allow any address at a domain. |
 | Sensitive Content Filter | `send_gmail_message` | Request | Prevents sending emails containing sensitive information |
 | Single Recipient Only | `send_gmail_message` | Request | Only allows sending emails to a specific recipient (allowlist) |
 
 <Tip>
-Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Gmail server."
+**Choosing the right send guardrail:**
+
+- Use **Approved Email Domains** when you want to allow any address at a domain — e.g. `@civic.com`. It uses an `ends_with` operator, so `titus@civic.com`, `team@civic.com`, etc. all pass.
+- Use **Send to Verified Recipients Only** only when you need exact per-address control (e.g. one specific address, no others). It uses a `matches` operator — if the `to` value doesn't match exactly, the send is blocked.
+
+A common mistake is configuring **Send to Verified Recipients Only** expecting domain-level filtering. If your intent is "only send within our company domain", use **Approved Email Domains**.
+
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add an approved email domains guardrail to my Gmail server for @civic.com."
 </Tip>
