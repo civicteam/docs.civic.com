@@ -9,20 +9,29 @@ public: true
 
 On Civic Auth, apps can be in either **Sandbox** or **Production** mode. When you create a new app, it starts in **Sandbox mode** to allow you to develop and test your integration.
 
-### Sandbox Mode Limitations
+This is a setting on the Civic Auth Dashboard — it is **separate from your own infrastructure environments** (such as a development server, staging environment, or production server).
 
-While in Sandbox mode, your app has the following limitations:
+### Sandbox Mode
 
-- **Uses Civic's SSO credentials**: Your app uses Civic's OAuth credentials for providers like Google, rather than your own
-- **No billing required**: Payment information is not required during development
-- **Domain restrictions may not be enforced**: Production-level domain security is not fully enforced
+In sandbox mode:
+
+- **Uses Civic's SSO credentials**: Your app uses Civic's shared OAuth credentials for providers like Google, so you can integrate and test without setting up your own OAuth app.
+- **No billing required**: Payment information is not required during development.
+- **Domain restrictions not enforced**: Your app accepts requests from any domain, including `localhost`. You can leave the Domains field empty in your Civic Dashboard and your app will work with any domain while testing.
+- **Same `clientId`**: Your app's `clientId` is the same in sandbox mode as it will be in production. **Your `clientId` does not change when you launch to production.**
 
 ### Production Mode
 
-Once you launch your app to production:
+Production mode is required before your app can be used by real users. To launch to production, you must:
+
+1. Provide your own SSO credentials (`clientId` and `clientSecret`) for each provider.
+2. Register at least one domain.
+3. Add payment information.
+
+To launch your app, click the **'Sandbox'** header in the Civic Auth Dashboard and select **'+ Launch to production'**.
 
 <Warning>
-  **This action is permanent**. Once an app is launched to production, it cannot be returned to Sandbox mode. Apps also cannot currently be deactivated or deleted by customers.
+  **This action is permanent**. Once an app is launched to production, it cannot be returned to Sandbox mode. There is no way to deactivate a Civic Auth app — if you need to stop users from authenticating, remove the Civic Auth integration from your application code.
 </Warning>
 
 <Info>
@@ -33,17 +42,26 @@ Once you've configured your App using the [Civic Auth Dashboard](https://auth.ci
 
 ## Configure SSO credentials
 
-In Sandbox mode, your app uses Civic's credentials for SSO providers such as Google. However, for a live app you need to provide your own credentials for your chosen providers.
+In Sandbox mode, your app uses Civic's credentials for SSO providers such as Google. However, for a live app you need to provide your own credentials (`clientId` and `clientSecret`) from your OAuth app configuration.
 
-For each provider, you need to set the `clientId` and `clientSecret` that will be provided to you when you set up your OAuth app.
+For each provider, you must also add the correct callback URL to your provider's list of allowed redirect URIs. You can find the exact callback URL for each provider directly in your Civic dashboard:
 
-You also need to add the Civic Auth domains to the OAuth whitelisted URLs
+1. Go to your Civic dashboard and navigate to the **SSO Setup** screen.
+2. Select the tab for your SSO provider (e.g. Google, Apple, Microsoft, Discord, X).
+3. The required callback URL is displayed on that tab — copy it and add it to your OAuth app's allowed redirect URIs.
 
-### *Example: Google*
+For reference, the table below lists the known callback URLs for common providers:
 
-You will need to add the following domains: `https://auth.civic.com` and `https://auth.civic.com/login/api/callback/google`.
+| Provider | Authorized domain | Callback URL |
+| --- | --- | --- |
+| Google | `https://auth.civic.com` | `https://auth.civic.com/login/api/callback/google` |
+| Apple | `https://auth.civic.com` | `https://auth.civic.com/login/api/callback/apple` |
+| Microsoft | `https://auth.civic.com` | `https://auth.civic.com/login/api/callback/azure-ad` |
+| X (Twitter) | `https://auth.civic.com` | `https://auth.civic.com/login/api/callback/twitter` |
 
-For other providers, the callback URL will have a different ending.
+<Info>
+  Always check the SSO Setup screen in your Civic dashboard for the most up-to-date callback URL for your provider. If your provider is not listed above, contact us in our [developer community](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) for assistance.
+</Info>
 
 ## Set a domain
 
