@@ -78,7 +78,7 @@
 - [OAuth & Civic Tokens](https://docs.civic.com/civic/concepts/tokens): Two auth methods — OAuth flow for interactive clients, bearer tokens for agents
 - [OAuth Reference](https://docs.civic.com/civic/concepts/oauth): OAuth 2.0 implementation details
 - [Authorizations Reference](https://docs.civic.com/civic/reference/authorizations): Scopes and permission model
-- [Native Integration Overview](https://docs.civic.com/civic/developers/native-integration/overview): Embedding Civic in your own app
+- [Integration Overview](https://docs.civic.com/civic/developers/integration/overview): Embedding Civic in your own app
 
 ## Plans & Support
 

@@ -63,7 +63,7 @@
             "group": "Integration",
             "icon": "plug",
             "pages": [
-              "civic/developers/native-integration/authorization",
+              "civic/developers/integration/apps",
               "civic/quickstart/clients/agents",
               {
                 "group": "AI Agents & Chat Tools",
@@ -73,6 +73,7 @@
                   "civic/quickstart/clients/claude-desktop",
                   "civic/quickstart/clients/claude-code",
                   "civic/quickstart/clients/chatgpt",
+                  "civic/quickstart/clients/manus",
                   "civic/quickstart/clients/mistral-lechat",
                   "civic/quickstart/clients/gemini",
                   "civic/quickstart/clients/openclaw",
@@ -147,8 +148,8 @@
                 "pages": [
                   "civic/reference/authorizations",
                   "civic/concepts/tokens",
-                  "civic/developers/native-integration/civic-auth-capability",
-                  "civic/developers/native-integration/overview",
+                  "civic/developers/integration/civic-auth-capability",
+                  "civic/developers/integration/overview",
                   "civic/concepts/oauth"
                 ]
               }

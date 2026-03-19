@@ -10,7 +10,7 @@ Connect a [DeepAgents](https://github.com/titus-civic/deepagents-reference-imple
 
 - Python 3.11+
 - A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
-- A Civic token (generate from Settings → Tokens)
+- A Civic token (generate from [Install → MCP URL](https://app.civic.com/web/install/mcp-url))
 - An Anthropic API key
 
 ## Installation
@@ -33,7 +33,7 @@ pip install deepagents langchain-mcp-adapters langchain-anthropic fastapi uvicor
 # Your full Civic toolkit URL (include profile param for production agents)
 CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit&lock=true
 
-# Civic token generated from app.civic.com → Settings → Tokens
+# Civic token generated from app.civic.com → Install → MCP URL
 CIVIC_TOKEN=your-civic-token
 
 # Anthropic API key
@@ -143,7 +143,7 @@ CIVIC_URL=https://app.civic.com/hub/mcp?profile=support&skills=escalation,canned
 | Variable | Description |
 |---|---|
 | `CIVIC_URL` | Full Civic toolkit URL including profile and any URL parameters |
-| `CIVIC_TOKEN` | Civic token from app.civic.com → Settings → Tokens |
+| `CIVIC_TOKEN` | Civic token from [app.civic.com → Install → MCP URL](https://app.civic.com/web/install/mcp-url) |
 | `ANTHROPIC_API_KEY` | Anthropic API key for the Claude model |
 
 ## Reference Implementation
