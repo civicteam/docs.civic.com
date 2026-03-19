@@ -50,6 +50,10 @@ For other providers, the callback URL will have a different ending.
 To ensure that your app is only usable by your website, you need to add the Domain that your website will be hosted on. You need to define at least one Domain, and a secure `https` site is recommended.
 
 <Info>
+  **Testing in sandbox mode:** While your app is in sandbox mode, you can remove all domains from your app's Domains settings in the Civic Dashboard, and your app will accept requests from any domain. This makes local and staging testing easier without needing to register each environment. Once you launch to production, at least one domain must be registered.
+</Info>
+
+<Info>
   Note that you can add localhost domains while testing but it's recommended that you remove localhost values when you bring your App to production as anyone running a localhost app could then potentially use your clientId.
 </Info>
 
