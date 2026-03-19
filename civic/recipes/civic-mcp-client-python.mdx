@@ -53,12 +53,12 @@ CIVIC_PROFILE_ID=optional-profile-id
 ```
 
 ```python
-import os
 from civic_mcp_client import CivicMCPClient
 
 client = CivicMCPClient(
-    auth={"token": os.environ["CIVIC_TOKEN"]},
-    civic_profile=os.getenv("CIVIC_PROFILE_ID"),
+    # Use your token loading approach (env vars, secrets manager, etc.)
+    auth={"token": "your-civic-token-here"},
+    civic_profile="optional-profile-id",
 )
 ```
 
@@ -76,7 +76,6 @@ CIVIC_PROFILE_ID=optional-profile-id
 ```
 
 ```python
-import os
 from civic_mcp_client import CivicMCPClient
 
 def get_external_access_token() -> str:
@@ -86,13 +85,14 @@ def get_external_access_token() -> str:
 client = CivicMCPClient(
     auth={
         "token_exchange": {
-            "client_id": os.environ["CIVIC_CLIENT_ID"],
-            "client_secret": os.environ["CIVIC_CLIENT_SECRET"],
+            # Token exchange credentials (server-side only)
+            "client_id": "your-client-id",
+            "client_secret": "your-client-secret",
             "subject_token": get_external_access_token,
             "expires_in": 3600,  # optional requested lifetime in seconds
         }
     },
-    civic_profile=os.getenv("CIVIC_PROFILE_ID"),
+    civic_profile="optional-profile-id",
 )
 ```
 
@@ -102,14 +102,13 @@ This quick start uses a manually generated Civic access token for local testing.
 
 ```python
 import asyncio
-import os
 from civic_mcp_client import CivicMCPClient
 
 
 async def main() -> None:
     client = CivicMCPClient(
-        auth={"token": os.environ["CIVIC_TOKEN"]},
-        civic_profile=os.getenv("CIVIC_PROFILE_ID"),
+        auth={"token": "your-civic-token-here"},
+        civic_profile="optional-profile-id",
     )
 
     # Discover available tools from your configured toolkit
