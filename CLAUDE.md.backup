@@ -141,9 +141,9 @@ Civic Tab
 ├── Authentication
 │   ├── concepts/oauth             existing
 │   ├── concepts/tokens            existing
-│   ├── native-integration/index   new builders → use Civic Auth
-│   ├── native-integration/authorization
-│   └── native-integration/civic-auth-capability  existing auth → token exchange
+│   ├── integration/index   new builders → use Civic Auth
+│   ├── integration/apps
+│   └── integration/civic-auth-capability  existing auth → token exchange
 │
 ├── Organize & Scale
 │   ├── concepts/toolkits          existing, needs skills comparison added
