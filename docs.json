@@ -87,6 +87,7 @@
                   "civic/recipes/openai-agents",
                   "civic/recipes/langchain",
                   "civic/recipes/python-pydantic",
+                  "civic/recipes/civic-mcp-client-python",
                   "civic/recipes/pydantic-ai",
                   "civic/recipes/vercel-ai-sdk",
                   "civic/recipes/google-adk",
