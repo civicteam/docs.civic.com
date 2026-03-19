@@ -73,6 +73,7 @@
                   "civic/quickstart/clients/claude-desktop",
                   "civic/quickstart/clients/claude-code",
                   "civic/quickstart/clients/chatgpt",
+                  "civic/quickstart/clients/manus",
                   "civic/quickstart/clients/mistral-lechat",
                   "civic/quickstart/clients/gemini",
                   "civic/quickstart/clients/openclaw",
