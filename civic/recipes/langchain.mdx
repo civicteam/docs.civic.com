@@ -10,7 +10,7 @@ Connect a LangGraph agent to Civic using the `langchain-mcp-adapters` package, w
 
 - Python 3.11+
 - A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
-- A Civic token (generate from Settings → Tokens)
+- A Civic token (generate from [Install → MCP URL](https://app.civic.com/web/install/mcp-url))
 - An LLM API key (e.g. Anthropic)
 
 ## Installation
@@ -25,7 +25,7 @@ pip install langgraph langchain-anthropic langchain-mcp-adapters
 # Your full Civic toolkit URL (include profile param for production agents)
 CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
 
-# Civic token generated from app.civic.com → Settings → Tokens
+# Civic token generated from app.civic.com → Install → MCP URL
 CIVIC_TOKEN=your-civic-token
 
 # Your LLM provider key
@@ -125,7 +125,7 @@ CIVIC_URL=https://app.civic.com/hub/mcp?profile=support&skills=escalation,canned
 | Variable | Description |
 |---|---|
 | `CIVIC_URL` | Full Civic toolkit URL including profile and any URL parameters |
-| `CIVIC_TOKEN` | Civic token from app.civic.com → Settings → Tokens |
+| `CIVIC_TOKEN` | Civic token from [app.civic.com → Install → MCP URL](https://app.civic.com/web/install/mcp-url) |
 
 ## Reference Implementation
 
