@@ -26,7 +26,7 @@ making it ideal for AI agents that need to pay for premium tools and services.
 
 ### Instant Micropayments
 - Pay-per-use model for MCP tools
-- Automatic USDC payments on [Base network](https://www.base.org/)
+- Automatic USDC payments on Base network
 - No accounts or authentication required
 - Settlement happens transparently during tool invocation
 
@@ -73,7 +73,7 @@ The library supports multiple deployment patterns:
 
 1. **Client requests a tool invocation** - Standard MCP request flow
 2. **Server responds with payment requirement** - HTTP 402 status with payment details
-3. **Client constructs payment** - Automatic USDC transaction on [Base](https://www.base.org/)
+3. **Client constructs payment** - Automatic USDC transaction on Base
 4. **Server verifies and executes** - Tool runs after payment confirmation
 5. **Results returned to client** - Standard MCP response with settlement info
 
