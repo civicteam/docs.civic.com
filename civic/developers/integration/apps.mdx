@@ -1,6 +1,6 @@
 ---
-title: "Authentication Options"
-description: "How to authenticate your app's users with Civic — using Civic Auth directly or via token exchange with a third-party provider"
+title: "App Integration"
+description: "How to integrate your app with Civic — using Civic Auth directly or via token exchange with a third-party provider"
 icon: "lock"
 ---
 
@@ -12,8 +12,6 @@ Civic exposes its capabilities through a single MCP endpoint at `https://app.civ
 
 Access tokens are JWTs issued by Civic Auth. Each token is scoped to a specific **application** (identified by a `CLIENT_ID`), which determines what a user is allowed to do — which tools they can call, which third-party services they can connect, and what data they can access.
 
-Civic provides its own native app for managing Civic access (e.g. at [app.civic.com/web](https://app.civic.com/web)), but third-party applications typically want to manage users within their own product experience.
-
 ## Setting up your integration
 
 The **Settings → Integration** page in your Civic account provides a guided setup that walks you through connecting your app to Civic. The setup has three steps:
@@ -21,10 +19,6 @@ The **Settings → Integration** page in your Civic account provides a guided se
 <Frame caption="The Integration page guides you through connecting authentication, configuring your auth provider, and setting up access controls.">
   <img src="/images/civic/integration-guided-setup.png" alt="Civic Integration page showing the three-step guided setup: Connect authentication, Configure auth provider, and Configure access" />
 </Frame>
-
-<Note>
-The Integration page requires an **Owner** or **Admin** role. Personal accounts will be prompted to convert to an organization first.
-</Note>
 
 ### Step 1: Connect authentication
 
@@ -174,24 +168,12 @@ x-civic-profile: default
 
 #### Scoping access via token exchange
 
-The token exchange grant supports two optional parameters to narrow the scope of the resulting access token:
+The token exchange grant supports an optional parameter to narrow the scope of the resulting access token:
 
-| Parameter | Description |
-|-----------|-------------|
-| `civic_account` | Account identifier to include as a claim in the exchanged token. |
-| `civic_profile` | Profile (toolkit) identifier to include as a claim in the exchanged token. |
+`civic_profile`: Profile (toolkit) identifier to include as a claim in the exchanged token.
 
 Since a linked Civic Auth application is already scoped to the account by default (via the Client ID), these parameters are primarily useful for restricting access to a **specific profile or toolkit** within the account — for example, limiting a user or agent to a single toolkit rather than the entire organization.
 
 <Warning>
 **Credential locking:** When `civic_profile` is present in the exchanged token, the profile is automatically **locked**. A locked profile can only access credentials that have been explicitly [assigned to it](/civic/reference/authorizations#profile-assignment) — unassigned credentials are not resolved. New credentials authenticated through the scoped token are automatically assigned to the profile. If you are migrating to profile-scoped tokens, review your credential assignments to ensure existing credentials are assigned to the relevant profiles.
 </Warning>
-
-## Summary
-
-| Step | What | Where |
-|------|------|-------|
-| Connect authentication | Create or link a Civic Auth app | Civic Settings → Integration |
-| Configure provider | Civic Auth directly **or** add a third-party provider | Civic Settings → Integration |
-| Configure access | Enable or restrict public user access | Civic Settings → Integration |
-| Integrate | Use `@civic/mcp-client` (recommended) or call the API directly | See above |
