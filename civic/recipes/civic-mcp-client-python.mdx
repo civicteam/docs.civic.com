@@ -16,6 +16,14 @@ It supports:
 - RFC 8693 token exchange (server-side only)
 - Adapter-based integration with frameworks like LangChain, Pydantic AI, and FastMCP
 
+## Recommended (demo-first)
+
+Start with the reference implementation:
+
+- https://github.com/civicteam/demos/tree/main/apps/civic-auth-demo-python-backend
+
+That demo uses Civic Auth in the frontend and forwards the authenticated Civic access token to a Python backend, which then passes it into `CivicMCPClient(auth={"token": ...})`.
+
 ## Install
 
 ```bash
@@ -30,9 +38,11 @@ pip install "civic-mcp-client[langchain,pydanticai,fastmcp]"
 
 ## Authentication
 
-### Civic Token (direct)
+### Civic Token (direct; manual token for local testing)
 
 <CivicTokenSetup />
+
+`CIVIC_TOKEN` (docs) is the same value as `access_token`. In the `python-civic-mcp-client` repo, this value is named `CIVIC_ACCESS_TOKEN`.
 
 ```bash
 # .env
@@ -86,7 +96,9 @@ client = CivicMCPClient(
 )
 ```
 
-## Quick Start
+## Quick Start (manual token)
+
+This quick start uses a manually generated Civic access token for local testing. For a production-like frontend + Python backend setup, use the demo app above.
 
 ```python
 import asyncio
