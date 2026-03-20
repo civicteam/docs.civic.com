@@ -31,6 +31,8 @@ Returned when the provided client ID is not recognized or has been deactivated. 
 
 Returned when the provided redirect URI doesn't match the pre-registered redirect URIs for the client ID. The redirect URI must exactly match one of the URIs specified during application registration.
 
+> **Troubleshooting tip:** If you are seeing this error while testing in sandbox mode, check whether you have registered any domains in your app's Domains settings in the Civic Dashboard. In sandbox mode, leaving the Domains field empty allows your app to accept requests from any domain. If you have already added domain restrictions, you can remove them from the dashboard while testing in sandbox mode.
+
 #### INVALID\_SCOPES (0x0005)
 
 Returned when one or more requested scopes are invalid or not available for the given client ID. Ensure all requested scopes are valid and that your application has permission to request them.
