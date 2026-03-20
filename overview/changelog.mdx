@@ -5,6 +5,21 @@ icon: "pen"
 public: true
 ---
 
+<Update label="March 20, 2026" description="apps-0.2.92">
+
+**Improvements**
+- Token exchange configuration now allows HTTP URLs for localhost addresses during local development, following OAuth 2.0 best practices (RFC 8252)
+- JWKS URI validation now enforces HTTPS-only for improved security, with an exception for localhost development
+
+**Bug fixes**
+- Fixed an issue where user analytics profiles could become fragmented, improving the accuracy of user identification
+- Updated dependencies to address known security vulnerabilities
+
+**Security**
+- Updated framework dependencies to resolve published security advisories
+
+</Update>
+
 <Update label="March 19, 2026" description="auth-server-1.2.26">
 
 **Improvements**
