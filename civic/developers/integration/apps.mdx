@@ -88,11 +88,11 @@ The [`@civic/mcp-client`](https://www.npmjs.com/package/@civic/mcp-client) SDK h
 <Tabs>
   <Tab title="Civic Auth">
     ```typescript
-    import { getUser } from "@civic/auth/nextjs";
-    const user = await getUser();
+    import { getTokens } from "@civic/auth/nextjs";
+    const tokens = await getTokens();
 
     const client = new CivicMcpClient({
-      auth: { token: user.idToken },
+      auth: { token: tokens.accessToken },
     });
     ```
   </Tab>
@@ -106,7 +106,7 @@ The [`@civic/mcp-client`](https://www.npmjs.com/package/@civic/mcp-client) SDK h
           subjectToken: () => getSessionToken(), // from your auth provider
         },
       },
-      civicProfile: "default", // optional: scope to a specific profile
+      civicProfile: process.env.CIVIC_PROFILE_ID, // optional: lock the client to this profile
     });
     ```
 
@@ -160,17 +160,17 @@ Content-Type: application/json
 Authorization: Bearer <civic-access-token>
 ```
 
-If your account has multiple profiles configured, include the `x-civic-profile` header to scope requests:
+If your account has multiple profiles configured, include the `x-civic-profile-id` header to scope requests to a specific profile:
 
 ```
-x-civic-profile: default
+x-civic-profile-id: <your-profile-uuid>
 ```
 
 #### Scoping access via token exchange
 
 The token exchange grant supports an optional parameter to narrow the scope of the resulting access token:
 
-`civic_profile`: Profile (toolkit) identifier to include as a claim in the exchanged token.
+`civic_profile`: Profile ID (UUID) to include as a claim in the exchanged token.
 
 Since a linked Civic Auth application is already scoped to the account by default (via the Client ID), these parameters are primarily useful for restricting access to a **specific profile or toolkit** within the account — for example, limiting a user or agent to a single toolkit rather than the entire organization.
 
