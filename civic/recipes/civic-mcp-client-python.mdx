@@ -49,7 +49,7 @@ pip install "civic-mcp-client[langchain,pydanticai,fastmcp]"
 CIVIC_TOKEN=your-civic-token-here
 
 # Optional: lock tool access to a specific profile id
-CIVIC_PROFILE_ID=optional-profile-id
+CIVIC_PROFILE_ID=your-profile-uuid
 ```
 
 ```python
@@ -58,7 +58,7 @@ from civic_mcp_client import CivicMCPClient
 client = CivicMCPClient(
     # Use your token loading approach (env vars, secrets manager, etc.)
     auth={"token": "your-civic-token-here"},
-    civic_profile="optional-profile-id",
+    civic_profile="your-profile-uuid",
 )
 ```
 
@@ -72,7 +72,7 @@ CIVIC_CLIENT_ID=your_client_id
 CIVIC_CLIENT_SECRET=your_client_secret
 
 # Optional: lock tool access to a specific profile id
-CIVIC_PROFILE_ID=optional-profile-id
+CIVIC_PROFILE_ID=your-profile-uuid
 ```
 
 ```python
@@ -92,7 +92,7 @@ client = CivicMCPClient(
             "expires_in": 3600,  # optional requested lifetime in seconds
         }
     },
-    civic_profile="optional-profile-id",
+    civic_profile="your-profile-uuid",
 )
 ```
 
@@ -108,7 +108,7 @@ from civic_mcp_client import CivicMCPClient
 async def main() -> None:
     client = CivicMCPClient(
         auth={"token": "your-civic-token-here"},
-        civic_profile="optional-profile-id",
+        civic_profile="your-profile-uuid",
     )
 
     # Discover available tools from your configured toolkit
