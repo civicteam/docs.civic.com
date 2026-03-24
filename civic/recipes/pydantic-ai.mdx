@@ -4,69 +4,155 @@ description: Connect a Pydantic AI agent to Civic's MCP Hub using streamable HTT
 icon: "python"
 ---
 
+import CivicTokenSetup from '/snippets/_civic-token-env-setup.mdx'
+
 Connect a [Pydantic AI](https://ai.pydantic.dev/) agent to Civic using native MCP support. Pydantic AI's `MCPServerStreamableHTTP` class handles session management and tool discovery automatically.
 
 ## Prerequisites
 
 - Python 3.11+
 - A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
-- A Civic token and an Anthropic API key
 
 ## Installation
 
 ```bash
-pip install pydantic-ai anthropic python-dotenv
+pip install pydantic-ai python-dotenv
 ```
 
-## Environment Variables
+## Authentication
 
-```bash
-CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
-CIVIC_TOKEN=your-civic-token
-ANTHROPIC_API_KEY=your-anthropic-key
-```
+<Tabs>
+  <Tab title="Script / Agent (Civic Token)">
+    For standalone scripts and autonomous agents — the simplest path.
 
-<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
-  How to generate a Civic token and configure toolkit URL parameters
-</Card>
+    <CivicTokenSetup />
 
-## Connecting to Civic
+    ```bash
+    # .env
+    CIVIC_TOKEN=your-civic-token-here
+    CIVIC_URL=https://app.civic.com/hub/mcp
+    ```
 
-Use `MCPServerStreamableHTTP` to configure the connection, then pass it to your agent via `mcp_servers`:
+    ```python
+    import os
+    import asyncio
+    from dotenv import load_dotenv
+    from pydantic_ai import Agent
+    from pydantic_ai.mcp import MCPServerStreamableHTTP
 
-```python
-import os
-import asyncio
-from dotenv import load_dotenv
-from pydantic_ai import Agent
-from pydantic_ai.mcp import MCPServerStreamableHTTP
+    load_dotenv()
 
-load_dotenv()
+    server = MCPServerStreamableHTTP(
+        os.environ["CIVIC_URL"],
+        headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+    )
 
-server = MCPServerStreamableHTTP(
-    os.environ["CIVIC_URL"],
-    headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
-)
+    agent = Agent("anthropic:claude-sonnet-4-6", mcp_servers=[server])
 
-agent = Agent("anthropic:claude-sonnet-4-6", mcp_servers=[server])
-```
+    async def main():
+        async with agent.run_mcp_servers():
+            result = await agent.run("List open PRs in civicteam/ai-chatbot")
+        print(result.output)
+
+    asyncio.run(main())
+    ```
+
+    <Tip>
+      You can customize tool names, arguments, and filtering. See [Pydantic AI MCP client docs](https://ai.pydantic.dev/mcp/client/#tool-call-customization).
+    </Tip>
+  </Tab>
+  <Tab title="Web App (Civic Auth)">
+    For web apps where each user has their own Civic session — use the `civic-auth` Python library to get a per-user access token.
+
+    ```bash
+    pip install civic-auth
+    ```
+
+    You need a Civic Auth client ID from [auth.civic.com](https://auth.civic.com).
+
+    <Tabs>
+      <Tab title="FastAPI">
+        ```python
+        import os
+        from fastapi import Depends
+        from pydantic_ai import Agent
+        from pydantic_ai.mcp import MCPServerStreamableHTTP
+        from civic_auth.integrations.fastapi import create_auth_dependencies
+        from civic_auth.core import CivicAuthConfig
+
+        config = CivicAuthConfig(client_id=os.environ["CIVIC_AUTH_CLIENT_ID"])
+        civic_auth_dep, get_current_user, require_auth = create_auth_dependencies(config)
+
+        @app.post("/chat", dependencies=[Depends(require_auth)])
+        async def chat(body: dict, civic=Depends(civic_auth_dep)):
+            tokens = await civic.get_tokens()
+            access_token = tokens["access_token"]
+
+            server = MCPServerStreamableHTTP(
+                "https://app.civic.com/hub/mcp",
+                headers={"Authorization": f"Bearer {access_token}"},
+            )
+            agent = Agent("openai:gpt-4o", mcp_servers=[server])
+            async with agent.run_mcp_servers():
+                result = await agent.run(body.get("prompt", ""))
+            return {"output": result.output}
+        ```
+      </Tab>
+      <Tab title="Flask">
+        ```python
+        import os
+        from flask import request, jsonify, session
+        from pydantic_ai import Agent
+        from pydantic_ai.mcp import MCPServerStreamableHTTP
+        from civic_auth.core import CivicAuth
+        from civic_auth.integrations.flask import civic_auth_required
+
+        @app.post("/chat")
+        @civic_auth_required
+        async def chat():
+            access_token = session.get(CivicAuth.ACCESS_TOKEN_KEY)
+            server = MCPServerStreamableHTTP(
+                "https://app.civic.com/hub/mcp",
+                headers={"Authorization": f"Bearer {access_token}"},
+            )
+            agent = Agent("openai:gpt-4o", mcp_servers=[server])
+            async with agent.run_mcp_servers():
+                result = await agent.run(request.json.get("prompt", ""))
+            return jsonify({"output": result.output})
+        ```
+      </Tab>
+      <Tab title="Django">
+        ```python
+        import os, json, asyncio
+        from django.http import JsonResponse
+        from pydantic_ai import Agent
+        from pydantic_ai.mcp import MCPServerStreamableHTTP
+        from civic_auth.core import CivicAuth
+        from civic_auth.integrations.django import civic_auth_required
+
+        @civic_auth_required
+        def chat(request):
+            access_token = request.session.get(CivicAuth.ACCESS_TOKEN_KEY)
+            payload = json.loads(request.body)
+            server = MCPServerStreamableHTTP(
+                "https://app.civic.com/hub/mcp",
+                headers={"Authorization": f"Bearer {access_token}"},
+            )
+            agent = Agent("openai:gpt-4o", mcp_servers=[server])
+            async def run_prompt():
+                async with agent.run_mcp_servers():
+                    return await agent.run(payload.get("prompt", ""))
+            result = asyncio.run(run_prompt())
+            return JsonResponse({"output": result.output})
+        ```
+      </Tab>
+    </Tabs>
+  </Tab>
+</Tabs>
 
 <Note>
 Use `mcp_servers=[server]` — not `toolsets=[server]`. The `mcp_servers` parameter is the current Pydantic AI API for MCP connections.
 </Note>
-
-## Running the Agent
-
-Wrap agent calls with `agent.run_mcp_servers()` to establish the MCP session:
-
-```python
-async def main():
-    async with agent.run_mcp_servers():
-        result = await agent.run("What events do I have today?")
-    print(result.output)
-
-asyncio.run(main())
-```
 
 ## Production Configuration
 
