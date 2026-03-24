@@ -170,6 +170,28 @@ After connecting, the developer configures security at app.civic.com:
 
 None of this requires application code. It's all managed in the Civic platform.
 
+## Error Handling
+
+When integrating Civic, add handling for these failure cases:
+
+**Authentication failures** — Token expired (30-day expiry) or missing. The MCP client will receive an HTTP 401. Handle by prompting the developer to regenerate the token at app.civic.com.
+```python
+# Python example
+try:
+    async with agent.run_mcp_servers():
+        result = await agent.run(user_message)
+except Exception as e:
+    if "401" in str(e) or "Unauthorized" in str(e):
+        raise RuntimeError("Civic token expired or invalid. Regenerate at app.civic.com")
+    raise
+```
+
+**Guardrail blocks** — If a guardrail blocks a tool call (e.g., PII detected in the request), the tool call returns an error response — not a crash. The agent will see the error and can inform the user or try a different approach. No special error handling is needed; the agent handles this naturally.
+
+**No tools returned** — The MCP URL may be missing `?profile=your-toolkit`, or the toolkit has no servers configured. Check `CIVIC_URL` includes the profile parameter.
+
+**Transport mismatch** — Civic uses Streamable HTTP. If you see connection errors, verify your framework is not trying to connect via stdio or plain SSE.
+
 ## Common Issues
 - **Auth errors**: Token may be expired (30-day expiry). Regenerate at app.civic.com
 - **No tools**: MCP URL may be missing `?profile=your-toolkit`. Check the toolkit name
