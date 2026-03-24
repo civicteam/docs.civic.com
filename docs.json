@@ -24,13 +24,19 @@
   ],
   "favicon": "/favicon.svg",
   "fonts": {
+    "family": "Geist",
+    "weight": 300,
+    "source": "https://fonts.gstatic.com/s/geist/v4/gyByhwUxId8gMEwSGFWNOITddY4.woff2",
+    "format": "woff2",
     "heading": {
-      "family": "CalSans",
+      "family": "Geist",
+      "weight": 700,
       "source": "https://cdn.prod.website-files.com/6721152f5cf7d1402980ed13/6721160e2e1457970b650aac_CalSans-SemiBold.woff2",
       "format": "woff2"
     },
     "body": {
-      "family": "Aeonik",
+      "family": "Geist",
+      "weight": 300,
       "source": "https://cdn.prod.website-files.com/6721152f5cf7d1402980ed13/6729f861146eaa418eb255f2_Aeonik-Regular.woff2",
       "format": "woff2"
     }
