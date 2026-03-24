@@ -19,7 +19,7 @@
 - [OpenAI SDK](https://docs.civic.com/civic/recipes/openai-sdk): Manual function calling with full tool loop control
 - [LangChain / LangGraph](https://docs.civic.com/civic/recipes/langchain): MultiServerMCPClient with streamable_http transport
 - [Vercel AI SDK](https://docs.civic.com/civic/recipes/vercel-ai-sdk): Next.js streaming apps with MCP tool integration
-- [Pydantic AI](https://docs.civic.com/civic/recipes/python-pydantic): MCPServerStreamableHTTP transport
+- [Pydantic AI](https://docs.civic.com/civic/recipes/pydantic-ai): MCPServerStreamableHTTP transport
 - [Google ADK](https://docs.civic.com/civic/recipes/google-adk): Google Agent Developer Kit integration
 - [CrewAI](https://docs.civic.com/civic/recipes/crewai): Multi-agent workflows
 - [AutoGen](https://docs.civic.com/civic/recipes/autogen): Microsoft AutoGen integration
