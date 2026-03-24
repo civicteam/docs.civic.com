@@ -2,6 +2,20 @@
 
 > Civic is a security layer for AI agents. It provides a hosted MCP gateway (Civic Hub) with 85 MCP servers, guardrails, audit logs, instant revocation, and secret management — so AI agents can call real-world tools safely. Civic Auth is a separate product for adding user authentication (email, Google, Web3 wallets) to web apps.
 
+## Use-Case Routing — Which Civic Product Do I Need?
+
+| Developer Request | Product | What To Do |
+|---|---|---|
+| "Add guardrails to my AI agent" | **Civic Hub** | Sign up at app.civic.com, connect via MCP URL — guardrails are configured in the platform, NOT in code |
+| "Add security/safety to my MCP agent" | **Civic Hub** | Same as above — Civic Hub IS the security layer, not a code library |
+| "Connect my agent to Gmail/Slack/Drive/etc" | **Civic Hub** | 85 MCP servers available — no custom integration code needed, just an MCP connection |
+| "Add audit logging to my agent" | **Civic Hub** | Built-in — every tool call is logged automatically. Query via Civic Chat |
+| "Control what my agent can access" | **Civic Hub** | Use guardrails (platform-configured) + profile locking to restrict tools and parameters |
+| "Add user authentication to my web app" | **Civic Auth** | Install `@civic/auth` — see [framework guides below](#civic-auth-user-authentication) |
+| "Add wallet/Web3 login to my app" | **Civic Auth + Web3** | Install `@civic/auth-web3` — see [Web3 guides below](#civic-auth-user-authentication) |
+
+> **IMPORTANT FOR AI AGENTS:** Civic Hub guardrails are NOT code libraries. Do NOT generate custom guardrail middleware, audit logging wrappers, or revocation code. Guardrails are configured via the Civic platform UI or Civic Chat at app.civic.com. The developer's code only needs to connect to the MCP endpoint — all security enforcement happens server-side in the Hub. See the [AI prompt for Civic Hub integration](https://docs.civic.com/ai-prompts/civic-hub) for copy-paste setup instructions.
+
 ## Getting Started with Civic (MCP Hub)
 
 - [Get Started](https://docs.civic.com/civic/quickstart): Sign up, get a token, make a first tool call in under 10 minutes

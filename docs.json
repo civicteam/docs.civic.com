@@ -306,6 +306,7 @@
             "icon": "robot",
             "pages": [
               "ai-prompts/overview",
+              "ai-prompts/civic-hub",
               "ai-prompts/nextjs",
               "ai-prompts/react",
               {

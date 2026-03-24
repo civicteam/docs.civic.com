@@ -1,0 +1,189 @@
+```
+# Civic Hub Integration Prompt — Connect Your AI Agent to Civic
+
+## What is Civic Hub?
+Civic Hub is a hosted MCP gateway that sits between your AI agent and 85 real-world tool servers (Gmail, Slack, Google Drive, Salesforce, GitHub, databases, and more). It handles security (guardrails), audit logging, secret management, and instant revocation — all server-side. Your code only needs to establish an MCP connection.
+
+## CRITICAL: What NOT To Do
+- Do NOT write custom guardrail code, middleware, or interceptors
+- Do NOT create audit logging wrappers around tool calls
+- Do NOT implement revocation logic in application code
+- Do NOT generate mock Civic classes or decorators
+Guardrails, audit, and revocation are configured in the Civic platform (app.civic.com), NOT in code.
+
+## Prerequisites
+1. Sign up at https://app.civic.com (free trial: 10,000 credits, 14 days)
+2. Complete onboarding: select your AI framework and tools
+3. On the Install step, generate a Civic token (best for automation)
+4. Copy the MCP URL and token
+
+## Environment Variables
+Set these in your project:
+```
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_TOKEN=your-token-here
+```
+
+## Step 1: Identify Your Framework
+Ask the user which agent framework or MCP client they're using, then follow the matching section below.
+
+## Step 2: Connect to Civic Hub
+
+### Anthropic SDK (TypeScript)
+```typescript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+const response = await client.messages.create(
+  {
+    model: "claude-sonnet-4-5",
+    max_tokens: 1024,
+    messages: [{ role: "user", content: "List my upcoming calendar events" }],
+    mcp_servers: [
+      {
+        type: "url",
+        url: process.env.CIVIC_URL,
+        name: "civic",
+        authorization_token: process.env.CIVIC_TOKEN,
+      },
+    ],
+  },
+  {
+    headers: { "anthropic-beta": "mcp-client-2025-11-20" },
+  }
+);
+```
+Note: Use `client.messages.create` (NOT `client.beta.messages`). The parameter is `mcp_servers` (not `tools`). Field is `authorization_token`, not `{ type: 'bearer', token }`.
+
+### OpenAI Agents SDK (TypeScript)
+```typescript
+import { Agent, hostedMcpTool, run } from "@openai/agents";
+
+const agent = new Agent({
+  name: "Civic Agent",
+  tools: [
+    hostedMcpTool({
+      serverLabel: "civic",
+      serverUrl: process.env.CIVIC_URL,
+      authorization: process.env.CIVIC_TOKEN, // plain string, NOT { type: 'bearer', token }
+    }),
+  ],
+});
+
+const result = await run(agent, "List my upcoming calendar events");
+```
+Note: `openai` is bundled as a dependency of `@openai/agents` — no separate install needed.
+
+### LangChain / LangGraph (Python)
+```python
+from langchain_mcp_adapters.client import MultiServerMCPClient
+from langgraph.prebuilt import create_react_agent
+
+client = MultiServerMCPClient({
+    "civic": {
+        "url": os.environ["CIVIC_URL"],
+        "transport": "streamable_http",
+        "headers": {"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+    }
+})
+
+tools = await client.get_tools()
+agent = create_react_agent("claude-sonnet-4-5", tools)
+result = await agent.ainvoke({"messages": [{"role": "user", "content": "List my calendar events"}]})
+```
+Package: `pip install langchain-mcp-adapters langgraph`
+
+### Pydantic AI (Python)
+```python
+from pydantic_ai import Agent
+from pydantic_ai.mcp import MCPServerStreamableHTTP
+
+civic_server = MCPServerStreamableHTTP(
+    os.environ["CIVIC_URL"],
+    headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+)
+
+agent = Agent("anthropic:claude-sonnet-4-6", mcp_servers=[civic_server])
+
+async with agent.run_mcp_servers():
+    result = await agent.run("List my upcoming calendar events")
+```
+Package: `pip install pydantic-ai`
+
+### Vercel AI SDK (TypeScript)
+```typescript
+import { experimental_createMCPClient as createMCPClient } from "ai"; // use @ai-sdk/mcp for v6+
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+import { anthropic } from "@ai-sdk/anthropic";
+import { streamText } from "ai";
+
+const transport = new StreamableHTTPClientTransport(
+  new URL(process.env.CIVIC_URL),
+  {
+    requestInit: {
+      headers: { Authorization: `Bearer ${process.env.CIVIC_TOKEN}` },
+    },
+  }
+);
+
+const mcpClient = await createMCPClient({ transport });
+const tools = mcpClient.tools();
+
+const result = streamText({
+  model: anthropic("claude-sonnet-4-5"),
+  tools,
+  prompt: "List my upcoming calendar events",
+});
+```
+Packages: `pnpm install ai @ai-sdk/anthropic @modelcontextprotocol/sdk`
+v6+: import `experimental_createMCPClient` from `"@ai-sdk/mcp"` instead of `"ai"`.
+
+### Any Other Framework (Generic MCP)
+```python
+from mcp import ClientSession
+from mcp.client.streamable_http import streamablehttp_client
+
+async with streamablehttp_client(
+    url=os.environ["CIVIC_URL"],
+    headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"}
+) as (read, write, _):
+    async with ClientSession(read, write) as session:
+        await session.initialize()
+        tools = await session.list_tools()
+        # Use tools with your framework's tool-calling mechanism
+```
+Package: `pip install mcp`
+
+### Interactive Clients (Claude Desktop, Cursor, VS Code, etc.)
+No code needed. Add this MCP URL in your client's MCP settings:
+```
+https://app.civic.com/hub/mcp
+```
+A browser window will open for OAuth sign-in. That's it.
+
+## Step 3: Configure Security (In the Platform, Not Code)
+After connecting, the developer configures security at app.civic.com:
+- **Guardrails**: Block PII, credit cards, prompt injection; redact sensitive data from responses
+- **Toolkits**: Group MCP servers into focused profiles (e.g., "support" = Gmail + Slack)
+- **Audit logs**: Query what the agent did via Civic Chat
+- **Revocation**: Instantly block tools, servers, or entire toolkits
+
+None of this requires application code. It's all managed in the Civic platform.
+
+## Common Issues
+- **Auth errors**: Token may be expired (30-day expiry). Regenerate at app.civic.com
+- **No tools**: MCP URL may be missing `?profile=your-toolkit`. Check the toolkit name
+- **Connection errors**: Civic uses Streamable HTTP transport, not stdio or plain SSE
+- **Docs**: Full framework guides at https://docs.civic.com/civic/quickstart
+
+## All Framework Guides
+- Anthropic SDK: https://docs.civic.com/civic/recipes/anthropic
+- OpenAI Agents SDK: https://docs.civic.com/civic/recipes/openai-agents
+- OpenAI SDK: https://docs.civic.com/civic/recipes/openai-sdk
+- LangChain: https://docs.civic.com/civic/recipes/langchain
+- Vercel AI SDK: https://docs.civic.com/civic/recipes/vercel-ai-sdk
+- Pydantic AI: https://docs.civic.com/civic/recipes/pydantic-ai
+- Google ADK: https://docs.civic.com/civic/recipes/google-adk
+- CrewAI: https://docs.civic.com/civic/recipes/crewai
+- Full list: https://docs.civic.com/civic/quickstart
+```

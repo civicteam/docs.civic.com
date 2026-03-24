@@ -1,0 +1,44 @@
+---
+title: "Civic Hub (Agent Security)"
+icon: "shield-check"
+description: "AI prompt for connecting your agent to Civic Hub — MCP gateway with guardrails, audit logging, and 85 tool servers"
+public: true
+---
+
+import CivicHubPrompt from '/snippets/civic-hub.mdx';
+import SupportedAiAssistants from '/snippets/_supported-ai-assistants.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
+
+Use this prompt with your preferred AI assistant (Claude, Cursor, ChatGPT, etc.) to connect your AI agent to Civic Hub — the MCP gateway that provides guardrails, audit logging, secret management, and access to 85 MCP servers.
+
+<Note>
+**Civic Hub vs Civic Auth:** This prompt is for **agent security** (connecting AI agents to tools safely). If you need **user authentication** for a web app, see the [Civic Auth prompts](/ai-prompts/overview#available-framework-prompts) instead.
+</Note>
+
+## How to Use
+
+1. **Copy the prompt below** and paste it into your AI assistant
+2. **Tell the assistant** which agent framework you're using (Anthropic SDK, LangChain, OpenAI Agents, etc.)
+3. **The assistant will walk you through** setting up your MCP connection with the correct code for your framework
+4. **Configure security** at [app.civic.com](https://app.civic.com) — guardrails, toolkits, and audit are managed in the platform, not in code
+
+## Integration Prompt
+
+<CivicHubPrompt />
+
+<Warning>
+**Guardrails are platform-configured, not code.** If your AI assistant generates custom guardrail middleware, interceptors, or audit logging wrappers — that's wrong. The only code you need is the MCP connection. All security enforcement happens server-side in Civic Hub.
+</Warning>
+
+## What the AI Assistant Will Do
+
+When you use this prompt, the AI assistant will:
+
+1. **Ask which framework** you're using (Anthropic SDK, OpenAI Agents, LangChain, etc.)
+2. **Generate the connection code** — typically 5-15 lines to connect to Civic Hub via MCP
+3. **Set up environment variables** for your MCP URL and token
+4. **Point you to app.civic.com** for guardrail and toolkit configuration
+
+<SupportedAiAssistants />
+
+<AiAssistantRequirements />
