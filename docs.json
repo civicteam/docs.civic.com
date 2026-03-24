@@ -484,6 +484,10 @@
     {
       "source": "/nexus/:path*",
       "destination": "/civic/:path*"
+    },
+    {
+      "source": "/civic/recipes/python-pydantic",
+      "destination": "/civic/recipes/pydantic-ai"
     }
   ]
 }
