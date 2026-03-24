@@ -57,6 +57,7 @@
             "icon": "rocket",
             "pages": [
               "civic/quickstart/index",
+              "civic/quickstart/ai-prompt",
               "civic/quickstart/civic-chat",
               "civic/quickstart/credentials",
               "civic/reference/client-compatibility",
@@ -306,7 +307,6 @@
             "icon": "robot",
             "pages": [
               "ai-prompts/overview",
-              "ai-prompts/civic-hub",
               "ai-prompts/nextjs",
               "ai-prompts/react",
               {
