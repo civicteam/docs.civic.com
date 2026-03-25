@@ -57,6 +57,7 @@
             "icon": "rocket",
             "pages": [
               "civic/quickstart/index",
+              "civic/quickstart/ai-prompt",
               "civic/quickstart/civic-chat",
               "civic/quickstart/credentials",
               "civic/reference/client-compatibility",
