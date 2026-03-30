@@ -60,6 +60,7 @@
               "civic/quickstart/ai-prompt",
               "civic/quickstart/civic-chat",
               "civic/quickstart/credentials",
+              "civic/quickstart/hub-bridge",
               "civic/reference/client-compatibility",
               "civic/concepts/connection-methods",
               "civic/billing",
@@ -255,7 +256,8 @@
             "group": "Reference",
             "icon": "book",
             "pages": [
-              "civic/troubleshooting"
+              "civic/troubleshooting",
+              "civic/concepts/tips"
             ]
           }
         ]
