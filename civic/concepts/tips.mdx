@@ -1,0 +1,185 @@
+---
+title: Tips & Best Practices
+description: Get the most out of Civic — token optimization, security, tooling, and workflow tips
+icon: "lightbulb"
+---
+
+## Getting Started
+
+**Start simple.** Begin with 2–3 toolkits based on your primary workflows. Don't try to set everything up at once — add tools as you discover you need them.
+
+**Choose the right client.** Different clients suit different use cases:
+
+| Client | Best for |
+|--------|----------|
+| **Civic Chat** | Setting up your account, configuring toolkits, getting started fast — no setup required |
+| **Claude.ai** | General use with a familiar interface (MCP support requires Pro plan or above) |
+| **Claude Desktop** | Power users who want offline capabilities |
+| **Cursor / Windsurf** | Developers working inside their IDE |
+
+<Tip>
+Start with Civic Chat to test and configure tools before committing to a desktop client setup.
+</Tip>
+
+**Be explicit in prompts.** Vague prompts cause the AI to explore multiple paths, wasting tokens. Specify which tools, which data, and which criteria you want.
+
+```
+❌ "Check my stuff"
+✅ "Get my GitHub notifications from the last 24 hours"
+✅ "Show all Jira tickets assigned to me in 'In Progress' status"
+```
+
+---
+
+## Token Optimization
+
+Every tool listed in a toolkit appears in every LLM prompt. Fewer tools = fewer tokens = faster, more accurate responses.
+
+### Use post-processors
+
+Post-processors transform tool responses before they reach the AI, often cutting token usage dramatically:
+
+| Transform | Typical reduction |
+|-----------|------------------|
+| HTML → Markdown | 40–70% |
+| JSON → CSV | 30–50% |
+| Remove unused fields | 10–30% |
+| Truncate long text | Up to 80% |
+
+Ask the AI: *"What post-processors are available? Add HTML-to-Markdown for my Confluence server."*
+
+### Pre-populate parameters
+
+If a tool always runs against the same repository, database, or calendar, preset the parameter so the LLM never has to specify it:
+
+*"Always use repository `civic-mcp` for GitHub tools in this toolkit."*
+
+### Clone and specialize tools
+
+Create named clones of generic tools pre-configured for specific tasks. For example, clone `list_commits` → `get-dev-branch-sha` with branch and limit preset. The AI will call the right tool directly without prompting.
+
+### Filter ruthlessly
+
+Keep toolkits to **3–5 tools maximum**. Ask the AI to filter out tools that weren't used in recent sessions.
+
+---
+
+## Security Best Practices
+
+### What NOT to do
+
+- Share OAuth tokens or API keys via email, Slack, or other messaging platforms
+- Store credentials in code repositories or documentation
+- Grant broader permissions than necessary — use read-only access where possible
+- Skip OAuth flows by manually entering tokens
+
+### What counts as sensitive data
+
+Be extra cautious with:
+- **PII** — names, addresses, emails, phone numbers, SSNs
+- **Financial data** — credit cards, bank accounts, transactions
+- **Credentials** — passwords, API keys, OAuth tokens, session IDs
+- **Proprietary data** — trade secrets, unreleased product plans
+
+### Set up account-level guardrails first
+
+Apply broad policies at the account level before adding toolkit-specific rules:
+- PII redaction for all tools
+- Maximum result limits to prevent accidentally pulling millions of records
+- Sensitive field filtering (passwords, tokens, secrets)
+
+Then layer on stricter toolkit-level guardrails for sensitive workflows.
+
+### Token rotation
+
+- **OAuth tokens** — configure auto-refresh; review every 30–90 days
+- **API keys** — rotate manually every 90 days minimum
+- **If compromised** — rotate immediately
+
+### Monthly security review checklist
+
+- Review which services are still connected; revoke unused authorizations
+- Check who has admin access in your organization
+- Review active guardrails and verify they're working
+- Scan audit logs for unusual activity or failed authorization attempts
+
+---
+
+## Authorization Management
+
+### OAuth vs API keys
+
+Prefer OAuth whenever the service supports it:
+
+| | OAuth | API Keys |
+|---|---|---|
+| Security | Higher — scoped, refreshable | Lower — static, manual rotation |
+| Setup | Requires browser flow | Simple |
+| Recommended | Yes | Only when OAuth unavailable |
+
+### Upgrade authorization levels as you scale
+
+1. **User-level** — for individual testing
+2. **Profile-level** — for sharing credentials across a team toolkit
+3. **Account-level** — for organization-wide policies
+
+Use the Civic Manager MCP to upgrade authorizations without re-authenticating.
+
+---
+
+## Troubleshooting Prevention
+
+Before starting a session, verify:
+- Is your OAuth token still valid?
+- Are you on the correct toolkit?
+- Have you connected the tools you need?
+- Are any guardrails blocking the operation you want?
+
+**Corporate networks** — proxy servers often intercept HTTPS and TLS inspection causes failures. Work with IT to whitelist `*.civic.com` domains if you hit connection issues.
+
+**Microsoft changes** — Azure/Entra permission changes can take time to sync. Wait a few minutes after updating permissions before retesting.
+
+---
+
+## Performance Tips
+
+- **Batch large operations** — break into smaller chunks and use pagination
+- **Use cursors over page numbers** — more efficient for databases, prevents duplicates
+- **Reduce scope when timing out** — narrow the date range or add filters before retrying
+- **Refresh long-running sessions** — Civic Chat can accumulate memory over time; reload the page for long work sessions
+
+---
+
+## Quick Reference: Common Commands
+
+**Toolkit management**
+```
+"Create a new toolkit called 'marketing'"
+"Switch to the development toolkit"
+"Show all my toolkits and their tools"
+"Filter out tools I haven't used in this session"
+```
+
+**Tool configuration**
+```
+"Install the Slack server into this toolkit"
+"Preset the GitHub repo parameter to 'my-project'"
+"Clone the list-events tool as 'list-my-events' with my primary calendar preset"
+"Alias the execute_query tool as 'query'"
+```
+
+**Guardrails**
+```
+"What guardrails are available?"
+"Add PII redaction to all responses from the CRM server"
+"Add HTML-to-Markdown post-processor for web scraping tools"
+"Show me all active guardrails in this toolkit"
+```
+
+**Authorization**
+```
+"Show my active authorizations"
+"Revoke GitHub authorization"
+"Upgrade my Slack auth to profile level"
+"Configure auto-refresh for my Google tokens"
+```
