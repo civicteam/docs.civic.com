@@ -82,13 +82,16 @@ public: true
   </Accordion>
   <Accordion title="What domains need to be registered for apps?">
 
-  All domains where your application is hosted must be explicitly registered in your Civic Auth dashboard under "Domains" when your app is in production mode. This is required for OAuth 2.0 security - Civic will only redirect to registered domains after authentication.
+  All domains where your application is hosted must be explicitly registered in your Civic Auth dashboard under "Domains" when your app is in **production mode**. This is required for OAuth 2.0 security — Civic will only redirect to registered domains after authentication.
 
   **What needs to be registered:**
   - Your application's domain(s) (e.g., `https://myapp.com`)
   - Your OAuth callback URLs for backend integrations (e.g., `https://myapp.com/auth/callback`)
-  
-  **Note:** The `loginSuccessUrl` parameter (used to redirect users to a specific page after login) does **not** need to be registered separately - it's used for navigation within your already-registered domain.
+
+  **Note:** The `loginSuccessUrl` parameter (used to redirect users to a specific page after login) does **not** need to be registered separately — it's used for navigation within your already-registered domain.
+
+  **Testing in sandbox mode:**
+  While your app is in sandbox mode, domain registration is not required. You can leave the Domains field empty in the Civic Dashboard, and your app will accept authentication requests from any domain. This allows you to test freely across localhost and staging environments. Once you launch to production, at least one domain must be registered.
 
   </Accordion>
   <Accordion title="How do I redirect my users to a specific page after login?">

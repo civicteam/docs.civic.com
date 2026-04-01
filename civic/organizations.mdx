@@ -14,6 +14,36 @@ Organizations are available on paid plans only. Only organization admins can cre
 
 ---
 
+## Account Types
+
+Civic has two types of accounts:
+
+**Personal accounts** are created automatically when you sign up. They are single-user and designed for individual use. Personal accounts cannot have additional members and cannot be used for third-party application integrations.
+
+**Organization accounts** are shared workspaces for teams. They support multiple users with different roles, enable shared credentials and organization-wide policies, and are required for integrating Civic into third-party applications.
+
+<Warning>
+When integrating Civic with third-party applications, only organization accounts can be used. Personal accounts are not supported for external integrations.
+</Warning>
+
+---
+
+## User Roles
+
+Every user in an account has one of three roles:
+
+| Role | Description |
+|------|-------------|
+| **Admin** | Full control over the account — manage settings and billing, invite/remove members, change roles, manage and promote credentials, configure guardrails, view audit logs |
+| **Member** | Can use the account's tools — access toolkits, authenticate personal credentials, view available tools. Cannot add tools, invite users, or change account settings |
+| **End User** | For large-scale or third-party app deployments — does not require a pre-invitation, accesses tools through integrated applications. Ideal when the user base is dynamic or too large to pre-invite individually |
+
+<Note>
+End Users differ from Members in that they don't need to be explicitly invited by an admin. They typically interact through third-party apps rather than the Civic UI directly.
+</Note>
+
+---
+
 ## Inviting and Managing Users
 
 To invite a new member to your organization:
@@ -40,7 +70,11 @@ If you belong to multiple organizations, you can switch between them at any time
 1. Click on your **profile picture** in the **bottom left** corner of the screen
 2. Select the organization you'd like to work in
 
-Your toolkits and settings will update to reflect the selected organization.
+When you switch accounts:
+- Available toolkits change to those configured in the selected account
+- Your role may be different (e.g. admin in one account, member in another)
+- Different guardrails and policies apply
+- Tool access is scoped to the selected account's configuration
 
 ---
 
