@@ -237,6 +237,7 @@
                   "civic/reference/servers/shopify-storefront",
                   "civic/reference/servers/slack",
                   "civic/reference/servers/socket",
+                  "civic/reference/servers/solana",
                   "civic/reference/servers/square",
                   "civic/reference/servers/stripe",
                   "civic/reference/servers/tavily",
