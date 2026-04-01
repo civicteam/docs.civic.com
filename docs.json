@@ -192,6 +192,7 @@
                   "civic/reference/servers/google-drive",
                   "civic/reference/servers/google-sheets",
                   "civic/reference/servers/google-slides",
+                  "civic/reference/servers/google-stitch",
                   "civic/reference/servers/grafana",
                   "civic/reference/servers/home-assistant",
                   "civic/reference/servers/hubspot",
