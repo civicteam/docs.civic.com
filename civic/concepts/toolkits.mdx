@@ -226,12 +226,39 @@ If you're using Civic Chat or managing multiple toolkits, you can switch between
     - "Preset the log groups parameter to this list: [log-group-1, log-group-2, log-group-3] when executing log queries"
     - "Always use the production database connection for queries in this toolkit"
 
-    <Info>
-        Presets can even include interpolated parameters. For example, if you have a SQL query tool, you can preset the query parameter to a specific SQL statement.
-        This allows you to create specialized versions of generic tools.
-        An example prompt would be:
-        - "Please preset the Postgres execute_sql tool to get the total number of users from the users table with a given email domain"
-    </Info>
+    ### Interpolated parameters
+
+    Interpolated parameters let you define a template with placeholders that the LLM fills in at call time. This constrains *how* the tool is used without exposing the full underlying parameter.
+
+    **Syntax:** Use `${variableName}` as a placeholder in your template value. The system exposes `variableName` to the LLM instead of the original parameter.
+
+    **Example — SQL query scoped to a specific table:**
+
+    Preset the `sql` parameter of a Postgres tool to:
+    ```
+    SELECT * FROM users WHERE email = '${email}'
+    ```
+
+    The LLM now sees an `email` parameter instead of the raw `sql` parameter. It can only query the `users` table with that exact shape.
+
+    **The `escape` field is required.** It controls how the LLM-provided value is sanitized before interpolation:
+
+    | Mode | Use for |
+    |------|---------|
+    | `sql` | Values inside single-quoted SQL strings |
+    | `shell` | Shell command arguments |
+    | `path` | Filenames within a fixed directory — strips `../` traversal |
+    | `url` | URL query parameter values |
+    | `html` | HTML text content |
+    | `alphanumeric` | Strictest — only `a-z A-Z 0-9 @ . - _` |
+
+    <Warning>
+    Using the wrong escape mode does not provide adequate protection. When in doubt, use `alphanumeric`. The `none` mode applies no escaping and should only be used for trusted internal values.
+    </Warning>
+
+    **Sample prompts:**
+    - "Please preset the Postgres execute_sql tool to get the total number of users from the users table with a given email domain"
+    - "Preset the file read tool to only allow access to files inside /data/reports/ with a filename I provide"
   </Accordion>
 
   <Accordion title="Toolkit Descriptions">
@@ -303,6 +330,19 @@ Follow these guidelines to get the most out of your toolkits:
 - For more fine-grained guardrails, ask the LLM which guardrails are available to it
 - *Do not* use descriptions as guardrails
 - Unlike tool filters and parameter presets, descriptions are **guidelines only** and LLMs can ignore them.
+
+### Guardrail execution order
+
+When multiple guardrails are active, they run in ascending `executionIndex` order. The recommended convention is:
+
+- **0–999** — security constraints (run first to block or redact sensitive data)
+- **1000+** — response transforms / post-processors (run after constraints)
+
+Order matters: redact sensitive fields *before* converting to CSV so redacted values don't leak into the output format.
+
+### Deleting a toolkit
+
+When you delete a toolkit, its chat history is **not lost** — existing chats are reassigned to the default toolkit so they remain accessible. The default toolkit cannot be deleted.
 
 ## Common Toolkit Patterns
 

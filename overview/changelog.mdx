@@ -5,6 +5,74 @@ icon: "pen"
 public: true
 ---
 
+<Update label="April 01, 2026" description="auth-server-1.2.30">
+
+**Security**
+- fix for CVE-2025-69720
+
+</Update>
+
+<Update label="March 27, 2026" description="auth-server-1.2.29">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="March 27, 2026" description="apps-0.2.94">
+
+**Features**
+- Added email subaddress support for major providers: addresses like `user+tag@gmail.com` are now accepted for supported domains
+- Added throwaway email blocking: signups from known disposable email providers are now automatically blocked
+- Added custom blocked domains: app owners can define additional blocked email domains via the dashboard
+
+**Improvements**
+- Throwaway email blocking is now off by default and can be enabled in your app settings
+- The built-in list of blocked disposable email domains is now viewable in the dashboard
+- Clarified that email blocking applies to email-based login only — social and OAuth logins are not affected
+
+**Bug fixes**
+- Fixed a security vulnerability in the login cleanup process
+- Updated dependencies to address security vulnerabilities
+
+</Update>
+
+<Update label="March 27, 2026" description="auth-server-1.2.28">
+
+**Bug fixes**
+- Fixed login issues that could occur when connecting through certain third-party applications
+
+**Improvements**
+- Updated dependencies to address security vulnerabilities
+
+</Update>
+
+<Update label="March 25, 2026" description="apps-0.2.93">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="March 25, 2026" description="auth-server-1.2.27">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="March 20, 2026" description="apps-0.2.92">
+
+**Improvements**
+- Token exchange configuration now allows HTTP URLs for localhost addresses during local development, following OAuth 2.0 best practices (RFC 8252)
+- JWKS URI validation now enforces HTTPS-only for improved security, with an exception for localhost development
+
+**Bug fixes**
+- Fixed an issue where user analytics profiles could become fragmented, improving the accuracy of user identification
+- Updated dependencies to address known security vulnerabilities
+
+**Security**
+- Updated framework dependencies to resolve published security advisories
+
+</Update>
+
 <Update label="March 19, 2026" description="auth-server-1.2.26">
 
 **Improvements**
@@ -25,6 +93,23 @@ public: true
 
 **Improvements**
 - Reduced latency on repeated configuration lookups for faster authentication flows
+
+</Update>
+
+<Update label="March 17, 2026" description="apps-0.2.90">
+
+**Features**
+- Added programmatic account creation API, allowing apps to create Civic Auth accounts automatically via API
+- Added token exchange configuration endpoints for programmatic app setup
+- Added account selector to the dashboard header for users who belong to multiple accounts
+
+**Improvements**
+- Improved authentication reliability and error handling
+- Reduced performance overhead of application monitoring
+
+**Bug fixes**
+- Fixed an issue where account creation could fail due to certain ID formats
+- Fixed a navigation issue that caused incorrect URLs in the dashboard
 
 </Update>
 
