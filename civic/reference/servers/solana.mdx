@@ -1,0 +1,134 @@
+---
+title: Solana
+description: "AI-powered Solana developer knowledge — Q&A, documentation search, and Anchor Framework expert"
+icon: "server"
+---
+
+## Overview
+
+The Solana MCP server at [mcp.solana.com](https://mcp.solana.com) provides three AI-powered knowledge tools for Solana developers. All tools use RAG-based similarity search against a curated corpus of Solana documentation. These are **knowledge and documentation tools only** — they do not interact with any live Solana cluster.
+
+## How to Add Solana
+
+<Steps>
+  <Step title="Add to Civic">
+    Add the Solana server to your Civic environment through the server directory. No API keys or authentication required — this is a public documentation server.
+  </Step>
+  <Step title="Test Connection">
+    Start with `"How do I create a new Solana wallet keypair in TypeScript?"` to verify the connection.
+  </Step>
+</Steps>
+
+<Info>
+**No authentication required** — The Solana MCP server is a public knowledge service. It provides documentation search and developer Q&A only — it does not interact with any live Solana cluster or wallet.
+
+**Transport configuration** — The server uses HTTP streaming at `https://mcp.solana.com/mcp`. Set transport type to `http`, not `sse`, to avoid 405 errors.
+</Info>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Solana Expert Q&A" icon="comments">
+    Ask about concepts, APIs, SDKs, errors, and best practices across the Solana ecosystem
+  </Card>
+  <Card title="Documentation Search" icon="magnifying-glass">
+    RAG-based search across solana.com, solanakit.com, anchor-lang.com, and more
+  </Card>
+  <Card title="Anchor Framework Expert" icon="anchor">
+    Specialized Q&A for Anchor macros, account constraints, IDL, CPIs, and testing
+  </Card>
+  <Card title="SDK Guidance" icon="code">
+    Help with @solana/kit, @solana/rpc, Token-2022, confidential transfers, and more
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+### General Solana Development
+- **Getting Started**: `"How do I create a new Solana wallet keypair in TypeScript?"`
+- **Concepts**: `"What is the difference between a program account and a data account on Solana?"`
+- **Transactions**: `"How do I send SOL from one wallet to another using @solana/kit?"`
+- **Clusters**: `"What is the difference between mainnet-beta, devnet, and testnet?"`
+- **Debugging**: `"What does 'insufficient funds for rent' mean and how do I fix it?"`
+- **Best Practices**: `"What are best practices for writing a Solana program in Rust?"`
+
+### Documentation Search
+- **API Reference**: `"Search for documentation on createSolanaRpc"`
+- **Token Extensions**: `"Find docs on Token-2022 transfer_checked instruction"`
+- **Account Model**: `"Search for Solana account model documentation"`
+- **RPC Methods**: `"Find documentation on getLatestBlockhash RPC method"`
+
+### Anchor Framework
+- **Account Validation**: `"How do I define account validation in an Anchor program?"`
+- **Constraints**: `"What is the difference between init and init_if_needed account constraints?"`
+- **CPIs**: `"How do I call a CPI to the System Program in Anchor?"`
+- **IDL**: `"What is the IDL in Anchor and how do I use it on the client side?"`
+- **Testing**: `"How do I write Anchor tests using Mocha?"`
+- **Events**: `"How do I emit events in Anchor?"`
+- **Composability**: `"How do I use the declare_program! macro for composability?"`
+
+---
+
+## Available Tools (3)
+
+<AccordionGroup>
+  <Accordion title="Solana_Expert__Ask_For_Help">
+    `Solana_Expert__Ask_For_Help` — General Solana development Q&A. Best for how-to questions, conceptual explanations, SDK usage, and debugging help. For Anchor-specific questions, use the Anchor expert tool instead.
+  </Accordion>
+  <Accordion title="Solana_Documentation_Search">
+    `Solana_Documentation_Search` — RAG-based search across the Solana ecosystem documentation corpus. Returns structured excerpts with source URLs from solana.com, solanakit.com, anchor-lang.com, and other sources.
+  </Accordion>
+  <Accordion title="Ask_Solana_Anchor_Framework_Expert">
+    `Ask_Solana_Anchor_Framework_Expert` — Anchor Framework-specific Q&A covering macros, account constraints, IDL, CPIs, error handling, testing, and client generation. For native Rust programs (no Anchor), use the general Solana expert instead.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+### Key Topics Covered
+
+<AccordionGroup>
+  <Accordion title="Core Solana" icon="cube">
+    - Account model: owner, data, lamports, executable flag
+    - Transactions and instructions; parallel execution via account lists
+    - Programs: stateless, BPF Upgradeable Loader, CPIs
+    - Clusters: localnet, devnet, testnet, mainnet-beta
+    - Rent exemption — all accounts must be rent-exempt from creation
+  </Accordion>
+  <Accordion title="SDKs and Clients" icon="code">
+    - `@solana/kit` (formerly web3.js v2): RPC clients, signers, codecs, transactions
+    - `@solana/rpc` and `@solana/rpc-subscriptions` packages
+    - Helpers: `fetchEncodedAccount`, `assertAccountExists`, `fetchMint`, `decodeMint`
+    - RPC WebSocket subscriptions
+  </Accordion>
+  <Accordion title="Tokens" icon="coins">
+    - SPL Token Program and Token-2022 (Token Extensions)
+    - Extensions: confidential transfers, transfer fees, metadata pointer, group pointer
+    - Confidential balances: ElGamal encryption, zero-knowledge proofs
+    - Token-2022 on-chain migration guide
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+**Not a live RPC node** — Cannot query on-chain state, check balances, submit transactions, or interact with any cluster.
+
+**No code execution** — Does not compile, deploy, or simulate Solana programs.
+
+**Specify the SDK version** — `@solana/web3.js` v1 vs `@solana/kit` v2 have very different APIs. Always mention which version you are using.
+
+**Combine tools for best results** — Run `Solana_Documentation_Search` first to surface relevant docs, then follow up with `Solana_Expert__Ask_For_Help` with a more targeted question.
+
+**Provide context for errors** — Include the full error message, relevant code snippet, and what you have already tried. Richer context returns better-matched results.
+</Note>
+
+---
+
+## Guardrails
+
+This server is covered by the [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Solana server."
+</Tip>
