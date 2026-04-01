@@ -177,6 +177,7 @@
                   "civic/reference/servers/asana",
                   "civic/reference/servers/atlassian",
                   "civic/reference/servers/aws-billing",
+                  "civic/reference/servers/betterstack",
                   "civic/reference/servers/bill",
                   "civic/reference/servers/bill-spend-expense",
                   "civic/reference/servers/bluesky",
