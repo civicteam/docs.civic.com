@@ -179,6 +179,7 @@
                   "civic/reference/servers/coingecko",
                   "civic/reference/servers/context7",
                   "civic/reference/servers/deepwiki",
+                  "civic/reference/servers/digitalocean",
                   "civic/reference/servers/dropbox",
                   "civic/reference/servers/elasticsearch",
                   "civic/reference/servers/findymail",
