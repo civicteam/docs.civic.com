@@ -24,13 +24,19 @@
   ],
   "favicon": "/favicon.svg",
   "fonts": {
+    "family": "Geist",
+    "weight": 300,
+    "source": "https://fonts.gstatic.com/s/geist/v4/gyByhwUxId8gMEwSGFWNOITddY4.woff2",
+    "format": "woff2",
     "heading": {
-      "family": "CalSans",
+      "family": "Geist",
+      "weight": 700,
       "source": "https://cdn.prod.website-files.com/6721152f5cf7d1402980ed13/6721160e2e1457970b650aac_CalSans-SemiBold.woff2",
       "format": "woff2"
     },
     "body": {
-      "family": "Aeonik",
+      "family": "Geist",
+      "weight": 300,
       "source": "https://cdn.prod.website-files.com/6721152f5cf7d1402980ed13/6729f861146eaa418eb255f2_Aeonik-Regular.woff2",
       "format": "woff2"
     }
@@ -51,8 +57,10 @@
             "icon": "rocket",
             "pages": [
               "civic/quickstart/index",
+              "civic/quickstart/ai-prompt",
               "civic/quickstart/civic-chat",
               "civic/quickstart/credentials",
+              "civic/quickstart/hub-bridge",
               "civic/reference/client-compatibility",
               "civic/concepts/connection-methods",
               "civic/billing",
@@ -73,6 +81,7 @@
                   "civic/quickstart/clients/claude-desktop",
                   "civic/quickstart/clients/claude-code",
                   "civic/quickstart/clients/chatgpt",
+                  "civic/quickstart/clients/manus",
                   "civic/quickstart/clients/mistral-lechat",
                   "civic/quickstart/clients/gemini",
                   "civic/quickstart/clients/openclaw",
@@ -87,8 +96,8 @@
                   "civic/recipes/openai-sdk",
                   "civic/recipes/openai-agents",
                   "civic/recipes/langchain",
-                  "civic/recipes/python-pydantic",
                   "civic/recipes/pydantic-ai",
+                  "civic/recipes/civic-mcp-client-python",
                   "civic/recipes/vercel-ai-sdk",
                   "civic/recipes/google-adk",
                   "civic/recipes/crewai",
@@ -247,7 +256,8 @@
             "group": "Reference",
             "icon": "book",
             "pages": [
-              "civic/troubleshooting"
+              "civic/troubleshooting",
+              "civic/concepts/tips"
             ]
           }
         ]
@@ -477,6 +487,10 @@
     {
       "source": "/nexus/:path*",
       "destination": "/civic/:path*"
+    },
+    {
+      "source": "/civic/recipes/python-pydantic",
+      "destination": "/civic/recipes/pydantic-ai"
     }
   ]
 }
