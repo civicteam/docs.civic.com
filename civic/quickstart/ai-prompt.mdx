@@ -1,0 +1,97 @@
+---
+title: "AI Integration Prompt"
+icon: "robot"
+description: "Copy-paste prompt for AI assistants to connect your agent to Civic — works with Anthropic SDK, OpenAI Agents, LangChain, Pydantic AI, Vercel AI SDK, and more"
+public: true
+---
+
+import CivicHubPrompt from '/snippets/civic-hub.mdx';
+import SupportedAiAssistants from '/snippets/_supported-ai-assistants.mdx';
+import AiAssistantRequirements from '/snippets/_ai-assistant-requirements.mdx';
+
+Use this prompt with your preferred AI assistant (Claude, Cursor, ChatGPT, etc.) to connect your AI agent to Civic. The prompt covers guardrails, audit logging, secret management, and access to 85 MCP servers.
+
+## How to Use
+
+1. **Copy the prompt below** and paste it into your AI assistant
+2. **Tell the assistant** which agent framework you're using (Anthropic SDK, LangChain, OpenAI Agents, etc.)
+3. **The assistant will walk you through** setting up your MCP connection with the correct code for your framework
+4. **Configure security** at [app.civic.com](https://app.civic.com) — guardrails, toolkits, and audit are managed in the platform, not in code
+
+## Integration Prompt
+
+<CivicHubPrompt />
+
+## Correct vs. Incorrect Output
+
+After pasting the prompt, review what your AI assistant generates. Here's how to tell if it got it right:
+
+<Tabs>
+  <Tab title="Correct">
+    ```python
+    # 5-10 lines: connect to Civic via MCP, pass env vars
+    from pydantic_ai import Agent
+    from pydantic_ai.mcp import MCPServerStreamableHTTP
+
+    server = MCPServerStreamableHTTP(
+        os.environ["CIVIC_URL"],
+        headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+    )
+    agent = Agent("anthropic:claude-sonnet-4-6", mcp_servers=[server])
+    ```
+
+    The AI generated an MCP connection. Guardrails, audit, and revocation are handled by Civic server-side. No security code needed in your app.
+  </Tab>
+  <Tab title="Incorrect — Regenerate">
+    ```python
+    # WRONG: custom guardrail middleware
+    class CivicGuardrail:
+        def __init__(self, rules):
+            self.rules = rules
+        def validate(self, request):
+            for rule in self.rules:
+                if rule.matches(request):
+                    raise BlockedRequestError(...)
+
+    # WRONG: custom audit logging
+    class CivicAuditLogger:
+        def log_tool_call(self, tool, params, response):
+            self.db.insert({"tool": tool, "params": params, ...})
+
+    # WRONG: custom revocation
+    def revoke_agent_access(agent_id, scope="all"):
+        requests.post(f"https://api.civic.com/revoke/{agent_id}", ...)
+    ```
+
+    If the AI generates guardrail classes, audit wrappers, revocation handlers, or any Civic-specific middleware — **it hallucinated**. None of this exists. Regenerate with the prompt.
+  </Tab>
+</Tabs>
+
+## Verify Your Integration
+
+After the AI generates code, check these three things before running:
+
+<Steps>
+  <Step title="Environment variables, not hardcoded tokens">
+    Confirm `CIVIC_URL` and `CIVIC_TOKEN` are read from `process.env` or `os.environ` — never hardcoded in source. If the AI put a token string directly in the code, move it to `.env`.
+  </Step>
+  <Step title="Correct transport type">
+    Civic uses **Streamable HTTP**, not stdio or plain SSE. Look for `streamable_http`, `StreamableHTTPClientTransport`, or `type: "url"` in the generated code. If you see `type: "stdio"` or a subprocess spawn — that's wrong.
+  </Step>
+  <Step title="No invented APIs">
+    The generated code should only call your framework's standard MCP client methods (e.g., `messages.create`, `hostedMcpTool`, `MCPServerStreamableHTTP`). If it imports from `civic`, `@civic/hub`, or `civic-guardrails` — those packages don't exist.
+  </Step>
+</Steps>
+
+## What the AI Assistant Will Do
+
+When you use this prompt, the AI assistant will:
+
+1. **Ask which framework** you're using (Anthropic SDK, OpenAI Agents, LangChain, etc.)
+2. **Generate the connection code** — typically 5-15 lines to connect to Civic via MCP
+3. **Set up environment variables** for your MCP URL and token
+4. **Point you to app.civic.com** for guardrail and toolkit configuration
+
+<SupportedAiAssistants />
+
+<AiAssistantRequirements />
