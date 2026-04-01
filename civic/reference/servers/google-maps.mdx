@@ -1,0 +1,114 @@
+---
+title: Google Maps
+description: "Place search, driving and walking routes, and current weather plus forecasts via Google Maps Platform"
+icon: "server"
+---
+
+## Overview
+
+The Google Maps MCP server provides access to three Google Maps Platform APIs: **Places** (search for businesses, restaurants, and points of interest), **Routes** (driving and walking directions with distance and duration), and **Weather** (current conditions and forecasts up to 10 days ahead).
+
+## How to Add Google Maps
+
+<Steps>
+  <Step title="Get a Google Maps API Key">
+    1. Go to the [Google Cloud Console](https://console.cloud.google.com)
+    2. Select or create a project
+    3. Navigate to **APIs & Services → Library** and enable the following APIs:
+       - **Places API**
+       - **Routes API**
+       - **Weather API** *(part of Google Maps Platform)*
+    4. Go to **APIs & Services → Credentials** and click **Create Credentials → API Key**
+    5. Copy the key
+
+    <Tip>
+    **Restrict the key** — Under **API restrictions**, limit the key to only the three APIs above. Google Maps Platform requires a billing account, but includes a **$200/month free credit** — typical LLM usage is unlikely to exceed this.
+    </Tip>
+  </Step>
+  <Step title="Add to Civic">
+    Add the Google Maps server to your Civic environment through the server directory. You will be prompted to provide your API key.
+  </Step>
+  <Step title="Test Connection">
+    Start with `"Find coffee shops near Brandenburg Gate, Berlin"` to verify the connection.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Place Search" icon="location-dot">
+    Find businesses, restaurants, parks, and points of interest by text query or coordinates
+  </Card>
+  <Card title="Driving Routes" icon="car">
+    Get driving directions with distance and duration between any two locations
+  </Card>
+  <Card title="Walking Routes" icon="person-walking">
+    Get walking directions and distance (beta — may lack sidewalk data)
+  </Card>
+  <Card title="Weather" icon="cloud-sun">
+    Current conditions, hourly forecasts (48h), and daily forecasts (10 days)
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+### Place Search
+- **Nearby Places**: `"Find coffee shops near Brandenburg Gate, Berlin"`
+- **Specific Search**: `"Search for pet-friendly parks in Manhattan, New York"`
+- **Business Lookup**: `"Find the Reichstag phone number and address"`
+- **Radius Search**: `"Search for Italian restaurants near 52.52, 13.405 within 500 metres"`
+
+### Weather
+- **Current**: `"What's the weather like in Berlin right now?"`
+- **Hourly Forecast**: `"Will it rain in London tomorrow morning at 9am?"`
+- **Daily Forecast**: `"Give me a 3-day forecast for Paris"`
+
+### Routes
+- **Driving**: `"How long does it take to drive from Brandenburg Gate to Berlin Hauptbahnhof?"`
+- **Walking**: `"How far is it to walk from the Reichstag to Checkpoint Charlie?"`
+
+### Combining Tools
+- **Chained Queries**: `"Find a coffee shop near Brandenburg Gate, then give me walking directions to the top result"`
+- **Multi-Tool**: `"Search for restaurants near Potsdamer Platz and check the weather for tonight"`
+
+---
+
+## Available Tools (3)
+
+<AccordionGroup>
+  <Accordion title="search_places">
+    `search_places` — Search for places by text query with optional location bias (coordinates + radius). Returns place IDs, coordinates, and Google Maps links. Supports `languageCode` and `regionCode` for localized results.
+  </Accordion>
+  <Accordion title="compute_routes">
+    `compute_routes` — Get routes between two locations. Supports `DRIVE` and `WALK` travel modes. Returns distance (meters) and duration. Accepts place IDs from `search_places` directly.
+  </Accordion>
+  <Accordion title="lookup_weather">
+    `lookup_weather` — Get weather conditions for a location. Supports current conditions, hourly forecasts (up to 48 hours), and daily forecasts (up to 10 days). Units default to METRIC — pass `unitsSystem: IMPERIAL` for Fahrenheit/miles.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+**Place names in summaries only** — `search_places` returns place IDs, coordinates, and Google Maps links in structured fields, but not place names. Names appear in the AI-generated `summary`.
+
+**Location bias is a bias, not a filter** — Results outside the specified radius may still appear. Post-process by distance for strict proximity filtering.
+
+**Weather: no historical data** — Only current conditions and forecasts up to 10 days ahead. Past dates return an error.
+
+**Hourly forecasts within 48 hours only** — Beyond 48 hours, use daily mode (omit the `hour` parameter).
+
+**Routes: DRIVE and WALK only** — No transit, cycling, or two-wheeler support. Walking routes are in beta.
+
+**Dates use local timezone** — `date` and `hour` in `lookup_weather` are interpreted in the target location's timezone, not the user's.
+</Note>
+
+---
+
+## Guardrails
+
+This server supports all [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Google Maps server."
+</Tip>
