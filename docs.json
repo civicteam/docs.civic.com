@@ -169,6 +169,7 @@
                   "civic/reference/servers/atlassian",
                   "civic/reference/servers/aws-billing",
                   "civic/reference/servers/bill",
+                  "civic/reference/servers/bill-spend-expense",
                   "civic/reference/servers/bluesky",
                   "civic/reference/servers/box",
                   "civic/reference/servers/box-community",
