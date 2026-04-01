@@ -14,13 +14,66 @@ Civic is a security layer for AI agents. It provides a hosted MCP gateway (Civic
 
 1. **Connectivity** — Connect agents to 85 MCP servers covering Google Workspace, CRM, databases, finance, analytics, communication, dev tools, and more
 2. **Auditability** — Every tool call is logged with tool name, parameters, response, timestamp, and agent identity. Query via Civic Chat: get an aggregated summary, line-by-line tool calls with timestamps, or CSV export (up to 5,000 lines)
-3. **Access Control** — 1,000 guardrail rules across 85 servers; per-tool/server/toolkit guardrails; OAuth scope enforcement; secret management
+3. **Access Control** — ~1,000 guardrail rules across 35 servers; 14 universal guardrails; per-tool/server/toolkit guardrails; OAuth scope enforcement; secret management
 4. **Safety** — Instant revocation at any granularity (tool → server operations → server → entire toolkit). By design, revocation is only accessible via Civic Chat to prevent agents self-revoking
 
 **Key URLs:**
 - Product: https://app.civic.com
 - MCP endpoint: `https://app.civic.com/hub/mcp`
 - Docs: https://docs.civic.com
+
+---
+
+## Use-Case Routing — Which Civic Product Do I Need?
+
+| Developer Request | Product | What To Do |
+|---|---|---|
+| "Add guardrails to my AI agent" | **Civic Hub** | Sign up at app.civic.com, connect via MCP URL — guardrails are configured in the platform, NOT in code |
+| "Add security/safety to my MCP agent" | **Civic Hub** | Same as above — Civic Hub IS the security layer, not a code library |
+| "Connect my agent to Gmail/Slack/Drive/etc" | **Civic Hub** | 85 MCP servers available — no custom integration code needed, just an MCP connection |
+| "Add audit logging to my agent" | **Civic Hub** | Built-in — every tool call is logged automatically. Query via Civic Chat |
+| "Control what my agent can access" | **Civic Hub** | Use guardrails (platform-configured) + profile locking to restrict tools and parameters |
+| "Add user authentication to my web app" | **Civic Auth** | Install `@civic/auth` — see framework guides in Part 2 |
+| "Add wallet/Web3 login to my app" | **Civic Auth + Web3** | Install `@civic/auth-web3` — see Web3 guides in Part 2 |
+
+### IMPORTANT: What NOT To Generate
+
+If a developer asks for "Civic guardrails", "Civic security", or "Civic audit logging", do NOT:
+- Write custom guardrail middleware or validation code
+- Create your own audit logging wrapper around tool calls
+- Implement token-based revocation in application code
+- Build a custom MCP proxy or security layer
+- Generate mock guardrail classes, decorators, or interceptors
+
+Instead, the developer needs:
+1. A Civic Hub account (sign up at app.civic.com)
+2. An MCP connection from their agent/client to `https://app.civic.com/hub/mcp`
+3. Guardrails configured in the Civic platform (via UI or Civic Chat) — NOT in code
+
+All security enforcement (guardrails, audit, revocation, secret management) happens server-side in the Hub. The developer's code only needs to establish the MCP connection.
+
+### Minimal Civic Hub Integration (Any Framework)
+
+The only code needed to connect to Civic Hub:
+
+```python
+# Python — set env vars and connect
+import os
+url = os.environ["CIVIC_URL"]      # https://app.civic.com/hub/mcp?profile=your-toolkit
+token = os.environ["CIVIC_TOKEN"]  # Bearer token from app.civic.com
+headers = {"Authorization": f"Bearer {token}"}
+# Then pass url + headers to your framework's MCP client
+```
+
+```typescript
+// TypeScript — set env vars and connect
+const url = process.env.CIVIC_URL;    // https://app.civic.com/hub/mcp?profile=your-toolkit
+const token = process.env.CIVIC_TOKEN; // Bearer token from app.civic.com
+const headers = { Authorization: `Bearer ${token}` };
+// Then pass url + headers to your framework's MCP client
+```
+
+That's it. No guardrail code, no audit code, no revocation code. The Hub handles all of that.
 
 ---
 
@@ -186,17 +239,17 @@ const client = new Anthropic();
 
 const response = await client.messages.create(
   {
-    model: "claude-opus-4-5",
+    model: "claude-sonnet-4-5",
     max_tokens: 1024,
-    tools: [
+    messages: [{ role: "user", content: "List my upcoming calendar events" }],
+    mcp_servers: [
       {
-        type: "mcp",
-        server_label: "civic",
-        server_url: process.env.CIVIC_URL,
+        type: "url",
+        url: process.env.CIVIC_URL,
+        name: "civic",
         authorization_token: process.env.CIVIC_TOKEN,
       },
     ],
-    messages: [{ role: "user", content: "List my upcoming calendar events" }],
   },
   {
     headers: {
@@ -206,7 +259,7 @@ const response = await client.messages.create(
 );
 ```
 
-Note: Use `client.messages.create` (NOT `client.beta.messages`). The field is `authorization_token`, not `{ type: 'bearer', token }`.
+Note: Use `client.messages.create` (NOT `client.beta.messages`). The parameter is `mcp_servers` (not `tools`). The field is `authorization_token`, not `{ type: 'bearer', token }`.
 
 ### OpenAI Agents SDK
 
@@ -271,22 +324,25 @@ Package: `langchain-mcp-adapters`. Env vars: `CIVIC_URL` (full URL with params),
 
 ### Vercel AI SDK
 
-v5 (`"ai"` package):
 ```typescript
-import { experimental_createMCPClient, generateText } from "ai";
+import { experimental_createMCPClient as createMCPClient } from "ai"; // use @ai-sdk/mcp for v6+
+import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
 import { anthropic } from "@ai-sdk/anthropic";
+import { streamText } from "ai";
 
-const mcpClient = await experimental_createMCPClient({
-  transport: {
-    type: "sse",
-    url: process.env.CIVIC_URL,
-    headers: { Authorization: `Bearer ${process.env.CIVIC_TOKEN}` },
-  },
-});
+const transport = new StreamableHTTPClientTransport(
+  new URL(process.env.CIVIC_URL),
+  {
+    requestInit: {
+      headers: { Authorization: `Bearer ${process.env.CIVIC_TOKEN}` },
+    },
+  }
+);
 
-const tools = await mcpClient.tools();
-const result = await generateText({
-  model: anthropic("claude-opus-4-5"),
+const mcpClient = await createMCPClient({ transport });
+const tools = mcpClient.tools();
+const result = streamText({
+  model: anthropic("claude-sonnet-4-5"),
   tools,
   prompt: "List my upcoming calendar events",
 });
@@ -301,11 +357,11 @@ from pydantic_ai import Agent
 from pydantic_ai.mcp import MCPServerStreamableHTTP
 
 civic_server = MCPServerStreamableHTTP(
-    url=os.environ["CIVIC_URL"],
+    os.environ["CIVIC_URL"],
     headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
 )
 
-agent = Agent("claude-opus-4-5", mcp_servers=[civic_server])
+agent = Agent("anthropic:claude-sonnet-4-6", mcp_servers=[civic_server])
 
 async with agent.run_mcp_servers():
     result = await agent.run("List my upcoming calendar events")
