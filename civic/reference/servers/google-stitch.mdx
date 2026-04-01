@@ -1,0 +1,129 @@
+---
+title: Google Stitch
+description: "Generative UI tool — create, edit, and iterate on web UI designs from natural language prompts"
+icon: "server"
+---
+
+## Overview
+
+Google Stitch is a generative UI tool that lets you create, edit, and iterate on web UI designs (screens) from natural language prompts. It outputs screenshots and production-ready HTML/CSS code.
+
+## How to Add Google Stitch
+
+<Steps>
+  <Step title="Get Your Stitch API Key">
+    1. Go to [stitch.withgoogle.com/settings](https://stitch.withgoogle.com/settings)
+    2. Copy your API key
+  </Step>
+  <Step title="Add to Civic">
+    Add the Google Stitch server to your Civic environment through the server directory. You will be prompted to provide your API key.
+  </Step>
+  <Step title="Test Connection">
+    Start with `"Create a new Stitch project called 'My App'"` to set up a container for your screens, then try generating a screen to verify everything works.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Screen Generation" icon="wand-magic-sparkles">
+    Generate new UI screens from text prompts with automatic design system creation
+  </Card>
+  <Card title="Screen Editing" icon="pen-to-square">
+    Make targeted changes to existing screens — colors, layouts, components, content
+  </Card>
+  <Card title="Design Variants" icon="clone">
+    Generate layout, color scheme, typography, and content variants of existing screens
+  </Card>
+  <Card title="Project Management" icon="folder">
+    Create and manage projects, list and retrieve screens with screenshots and HTML
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+### Creating & Managing Projects
+- **New Project**: `"Create a new Stitch project called 'My App'"`
+- **List Projects**: `"List all my Stitch projects"`
+- **Project Details**: `"Get the details of project ID 10337927055765204329"`
+
+### Generating Screens
+- **Dashboard**: `"Generate a dark-themed dashboard for a SaaS product with recent activity, connected integrations, and quick action buttons"`
+- **Login Screen**: `"Create a mobile login screen with email/password fields and a Google sign-in button"`
+- **Settings Page**: `"Generate a settings page with profile info, notification preferences, and a danger zone"`
+
+### Editing Screens
+- **Add Elements**: `"Add a notifications bell icon to the header and rename the primary button to 'Add Tool'"`
+- **Theme Changes**: `"Change the color scheme to light mode and increase heading font size"`
+- **Navigation**: `"Add a sidebar navigation with Home, Tools, Settings, and Help items"`
+
+### Generating Variants
+- **Layout Variants**: `"Generate 2 layout and color scheme variants of this screen"`
+- **Style Exploration**: `"Create 3 variants — one minimalist, one data-dense, one mobile-optimized"`
+- **Reimagine**: `"Reimagine this screen with a completely different visual style"`
+
+---
+
+## Available Tools (8)
+
+### Project Management
+
+<AccordionGroup>
+  <Accordion title="create_project">
+    `create_project` — Create a new Stitch project (container for screens). Projects are private by default.
+  </Accordion>
+  <Accordion title="get_project">
+    `get_project` — Retrieve metadata and design theme for a project
+  </Accordion>
+  <Accordion title="list_projects">
+    `list_projects` — List all owned or shared projects
+  </Accordion>
+</AccordionGroup>
+
+### Screen Operations
+
+<AccordionGroup>
+  <Accordion title="list_screens">
+    `list_screens` — List all screens in a project
+  </Accordion>
+  <Accordion title="get_screen">
+    `get_screen` — Retrieve a specific screen including screenshot and HTML download URLs
+  </Accordion>
+  <Accordion title="generate_screen_from_text">
+    `generate_screen_from_text` — Generate a new screen from a text prompt. Supports device types: `DESKTOP`, `MOBILE`, `TABLET`, `AGNOSTIC`.
+  </Accordion>
+  <Accordion title="edit_screens">
+    `edit_screens` — Edit one or more existing screens via a targeted prompt
+  </Accordion>
+  <Accordion title="generate_variants">
+    `generate_variants` — Generate design variants scoped to: `LAYOUT`, `COLOR_SCHEME`, `IMAGES`, `TEXT_FONT`, `TEXT_CONTENT`. Creative range: `REFINE` (subtle), `EXPLORE` (noticeable), `REIMAGINE` (fundamentally different).
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+**Generation time** — Screen generation takes 1–3 minutes. Do not retry if slow; the job continues server-side.
+
+**Screen output** — Each generated screen includes a `screenshot.downloadUrl` (image) and `htmlCode.downloadUrl` (HTML/CSS file). Both are signed Google URLs with a limited lifetime — fetch promptly.
+
+**Design system is auto-generated** — On first screen creation, Stitch generates a custom design system (colors, typography, component rules) tailored to the prompt. Subsequent edits reuse it for consistency.
+
+**Device types** — Supported: `DESKTOP`, `MOBILE`, `TABLET`, `AGNOSTIC`. Matching the device type to your use case improves layout quality.
+
+**Edit vs. Variants** — Use `edit_screens` for targeted, instructed changes. Use `generate_variants` when you want autonomous exploration.
+
+**Model selection** — Optional `modelId` accepts `GEMINI_3_PRO`, `GEMINI_3_FLASH`, or `GEMINI_3_1_PRO`.
+
+**`list_screens` caveat** — May return empty even when screens exist. Use `get_screen` directly with a known screen ID from generation responses.
+</Note>
+
+---
+
+## Guardrails
+
+This server is covered by the [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Google Stitch server."
+</Tip>

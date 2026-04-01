@@ -1,0 +1,127 @@
+---
+title: Google BigQuery
+description: "Query data with full SQL power and inspect dataset, table, and schema metadata"
+icon: "server"
+---
+
+## Overview
+
+The BigQuery MCP server provides read-only access to Google BigQuery — querying data with full SQL power and inspecting dataset/table metadata. It supports GoogleSQL `SELECT` queries, `INFORMATION_SCHEMA` views, dry-run cost estimation, and built-in `AI.FORECAST` for time-series forecasting.
+
+<Info>
+**Read-only** — No DDL (`CREATE`/`DROP`/`ALTER`) or DML (`INSERT`/`UPDATE`/`DELETE`). Schema and data management must be done via the GCP Console, `bq` CLI, or Terraform.
+</Info>
+
+## How to Add BigQuery
+
+<Steps>
+  <Step title="Enable the BigQuery API">
+    1. Go to the [Google Cloud Console](https://console.cloud.google.com)
+    2. Select your project (or create one)
+    3. Navigate to **APIs & Services → Library**
+    4. Search for **BigQuery API** and click **Enable**
+  </Step>
+  <Step title="Check Permissions">
+    Your Google account must have at minimum `roles/bigquery.dataViewer` + `roles/bigquery.jobUser` on the project. Check this under **IAM & Admin → IAM** in the GCP Console.
+
+    <Warning>
+    All queries are **billed to the project ID** you provide — including queries against public datasets like `bigquery-public-data`.
+    </Warning>
+  </Step>
+  <Step title="Add to Civic">
+    Add the Google BigQuery server to your Civic environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    On first use, you will be redirected to Google to authorize the connection.
+  </Step>
+  <Step title="Test Connection">
+    Start with `"What datasets exist in my BigQuery project?"` to verify the connection.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="SQL Queries" icon="database">
+    Run GoogleSQL SELECT queries with dry-run cost estimation and AI.FORECAST support
+  </Card>
+  <Card title="Schema Inspection" icon="magnifying-glass">
+    Browse datasets, tables, columns, types, and row counts
+  </Card>
+  <Card title="Access Auditing" icon="shield">
+    View dataset ACLs — who has OWNER, WRITER, READER access
+  </Card>
+  <Card title="Cost Management" icon="calculator">
+    Validate queries with dry-run mode before incurring costs
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+### Data Exploration
+- **Project Inventory**: `"What datasets and tables do I have in my BigQuery project?"`
+- **Schema Discovery**: `"Show me the schema of the analytics.users table"`
+- **Access Audit**: `"Who has access to my analytics dataset?"`
+
+### Querying
+- **Row Counts**: `"How many rows are in each table in my analytics dataset?"`
+- **Analysis**: `"Show me the top 10 most common names in the US between 1990 and 2013"`
+- **Joins**: `"Write a query to join users and events and show me each user's event count"`
+- **Forecasting**: `"Forecast the next 7 days of sales from my iowa_liquor_sales data"`
+
+### Cost Control
+- **Dry Run**: `"Validate this query without running it: SELECT ..."`
+- **Job History**: `"Show me all jobs run in my project in the last 24 hours using INFORMATION_SCHEMA"`
+
+---
+
+## Available Tools (5)
+
+### Metadata Inspection
+
+<AccordionGroup>
+  <Accordion title="list_dataset_ids">
+    `list_dataset_ids` — List all datasets in a project. Own-project only — returns 403 on external projects. Use `INFORMATION_SCHEMA.SCHEMATA` via `execute_sql` for cross-project metadata.
+  </Accordion>
+  <Accordion title="get_dataset_info">
+    `get_dataset_info` — Get full metadata for a dataset including creation time, location, time-travel hours, and the full ACL (access control list with roles and user grants).
+  </Accordion>
+  <Accordion title="list_table_ids">
+    `list_table_ids` — List all tables in a dataset. Returns `{}` when the dataset is empty.
+  </Accordion>
+  <Accordion title="get_table_info">
+    `get_table_info` — Get full table metadata including schema (field names, types, modes), row count, storage size, table type (TABLE/VIEW/EXTERNAL/MATERIALIZED_VIEW), and timestamps.
+  </Accordion>
+</AccordionGroup>
+
+### Query Execution
+
+<AccordionGroup>
+  <Accordion title="execute_sql">
+    `execute_sql` — Run a GoogleSQL `SELECT` query against any accessible table. Supports `dryRun: true` to validate and estimate cost without executing. Also supports `INFORMATION_SCHEMA` queries and `AI.FORECAST` for time-series forecasting.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+**SELECT only** — No DDL or DML operations.
+
+**Metadata tools are own-project only** — `list_dataset_ids`, `get_dataset_info`, `list_table_ids`, and `get_table_info` return 403 on external projects. Use `INFORMATION_SCHEMA` via `execute_sql` instead.
+
+**Timestamps are epoch floats** — All timestamps are returned as Unix epoch float strings (e.g. `"1.7722368E9"`), not ISO 8601. Use `FORMAT_TIMESTAMP` in your query for readable output.
+
+**Always use LIMIT** — Unbounded queries on large tables produce huge responses and incur unnecessary cost. Use `dryRun: true` first for expensive queries.
+
+**Partition filtering** — BigQuery tables are often partitioned by date. Filter on the partition column to dramatically reduce cost.
+</Note>
+
+---
+
+## Guardrails
+
+This server supports all [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my BigQuery server."
+</Tip>
