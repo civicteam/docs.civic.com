@@ -5,6 +5,21 @@ icon: "pen"
 public: true
 ---
 
+<Update label="April 01, 2026" description="auth-server-1.2.30">
+
+**Features**
+- Added an account discovery API that lets you programmatically list your accounts, including account IDs, app IDs, and account names
+- Added deep-link support for the customer dashboard, allowing direct navigation to specific sections like domains, users, billing, connections, security, and integration settings
+
+**Improvements**
+- Deep-link targets are now preserved through the full login and account creation flow, so you land on the right page after signing in
+- Resolved several dependency vulnerabilities to keep your environment secure
+
+**Security**
+- Added validation to prevent open-redirect attacks when using deep links
+
+</Update>
+
 <Update label="March 27, 2026" description="auth-server-1.2.29">
 
 Internal improvements and maintenance updates.
