@@ -6,11 +6,60 @@ icon: "server"
 
 ## Overview
 
-Cloudflare's MCP suite gives AI assistants access to 14 specialized servers spanning infrastructure management, security observability, developer tooling, and global internet intelligence. Connect to the servers you need to manage Workers, inspect audit logs, analyze DNS, scan URLs, and more — all from within Civic.
+Cloudflare's MCP suite gives AI assistants access to specialized servers spanning infrastructure management, security observability, developer tooling, and global internet intelligence. Connect to the servers you need to manage Workers, inspect audit logs, analyze DNS, scan URLs, and more — all from within Civic.
 
-<Card title="Add to Civic" icon="plus" href="https://app.civic.com">
-  Connect Cloudflare at app.civic.com
-</Card>
+## How to Add Cloudflare
+
+<Steps>
+  <Step title="Add to Civic">
+    Add the Cloudflare servers you need to your Civic environment through the server directory. Each Cloudflare product area is a separate server — add only the ones you need.
+  </Step>
+  <Step title="Authorize">
+    On first use of each server, you will be redirected to [Cloudflare](https://dash.cloudflare.com) to authorize the connection. Each product-specific server requests only the permissions it needs (e.g. the Logpush server only requests account read and logpush access).
+
+    <Info>
+    **Per-server authorization** — Each Cloudflare server has its own authorization with minimal permissions. The unified Cloudflare API server is the exception — it requests broad permissions covering the entire API surface.
+    </Info>
+  </Step>
+  <Step title="Test Connection">
+    Try a simple command for the server you added, such as `"List all accounts"` or `"List my Worker scripts"`.
+  </Step>
+</Steps>
+
+---
+
+## cloudflare-api (Unified)
+
+The Cloudflare API MCP exposes the **entire Cloudflare REST API surface** through just two tools: `search` (explores the OpenAPI spec) and `execute` (makes authenticated API calls). It covers 300+ product areas in a single integration.
+
+<Warning>
+**Prefer the product-specific servers below for everyday use.** They offer named tools (no code required), minimal OAuth scopes, and enforceable least-privilege per server. The unified API server is best for power users who need endpoints not covered by any specific server, or want to chain multiple product APIs in a single code block.
+</Warning>
+
+|  | **Cloudflare API (unified)** | **Product-specific servers (below)** |
+|---|---|---|
+| Coverage | Full Cloudflare API | Scoped to one product |
+| Tool experience | Code-mode only; search-then-execute | Named tools, no code required |
+| Auth scope | One broad token for everything | Minimal scopes per server |
+| Least privilege | Not enforceable per call | Each server scoped precisely |
+| Best for | Edge endpoints, automation, power users | Everyday guided use |
+
+| Tool | Description |
+|------|-------------|
+| `search` | Explore the Cloudflare OpenAPI spec to find endpoints, parameters, and schemas. Always use before `execute`. |
+| `execute` | Make authenticated API calls to any Cloudflare endpoint. Supports JavaScript with `Promise.all` for batching. Use `${accountId}` in paths — it is pre-set. |
+
+<Note>
+**Two-tool pattern** — Always `search` first, then `execute`. Skipping search leads to path errors.
+
+**Radar needs no auth** — Radar endpoints (`/radar/...`) work without account context and are the best connectivity test.
+
+**Code mode required** — Both tools require JavaScript execution.
+
+**Some products require dashboard activation** — R2 and Access/Zero Trust return errors until enabled in the Cloudflare dashboard. Some features require a paid plan.
+</Note>
+
+---
 
 ## cloudflare-ai-gateway
 
@@ -80,6 +129,20 @@ Inspect SaaS integration assets and security findings via Cloudflare CASB (Cloud
 | `asset_categories_by_vendor_and_type` | Filter asset categories by vendor and type |
 | `set_active_account` | Set the active account for subsequent tool calls |
 
+## cloudflare-logpush
+
+View and manage Cloudflare Logpush jobs for log delivery to external destinations. Currently read-only.
+
+| Tool | Description |
+|------|-------------|
+| `accounts_list` | List all accounts in your Cloudflare account |
+| `list_logpush_jobs` | List all Logpush jobs for the active account (max 100) |
+| `set_active_account` | Set the active account for subsequent tool calls |
+
+<Note>
+Account context required — call `set_active_account` before querying Logpush jobs. Current version supports listing and viewing only, not creating or modifying jobs.
+</Note>
+
 ## cloudflare-documentation
 
 Search Cloudflare's official documentation and access migration guides.
@@ -110,7 +173,7 @@ Query Workers Observability logs and metrics, and inspect Worker code.
 
 ## Guardrails
 
-This server supports all [14 universal guardrails](/civic/concepts/guardrails). No server-specific guardrails are available.
+This server supports all [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.
 
 ## cloudflare-radar
 
