@@ -238,7 +238,6 @@
                   "civic/reference/servers/redis",
                   "civic/reference/servers/redshift",
                   "civic/reference/servers/replicate",
-                  "civic/reference/servers/salesforce",
                   "civic/reference/servers/sentry",
                   "civic/reference/servers/servicetitan",
                   "civic/reference/servers/sharepoint",
