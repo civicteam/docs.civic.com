@@ -235,6 +235,7 @@
                   "civic/reference/servers/posthog",
                   "civic/reference/servers/postmark",
                   "civic/reference/servers/quickbooks-online",
+                  "civic/reference/servers/redis",
                   "civic/reference/servers/redshift",
                   "civic/reference/servers/replicate",
                   "civic/reference/servers/sentry",
