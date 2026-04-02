@@ -111,7 +111,8 @@
                   "civic/recipes/camel-ai",
                   "civic/recipes/mastra",
                   "civic/recipes/dify",
-                  "civic/recipes/flowise"
+                  "civic/recipes/flowise",
+                  "civic/recipes/hermes"
                 ]
               },
               {

@@ -1,0 +1,143 @@
+---
+title: Hermes
+description: Build a CLI or Telegram agent with Hermes and Civic's MCP Hub
+icon: "terminal"
+---
+
+Connect a [Hermes](https://github.com/civicteam/hermes-reference-implementation-civic) agent to Civic using its native MCP support. Hermes is a Python CLI agent framework powered by Anthropic's Claude that supports MCP for external tool access — pair it with Civic's MCP gateway to give your agent secure access to Gmail, Google Calendar, and 80+ other services.
+
+## Prerequisites
+
+- Python 3.11+
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
+- A Civic token (generate from [Install → MCP URL](https://app.civic.com/web/install/mcp-url))
+- An Anthropic API key from [console.anthropic.com](https://console.anthropic.com)
+
+## Installation
+
+Install the Hermes agent with MCP support using [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv add hermes-agent[mcp]
+```
+
+## Environment Variables
+
+```bash
+# Your full Civic toolkit URL — MUST be wrapped in double quotes
+# because the URL contains & characters that bash interprets otherwise
+CIVIC_URL="https://app.civic.com/hub/mcp?profile=your-toolkit&lock=true"
+
+# Civic token generated from app.civic.com → Install → MCP URL
+CIVIC_TOKEN=your-civic-token
+
+# Your Anthropic API key
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+<Warning>
+The `CIVIC_URL` contains `&` characters. Always wrap it in **double quotes** in your `.env` file — otherwise bash interprets `&` as a background operator and silently truncates the URL.
+</Warning>
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Configuration
+
+Create a `config.yaml` that points Hermes at your Civic MCP gateway:
+
+```yaml
+model:
+  provider: anthropic
+  model_id: claude-sonnet-4-6
+
+mcp:
+  servers:
+    civic:
+      url: ${CIVIC_URL}
+      authorization: Bearer ${CIVIC_TOKEN}
+      timeout: 180
+```
+
+Hermes reads this config at startup and connects to Civic as a Streamable HTTP MCP server. Claude discovers the available tools automatically.
+
+## Running the Agent
+
+```bash
+uv run hermes
+```
+
+This starts an interactive CLI session. Ask natural language questions and Hermes will route tool calls through Civic:
+
+```
+You: What events do I have this week?
+Hermes: Let me check your Google Calendar...
+```
+
+## Telegram Bot
+
+Hermes also supports running as a Telegram bot. Add your bot token to `.env`:
+
+```bash
+TELEGRAM_BOT_TOKEN=your-telegram-bot-token
+```
+
+Then run the bot:
+
+```bash
+uv run python telegram_bot.py
+```
+
+The bot supports per-user conversation history, automatic message chunking for Telegram's 4,096-character limit, and background typing indicators during tool calls.
+
+## Production Configuration
+
+### Lock to a Toolkit
+
+For production agents, always lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL="https://app.civic.com/hub/mcp?profile=your-production-toolkit"
+```
+
+When a profile is specified, the session is locked by default — the agent cannot switch toolkits or modify its own guardrails. This prevents prompt injection attacks from escaping the defined tool scope.
+
+### Multi-Account Setup
+
+For organization accounts, include the `accountId` parameter:
+
+```bash
+CIVIC_URL="https://app.civic.com/hub/mcp?profile=support&accountId=org_abc123"
+```
+
+### Pre-load Skills
+
+Load specific Skills at session start using the `skills` parameter:
+
+```bash
+CIVIC_URL="https://app.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses"
+```
+
+## Reference Implementation
+
+A complete reference implementation including CLI agent and Telegram bot is available at:
+
+[github.com/civicteam/hermes-reference-implementation-civic](https://github.com/civicteam/hermes-reference-implementation-civic)
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your Hermes agent can use
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>
