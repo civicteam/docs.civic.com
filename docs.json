@@ -390,7 +390,14 @@
             "pages": [
               "web3/embedded-wallets",
               "web3/ethereum-evm",
-              "web3/solana"
+              "web3/solana",
+              {
+                "group": "Mobile",
+                "icon": "mobile",
+                "pages": [
+                  "web3/mobile/solana"
+                ]
+              }
             ]
           },
           {

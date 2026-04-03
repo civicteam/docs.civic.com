@@ -1,0 +1,477 @@
+---
+title: "Mobile Solana"
+icon: "code"
+public: true
+---
+
+<Info>
+  The Civic Auth Solana API for React Native is currently in early access and
+  subject to change.
+</Info>
+
+## Getting Started
+
+After authenticating a user with Civic Auth, you can create a Web3 wallet for them using the `useWeb3Client` hook. Embedded wallets are generated on behalf of users through our non-custodial wallet partner—neither Civic nor your app has access to the private keys.
+
+<Info>
+  Only embedded wallets are supported (no self-custodial wallet connections yet)
+</Info>
+
+### Installation
+
+Install the SDK and its peer dependencies:
+
+<Tabs>
+  <Tab title="npm">
+    ```bash npm install @civic/react-native-auth-web3 @solana/web3.js ```
+  </Tab>
+  <Tab title="yarn">
+    ```bash yarn add @civic/react-native-auth-web3 @solana/web3.js ```
+  </Tab>
+  <Tab title="pnpm">
+    ```bash pnpm add @civic/react-native-auth-web3 @solana/web3.js ```
+  </Tab>
+</Tabs>
+
+### Native Setup
+
+#### Android Configuration
+
+Add the following to your `android/app/build.gradle`:
+
+```gradle
+android {
+    defaultConfig {
+        minSdkVersion 26  // Required minimum SDK version
+
+        // Add manifest placeholders for embedded wallet integration
+        manifestPlaceholders = [
+            metakeepDomain: "*.auth.metakeep.xyz",
+            metakeepScheme: <YourAppSchema>
+        ]
+    }
+}
+```
+
+#### iOS Configuration
+
+**Requirements:**
+
+- iOS 14.0 or higher
+- Xcode 14.0 or higher
+- Swift 5.0 or higher
+
+**Step 1: Add URL Type**
+
+1. Navigate to the **Info** tab of your app target settings in Xcode
+2. In the **URL Types** section, click the **＋** button to add a new URL
+3. Enter the following values:
+   - **Identifier:** `metakeep`
+   - **URL Schemes:** `$(PRODUCT_BUNDLE_IDENTIFIER)`
+
+**Step 2: Handle Callback URLs**
+
+Add the following code to your `ios/<YourAppName>/AppDelegate.swift`:
+
+```swift
+public override func application(
+    _ app: UIApplication,
+    open url: URL,
+    options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+) -> Bool {
+
+    ...
+
+    if url.absoluteString.lowercased().contains("metakeep") {
+        MetaKeep.companion.resume(url: url.absoluteString)
+        return true
+    }
+
+   ...
+
+}
+```
+
+### How Wallet Creation Works
+
+After authenticating with Civic Auth, the SDK can create a non-custodial embedded wallet for the user. The creation process requires an **ID token** - a JWT received from Civic Auth after successful authentication. This token proves the user's identity and links the wallet to their Civic account.
+
+Without a valid ID token, wallet creation will fail. This ensures only authenticated users can create wallets, with each wallet uniquely tied to a specific user account.
+
+### Quick Start
+
+```tsx
+import { useWeb3Client } from "@civic/react-native-auth-web3";
+
+const web3Config = {
+  solana: {
+    endpoint: "https://api.devnet.solana.com", // Your RPC endpoint
+  },
+};
+
+// Initialize the Web3 client with user's ID token
+const web3Client = useWeb3Client(web3Config, idToken);
+
+// Create wallets after login
+if (!web3Client?.solana) {
+  await web3Client?.createWallets();
+}
+```
+
+## The useWeb3Client Hook
+
+The `useWeb3Client` hook returns a `Web3Client` object for interacting with blockchain networks. The client manages both wallet creation and transaction operations.
+
+### Web3Client Interface
+
+```typescript
+interface Web3Client {
+  solana: SolanaWeb3Client; // Solana wallet operations
+  connected: boolean; // Connection status
+  createWallets(): Promise<Wallets | null>; // Create embedded wallets
+  disconnect(): Promise<void>; // Disconnect and cleanup
+}
+```
+
+### SolanaWeb3Client Methods
+
+The `solana` property provides access to Solana-specific operations:
+
+```typescript
+interface SolanaWeb3Client {
+  readonly address: string; // Wallet public key
+
+  // Core transaction methods
+  sendTransaction(address: string, amount: number): Promise<string>;
+  signTransaction(transaction: Transaction, reason: string): Promise<Buffer>;
+  signMessage(message: string, reason: string): Promise<string>;
+
+  // Utility methods
+  getBalance(): Promise<number | undefined>;
+  disconnect(): Promise<void>;
+}
+```
+
+## Using the Wallet
+
+### Sending Transactions
+
+You have two options for sending transactions:
+
+#### Option 1: Simple Transfer (Recommended)
+
+Use `sendTransaction` for quick SOL transfers. It handles transaction creation, signing, and broadcasting:
+
+```tsx
+// Send 0.5 SOL to a recipient
+const txHash = await web3Client?.solana?.sendTransaction(
+  "RecipientPublicKeyHere",
+  0.5, // Amount in SOL
+);
+console.log(`Transaction: ${txHash}`);
+```
+
+#### Option 2: Custom Transactions
+
+Use `signTransaction` for complex transactions with custom instructions:
+
+```tsx
+import {
+  Connection,
+  Transaction,
+  SystemProgram,
+  PublicKey,
+} from "@solana/web3.js";
+
+const connection = new Connection(web3Config.solana.endpoint);
+
+// Build custom transaction
+const transaction = new Transaction().add(
+  SystemProgram.transfer({
+    fromPubkey: new PublicKey(web3Client.solana.address),
+    toPubkey: new PublicKey(recipientAddress),
+    lamports: 0.001 * 1e9, // 0.001 SOL in lamports
+  }),
+);
+
+// Sign the transaction
+const signature = await web3Client?.solana?.signTransaction(
+  transaction,
+  "Approve transfer", // Reason shown to user
+);
+
+// Add signature and send
+transaction.addSignature(new PublicKey(web3Client.solana.address), signature);
+const txHash = await connection.sendRawTransaction(transaction.serialize());
+```
+
+### Checking Balance
+
+```tsx
+import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
+
+const connection = new Connection(web3Config.solana.endpoint);
+const balanceLamports = await connection.getBalance(
+  new PublicKey(web3Client.solana.address),
+);
+const balanceSOL = balanceLamports / LAMPORTS_PER_SOL;
+console.log(`Balance: ${balanceSOL} SOL`);
+```
+
+### Signing Messages
+
+```tsx
+const message = "Verify wallet ownership";
+const signature = await web3Client?.solana?.signMessage(
+  message,
+  "Sign to verify your wallet", // Shown to user
+);
+console.log(`Signature: ${signature}`);
+```
+
+## Complete Example
+
+Here's a complete authentication provider with Expo Auth Session and Web3 wallet creation:
+
+```tsx
+import { createContext, useEffect, useMemo, useReducer } from "react";
+import { AuthRequestConfig, useAuthRequest } from "expo-auth-session";
+import * as WebBrowser from "expo-web-browser";
+import { civicAuthConfig } from "@/config/civicAuth";
+import { useWeb3Client, type Web3Client } from "@civic/react-native-auth-web3";
+import { clusterApiUrl } from "@solana/web3.js";
+import { CivicWeb3ClientConfig } from "@civic/react-native-auth-web3/dist/types";
+
+interface AuthState {
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  user?: AuthUser;
+  accessToken?: string;
+  refreshToken?: string;
+  idToken?: string;
+  expiresIn?: number;
+}
+
+interface AuthUser {
+  email?: string;
+  name: string;
+  picture?: string;
+  sub: string;
+}
+
+interface AuthAction {
+  type: string;
+  payload?: any;
+}
+
+const initialState: AuthState = {
+  isLoading: false,
+  isAuthenticated: false,
+};
+
+export type AuthContextType = {
+  state: AuthState;
+  signIn?: () => Promise<void>;
+  signOut?: () => Promise<void>;
+  web3Client?: Web3Client | null | undefined;
+};
+
+export const AuthContext = createContext<AuthContextType>({
+  state: initialState,
+});
+
+// This is needed to close the webview after a complete login
+WebBrowser.maybeCompleteAuthSession();
+
+export const AuthProvider = ({
+  config,
+  children,
+}: {
+  config?: Partial<AuthRequestConfig>;
+  children: React.ReactNode;
+}) => {
+  const finalConfig = useMemo(() => {
+    return { ...civicAuthConfig, ...config };
+  }, [config]);
+
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: finalConfig.clientId,
+      scopes: finalConfig.scopes,
+      redirectUri: finalConfig.redirectUri,
+      usePKCE: true,
+    },
+    {
+      authorizationEndpoint: finalConfig.authorizationEndpoint,
+      tokenEndpoint: finalConfig.tokenEndpoint,
+    },
+  );
+
+  const [authState, dispatch] = useReducer(
+    (previousState: AuthState, action: AuthAction): AuthState => {
+      switch (action.type) {
+        case "SIGN_IN":
+          return {
+            ...previousState,
+            isAuthenticated: true,
+            accessToken: action.payload.access_token,
+            idToken: action.payload.id_token,
+            expiresIn: action.payload.expires_in,
+          };
+        case "USER_INFO":
+          return {
+            ...previousState,
+            user: action.payload,
+          };
+        case "SIGN_OUT":
+          return initialState;
+        default:
+          return previousState;
+      }
+    },
+    initialState,
+  );
+
+  const web3Config = useMemo(
+    () =>
+      ({
+        solana: {
+          endpoint: clusterApiUrl("devnet"),
+        },
+      }) as CivicWeb3ClientConfig,
+    [],
+  );
+
+  const web3Client = useWeb3Client(web3Config, authState.idToken);
+
+  const authContext = useMemo(
+    () => ({
+      state: authState,
+      web3Client,
+      signIn: async () => {
+        promptAsync();
+      },
+      signOut: async () => {
+        if (!authState.idToken) {
+          throw new Error("No idToken found");
+        }
+        try {
+          const endSessionUrl = new URL(finalConfig.endSessionEndpoint);
+          endSessionUrl.searchParams.append("client_id", finalConfig.clientId);
+          endSessionUrl.searchParams.append("id_token_hint", authState.idToken);
+          endSessionUrl.searchParams.append(
+            "post_logout_redirect_uri",
+            finalConfig.redirectUri,
+          );
+
+          const result = await WebBrowser.openAuthSessionAsync(
+            endSessionUrl.toString(),
+            finalConfig.redirectUri,
+          );
+
+          // Only sign out if the session was completed successfully
+          // If the user cancels (result.type === 'cancel'), we don't sign them out
+          if (result.type === "success") {
+            dispatch({ type: "SIGN_OUT" });
+          }
+        } catch (e) {
+          console.warn(e);
+        }
+      },
+    }),
+    [authState, web3Client, promptAsync, finalConfig],
+  );
+
+  useEffect(() => {
+    const getToken = async ({
+      code,
+      codeVerifier,
+      redirectUri,
+    }: {
+      code: string;
+      redirectUri: string;
+      codeVerifier?: string;
+    }) => {
+      try {
+        const response = await fetch(finalConfig.tokenEndpoint, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: new URLSearchParams({
+            grant_type: "authorization_code",
+            client_id: finalConfig.clientId,
+            code,
+            code_verifier: codeVerifier || "",
+            redirect_uri: redirectUri,
+          }).toString(),
+        });
+        if (response.ok) {
+          const payload = await response.json();
+          dispatch({ type: "SIGN_IN", payload });
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+    };
+    if (response?.type === "success") {
+      const { code } = response.params;
+      getToken({
+        code,
+        codeVerifier: request?.codeVerifier,
+        redirectUri: finalConfig.redirectUri || "",
+      });
+    } else if (response?.type === "error") {
+      console.warn("Authentication error: ", response.error);
+    }
+  }, [dispatch, finalConfig, request?.codeVerifier, response]);
+
+  useEffect(() => {
+    const initializeUser = async () => {
+      // Fetch user info
+      try {
+        const response = await fetch(finalConfig.userInfoEndpoint || "", {
+          headers: { Authorization: `Bearer ${authState.accessToken}` },
+        });
+        if (response.ok) {
+          const payload = await response.json();
+          dispatch({ type: "USER_INFO", payload });
+        }
+      } catch (e) {
+        console.warn("Failed to fetch user info:", e);
+      }
+
+      // Create wallets if needed
+      if (!web3Client?.solana) {
+        await web3Client?.createWallets();
+      }
+    };
+
+    if (authState.isAuthenticated) {
+      initializeUser();
+    }
+  }, [
+    authState.isAuthenticated,
+    authState.accessToken,
+    finalConfig.userInfoEndpoint,
+    web3Client,
+  ]);
+
+  return (
+    <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>
+  );
+};
+```
+
+## Example Repository
+
+For a complete working example of Civic Auth with embedded wallets in a React Native application, check out our example repository:
+
+[https://github.com/civicteam/civic-auth-examples/tree/main/packages/mobile/react-native-expo]
+
+## Crypto Polyfill
+
+The SDK automatically includes a crypto polyfill using [expo-crypto](https://docs.expo.dev/versions/latest/sdk/crypto/) to provide the `getRandomValues` function required by Solana's `PublicKey` object. This polyfill ensures cryptographic operations work correctly in React Native environments where the Web Crypto API is not natively available.
+
+The polyfill is applied automatically when you import the SDK, so no additional configuration is needed.
