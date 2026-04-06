@@ -125,7 +125,8 @@
                   "civic/quickstart/clients/windsurf",
                   "civic/quickstart/clients/jetbrains",
                   "civic/quickstart/clients/codex",
-                  "civic/quickstart/clients/goose"
+                  "civic/quickstart/clients/goose",
+                  "civic/quickstart/clients/kiro"
                 ]
               }
             ]
