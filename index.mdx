@@ -1,12 +1,12 @@
 ---
 title: "Welcome to Civic"
-description: "The security layer for AI agents. Connect to 85 MCP servers with guardrails, audit logs, and instant revocation."
+description: "The security layer for AI agents. Connect to 95+ MCP servers with guardrails, audit logs, and instant revocation."
 icon: "octopus"
 ---
 
 Your agent can read every email. Can you prove it only read what it was supposed to?
 
-Civic is the security layer for AI agents — a control plane that makes tool-using agents safe, auditable, and compliant. Connect your agent to 85 MCP servers and stay in control of every tool call.
+Civic is the security layer for AI agents — a control plane that makes tool-using agents safe, auditable, and compliant. Connect your agent to 95+ MCP servers and stay in control of every tool call.
 
 <CardGroup cols={2}>
   <Card title="Start in Civic Chat" icon="sparkles" href="https://app.civic.com">
@@ -19,7 +19,7 @@ Civic is the security layer for AI agents — a control plane that makes tool-us
 
 ## Four Pillars
 
-Civic is built on four pillars: **Connectivity** to 85 MCP servers, **Auditability** of every tool call, **Access Control** through 1,000 guardrail rules, and **Safety** via instant revocation at any granularity. Together they form a security layer that sits between your agent and the tools it uses — so you stay in control without slowing anything down.
+Civic is built on four pillars: **Connectivity** to 95+ MCP servers, **Auditability** of every tool call, **Guardrails** through 1,000 guardrail rules, and **Revocability** via instant revocation at any granularity. Together they form a security layer that sits between your agent and the tools it uses — so you stay in control without slowing anything down.
 
 <div style={{margin: '24px 0', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(124, 59, 237, 0.25)'}}>
   <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '16px 24px', background: 'rgba(124, 59, 237, 0.06)', borderBottom: '1px solid rgba(124, 59, 237, 0.15)'}}>
@@ -27,13 +27,13 @@ Civic is built on four pillars: **Connectivity** to 85 MCP servers, **Auditabili
     <span style={{color: '#7C3BED', fontSize: '18px'}}>→</span>
     <span style={{padding: '6px 14px', borderRadius: '6px', background: 'rgba(124, 59, 237, 0.28)', fontSize: '13px', fontWeight: '700', color: '#7C3BED'}}>Civic Hub</span>
     <span style={{color: '#7C3BED', fontSize: '18px'}}>→</span>
-    <span style={{padding: '6px 14px', borderRadius: '6px', background: 'rgba(124, 59, 237, 0.12)', fontSize: '13px', fontWeight: '600'}}>85 MCP Servers</span>
+    <span style={{padding: '6px 14px', borderRadius: '6px', background: 'rgba(124, 59, 237, 0.12)', fontSize: '13px', fontWeight: '600'}}>95+ MCP Servers</span>
   </div>
   <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)'}}>
     <div style={{padding: '20px', borderRight: '1px solid rgba(124, 59, 237, 0.15)', textAlign: 'center'}}>
       <div style={{fontSize: '22px', marginBottom: '8px'}}>🔌</div>
       <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Connectivity</div>
-      <div style={{fontSize: '12px', opacity: 0.5}}>85 MCP servers</div>
+      <div style={{fontSize: '12px', opacity: 0.5}}>95+ MCP servers</div>
     </div>
     <div style={{padding: '20px', borderRight: '1px solid rgba(124, 59, 237, 0.15)', textAlign: 'center'}}>
       <div style={{fontSize: '22px', marginBottom: '8px'}}>📊</div>
@@ -42,12 +42,12 @@ Civic is built on four pillars: **Connectivity** to 85 MCP servers, **Auditabili
     </div>
     <div style={{padding: '20px', borderRight: '1px solid rgba(124, 59, 237, 0.15)', textAlign: 'center'}}>
       <div style={{fontSize: '22px', marginBottom: '8px'}}>🛡️</div>
-      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Access Control</div>
+      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Guardrails</div>
       <div style={{fontSize: '12px', opacity: 0.5}}>1,000 guardrail rules</div>
     </div>
     <div style={{padding: '20px', textAlign: 'center'}}>
       <div style={{fontSize: '22px', marginBottom: '8px'}}>⚡</div>
-      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Safety</div>
+      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Revocability</div>
       <div style={{fontSize: '12px', opacity: 0.5}}>Instant revocation</div>
     </div>
   </div>
@@ -55,9 +55,9 @@ Civic is built on four pillars: **Connectivity** to 85 MCP servers, **Auditabili
 
 ### Connectivity
 
-Connect to **85 MCP servers** — Google Workspace, Slack, GitHub, databases, CRMs, and more. Civic handles OAuth, secrets, and authentication so your agent never touches raw credentials.
+Connect to **95+ MCP servers** — Google Workspace, Slack, GitHub, databases, CRMs, and more. Civic handles OAuth, secrets, and authentication so your agent never touches raw credentials.
 
-<Card title="Browse all 85 MCP servers" icon="server" href="/civic/reference/servers">
+<Card title="Browse all 95+ MCP servers" icon="server" href="/civic/reference/servers">
   Google Calendar, Gmail, Sheets, Drive, Docs, Slack, GitHub, PostgreSQL, HubSpot, and 76 more
 </Card>
 
@@ -69,7 +69,7 @@ Every tool call is logged: tool name, parameters, response, timestamp, and agent
 - **Line-by-line detail**: "Show every tool call from yesterday with timestamps"
 - **CSV export**: Up to 5,000 lines per export
 
-### Access Control
+### Guardrails
 
 With **1,000 guardrail rules**, set precise controls per tool, per server, or per toolkit. OAuth scope enforcement ensures agents get least-privilege access. Secrets — OAuth tokens, API keys, Bearer tokens — are stored in Civic and never exposed to the agent layer.
 
@@ -77,7 +77,7 @@ With **1,000 guardrail rules**, set precise controls per tool, per server, or pe
   Block specific tools, enforce read-only scopes, set parameter presets the agent cannot override
 </Card>
 
-### Safety
+### Revocability
 
 Revoke access instantly at any granularity — a single tool, a server connection, or an entire toolkit. Revocation is available via Civic Chat and the UI, not the API. An agent cannot revoke its own constraints.
 

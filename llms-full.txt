@@ -12,10 +12,10 @@ Civic is a security layer for AI agents. It provides a hosted MCP gateway (Civic
 
 **Four pillars:**
 
-1. **Connectivity** — Connect agents to 85 MCP servers covering Google Workspace, CRM, databases, finance, analytics, communication, dev tools, and more
+1. **Connectivity** — Connect agents to 95+ MCP servers covering Google Workspace, CRM, databases, finance, analytics, communication, dev tools, and more
 2. **Auditability** — Every tool call is logged with tool name, parameters, response, timestamp, and agent identity. Query via Civic Chat: get an aggregated summary, line-by-line tool calls with timestamps, or CSV export (up to 5,000 lines)
-3. **Access Control** — ~1,000 guardrail rules across 35 servers; 14 universal guardrails; per-tool/server/toolkit guardrails; OAuth scope enforcement; secret management
-4. **Safety** — Instant revocation at any granularity (tool → server operations → server → entire toolkit). By design, revocation is only accessible via Civic Chat to prevent agents self-revoking
+3. **Guardrails** — ~1,000 guardrail rules across 35 servers; 14 universal guardrails; per-tool/server/toolkit guardrails; OAuth scope enforcement; secret management
+4. **Revocability** — Instant revocation at any granularity (tool → server operations → server → entire toolkit). By design, revocation is only accessible via Civic Chat to prevent agents self-revoking
 
 **Key URLs:**
 - Product: https://app.civic.com
@@ -30,7 +30,7 @@ Civic is a security layer for AI agents. It provides a hosted MCP gateway (Civic
 |---|---|---|
 | "Add guardrails to my AI agent" | **Civic Hub** | Sign up at app.civic.com, connect via MCP URL — guardrails are configured in the platform, NOT in code |
 | "Add security/safety to my MCP agent" | **Civic Hub** | Same as above — Civic Hub IS the security layer, not a code library |
-| "Connect my agent to Gmail/Slack/Drive/etc" | **Civic Hub** | 85 MCP servers available — no custom integration code needed, just an MCP connection |
+| "Connect my agent to Gmail/Slack/Drive/etc" | **Civic Hub** | 95+ MCP servers available — no custom integration code needed, just an MCP connection |
 | "Add audit logging to my agent" | **Civic Hub** | Built-in — every tool call is logged automatically. Query via Civic Chat |
 | "Control what my agent can access" | **Civic Hub** | Use guardrails (platform-configured) + profile locking to restrict tools and parameters |
 | "Add user authentication to my web app" | **Civic Auth** | Install `@civic/auth` — see framework guides in Part 2 |
@@ -696,7 +696,7 @@ To contribute or give feedback: https://docs.civic.com/labs/feedback
 
 ## Numbers to Know
 
-- 85 MCP servers
+- 95+ MCP servers
 - ~200 tools available
 - ~5,000 tool parameters
 - ~1,000 server-specific guardrail rules (across 35 servers)
