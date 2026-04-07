@@ -4,8 +4,9 @@ description: Connect Cursor AI code editor to Civic in 3 minutes
 icon: "code"
 ---
 
-import HubBridgeInfo from '/snippets/_hub-bridge-what-is.mdx'
+import AuthMethodCallout from '/snippets/_auth-method-callout.mdx'
 import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
+import HubBridgeInfo from '/snippets/_hub-bridge-what-is.mdx'
 
 ## Prerequisites
 
@@ -13,48 +14,54 @@ import OnboardingSteps from '/snippets/_onboarding-what-happens.mdx'
   <Card title="Cursor Editor" icon="cursor-click" href="https://cursor.com">
     Download and install Cursor (free tier works)
   </Card>
-  <Card title="Node.js 18+" icon="code" href="https://nodejs.org">
-    Required for Hub Bridge - check with `node --version`
+  <Card title="Civic Account" icon="shield-check" href="https://app.civic.com">
+    Sign up at app.civic.com and grab your token
   </Card>
 </CardGroup>
 
-<HubBridgeInfo />
-
-<Note>
-Cursor doesn't support remote HTTP MCP natively, so this setup uses Hub Bridge as the local proxy.
-</Note>
+<AuthMethodCallout />
 
 ## Setup Steps
 
 <Steps>
-  <Step title="Click 'Add to Cursor'">
-    Use the one-click install button below:
-    
-    <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=Civic&config=eyJjb21tYW5kIjoibnB4IC15IEBjaXZpYy9odWItYnJpZGdlIn0%3D">
-      <img
-        src="https://cursor.com/deeplink/mcp-install-dark.svg"
-        alt="Add Civic to Cursor"
-        width="126"
-        height="28"
-        className="rounded hover:opacity-80 transition-opacity"
-      />
-    </a>
-  </Step>
-  
-  <Step title="Install in Cursor">
-    When Cursor opens, click "Install" to add the Civic MCP server
-  </Step>
-  
-  <Step title="Enable the Connection">
-    Make sure Civic is enabled in Cursor's MCP settings. If you don't see it, try disabling and re-enabling it.
-  </Step>
-  
-  <Step title="First-Time Authentication">
-    The first time you use any MCP command, Hub Bridge downloads itself (once, ~30 seconds) and opens a browser window to app.civic.com. Sign in to link the session to your account.
+  <Step title="Get Your Civic URL and Token">
+    Log in to [app.civic.com](https://app.civic.com) and copy your **Civic URL** and **API token** from your account settings.
+
+    Your Civic URL looks like this:
+    ```
+    https://app.civic.com/hub/mcp?profile=YOUR_PROFILE
+    ```
 
     If you haven't set up Civic yet, the onboarding takes about 2 minutes:
 
     <OnboardingSteps />
+  </Step>
+
+  <Step title="Open Cursor MCP Settings">
+    Go to **Settings → Tools & MCPs → New MCP Server**
+  </Step>
+
+  <Step title="Add Civic MCP Server">
+    Paste the following configuration:
+
+    ```json
+    {
+      "mcpServers": {
+        "civic": {
+          "url": "YOUR_CIVIC_URL",
+          "headers": {
+            "Authorization": "Bearer YOUR_TOKEN_HERE"
+          }
+        }
+      }
+    }
+    ```
+
+    Replace `YOUR_CIVIC_URL` with your Civic URL and `YOUR_TOKEN_HERE` with your API token.
+  </Step>
+
+  <Step title="Enable and Test">
+    The server should appear in your MCP servers list. If you don't see it, try disabling and re-enabling it.
   </Step>
 </Steps>
 
@@ -70,83 +77,62 @@ Try these prompts in Cursor to verify everything works:
 
 ## Troubleshooting
 
-<Accordion title="Cursor doesn't open when I click the install button">
-Make sure Cursor is installed and try copying this URL manually:
-```
-cursor://anysphere.cursor-deeplink/mcp/install?name=Civic&config=eyJjb21tYW5kIjoibnB4IC15IEBjaXZpYy9odWItYnJpZGdlIn0%3D
-```
+<Accordion title="Civic not showing in MCP settings">
+1. Make sure you saved the configuration after adding it
+2. Check that your URL and token are correct
+3. Try disabling and re-enabling the server
+4. Restart Cursor
 </Accordion>
 
-<Accordion title="'Node.js not found' error">
-Install Node.js 18 or later from [nodejs.org](https://nodejs.org) and restart Cursor.
+<Accordion title="Authentication errors">
+1. Verify your token is correct and hasn't expired
+2. Make sure you're using the `Bearer ` prefix in the Authorization header
+3. Try generating a new token from [app.civic.com](https://app.civic.com)
 </Accordion>
 
-<Accordion title="Authentication window doesn't open">
-The Hub Bridge should handle authentication in the chat. If it doesn't:
-1. Restart Cursor
-2. Try disabling and re-enabling Civic in Cursor settings
-3. Make sure you're trying to use a tool that requires authentication
+<Accordion title="Connection timeouts">
+1. Check your internet connection
+2. Verify the Civic URL is correct
+3. Try removing and re-adding the MCP server
 </Accordion>
 
-<Accordion title="Civic not showing in Cursor settings">
-1. Make sure you clicked "Install" when prompted
-2. Check Cursor's MCP server settings manually
-3. Try the manual setup method below
-</Accordion>
+## Legacy Setup: Hub Bridge
 
-## Manual Setup (If One-Click Fails)
+<HubBridgeInfo />
 
-If the one-click install doesn't work, add Civic manually:
+If you're on an older version of Cursor that doesn't support HTTP MCP servers, you can use Hub Bridge as a local stdio proxy instead. This requires **Node.js 18+**.
 
-### Method 1: Via Cursor Settings (Recommended)
+<Accordion title="Hub Bridge setup (legacy)">
 
-<Steps>
-  <Step title="Open Cursor Settings">
-    Go to **Settings → Features → MCP**
-  </Step>
-  
-  <Step title="Add New MCP Server">
-    1. Click **+ Add New MCP Server**
-    2. Select transport type: **stdio**  
-    3. Enter nickname: **Civic**
-    4. Enter command: **npx -y @civic/hub-bridge**
-    5. Save the configuration
-  </Step>
-  
-  <Step title="Enable and Test">
-    The server should appear in your MCP servers list. Test with: "What MCP servers are available?"
-  </Step>
-</Steps>
+### One-Click Install
 
-### Method 2: Via Configuration File
+<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=Civic&config=eyJjb21tYW5kIjoibnB4IC15IEBjaXZpYy9odWItYnJpZGdlIn0%3D">
+  <img
+    src="https://cursor.com/deeplink/mcp-install-dark.svg"
+    alt="Add Civic to Cursor"
+    width="126"
+    height="28"
+    className="rounded hover:opacity-80 transition-opacity"
+  />
+</a>
 
-<Steps>
-  <Step title="Create MCP Configuration File">
-    Create a file called **`.cursor/mcp.json`** in your project root directory
-  </Step>
-  
-  <Step title="Add Configuration">
-    Add the following content:
-    ```json
-    {
-      "mcpServers": {
-        "civic": {
-          "command": "npx",
-          "args": ["-y", "@civic/hub-bridge"]
-        }
-      }
+### Manual Config File
+
+Create **`.cursor/mcp.json`** in your project root:
+
+```json
+{
+  "mcpServers": {
+    "civic": {
+      "command": "npx",
+      "args": ["-y", "@civic/hub-bridge"]
     }
-    ```
-  </Step>
-  
-  <Step title="Restart Cursor">
-    Save the file and restart Cursor. The MCP server will be automatically detected.
-  </Step>
-  
-  <Step title="Test Connection">
-    Test with: "What MCP servers are available?"
-  </Step>
-</Steps>
+  }
+}
+```
+
+The first time you use a tool, Hub Bridge opens a browser window to app.civic.com for authentication.
+</Accordion>
 
 ## Managing Your Tools
 
@@ -161,54 +147,23 @@ You can add new tools directly in your Cursor chat:
 "Show me what tools are available to connect"
 ```
 
-This works because Hub Bridge exposes Civic's Configurator Agent, which handles adding, removing, and configuring MCP servers via natural language. You don't need to touch app.civic.com directly.
-
 ### Removing Tools
 
 You can disconnect from specific tools directly in chat:
 
 ```
-"Disconnect from Slack"  
+"Disconnect from Slack"
 "Remove GitHub from my tools"
 "What tools do I currently have connected?"
-"Stop my access to Dropbox"
 ```
 
 ### Removing the MCP Server
 
-To remove Civic completely:
-
-**Via Settings:**
-<Steps>
-  <Step title="Open MCP Settings">
-    Go to **Settings → Features → MCP**
-  </Step>
-  <Step title="Delete Server">
-    1. Find "Civic" in your MCP servers list
-    2. Click on the server to access its settings  
-    3. Click **Delete** or **Remove** button
-  </Step>
-</Steps>
-
-**Via Configuration File:**
-<Steps>
-  <Step title="Edit Configuration">
-    Open your **`.cursor/mcp.json`** file
-  </Step>
-  <Step title="Remove Entry">
-    Delete the `"civic"` entry from the `mcpServers` object
-  </Step>
-  <Step title="Save and Restart">
-    Save the file and restart Cursor
-  </Step>
-</Steps>
+Go to **Settings → Tools & MCPs**, find "Civic" in your MCP servers list, and delete it.
 
 ## Resources
 
 <CardGroup cols={2}>
-  <Card title="Hub Bridge Guide" icon="bridge" href="/civic/quickstart/hub-bridge">
-    Detailed Hub Bridge setup and troubleshooting
-  </Card>
   <Card title="Client Compatibility" icon="table" href="/civic/reference/client-compatibility">
     Technical details about Cursor's MCP support
   </Card>
