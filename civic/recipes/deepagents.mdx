@@ -11,7 +11,7 @@ Connect a [DeepAgents](https://github.com/civicteam/deepagents-reference-impleme
 - Python 3.11+
 - A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
 - A Civic token (generate from [Install → MCP URL](https://app.civic.com/web/install/mcp-url))
-- An Anthropic API key
+- An API key for your chosen LLM provider (e.g., [Anthropic](https://console.anthropic.com), [OpenAI](https://platform.openai.com))
 
 ## Installation
 
@@ -36,8 +36,8 @@ CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit&lock=true
 # Civic token generated from app.civic.com → Install → MCP URL
 CIVIC_TOKEN=your-civic-token
 
-# Anthropic API key
-ANTHROPIC_API_KEY=your-anthropic-key
+# API key for your chosen LLM provider
+ANTHROPIC_API_KEY=your-anthropic-key   # or OPENAI_API_KEY, etc.
 ```
 
 <Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
@@ -73,7 +73,7 @@ async def lifespan(app: FastAPI):
     tools = await mcp_client.get_tools()
 
     agent = create_deep_agent(
-        model="anthropic:claude-sonnet-4-6",
+        model="anthropic:claude-sonnet-4-6",  # or "openai:gpt-4o", etc.
         tools=tools,
         system_prompt="You are a helpful assistant with access to calendar and email tools.",
     )
@@ -144,7 +144,7 @@ CIVIC_URL=https://app.civic.com/hub/mcp?profile=support&skills=escalation,canned
 |---|---|
 | `CIVIC_URL` | Full Civic toolkit URL including profile and any URL parameters |
 | `CIVIC_TOKEN` | Civic token from [app.civic.com → Install → MCP URL](https://app.civic.com/web/install/mcp-url) |
-| `ANTHROPIC_API_KEY` | Anthropic API key for the Claude model |
+| `ANTHROPIC_API_KEY` | API key for your LLM provider (e.g., Anthropic, OpenAI) |
 
 ## Reference Implementation
 

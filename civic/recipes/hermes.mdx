@@ -4,14 +4,14 @@ description: Build a CLI or Telegram agent with Hermes and Civic's MCP Hub
 icon: "terminal"
 ---
 
-Connect a [Hermes](https://github.com/civicteam/hermes-reference-implementation-civic) agent to Civic using its native MCP support. Hermes is a Python CLI agent framework powered by Anthropic's Claude that supports MCP for external tool access — pair it with Civic's MCP gateway to give your agent secure access to Gmail, Google Calendar, and 80+ other services.
+Connect a [Hermes](https://github.com/civicteam/hermes-reference-implementation-civic) agent to Civic using its native MCP support. Hermes is a Python CLI agent framework that supports multiple LLM providers (including Anthropic, OpenAI, and others) and MCP for external tool access — pair it with Civic's MCP gateway to give your agent secure access to Gmail, Google Calendar, and 80+ other services.
 
 ## Prerequisites
 
 - Python 3.11+
 - A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
 - A Civic token (generate from [Install → MCP URL](https://app.civic.com/web/install/mcp-url))
-- An Anthropic API key from [console.anthropic.com](https://console.anthropic.com)
+- An API key for your chosen LLM provider (e.g., [Anthropic](https://console.anthropic.com), [OpenAI](https://platform.openai.com))
 
 ## Installation
 
@@ -31,8 +31,8 @@ CIVIC_URL="https://app.civic.com/hub/mcp?profile=your-toolkit&lock=true"
 # Civic token generated from app.civic.com → Install → MCP URL
 CIVIC_TOKEN=your-civic-token
 
-# Your Anthropic API key
-ANTHROPIC_API_KEY=your-anthropic-key
+# API key for your chosen LLM provider
+ANTHROPIC_API_KEY=your-anthropic-key   # or OPENAI_API_KEY, etc.
 ```
 
 <Warning>
@@ -49,8 +49,8 @@ Create a `config.yaml` that points Hermes at your Civic MCP gateway:
 
 ```yaml
 model:
-  provider: anthropic
-  model_id: claude-sonnet-4-6
+  provider: anthropic          # or openai, etc.
+  model_id: claude-sonnet-4-6  # or gpt-4o, etc.
 
 mcp:
   servers:
@@ -60,7 +60,7 @@ mcp:
       timeout: 180
 ```
 
-Hermes reads this config at startup and connects to Civic as a Streamable HTTP MCP server. Claude discovers the available tools automatically.
+Hermes reads this config at startup and connects to Civic as a Streamable HTTP MCP server. The LLM discovers the available tools automatically.
 
 ## Running the Agent
 
