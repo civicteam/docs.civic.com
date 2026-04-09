@@ -1,0 +1,224 @@
+---
+title: Redis
+description: "Read/write access to Redis — strings, hashes, lists, sets, sorted sets, streams, pub/sub, JSON, and vector search"
+icon: "server"
+---
+
+## Overview
+
+The Redis MCP server gives AI assistants direct read/write access to a Redis database, covering the full range of Redis data structures — strings, hashes, lists, sets, sorted sets, streams, pub/sub, and (with the right modules) JSON and vector search. It's ideal for inspecting and debugging live data, managing caches and queues, and building or testing Redis-backed features.
+
+## How to Add Redis
+
+<Steps>
+  <Step title="Get Your Redis Connection URL">
+    Gather your Redis connection details - username, password, host, port. This is available from your Redis hosting provider's dashboard (e.g. Redis Cloud, AWS ElastiCache, Upstash, or your self-hosted instance).
+  </Step>
+  <Step title="Trigger a Tool Call">
+    Start with `"How many keys are in the database?"` or `"Show me Redis server info"` - you will be requested to provide your Redis connection details.
+  </Step>
+  <Step title="Add connection details">
+    Add the Redis connection details in the provided dialog. Note: if your instance uses SSL (i.e the URL starts with `rediss://`), make sure to check the "ssl" box.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Key-Value Operations" icon="key">
+    Get, set, delete, rename, scan, and expire keys with full TTL control
+  </Card>
+  <Card title="Hashes" icon="table">
+    Store and retrieve structured objects as field-value pairs
+  </Card>
+  <Card title="Lists & Queues" icon="list">
+    Push, pop, and range operations for ordered collections
+  </Card>
+  <Card title="Sets & Sorted Sets" icon="layer-group">
+    Unique members, intersections, and scored leaderboards
+  </Card>
+  <Card title="Streams & Pub/Sub" icon="stream">
+    Durable event streams and fire-and-forget messaging
+  </Card>
+  <Card title="Vector Search" icon="brain">
+    Store vectors, create indexes, and run similarity searches (requires RediSearch)
+  </Card>
+  <Card title="JSON Documents" icon="file-code">
+    Native JSON storage with path-based get/set/delete (requires RedisJSON)
+  </Card>
+  <Card title="Server Info & Docs" icon="circle-info">
+    Database stats, client list, key inspection, and built-in Redis documentation search
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+### Strings & Keys
+- **Set with expiry**: `"Set a key 'user:123:name' to 'Alice' with a 10-minute expiry"`
+- **Get value**: `"Get the value of 'user:123:name'"`
+- **Delete**: `"Delete the key 'user:123:name'"`
+- **Rename**: `"Rename the key 'temp:job' to 'jobs:completed:42'"`
+- **Scan**: `"Scan for all keys matching 'session:*'"`
+
+### Hashes
+- **Store object**: `"Store a user object with fields name, email and role in a hash at 'user:42'"`
+- **Get all fields**: `"Get all fields from the hash 'user:42'"`
+- **Check field**: `"Check if the field 'email' exists in 'user:42'"`
+- **Delete field**: `"Delete the 'role' field from the hash 'user:42'"`
+
+### Lists
+- **Push items**: `"Push 'task-1' and 'task-2' onto the list 'queue:jobs'"`
+- **Get all**: `"Get all items in the list 'queue:jobs'"`
+- **Pop**: `"Pop the first item off 'queue:jobs'"`
+
+### Sets
+- **Add members**: `"Add 'admin' and 'editor' to the set 'user:42:roles'"`
+- **List members**: `"Show all members of 'user:42:roles'"`
+- **Remove member**: `"Remove 'editor' from 'user:42:roles'"`
+
+### Sorted Sets
+- **Leaderboard**: `"Add players 'alice' (score 150) and 'bob' (score 200) to the leaderboard 'game:scores'"`
+- **View scores**: `"Show the leaderboard 'game:scores' with scores"`
+- **Remove member**: `"Remove 'alice' from 'game:scores'"`
+
+### Streams
+- **Add event**: `"Add an event to stream 'events:orders' with fields type='purchase' and amount='99.99'"`
+- **Read entries**: `"Read the last 10 entries from 'events:orders'"`
+- **Delete entry**: `"Delete entry '1775116133215-0' from 'events:orders'"`
+
+### Pub/Sub
+- **Publish**: `"Publish a message 'deployment complete' to the channel 'ops:notifications'"`
+
+### Vector Search
+- **Store vector**: `"Store a vector [0.1, 0.5, 0.9] in the hash 'doc:1'"`
+- **Create index**: `"Create a vector index on keys with prefix 'doc:' using cosine similarity and 1536 dimensions"`
+- **Similarity search**: `"Find the 5 most similar documents to this vector: [0.1, 0.5, 0.9, ...]"`
+- **Hybrid search**: `"Search for documents similar to this vector, but only where category is 'news'"`
+
+### Server Info
+- **Key count**: `"How many keys are in the database?"`
+- **Server stats**: `"Show me Redis server info — version, memory usage, connected clients"`
+- **Client list**: `"List all connected clients"`
+- **Key inspection**: `"What type is the key 'game:scores', and when does it expire?"`
+- **Documentation**: `"Search the Redis docs — when should I use a sorted set vs a list?"`
+
+---
+
+## Available Tools
+
+### Core Key Operations
+
+<AccordionGroup>
+  <Accordion title="set / get / del / rename">
+    String key operations — set values with optional TTL, retrieve, delete, and rename keys
+  </Accordion>
+  <Accordion title="scan_keys / scan_all_keys">
+    Cursor-based key scanning with pattern matching — always use these instead of `KEYS *`
+  </Accordion>
+  <Accordion title="expire / ttl / type / exists">
+    Key metadata — set expiration, check TTL, inspect type, and check existence
+  </Accordion>
+</AccordionGroup>
+
+### Hashes
+
+<AccordionGroup>
+  <Accordion title="hset / hget / hgetall / hdel / hexists">
+    Hash field operations — set one field at a time, get single/all fields, delete fields, check existence
+  </Accordion>
+</AccordionGroup>
+
+### Lists
+
+<AccordionGroup>
+  <Accordion title="lpush / rpush / lpop / rpop / lrange / llen">
+    List operations — push to head/tail, pop from head/tail, range queries, and length
+  </Accordion>
+</AccordionGroup>
+
+### Sets & Sorted Sets
+
+<AccordionGroup>
+  <Accordion title="sadd / smembers / srem / sismember">
+    Set operations — add members, list all, remove, and check membership
+  </Accordion>
+  <Accordion title="zadd / zrange / zrangebyscore / zrem / zscore / zrank">
+    Sorted set operations — add with scores, range queries, remove, and rank lookups
+  </Accordion>
+</AccordionGroup>
+
+### Streams & Pub/Sub
+
+<AccordionGroup>
+  <Accordion title="xadd / xrange / xlen / xdel">
+    Stream operations — add entries, read ranges, count, and delete entries
+  </Accordion>
+  <Accordion title="publish">
+    `publish` — Send a message to a pub/sub channel (fire-and-forget — not persisted)
+  </Accordion>
+</AccordionGroup>
+
+### JSON (requires RedisJSON module)
+
+<AccordionGroup>
+  <Accordion title="json_set / json_get / json_del">
+    Native JSON document operations with JSONPath-based get, set, and delete
+  </Accordion>
+</AccordionGroup>
+
+### Vector Search (requires RediSearch module)
+
+<AccordionGroup>
+  <Accordion title="create_vector_index_hash / vector_search_hash / hybrid_search">
+    Create vector indexes on hash keys, run KNN similarity searches, and combine vector + attribute filters
+  </Accordion>
+  <Accordion title="get_indexes / get_index_info / get_indexed_keys_number">
+    Index management — list indexes, inspect schema, and count indexed documents
+  </Accordion>
+  <Accordion title="store_vector / retrieve_vector">
+    Store and retrieve float32 vectors in hash fields
+  </Accordion>
+</AccordionGroup>
+
+### Server & Documentation
+
+<AccordionGroup>
+  <Accordion title="dbsize / info / client_list">
+    Server introspection — key count, server stats (version, memory, clients), and connected client list
+  </Accordion>
+  <Accordion title="search_redis_documents">
+    `search_redis_documents` — Search the Redis documentation knowledge base for data type trade-offs, command behavior, and patterns
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+**Always set TTLs** — Use the `expiration` parameter on write operations, or call `expire` afterwards. Without TTLs, keys accumulate indefinitely.
+
+**Use namespaced keys** — Follow a `prefix:type:id` convention (e.g. `user:profile:42`) for clarity and to enable pattern-based scanning.
+
+**Use `scan_keys`, never `KEYS *`** — SCAN is cursor-based and non-blocking. KEYS blocks the server and should never be used in production.
+
+**Hashes are one field per call** — `hset` sets a single field at a time; there is no multi-field set in this server.
+
+**Pub/sub is fire-and-forget** — Messages are not persisted. If no subscriber is listening, the message is lost. Use streams for durability.
+
+**Streams vs lists for queuing** — Streams retain messages after reading and support ordered replay; lists do not. Prefer streams for event and queue use cases.
+
+**Vector float32 precision** — Vectors are stored as binary float32, so values may have minor precision loss on retrieval.
+
+**Module-dependent tools** — Some tools require optional Redis modules:
+- `json_set` / `json_get` / `json_del` require **RedisJSON**
+- Vector search tools (`create_vector_index_hash`, `vector_search_hash`, `hybrid_search`, etc.) require **RediSearch**
+</Note>
+
+---
+
+## Guardrails
+
+This server is covered by the [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Redis server."
+</Tip>
