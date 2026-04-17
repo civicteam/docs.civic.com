@@ -1,0 +1,32 @@
+---
+title: Tempo
+description: >-
+  Grafana Tempo distributed tracing with TraceQL search, metrics, and trace
+  retrieval
+---
+
+## Overview
+
+The Tempo server provides access to Grafana Tempo for distributed tracing. Use TraceQL to search traces, retrieve metrics over time ranges, explore attribute names and values, and fetch individual traces by ID.
+
+<Card title="Add to Civic" icon="plus" href="https://app.civic.com">
+  Connect Tempo at app.civic.com
+</Card>
+
+## Available Tools (7)
+
+| Tool | Description |
+|------|-------------|
+| `docs-traceql` | Retrieve TraceQL documentation covering basic attributes, aggregates, pipelines, and structural queries |
+| `get-attribute-names` | Get a list of available attribute names that can be used in TraceQL queries |
+| `get-attribute-values` | Get a list of values for a fully scoped attribute name (e.g. `resource.service.name`) |
+| `get-trace` | Retrieve a specific trace by ID |
+| `traceql-metrics-instant` | Retrieve a single metric value for a TraceQL metrics query at the current instant |
+| `traceql-metrics-range` | Retrieve a metric series for a TraceQL metrics query over a time range |
+| `traceql-search` | Search for traces using TraceQL queries |
+
+---
+
+## Guardrails
+
+This server supports all [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.

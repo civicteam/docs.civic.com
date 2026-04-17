@@ -1,10 +1,14 @@
 name: Link Check (Production)
 
+# Runs against the deployed site URL. Flip the --base value to docs.civic.com
+# at cutover; until then we point at docs-next.civic.com so the check exercises
+# the Docusaurus build without interfering with the Mintlify production site.
+
 on:
   push:
     branches: [main]
   schedule:
-    # Run daily at 9 AM UTC
+    # Daily at 09:00 UTC
     - cron: '0 9 * * *'
   workflow_dispatch:
 
@@ -12,19 +16,23 @@ jobs:
   link-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
 
       - name: Link Checker (Deployed Site)
         uses: lycheeverse/lychee-action@v2
         with:
-          # Check against deployed site using base URL
           args: >
             --config lychee.toml
-            --base 'https://docs.civic.com'
+            --base 'https://docs-next.civic.com'
             --no-progress
-            '**/*.md'
-            '**/*.mdx'
+            'build/**/*.html'
           fail: true
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -48,10 +56,7 @@ jobs:
               "blocks": [
                 {
                   "type": "header",
-                  "text": {
-                    "type": "plain_text",
-                    "text": "🔴 Docs Link Check Failed"
-                  }
+                  "text": { "type": "plain_text", "text": "🔴 Docs Link Check Failed" }
                 },
                 {
                   "type": "section",

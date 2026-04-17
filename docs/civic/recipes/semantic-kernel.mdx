@@ -1,0 +1,115 @@
+---
+title: Semantic Kernel
+description: >-
+  Connect a Semantic Kernel agent to Civic's MCP Hub using streamable HTTP
+  transport
+---
+
+Connect a [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/) agent to Civic using `MCPStreamableHttpPlugin`. The plugin registers all Civic tools as kernel functions and makes them available to your agent.
+
+## Prerequisites
+
+- Python 3.11+
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
+- A Civic token and an Anthropic API key
+
+## Installation
+
+Semantic Kernel requires Pydantic v2 (not v3/v4). Use a dedicated virtual environment if you have other packages installed:
+
+```bash
+pip install "semantic-kernel" "anthropic" "pydantic>=2.0.0,<3.0.0" python-dotenv
+```
+
+## Environment Variables
+
+```bash
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_TOKEN=your-civic-token
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Use `MCPStreamableHttpPlugin` as an async context manager to load all Civic tools into the kernel:
+
+```python
+import os
+import asyncio
+from dotenv import load_dotenv
+from semantic_kernel import Kernel
+from semantic_kernel.connectors.mcp import MCPStreamableHttpPlugin
+from semantic_kernel.connectors.ai.anthropic import AnthropicChatCompletion
+from semantic_kernel.connectors.ai.function_choice_behavior import FunctionChoiceBehavior
+
+load_dotenv()
+
+async def main():
+    kernel = Kernel()
+
+    svc = AnthropicChatCompletion(
+        ai_model_id="claude-sonnet-4-6",
+        api_key=os.environ["ANTHROPIC_API_KEY"],
+    )
+    kernel.add_service(svc)
+
+    async with MCPStreamableHttpPlugin(
+        name="civic",  # name is required
+        url=os.environ["CIVIC_URL"],
+        headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+    ) as civic_plugin:
+        kernel.add_plugin(civic_plugin)
+
+        plugin = kernel.plugins.get("civic")
+        print(f"{len(plugin.functions)} tools loaded")
+
+        settings = svc.get_prompt_execution_settings_class()()
+        settings.function_choice_behavior = FunctionChoiceBehavior.Auto()
+
+        result = await kernel.invoke_prompt(
+            "What events do I have today?",
+            settings=settings,
+        )
+        print(result)
+
+asyncio.run(main())
+```
+
+<Note>
+The `name` parameter is required for `MCPStreamableHttpPlugin`. Use `kernel.invoke_prompt()` directly — not `kernel.get_service(AnthropicChatCompletion)` followed by `chat_completion.get_chat_message_contents()`, which raises a `KernelServiceNotFoundError`.
+</Note>
+
+## Production Configuration
+
+For production agents, lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+## Reference Implementation
+
+<Card title="semantic-kernel-reference-implementation-civic" icon="github" href="https://github.com/civicteam/semantic-kernel-reference-implementation-civic">
+  Complete implementation with FastAPI chat UI, isolated venv setup, and deployment guide
+</Card>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

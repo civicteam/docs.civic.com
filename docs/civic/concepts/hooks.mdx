@@ -1,0 +1,119 @@
+---
+title: Hooks Configuration
+description: Customize how tools behave using profile data hooks
+---
+
+In Civic, **hooks** are profile data configurations that customize how tools behave. They let you pre-fill parameters, filter visible tools, rename tools, clone them with different defaults, and override descriptions — all without touching the underlying MCP servers.
+
+Configure hooks via the `manage-profile-data` tool or by asking the Configurator Agent directly.
+
+## Hook Types
+
+There are 5 hook categories:
+
+### `Hook_Parameter` — Auto-fill Tool Parameters
+
+Pre-populate tool inputs so you don't have to specify them every time.
+
+**Example** — always use a specific Notion page ID:
+
+```
+Action: update
+Category: Hook_Parameter
+MCP Server: notion
+Tool: create_page
+Key: page_id
+Value: "abc123-workspace"
+```
+
+You can also use **interpolated templates** with `${placeholder}` syntax:
+
+```json
+{ "template": "SELECT * FROM users WHERE email = '${email}'", "escape": "sql" }
+```
+
+---
+
+### `Hook_Filter` — Show/Hide Tools
+
+Control which tools from a server are visible to the AI.
+
+**Example** — only allow specific GitHub tools:
+
+```
+Action: update
+Category: Hook_Filter
+MCP Server: github
+Value: { "enabled": ["create_issue", "search_repositories"] }
+```
+
+Or to block specific tools:
+
+```json
+{ "disabled": ["send_gmail_message", "delete_event"] }
+```
+
+---
+
+### `Hook_Alias` — Rename Tools
+
+Give tools a friendlier or more context-specific name.
+
+```
+Action: update
+Category: Hook_Alias
+MCP Server: postgresql
+Tool: execute_sql
+Value: "run-query"
+```
+
+---
+
+### `Hook_Clone` — Duplicate Tools with Different Names
+
+Create multiple versions of the same tool, each pre-configured differently.
+
+**Example** — two versions of `list_events`:
+
+```json
+["my-events", "team-events"]
+```
+
+Then use `Hook_Parameter` on each clone to set different `calendar_id` values.
+
+---
+
+### `Hook_CustomDescription` — Override Tool Descriptions
+
+Change what the AI sees as the tool's description — useful for schema hints or environment-specific guidance.
+
+```
+Action: update
+Category: Hook_CustomDescription
+MCP Server: postgresql
+Tool: execute_sql
+Value: "Runs a SQL query against the production DB. Schema: users(id, email, created_at)..."
+```
+
+---
+
+## How to Configure
+
+Ask the Configurator Agent in natural language:
+
+- *"Set the default GitHub repository to `my-org/my-repo`"*
+- *"Filter the Gmail tools to hide the send tool"*
+- *"Clone the PostgreSQL query tool into `get-pipeline-summary` and `get-stalled-deals`"*
+
+Or use the `manage-profile-data` tool directly with `action: describe` and a `category` to see live examples for any hook type.
+
+## Learn More
+
+<CardGroup cols={2}>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Higher-level security configuration built on the hook architecture
+  </Card>
+  <Card title="Prompt Injection" icon="lock" href="/civic/concepts/prompt-injection">
+    How hooks and guardrails defend against prompt injection attacks
+  </Card>
+</CardGroup>

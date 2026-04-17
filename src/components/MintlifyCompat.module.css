@@ -1,0 +1,228 @@
+/* Card */
+.cardLink {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+.card {
+  display: flex;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 12px;
+  background: var(--ifm-background-surface-color);
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  align-items: flex-start;
+  height: 100%;
+}
+.card:hover {
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(124, 59, 237, 0.12);
+}
+.cardIcon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(124, 59, 237, 0.1);
+  color: var(--ifm-color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.cardBody {
+  flex: 1;
+}
+.cardTitle {
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.98rem;
+}
+.cardChildren {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+.cardHorizontal {
+  flex-direction: row;
+}
+
+/* CardGroup */
+.cardGroup {
+  display: grid;
+  grid-template-columns: repeat(var(--cards-cols, 2), minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+@media (max-width: 760px) {
+  .cardGroup {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Steps */
+.steps {
+  list-style: none;
+  padding-left: 0;
+  counter-reset: steps;
+  margin: 20px 0;
+}
+.step {
+  display: flex;
+  gap: 14px;
+  padding: 12px 0 18px;
+  border-left: 1px solid var(--ifm-color-emphasis-200);
+  padding-left: 22px;
+  margin-left: 14px;
+  position: relative;
+}
+.stepNumber {
+  position: absolute;
+  left: -14px;
+  top: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  border: 3px solid var(--ifm-background-color);
+}
+.stepContent {
+  flex: 1;
+}
+.stepTitle {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* Accordion */
+.accordionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+.accordion {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  padding: 0;
+  overflow: hidden;
+}
+.accordionSummary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  list-style: none;
+  background: var(--ifm-background-surface-color);
+}
+.accordionSummary::-webkit-details-marker {
+  display: none;
+}
+.accordionSummary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 8px;
+  color: var(--ifm-color-primary);
+  transition: transform 0.15s ease;
+}
+.accordion[open] > .accordionSummary::before {
+  transform: rotate(90deg);
+}
+.accordionBody {
+  padding: 12px 16px;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* Frame */
+.frame {
+  margin: 18px 0;
+  padding: 0;
+  text-align: center;
+}
+.frameContent {
+  border-radius: 8px;
+  overflow: hidden;
+  display: inline-block;
+  max-width: 100%;
+}
+.frameContent img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.frameCaption {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-600);
+  font-style: italic;
+}
+.frameLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Tabs */
+.tabs {
+  margin: 16px 0;
+}
+.tabList {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  flex-wrap: wrap;
+}
+.tab {
+  background: none;
+  border: none;
+  padding: 10px 14px;
+  cursor: pointer;
+  color: var(--ifm-color-emphasis-700);
+  font: inherit;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tab:hover {
+  color: var(--ifm-color-primary);
+}
+.tabActive {
+  color: var(--ifm-color-primary);
+  border-bottom-color: var(--ifm-color-primary);
+}
+.tabPanel {
+  padding-top: 16px;
+}
+
+/* Update (changelog entry) */
+.update {
+  border-left: 2px solid var(--ifm-color-primary);
+  padding: 4px 0 4px 18px;
+  margin: 18px 0;
+}
+.updateHeader {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.updateLabel {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.updateDescription {
+  font-size: 0.8rem;
+  color: var(--ifm-color-emphasis-600);
+  background: var(--ifm-background-surface-color);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.updateBody {
+  color: var(--ifm-color-emphasis-800);
+}

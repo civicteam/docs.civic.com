@@ -1,0 +1,113 @@
+---
+title: MCP Hub
+description: >-
+  A hosted MCP Manager unifying and orchstrating multiple MCP servers, focusing
+  on auth and security
+---
+
+**Flask Status: Distilling** 🧪
+
+<Frame caption="MCP Hub Directory">
+    <img
+        src="/images/labs/projects/mcp-hub/directory-all.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
+
+## Overview
+
+The MCP Hub is the core of Civic's Model Context Protocol platform.
+It enables secure, on-demand execution of third-party MCP tools from an LLM or other agent.
+By abstracting away container management, authorization workflows, and tool discovery,
+it makes it simple to connect AI assistants to external tools while maintaining security and control.
+
+The platform consists of three modular services: Directory (for MCP server discovery), Hub (for container orchestration), and AuthZ (for authorization and token management).
+
+## Integration Patterns
+
+The MCP Hub supports multiple integration approaches to fit your use case:
+
+### Desktop AI Assistants
+Connect Claude Desktop and other local AI agents to cloud-hosted MCP servers through our secure bridge. This enables:
+- Access to enterprise tools from your desktop
+- Centralized authentication and authorization
+- Automatic tool discovery and updates
+- Cross-platform support
+
+<Frame caption="MCP Hub Profiles - Organize your tools by context">
+    <img
+        src="/images/labs/projects/mcp-hub/directory-profiles.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
+
+### Backend Services & Applications
+Build MCP capabilities directly into your applications:
+- Compatible with any MCP-Client
+- Compatible with widely-used Typescript and Python MCP SDKs
+- Compatible with AI frameworks like Vercel AI SDK
+- Flexible authentication options
+
+### Workflow Automation
+Create no-code AI workflows with platforms like n8n:
+- Visual workflow builders
+- Pre-built templates and patterns
+- Support for multiple AI models
+- Easy tool orchestration
+
+### Coming Soon
+We're expanding support for additional platforms including Crew.ai, Make.com, and Zapier. [Join our waitlist](https://civickey.typeform.com/to/uVH7CWJ5) to be notified.
+
+
+## Key Features
+
+- **Container Orchestration**: Automatically manages Docker containers for MCP servers
+- **OAuth Integration**: Built-in support for OAuth2 authorization flows
+- **Tool Discovery**: Registry for finding and connecting to MCP servers
+- **Token Management**: Secure handling of authentication tokens
+- **Desktop Bridge**: Connect desktop LLM apps to cloud-hosted MCP servers
+- **Guardrails**: Apply security policies to tool calls without modifying servers
+- **Manage via LLM**: Full control over MCP servers and tools through LLM interactions
+- **Full visibility and control**: List and revoke authorisations for you or your users
+
+<Frame caption="GitHub MCP Server with Guardrails - Control tool access with security policies">
+    <img
+        src="/images/labs/projects/mcp-hub/directory-github-guardrails.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
+
+<Frame caption="Guardrail Example - Protect against malicious prompt injection">
+    <img
+        src="/images/labs/projects/mcp-hub/guardrail-example.png"
+        align="center"
+        className="image-60 image-rounded"
+    />
+</Frame>
+
+## Integration Notes
+
+The MCP Hub works seamlessly with other Civic Labs tools:
+- **Guardrail Proxy** can be deployed between the Hub and MCP servers for additional security
+- **Bodyguard** can analyze prompts before they reach MCP tools
+- **Pass-through Proxy** provides the middleware layer for adding custom logic
+
+## Status
+
+This flask is currently **distilling**: The core platform is functional with active development on additional features. The system is being used internally and with select partners. Contact us if you'd like to try it out or provide feedback.
+
+## Next Steps
+
+Ready to get started with MCP Hub?
+
+<Card title="Request Early Access" icon="key" href="https://civickey.typeform.com/to/uVH7CWJ5">
+  Get access to the MCP Hub and start building secure AI integrations
+</Card>
+
+## Learn More
+
+- [MCP Protocol Overview](/labs/concepts/mcp) - Understand the fundamentals of Model Context Protocol
+- [Integration Guide](/labs/private/mcp-hub) - Detailed implementation documentation (requires access)

@@ -1,0 +1,82 @@
+---
+title: Manus Setup
+description: Connect Manus to Civic in 5 minutes
+---
+
+<Note>
+  Manus uses bearer token authentication via custom headers rather than browser-based OAuth. You'll need to generate a Civic token before connecting.
+</Note>
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Manus Account" icon="robot" href="https://manus.im">
+    Access to Manus at manus.im
+  </Card>
+  <Card title="Civic Account" icon="user" href="https://app.civic.com">
+    Create a free account and generate a token at app.civic.com
+  </Card>
+</CardGroup>
+
+## Setup
+
+<Steps>
+  <Step title="Generate a Civic Token">
+    Manus uses bearer token authentication rather than browser-based OAuth, so you'll need to generate a token in Civic first.
+
+    1. Open [app.civic.com](https://app.civic.com) and sign in
+    2. Navigate to **Install**
+    3. Click **"Generate a Civic token"** and copy it — you'll need this in the next step
+  </Step>
+  <Step title="Add a Custom MCP Connector in Manus">
+    1. In Manus, open **Settings → Connectors**
+    2. Click **Add connectors → Custom MCP → Add custom MCP**
+    3. Select **Direct configuration**
+    4. Enter the following as the server URL:
+       ```
+       https://app.civic.com/hub/mcp
+       ```
+    5. Click **Add custom header** and add:
+       - **Name:** `Authorization`
+       - **Value:** `Bearer <YOUR_CIVIC_TOKEN>`
+
+    <Warning>
+      Manus does not have a dedicated bearer token field — all authentication is configured through custom headers. You must manually include the `Bearer ` prefix (with a space) before your token. Entering the token alone will cause 401 errors.
+    </Warning>
+
+    6. Save the connector. Civic MCP tools are now available in Manus.
+  </Step>
+  <Step title="Test Your Connection">
+    Try these prompts to verify everything is working:
+
+    ```
+    "What MCP servers are available?"
+    "Can you check my recent GitHub issues?"
+    ```
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Why do I keep getting 401 errors?">
+    The most common cause is a missing or malformed Authorization header. Check that:
+    - The header name is exactly: `Authorization`
+    - The header value starts with: `Bearer ` (with a space) followed by your token — not the token alone
+    - Your Civic token hasn't expired — generate a new one from [app.civic.com](https://app.civic.com) if needed
+  </Accordion>
+  <Accordion title="Can I use OAuth / browser authentication instead?">
+    Browser-based OAuth is not currently supported in Manus's MCP connector. Token-based authentication via custom headers is the supported method.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Browse Available Servers" icon="server" href="/civic/reference/servers">
+    Explore what MCP tools Civic connects
+  </Card>
+  <Card title="Client Compatibility" icon="table" href="/civic/reference/client-compatibility">
+    See all supported clients and connection methods
+  </Card>
+</CardGroup>

@@ -1,0 +1,182 @@
+---
+title: Salesforce
+description: >-
+  Connect and interact with Salesforce CRM through Model Context Protocol,
+  enabling object management, data queries, Apex code operations, and
+  comprehensive field-level security control
+---
+
+## Overview
+
+The Salesforce server enables AI assistants to interact with [Salesforce](https://www.salesforce.com) CRM, providing powerful querying capabilities across accounts, opportunities, contacts, and custom objects through conversational AI and SOQL.
+
+## How to Add Salesforce
+
+<Steps>
+  <Step title="Access Salesforce Account">
+    Log in to your Salesforce account with appropriate permissions to access the data you need.
+  </Step>
+  <Step title="Generate API Credentials">
+    1. Go to **Setup** in Salesforce
+    2. Navigate to **Apps > App Manager**
+    3. Create a Connected App or use existing credentials
+    4. Note your Consumer Key, Consumer Secret, and Security Token
+  </Step>
+  <Step title="Connect to Civic">
+    1. Add the Salesforce server to your Civic environment
+    2. Enter your credentials when prompted
+    3. Authorize the connection using OAuth
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Show me all open opportunities" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+Ensure your Salesforce user has the necessary permissions to query the objects you need to access.
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Data Querying" icon="database">
+    Query accounts, opportunities, contacts, and custom objects with SOQL
+  </Card>
+  <Card title="Cross-Object Search" icon="magnifying-glass">
+    Search across multiple Salesforce objects to get a complete view
+  </Card>
+  <Card title="Analytics & Reporting" icon="chart-bar">
+    Calculate metrics, aggregate data, and generate insights from CRM data
+  </Card>
+  <Card title="Deal Intelligence" icon="lightbulb">
+    Identify at-risk deals, calculate health scores, and prioritize opportunities
+  </Card>
+</CardGroup>
+
+## Available Tools (17)
+
+### Data Query
+
+<AccordionGroup>
+  <Accordion title="query_soql">
+    Execute SOQL queries to retrieve Salesforce data
+  </Accordion>
+
+  <Accordion title="search_records">
+    Search across multiple objects using Salesforce Search
+  </Accordion>
+
+  <Accordion title="describe_object">
+    Get metadata about Salesforce objects and their fields
+  </Accordion>
+</AccordionGroup>
+
+### Opportunities
+
+<AccordionGroup>
+  <Accordion title="list_opportunities">
+    List opportunities with filtering by stage, owner, and close date
+  </Accordion>
+
+  <Accordion title="get_opportunity">
+    Retrieve detailed information about a specific opportunity
+  </Accordion>
+
+  <Accordion title="calculate_opportunity_metrics">
+    Aggregate opportunity data by various dimensions
+  </Accordion>
+</AccordionGroup>
+
+### Accounts
+
+<AccordionGroup>
+  <Accordion title="list_accounts">
+    List accounts with filtering and sorting options
+  </Accordion>
+
+  <Accordion title="get_account_details">
+    Get comprehensive account information including related records
+  </Accordion>
+
+  <Accordion title="calculate_account_health">
+    Calculate account health scores based on opportunity data
+  </Accordion>
+</AccordionGroup>
+
+### Analytics
+
+<AccordionGroup>
+  <Accordion title="aggregate_data">
+    Perform aggregations like SUM, COUNT, AVG across records
+  </Accordion>
+
+  <Accordion title="group_by_analysis">
+    Group and analyze data by various dimensions
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Find At-Risk Deals
+"Connect to salesforce and show me all open opportunities closing this week that aren't in Closed Won stage" - Identify deals needing immediate attention.
+
+### Account Health Score
+"Connect to salesforce and calculate total opportunities, revenue, and average deal size grouped by account" - Understand which accounts are most valuable.
+
+### Cross-Object Search
+"Connect to salesforce and search for all records related to 'Global Media' across accounts and opportunities" - Get a 360-degree view of customers.
+
+<Note>
+The Salesforce server provides read-only query access to your CRM data. Use SOQL for precise filtering or natural language search for broader discovery.
+</Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **34 server-specific guardrails** across 9 operations.
+
+<Note>
+Most extensive guardrail set — 34 specific guardrails covering DML, Apex code security, object/field management, query restrictions, and financial data redaction.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Limit Aggregate Query Result Size | `aggregate_query` | Request | Caps records returned from aggregate queries |
+| Block Account Deletion | `dml_records` | Request | Prevents deletion of Account records |
+| Block Case Deletion | `dml_records` | Request | Prevents deletion of Case records |
+| Block Contact Deletion | `dml_records` | Request | Prevents deletion of Contact records |
+| Block Lead Deletion | `dml_records` | Request | Prevents deletion of Lead records |
+| Block Opportunity Deletion | `dml_records` | Request | Prevents deletion of Opportunity records |
+| Limit DML Batch Size | `dml_records` | Request | Caps records per DML operation |
+| Restrict DML to Vetted Objects | `dml_records` | Request | Allowlist for DML operations |
+| Block Anonymous Apex Delete Operations | `execute_anonymous` | Request | Blocks delete in anonymous Apex |
+| Block Bulk DML in Anonymous Apex | `execute_anonymous` | Request | Blocks Database class DML in anonymous Apex |
+| Block Debug Logs for Other Users | `manage_debug_logs` | Request | Restricts debug log access to own user |
+| Limit Apex Debug Log Response Size | `manage_debug_logs` | Response | Truncates large debug logs |
+| Limit Debug Logs Retrieved | `manage_debug_logs` | Request | Caps number of logs retrievable |
+| Block Custom Field Deletion | `manage_field` | Request | Prevents custom field deletion |
+| Block Standard Field Modifications | `manage_field` | Request | Restricts to custom fields only (`__c`) |
+| Restrict Field Management to Vetted Objects | `manage_field` | Request | Allowlist for field management |
+| Block Admin Profile FLS Changes | `manage_field_permissions` | Request | Blocks FLS changes to System Administrator |
+| Restrict FLS to Custom Fields | `manage_field_permissions` | Request | Only custom fields can have permissions changed |
+| Block Custom Object Deletion | `manage_object` | Request | Prevents custom object deletion |
+| Restrict Custom Object Creation | `manage_object` | Request | Allowlist for object creation |
+| Block Permission Set Queries | `query_records` | Request | Prevents querying PermissionSet object |
+| Block Profile Queries | `query_records` | Request | Prevents querying Profile object |
+| Block User Object Queries | `query_records` | Request | Prevents querying User object |
+| Filter Records by Owner | `query_records` | Response | Redacts records from non-vetted owners |
+| Limit Query Result Size | `query_records` | Request | Caps SOQL result set size |
+| Redact Financial Data | `query_records` | Response | Redacts Amount, Revenue, Price fields |
+| Redact Password Fields | `query_records` | Response | Redacts password/token/secret fields |
+| Restrict Queries to Vetted Objects | `query_records` | Request | Allowlist for queryable objects |
+| Limit SOSL Search Results | `search_all` | Request | Caps SOSL search result size |
+| Block Dangerous Apex Delete Patterns | `write_apex` | Request | Blocks Apex that deletes core objects |
+| Block System Mode Apex | `write_apex` | Request | Blocks `without sharing` / `System.runAs` |
+| Restrict Apex Class Names | `write_apex` | Request | Allowlist for Apex class names |
+| Block Apex Trigger Delete Patterns | `write_apex_trigger` | Request | Blocks delete operations in triggers |
+| Restrict Triggers to Vetted Objects | `write_apex_trigger` | Request | Allowlist for trigger objects |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Salesforce server."
+</Tip>

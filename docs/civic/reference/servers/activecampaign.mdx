@@ -1,0 +1,407 @@
+---
+title: ActiveCampaign Server
+description: >-
+  Access and manage ActiveCampaign CRM data, contacts, campaigns, automations,
+  and more
+---
+
+## Overview
+
+The ActiveCampaign server provides comprehensive integration with [ActiveCampaign](https://www.activecampaign.com) marketing automation platform, enabling AI assistants to manage customer relationships, email campaigns, and marketing workflows programmatically.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to ActiveCampaign">
+    Add the ActiveCampaign server to your Civic environment through the server directory.
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple tool like `get_contact` or `list_contacts` to verify the connection works properly.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Customer Data Management" icon="users">
+    Create, update, and organize contacts with custom fields and advanced segmentation capabilities
+  </Card>
+  <Card title="Marketing Automation" icon="robot">
+    Add contacts to automations and manage their journey through sophisticated marketing funnels
+  </Card>
+  <Card title="Campaign Management" icon="envelope">
+    Create and manage email campaigns, track performance, and analyze engagement metrics
+  </Card>
+  <Card title="List Organization" icon="list">
+    Build and maintain targeted email lists for different customer segments and demographics
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Marketing Operations" icon="chart-line">
+    - **Lead Segmentation**: Automatically categorize new leads based on behavior, demographics, or engagement patterns
+    - **Personalized Sequences**: Trigger customized email sequences based on specific customer actions or milestones  
+    - **Data Synchronization**: Keep customer data in sync between ActiveCampaign and other business tools
+    - **Performance Analytics**: Track campaign effectiveness and optimize marketing spend allocation
+  </Accordion>
+
+  <Accordion title="Customer Success" icon="heart">
+    - **Lifecycle Tracking**: Monitor customer progression through different stages and automate appropriate communications
+    - **Engagement Monitoring**: Identify at-risk customers based on email engagement and interaction patterns
+    - **Re-engagement Campaigns**: Create targeted campaigns to win back inactive subscribers and customers
+    - **Onboarding Automation**: Guide new customers through structured onboarding sequences
+  </Accordion>
+
+  <Accordion title="Sales Enablement" icon="handshake">
+    - **Lead Qualification**: Score and qualify leads automatically based on behavior and engagement metrics
+    - **Sales Routing**: Route qualified prospects to appropriate sales representatives based on territory or expertise  
+    - **Follow-up Automation**: Ensure no leads fall through the cracks with automated nurture sequences
+    - **Deal Pipeline Management**: Track prospects through the sales funnel with automated status updates
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (38)
+
+<AccordionGroup>
+  <Accordion title="Contact Management">
+    Core functionality for managing customer and prospect data, including creation, updates, and relationship management.
+
+    **Contact Lifecycle**
+    <AccordionGroup>
+      <Accordion title="create_or_update_contact">
+        Create new contacts or update existing ones using email as the unique identifier
+      </Accordion>
+      <Accordion title="get_contact">
+        Retrieve detailed information about a specific contact by their ID
+      </Accordion>
+      <Accordion title="list_contacts">
+        Get all contacts with extensive filtering options for segmentation and analysis
+      </Accordion>
+      <Accordion title="search_contacts">
+        Find contacts by email address for quick lookups
+      </Accordion>
+    </AccordionGroup>
+
+    **Contact Organization**
+    <AccordionGroup>
+      <Accordion title="add_contact_to_list">
+        Subscribe a contact to a specific email list for targeted campaigns
+      </Accordion>
+      <Accordion title="remove_contact_from_list">
+        Unsubscribe a contact from a specific email list
+      </Accordion>
+      <Accordion title="add_tag_to_contact">
+        Apply tags to contacts for segmentation and automation triggers
+      </Accordion>
+      <Accordion title="remove_tag_from_contact">
+        Remove tags from contacts when criteria no longer apply
+      </Accordion>
+    </AccordionGroup>
+
+    **Automation Management**
+    <AccordionGroup>
+      <Accordion title="add_contact_to_automation">
+        Add a contact to an automation workflow to start their journey through a marketing sequence
+      </Accordion>
+      <Accordion title="remove_contact_from_automation">
+        Stop a contact's participation in an automation sequence
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Lists & Campaigns">
+    Tools for organizing contacts into targeted groups and managing email marketing campaigns.
+
+    **List Management**
+    <AccordionGroup>
+      <Accordion title="create_list">
+        Create new email lists for organizing contacts by demographics, behavior, or interests
+      </Accordion>
+      <Accordion title="get_list">
+        Retrieve details about a specific email list including subscriber counts and settings
+      </Accordion>
+      <Accordion title="list_lists">
+        Get all email lists with filtering and pagination for list management
+      </Accordion>
+      <Accordion title="update_list">
+        Modify existing list properties, settings, and compliance information
+      </Accordion>
+    </AccordionGroup>
+
+    **Campaign Operations**
+    <AccordionGroup>
+      <Accordion title="get_campaign">
+        Retrieve detailed information about email campaigns including performance metrics
+      </Accordion>
+      <Accordion title="get_campaign_links">
+        Get all tracked links within a campaign for click-through analysis
+      </Accordion>
+      <Accordion title="list_campaigns">
+        Browse all campaigns with filtering options for reporting and analysis
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Automations">
+    Manage marketing automation workflows and track contact progression through automated sequences.
+
+    <AccordionGroup>
+      <Accordion title="list_automations">
+        Get all automation workflows with filtering and ordering options
+      </Accordion>
+      <Accordion title="get_contact_automation">
+        Retrieve specific automation enrollment details for a contact
+      </Accordion>
+      <Accordion title="list_contact_automations">
+        See all automation enrollments for contacts with filtering capabilities
+      </Accordion>
+    </AccordionGroup>
+
+    <Tip>
+      Automations are the heart of ActiveCampaign. Use these tools to build sophisticated customer journeys that respond to behavior and engagement.
+    </Tip>
+  </Accordion>
+
+  <Accordion title="Tags & Custom Fields (15 tools)">
+    Advanced contact segmentation and custom data management for personalized marketing.
+
+    **Tag Management**
+    <AccordionGroup>
+      <Accordion title="create_contact_tag">
+        Create new tags for contact categorization and automation triggers
+      </Accordion>
+      <Accordion title="get_tag">
+        Retrieve information about a specific tag including usage statistics
+      </Accordion>
+      <Accordion title="list_tags">
+        Get all available tags with filtering and pagination for tag management
+      </Accordion>
+    </AccordionGroup>
+
+    **Custom Field Setup**
+    <AccordionGroup>
+      <Accordion title="create_contact_custom_field">
+        Add custom data fields to store additional contact information
+      </Accordion>
+      <Accordion title="get_contact_custom_field">
+        Retrieve details about custom field definitions and options
+      </Accordion>
+      <Accordion title="list_contact_custom_fields">
+        Get all custom fields with filtering for data management
+      </Accordion>
+      <Accordion title="update_contact_custom_field">
+        Modify custom field properties and validation rules
+      </Accordion>
+    </AccordionGroup>
+
+    **Field Value Management**
+    <AccordionGroup>
+      <Accordion title="create_contact_field_value">
+        Set custom field values for specific contacts
+      </Accordion>
+      <Accordion title="get_contact_field_value">
+        Retrieve custom field values for individual contacts
+      </Accordion>
+      <Accordion title="list_contact_field_values">
+        Get all custom field values with filtering options
+      </Accordion>
+      <Accordion title="update_contact_field_value">
+        Modify existing custom field values for contacts
+      </Accordion>
+    </AccordionGroup>
+
+    **Field Configuration**
+    <AccordionGroup>
+      <Accordion title="create_contact_field_relationship">
+        Associate custom fields with specific email lists
+      </Accordion>
+      <Accordion title="create_field_options">
+        Add options for dropdown, radio, or checkbox custom fields
+      </Accordion>
+      <Accordion title="list_field_options">
+        Get available options for multi-choice custom fields
+      </Accordion>
+    </AccordionGroup>
+
+    <Warning>
+      Always create field options after creating fields of type 'dropdown', 'listbox', 'radio', or 'checkbox' for proper functionality.
+    </Warning>
+  </Accordion>
+
+  <Accordion title="Groups & Permissions (2 tools)">
+    Organizational tools for team management and access control.
+
+    <AccordionGroup>
+      <Accordion title="create_list_group_permission">
+        Associate email lists with user groups for team organization
+      </Accordion>
+      <Accordion title="list_groups">
+        Get all user groups for permissions and organizational management
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+
+  <Accordion title="Email Activities (1 tool)">
+    Track and analyze email engagement metrics and subscriber behavior.
+
+    <AccordionGroup>
+      <Accordion title="list_email_activities">
+        Monitor email opens, clicks, and other engagement activities
+      </Accordion>
+    </AccordionGroup>
+
+    <Info>
+      For best results, always use filters when calling this tool rather than requesting all activities at once.
+    </Info>
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **70 server-specific guardrails** across 35+ operations.
+
+<Note>
+ActiveCampaign guardrails cover the full lifecycle of contact data — from creation and field updates to automation enrollment, list management, and bulk export prevention. Pay particular attention to guardrails on `list_contacts` and `search_contacts`, which can otherwise expose large volumes of contact PII in a single call.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Block Automation IDs | `add_contact_to_automation` | Request | Prevents adding contacts to specific automation IDs |
+| High-Value Automation Approval | `add_contact_to_automation` | Request | Requires approval for enrolling contacts in high-value automations |
+| Block List Subscription | `add_contact_to_list` | Request | Prevents adding contacts to specific list IDs |
+| Prevent Unsubscribe Status | `add_contact_to_list` | Request | Blocks specific subscription status values to prevent malicious unsubscribes |
+| Block Sensitive Tags | `add_tag_to_contact` | Request | Prevents adding specific sensitive tag IDs to contacts |
+| Block Field Types | `create_contact_custom_field` | Request | Prevents creation of certain field types like hidden fields |
+| Block Sensitive Field Names | `create_contact_custom_field` | Request | Prevents creation of fields with sensitive names like password or SSN |
+| Limit Field Creation | `create_contact_custom_field` | Request | Limits the number of custom fields that can be created |
+| Block Field-List Relationships | `create_contact_field_relationship` | Request | Prevents field associations with specific protected lists |
+| Block Field Value Updates | `create_contact_field_value` | Request | Prevents updates to specific protected field IDs |
+| Limit Field Value Length | `create_contact_field_value` | Request | Limits the maximum length of field values |
+| Redact PII from Field Values | `create_contact_field_value` | Request | Blocks PII like SSNs or credit cards in field values |
+| Block Sensitive Tag Names | `create_contact_tag` | Request | Prevents creation of tags with sensitive names |
+| Limit Field Options | `create_field_options` | Request | Limits the number of options that can be created for a field |
+| Block Sensitive List Names | `create_list` | Request | Prevents creation of lists with sensitive names |
+| Valid Sender URL | `create_list` | Request | Requires sender URLs to match allowed domains or patterns |
+| Block Group Permissions | `create_list_group_permission` | Request | Prevents granting permissions to specific admin or sensitive groups |
+| Hide Custom Field Values | `create_or_update_contact` | Response | Redacts sensitive custom field values from responses |
+| Redact Contact PII | `create_or_update_contact` | Request | Masks personally identifiable information in contact fields |
+| Block Campaign Access | `get_campaign` | Request | Prevents access to specific sensitive campaign IDs |
+| Block Campaign Links Access | `get_campaign_links` | Request | Prevents access to campaign links for specific campaign IDs |
+| Hide Tracking URLs | `get_campaign_links` | Response | Redacts tracking link destinations from campaign link responses |
+| Block VIP Contact Access | `get_contact` | Request | Protects high-value contacts from unauthorized access |
+| Hide Sensitive Contact Fields | `get_contact` | Response | Redacts custom fields and tags from contact responses |
+| Redact Contact Email/Phone | `get_contact` | Response | Masks email and phone PII from contact responses |
+| Hide Automation Details | `get_contact_automation` | Response | Redacts automation steps and status from responses |
+| Block Sensitive Field Access | `get_contact_custom_field` | Request | Protects critical custom fields from unauthorized access |
+| Hide Field Configuration | `get_contact_custom_field` | Response | Redacts field settings and configuration from responses |
+| Block Field Value Access | `get_contact_field_value` | Request | Protects critical field data from unauthorized access |
+| Redact Field Values | `get_contact_field_value` | Response | Masks actual field values in responses |
+| Block List Access | `get_list` | Request | Protects sensitive lists from unauthorized access |
+| Block Tag Access | `get_tag` | Request | Protects internal tags from unauthorized access |
+| Filter Internal Automations | `list_automations` | Response | Hides internal automations by name pattern |
+| Hide Automation Configuration | `list_automations` | Response | Redacts triggers and actions from automation responses |
+| Limit Automations Per Page | `list_automations` | Request | Caps limit parameter to prevent excessive data retrieval |
+| Filter Campaigns By Date | `list_campaigns` | Request | Limits results to recent campaigns only |
+| Limit Campaigns Per Page | `list_campaigns` | Request | Caps limit parameter to prevent excessive data retrieval |
+| Hide Enrollment Details | `list_contact_automations` | Response | Redacts status and progress from contact automation responses |
+| Limit Contact Automations Per Page | `list_contact_automations` | Request | Caps limit parameter to prevent excessive data retrieval |
+| Hide Field Definitions | `list_contact_custom_fields` | Response | Redacts field configurations from responses |
+| Limit Custom Fields Results | `list_contact_custom_fields` | Request | Caps limit parameter to prevent excessive data retrieval |
+| Limit Field Values Per Page | `list_contact_field_values` | Request | Caps limit parameter to prevent excessive data retrieval |
+| Redact All Field Values | `list_contact_field_values` | Response | Masks actual data in field value responses |
+| Block Email Searches | `list_contacts` | Request | Prevents email enumeration through search |
+| Block Wildcard Searches | `list_contacts` | Request | Prevents broad email_like patterns in searches |
+| Hide Contact PII | `list_contacts` | Response | Redacts emails, phones, and custom fields from contact list responses |
+| Limit Contact Search Results | `list_contacts` | Request | Caps limit to prevent bulk export of contacts |
+| Hide Email Content | `list_email_activities` | Response | Redacts message details from email activity responses |
+| Require Email Activity Filters | `list_email_activities` | Request | Requires specific subscriberid to prevent bulk retrieval |
+| Hide Field Options Config | `list_field_options` | Response | Redacts field option details from responses |
+| Filter Admin Groups | `list_groups` | Response | Hides sensitive admin groups from responses |
+| Hide Group Permissions | `list_groups` | Response | Redacts access levels from group responses |
+| Filter Internal Lists | `list_lists` | Response | Hides internal lists by name pattern |
+| Hide List Configuration | `list_lists` | Response | Redacts list settings from responses |
+| Limit Lists Per Page | `list_lists` | Request | Caps limit parameter to prevent excessive data retrieval |
+| Filter Sensitive Tags | `list_tags` | Response | Hides internal tags from tag list responses |
+| Limit Tag Search Scope | `list_tags` | Request | Prevents wildcard searches on tags |
+| Block Critical Automation Removal | `remove_contact_from_automation` | Request | Protects enrollment in essential automations |
+| Minimum Enrollment Duration | `remove_contact_from_automation` | Request | Prevents immediate removals from automations |
+| Block Required List Removal | `remove_contact_from_list` | Request | Protects mandatory subscriptions from removal |
+| Block Required Tag Removal | `remove_tag_from_contact` | Request | Protects compliance tags from removal |
+| Block Email Enumeration | `search_contacts` | Request | Prevents wildcard searches on contacts |
+| Hide Search Results | `search_contacts` | Response | Limits data exposure in contact search responses |
+| Block Critical Field Updates | `update_contact_custom_field` | Request | Protects field definitions from modification |
+| Prevent Field Type Changes | `update_contact_custom_field` | Request | Locks field types from modification |
+| Block Protected Value Updates | `update_contact_field_value` | Request | Prevents critical data changes |
+| Redact Updated Values | `update_contact_field_value` | Response | Hides updated data from responses |
+| Block Critical List Updates | `update_list` | Request | Protects list configurations from modification |
+| Validate Update Sender URLs | `update_list` | Request | Ensures compliance domains in list updates |
+| Redact Email Addresses | *(all operations)* | Response | Redacts email addresses from all responses (ActiveCampaign-specific instance) |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my ActiveCampaign server."
+</Tip>
+
+---
+
+## Resources
+
+The ActiveCampaign server provides direct access to platform data through resource endpoints that complement the tool-based operations.
+
+<AccordionGroup>
+  <Accordion title="Collection Endpoints" icon="database">
+    Access entire data collections for browsing and discovery:
+
+    <CardGroup cols={2}>
+      <Card title="Contacts" icon="users">
+        `activecampaign://contacts`  
+        Access the complete contact database
+      </Card>
+      <Card title="Lists" icon="list-ul">
+        `activecampaign://lists`  
+        Browse all email lists and segments
+      </Card>
+      <Card title="Automations" icon="robot">
+        `activecampaign://automations`  
+        View all automation workflows
+      </Card>
+      <Card title="Campaigns" icon="envelope">
+        `activecampaign://campaigns`  
+        Access campaign data and metrics
+      </Card>
+    </CardGroup>
+  </Accordion>
+
+  <Accordion title="Individual Record Endpoints" icon="magnifying-glass">
+    Access specific records when you know their ID:
+
+    <CardGroup cols={2}>
+      <Card title="Contacts" icon="users">
+        `activecampaign://contacts/{id}`  
+        Get detailed contact information
+      </Card>
+      <Card title="Lists" icon="list-ul">
+        `activecampaign://lists/{id}`  
+        Retrieve specific list configuration and stats
+      </Card>
+      <Card title="Automations" icon="robot">
+        `activecampaign://automations/{id}`  
+        Access automation workflow details
+      </Card>
+      <Card title="Campaigns" icon="envelope">
+        `activecampaign://campaigns/{id}`  
+        Get campaign-specific performance data
+      </Card>
+    </CardGroup>
+
+    <Tip>
+      **Pro Tip:** Use collection endpoints for discovery, then switch to individual record endpoints for detailed operations.
+    </Tip>
+  </Accordion>
+</AccordionGroup>
+

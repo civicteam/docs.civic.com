@@ -1,0 +1,261 @@
+---
+title: Flask
+description: >-
+  Follow these simple steps to set up Civic Auth with a
+  [Flask](https://flask.palletsprojects.com/) backend (a working example is
+  available in the [github
+  repo](https://github.com/civicteam/civic-auth-py/tree/main/examples/flask)).
+---
+
+import PythonSdkWarning from '@site/docs/_snippets/_python-sdk-warning.mdx';
+
+<Info>
+**Prefer AI-assisted setup?** Use our [AI prompts for Flask](/ai-prompts/python/flask) to automatically integrate Civic Auth using Claude, ChatGPT, or other AI assistants. Includes a step-by-step video tutorial!
+</Info>
+
+<PythonSdkWarning />
+
+## 1. Install dependencies
+
+```bash
+pip install "civic-auth[flask]"
+```
+
+Or, if you're using the `uv` package manager:
+
+```bash
+uv add "civic-auth[flask]"
+```
+
+## 2. Configure your App
+
+Your app will need the following configuration:
+
+```python
+config = {
+    "client_id": "...",  # Client ID from auth.civic.com
+    "redirect_url": "http://localhost:5000/auth/callback",  # change to your domain when deploying
+    "post_logout_redirect_url": "http://localhost:5000/"  # The postLogoutRedirectUrl is the URL where the user will be redirected after successfully logging out from Civic's auth server.
+}
+```
+
+Note: `redirect_url` and `post_logout_redirect_url` must be absolute URLs.
+
+## 3. Initialize Civic Auth
+
+Set up Civic Auth with your Flask app:
+
+```python
+from flask import Flask
+from civic_auth.integrations.flask import init_civic_auth, create_auth_blueprint
+
+app = Flask(__name__)
+app.secret_key = "your-secret-key"  # Required for session handling
+
+# Initialize Civic Auth
+init_civic_auth(app, config)
+
+# Register the auth blueprint (provides /auth/* routes)
+app.register_blueprint(create_auth_blueprint(config))
+```
+
+## 4. Login and Logout Routes
+
+The auth blueprint automatically creates these routes:
+- `/auth/login` - Initiates the login flow
+- `/auth/callback` - Handles the OAuth callback
+- `/auth/logout` - Logs the user out
+
+You can redirect users to start the login process:
+
+```python
+from flask import redirect, url_for
+
+@app.route("/")
+def index():
+    return redirect(url_for("civic_auth.login"))
+```
+
+## 5. Protect Routes
+
+Use the `civic_auth_required` decorator to protect routes:
+
+```python
+from civic_auth.integrations.flask import civic_auth_required
+
+@app.route("/admin/hello")
+@civic_auth_required
+async def hello():
+    return "Hello, authenticated user!"
+```
+
+## 6. Access User Information
+
+Use `get_civic_user()` to access the logged-in user as a dictionary:
+
+```python
+from civic_auth.integrations.flask import get_civic_user
+
+@app.route("/admin/profile")
+@civic_auth_required
+async def profile():
+    user = await get_civic_user()
+    return {
+        "message": f"Hello, {user.get('name', 'User')}!",
+        "user_info": {
+            "id": user.get("id"),
+            "email": user.get("email"),
+            "name": user.get("name"),
+            "picture": user.get("picture")
+        }
+    }
+
+@app.route("/admin/dashboard")
+@civic_auth_required
+async def dashboard():
+    user = await get_civic_user()
+    return f"""
+        <h1>Dashboard</h1>
+        <p>Welcome, {user.get('name', 'User')}!</p>
+        <img src="{user.get('picture', '')}" alt="Profile picture" style="width: 50px; height: 50px; border-radius: 50%;">
+        <p>Email: {user.get('email', 'No email')}</p>
+        <p><a href="/auth/logout">Logout</a></p>
+    """
+```
+
+### Working with User Data
+
+The `get_civic_user()` function returns a dictionary with user information. Always use `.get()` for safe access:
+
+```python
+@app.route("/user-info")
+@civic_auth_required
+async def user_info():
+    user = await get_civic_user()
+    return {
+        "id": user.get("id"),
+        "email": user.get("email", "No email"),
+        "name": user.get("name", "Anonymous"),
+        "picture": user.get("picture")
+    }
+```
+
+## Complete Example
+
+Here's a complete working Flask application:
+
+```python
+from flask import Flask, redirect, url_for
+from civic_auth.integrations.flask import (
+    init_civic_auth, 
+    create_auth_blueprint, 
+    civic_auth_required, 
+    get_civic_user
+)
+
+app = Flask(__name__)
+app.secret_key = "your-secret-key"  # Required for session handling
+
+# Configuration
+config = {
+    "client_id": "YOUR_CLIENT_ID",  # Replace with your actual client ID
+    "redirect_url": "http://localhost:5000/auth/callback",
+    "post_logout_redirect_url": "http://localhost:5000/"
+}
+
+# Initialize Civic Auth
+init_civic_auth(app, config)
+app.register_blueprint(create_auth_blueprint(config))
+
+@app.route("/")
+def home():
+    return """
+        <h1>Welcome to My Flask App!</h1>
+        <p><a href="/auth/login">Login with Civic Auth</a></p>
+        <p><a href="/profile">View Profile</a> (requires authentication)</p>
+        <p><a href="/dashboard">Dashboard</a> (requires authentication)</p>
+        <p><a href="/public">Public Page</a> (no authentication required)</p>
+    """
+
+@app.route("/profile")
+@civic_auth_required
+async def profile():
+    user = await get_civic_user()
+    return {
+        "authenticated": True,
+        "user": {
+            "id": user.get("id"),
+            "name": user.get("name"),
+            "email": user.get("email"),
+            "picture": user.get("picture")
+        },
+        "logout_url": "/auth/logout"
+    }
+
+@app.route("/dashboard")
+@civic_auth_required
+async def dashboard():
+    user = await get_civic_user()
+    return f"""
+        <h1>Dashboard</h1>
+        <p>Welcome, {user.get('name', 'User')}!</p>
+        <p>Email: {user.get('email', 'No email')}</p>
+        <p><a href="/auth/logout">Logout</a></p>
+    """
+
+@app.route("/public")
+def public():
+    return "<h1>Public Page</h1><p>No authentication required</p>"
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+## Configuration Options
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `client_id` | Yes | Your Civic Auth Client ID from [auth.civic.com](https://auth.civic.com) |
+| `redirect_url` | Yes | Where Civic redirects after authentication (must be absolute URL) |
+| `post_logout_redirect_url` | Yes | Where users go after logout (must be absolute URL) |
+
+<Info>
+Note: `redirect_url` and `post_logout_redirect_url` must be absolute URLs.
+</Info>
+
+## Next Steps
+
+1. **Get your Client ID**: Sign up at [auth.civic.com](https://auth.civic.com)
+2. **Replace `YOUR_CLIENT_ID`** with your actual client ID
+3. **Update URLs** when deploying to production
+4. **Add more protected routes** as needed
+5. **Handle user data safely** using `.get()` method for dictionary access
+
+## Authentication Flows
+
+Civic Auth supports multiple OAuth 2.0 authentication methods to provide maximum security for different application architectures.
+
+<Info>
+**Need client secret authentication?** Civic Auth supports PKCE-only, client secrets, and hybrid PKCE + client secret approaches. See our [Authentication Flows guide](/overview/authentication-flows) for detailed comparison.
+</Info>
+
+The examples above use PKCE authentication, which is handled entirely by the Civic Auth SDK and suitable for most applications.
+
+### Access Tokens
+
+Retrieve tokens from session (or via a CivicAuth instance if exposed):
+
+```python
+from flask import session
+from civic_auth.core import CivicAuth  # for key names
+
+@app.route("/tokens")
+@civic_auth_required
+async def tokens():
+    return {
+        "access_token": session.get(CivicAuth.ACCESS_TOKEN_KEY),
+        "id_token": session.get(CivicAuth.ID_TOKEN_KEY),
+        "refresh_token": session.get(CivicAuth.REFRESH_TOKEN_KEY),
+        "token_type": "Bearer",
+    }
+```

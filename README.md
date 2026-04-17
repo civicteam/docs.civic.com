@@ -1,350 +1,133 @@
 # Civic Documentation
 
-Welcome to the Civic documentation repository\! This site powers our customer-facing documentation at [docs.civic.com](https://docs.civic.com/) using [Mintlify](https://mintlify.com/docs).
+Source for [docs.civic.com](https://docs.civic.com/) — now built with
+[Docusaurus](https://docusaurus.io). Previously hosted on Mintlify; see
+`MIGRATION.md` for the cutover plan.
 
-## 🚀 Quick Start
-
-### For Developers (Recommended for branch-based updates)
-
-1. **Clone the repository**
-
-   ```bash
-   git clone <repository-url>
-   cd docs.civic.com
-   ```
-2. **Install Mintlify CLI**
-
-   ```bash
-   npm install -g mintlify
-   ```
-3. **Start local development server**
-
-   ```bash
-   npx mint dev
-   ```
-
-   This will start a local preview at `http://localhost:3000`
-4. **Make your changes** and preview them locally
-5. **Create a branch and push**
-
-   ```bash
-   git checkout -b feature/your-update
-   git add .
-   git commit -m "Update documentation"
-   git push origin feature/your-update
-   ```
-6. **Open a Pull Request** - Mintlify will automatically create a preview deployment for your branch
-
-### For Non-Developers (Quick edits)
-
-Use the [Mintlify Web Editor](https://mintlify.com/docs/quickstart) for quick updates:
-
-1. Navigate to the [Mintlify dashboard](https://dashboard.mintlify.com/civic/civic)
-2. Select your documentation project
-3. Use the browser-based editor to make changes
-4. Changes are deployed automatically
-
-## 📋 Documentation Structure
-
-Our documentation follows Mintlify's structure with these key files:
-
-- `docs.json` - Main configuration file for navigation, themes, and settings
-- `/pages/` - Individual documentation pages (MDX format)
-- `/api-reference/` - API documentation files
-- `/images/` - Static assets and images
-- `/snippets/` - Reusable content snippets
-
-## 🔄 Workflow & Best Practices
-
-### Branch-Based Development (Developers)
-
-✅ **Best for:**
-
-- Substantial content updates
-- New feature documentation
-- Structural changes
-- Code examples and snippets
-
-**Workflow:**
-
-1. Create a feature branch
-2. Make changes locally with `npx mint dev` for preview
-3. Push branch - automatic Mintlify preview is generated
-4. Review changes in both local and Mintlify preview
-5. Submit PR for team review
-6. Merge to main for production deployment
-
-### Web Editor (Non-Developers)
-
-✅ **Best for:**
-
-- Quick text fixes
-- Typo corrections
-- Small content updates
-- Urgent documentation changes
-
-**Benefits:**
-
-- No local setup required
-- Real-time preview
-- Immediate deployment
-- User-friendly interface
-
-## 🛠️ Development Commands
+## Local development
 
 ```bash
-# Start local development server
-npx mint dev
-
-# Install Mintlify CLI globally
-npm install -g mintlify
-
-# Check for broken links and issues
-npx mint check
+pnpm install
+pnpm start           # dev server on http://localhost:3000
+pnpm build           # production build into ./build
+pnpm serve           # preview the production build
+pnpm typecheck       # tsc --noEmit
+pnpm codemod         # re-run the Mintlify -> Docusaurus MDX codemod
 ```
 
-## 🌟 Features & Components
+Requires Node 18+ and pnpm 9+. The pinned pnpm version lives in
+`package.json#packageManager`; run `corepack enable` once to have Node pick
+it up automatically.
 
-Our documentation leverages Mintlify's rich component library:
+`pnpm.overrides.webpack` is pinned to `5.97.1` because webpack `5.106+`
+tightened `ProgressPlugin` option validation in a way that breaks
+`webpackbar@6.0.1` (which Docusaurus 3.8 pulls in). Bump together when
+upgrading Docusaurus.
 
-- **Code Blocks** with syntax highlighting
-- **API Playground** for interactive testing
-- **Callouts** for important information
-- **Tabs** for organized content
-- **Cards** for feature highlights
-- **Accordions** for expandable sections
+## Repo layout
 
-For a complete list of available components, see the [Mintlify Components Documentation](https://mintlify.com/docs/components).
+```
+docs/                      all authored MDX (routeBasePath: '/')
+  index.mdx                -> /
+  civic/**/*.mdx           -> /civic/**
+  auth/**/*.mdx            -> /auth/**
+  overview/**/*.mdx        -> /overview/**
+  ai-prompts/**/*.mdx      -> /ai-prompts/**
+  integration/**/*.mdx     -> /integration/**
+  web3/**/*.mdx            -> /web3/**
+  libraries/**/*.mdx       -> /libraries/**
+  guides/**/*.mdx          -> /guides/**
+  prompts/**/*.mdx         -> /prompts/**
+  labs.mdx, labs/**/*.mdx  -> /labs, /labs/**
+  _snippets/**/*.mdx       shared partials, imported by other MDX
 
-### 🎨 Custom Styling
+sidebars.ts                three sidebars (civic/auth/labs) wired to navbar tabs
+sidebars/{civic,auth,labs}.ts
+docusaurus.config.ts       site config (redirects, clientModules, fonts, etc.)
+src/
+  components/MintlifyCompat.tsx   Docusaurus-native <Note>, <Card>, <Steps>, etc.
+  theme/MDXComponents.tsx         injects those globally into every MDX file
+  theme/DocSidebarItem/Category/  renders FontAwesome icon from customProps.icon
+  css/custom.css                  brand colors + utility classes
+  clientModules/{fontawesome,kapa,gtm}.ts
+scripts/mintlify-to-docusaurus.mjs   one-time content codemod
+static/
+  fonts/                     self-hosted CalSans + Aeonik (see README there)
+  images/, logo/, favicon.svg
+  css/fonts.css              @font-face declarations (served raw to avoid
+                             webpack url() resolution at build time)
+  llms.txt, llms-full.txt    hand-maintained, copied as-is
+```
 
-We have a `custom.css` file that provides additional styling classes, particularly useful for image formatting:
+## Editing content
 
-**Image Width Classes:**
+Authoring is GitHub PR only (no Mintlify web editor replacement). Add or edit
+MDX under `docs/`, push a branch, open a PR. The site deploys from `main` only
+— there are no per-branch previews.
 
-- `.image-50` - 50% width
-- `.image-60` - 60% width
-- `.image-70` - 70% width
-- `.image-80` - 80% width
+### Components available in MDX
 
-**Image Styling:**
+All Mintlify-style tags render through native Docusaurus components —
+`<Note>`, `<Tip>`, `<Warning>`, `<Info>`, `<Check>`, `<Callout>`, `<Card>`,
+`<CardGroup>`, `<Steps>`/`<Step>`, `<Accordion>`/`<AccordionGroup>`,
+`<Tabs>`/`<Tab>`, `<CodeGroup>`, `<Frame>`, `<Update>`. Implementations live in
+`src/components/MintlifyCompat.tsx`.
 
-- `.image-rounded` - Adds border radius
+### Images
 
-**Usage Example:**
+Served from `static/images/…`; in MDX reference them as `/images/…`. Utility
+classes for width and rounding are ported from the old `custom.css`:
 
 ```mdx
-<Frame>
-  <img
-    src="/images/example.png"
-    alt="Example"
-    className="image-70 image-rounded"
-  />
-</Frame>
+<img src="/images/example.png" className="image-70 image-rounded" alt="..." />
 ```
 
-**Note:** Apply the `className` directly to the `img` tag, not the Frame component, as the editor may remove classes from Frame components.
+## Search
 
-These classes automatically adjust to 90% width on mobile devices for responsive design.
+Two surfaces:
 
-## 🤖 AI Prompts
+- **Kapa widget** — always on (loaded via `src/clientModules/kapa.ts`).
+- **Algolia DocSearch** — disabled until the free-program application clears.
+  When approved, set the `ALGOLIA_APP_ID`, `ALGOLIA_API_KEY`, and
+  `ALGOLIA_INDEX_NAME` secrets on the deploy environment; the config in
+  `docusaurus.config.ts` auto-enables the search bar once all three are set.
 
-Our documentation includes AI-assisted integration prompts that allow developers to use AI assistants (Claude, ChatGPT, etc.) to automatically integrate Civic Auth into their projects.
+## Redirects
 
-### Available AI Prompts
+Declared in `docusaurus.config.ts` under
+`@docusaurus/plugin-client-redirects`:
 
-- **Framework Prompts**: [React](/ai-prompts/react), [Next.js](/ai-prompts/nextjs)
-- **Python Framework Prompts**: [Django](/ai-prompts/python/django), [FastAPI](/ai-prompts/python/fastapi), [Flask](/ai-prompts/python/flask)  
-- **Web3 Blockchain Prompts**: [Solana](/ai-prompts/web3/solana), [Ethereum](/ai-prompts/web3/ethereum)
+- `/nexus/*` -> `/civic/*` (wildcard, generated from the existing civic pages)
+- `/nexus/quickstart/nexus-chat` -> `/civic/quickstart/civic-chat`
+- `/civic/quickstart/nexus-chat` -> `/civic/quickstart/civic-chat`
+- `/civic/recipes/python-pydantic` -> `/civic/recipes/pydantic-ai`
 
-### Direct Prompt Access
+Each renders a small HTML redirect file at the source path.
 
-AI prompts use a three-tier approach for maximum flexibility:
+## Deployment
 
-1. **`/snippets/`** - Single source of truth for prompt content
-2. **`/prompts/`** - Public pages for direct access (import snippets)
-3. **`/ai-prompts/`** - Full display pages with context (import snippets)
+`.github/workflows/deploy.yml` builds on every push to `main` and publishes to
+GitHub Pages. The CNAME in the artifact is currently `docs-next.civic.com` for
+side-by-side QA with the Mintlify production site — flip to `docs.civic.com`
+at DNS cutover.
 
-**Directory Structure:**
-```
-snippets/              # Source of truth - raw prompt content + reusable components
-├── solana.mdx        # Solana Web3 prompt
-├── ethereum.mdx      # Ethereum Web3 prompt  
-├── react.mdx         # React framework prompt
-├── nextjs.mdx        # Next.js framework prompt
-├── flask.mdx         # Flask Python prompt
-├── django.mdx        # Django Python prompt
-├── fastapi.mdx       # FastAPI Python prompt
-├── _how-to-use-basic.mdx          # Reusable "How to Use" section
-├── _how-to-use-web3.mdx           # Web3 variant of "How to Use"
-├── _web3-prerequisites.mdx        # Web3 prerequisites warning
-├── _ai-assistant-requirements.mdx # AI assistant requirements info
-├── _supported-ai-assistants.mdx   # List of supported AI assistants
-└── _web3-upsell-note.mdx          # Web3 upsell note for framework prompts
+## Link checking
 
-prompts/              # Public pages - direct access (imports snippets)
-├── solana.mdx        # /prompts/solana
-├── ethereum.mdx      # /prompts/ethereum
-├── react.mdx         # /prompts/react
-├── nextjs.mdx        # /prompts/nextjs
-├── flask.mdx         # /prompts/flask
-├── django.mdx        # /prompts/django
-└── fastapi.mdx       # /prompts/fastapi
+`.github/workflows/link-check-branch.yml` builds the site and runs
+[`lychee`](https://github.com/lycheeverse/lychee) against `build/**/*.html` on
+every PR. The production variant runs against
+`https://docs-next.civic.com` daily.
 
-ai-prompts/           # Display pages - rich context (imports snippets)
-├── react.mdx         # /ai-prompts/react
-├── nextjs.mdx        # /ai-prompts/nextjs
-├── web3/
-│   ├── solana.mdx    # /ai-prompts/web3/solana
-│   └── ethereum.mdx  # /ai-prompts/web3/ethereum
-└── python/
-    ├── flask.mdx     # /ai-prompts/python/flask
-    ├── django.mdx    # /ai-prompts/python/django
-    └── fastapi.mdx   # /ai-prompts/python/fastapi
-```
+## Fonts
 
-**Direct Access Examples:**
+`CalSans-SemiBold.woff2` and `Aeonik-Regular.woff2` are self-hosted under
+`static/fonts/`. The binaries are absent from the initial migration commit
+pending legal review — see `static/fonts/README.md`. Without the files the
+browser falls back to the declared font stack (Geist -> system UI).
 
-```bash
-# Web3 prompts
-curl https://docs.civic.com/prompts/solana
-curl https://docs.civic.com/prompts/ethereum
+## AI prompts
 
-# Framework prompts  
-curl https://docs.civic.com/prompts/react
-curl https://docs.civic.com/prompts/nextjs
-
-# Python framework prompts
-curl https://docs.civic.com/prompts/flask
-curl https://docs.civic.com/prompts/django
-curl https://docs.civic.com/prompts/fastapi
-```
-
-**Benefits:**
-- **Direct URL access** via `/prompts/` for automation and tools (raw prompt only)
-- **Rich display pages** via `/ai-prompts/` with context and instructions
-- **Single source of truth** via `/snippets/` - content defined once, imported everywhere
-- **Reusable components** - common sections (prerequisites, how-to-use, etc.) shared across pages
-- **DRY principle** - eliminate duplication in both prompt content AND page structure
-- **Easy maintenance** - update common sections once, reflected across all pages
-- **Clean URLs** - easy to remember and curl
-
-### Adding New AI Prompts
-
-When adding new AI prompt pages:
-
-1. **Create the prompt snippet**: Add raw prompt content to `/snippets/your-prompt.mdx` (no frontmatter)
-2. **Create the public page**: Add to `/prompts/your-prompt.mdx`:
-   - Frontmatter with `title`, `public: true`
-   - Import: `import YourPrompt from '/snippets/your-prompt.mdx';`
-   - Display: `<YourPrompt />`
-3. **Create the display page**: Create main page in `/ai-prompts/` with:
-   - Proper frontmatter (`title`, `icon`, `public: true`)
-   - Import prompt snippet: `import YourPrompt from '/snippets/your-prompt.mdx';`
-   - Import reusable components: `import HowToUseBasic from '/snippets/_how-to-use-basic.mdx';`
-   - Use components: `<HowToUseBasic />`, `<YourPrompt />`, etc.
-4. **Update navigation**: Add the display page to `docs.json` navigation
-5. **Update overview**: Reference the new prompt in the overview page
-
-### Reusable Components
-
-Common sections are available as reusable snippets (prefixed with `_`):
-- `_how-to-use-basic.mdx` - Standard 4-step instructions
-- `_how-to-use-web3.mdx` - Web3 variant with setup verification
-- `_web3-prerequisites.mdx` - Warning about needing basic auth first  
-- `_ai-assistant-requirements.mdx` - Info about terminal/file access
-- `_supported-ai-assistants.mdx` - List of tested AI assistants
-- `_web3-upsell-note.mdx` - Upsell note for Web3 functionality
-
-**Example Files:**
-
-**Snippet (`/snippets/your-prompt.mdx`):**
-```mdx
-# Your Framework Integration Prompt
-...raw prompt content here...
-```
-
-**Public Access (`/prompts/your-prompt.mdx`):**
-```mdx
----
-title: "Your Framework Prompt"
-public: true
----
-
-import YourPrompt from '/snippets/your-prompt.mdx';
-
-<YourPrompt />
-```
-
-**Display Page (`/ai-prompts/your-page.mdx`):**
-```mdx
----
-title: "Your Framework"
-icon: "your-icon"  
-public: true
----
-
-import YourPrompt from '/snippets/your-prompt.mdx';
-
-## Prerequisites
-<Warning>...</Warning>
-
-## How to Use
-1. Copy the prompt below...
-
-## Integration Prompt
-
-\```text
-<YourPrompt />
-\```
-
-## What the AI Assistant Will Do
-...
-```
-
-## 🔗 Link Checker
-
-To ensure all links are valid and working:
-
-```bash
-lychee --verbose --root-dir $(pwd) --fallback-extensions mdx,md --include-fragments **/*.mdx
-```
-
-## 📦 Preview Deployments
-
-Every branch automatically gets a preview deployment:
-
-- **Main branch**: [docs.civic.com](https://docs.civic.com/)
-- **Feature branches**: Preview URLs provided in PR comments
-- **Local development**: `http://localhost:3000`
-
-## 📚 Useful Resources
-
-- [Mintlify Documentation](https://mintlify.com/docs) - Complete guide and reference
-- [Mintlify Dashboard](https://dashboard.mintlify.com/civic/civic) - Access the web editor and project settings
-- [Mintlify Quickstart](https://mintlify.com/docs/quickstart) - Get started in minutes
-- [MDX Documentation](https://mdxjs.com/) - Learn about MDX syntax
-- [Civic Auth Documentation](https://docs.civic.com/) - Our live documentation site
-
-## 🆘 Getting Help
-
-- **For Mintlify-specific questions**: Check the [Mintlify docs](https://mintlify.com/docs) or their community
-- **For content questions**: Reach out to the documentation team
-- **For technical issues**: Create an issue in this repository
-
-## 📝 Contributing
-
-1. Follow the branch-based workflow for substantial changes
-2. Use the web editor for quick fixes
-3. Ensure all links work and code examples are tested
-4. Preview changes before submitting PRs
-5. Write clear commit messages describing your changes
-
----
-
-**Need to make an update?**
-
-- 👩‍💻 **Developer?** Use the branch workflow with local preview
-- 🖊️ **Quick edit?** Use the Mintlify web editor
-
-Happy documenting\! 🚀 Thanks\!
+Unchanged from the Mintlify era: the three-tier structure under `docs/`
+(`_snippets/` -> `prompts/` -> `ai-prompts/`) still works; snippet imports
+were rewritten by the codemod from `/snippets/...` to
+`@site/docs/_snippets/...`.

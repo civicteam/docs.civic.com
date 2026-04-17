@@ -1,0 +1,164 @@
+---
+title: Google Docs
+description: Create and edit Google Docs documents
+---
+
+## Overview
+
+The Google Docs server enables AI assistants to interact with [Google Docs](https://docs.google.com), providing document creation, content retrieval, search capabilities, and collaboration features through the Google Docs and Drive APIs.
+
+## How to Add Google Docs
+
+<Steps>
+  <Step title="Add Server">
+    Add the Google Docs server to your Civic environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in with your Google account and approve the OAuth consent request. No admin approval needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "List my Google Docs" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Simple OAuth Consent:** Google Docs uses standard Google OAuth consent. Works with personal Google accounts and Google Workspace without special admin approval.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Document Search" icon="magnifying-glass">
+    Search for Google Docs by name and list documents in folders
+  </Card>
+  <Card title="Content Access" icon="file-lines">
+    Read content from Google Docs and Office files (.docx)
+  </Card>
+  <Card title="Document Creation" icon="file-plus">
+    Create new Google Docs with optional initial content
+  </Card>
+  <Card title="Collaboration" icon="comments">
+    Read, create, reply to, and resolve document comments
+  </Card>
+</CardGroup>
+
+## Available Tools (8)
+
+<Note>
+**Security note:** This server provides read access and document creation. It does not include bulk edit or find-and-replace operations. `create_doc` can write new documents to any accessible Drive folder. For automated agents, consider guardrails if write access should be restricted. See [Guardrails](/civic/concepts/guardrails).
+</Note>
+
+### Document Operations
+
+<AccordionGroup>
+  <Accordion title="search_docs">
+    Search for Google Docs by name using Drive API. Returns document IDs, names, modified times, and Drive web links.
+  </Accordion>
+
+  <Accordion title="get_doc_content">
+    Retrieve content of a Google Doc or Drive file by document ID. Native Google Docs are fetched via Docs API. Office files (.docx, etc.) stored in Drive are downloaded and text is extracted.
+  </Accordion>
+
+  <Accordion title="list_docs_in_folder">
+    List Google Docs within a specific Drive folder. Defaults to root folder but can list any folder by ID. Supports configurable page sizes up to 100 documents.
+  </Accordion>
+
+  <Accordion title="create_doc">
+    Create a new Google Doc with a title and optional initial content. Returns document ID and link.
+  </Accordion>
+</AccordionGroup>
+
+### Comment Operations
+
+<AccordionGroup>
+  <Accordion title="read_document_comments">
+    Read all comments from a Google Document including author, creation time, and content.
+  </Accordion>
+
+  <Accordion title="create_document_comment">
+    Create a new comment on a Google Document with specified content.
+  </Accordion>
+
+  <Accordion title="reply_to_document_comment">
+    Reply to a specific comment in a Google Document by comment ID.
+  </Accordion>
+
+  <Accordion title="resolve_document_comment">
+    Resolve a comment in a Google Document to mark it as complete.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Document Search
+"Find all documents with 'proposal' in the name" - Search for specific documents by name.
+
+### Content Reading
+"Read the content of the project requirements document" - Extract text from Google Docs or Office files.
+
+### Folder Navigation
+"Show me all Google Docs in my Projects folder" - List documents within specific folders.
+
+### Document Creation
+"Create a new document called 'Meeting Notes' with today's agenda" - Generate new documents with initial content.
+
+### Blank Document Creation
+"Create a blank document called 'Draft Report'" - Create empty documents for later editing.
+
+### Comment Reading
+"Show me all comments on the design document" - View collaboration feedback and discussions.
+
+### Adding Comments
+"Add a comment to the document saying 'Needs review by Friday'" - Provide feedback on documents.
+
+### Comment Threads
+"Reply to comment ABC123 with 'Changes completed'" - Participate in document discussions.
+
+### Resolving Feedback
+"Resolve comment XYZ789 on the document" - Mark feedback as addressed.
+
+### Office File Access
+"Read the content of the .docx file in my Drive" - Access Microsoft Word documents stored in Google Drive.
+
+<Note>
+**File Type Support:** Native Google Docs are accessed via Docs API. Office files (.docx, etc.) stored in Drive are downloaded and parsed to extract text content.
+
+**Search Functionality:** Search uses Drive API with mimeType filter for Google Docs. Returns document metadata and links for easy access.
+
+**Folder IDs:** Use `'root'` for the user's main Drive folder or specific folder IDs from Google Drive for organized listing.
+
+**Comment System:** Full comment lifecycle supported - read existing comments, create new ones, reply to threads, and resolve completed discussions.
+</Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **21 server-specific guardrails** across 9 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Blocked Content Patterns | `create_doc` | Request | Block content containing specific patterns |
+| Blocked Title Keywords | `create_doc` | Request | Block creation with specific title keywords |
+| Maximum Content Size | `create_doc` | Request | Limit content field to character count |
+| Comment Blocked Content Patterns | `create_document_comment` | Request | Block comments containing patterns |
+| Maximum Comment Length | `create_document_comment` | Request | Limit comment content to a character limit |
+| Block Content Access for Dangerous Formats | `get_doc_content` | Response | Blocks accessing content of files with dangerous formats |
+| Document ID Blocklist | `get_doc_content` | Request | Deny access to specific document IDs |
+| Maximum Content Length | `get_doc_content` | Response | Truncate document content to character limit |
+| PII Patterns to Redact | `get_doc_content` | Response | Redact specific patterns from content |
+| Blocked Folder Names | `list_docs_in_folder` | Request | Block access to folders with specific names |
+| Maximum Folder List Page Size | `list_docs_in_folder` | Request | Restrict page_size to a maximum number |
+| Minimum Document Age | `list_docs_in_folder` | Response | Hide documents created before a date |
+| Restrict to Allowed Folders | `list_docs_in_folder` | Request | Only allow listing documents in whitelisted folders |
+| Blocked Comment Content | `read_document_comments` | Response | Filter comments containing keywords |
+| Filter Comments by Allowed Authors | `read_document_comments` | Response | Redact comments from non-allowed authors |
+| Blocked Reply Content | `reply_to_document_comment` | Request | Block replies containing patterns |
+| Maximum Reply Length | `reply_to_document_comment` | Request | Limit reply content to a character limit |
+| Blocked Search Terms | `search_docs` | Request | Block searches containing specific keywords |
+| Maximum Search Page Size | `search_docs` | Request | Restrict page_size to a maximum number |
+| Sensitive Document Filter | `search_docs` | Response | Filter out documents with titles containing keywords |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Google Docs server."
+</Tip>
