@@ -1,0 +1,33 @@
+/**
+ * Loads the Kapa.ai widget on every page (browser only).
+ * Ported 1:1 from the Mintlify `kapa-widget.js` script.
+ */
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
+
+if (ExecutionEnvironment.canUseDOM) {
+  const script = document.createElement('script');
+  script.src = 'https://widget.kapa.ai/kapa-widget.bundle.js';
+  script.async = true;
+  script.setAttribute('data-website-id', '6b20664c-1b0b-46ef-9801-3c7b0fac7b2d');
+  script.setAttribute('data-project-name', 'Civic');
+  script.setAttribute('data-project-color', '#7C75FF');
+  script.setAttribute(
+    'data-project-logo',
+    'https://civic-public-logo-dev.s3.us-east-1.amazonaws.com/civic-ai-white.png',
+  );
+  script.setAttribute(
+    'data-modal-image',
+    'https://civic-public-logo-dev.s3.us-east-1.amazonaws.com/civic-ai-dark.png',
+  );
+  script.setAttribute(
+    'data-modal-disclaimer',
+    "Powered by AI trained on Civic documentation. While we work to keep responses accurate, AI can sometimes miss nuances or provide incomplete information. This tool is best for quick reference. For mission-critical decisions, security concerns, or complex integrations, consult our full documentation or reach out in the Civic Developers Slack community. If you're experiencing an issue, please provide Kapa with a clear description of what you're trying to do, which framework you're using, what's going wrong and the error message(s) you're seeing on screen or in your console.",
+  );
+  script.setAttribute(
+    'data-modal-example-questions',
+    'How do I create and access embedded wallets after Civic Auth login?,Can users sign up with their existing wallet or use embedded wallets?,Which framework should I use and how long will integration take?,How can I use Cursor to add Civic?,How do I add Civic to Claude Code?',
+  );
+  document.head.appendChild(script);
+}
+
+export {};

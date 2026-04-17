@@ -1,0 +1,17 @@
+/* Self-hosted fonts. Served statically so the browser (not webpack) resolves
+ * the woff2 URLs. See static/fonts/README.md for the pending legal review. */
+@font-face {
+  font-family: 'CalSans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/CalSans-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Aeonik';
+  font-style: normal;
+  font-weight: 300 500;
+  font-display: swap;
+  src: url('/fonts/Aeonik-Regular.woff2') format('woff2');
+}

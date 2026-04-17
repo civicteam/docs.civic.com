@@ -1,0 +1,339 @@
+---
+title: Changelog
+description: Product updates and announcements
+---
+
+<Update label="April 01, 2026" description="auth-server-1.2.30">
+
+**Security**
+- fix for CVE-2025-69720
+
+</Update>
+
+<Update label="March 27, 2026" description="auth-server-1.2.29">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="March 27, 2026" description="apps-0.2.94">
+
+**Features**
+- Added email subaddress support for major providers: addresses like `user+tag@gmail.com` are now accepted for supported domains
+- Added throwaway email blocking: signups from known disposable email providers are now automatically blocked
+- Added custom blocked domains: app owners can define additional blocked email domains via the dashboard
+
+**Improvements**
+- Throwaway email blocking is now off by default and can be enabled in your app settings
+- The built-in list of blocked disposable email domains is now viewable in the dashboard
+- Clarified that email blocking applies to email-based login only — social and OAuth logins are not affected
+
+**Bug fixes**
+- Fixed a security vulnerability in the login cleanup process
+- Updated dependencies to address security vulnerabilities
+
+</Update>
+
+<Update label="March 27, 2026" description="auth-server-1.2.28">
+
+**Bug fixes**
+- Fixed login issues that could occur when connecting through certain third-party applications
+
+**Improvements**
+- Updated dependencies to address security vulnerabilities
+
+</Update>
+
+<Update label="March 25, 2026" description="apps-0.2.93">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="March 25, 2026" description="auth-server-1.2.27">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="March 20, 2026" description="apps-0.2.92">
+
+**Improvements**
+- Token exchange configuration now allows HTTP URLs for localhost addresses during local development, following OAuth 2.0 best practices (RFC 8252)
+- JWKS URI validation now enforces HTTPS-only for improved security, with an exception for localhost development
+
+**Bug fixes**
+- Fixed an issue where user analytics profiles could become fragmented, improving the accuracy of user identification
+- Updated dependencies to address known security vulnerabilities
+
+**Security**
+- Updated framework dependencies to resolve published security advisories
+
+</Update>
+
+<Update label="March 19, 2026" description="auth-server-1.2.26">
+
+**Improvements**
+- Updated authentication dependencies to improve compatibility and security
+
+**Bug fixes**
+- Fixed an issue where some users could encounter an unexpected error during login
+
+</Update>
+
+<Update label="March 17, 2026" description="auth-server-1.2.25">
+
+**Features**
+- Apps can now be configured to control access to specific OAuth scopes, giving administrators more granular permission management
+
+**Bug fixes**
+- Authorization requests with unsupported scopes now return a clear error instead of silently ignoring them
+
+**Improvements**
+- Reduced latency on repeated configuration lookups for faster authentication flows
+
+</Update>
+
+<Update label="March 17, 2026" description="apps-0.2.90">
+
+**Features**
+- Added programmatic account creation API, allowing apps to create Civic Auth accounts automatically via API
+- Added token exchange configuration endpoints for programmatic app setup
+- Added account selector to the dashboard header for users who belong to multiple accounts
+
+**Improvements**
+- Improved authentication reliability and error handling
+- Reduced performance overhead of application monitoring
+
+**Bug fixes**
+- Fixed an issue where account creation could fail due to certain ID formats
+- Fixed a navigation issue that caused incorrect URLs in the dashboard
+
+</Update>
+
+<Update label="March 11, 2026" description="auth-server-1.2.24">
+
+**Features**
+- Added support for MCP (Model Context Protocol) clients, enabling proper OAuth authorization for tools like Gemini CLI
+
+**Bug fixes**
+- Fixed an error that could occur when MCP clients attempted to connect via OAuth authorization
+
+</Update>
+
+<Update label="March 10, 2026" description="auth-server-1.2.23">
+
+**Features**
+- Added support for `civic_account` and `civic_profile` claims in token exchange requests
+- When both legacy and new claim formats are present, the new `civic_*` claims now take priority
+
+</Update>
+
+<Update label="March 10, 2026" description="apps-0.2.89">
+
+**Features**
+- Added support for `civic_account` and `civic_profile` claims in token exchange
+
+</Update>
+
+<Update label="March 06, 2026" description="apps-0.2.88">
+
+**Bug fixes**
+- Fixed an issue where custom logo uploads were not displaying correctly
+- Fixed an issue preventing cleanup of previously uploaded files when replacing them
+
+**Security**
+- Updated dependencies to address known vulnerabilities
+
+</Update>
+
+<Update label="February 13, 2026" description="Auth Server v1.2.21">
+
+**Bug Fixes**
+- Fixed federated token exchange `sub` claim to use the correct account identifier
+- Fixed federated token exchange userinfo endpoint to return proper OIDC claims
+- Extracted standard OIDC claims (name, email, picture, etc.) from external tokens during federated token exchange
+
+**Security**
+- Dependency upgrade to address a high-severity vulnerability
+
+</Update>
+
+<Update label="February 9, 2026" description="Auth Server v1.2.20">
+
+**Improvements**
+- Internal infrastructure and analytics improvements
+
+</Update>
+
+<Update label="February 9, 2026" description="Apps v0.2.82">
+
+**Improvements**
+- Next.js 16 compatibility updates
+
+**Bug Fixes**
+- Fixed SSR hydration mismatches in useUser hook and login app
+- Fixed cross-origin SecurityError in MessageHandler logging
+
+</Update>
+
+<Update label="February 4, 2026" description="Auth Server v1.2.19">
+
+**Security**
+- Security hardening and vulnerability fixes across the authentication infrastructure
+
+</Update>
+
+<Update label="February 2, 2026" description="Auth Server v1.2.18">
+
+**Improvements**
+- Added support for `mcp:tools` scope in Dynamic Client Registration, enabling MCP tool authorization through the `/reg` endpoint
+
+**Security**
+- Addressed security vulnerabilities to improve platform safety
+
+</Update>
+
+<Update label="September 26th, 2025" description="OAuth 2.0 Enhancements & Session Improvements" tags={["OAuth", "Sessions", "SDK", "Enhancement"]}>
+
+🔄 **Dynamic Client Registration support**
+Connect Civic auth to any AI server or MCP server with our new Dynamic Client Registration support. Perfect for modern, flexible authentication flows.
+
+🔐 **OAuth client-credentials flow**
+Now supporting the OAuth client-credentials flow for secure server-to-server authentication scenarios.
+
+⚡ **Major session refresh improvements**
+The Civic Auth SDK brings significant API improvements with faster session refreshes. Sessions now refresh quickly on page load and automatically in the background when users navigate back to protected pages.
+
+🎨 **Enhanced UserButton UI**
+Improved the UserButton component with better visual design and user experience.
+
+</Update>
+
+<Update label="October 2025" description="Token Exchange & Security" tags={["OAuth", "Security"]}>
+
+🔄 **Token exchange (RFC 8693)**
+Exchange one access token for another with different permissions or audience. Perfect for delegating access between services while maintaining security.
+
+🔒 **Enhanced cross-origin security**
+Added COEP and CORP headers for better security and compatibility with modern web standards.
+
+</Update>
+
+<Update label="August 21st, 2025" description="Passkey Authentication" tags={["Passkey", "Authentication", "Security"]}>
+
+🔑 **Passkey login is here!**
+We now support passkey as a login method! After enabling passkey, you can prompt users to create a passkey to login to your site, making login faster and more secure. Say goodbye to passwords and hello to the future of authentication.
+
+</Update>
+
+<Update label="August 6th, 2025" description="React Frontend + Any Backend Support" tags={["React", "SDK", "Enhancement"]}>
+
+🔗 **Mix and match React with any backend**
+New React SDK feature lets you use React on the frontend with any backend technology. Whether you're running Node.js, Python, Go, or something else entirely, our React components now work seamlessly with your existing auth setup.
+
+Perfect for teams that want React's user experience with the flexibility to choose their backend stack.
+
+</Update>
+
+<Update label="July 30th, 2025" description="Auth Middleware Improvements & Session Management" tags={["Middleware", "Sessions", "Bug Fixes"]}>
+
+⚡ **Smarter auth middleware**
+Refactored authentication middleware with better utilities and improved token refresh prioritization. Sessions now handle cleanup and replenishment more reliably.
+
+🛠️ **URL parameter cleanup**
+Fixed issues with code parameter handling and improved session cleanup processes. Login flows are now more robust across different scenarios.
+
+🔧 **Enhanced session reliability**
+Better session management ensures users stay authenticated properly and reduces unexpected logouts during normal usage.
+
+</Update>
+
+<Update label="July 14th, 2025" description="Enterprise Security & Mobile Excellence" tags={["Authentication", "Mobile", "Bug Fixes"]}>
+
+🔐 **Client secrets for the enterprise crowd**
+We kept hearing from enterprise customers that they needed client secrets for their confidential applications. So we built it. You can now choose PKCE + client secret for maximum security, or go with client secrets only if you're working with legacy systems that need it.
+
+Check out our [authentication flows guide](/overview/authentication-flows) to see how it works.
+
+📱 **Mobile login that actually works**
+Remember those tiny login buttons that were impossible to tap on mobile? Yeah, we fixed that. Login buttons now look good and load fast on phones. No more squinting at your screen trying to hit the right spot.
+
+🛠️ **Vanilla JavaScript plays nice with everything**
+Our vanilla JavaScript integration now works smoothly with Express, Fastify, Hono, or whatever backend you're running. Same simple code, any framework.
+
+🐛 **Bug fixes and improvements**
+We've been busy polishing the experience:
+- Various login flow improvements
+- Enhanced mobile display quality
+- Better handling of edge cases across different auth methods
+
+</Update>
+
+<Update label="June 5th, 2025" description="Going Native & Vanilla" tags={["SDKs", "Mobile", "JavaScript"]}>
+
+📱 **React Native support is here**
+Your React Native apps can now use Civic Auth. Works on both iOS and Android with solid performance.
+
+🍦 **Pure JavaScript, no frameworks required**
+Want to integrate Civic Auth without any frameworks? Now you can. Plain JavaScript integration that just works.
+
+</Update>
+
+<Update label="June 3rd, 2025" description="¡Hola mundo! Guten Tag authentication!" tags={["Localization", "Enhancement"]}>
+
+🌍 **Speaking Spanish and German**
+Login screens now support Spanish and German with complete translations. Your international users will feel right at home.
+
+📸 **Google profile pictures show up**
+Fixed the bug where Google profile pictures wouldn't load. No more broken image icons.
+
+</Update>
+
+<Update label="May 22nd, 2025" description="Dashboard polish & production focus" tags={["Billing", "Dashboard"]}>
+
+📊 **Billing dashboard shows real numbers**
+The billing dashboard was showing incorrect data. Charts now display accurate usage information.
+
+🎯 **Fewer annoying banners**
+App banners now only appear for production applications, not during development. Less noise while you're building.
+
+</Update>
+
+<Update label="May 3rd, 2025" description="Next.js gets snappier" tags={["Performance", "Next.js"]}>
+
+⚡ **One redirect, not three**
+Next.js apps were doing multiple redirects after login. Fixed it so there's just one clean redirect like there should be.
+
+</Update>
+
+<Update label="April 30th, 2025" description="Dashboard makeover & account fixes" tags={["Enhancement", "Bug Fixes", "Dashboard"]}>
+
+📈 **Billing dashboard improvements**
+Usage charts now show the right data with clearer visuals. No more guessing what your actual usage is.
+
+</Update>
+
+<Update label="April 29th, 2025" description="Visibility & flexibility upgrades" tags={["Enhancement", "SDK"]}>
+
+💡 **Find your plan info easily**
+Subscription details and usage limits are now easy to find. No more hunting through multiple screens.
+
+🔗 **Better custom domain support**
+Improved how the SDK handles custom URLs and domains. More reliable and flexible.
+
+</Update>
+
+<Update label="April 17th, 2025" description="Production launch made easy" tags={["Bug Fixes", "Production"]}>
+
+🚀 **Production setup works again**
+Fixed the errors that were happening when setting up production applications. Should be smooth sailing now.
+
+</Update>
+
+<Update label="April 16th, 2025" description="Never get surprised by limits again" tags={["Alerts", "Monitoring"]}>
+
+🚨 **Know before you hit the limit**
+Added dashboard and email alerts when you're approaching your plan limits. No more surprise overages.
+
+</Update>

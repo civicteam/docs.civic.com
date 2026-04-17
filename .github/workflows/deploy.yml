@@ -1,0 +1,54 @@
+name: Build & Deploy docs-next
+
+# Phase 4 cutover: builds the Docusaurus site on every push to main and
+# publishes to GitHub Pages at docs-next.civic.com for side-by-side QA with the
+# current Mintlify site. Once DNS is swapped, rename the CNAME to docs.civic.com.
+#
+# Per-branch preview deployments were intentionally dropped for the migration
+# (see the migration plan). Only main gets deployed.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
+      # CNAME for the target host. Flip to docs.civic.com at cutover.
+      - run: echo "docs-next.civic.com" > build/CNAME
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

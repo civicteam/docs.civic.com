@@ -1,0 +1,65 @@
+---
+title: Civic Setup Skill
+description: A Civic skill that guides users through connecting Civic as their MCP server
+---
+
+import CivicSetupSkill from '@site/docs/_snippets/civic-setup-skill.mdx';
+
+The Civic Setup skill teaches your AI agent how to walk users through connecting Civic as their MCP server — for any supported client or framework. Load it into a session and the agent knows the right setup path, authentication method, and docs links for every integration.
+
+## What This Skill Does
+
+When loaded, the agent will:
+
+- Ask which MCP client or agent framework the user is working with
+- Route them to the correct auth method: **OAuth** for interactive clients, **Civic Token** for agent frameworks
+- Walk through step-by-step setup for their specific client or framework
+- Point them to the right integration guide on docs.civic.com
+- Handle common errors (expired tokens, missing profile, transport mismatches)
+
+## How to Load It
+
+### Via the skills URL parameter
+
+Add `skills=civic-setup` to your MCP URL when connecting:
+
+```
+https://app.civic.com/hub/mcp?skills=civic-setup
+```
+
+### Via Civic Chat
+
+```
+"Load the civic-setup skill"
+```
+
+### Via curl (raw skill text)
+
+The skill prompt is available as plain text for use in any AI assistant or agent:
+
+```bash
+curl https://docs.civic.com/prompts/civic-setup.md
+```
+
+## Skill Content
+
+<CivicSetupSkill />
+
+## About Skills
+
+Skills are reusable instruction sets that load on top of the current toolkit without replacing it. This skill adds setup guidance to any session — it works alongside Gmail, Slack, Calendar, and any other tools already in the toolkit.
+
+<CardGroup cols={2}>
+  <Card title="Using Skills" icon="book" href="/civic/concepts/skills">
+    How skills work and how to create your own
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production agent configuration with skills and toolkits
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
+    Common setup issues and solutions
+  </Card>
+</CardGroup>

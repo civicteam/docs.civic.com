@@ -1,0 +1,37 @@
+---
+title: Google Ads
+description: >-
+  Manage Google Ads accounts, campaigns, and ad performance. Run GAQL queries
+  and analyze image assets.
+---
+
+## Overview
+
+The Google Ads server enables AI assistants to interact with the Google Ads API to retrieve account and campaign performance data, manage image assets, and execute custom GAQL queries for flexible reporting.
+
+<Card title="Add to Civic" icon="plus" href="https://app.civic.com">
+  Connect Google Ads at app.civic.com
+</Card>
+
+## Available Tools (12)
+
+| Tool | Description |
+|------|-------------|
+| `list_accounts` | List all accessible Google Ads accounts |
+| `get_account_currency` | Retrieve the default currency code used by the Google Ads account |
+| `get_campaign_performance` | Get campaign performance metrics for the specified time period |
+| `get_ad_performance` | Get ad performance metrics for the specified time period |
+| `get_ad_creatives` | Get ad creative details including headlines, descriptions, and URLs |
+| `get_image_assets` | Retrieve all image assets in the account including their full-size URLs |
+| `get_asset_usage` | Find where specific assets are being used in campaigns, ad groups, and ads |
+| `analyze_image_assets` | Analyze image assets with their performance metrics across campaigns |
+| `download_image_asset` | Download a specific image asset from a Google Ads account |
+| `list_resources` | List valid resources that can be used in GAQL FROM clauses |
+| `execute_gaql_query` | Execute a custom GAQL (Google Ads Query Language) query |
+| `run_gaql` | Execute any arbitrary GAQL query with custom formatting options (table, JSON, or CSV) |
+
+---
+
+## Guardrails
+
+This server supports all [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.

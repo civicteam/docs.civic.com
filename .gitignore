@@ -1,11 +1,14 @@
 # Dependencies
 node_modules/
 
-# Build outputs
+# Docusaurus build + cache
+.docusaurus/
+build/
+
+# Legacy Next/Mintlify outputs (kept so downgrade is clean if needed)
 .next/
 out/
 dist/
-build/
 
 # Environment files
 .env

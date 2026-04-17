@@ -1,0 +1,169 @@
+---
+title: DeepAgents
+description: Connect a DeepAgents agent to Civic's MCP Hub using streamable HTTP transport
+---
+
+Connect a [DeepAgents](https://github.com/civicteam/deepagents-reference-implementation-civic) agent to Civic using the `langchain-mcp-adapters` package, which bridges DeepAgents' tool interface with Civic's Streamable HTTP MCP transport.
+
+## Prerequisites
+
+- Python 3.11+
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
+- A Civic token (generate from [Install → MCP URL](https://app.civic.com/web/install/mcp-url))
+- An API key for your chosen LLM provider (e.g., [Anthropic](https://console.anthropic.com), [OpenAI](https://platform.openai.com))
+
+## Installation
+
+Using [uv](https://docs.astral.sh/uv/) (recommended):
+
+```bash
+uv add deepagents langchain-mcp-adapters langchain-anthropic fastapi uvicorn python-dotenv
+```
+
+Or with pip:
+
+```bash
+pip install deepagents langchain-mcp-adapters langchain-anthropic fastapi uvicorn python-dotenv
+```
+
+## Environment Variables
+
+```bash
+# Your full Civic toolkit URL (include profile param for production agents)
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit&lock=true
+
+# Civic token generated from app.civic.com → Install → MCP URL
+CIVIC_TOKEN=your-civic-token
+
+# API key for your chosen LLM provider
+ANTHROPIC_API_KEY=your-anthropic-key   # or OPENAI_API_KEY, etc.
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Use `MultiServerMCPClient` to connect to the Civic MCP Hub during app startup, then pass the discovered tools to `create_deep_agent`:
+
+```python
+import os
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from deepagents import create_deep_agent
+from langchain_mcp_adapters.client import MultiServerMCPClient
+
+mcp_client = None
+agent = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global mcp_client, agent
+
+    mcp_client = MultiServerMCPClient({
+        "civic-nexus": {
+            "transport": "streamable_http",
+            "url": os.environ["CIVIC_URL"],
+            "headers": {"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+        }
+    })
+
+    tools = await mcp_client.get_tools()
+
+    agent = create_deep_agent(
+        model="anthropic:claude-sonnet-4-6",  # or "openai:gpt-4o", etc.
+        tools=tools,
+        system_prompt="You are a helpful assistant with access to calendar and email tools.",
+    )
+
+    yield
+
+    await mcp_client.__aexit__(None, None, None)
+
+app = FastAPI(lifespan=lifespan)
+```
+
+## Running the Agent
+
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+class ChatRequest(BaseModel):
+    message: str
+    thread_id: str = "default"
+
+@app.post("/chat")
+async def chat(request: ChatRequest):
+    result = await agent.ainvoke(
+        {"messages": [{"role": "user", "content": request.message}]},
+        config={"configurable": {"thread_id": request.thread_id}},
+    )
+    return {"response": result["messages"][-1].content}
+```
+
+Start the server:
+
+```bash
+uv run uvicorn main:app --reload
+```
+
+## Production Configuration
+
+### Lock to a Toolkit
+
+For production agents, always lock to a specific toolkit using the `profile` and `lock` URL parameters:
+
+```bash
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-production-toolkit&lock=true
+```
+
+When locked, the agent cannot switch toolkits or modify its own guardrails — preventing prompt injection attacks from escaping the defined tool scope.
+
+### Multi-Account Setup
+
+For organization accounts, include the `accountId` parameter:
+
+```bash
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=support&accountId=org_abc123
+```
+
+### Pre-load Skills
+
+Load specific Skills at session start using the `skills` parameter:
+
+```bash
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
+```
+
+## Environment Variable Reference
+
+| Variable | Description |
+|---|---|
+| `CIVIC_URL` | Full Civic toolkit URL including profile and any URL parameters |
+| `CIVIC_TOKEN` | Civic token from [app.civic.com → Install → MCP URL](https://app.civic.com/web/install/mcp-url) |
+| `ANTHROPIC_API_KEY` | API key for your LLM provider (e.g., Anthropic, OpenAI) |
+
+## Reference Implementation
+
+A complete reference implementation including a FastAPI server, streaming chat UI, and production patterns is available at:
+
+[github.com/civicteam/deepagents-reference-implementation-civic](https://github.com/civicteam/deepagents-reference-implementation-civic)
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your DeepAgents agent can use
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

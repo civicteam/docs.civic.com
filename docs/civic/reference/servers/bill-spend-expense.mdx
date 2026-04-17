@@ -1,0 +1,136 @@
+---
+title: Bill.com Spend & Expense
+description: >-
+  Manage budgets, transactions, cards, reimbursements, and users through
+  Bill.com's Spend & Expense API
+---
+
+## Overview
+
+The Bill.com Spend & Expense server provides access to Bill.com's expense management platform — budgets, transactions, corporate cards, reimbursements, and user administration. This is a **separate server** from the [Bill.com AP/AR server](/civic/reference/servers/bill), which handles accounts payable and receivable.
+
+## How to Add Bill.com Spend & Expense
+
+<Steps>
+  <Step title="Get Your API Token">
+    1. Log in to [Bill.com](https://app.bill.com)
+    2. Navigate to **Settings → Developer → API**
+    3. Generate a new API token for the **Spend & Expense** product
+
+    <Warning>
+    This API token is **separate** from the Bill.com AP/AR API key. Make sure you are generating a token for the Spend & Expense product specifically.
+    </Warning>
+  </Step>
+  <Step title="Add to Civic">
+    Add the Bill.com Spend & Expense server to your Civic environment through the server directory. You will be prompted to provide your API token and choose your environment (`sandbox` or `production`).
+
+    <Tip>
+    Use the **sandbox** environment first to test your integration before switching to production.
+    </Tip>
+  </Step>
+  <Step title="Test Connection">
+    Start with `"List all budgets"` or `"Show me recent transactions"` to verify the connection.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Budget Management" icon="wallet">
+    List budgets, check remaining balances, and monitor departmental spending
+  </Card>
+  <Card title="Transaction Tracking" icon="receipt">
+    View recent transactions, filter by amount or date, and get transaction details
+  </Card>
+  <Card title="Card Management" icon="credit-card">
+    List active cards, view card details, and track spending by card
+  </Card>
+  <Card title="Reimbursements" icon="money-bill-transfer">
+    View pending and completed reimbursement requests with full details
+  </Card>
+  <Card title="User Management" icon="users">
+    List organization users, view profiles, and check access levels
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+### Budget Oversight
+- **Department Budgets**: `"Show me the budget for the Marketing department"`
+- **Budget Tracking**: `"What's the remaining budget for Q1?"`
+- **Budget Summary**: `"List all budgets"`
+
+### Expense Tracking
+- **Recent Activity**: `"Show me recent transactions"`
+- **High-Value Transactions**: `"List all transactions over $500 this month"`
+- **Transaction Details**: `"Get details for transaction TXN-12345"`
+
+### Card Administration
+- **Active Cards**: `"List all active cards"`
+- **Card Spending**: `"Which cards have the highest spending this month?"`
+- **Card Details**: `"Show me card details for card ending in 1234"`
+
+### Reimbursement Processing
+- **Pending Requests**: `"Show me pending reimbursement requests"`
+- **Monthly Summary**: `"List all reimbursements for this month"`
+
+### Team Management
+- **User List**: `"List all users in my organization"`
+- **Access Audit**: `"Who has admin access?"`
+
+---
+
+## Available Tools
+
+<AccordionGroup>
+  <Accordion title="list_budgets">
+    `list_budgets` — List all budgets in the organization
+  </Accordion>
+  <Accordion title="get_budget">
+    `get_budget` — Get details for a specific budget including remaining balance
+  </Accordion>
+  <Accordion title="list_transactions">
+    `list_transactions` — List transactions with optional filtering by amount, date, and status
+  </Accordion>
+  <Accordion title="get_transaction">
+    `get_transaction` — Get full details for a specific transaction
+  </Accordion>
+  <Accordion title="list_cards">
+    `list_cards` — List all corporate cards and their status
+  </Accordion>
+  <Accordion title="get_card">
+    `get_card` — Get details for a specific card
+  </Accordion>
+  <Accordion title="list_reimbursements">
+    `list_reimbursements` — List reimbursement requests with filtering
+  </Accordion>
+  <Accordion title="get_reimbursement">
+    `get_reimbursement` — Get full details for a specific reimbursement request
+  </Accordion>
+  <Accordion title="list_users">
+    `list_users` — List all users in the organization
+  </Accordion>
+  <Accordion title="get_user">
+    `get_user` — Get detailed profile and access information for a specific user
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<Note>
+**Separate from AP/AR** — This server is distinct from the [Bill.com server](/civic/reference/servers/bill) for accounts payable and receivable. Use this server for expense management; use Bill.com AP/AR for invoices, bills, and vendor payments.
+
+**Organization scoped** — All queries are scoped to the configured Organization ID.
+
+**Sandbox available** — Test against the sandbox environment before switching to production.
+</Note>
+
+---
+
+## Guardrails
+
+This server is covered by the [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Bill.com Spend & Expense server."
+</Tip>
