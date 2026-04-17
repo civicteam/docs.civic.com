@@ -1,6 +1,10 @@
 # Dependencies
 node_modules/
 
+# npm lockfile — this repo uses pnpm (see package.json#packageManager).
+# A stray package-lock.json would drift from pnpm-lock.yaml and confuse CI.
+package-lock.json
+
 # Docusaurus build + cache
 .docusaurus/
 build/

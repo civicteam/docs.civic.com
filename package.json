@@ -42,9 +42,13 @@
     ]
   },
   "engines": {
-    "node": ">=18.0"
+    "node": ">=18.0",
+    "pnpm": ">=9"
   },
-  "overrides": {
-    "webpack": "5.97.1"
+  "packageManager": "pnpm@10.11.1",
+  "pnpm": {
+    "overrides": {
+      "webpack": "5.97.1"
+    }
   }
 }
