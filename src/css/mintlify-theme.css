@@ -89,20 +89,42 @@ h1, h2, h3, h4 {
   background: rgba(255, 255, 255, 0.85);
 }
 
-/* Mobile slide-out sidebar must float above the page, not below it. The
- * backdrop-filter on .navbar creates a new stacking context; the sidebar is
- * rendered as a child of .navbar so without explicit z-index rules it can
- * end up behind admonitions / cards that have their own stacking contexts.
- * Belt and braces: force both the panel and its backdrop to a high layer. */
-.navbar-sidebar,
+/* Mobile slide-out sidebar must float above the page. The backdrop-filter on
+ * .navbar creates a new stacking context; the sidebar is rendered as a child
+ * of .navbar, so without explicit z-index rules it can end up behind
+ * admonitions / cards that have their own stacking contexts.
+ *
+ * The backdrop has to stay below the panel — if they tie, DOM order decides
+ * and the backdrop can sit on top of the menu. */
+.navbar-sidebar {
+  z-index: 1001 !important;
+  background: var(--ifm-background-color);
+  /* Docusaurus keeps display:flex on this; don't override. */
+}
 .navbar-sidebar__backdrop {
   z-index: 1000 !important;
-}
-.navbar-sidebar {
-  background: var(--ifm-background-color);
-}
-.navbar-sidebar__backdrop {
   background: rgba(0, 0, 0, 0.5);
+}
+/* On the mobile sidebar brand row, bring the title back — we only hide it in
+ * the top navbar (where the logo alone reads better). */
+.navbar-sidebar .navbar__title {
+  display: initial;
+}
+/* Give menu items inside the mobile sidebar room to breathe and ensure they
+ * render with the expected pointer interactions (our top-level disable was
+ * meant for the desktop rail, not mobile). */
+.navbar-sidebar .menu {
+  padding: 0.75rem !important;
+}
+.navbar-sidebar .menu__link {
+  padding: 10px 12px;
+  font-size: 0.95rem;
+}
+.navbar-sidebar .menu > .menu__list > .menu__list-item > .menu__link,
+.navbar-sidebar .menu > .menu__list > .menu__list-item
+  > .menu__list-item-collapsible > .menu__link {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .navbar__brand {
