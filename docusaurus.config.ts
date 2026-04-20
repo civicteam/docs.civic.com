@@ -95,7 +95,6 @@ const config: Config = {
 
   clientModules: [
     './src/clientModules/fontawesome.ts',
-    './src/clientModules/kapa.ts',
     './src/clientModules/gtm.ts',
   ],
 

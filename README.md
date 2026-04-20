@@ -84,13 +84,11 @@ classes for width and rounding are ported from the old `custom.css`:
 
 ## Search
 
-Two surfaces:
-
-- **Kapa widget** — always on (loaded via `src/clientModules/kapa.ts`).
-- **Algolia DocSearch** — disabled until the free-program application clears.
-  When approved, set the `ALGOLIA_APP_ID`, `ALGOLIA_API_KEY`, and
-  `ALGOLIA_INDEX_NAME` secrets on the deploy environment; the config in
-  `docusaurus.config.ts` auto-enables the search bar once all three are set.
+**Algolia DocSearch** is the only search surface — disabled until the
+free-program application clears. When approved, set the `ALGOLIA_APP_ID`,
+`ALGOLIA_API_KEY`, and `ALGOLIA_INDEX_NAME` secrets on the deploy
+environment; the config in `docusaurus.config.ts` auto-enables the search
+bar once all three are set.
 
 ## Redirects
 
