@@ -79,14 +79,19 @@ h1, h2, h3, h4 {
  * ==================================================================== */
 
 .navbar {
-  backdrop-filter: saturate(180%) blur(10px);
-  background: rgba(3, 7, 17, 0.8);
+  /* Intentionally no backdrop-filter / transform / filter / perspective here.
+   * Any of those would turn .navbar into a containing block for its fixed
+   * descendants, which in turn traps the mobile slide-out sidebar
+   * (.navbar-sidebar) inside the 60px navbar box. See CSS spec:
+   * https://developer.mozilla.org/en-US/docs/Web/CSS/position#fixed (note
+   * on transformed ancestors). */
+  background: #030711;
   border-bottom: 1px solid var(--ifm-color-emphasis-200);
   box-shadow: none;
   height: 60px;
 }
 [data-theme='light'] .navbar {
-  background: rgba(255, 255, 255, 0.85);
+  background: #ffffff;
 }
 
 /* Mobile slide-out sidebar must float above the page. The backdrop-filter on
