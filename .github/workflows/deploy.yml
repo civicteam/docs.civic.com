@@ -13,7 +13,7 @@ on:
   push:
     branches:
       - main
-      - claude/migrate-docs-docusaurus-jOSMh
+      - docs-next
   workflow_dispatch:
 
 permissions:
