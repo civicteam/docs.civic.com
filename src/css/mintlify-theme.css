@@ -89,6 +89,22 @@ h1, h2, h3, h4 {
   background: rgba(255, 255, 255, 0.85);
 }
 
+/* Mobile slide-out sidebar must float above the page, not below it. The
+ * backdrop-filter on .navbar creates a new stacking context; the sidebar is
+ * rendered as a child of .navbar so without explicit z-index rules it can
+ * end up behind admonitions / cards that have their own stacking contexts.
+ * Belt and braces: force both the panel and its backdrop to a high layer. */
+.navbar-sidebar,
+.navbar-sidebar__backdrop {
+  z-index: 1000 !important;
+}
+.navbar-sidebar {
+  background: var(--ifm-background-color);
+}
+.navbar-sidebar__backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
 .navbar__brand {
   font-weight: 600;
 }
