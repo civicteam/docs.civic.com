@@ -8,7 +8,7 @@ Source for [docs.civic.com](https://docs.civic.com/) — now built with
 
 ```bash
 pnpm install
-pnpm start           # dev server on http://localhost:3000
+pnpm start           # dev server on http://localhost:3217
 pnpm build           # production build into ./build
 pnpm serve           # preview the production build
 pnpm typecheck       # tsc --noEmit

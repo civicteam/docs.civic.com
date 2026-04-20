@@ -8,7 +8,17 @@ import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
 const GTM_ID = 'GTM-KRZHVRL';
 
-if (ExecutionEnvironment.canUseDOM) {
+// Skip in dev + on localhost. The production GTM container fires GA4, Google
+// Ads, Reddit Pixel, Twitter UWT, Bing UWT, and CookieYes — none of which
+// should run during local development (and CookieYes is domain-locked, so it
+// throws an uncaught error on localhost that webpack-dev-server's overlay
+// grabs as "Script error.").
+const isDev = process.env.NODE_ENV !== 'production';
+const isLocalhost =
+  typeof window !== 'undefined' &&
+  /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
+
+if (ExecutionEnvironment.canUseDOM && !isDev && !isLocalhost) {
   // dataLayer + loader (the "head" half of the official GTM snippet).
   (window as any).dataLayer = (window as any).dataLayer || [];
   (window as any).dataLayer.push({

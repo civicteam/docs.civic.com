@@ -4,7 +4,14 @@
  */
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
-if (ExecutionEnvironment.canUseDOM) {
+// Skip in dev + on localhost. The widget is domain-locked to civic.com and
+// pulls non-trivial JS on every reload.
+const isDev = process.env.NODE_ENV !== 'production';
+const isLocalhost =
+  typeof window !== 'undefined' &&
+  /^(localhost|127\.0\.0\.1|\[::1\])$/.test(window.location.hostname);
+
+if (ExecutionEnvironment.canUseDOM && !isDev && !isLocalhost) {
   const script = document.createElement('script');
   script.src = 'https://widget.kapa.ai/kapa-widget.bundle.js';
   script.async = true;
