@@ -99,6 +99,28 @@ const config: Config = {
   ],
 
   headTags: [
+    // Geist via Google Fonts as a bridge until self-hosted CalSans/Aeonik land.
+    // Mintlify used family name "Geist" with Aeonik/CalSans woff2 files behind
+    // it — this keeps the body face close until legal review clears.
+    {
+      tagName: 'link',
+      attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: 'anonymous',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap',
+      },
+    },
     // Self-hosted fonts (see static/fonts/README.md for legal review notes).
     // @font-face lives in static/css/fonts.css so css-loader doesn't try to
     // resolve the woff2 path during the webpack build.
@@ -192,8 +214,10 @@ const config: Config = {
       copyright: `Copyright © ${new Date().getFullYear()} Civic Technologies, Inc.`,
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      theme: prismThemes.oneLight,
+      // nightOwl's palette is closer to Mintlify's dark Monokai-ish scheme
+      // than the default dracula (cooler blues, softer pink for keywords).
+      darkTheme: prismThemes.nightOwl,
       additionalLanguages: [
         'bash',
         'diff',

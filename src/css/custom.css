@@ -4,7 +4,12 @@
  * - Dark background: #030711 (Mintlify `background.color.dark`).
  * - Body font: Aeonik (self-hosted). Headings: CalSans-SemiBold (self-hosted).
  *   Both fonts require legal review before merging - see static/fonts/README.md.
+ *
+ * The Mintlify-alike visual overlay (navbar tabs, sidebar density, admonition
+ * + code-block re-skin, etc.) lives in mintlify-theme.css. Keep brand tokens +
+ * ported utilities here, keep look/feel there.
  */
+@import './mintlify-theme.css';
 
 /* @font-face declarations live in static/css/fonts.css (loaded via headTags
  * in docusaurus.config.ts) so webpack's css-loader doesn't try to resolve

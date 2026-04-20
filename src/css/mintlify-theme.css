@@ -1,0 +1,519 @@
+/**
+ * Mintlify-look overlay.
+ *
+ * Layered on top of the Docusaurus `theme-classic` defaults to approximate
+ * the look of the original docs.civic.com / Mintlify site. Nothing in here is
+ * functionally required — it is purely visual. If a selector stops working
+ * after a Docusaurus upgrade, the fallback is "looks like stock Docusaurus,"
+ * not "site broken."
+ *
+ * Section order mirrors how you see the page, top to bottom:
+ *   1. Global typography + scale
+ *   2. Navbar (tabs, CTA)
+ *   3. Left sidebar (density, icons, active state)
+ *   4. Main content (headings, paragraphs, hero)
+ *   5. Admonitions
+ *   6. Code blocks + inline code
+ *   7. Cards / card groups (the MintlifyCompat component)
+ *   8. Table of contents (right rail)
+ *   9. Footer
+ *  10. Misc / breadcrumbs / buttons / scrollbar
+ */
+
+/* ======================================================================
+ * 1. Global typography + scale
+ * ==================================================================== */
+
+:root {
+  --ifm-font-family-base: 'Geist', 'Aeonik', system-ui, -apple-system,
+    'Segoe UI', sans-serif;
+  --ifm-heading-font-family: 'Geist', 'CalSans', 'Aeonik', system-ui, sans-serif;
+  --ifm-font-family-monospace: 'Geist Mono', ui-monospace, SFMono-Regular,
+    Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --ifm-font-size-base: 15px;
+  --ifm-line-height-base: 1.6;
+
+  --ifm-h1-font-size: 2.25rem; /* ~36px */
+  --ifm-h2-font-size: 1.625rem; /* ~26px */
+  --ifm-h3-font-size: 1.25rem; /* ~20px */
+  --ifm-h4-font-size: 1.05rem;
+
+  --ifm-heading-line-height: 1.25;
+  --ifm-heading-font-weight: 600;
+
+  --ifm-spacing-horizontal: 1rem;
+  --ifm-global-radius: 0.5rem;
+  --ifm-alert-border-radius: 0.5rem;
+}
+
+[data-theme='dark'] {
+  /* Deepen the neutral surface colors to match Mintlify's near-black dark. */
+  --ifm-background-color: #030711;
+  --ifm-background-surface-color: #0b1020;
+  --ifm-color-emphasis-0: #030711;
+  --ifm-color-emphasis-100: #0b1020;
+  --ifm-color-emphasis-200: rgba(255, 255, 255, 0.08);
+  --ifm-color-emphasis-300: rgba(255, 255, 255, 0.12);
+  --ifm-color-emphasis-500: rgba(255, 255, 255, 0.35);
+  --ifm-color-emphasis-600: rgba(255, 255, 255, 0.55);
+  --ifm-color-emphasis-700: rgba(255, 255, 255, 0.7);
+  --ifm-color-emphasis-800: rgba(255, 255, 255, 0.85);
+  --ifm-color-content: rgba(255, 255, 255, 0.9);
+  --ifm-color-content-secondary: rgba(255, 255, 255, 0.65);
+  --ifm-toc-border-color: rgba(255, 255, 255, 0.08);
+  --ifm-hr-border-color: rgba(255, 255, 255, 0.08);
+}
+
+body {
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  letter-spacing: -0.015em;
+}
+
+/* ======================================================================
+ * 2. Navbar — tabs + CTA
+ * ==================================================================== */
+
+.navbar {
+  backdrop-filter: saturate(180%) blur(10px);
+  background: rgba(3, 7, 17, 0.8);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  box-shadow: none;
+  height: 60px;
+}
+[data-theme='light'] .navbar {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.navbar__brand {
+  font-weight: 600;
+}
+.navbar__logo img {
+  height: 24px;
+}
+.navbar__title {
+  display: none; /* logo is enough; mirrors Mintlify */
+}
+
+/* Navbar tabs — Mintlify's three top tabs are pill-shaped, tight, and flat. */
+.navbar__link {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--ifm-color-emphasis-700);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.navbar__link:hover {
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-800);
+  text-decoration: none;
+}
+.navbar__link--active {
+  color: var(--ifm-color-primary);
+  background: rgba(124, 59, 237, 0.12);
+}
+.navbar__link--active::after {
+  /* Kill default underline, we use bg pill instead */
+  display: none;
+}
+
+/* "Try Civic" CTA button. */
+.navbar__cta {
+  background: var(--ifm-color-primary) !important;
+  color: #fff !important;
+  padding: 6px 14px !important;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.navbar__cta:hover {
+  background: var(--ifm-color-primary-dark) !important;
+  transform: translateY(-1px);
+}
+
+/* ======================================================================
+ * 3. Left sidebar — density, icons, active state
+ * ==================================================================== */
+
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-color-emphasis-200) !important;
+}
+
+.menu {
+  padding: 0.75rem !important;
+  font-size: 0.875rem;
+}
+
+.menu__list {
+  padding-left: 0;
+}
+.menu__list .menu__list {
+  padding-left: 0.75rem;
+  border-left: 1px solid var(--ifm-color-emphasis-200);
+  margin-left: 0.4rem;
+}
+
+.menu__link,
+.menu__list-item-collapsible {
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--ifm-color-emphasis-700);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.menu__link:hover,
+.menu__list-item-collapsible:hover {
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-800);
+}
+.menu__link--active {
+  background: rgba(124, 59, 237, 0.14) !important;
+  color: var(--ifm-color-primary) !important;
+  font-weight: 500;
+}
+.menu__link--active:hover {
+  background: rgba(124, 59, 237, 0.2) !important;
+}
+.menu__caret {
+  padding: 0 4px;
+}
+.menu__caret::before {
+  opacity: 0.5;
+}
+
+/* Bold category labels (top-level groups). */
+.menu > .menu__list > .menu__list-item > .menu__list-item-collapsible
+  > .menu__link {
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ifm-color-emphasis-600);
+}
+.menu > .menu__list > .menu__list-item > .menu__list-item-collapsible
+  > .menu__link:hover {
+  color: var(--ifm-color-emphasis-800);
+  background: transparent;
+}
+
+/* ======================================================================
+ * 4. Main content area
+ * ==================================================================== */
+
+.main-wrapper {
+  background: var(--ifm-background-color);
+}
+article {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding-top: 0.5rem;
+}
+article h1:first-child {
+  margin-top: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 2.25rem;
+  letter-spacing: -0.02em;
+}
+article p {
+  color: var(--ifm-color-emphasis-800);
+}
+
+/* Lead paragraph under an h1 (Mintlify style). */
+article > header + p,
+article h1 + p {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 1.1rem;
+  line-height: 1.55;
+  margin-top: -0.25rem;
+}
+
+/* Heading anchor links (#) fade until hover, matching Mintlify. */
+.hash-link {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+h1:hover .hash-link,
+h2:hover .hash-link,
+h3:hover .hash-link,
+h4:hover .hash-link {
+  opacity: 0.6;
+}
+
+/* ======================================================================
+ * 5. Admonitions (Note / Tip / Warning / Info / Check / Callout)
+ * ==================================================================== */
+
+.admonition,
+.theme-admonition {
+  border-radius: 8px;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-left-width: 3px;
+  padding: 1rem 1.1rem;
+  margin: 1.25rem 0;
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 0.95rem;
+}
+[data-theme='light'] .admonition,
+[data-theme='light'] .theme-admonition {
+  background: rgba(0, 0, 0, 0.02);
+}
+.admonition-heading,
+.theme-admonition-heading {
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.admonition-icon,
+.theme-admonition-icon {
+  margin-right: 0;
+}
+.admonition-content > *:last-child,
+.theme-admonition-content > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Per-type accent colors (the left border + title color). */
+.admonition-note,
+.theme-admonition-note {
+  border-left-color: #64748b;
+}
+.admonition-note .admonition-heading,
+.theme-admonition-note .theme-admonition-heading {
+  color: #94a3b8;
+}
+
+.admonition-tip,
+.theme-admonition-tip {
+  border-left-color: #10b981;
+}
+.admonition-tip .admonition-heading,
+.theme-admonition-tip .theme-admonition-heading {
+  color: #34d399;
+}
+
+.admonition-info,
+.theme-admonition-info {
+  border-left-color: var(--ifm-color-primary);
+}
+.admonition-info .admonition-heading,
+.theme-admonition-info .theme-admonition-heading {
+  color: var(--ifm-color-primary-light);
+}
+
+.admonition-warning,
+.theme-admonition-warning,
+.admonition-caution,
+.theme-admonition-caution {
+  border-left-color: #f59e0b;
+}
+.admonition-warning .admonition-heading,
+.theme-admonition-warning .theme-admonition-heading {
+  color: #fbbf24;
+}
+
+.admonition-danger,
+.theme-admonition-danger {
+  border-left-color: #ef4444;
+}
+.admonition-danger .admonition-heading,
+.theme-admonition-danger .theme-admonition-heading {
+  color: #f87171;
+}
+
+/* ======================================================================
+ * 6. Code blocks + inline code
+ * ==================================================================== */
+
+code {
+  background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+[data-theme='dark'] code {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.prism-code,
+pre.prism-code,
+pre {
+  border-radius: 8px !important;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+[data-theme='dark'] .prism-code,
+[data-theme='dark'] pre.prism-code,
+[data-theme='dark'] pre {
+  background: #0a0f1d !important;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Code block filename tab. */
+.theme-code-block .codeBlockTitle_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Container-styles-module,
+.theme-code-block [class*='codeBlockTitle_'] {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8rem;
+  background: var(--ifm-color-emphasis-100);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  padding: 0.4rem 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.theme-code-block {
+  box-shadow: none !important;
+  margin-bottom: 1.25rem;
+}
+
+/* Copy button — smaller, subtler. */
+.theme-code-block [class*='buttonGroup_'] button {
+  border-radius: 6px;
+  opacity: 0.6;
+}
+.theme-code-block [class*='buttonGroup_'] button:hover {
+  opacity: 1;
+}
+
+/* ======================================================================
+ * 7. Cards (MintlifyCompat.tsx + its CardGroup)
+ * ==================================================================== */
+
+/* Tighten card density + soften borders. Primary styling lives in
+ * MintlifyCompat.module.css; these are nudge-overrides. */
+.main-wrapper a:has(> [class*='card_']) {
+  text-decoration: none;
+}
+
+/* ======================================================================
+ * 8. Table of contents (right rail)
+ * ==================================================================== */
+
+.table-of-contents {
+  font-size: 0.8rem;
+  border-left: 1px solid var(--ifm-color-emphasis-200);
+  padding-left: 0.75rem;
+}
+.table-of-contents__link {
+  color: var(--ifm-color-emphasis-600);
+  padding: 3px 0;
+  display: block;
+}
+.table-of-contents__link:hover {
+  color: var(--ifm-color-emphasis-800);
+}
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary) !important;
+  font-weight: 500;
+}
+.table-of-contents__left-border {
+  border-left: none;
+}
+
+/* ======================================================================
+ * 9. Footer
+ * ==================================================================== */
+
+.footer {
+  background: var(--ifm-background-color);
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  padding: 2rem 0;
+  font-size: 0.85rem;
+}
+.footer__title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ifm-color-emphasis-600);
+  margin-bottom: 0.75rem;
+}
+.footer__link-item {
+  color: var(--ifm-color-emphasis-700);
+}
+.footer__link-item:hover {
+  color: var(--ifm-color-primary);
+}
+.footer__copyright {
+  color: var(--ifm-color-emphasis-500);
+  font-size: 0.78rem;
+}
+
+/* ======================================================================
+ * 10. Misc
+ * ==================================================================== */
+
+/* Breadcrumbs — Mintlify shows them muted above the H1. */
+.breadcrumbs {
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+.breadcrumbs__item:not(:last-child) .breadcrumbs__link {
+  color: var(--ifm-color-emphasis-600);
+}
+.breadcrumbs__item:last-child .breadcrumbs__link {
+  color: var(--ifm-color-emphasis-800);
+  background: transparent;
+}
+
+/* Pagination (prev/next nav links at page bottom). */
+.pagination-nav__link {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-1px);
+}
+.pagination-nav__sublabel {
+  color: var(--ifm-color-emphasis-600);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.pagination-nav__label {
+  font-size: 1rem;
+}
+
+/* Buttons (the "Edit this page" link, pagination, etc). */
+a.button,
+.button {
+  border-radius: 8px;
+}
+
+/* HR lines in docs. */
+hr {
+  border: none;
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+  margin: 2rem 0;
+}
+
+/* Scrollbar — thin + muted. */
+[data-theme='dark'] ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+}
+[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+[data-theme='dark'] ::-webkit-scrollbar-track {
+  background: transparent;
+}
