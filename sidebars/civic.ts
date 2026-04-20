@@ -5,13 +5,19 @@ import type { SidebarItemConfig } from '@docusaurus/plugin-content-docs/src/side
 // to render FontAwesome.
 const icon = (name: string) => ({ icon: name });
 
+// Mintlify renders top-level sidebar groups as always-open, non-clickable
+// section headers. Replicate by marking each one `collapsible: false` —
+// nested sub-categories keep the default (collapsible: true) so long server
+// lists etc. can still fold.
+const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
+
 const sidebar: SidebarItemConfig[] = [
   { type: 'doc', id: 'index', label: 'Welcome' },
   {
     type: 'category',
     label: 'Quickstart',
     customProps: icon('rocket'),
-    collapsed: false,
+    ...TOP_GROUP,
     items: [
       'civic/quickstart/index',
       'civic/quickstart/ai-prompt',
@@ -28,6 +34,7 @@ const sidebar: SidebarItemConfig[] = [
     type: 'category',
     label: 'Integration',
     customProps: icon('plug'),
+    ...TOP_GROUP,
     items: [
       'civic/developers/integration/apps',
       'civic/quickstart/clients/agents',
@@ -96,6 +103,7 @@ const sidebar: SidebarItemConfig[] = [
     type: 'category',
     label: 'Security',
     customProps: icon('shield'),
+    ...TOP_GROUP,
     items: [
       'civic/concepts/audit',
       {
@@ -134,6 +142,7 @@ const sidebar: SidebarItemConfig[] = [
     type: 'category',
     label: 'Connectivity',
     customProps: icon('plug'),
+    ...TOP_GROUP,
     items: [
       {
         type: 'category',
@@ -161,6 +170,7 @@ const sidebar: SidebarItemConfig[] = [
     type: 'category',
     label: 'Reference',
     customProps: icon('book'),
+    ...TOP_GROUP,
     items: ['civic/troubleshooting', 'civic/concepts/tips'],
   },
 ];

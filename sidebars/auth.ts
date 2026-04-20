@@ -2,11 +2,15 @@ import type { SidebarItemConfig } from '@docusaurus/plugin-content-docs/src/side
 
 const icon = (name: string) => ({ icon: name });
 
+// See sidebars/civic.ts for the rationale — Mintlify renders top-level
+// groups as always-open section headers, not collapsible categories.
+const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
+
 const sidebar: SidebarItemConfig[] = [
   {
     type: 'category',
     label: 'Getting Started',
-    collapsed: false,
+    ...TOP_GROUP,
     items: [
       'auth/index',
       'overview/pricing',
@@ -27,6 +31,7 @@ const sidebar: SidebarItemConfig[] = [
     type: 'category',
     label: 'AI Prompts',
     customProps: icon('robot'),
+    ...TOP_GROUP,
     items: [
       'ai-prompts/overview',
       'ai-prompts/nextjs',
@@ -62,6 +67,7 @@ const sidebar: SidebarItemConfig[] = [
   {
     type: 'category',
     label: 'Integration',
+    ...TOP_GROUP,
     items: [
       'integration/react',
       'integration/nextjs',
@@ -101,6 +107,7 @@ const sidebar: SidebarItemConfig[] = [
   {
     type: 'category',
     label: 'Web3',
+    ...TOP_GROUP,
     items: [
       'web3/embedded-wallets',
       'web3/ethereum-evm',
@@ -111,16 +118,19 @@ const sidebar: SidebarItemConfig[] = [
     type: 'category',
     label: 'Libraries and Tools',
     customProps: icon('code'),
+    ...TOP_GROUP,
     items: ['libraries/auth-verify'],
   },
   {
     type: 'category',
     label: 'Guides',
+    ...TOP_GROUP,
     items: ['guides/add-auth-to-mcp'],
   },
   {
     type: 'category',
     label: 'Support',
+    ...TOP_GROUP,
     items: ['auth/troubleshooting'],
   },
 ];

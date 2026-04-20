@@ -52,7 +52,12 @@ const config: Config = {
           editUrl:
             'https://github.com/civicteam/docs.civic.com/edit/main/',
           showLastUpdateTime: false,
-          breadcrumbs: true,
+          // Mintlify doesn't render breadcrumbs above the H1; mirror that.
+          breadcrumbs: false,
+          // Top-level groups are opt-in non-collapsible in each sidebar file
+          // (Mintlify renders them as always-open section headers). Nested
+          // groups stay collapsible so /civic/reference/servers/* etc. can
+          // fold away — keep the global default collapsible: true.
         },
         blog: false,
         pages: { path: 'src/pages' },
@@ -152,7 +157,14 @@ const config: Config = {
 
   themeConfig: {
     image: 'logo/dark.png',
-    colorMode: { defaultMode: 'dark', respectPrefersColorScheme: true },
+    // Mintlify's docs.civic.com is dark always; match that. Users can still
+    // toggle via the navbar switch, but OS prefers-color-scheme: light no
+    // longer auto-flips the site.
+    colorMode: {
+      defaultMode: 'dark',
+      respectPrefersColorScheme: false,
+      disableSwitch: false,
+    },
     navbar: {
       title: 'Civic Docs',
       logo: {
