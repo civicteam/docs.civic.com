@@ -1,15 +1,19 @@
 name: Build & Deploy docs-next
 
-# Phase 4 cutover: builds the Docusaurus site on every push to main and
-# publishes to GitHub Pages at docs-next.civic.com for side-by-side QA with the
-# current Mintlify site. Once DNS is swapped, rename the CNAME to docs.civic.com.
+# Phase 4 cutover: builds the Docusaurus site and publishes to GitHub Pages at
+# docs-next.civic.com for side-by-side QA with the current Mintlify site. Once
+# DNS is swapped to the Docusaurus deploy, rename the CNAME below to
+# docs.civic.com.
 #
-# Per-branch preview deployments were intentionally dropped for the migration
-# (see the migration plan). Only main gets deployed.
+# During the migration we also deploy from the migration branch so the team
+# can review the running site without merging to main. Drop that branch
+# from this list at cutover.
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - claude/migrate-docs-docusaurus-jOSMh
   workflow_dispatch:
 
 permissions:
