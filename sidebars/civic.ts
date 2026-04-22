@@ -59,7 +59,7 @@ const sidebar: SidebarItemConfig[] = [
       {
         type: 'category',
         label: 'Agent Frameworks & SDKs',
-        customProps: icon('brackets-curly'),
+        customProps: icon('cubes'),
         items: [
           'civic/recipes/anthropic',
           'civic/recipes/openai-sdk',

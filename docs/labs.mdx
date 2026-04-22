@@ -1,43 +1,41 @@
 ---
 title: Civic Labs
-description: 'Where Civic explores ideas in digital identity, agentic AI, and authorization'
+description: 'Open-source agent infrastructure — the building blocks behind forward deployed agents'
 ---
 
-Here you'll find a suite of experiments and tools, some just getting started, some ready to test, all open to feedback and community input.
+Civic Labs is where we build and open-source the infrastructure that powers forward deployed agents. Every flask here solves a real problem we encountered deploying production agents for mid-market businesses — identity, authorization, guardrails, threat detection, and knowledge retrieval.
 
-Each project is presented as a **flask**, representing different stages of experimental development. [Learn more about flask status →](/labs/flask-status).
+Each project is presented as a **flask**, representing different stages of development. [Learn more about flask status](/labs/flask-status).
 
-Flasks are standalone services, libraries or tools, that can be used independently or together to build more complex applications.
+Flasks are standalone services, libraries, or tools that can be used independently or composed together. They are built by the same team that has shipped identity infrastructure for the German Federal Chamber of Notaries, enterprise AI for BMW and Panasonic, and production systems across financial services, manufacturing, and publishing.
 
 Explore the flasks below or [get in touch](/labs/feedback) if you want to contribute, try things early, or shape what comes next.
 
-## 🚀 Getting Started
+## Getting Started
 
 Want to try out these experiments? [Get started here](/labs/private/getting-started).
 
-## 💬 Feedback & Contribution
+## Feedback & Contribution
 
-We're building in the open and love community input. [Learn how to contribute](/labs/feedback).
+We're building in the open and welcome community input. [Learn how to contribute](/labs/feedback).
 
-## 🧪 Flasks
-
-Our current experiments focus on Model Context Protocol (MCP) tools and AI security. These tools help developers build safer, more controlled AI applications with proper identity and authorization.
+## Flasks
 
 <CardGroup cols={2}>
-  <Card title="MCP Hub" icon="server" href="/labs/projects/mcp-hub">
-    A hosted MCP Manager unifying and orchstrating multiple MCP servers, focusing on auth and security
+  <Card title="MCP Hub" icon="server" href="/labs/projects/x402-mcp">
+    Hosted MCP manager that unifies and orchestrates multiple MCP servers with built-in authentication and governance — the core of every Civic agent deployment.
   </Card>
   <Card title="Guardrail Proxy" icon="shield-halved" href="/labs/projects/guardrail-proxy">
-    Wrap any MCP server in a configurable and flexible security layer
+    Wrap any MCP server in a configurable security layer. Block, redact, and transform tool calls and responses before they reach your agent.
   </Card>
   <Card title="Bodyguard" icon="shield-virus" href="/labs/projects/bodyguard">
-    LLM-based threat detection for prompts and tool calls
+    LLM-based threat detection for prompts and tool calls. Catches prompt injection, data exfiltration attempts, and policy violations in real time.
   </Card>
   <Card title="Pass-through Proxy" icon="arrows-left-right" href="/labs/projects/passthrough-proxy">
-    Middleware hook system for MCP servers that powers guardrails and more
+    Middleware hook system for MCP servers. Intercept, inspect, and modify tool calls without changing the underlying server — powers guardrails and custom logic.
   </Card>
   <Card title="Civic Knowledge" icon="brain" href="/labs/projects/civic-knowledge">
-    AI assistant for the optimisation of internal operations and processes
+    RAG-powered AI assistant for internal operations. Query company documentation, processes, and institutional knowledge through natural language.
   </Card>
 </CardGroup>
 
@@ -45,27 +43,27 @@ Our current experiments focus on Model Context Protocol (MCP) tools and AI secur
     ![](/images/labs/hub-components.png)
 </Frame>
 
-## 📚 Concepts & Architecture
+## Concepts & Architecture
 
 Understanding the building blocks behind our experiments.
 
 <CardGroup cols={3}>
   <Card title="Model Context Protocol" icon="plug" href="/labs/concepts/mcp">
-    What is MCP and why it matters for AI applications
+    What is MCP and why it matters for AI agent deployment
   </Card>
   <Card title="Guardrails" icon="traffic-light" href="/labs/concepts/guardrails">
-    Guardrails as a protection layer
+    How guardrails protect agents and the systems they interact with
   </Card>
   <Card title="Prompt Injection" icon="syringe" href="/labs/concepts/prompt-injection">
-    Understanding prompt injection attacks & LLM safety
+    Understanding prompt injection attacks and LLM safety
   </Card>
   <Card title="Auth Strategies" icon="key" href="/labs/concepts/auth-strategies">
-    OAuth2, granular permissions, and consent
+    OAuth2, granular permissions, and consent for agent access
   </Card>
-  <Card title="Hooks" icon="zap" href="/labs/concepts/hooks">
-    A middleware layer around MCP APIs
+  <Card title="Hooks" icon="bolt" href="/labs/concepts/hooks">
+    A middleware layer around MCP APIs for custom logic
   </Card>
   <Card title="RAG" icon="magnifying-glass" href="/labs/concepts/rag">
-    Retrieval strategies for LLMs
+    Retrieval strategies for grounding LLMs in your data
   </Card>
 </CardGroup>

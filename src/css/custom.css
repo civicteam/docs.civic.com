@@ -12,6 +12,19 @@
 @import './mintlify-theme.css';
 
 :root {
+  /* Brand guide colors (2026-04-21) */
+  --civic-purple: #7C3BED;
+  --civic-soft-violet: #A78BFA;
+  --civic-blue: #0BBFEF;
+  --civic-dark: #030711;
+  --civic-light: #FAFAFA;
+  --civic-slate: #1C2A3A;
+  --civic-success: #94FD63;
+  --civic-danger: #EF4343;
+  --civic-warning: #F59F0A;
+  --civic-text-primary: #DDE4EF;
+  --civic-text-secondary: #728096;
+
   --ifm-color-primary: #7c3bed;
   --ifm-color-primary-dark: #6820e8;
   --ifm-color-primary-darker: #6217db;
@@ -39,7 +52,7 @@
   --ifm-color-primary-lightest: #d1b4f9;
 
   --ifm-background-color: #030711;
-  --ifm-background-surface-color: #0a0f1d;
+  --ifm-background-surface-color: #030711;
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.08);
 }
 
@@ -104,7 +117,7 @@ h6 {
   }
 }
 
-/* Navbar "Try Civic" CTA button */
+/* Navbar CTA button */
 .navbar__cta {
   background: var(--ifm-color-primary);
   color: #fff !important;
