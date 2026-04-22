@@ -19,11 +19,6 @@ Requires Node 18+ and pnpm 9+. The pinned pnpm version lives in
 `package.json#packageManager`; run `corepack enable` once to have Node pick
 it up automatically.
 
-`pnpm.overrides.webpack` is pinned to `5.97.1` because webpack `5.106+`
-tightened `ProgressPlugin` option validation in a way that breaks
-`webpackbar@6.0.1` (which Docusaurus 3.8 pulls in). Bump together when
-upgrading Docusaurus.
-
 ## Repo layout
 
 ```
