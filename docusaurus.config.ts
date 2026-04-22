@@ -27,7 +27,6 @@ const config: Config = {
   projectName: 'docs.civic.com',
 
   onBrokenLinks: 'warn',
-  onBrokenMarkdownLinks: 'warn',
   onBrokenAnchors: 'warn',
 
   i18n: { defaultLocale: 'en', locales: ['en'] },
@@ -36,6 +35,9 @@ const config: Config = {
     mdx1Compat: { comments: false, admonitions: false, headingIds: false },
     // Allow .md and .mdx side by side; llms.txt stays in /static.
     format: 'detect',
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
   },
 
   presets: [
