@@ -1,4 +1,6 @@
-import type { SidebarItemConfig } from '@docusaurus/plugin-content-docs/src/sidebars/types';
+import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
+
+type SidebarItemConfig = Extract<SidebarsConfig[string], readonly unknown[]>[number];
 
 const icon = (name: string) => ({ icon: name });
 
