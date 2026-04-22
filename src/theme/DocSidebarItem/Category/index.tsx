@@ -7,6 +7,7 @@ import React from 'react';
 import Category from '@theme-original/DocSidebarItem/Category';
 import type CategoryType from '@theme/DocSidebarItem/Category';
 import type { WrapperProps } from '@docusaurus/types';
+import { SidebarIcon } from '@site/src/theme/sidebarIcon';
 
 type Props = WrapperProps<typeof CategoryType>;
 
@@ -19,11 +20,7 @@ export default function CategoryWrapper(props: Props): JSX.Element {
       ...props.item,
       label: (
         <>
-          <i
-            className={`fa-solid fa-${icon}`}
-            style={{ width: 16, marginRight: 8, opacity: 0.8 }}
-            aria-hidden
-          />
+          <SidebarIcon name={icon} />
           {props.item.label}
         </>
       ) as unknown as string,
