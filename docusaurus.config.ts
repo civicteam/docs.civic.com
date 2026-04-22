@@ -2,9 +2,6 @@ import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import { themes as prismThemes } from 'prism-react-renderer';
 
-// Reads ALGOLIA_APP_ID / ALGOLIA_API_KEY / ALGOLIA_INDEX_NAME at build time.
-// Until DocSearch approval lands, search stays disabled and Kapa widget is the
-// only search UI.
 const algoliaEnv = {
   appId: process.env.ALGOLIA_APP_ID,
   apiKey: process.env.ALGOLIA_API_KEY,
