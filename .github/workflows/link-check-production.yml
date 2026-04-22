@@ -1,8 +1,6 @@
 name: Link Check (Production)
 
-# Runs against the deployed site URL. Flip the --base value to docs.civic.com
-# at cutover; until then we point at docs-next.civic.com so the check exercises
-# the Docusaurus build without interfering with the Mintlify production site.
+# Runs against the deployed production site URL.
 
 on:
   push:
@@ -30,7 +28,7 @@ jobs:
         with:
           args: >
             --config lychee.toml
-            --base 'https://docs-next.civic.com'
+            --base 'https://docs.civic.com'
             --no-progress
             'build/**/*.html'
           fail: true
