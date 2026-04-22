@@ -1,0 +1,122 @@
+/**
+ * Civic Docs theme.
+ * - Primary brand: #7C3BED (Mintlify `colors.primary` / `light` / `dark`).
+ * - Dark background: #030711 (Mintlify `background.color.dark`).
+ * - Body / headings / mono: Geist and Geist Mono, loaded from Google Fonts
+ *   via headTags in docusaurus.config.ts.
+ *
+ * The Mintlify-alike visual overlay (navbar tabs, sidebar density, admonition
+ * + code-block re-skin, etc.) lives in mintlify-theme.css. Keep brand tokens +
+ * ported utilities here, keep look/feel there.
+ */
+@import './mintlify-theme.css';
+
+:root {
+  --ifm-color-primary: #7c3bed;
+  --ifm-color-primary-dark: #6820e8;
+  --ifm-color-primary-darker: #6217db;
+  --ifm-color-primary-darkest: #5113b5;
+  --ifm-color-primary-light: #9058f0;
+  --ifm-color-primary-lighter: #9b67f1;
+  --ifm-color-primary-lightest: #b891f5;
+
+  --ifm-font-family-base: 'Geist', system-ui, -apple-system,
+    'Segoe UI', sans-serif;
+  --ifm-heading-font-family: 'Geist', system-ui, sans-serif;
+  --ifm-heading-font-weight: 600;
+
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #9058f0;
+  --ifm-color-primary-dark: #7c3bed;
+  --ifm-color-primary-darker: #6820e8;
+  --ifm-color-primary-darkest: #5113b5;
+  --ifm-color-primary-light: #a77af3;
+  --ifm-color-primary-lighter: #b489f4;
+  --ifm-color-primary-lightest: #d1b4f9;
+
+  --ifm-background-color: #030711;
+  --ifm-background-surface-color: #0a0f1d;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.08);
+}
+
+/* Heading letter-spacing tweaks ported from custom.css */
+h1,
+.heading-1 {
+  letter-spacing: 0.02em;
+}
+h2,
+.heading-2 {
+  letter-spacing: 0.015em;
+}
+h3,
+.heading-3 {
+  letter-spacing: 0.01em;
+}
+h4,
+h5,
+h6 {
+  letter-spacing: 0.005em;
+}
+
+/* Image utility classes (ported 1:1 from Mintlify custom.css) */
+.image-50 {
+  width: 50%;
+  max-width: 50%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+.image-60 {
+  width: 60%;
+  max-width: 60%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+.image-70 {
+  width: 70%;
+  max-width: 70%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+.image-80 {
+  width: 80%;
+  max-width: 80%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+.image-rounded {
+  border-radius: 8px;
+}
+@media (max-width: 768px) {
+  .image-50,
+  .image-60,
+  .image-70,
+  .image-80 {
+    width: 90%;
+    max-width: 90%;
+  }
+}
+
+/* Navbar "Try Civic" CTA button */
+.navbar__cta {
+  background: var(--ifm-color-primary);
+  color: #fff !important;
+  padding: 6px 14px !important;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.navbar__cta:hover {
+  background: var(--ifm-color-primary-dark);
+}
+
+/* Table header alignment (ported) */
+table thead {
+  text-align: left;
+}

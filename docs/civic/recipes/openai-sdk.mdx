@@ -1,0 +1,169 @@
+---
+title: OpenAI SDK
+description: Use OpenAI with Civic tools via manual function calling
+sidebar_custom_props:
+  icon: "robot"
+---
+
+import CivicTokenSetup from '@site/docs/_snippets/_civic-token-env-setup.mdx'
+import NextjsAccessTokenSetup from '@site/docs/_snippets/_nextjs-access-token-setup.mdx'
+
+## Overview
+
+This recipe shows how to wire Civic MCP tools to the OpenAI Node SDK using manual function calling.
+
+<Note>
+**Want a simpler approach?** The [OpenAI Agents SDK recipe](/civic/recipes/openai-agents) uses `hostedMcpTool()` — no manual tool looping required. Use this page if you need full control over the tool loop.
+</Note>
+
+## Prerequisites
+
+- Civic account at [app.civic.com](https://app.civic.com) with at least one MCP server connected
+- OpenAI API key from [platform.openai.com](https://platform.openai.com)
+
+## Installation
+
+```bash
+npm install openai @modelcontextprotocol/sdk
+```
+
+## Authentication
+
+<Tabs>
+  <Tab label="Backend / Script (Civic Token)">
+    <CivicTokenSetup />
+
+    ```bash
+    # .env
+    OPENAI_API_KEY=your_openai_api_key
+    CIVIC_TOKEN=your-civic-token-here
+    CIVIC_URL=https://app.civic.com/hub/mcp
+    ```
+  </Tab>
+  <Tab label="Next.js App (Civic Auth)">
+    For web apps where each user has their own Civic session.
+
+    Install the additional auth package:
+    ```bash
+    npm install @civic/auth
+    ```
+
+    <NextjsAccessTokenSetup />
+
+    ```bash
+    # .env.local
+    OPENAI_API_KEY=your_openai_api_key
+    CIVIC_AUTH_CLIENT_ID=your_client_id  # from auth.civic.com
+    ```
+  </Tab>
+</Tabs>
+
+## Create an MCP Client
+
+```ts
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+
+async function createMCP(token: string) {
+  const transport = new StreamableHTTPClientTransport(
+    new URL(process.env.CIVIC_URL!),
+    {
+      requestInit: {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      },
+    }
+  );
+  const client = new Client(
+    { name: 'my-app', version: '1.0.0' },
+    { capabilities: {} }
+  );
+  await client.connect(transport);
+  return client;
+}
+```
+
+## Call with Tool Functions
+
+<Note>
+This example handles a single round of tool calling. Real agent loops need to iterate until the model stops requesting tools — see the multi-turn loop below.
+</Note>
+
+```ts
+import OpenAI from 'openai';
+
+export async function chatWithTools(messages: any[], civicToken: string) {
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+  const mcp = await createMCP(civicToken);
+  const { tools } = await mcp.listTools();
+
+  const toolDefs = tools.map((t) => ({
+    type: 'function' as const,
+    function: {
+      name: t.name,
+      description: t.description,
+      parameters: t.inputSchema,
+    },
+  }));
+
+  // Multi-turn tool loop — runs until the model stops requesting tools
+  let response = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    messages,
+    tools: toolDefs,
+    tool_choice: 'auto',
+  });
+
+  while (response.choices[0]?.finish_reason === 'tool_calls') {
+    const toolCalls = response.choices[0].message.tool_calls ?? [];
+    const toolResults = await Promise.all(
+      toolCalls.map(async (call) => {
+        const args = JSON.parse(call.function.arguments || '{}');
+        const result = await mcp.callTool({ name: call.function.name, arguments: args });
+        return {
+          role: 'tool' as const,
+          tool_call_id: call.id,
+          content: JSON.stringify(result.content),
+        };
+      })
+    );
+
+    messages = [
+      ...messages,
+      response.choices[0].message,
+      ...toolResults,
+    ];
+
+    response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages,
+      tools: toolDefs,
+    });
+  }
+
+  await mcp.close();
+  return response;
+}
+```
+
+## Usage
+
+```ts
+// Backend / Script
+const result = await chatWithTools(
+  [{ role: 'user', content: 'List my GitHub repositories' }],
+  process.env.CIVIC_TOKEN!
+);
+console.log(result.choices[0].message.content);
+```
+
+<CardGroup cols={2}>
+  <Card title="OpenAI Agents SDK" icon="robot" href="/civic/recipes/openai-agents">
+    Simpler approach — hostedMcpTool() handles the loop for you
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Developer Slack
+  </Card>
+</CardGroup>

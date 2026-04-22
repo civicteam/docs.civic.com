@@ -1,0 +1,174 @@
+---
+title: Get Started
+description: >-
+  Connect your AI agent to Civic Hub (MCP gateway) in under 10 minutes — three
+  paths for chat, interactive clients, or agent frameworks
+sidebar_custom_props:
+  icon: "bolt"
+---
+
+## Zero to First Tool Call
+
+The fastest path: sign up, get a token, make a call.
+
+<Steps>
+  <Step title="Sign up">
+    Go to [app.civic.com](https://app.civic.com) and create a free account. You get 10,000 credits and 14 days.
+  </Step>
+  <Step title="Complete onboarding">
+    Select your AI framework and tools. On the **Install** step, you'll see your MCP URL.
+  </Step>
+  <Step title="Generate a token">
+    On the Install screen, choose **Generate a Civic token** (best for automation) and copy it.
+  </Step>
+  <Step title="Make your first call">
+    Pass the token as a Bearer header and the MCP URL to your agent or client:
+
+    ```bash
+    curl -X POST https://app.civic.com/hub/mcp \
+      -H "Authorization: Bearer $CIVIC_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d '{"jsonrpc":"2.0","method":"tools/list","params":{},"id":1}'
+    ```
+
+    You should see the list of tools available in your configured toolkit.
+  </Step>
+</Steps>
+
+---
+
+## Choose Your Path
+
+### Path 1 — Civic Chat (Zero Setup)
+
+The fastest way to start. No client configuration, no credentials file. Sign up at [app.civic.com](https://app.civic.com) and you're in your control plane.
+
+**Use Civic Chat to:**
+- Configure toolkits and guardrails in plain English
+- Query your agent's audit log
+- Revoke access instantly at any granularity
+
+<Card title="Open Civic Chat" icon="sparkles" href="https://app.civic.com">
+  Sign up free — 10,000 credits, 14 days trial
+</Card>
+
+<Card title="What is Civic Chat?" icon="terminal" href="/civic/quickstart/civic-chat">
+  Learn about the Configurator, Audit, and Revocation agents
+</Card>
+
+---
+
+### Path 2 — Integrate Your Agent or Client
+
+Connect your existing AI agent or client via HTTP.
+
+**Before you connect:** Get your credentials — your MCP URL and (for agents) a Civic token.
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  MCP URL, toolkit URL params, and how to generate a token
+</Card>
+
+**Pick your integration:**
+
+<CardGroup cols={3}>
+  <Card title="LangChain / LangGraph" icon="code" href="/civic/recipes/langchain">
+    Python agents • streamable_http
+  </Card>
+  <Card title="Vercel AI SDK" icon="code" href="/civic/recipes/vercel-ai-sdk">
+    TypeScript / Next.js
+  </Card>
+  <Card title="Anthropic SDK" icon="code" href="/civic/recipes/anthropic">
+    Direct Anthropic SDK
+  </Card>
+  <Card title="OpenAI Agents SDK" icon="code" href="/civic/recipes/openai-agents">
+    OpenAI Agent Builder
+  </Card>
+  <Card title="OpenAI SDK" icon="code" href="/civic/recipes/openai-sdk">
+    Standard OpenAI SDK
+  </Card>
+  <Card title="Python / Pydantic AI" icon="python" href="/civic/recipes/pydantic-ai">
+    Pydantic AI agents
+  </Card>
+  <Card title="Python MCP Client" icon="python" href="/civic/recipes/civic-mcp-client-python">
+    Direct Python MCP client + adapters
+  </Card>
+</CardGroup>
+
+**Clients (interactive):**
+
+<CardGroup cols={3}>
+  <Card title="Claude Desktop" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
+    2 mins
+  </Card>
+  <Card title="Claude.ai" icon="globe" href="/civic/quickstart/clients/claude-web">
+    2 mins
+  </Card>
+  <Card title="Cursor" icon="code" href="/civic/quickstart/clients/cursor">
+    3 mins
+  </Card>
+  <Card title="VS Code" icon="code" href="/civic/quickstart/clients/vscode">
+    3 mins
+  </Card>
+  <Card title="Windsurf" icon="wind" href="/civic/quickstart/clients/windsurf">
+    Native HTTP • 5 mins
+  </Card>
+  <Card title="JetBrains IDEs" icon="command" href="/civic/quickstart/clients/jetbrains">
+    Via mcp-remote • 5 mins
+  </Card>
+  <Card title="Goose" icon="terminal" href="/civic/quickstart/clients/goose">
+    Block's agent • 5 mins
+  </Card>
+  <Card title="Gemini CLI" icon="sparkles" href="/civic/quickstart/clients/gemini">
+    Google Gemini • 3 mins
+  </Card>
+  <Card title="Codex" icon="terminal" href="/civic/quickstart/clients/codex">
+    OpenAI Codex • 3 mins
+  </Card>
+  <Card title="ChatGPT" icon="message-circle" href="/civic/quickstart/clients/chatgpt">
+    Status and roadmap
+  </Card>
+  <Card title="Mistral LeChat" icon="sparkles" href="/civic/quickstart/clients/mistral-lechat">
+    Direct connector • 2 mins
+  </Card>
+</CardGroup>
+
+---
+
+### Path 3 — Deploy an Agent
+
+If you're building a production agent deployment, see the agent deployment guide. It covers profile locking, URL parameters, and authentication for agents that run unattended.
+
+<Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+  Profile locking, toolkit URL params, skills pre-loading, and agent authentication
+</Card>
+
+---
+
+## Your MCP URL
+
+All agents and clients connect to:
+
+```
+https://app.civic.com/hub/mcp
+```
+
+Add URL parameters to lock your agent to a specific toolkit:
+
+```
+https://app.civic.com/hub/mcp?profile=your-toolkit
+```
+
+<Card title="Credentials and URL Parameters" icon="key" href="/civic/quickstart/credentials">
+  Full reference for MCP URL, toolkit params, tokens, and OAuth vs token auth
+</Card>
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Client Compatibility" icon="table" href="/civic/reference/client-compatibility">
+    Full matrix of supported clients and connection methods
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
+    Common setup issues and solutions
+  </Card>
+</CardGroup>

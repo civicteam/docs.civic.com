@@ -1,0 +1,180 @@
+import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
+
+type SidebarItemConfig = Extract<SidebarsConfig[string], readonly unknown[]>[number];
+
+// Mintlify `icon` lives on the category; Docusaurus surfaces it via
+// `customProps.icon`, read by our custom DocSidebarItemCategory theme override
+// to render FontAwesome.
+const icon = (name: string) => ({ icon: name });
+
+// Mintlify renders top-level sidebar groups as always-open, non-clickable
+// section headers. Replicate by marking each one `collapsible: false` —
+// nested sub-categories keep the default (collapsible: true) so long server
+// lists etc. can still fold.
+const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
+
+const sidebar: SidebarItemConfig[] = [
+  { type: 'doc', id: 'index', label: 'Welcome' },
+  {
+    type: 'category',
+    label: 'Quickstart',
+    customProps: icon('rocket'),
+    ...TOP_GROUP,
+    items: [
+      'civic/quickstart/index',
+      'civic/quickstart/ai-prompt',
+      'civic/quickstart/civic-chat',
+      'civic/quickstart/credentials',
+      'civic/quickstart/hub-bridge',
+      'civic/reference/client-compatibility',
+      'civic/concepts/connection-methods',
+      'civic/billing',
+      'civic/changelog',
+    ],
+  },
+  {
+    type: 'category',
+    label: 'Integration',
+    customProps: icon('plug'),
+    ...TOP_GROUP,
+    items: [
+      'civic/developers/integration/apps',
+      'civic/quickstart/clients/agents',
+      {
+        type: 'category',
+        label: 'AI Agents & Chat Tools',
+        customProps: icon('message'),
+        items: [
+          'civic/quickstart/clients/claude-web',
+          'civic/quickstart/clients/claude-desktop',
+          'civic/quickstart/clients/claude-code',
+          'civic/quickstart/clients/chatgpt',
+          'civic/quickstart/clients/manus',
+          'civic/quickstart/clients/mistral-lechat',
+          'civic/quickstart/clients/gemini',
+          'civic/quickstart/clients/openclaw',
+          'civic/recipes/deepagents',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Agent Frameworks & SDKs',
+        customProps: icon('brackets-curly'),
+        items: [
+          'civic/recipes/anthropic',
+          'civic/recipes/openai-sdk',
+          'civic/recipes/openai-agents',
+          'civic/recipes/langchain',
+          'civic/recipes/pydantic-ai',
+          'civic/recipes/civic-mcp-client-python',
+          'civic/recipes/vercel-ai-sdk',
+          'civic/recipes/google-adk',
+          'civic/recipes/crewai',
+          'civic/recipes/agno',
+          'civic/recipes/llamaindex',
+          'civic/recipes/autogen',
+          'civic/recipes/haystack',
+          'civic/recipes/smolagents',
+          'civic/recipes/dspy',
+          'civic/recipes/semantic-kernel',
+          'civic/recipes/camel-ai',
+          'civic/recipes/mastra',
+          'civic/recipes/dify',
+          'civic/recipes/flowise',
+          'civic/recipes/hermes',
+          'civic/recipes/ciana-parrot',
+        ],
+      },
+      {
+        type: 'category',
+        label: 'Code Editors & Coding Agents',
+        customProps: icon('code'),
+        items: [
+          'civic/quickstart/clients/vscode',
+          'civic/quickstart/clients/cursor',
+          'civic/quickstart/clients/windsurf',
+          'civic/quickstart/clients/jetbrains',
+          'civic/quickstart/clients/codex',
+          'civic/quickstart/clients/goose',
+          'civic/quickstart/clients/kiro',
+        ],
+      },
+    ],
+  },
+  {
+    type: 'category',
+    label: 'Security',
+    customProps: icon('shield'),
+    ...TOP_GROUP,
+    items: [
+      'civic/concepts/audit',
+      {
+        type: 'category',
+        label: 'Guardrails',
+        customProps: icon('shield-halved'),
+        items: [
+          'civic/concepts/guardrails',
+          'civic/concepts/guardrails/request',
+          'civic/concepts/guardrails/blocking',
+          'civic/concepts/guardrails/parameters',
+          'civic/concepts/guardrails/redaction',
+          'civic/concepts/guardrails/transforms',
+        ],
+      },
+      'civic/concepts/hooks',
+      'civic/concepts/prompt-injection',
+      'civic/concepts/revocation',
+      'civic/concepts/secret-management',
+      'civic/reference/security',
+      {
+        type: 'category',
+        label: 'Authentication & Authorization',
+        customProps: icon('lock'),
+        items: [
+          'civic/reference/authorizations',
+          'civic/concepts/tokens',
+          'civic/developers/integration/civic-auth-capability',
+          'civic/developers/integration/overview',
+          'civic/concepts/oauth',
+        ],
+      },
+    ],
+  },
+  {
+    type: 'category',
+    label: 'Connectivity',
+    customProps: icon('plug'),
+    ...TOP_GROUP,
+    items: [
+      {
+        type: 'category',
+        label: 'MCP Servers',
+        customProps: icon('server'),
+        items: [
+          'civic/reference/servers',
+          // Auto-expand the servers directory. All 76 server pages become
+          // siblings under this category.
+          {
+            type: 'autogenerated',
+            dirName: 'civic/reference/servers',
+          },
+        ],
+      },
+      'civic/concepts/toolkits',
+      'civic/concepts/tools-resources-prompts',
+      'civic/concepts/mcp',
+      'civic/organizations',
+      'civic/concepts/skills',
+      'civic/concepts/setup-skill',
+    ],
+  },
+  {
+    type: 'category',
+    label: 'Reference',
+    customProps: icon('book'),
+    ...TOP_GROUP,
+    items: ['civic/troubleshooting', 'civic/concepts/tips'],
+  },
+];
+
+export default sidebar;

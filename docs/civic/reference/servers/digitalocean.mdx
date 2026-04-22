@@ -1,0 +1,366 @@
+---
+title: DigitalOcean
+description: >-
+  9 MCP servers covering Droplets, Apps, Databases, Kubernetes, Networking,
+  Insights, Spaces, and Marketplace
+---
+
+## Overview
+
+DigitalOcean is covered by **9 MCP servers**, each targeting a distinct product area. All share a single DigitalOcean Personal Access Token for authentication.
+
+## How to Add DigitalOcean
+
+<Steps>
+  <Step title="Generate API Token">
+    1. Go to [DigitalOcean Console → API → Personal access tokens](https://cloud.digitalocean.com/account/api/tokens)
+    2. Click **Generate New Token**
+    3. Give it a name (e.g. "Civic MCP") and select **read+write** scope
+    4. Copy the token — it is only shown once
+
+    <Info>
+    **One token for all servers** — A single Personal Access Token covers all 9 DigitalOcean MCP servers. You only need to generate one.
+    </Info>
+  </Step>
+  <Step title="Add to Civic">
+    Add the DigitalOcean servers you need to your Civic environment through the server directory. You can add individual servers (e.g. just Droplets and Databases) or all 9. You will be prompted to provide your token.
+  </Step>
+  <Step title="Test Connection">
+    Start with `"What is my DigitalOcean account status and droplet limit?"` to verify authentication and check your resource limits.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={3}>
+  <Card title="Accounts" icon="user">
+    Account info, SSH keys, billing, and action audit logs
+  </Card>
+  <Card title="Droplets" icon="server">
+    Full VM lifecycle — create, resize, snapshot, reboot, rebuild, and bulk tag-based operations
+  </Card>
+  <Card title="Apps" icon="rocket">
+    App Platform — deploy containerized apps, static sites, workers, functions, and jobs
+  </Card>
+  <Card title="Databases" icon="database">
+    Managed PostgreSQL, MySQL, MongoDB, Valkey, Kafka, and OpenSearch clusters
+  </Card>
+  <Card title="Kubernetes" icon="dharmachakra">
+    DOKS cluster lifecycle, node pools, upgrades, kubeconfig, and GPU support
+  </Card>
+  <Card title="Networking" icon="network-wired">
+    Firewalls, Load Balancers, DNS, VPCs, Reserved IPs, Certificates, and BYOIP
+  </Card>
+  <Card title="Insights" icon="chart-bar">
+    Alert policies for Droplet/LB/Database metrics and uptime checks
+  </Card>
+  <Card title="Spaces" icon="hard-drive">
+    Spaces access key management and CDN configuration
+  </Card>
+  <Card title="Marketplace" icon="store">
+    Browse and install 250+ 1-click applications for Droplets and Kubernetes
+  </Card>
+</CardGroup>
+
+---
+
+## digitalocean-accounts
+
+Account info, SSH keys, billing, and action audit log.
+
+### Use Cases
+- **Account Status**: `"What is my DigitalOcean account status and droplet limit?"`
+- **SSH Keys**: `"List all SSH keys on my account"`
+- **Billing**: `"Show my current account balance"`, `"Show my billing history"`
+- **Audit Log**: `"What actions have been performed on my account recently?"`
+
+<AccordionGroup>
+  <Accordion title="account-get-information">
+    `account-get-information` — Get account status, droplet/volume/IP limits, and email verification
+  </Accordion>
+  <Accordion title="ssh-key-list / ssh-key-create / ssh-key-get / ssh-key-delete">
+    SSH key management — create, list, get, and delete SSH keys
+  </Accordion>
+  <Accordion title="billing-get-balance / billing-history-list / get-invoice">
+    Billing tools — current balance, month-to-date usage, billing history, and invoice details
+  </Accordion>
+  <Accordion title="action-list">
+    `action-list` — Paginated audit history of all resource actions across the account
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## digitalocean-droplets
+
+Full lifecycle management of Droplet VMs, images, and snapshots.
+
+### Use Cases
+- **List VMs**: `"List all my droplets"`
+- **Create**: `"Create a new Ubuntu 24.04 droplet called 'web-01' in fra1, size s-1vcpu-1gb"`
+- **Snapshot**: `"Take a snapshot of droplet 12345678 called 'web-01-backup'"`
+- **Resize**: `"Resize droplet 12345678 to s-2vcpu-4gb"`
+- **Lifecycle**: `"Reboot droplet 12345678"`, `"Enable backups on droplet 12345678"`
+
+<AccordionGroup>
+  <Accordion title="droplet-create / droplet-list / droplet-get / droplet-delete">
+    Droplet lifecycle — create, list, get, delete
+  </Accordion>
+  <Accordion title="droplet-reboot / droplet-power-on / droplet-power-off / droplet-shutdown">
+    Power management — reboot, power on/off, graceful shutdown
+  </Accordion>
+  <Accordion title="droplet-resize / droplet-rename / droplet-rebuild">
+    Resize (with optional disk resize), rename, and rebuild from image or slug
+  </Accordion>
+  <Accordion title="droplet-snapshot / image-list / image-create / image-delete">
+    Snapshots and images — on-demand snapshots, list/create/delete/transfer images
+  </Accordion>
+  <Accordion title="Tag-based bulk operations">
+    Power on/off/cycle, shutdown, snapshot, enable/disable backups, enable IPv6 — all by tag
+  </Accordion>
+  <Accordion title="size-list / image-list">
+    `size-list` and `image-list` — Always call before creating droplets to get current valid slugs
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+`resize-droplet` with `ResizeDisk: true` is **irreversible** — disk can only grow, not shrink. Tag-based bulk operations apply to **all** droplets with that tag.
+</Warning>
+
+---
+
+## digitalocean-apps
+
+DigitalOcean App Platform — deploy and manage containerized apps, static sites, workers, functions, and jobs.
+
+### Use Cases
+- **List Apps**: `"List all my App Platform apps"`
+- **Deploy**: `"Create a static site from GitHub repo myorg/myrepo, branch main"`
+- **Logs**: `"Get the build logs for app abc-123, deployment def-456, component 'api'"`
+- **Update**: `"Update app abc-123 to use 2 instances"`
+
+<AccordionGroup>
+  <Accordion title="apps-create / apps-get-info / apps-list / apps-update / apps-delete">
+    App lifecycle — create from spec, list, get details, update, delete
+  </Accordion>
+  <Accordion title="apps-get-deployment-status">
+    `apps-get-deployment-status` — Active deployment status, phase, and per-component health
+  </Accordion>
+  <Accordion title="apps-get-logs">
+    `apps-get-logs` — BUILD, RUN, DEPLOY, and RUN_RESTARTED logs with `TailLines` and `Follow` options
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+**Full spec required on update** — must supply the entire app spec, not just changed fields. Always fetch the current spec first with `apps-get-info`.
+</Warning>
+
+---
+
+## digitalocean-databases
+
+Managed database clusters: PostgreSQL, MySQL, MongoDB, Valkey, Kafka, and OpenSearch.
+
+### Supported Engines
+
+| Engine | Versions | Min Nodes |
+|--------|----------|-----------|
+| PostgreSQL (`pg`) | 14, 15, 16, 17, 18 | 1 |
+| MySQL | 8 | 1 |
+| MongoDB | 7.0, 8.0 | 1 |
+| Valkey | 8 | 1 |
+| Kafka | 3.8 | 3 |
+| OpenSearch | 1, 2.19 | 1 |
+
+### Use Cases
+- **List Clusters**: `"List all my database clusters"`
+- **Create**: `"Create a PostgreSQL 17 cluster called 'prod-pg' in fra1, size db-s-2vcpu-4gb, 1 node"`
+- **Engine Options**: `"List available database engine options and versions"`
+- **Users**: `"Add a user called 'app_user' to cluster abc-123"`
+- **Config**: `"Get the PostgreSQL config for cluster abc-123"`
+- **Migration**: `"Start an online migration from an external PostgreSQL to cluster abc-123"`
+
+<AccordionGroup>
+  <Accordion title="db-cluster-create / db-cluster-list / db-cluster-get / db-cluster-delete">
+    Cluster lifecycle — create, list, get, delete, resize, upgrade major version
+  </Accordion>
+  <Accordion title="db-config-get / db-config-update">
+    Per-engine configuration management
+  </Accordion>
+  <Accordion title="db-user-create / db-user-list / db-user-get / db-user-delete">
+    User management with ACL support for Kafka and OpenSearch
+  </Accordion>
+  <Accordion title="db-firewall-get / db-firewall-update">
+    Firewall rules — trusted sources by IP, droplet, tag, or app. Rules **replace** the entire ruleset on update.
+  </Accordion>
+  <Accordion title="db-migration-start / db-migration-status / db-migration-stop">
+    Online migration from external sources
+  </Accordion>
+  <Accordion title="db-cluster-list-options">
+    `db-cluster-list-options` — Live engine/version/size/region availability. Call before creating.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+Redis cluster options return `null` — use Valkey instead (compatible API/protocol). Kafka minimum is 3 nodes.
+</Note>
+
+---
+
+## digitalocean-doks
+
+DigitalOcean Kubernetes Service (DOKS) — create and manage Kubernetes clusters and node pools.
+
+### Use Cases
+- **List Clusters**: `"List all my Kubernetes clusters"`
+- **Create**: `"Create a cluster called 'prod-k8s' in fra1 with k8s 1.35, 2 nodes of s-2vcpu-4gb"`
+- **Scale**: `"Scale node pool def-456 on cluster abc-123 to 5 nodes"`
+- **Upgrade**: `"Upgrade cluster abc-123 to 1.35.1-do.1"`
+- **Kubeconfig**: `"Get the kubeconfig for cluster abc-123"`
+
+<AccordionGroup>
+  <Accordion title="doks-cluster-create / doks-cluster-list / doks-cluster-get / doks-cluster-delete">
+    Cluster lifecycle — create, list, get, update, delete, upgrade
+  </Accordion>
+  <Accordion title="doks-nodepool-create / doks-nodepool-list / doks-nodepool-update / doks-nodepool-delete">
+    Node pool management — create, list, update (count, autoscale, labels, taints), delete
+  </Accordion>
+  <Accordion title="doks-get-kubeconfig">
+    `doks-get-kubeconfig` — Fetch raw YAML kubeconfig for kubectl access
+  </Accordion>
+  <Accordion title="doks-list-options">
+    `doks-list-options` — Valid version slugs, sizes, and regions. Call before creating.
+  </Accordion>
+  <Accordion title="recycle-nodes">
+    `recycle-nodes` — Gracefully drain and replace nodes (preferable to delete+replace)
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+Cluster deletion is **immediate and irreversible**. HA control plane cannot be disabled after enabling — enable at creation time for production clusters.
+</Warning>
+
+---
+
+## digitalocean-networking
+
+Firewalls, Load Balancers, DNS, VPCs, Reserved IPs, Certificates, and BYOIP.
+
+### Use Cases
+- **Firewalls**: `"Create a firewall allowing HTTP/HTTPS inbound from anywhere, all outbound"`
+- **Load Balancers**: `"Create a load balancer 'web-lb' in nyc3 forwarding port 80 to droplets tagged 'web'"`
+- **DNS**: `"Add an A record for 'app.example.com' pointing to 1.2.3.4"`
+- **Reserved IPs**: `"Reserve a new IPv4 in fra1"`
+- **Certificates**: `"Create a Let's Encrypt certificate for example.com"`
+
+<AccordionGroup>
+  <Accordion title="Firewall tools">
+    Create with inbound/outbound rules, apply to droplets or tags; add/remove rules, droplets, tags incrementally
+  </Accordion>
+  <Accordion title="Load Balancer tools">
+    Types: REGIONAL, REGIONAL_NETWORK, GLOBAL. Network: EXTERNAL or INTERNAL. Assign by droplet ID or tag.
+  </Accordion>
+  <Accordion title="DNS / Domain tools">
+    Create domains, manage records (A, CNAME, TXT, MX, etc.) — create, list, get, edit, delete
+  </Accordion>
+  <Accordion title="VPC tools">
+    Create with custom CIDR subnet, list members, manage VPC peering connections
+  </Accordion>
+  <Accordion title="Reserved IP tools">
+    Reserve, assign to droplet, unassign, release — IPv4 and IPv6
+  </Accordion>
+  <Accordion title="Certificate tools">
+    Let's Encrypt (auto-provisioned) or custom upload. Let's Encrypt requires DO-managed DNS.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## digitalocean-insights
+
+Alert policies for Droplet/LB/Database metrics, and uptime checks for HTTP/HTTPS/PING endpoints.
+
+### Use Cases
+- **Alert Policies**: `"Create a CPU alert for droplet 12345678 — notify alerts@company.com if CPU > 80% for 10 minutes"`
+- **Uptime Checks**: `"Create an uptime check for https://myapp.com monitoring from us_east and eu_west"`
+- **Uptime State**: `"Get the current state of uptime check abc-123"`
+
+<AccordionGroup>
+  <Accordion title="Alert policy tools">
+    Create, list, get, update, delete, enable/disable. Types: `cpu`, `memory_utilization`, `disk_utilization`, and more for Droplets, Load Balancers, and Databases.
+  </Accordion>
+  <Accordion title="Uptime check tools">
+    Create, list, get, update, delete, poll state. Types: HTTP, HTTPS, PING. Regions: `us_east`, `us_west`, `eu_west`, `se_asia`.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+Droplet metric alerts require the DigitalOcean Monitoring agent installed on the Droplet. Alert entity IDs must be **strings** even though Droplet IDs are numeric.
+</Note>
+
+---
+
+## digitalocean-spaces
+
+Spaces access key management and CDN configuration.
+
+### Use Cases
+- **CDN Management**: `"List all my Spaces CDN endpoints"`, `"Flush CDN cache for files on CDN abc-123"`
+- **Access Keys**: `"Create a new Spaces access key called 'ci-deploy'"`
+
+<AccordionGroup>
+  <Accordion title="Spaces key tools">
+    Create, get, update (rename), delete. Note: `spaces-key-list` currently returns 404 (known bug).
+  </Accordion>
+  <Accordion title="CDN tools">
+    Create CDN endpoint for a Space, list CDNs, flush cache (up to 50 files/request), delete
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+Spaces bucket management (create bucket, upload objects) is **not** available via MCP — use an S3-compatible client with your Spaces key. Spaces secret keys are shown only once at creation.
+</Warning>
+
+---
+
+## digitalocean-marketplace
+
+Browse and install 1-click applications on Droplets or Kubernetes clusters.
+
+### Use Cases
+- **Browse Apps**: `"List all available 1-click Droplet apps"`
+- **Kubernetes Apps**: `"Install the metrics-server app on Kubernetes cluster abc-123"`
+
+<AccordionGroup>
+  <Accordion title="1-click-list">
+    `1-click-list` — List available 1-click apps by type (`droplet` or `kubernetes`)
+  </Accordion>
+  <Accordion title="1-click-kubernetes-app-install">
+    `1-click-kubernetes-app-install` — Install one or more apps onto a Kubernetes cluster by slug
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+Droplet 1-click apps cannot be installed via this server — use `digitalocean-droplets` with the marketplace slug as the image identifier when creating or rebuilding a droplet.
+</Note>
+
+---
+
+## Coverage Gaps
+
+These DigitalOcean products are **not covered** by any MCP server:
+
+- **Container Registry (DOCR)** — Manage via the DO console or `doctl`
+- **Block Storage (Volumes)** — Cannot attach/detach volumes
+- **Spaces bucket management** — Object-level operations require an S3-compatible client
+- **Functions (serverless)** — No dedicated server (functions can be deployed via App Platform)
+
+---
+
+## Guardrails
+
+This server is covered by the [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my DigitalOcean server."
+</Tip>

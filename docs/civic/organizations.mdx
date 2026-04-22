@@ -1,0 +1,122 @@
+---
+title: Managing Your Organizations
+description: 'How to create, manage, and switch between organizations in Civic'
+sidebar_custom_props:
+  icon: "building"
+---
+
+## Overview
+
+Organizations in Civic let you group projects and collaborate with your team. Each organization has its own set of toolkits and members, keeping your work organized and access-controlled.
+
+<Note>
+Organizations are available on paid plans only. Only organization admins can create or manage organizations.
+</Note>
+
+---
+
+## Account Types
+
+Civic has two types of accounts:
+
+**Personal accounts** are created automatically when you sign up. They are single-user and designed for individual use. Personal accounts cannot have additional members and cannot be used for third-party application integrations.
+
+**Organization accounts** are shared workspaces for teams. They support multiple users with different roles, enable shared credentials and organization-wide policies, and are required for integrating Civic into third-party applications.
+
+<Warning>
+When integrating Civic with third-party applications, only organization accounts can be used. Personal accounts are not supported for external integrations.
+</Warning>
+
+---
+
+## User Roles
+
+Every user in an account has one of three roles:
+
+| Role | Description |
+|------|-------------|
+| **Admin** | Full control over the account — manage settings and billing, invite/remove members, change roles, manage and promote credentials, configure guardrails, view audit logs |
+| **Member** | Can use the account's tools — access toolkits, authenticate personal credentials, view available tools. Cannot add tools, invite users, or change account settings |
+| **End User** | For large-scale or third-party app deployments — does not require a pre-invitation, accesses tools through integrated applications. Ideal when the user base is dynamic or too large to pre-invite individually |
+
+<Note>
+End Users differ from Members in that they don't need to be explicitly invited by an admin. They typically interact through third-party apps rather than the Civic UI directly.
+</Note>
+
+---
+
+## Inviting and Managing Users
+
+To invite a new member to your organization:
+
+1. Click on your profile picture in the **bottom right** corner of the screen
+2. Go to **Settings** > **Members**
+3. Click the **+** (plus) icon in the bottom right of the Members panel
+4. Enter the member's email address
+5. Select their role
+6. Click **"Send invitation"**
+
+The member will receive an email invitation to join your organization. If they haven't accepted after a while, you can delete the pending invitation and send a new one.
+
+<Note>
+If you have any trouble inviting members, contact support at [support@civic.com](mailto:support@civic.com).
+</Note>
+
+---
+
+## Switching Between Organizations
+
+If you belong to multiple organizations, you can switch between them at any time:
+
+1. Click on your **profile picture** in the **bottom left** corner of the screen
+2. Select the organization you'd like to work in
+
+When you switch accounts:
+- Available toolkits change to those configured in the selected account
+- Your role may be different (e.g. admin in one account, member in another)
+- Different guardrails and policies apply
+- Tool access is scoped to the selected account's configuration
+
+---
+
+## Adding a New Organization
+
+To create an additional organization:
+
+1. Click on your **profile picture** in the **bottom left** corner of the screen
+2. Click **"Add organization"**
+3. Enter a name for your new organization
+4. Click **Create**
+
+Your new organization starts with a fresh set of toolkits and an empty member list.
+
+---
+
+## Converting Your Personal Account to an Organization
+
+If you want to convert your Personal Civic account to an Organization account:
+
+1. Click on your profile name in the **bottom left** corner of the screen
+2. Go to **Settings**
+3. Go to **Members**
+4. Click the **'Convert to organization'** button
+5. Choose your organization name in the modal and click **'Convert to organization'** to complete
+6. You should see an **'Account converted to organization successfully'** message
+
+After conversion, you'll be able to invite team members to collaborate. Your existing data and settings will be preserved.
+
+<Warning>
+**Important:**
+
+- Once you've converted your personal account to an organization, **this change is permanent**.
+- Only one account type is allowed per email address or login method. You cannot have both a Personal account and an Organization account associated with the same email address or login method.
+- If you have an Organization account, you cannot convert it back to a personal account. You will need to create a separate personal account using a different email address.
+</Warning>
+
+If you encounter any issues converting your account, please reach out to our support team via email at [support@civic.com](mailto:support@civic.com) using the email address associated with your account. Include a description of your issue, any troubleshooting steps you've tried, and provide screenshots or a screen recording.
+
+---
+
+## Need Help?
+
+Reach out at [support@civic.com](mailto:support@civic.com) or join the community on [Slack](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw).

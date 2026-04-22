@@ -1,0 +1,79 @@
+---
+title: Dify
+description: Connect a Dify workflow or chatbot to Civic's MCP Hub
+sidebar_custom_props:
+  icon: "puzzle-piece"
+---
+
+Connect [Dify](https://dify.ai/) workflows and chatbots to Civic's MCP Hub. Dify supports MCP tool servers via its built-in tools configuration — no code required.
+
+## Prerequisites
+
+- A Dify account (cloud at [dify.ai](https://dify.ai) or self-hosted)
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
+- A Civic token
+
+## Get Your Credentials
+
+You need your Civic MCP URL and a Civic token before configuring Dify.
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connect Civic to Dify
+
+<Steps>
+  <Step title="Open Tool Settings">
+    In Dify, go to **Tools** in the top navigation, then click **Custom Tools** → **Create Custom Tool**.
+  </Step>
+  <Step title="Configure the MCP server">
+    Select **MCP** as the tool type and enter your Civic MCP URL:
+
+    ```
+    https://app.civic.com/hub/mcp?profile=your-toolkit
+    ```
+
+    Set the authentication header:
+
+    ```
+    Authorization: Bearer your-civic-token
+    ```
+  </Step>
+  <Step title="Import tools">
+    Dify will connect to Civic and list the available tools. Select the tools you want to enable in your workflows.
+  </Step>
+  <Step title="Add tools to your app">
+    Open your Dify app (chatbot, workflow, or agent). In the **Tools** section, add the Civic tools you imported.
+  </Step>
+  <Step title="Test the connection">
+    Run your app and ask it to use a Civic tool (e.g., "List my calendar events"). Dify will call the tool through the Civic Hub.
+  </Step>
+</Steps>
+
+## Locking to a Toolkit
+
+For production apps, lock to a specific toolkit by adding the `profile` parameter to your MCP URL:
+
+```
+https://app.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+When a profile is set, the session is locked — the agent cannot switch toolkits or modify its own guardrails.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Profile locking, URL params, and production agent configuration
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your Dify app can call
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your app did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

@@ -1,0 +1,29 @@
+---
+title: Native Integration
+description: Integrate Civic directly into third-party applications and MCP clients
+sidebar_custom_props:
+  icon: "puzzle-piece"
+---
+
+Civic can be integrated natively into third-party applications — MCP clients, AI agents, developer tools, and more. Native integrations go beyond simply connecting to Civic as an end user; they allow your application to handle authentication flows, manage tool calls, and deliver a seamless experience to your users.
+
+## What is a native integration?
+
+A native integration embeds Civic capabilities directly into your application's runtime. Instead of relying on the LLM to surface authorization links and wait for manual user action, your application can intercept these flows, handle them programmatically, and return results transparently.
+
+## OpenAI Strict Mode
+
+<Warning>
+Not all Civic tool schemas are compatible with OpenAI's [`strict: true` structured outputs](https://developers.openai.com/api/docs/guides/structured-outputs). If using the Responses API, ensure `strict` is set to `false` when calling Civic tools.
+</Warning>
+
+## Available integration guides
+
+<CardGroup cols={1}>
+  <Card title="Authorization" icon="lock" href="/civic/developers/integration/apps">
+    Understand how access tokens work, set up your organization, and connect your app to the Civic MCP endpoint using Civic Auth or Token Exchange.
+  </Card>
+  <Card title="Implementing civic:rest-auth" icon="shield-check" href="/civic/developers/integration/civic-auth-capability">
+    Handle authentication automatically in your MCP client — intercept auth-required responses, redirect users, poll for completion, and resume tool calls without LLM involvement.
+  </Card>
+</CardGroup>

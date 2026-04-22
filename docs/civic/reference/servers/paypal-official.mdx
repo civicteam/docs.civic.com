@@ -1,0 +1,55 @@
+---
+title: PayPal
+description: >-
+  Payments platform — orders, invoices, subscriptions, disputes, refunds,
+  products, and shipment tracking
+sidebar_custom_props:
+  icon: "server"
+---
+
+## Overview
+
+PayPal is a global payments platform for managing orders, invoices, subscriptions, products, disputes, and refunds. Connect it to Civic to let your AI agent handle the full PayPal payment lifecycle including billing plans and shipment tracking.
+
+<Card title="Add to Civic" icon="plus" href="https://app.civic.com">
+  Connect PayPal at app.civic.com
+</Card>
+
+## Available Tools (28)
+
+| Tool | Description |
+|------|-------------|
+| `accept_dispute_claim` | Accept liability for a dispute claim, closing it in the customer's favor |
+| `cancel_sent_invoice` | Cancel a sent invoice |
+| `cancel_subscription` | Cancel a customer subscription |
+| `create_invoice` | Create an invoice in PayPal |
+| `create_order` | Create an order in PayPal |
+| `create_product` | Create a product in PayPal |
+| `create_refund` | Initiate a refund for a PayPal payment capture |
+| `create_shipment_tracking` | Create a shipment tracking entry for a transaction |
+| `create_subscription` | Create a subscription against a plan |
+| `create_subscription_plan` | Create a subscription plan for a product |
+| `generate_invoice_qr_code` | Generate a QR code for an invoice |
+| `get_dispute` | Get details for a specific dispute |
+| `get_invoice` | Get an invoice from PayPal |
+| `get_order` | Retrieve order details from PayPal |
+| `get_refund` | Retrieve detailed information about a refund |
+| `get_shipment_tracking` | Get tracking information for a shipment |
+| `list_disputes` | List disputes, optionally filtered by state or transaction |
+| `list_invoices` | List invoices from PayPal |
+| `list_products` | List products from PayPal |
+| `list_subscription_plans` | List subscription plans, optionally filtered by product |
+| `list_transactions` | List transactions within a date range (max 31 days) |
+| `pay_order` | Capture a payment for an order |
+| `send_invoice` | Send an invoice to the recipient |
+| `send_invoice_reminder` | Send a payment reminder for an invoice |
+| `show_product_details` | Show details of a specific product |
+| `show_subscription_details` | Show subscription details |
+| `show_subscription_plan_details` | Show subscription plan details |
+| `update_product` | Update a product using JSON Patch operations |
+
+---
+
+## Guardrails
+
+This server supports all [14 universal guardrails](/civic/concepts/guardrails). Server-specific guardrails are coming soon.

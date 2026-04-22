@@ -1,0 +1,135 @@
+---
+title: CianaParrot
+description: >-
+  Connect a CianaParrot Telegram bot agent to Civic's MCP Hub for Google
+  Calendar & Gmail
+---
+
+Connect [CianaParrot](https://github.com/emanueleielo/ciana-parrot) — a Telegram-based AI agent — to Google Calendar and Gmail through Civic's MCP Gateway using Streamable HTTP transport.
+
+<Note>
+**Zero credential management**: Civic Hub handles all OAuth tokens, token refresh, guardrails, audit logging, and instant revocation server-side. No Google credentials are stored in your project.
+</Note>
+
+## Prerequisites
+
+- Python 3.13+
+- Docker and Docker Compose
+- A Civic account at [app.civic.com](https://app.civic.com) with Google Calendar and/or Gmail servers connected
+- A Civic token (generate from [Install → MCP URL](https://app.civic.com/web/install/mcp-url))
+- An [Anthropic API key](https://console.anthropic.com)
+- A [Telegram Bot Token](https://core.telegram.org/bots#how-do-i-create-a-bot) from BotFather
+
+## Environment Variables
+
+```bash
+# Civic MCP Gateway URL (include profile param for production agents)
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
+
+# Civic token generated from app.civic.com → Install → MCP URL
+CIVIC_TOKEN=your-civic-token
+
+# Anthropic API key for Claude
+ANTHROPIC_API_KEY=your-anthropic-key
+
+# Telegram bot token from BotFather
+TELEGRAM_BOT_TOKEN=your-telegram-bot-token
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Configuration
+
+CianaParrot uses a `config.yaml` file for MCP server configuration. Point it at Civic Hub using Streamable HTTP transport:
+
+```yaml title="config.yaml"
+mcp_servers:
+  civic:
+    transport: "streamable_http"
+    url: "${CIVIC_URL}"
+    headers:
+      Authorization: "Bearer ${CIVIC_TOKEN}"
+```
+
+This single connection gives your Telegram bot access to all tools configured in your Civic toolkit — no per-service credentials needed.
+
+## Running with Docker
+
+```bash
+git clone https://github.com/civicteam/ciana-parrot-reference-implementation-civic.git
+cd ciana-parrot-reference-implementation-civic
+```
+
+Create a `.env` file with the variables above, then:
+
+```bash
+docker compose up --build
+```
+
+The bot starts listening for Telegram messages. The first time it accesses Google Calendar or Gmail, Civic sends an OAuth approval link to authorize access (persists for 30 days).
+
+## Architecture
+
+```
+Telegram User → CianaParrot (Docker) → Streamable HTTP/MCP → Civic Hub → Google Calendar / Gmail
+```
+
+Civic Hub sits between your agent and Google APIs, enforcing guardrails and logging every tool call for audit.
+
+## Recommended Guardrails
+
+Set these in [Civic Chat](https://app.civic.com) to protect against unintended actions:
+
+| Server | Tools to Block | Why |
+|---|---|---|
+| Google Calendar | `delete_event`, `modify_event` | Prevents deleting events or modifying attendees |
+| Gmail | `delete_gmail_filter`, `create_gmail_filter` | Prevents filter manipulation that could hide or redirect emails |
+
+<Card title="Configure Guardrails" icon="shield" href="/civic/concepts/guardrails">
+  Set up blocking rules via Civic Chat or the UI
+</Card>
+
+## Production Configuration
+
+### Lock to a Toolkit
+
+For production bots, always lock to a specific toolkit:
+
+```bash
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+When a profile is specified, the session is locked by default — the agent cannot switch toolkits or modify its own guardrails.
+
+### Pre-load Skills
+
+Load specific Skills at session start:
+
+```bash
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=support&skills=escalation,canned-responses
+```
+
+## Reference Implementation
+
+The full reference implementation with Docker Compose, configuration, and deployment patterns:
+
+[github.com/civicteam/ciana-parrot-reference-implementation-civic](https://github.com/civicteam/ciana-parrot-reference-implementation-civic)
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can use
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

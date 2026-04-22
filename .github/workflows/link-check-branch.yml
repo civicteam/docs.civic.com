@@ -1,5 +1,10 @@
 name: Link Check (Branch)
 
+# Post-migration: lychee runs against the *built* HTML so it exercises the same
+# link graph the browser sees (including redirects from
+# @docusaurus/plugin-client-redirects). The old MDX-only run was catching
+# relative-path false negatives because paths changed under docs/.
+
 on:
   push:
     branches-ignore: [main]
@@ -10,19 +15,23 @@ jobs:
   link-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
 
-      - name: Link Checker (Local Files)
+      - name: Link Checker (Built HTML)
         uses: lycheeverse/lychee-action@v2
         with:
-          # Check relative links as file paths using root-dir
           args: >
             --config lychee.toml
-            --root-dir ${{ github.workspace }}
+            --root-dir ${{ github.workspace }}/build
             --no-progress
-            '**/*.md'
-            '**/*.mdx'
+            'build/**/*.html'
           fail: true
           token: ${{ secrets.GITHUB_TOKEN }}
 

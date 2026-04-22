@@ -1,0 +1,78 @@
+---
+title: Meta Ads
+description: >-
+  Manage Meta (Facebook/Instagram) advertising campaigns, ad sets, creatives,
+  audiences, and performance insights.
+sidebar_custom_props:
+  icon: "server"
+---
+
+## Overview
+
+The Meta Ads server enables AI assistants to interact with the Meta Marketing API to create and manage campaigns, ad sets, and creatives across Facebook and Instagram, and retrieve performance insights and audience data.
+
+<Card title="Add to Civic" icon="plus" href="https://app.civic.com">
+  Connect Meta Ads at app.civic.com
+</Card>
+
+## Available Tools (42)
+
+| Tool | Description |
+|------|-------------|
+| `create_campaign` | Create a new Meta ad campaign (created in PAUSED status by default) |
+| `update_campaign` | Update an existing campaign's name, status, budget, or schedule |
+| `delete_campaign` | Permanently delete a campaign and all its associated ad sets and ads |
+| `pause_campaign` | Instantly pause a campaign to stop ad delivery and spending |
+| `resume_campaign` | Reactivate a previously paused campaign |
+| `list_campaigns` | Retrieve a paginated list of all campaigns for a Meta ad account |
+| `get_campaign` | Retrieve full details for a specific campaign by ID |
+| `get_campaign_performance` | Get performance insights specific to a campaign |
+| `list_ad_sets` | List all ad sets for a given campaign or ad account |
+| `create_ad_set_enhanced` | Create a new ad set with advanced validation and helpful error messages |
+| `list_ads` | List all ads for a given campaign, ad set, or ad account |
+| `create_ad_creative` | Create a new ad creative with images, videos, text, and call-to-action buttons |
+| `list_creatives` | List all ad creatives in an ad account |
+| `get_insights` | Retrieve performance metrics and insights for ad campaigns, ad sets, or individual ads |
+| `export_insights` | Export ad insights data in CSV or JSON format |
+| `create_custom_audience` | Create a custom audience from customer data, website traffic, or app activity |
+| `create_lookalike_audience` | Create a lookalike audience based on an existing custom audience |
+| `list_audiences` | List all custom audiences available in the ad account |
+| `estimate_audience_size` | Estimate the size of an audience based on targeting parameters |
+| `compare_performance` | Compare performance metrics across multiple campaigns, ad sets, or ads |
+| `validate_creative_setup` | Validate ad creative parameters before creation to catch errors early |
+| `upload_image_from_url` | Upload an image from a URL to Meta and get the image hash for API compliance |
+| `verify_account_setup` | Verify that a Meta ad account is ready for ad creation |
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **18 server-specific guardrails** across 5 operations.
+
+<Note>
+Heavily spend-control focused — budget caps at every level (campaign, ad set), geo-targeting requirements, and financial data redaction on account info responses.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Require Ad Name | `create_ad` | Request | Ensures all ads have a descriptive name |
+| Require Creative Name | `create_ad_creative` | Request | Ensures all ad creatives have a descriptive name |
+| Limit Ad Set Daily Budget | `create_ad_set` | Request | Caps max daily budget per ad set (in cents) |
+| Limit Ad Set Lifetime Budget | `create_ad_set` | Request | Caps max lifetime budget per ad set (in cents) |
+| Require Geographic Targeting | `create_ad_set` | Request | Ensures geo targeting is set to prevent global spending |
+| Limit Campaign Daily Budget | `create_campaign` | Request | Caps max daily budget per campaign |
+| Limit Campaign Lifetime Budget | `create_campaign` | Request | Caps max lifetime budget per campaign |
+| Require Budget for New Campaigns | `create_campaign` | Request | Ensures every new campaign has a budget set |
+| Restrict Lookalike Audience Ratio | `create_lookalike_audience` | Request | Limits ratio to ≤5 to prevent overly broad audiences |
+| Redact Account Balance | `get_ad_accounts` | Response | Redacts balance, amount_spent, spend_cap |
+| Redact Business IDs | `get_ad_accounts` | Response | Redacts business_id from responses |
+| Redact Payment and Credit Information | `get_ad_accounts` | Response | Redacts funding_source, payment_method, billing |
+| Limit Insights Results | `get_insights` | Request | Caps results at 100 per request |
+| Block Campaign Deletion | `update_campaign` | Request | Forces ARCHIVED instead of DELETED |
+| Limit Campaign Daily Budget Update | `update_campaign` | Request | Caps daily budget updates |
+| Limit Campaign Lifetime Budget Update | `update_campaign` | Request | Caps lifetime budget updates |
+| Prevent Direct Active to Deleted Transition | `update_campaign` | Request | Requires pausing before deletion |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Meta Ads server."
+</Tip>

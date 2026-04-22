@@ -1,0 +1,45 @@
+---
+title: Overview
+description: The login options you can set up for users to log in to your app.
+sidebar_custom_props:
+  icon: "arrow-right-to-bracket"
+---
+
+
+
+
+You can choose different Login Options for your App using the [Civic Auth Dashboard](https://auth.civic.com/dashboard). You can choose which providers you'd like to support, and the order you'd like to present them to your users.
+
+Just click on a provider icon to enable or disable it, and drag the option above or below existing options to change the ordering. As soon as you make an update, you'll see a preview of what your users will see.
+
+<Frame>
+    <img src="/images/login-options-dashboard-sso-email.png"/>
+</Frame>
+
+## Social Providers (OAuth)
+
+We currently support the following social providers:
+- Google
+- Discord
+- Github
+- Facebook
+- X
+- Apple
+
+Don't see your preferred provider? [Let us know](https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw) and we'll see what we can do!
+
+## Email
+
+Users login by proving ownership of their email address by entering an OTP (One-Time PIN) sent to their email.
+
+## Account linking
+
+When a user logs in using an email address, once the OTP code is verified, we check if the email has already been used with a Google or Apple account.
+
+If the email address associated with one of these providers matches the email address used to login, we automatically link the accounts. This means that the returned user id will be the same for both login methods, and the user's profile information will be merged, i.e. their name, profile picture, and any other relevant information.
+
+### Passkeys
+
+Passkeys provide a seamless user experience and enhanced security using biometric authentication, device PINs, or security keys instead of passwords.
+
+Learn more about [setting up and using passkeys](/overview/passkeys).

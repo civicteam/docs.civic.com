@@ -1,0 +1,141 @@
+---
+title: Claude Code Setup
+description: Connect Anthropic's Claude Code CLI to Civic
+sidebar_custom_props:
+  icon: "terminal"
+---
+
+<Callout icon="terminal" color="blue">
+  Claude Code supports direct HTTP Streaming connections to Civic — no local bridge required. Follow the steps below to connect in a few minutes. Hub Bridge is also available as a fallback if needed.
+</Callout>
+
+## Overview
+
+Claude Code (Anthropic's command-line coding assistant) uses Model Context Protocol (MCP) to talk to external tools. Claude Code supports **direct HTTP connections** to Civic — no local bridge required.
+
+## Prerequisites
+
+- Anthropic Claude CLI (`claude`) installed and authenticated
+- A Civic account — [create one free at app.civic.com](https://app.civic.com)
+
+import OnboardingSteps from '@site/docs/_snippets/_onboarding-what-happens.mdx'
+import HubBridgeInfo from '@site/docs/_snippets/_hub-bridge-what-is.mdx'
+import AuthCallout from '@site/docs/_snippets/_auth-method-callout.mdx'
+
+<AuthCallout />
+
+## Quick Setup
+
+Claude Code supports two connection methods. Choose the one that works best for you:
+
+<Tabs>
+  <Tab label="HTTP Transport (Recommended)">
+    ### Direct Connection via HTTP
+
+    Claude Code now supports direct HTTP connections to Civic without needing a local bridge.
+
+    <Steps>
+      <Step title="Register the Civic server with HTTP transport">
+        Run this command to add Civic via HTTP:
+
+        ```bash
+        claude mcp add --transport http civic https://app.civic.com/hub/mcp
+        ```
+
+        This configures Claude Code to connect directly to Civic over HTTP.
+      </Step>
+      <Step title="Launch Claude Code">
+        Start the Claude CLI session:
+
+        ```bash
+        claude
+        ```
+
+        Tip: add the `--debug` flag if you want to watch MCP logs while connecting.
+      </Step>
+      <Step title="Connect and sign in">
+        Inside the Claude session, run the MCP menu command:
+
+        ```text
+        /mcp
+        ```
+
+        Select the `civic` server. A browser window opens to app.civic.com — sign in with your Civic account. Once complete, Claude confirms the server is `connected` and ready to use.
+      </Step>
+    </Steps>
+  </Tab>
+
+  <Tab label="Hub Bridge (Alternative)">
+    ### Local Bridge Connection
+
+    <HubBridgeInfo />
+
+    Use this method if you run into issues with the HTTP transport path above.
+
+    <Steps>
+      <Step title="Register the Civic server">
+        Run this command to add the Civic Hub Bridge MCP server:
+
+        ```bash
+        claude mcp add civic "npx @civic/hub-bridge"
+        ```
+
+        This installs the bridge (if needed) and stores the connection in your Claude MCP config.
+      </Step>
+      <Step title="Launch Claude Code">
+        Start the Claude CLI session:
+
+        ```bash
+        claude
+        ```
+
+        Tip: add the `--debug` flag if you want to watch MCP logs while connecting.
+      </Step>
+      <Step title="Connect and sign in">
+        Inside the Claude session, run the MCP menu command:
+
+        ```text
+        /mcp
+        ```
+
+        Select the `civic` server and follow the browser sign-in flow to authorize Civic. Once the login completes, Claude confirms that the server is available for tool execution.
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+<Frame>
+  <img
+    src="/images/claude-code.png"
+    alt="Claude CLI connected to the Civic MCP server"
+    className="image-80 image-rounded"
+  />
+</Frame>
+
+## Verify the Connection
+
+- In Claude, run `/mcp` again to check that `civic` shows as `connected`
+- Test a Civic command (for example, request a tool list) to confirm the session is authorized
+
+## Troubleshooting
+
+- If the connection shows `failed`, re-run `claude --debug` to view detailed logs in your terminal
+- Ensure you have an active Civic session in your default browser; the MCP flow opens a new window for login
+- Delete and re-add the server with `claude mcp remove civic` followed by the setup command if you need to refresh credentials
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Hub Bridge Guide" icon="bridge" href="/civic/quickstart/hub-bridge">
+    Full Hub Bridge configuration details
+  </Card>
+  <Card title="Client Compatibility" icon="table" href="/civic/reference/client-compatibility">
+    MCP support matrix for Claude Code
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
+    Common Claude Code connection fixes
+  </Card>
+  <Card title="Installing into an agent" icon="robot" href="/civic/quickstart/clients/agents">
+    Deploy Civic in autonomous agents and automation platforms
+  </Card>
+</CardGroup>

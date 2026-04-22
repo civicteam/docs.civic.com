@@ -1,0 +1,49 @@
+---
+title: Client Compatibility
+description: Connection methods for every supported AI client and framework
+sidebar_custom_props:
+  icon: "table"
+---
+
+Every client and framework in the [Integrate](/civic/quickstart/clients/agents) section works with Civic. Connection method depends on what the client supports.
+
+## AI Clients
+
+| Client | Connection Method | Guide |
+|--------|------------------|-------|
+| **ChatGPT** | Remote URL (dev/admin accounts only) | [Setup](/civic/quickstart/clients/chatgpt) |
+| **Claude Code** | Hub Bridge (stdio) | [Setup](/civic/quickstart/clients/claude-code) |
+| **Claude Desktop** | Remote URL | [Setup](/civic/quickstart/clients/claude-desktop) |
+| **Claude.ai** | Remote URL | [Setup](/civic/quickstart/clients/claude-web) |
+| **Codex** | Remote URL (Hub Bridge for offline) | [Setup](/civic/quickstart/clients/codex) |
+| **Cursor** | Hub Bridge (stdio) | [Setup](/civic/quickstart/clients/cursor) |
+| **Gemini CLI** | Remote URL (`httpUrl`) | [Setup](/civic/quickstart/clients/gemini) |
+| **Goose** | Remote URL | [Setup](/civic/quickstart/clients/goose) |
+| **JetBrains AI** | `mcp-remote` bridge (Node 20+) | [Setup](/civic/quickstart/clients/jetbrains) |
+| **Manus** | Custom Header (Bearer token) | [Setup](/civic/quickstart/clients/manus) |
+| **Mistral Le Chat** | Remote URL | [Setup](/civic/quickstart/clients/mistral-lechat) |
+| **OpenClaw** | Remote URL | [Setup](/civic/quickstart/clients/openclaw) |
+| **VS Code** | Hub Bridge (stdio) | [Setup](/civic/quickstart/clients/vscode) |
+| **Windsurf** | Remote URL (`serverUrl`) | [Setup](/civic/quickstart/clients/windsurf) |
+
+## Frameworks & SDKs
+
+| Framework | Transport | Guide |
+|-----------|-----------|-------|
+| **Anthropic SDK** | Streamable HTTP (beta header required) | [Setup](/civic/recipes/anthropic) |
+| **LangChain / LangGraph** | `streamable_http` via `MultiServerMCPClient` | [Setup](/civic/recipes/langchain) |
+| **OpenAI Agents SDK** | Streamable HTTP | [Setup](/civic/recipes/openai-agents) |
+| **OpenAI SDK** | Streamable HTTP | [Setup](/civic/recipes/openai-sdk) |
+| **Python / Pydantic AI** | Streamable HTTP | [Setup](/civic/recipes/pydantic-ai) |
+| **Python / civic-mcp-client-python** | HTTP (SSE) | [Setup](/civic/recipes/civic-mcp-client-python) |
+| **Vercel AI SDK** | Streamable HTTP | [Setup](/civic/recipes/vercel-ai-sdk) |
+
+## Connection Methods
+
+**Remote URL** — paste `https://app.civic.com/hub/mcp` into the client's MCP settings. Fastest setup, no local software needed.
+
+**Hub Bridge** — local stdio proxy via `npx -y @civic/hub-bridge@latest`. Required for clients that only support stdio/local MCP servers. Needs Node.js 18+.
+
+**mcp-remote** — `npx mcp-remote` bridges stdio clients to HTTP. Used by JetBrains. Needs Node.js 20+.
+
+See [Connection Methods](/civic/concepts/connection-methods) for full technical details.

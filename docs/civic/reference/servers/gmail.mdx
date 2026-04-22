@@ -1,0 +1,187 @@
+---
+title: Google Gmail
+description: 'Access and manage Gmail messages, labels, and threads'
+sidebar_custom_props:
+  icon: "server"
+---
+
+## Overview
+
+The Google Gmail server enables AI assistants to interact with [Gmail](https://mail.google.com), providing comprehensive email management including message search, sending, labeling, and thread management through the Gmail API.
+
+## How to Add Google Gmail
+
+<Steps>
+  <Step title="Add Server">
+    Add the Google Gmail server to your Civic environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in with your Google account and approve the OAuth consent request. No admin approval needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "Show me my latest 5 emails" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Simple OAuth Consent:** Gmail uses standard Google OAuth consent. No special admin approval or Google Workspace setup is required - works with any Gmail account.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Email Search & Reading" icon="magnifying-glass">
+    Search messages with Gmail operators and read full content
+  </Card>
+  <Card title="Sending & Drafting" icon="paper-plane">
+    Send emails and create drafts directly from AI assistants
+  </Card>
+  <Card title="Thread Management" icon="comments">
+    Read complete conversation threads and analyze email chains
+  </Card>
+  <Card title="Label Management" icon="tags">
+    Create, update, and apply labels to organize your inbox
+  </Card>
+</CardGroup>
+
+## Available Tools (11)
+
+### Message Operations
+
+<AccordionGroup>
+  <Accordion title="search_gmail_messages">
+    Search messages using Gmail query operators. Returns Message IDs, Thread IDs, and web interface links for verification.
+  </Accordion>
+
+  <Accordion title="get_gmail_message_content">
+    Retrieve full content of a specific message including subject, sender, and body.
+  </Accordion>
+
+  <Accordion title="get_gmail_messages_content_batch">
+    Retrieve multiple messages in a single batch request (up to 5 messages). Supports full content or metadata-only format.
+  </Accordion>
+
+  <Accordion title="send_gmail_message">
+    Send an email using your Gmail account. Required: `subject`, `body`. Optional: `to`, `cc`, `bcc`, `body_format` (plain/html), `from_name`, `from_email` (Send As alias). For replies: `thread_id`, `in_reply_to`, `references`. Supports `attachments` by file path or base64 content.
+  </Accordion>
+
+  <Accordion title="draft_gmail_message">
+    Create a draft email with optional recipient. Can be completed and sent later.
+  </Accordion>
+</AccordionGroup>
+
+### Thread Operations
+
+<AccordionGroup>
+  <Accordion title="get_gmail_thread_content">
+    Retrieve complete conversation thread including all messages in chronological order.
+  </Accordion>
+
+  <Accordion title="get_gmail_threads_content_batch">
+    Retrieve multiple threads in batch (up to 25 threads). Useful for analyzing conversations at scale.
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+**High-risk tools:** `send_gmail_message` sends email directly from your account. `manage_gmail_label` (with delete action) and `batch_modify_gmail_message_labels` can bulk-archive or trash messages. For automated agents, consider adding guardrails to block `send_gmail_message` or restrict bulk label operations. See [Guardrails](/civic/concepts/guardrails).
+</Warning>
+
+### Label Management
+
+<AccordionGroup>
+  <Accordion title="list_gmail_labels">
+    List all labels in your Gmail account with IDs, names, and types.
+  </Accordion>
+
+  <Accordion title="manage_gmail_label">
+    Create, update, or delete labels. Control label visibility in both label list and message list.
+  </Accordion>
+
+  <Accordion title="modify_gmail_message_labels">
+    Add or remove labels from a single message. Use to archive (remove INBOX) or delete (add TRASH).
+  </Accordion>
+
+  <Accordion title="batch_modify_gmail_message_labels">
+    Add or remove labels from multiple messages simultaneously for bulk organization.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Email Search
+"Find all emails from john@example.com in the last week" - Use Gmail search operators to locate specific messages.
+
+### Reading Messages
+"Show me the content of the most recent email from the newsletter" - Retrieve and display full message content.
+
+### Batch Processing
+"Get the last 5 messages from my inbox and summarize them" - Process multiple emails efficiently in one request.
+
+### Sending Email
+"Send an email to sarah@example.com about tomorrow's meeting" - Compose and send emails directly.
+
+### Draft Creation
+"Create a draft email for the quarterly report" - Prepare emails for review before sending.
+
+### Thread Analysis
+"Show me the entire conversation thread about the project proposal" - Read complete email chains.
+
+### Label Organization
+"Create a label called 'Important Projects' and apply it to all emails from client@example.com" - Organize inbox with custom labels.
+
+### Bulk Label Operations
+"Archive all emails from notifications@example.com" - Remove INBOX label from multiple messages.
+
+<Note>
+**Gmail Search Operators:** Supports standard Gmail search syntax including `from:`, `to:`, `subject:`, `after:`, `before:`, `has:attachment`, `is:unread`, and more.
+
+**Batch Limits:** Message batch operations support up to 5 messages, thread batch operations support up to 25 threads.
+
+**Label Operations:** Archiving removes the INBOX label. Deleting adds the TRASH label. System labels like INBOX, SENT, TRASH cannot be deleted.
+</Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **21 server-specific guardrails** across 8 operations.
+
+<Note>
+There is no `send_gmail_message` tool for creating new outbound email from scratch — `draft_gmail_message` is used instead, keeping a human in the loop before sending. The `send_gmail_message` guardrails below apply to reply sending via thread operations.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Batch Protected Labels | `batch_modify_gmail_message_labels` | Request | Prevents batch adding or removing protected labels |
+| Prevent Batch Adding Protected Label | `batch_modify_gmail_message_labels` | Request | Prevents adding a protected label to multiple emails via batch modification |
+| Draft Content Filter | `draft_gmail_message` | Request | Prevents creating drafts with sensitive content |
+| Message Content Filter | `get_gmail_message_content` | Response | Filters out email messages containing sensitive information |
+| Single Message Verified Senders Only | `get_gmail_message_content` | Response | Blocks single message content from non-verified sender domains |
+| Batch Messages Verified Senders Only | `get_gmail_messages_content_batch` | Response | Redacts batch message content from non-verified sender domains |
+| Thread Content Filter | `get_gmail_thread_content` | Response | Filters thread content containing sensitive information |
+| Thread Verified Senders Only | `get_gmail_thread_content` | Response | Blocks thread content from non-verified sender domains |
+| Batch Threads Verified Senders Only | `get_gmail_threads_content_batch` | Response | Redacts batch thread content from non-verified sender domains |
+| Prevent Adding Protected Label | `modify_gmail_message_labels` | Request | Prevents adding a protected label to emails |
+| Protected Labels | `modify_gmail_message_labels` | Request | Prevents adding or removing protected labels |
+| Allowed Email Labels | `search_gmail_messages` | Request | Only allows viewing emails with specific labels |
+| Block Common Sensitive Terms in Search | `search_gmail_messages` | Request | Prevents searching for emails with commonly sensitive terms (password, SSN, credit card, etc.) |
+| Block Custom Sensitive Terms in Search | `search_gmail_messages` | Request | Prevents searching for emails with organisation-specific sensitive terms |
+| Required Search Labels | `search_gmail_messages` | Request | Requires specific labels to be included in search queries |
+| Safe Email Search | `search_gmail_messages` | Request | Prevents searching for emails with sensitive terms |
+| Search Results Filter | `search_gmail_messages` | Response | Filters search results containing sensitive information |
+| Approved Email Domains | `send_gmail_message` | Request | Restricts sending to addresses ending in approved domains (e.g. `@civic.com`). Uses `ends_with` — the right choice for domain-level allow lists. |
+| Maximum Recipients | `send_gmail_message` | Request | Limits the number of email recipients |
+| Send to Verified Recipients Only | `send_gmail_message` | Request | Allows sending only to exact recipient addresses. Uses `matches` for precise per-address control — use **Approved Email Domains** instead if you want to allow any address at a domain. |
+| Sensitive Content Filter | `send_gmail_message` | Request | Prevents sending emails containing sensitive information |
+| Single Recipient Only | `send_gmail_message` | Request | Only allows sending emails to a specific recipient (allowlist) |
+
+<Tip>
+**Choosing the right send guardrail:**
+
+- Use **Approved Email Domains** when you want to allow any address at a domain — e.g. `@civic.com`. It uses an `ends_with` operator, so `titus@civic.com`, `team@civic.com`, etc. all pass.
+- Use **Send to Verified Recipients Only** only when you need exact per-address control (e.g. one specific address, no others). It uses a `matches` operator — if the `to` value doesn't match exactly, the send is blocked.
+
+A common mistake is configuring **Send to Verified Recipients Only** expecting domain-level filtering. If your intent is "only send within our company domain", use **Approved Email Domains**.
+
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add an approved email domains guardrail to my Gmail server for @civic.com."
+</Tip>

@@ -1,0 +1,177 @@
+---
+title: Cursor Setup
+description: Connect Cursor AI code editor to Civic in 3 minutes
+sidebar_custom_props:
+  icon: "code"
+---
+
+import AuthMethodCallout from '@site/docs/_snippets/_auth-method-callout.mdx'
+import OnboardingSteps from '@site/docs/_snippets/_onboarding-what-happens.mdx'
+import HubBridgeInfo from '@site/docs/_snippets/_hub-bridge-what-is.mdx'
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Cursor Editor" icon="cursor-click" href="https://cursor.com">
+    Download and install Cursor (free tier works)
+  </Card>
+  <Card title="Civic Account" icon="shield-check" href="https://app.civic.com">
+    Sign up at app.civic.com and grab your token
+  </Card>
+</CardGroup>
+
+<AuthMethodCallout />
+
+## Setup Steps
+
+<Steps>
+  <Step title="Get Your Civic URL and Token">
+    Log in to [app.civic.com](https://app.civic.com) and copy your **Civic URL** and **API token** from your account settings.
+
+    Your Civic URL looks like this:
+    ```
+    https://app.civic.com/hub/mcp?profile=YOUR_PROFILE
+    ```
+
+    If you haven't set up Civic yet, the onboarding takes about 2 minutes:
+
+    <OnboardingSteps />
+  </Step>
+
+  <Step title="Open Cursor MCP Settings">
+    Go to **Settings → Tools & MCPs → New MCP Server**
+  </Step>
+
+  <Step title="Add Civic MCP Server">
+    Paste the following configuration:
+
+    ```json
+    {
+      "mcpServers": {
+        "civic": {
+          "url": "YOUR_CIVIC_URL",
+          "headers": {
+            "Authorization": "Bearer YOUR_TOKEN_HERE"
+          }
+        }
+      }
+    }
+    ```
+
+    Replace `YOUR_CIVIC_URL` with your Civic URL and `YOUR_TOKEN_HERE` with your API token.
+  </Step>
+
+  <Step title="Enable and Test">
+    The server should appear in your MCP servers list. If you don't see it, try disabling and re-enabling it.
+  </Step>
+</Steps>
+
+## Test Your Connection
+
+Try these prompts in Cursor to verify everything works:
+
+```
+"What MCP servers are available?"
+"Show me my connected tools"
+"Help me set up GitHub integration"
+```
+
+## Troubleshooting
+
+<Accordion title="Civic not showing in MCP settings">
+1. Make sure you saved the configuration after adding it
+2. Check that your URL and token are correct
+3. Try disabling and re-enabling the server
+4. Restart Cursor
+</Accordion>
+
+<Accordion title="Authentication errors">
+1. Verify your token is correct and hasn't expired
+2. Make sure you're using the `Bearer ` prefix in the Authorization header
+3. Try generating a new token from [app.civic.com](https://app.civic.com)
+</Accordion>
+
+<Accordion title="Connection timeouts">
+1. Check your internet connection
+2. Verify the Civic URL is correct
+3. Try removing and re-adding the MCP server
+</Accordion>
+
+## Legacy Setup: Hub Bridge
+
+<HubBridgeInfo />
+
+If you're on an older version of Cursor that doesn't support HTTP MCP servers, you can use Hub Bridge as a local stdio proxy instead. This requires **Node.js 18+**.
+
+<Accordion title="Hub Bridge setup (legacy)">
+
+### One-Click Install
+
+<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=Civic&config=eyJjb21tYW5kIjoibnB4IC15IEBjaXZpYy9odWItYnJpZGdlIn0%3D">
+  <img
+    src="https://cursor.com/deeplink/mcp-install-dark.svg"
+    alt="Add Civic to Cursor"
+    width="126"
+    height="28"
+    className="rounded hover:opacity-80 transition-opacity"
+  />
+</a>
+
+### Manual Config File
+
+Create **`.cursor/mcp.json`** in your project root:
+
+```json
+{
+  "mcpServers": {
+    "civic": {
+      "command": "npx",
+      "args": ["-y", "@civic/hub-bridge"]
+    }
+  }
+}
+```
+
+The first time you use a tool, Hub Bridge opens a browser window to app.civic.com for authentication.
+</Accordion>
+
+## Managing Your Tools
+
+### Adding More Tools
+
+You can add new tools directly in your Cursor chat:
+
+```
+"Connect me to GitHub"
+"Add Slack to my available tools"
+"I need access to PostgreSQL"
+"Show me what tools are available to connect"
+```
+
+### Removing Tools
+
+You can disconnect from specific tools directly in chat:
+
+```
+"Disconnect from Slack"
+"Remove GitHub from my tools"
+"What tools do I currently have connected?"
+```
+
+### Removing the MCP Server
+
+Go to **Settings → Tools & MCPs**, find "Civic" in your MCP servers list, and delete it.
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Client Compatibility" icon="table" href="/civic/reference/client-compatibility">
+    Technical details about Cursor's MCP support
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
+    Common Cursor connection issues
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community for setup assistance
+  </Card>
+</CardGroup>

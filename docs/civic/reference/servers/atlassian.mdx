@@ -1,0 +1,346 @@
+---
+title: Atlassian
+description: 'Access and manage Atlassian products including Jira, Confluence, and Bitbucket'
+sidebar_custom_props:
+  icon: "server"
+---
+
+## Overview
+
+The Atlassian server enables AI assistants to interact with [Jira](https://www.atlassian.com/software/jira) and [Confluence](https://www.atlassian.com/software/confluence), providing comprehensive project management and documentation capabilities through Rovo-powered intelligent search and full read/write access.
+
+## How to Add Atlassian
+
+<Steps>
+  <Step title="Access Atlassian Administration">
+    1. Go to Atlassian Administration and select your organization
+    2. Navigate to **Apps > AI settings > Rovo MCP server**
+  </Step>
+  <Step title="Configure Domain Access">
+    1. Add or remove domains as needed for your organization
+    2. You can use Atlassian's default supported domain list or specify your own
+    3. These controls apply to OAuth connections only (API token connections aren't restricted)
+  </Step>
+  <Step title="Connect to Civic">
+    1. Add the Atlassian server to your Civic environment through the server directory
+    2. Authorize using OAuth when prompted
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple command like "Search Jira for all my open tasks" or "List my recent Confluence pages" to verify the connection works properly.
+  </Step>
+</Steps>
+
+<Tip>
+For more details, see [Control Atlassian Rovo MCP server settings](https://support.atlassian.com/security-and-access-policies/docs/control-atlassian-rovo-mcp-server-settings/)
+</Tip>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Intelligent Search" icon="magnifying-glass">
+    Use Rovo Search to find content across Jira and Confluence with natural language queries
+  </Card>
+  <Card title="Project Management" icon="list-check">
+    Create, update, and transition Jira issues with full field management and workflow control
+  </Card>
+  <Card title="Documentation" icon="file-lines">
+    Create and update Confluence pages with Markdown formatting and comment management
+  </Card>
+  <Card title="Cross-Product Workflows" icon="diagram-project">
+    Build workflows that span Jira and Confluence for seamless collaboration
+  </Card>
+</CardGroup>
+
+## Available Tools (28)
+
+### Search & Discovery
+
+<AccordionGroup>
+  <Accordion title="search">
+    Rovo-powered intelligent search across both Jira and Confluence. Use this by default for natural language queries.
+  </Accordion>
+
+  <Accordion title="searchJiraIssuesUsingJql">
+    Search Jira issues using JQL (Jira Query Language) for precise field-level filtering
+  </Accordion>
+
+  <Accordion title="searchConfluenceUsingCql">
+    Search Confluence content using CQL (Confluence Query Language) for advanced queries
+  </Accordion>
+</AccordionGroup>
+
+### Jira Management
+
+<AccordionGroup>
+  <Accordion title="createJiraIssue">
+    Create new Jira issues with custom fields, assignees, and metadata
+  </Accordion>
+
+  <Accordion title="getJiraIssue">
+    Retrieve detailed information about a specific Jira issue
+  </Accordion>
+
+  <Accordion title="editJiraIssue">
+    Update fields on existing Jira issues
+  </Accordion>
+
+  <Accordion title="transitionJiraIssue">
+    Move issues through workflow states
+  </Accordion>
+
+  <Accordion title="addCommentToJiraIssue">
+    Add comments to Jira issues with optional visibility restrictions
+  </Accordion>
+</AccordionGroup>
+
+### Confluence Management
+
+<AccordionGroup>
+  <Accordion title="createConfluencePage">
+    Create new Confluence pages with Markdown content
+  </Accordion>
+
+  <Accordion title="updateConfluencePage">
+    Update existing Confluence pages with version tracking
+  </Accordion>
+
+  <Accordion title="getConfluencePage">
+    Retrieve page content converted to Markdown format
+  </Accordion>
+
+  <Accordion title="createConfluenceFooterComment">
+    Add general comments to pages
+  </Accordion>
+
+  <Accordion title="createConfluenceInlineComment">
+    Add comments attached to specific text selections
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### Sprint Planning
+"Search Jira for all tasks in project AUTH with status 'Backlog' created in the last 2 weeks. Show me the top 10, then transition them to 'Selected for Development' and add a comment 'Added to Sprint 23'"
+
+### Team Standup Preparation
+"Show me all Jira issues assigned to me that are 'In Progress'. For each issue, get the latest comments and summarize my current status. Also show which issues are due this week."
+
+### Documentation Sync
+"Search for all bugs in project AUTH tagged 'api-endpoint' that were resolved this sprint. Create a Confluence page in the Labs space titled 'Sprint 23 - API Endpoints Completed' with a summary of each bug and its resolution."
+
+### Research Workflow
+"Search for 'authentication analytics' across Jira and Confluence, summarize the top 5 results, then create a new Confluence page in the Labs space titled 'Authentication Analytics Research Summary' with your findings"
+
+<Note>
+**Available Products:** Both Confluence and Jira with full read/write capabilities
+
+**Search Tip:** Use Rovo Search (search) by default for intelligent cross-product search. Only use CQL/JQL when you need precise field-level filtering.
+
+**URL Handling:** Most tools accept full Confluence/Jira URLs and will extract IDs automatically.
+
+**Content Format:** All page and comment creation uses Markdown format.
+</Note>
+
+<Warning>
+The MCP server currently requests over-privileged access, so you cannot limit it to read-only operations. Coupled with the lack of approval requests in Civic, care must be taken when using this MCP server.
+</Warning>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **72 server-specific guardrails** across 20 operations (Jira and Confluence combined).
+
+<Note>
+Most comprehensive guardrail set on the platform — 72 specific guardrails across 20 operations spanning both Jira and Confluence. All require values configured before use (allowlists, blocklists, length limits, etc.).
+</Note>
+
+### Jira Guardrails
+
+**`addCommentToJiraIssue`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Comments on Specific Issues | Request | Blocks comments on protected issue IDs/keys |
+| Filter Comment Content | Request | Blocks comments containing sensitive keywords |
+| Limit Comment Length | Request | Caps commentBody length |
+| Prevent Visibility Restrictions | Request | Blocks setting commentVisibility |
+
+**`atlassianUserInfo`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Hide User Account IDs | Response | Redacts accountId from user info responses |
+| Hide User Email Addresses | Response | Redacts email from user info responses |
+
+**`createJiraIssue`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Creation in Specific Projects | Request | Blocks issue creation in sensitive project_key values |
+| Restrict Issue Types | Request | Allowlist for issueTypeName |
+| Prevent Assignment to Specific Users | Request | Blocklist for assignee_account_id |
+| Limit Additional Fields | Request | Allowlist for additional_fields usage |
+
+**`editJiraIssue`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Edits to Specific Issues | Request | Protects issue IDs/keys from modification |
+| Prevent Field Modifications | Request | Blocks changes to specific field values |
+| Filter Field Values | Request | Blocks sensitive data in field updates |
+
+**`getJiraIssue`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Access to Specific Issues | Request | Protects sensitive issues by ID/key |
+| Hide Sensitive Issue Fields | Response | Redacts fields from issue responses |
+| Redact User Information | Response | Redacts fields.assignee and other user data |
+| Filter Issue History | Response | Redacts changelog from responses |
+
+**`getJiraIssueRemoteIssueLinks`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Hide Remote Links | Response | Redacts all external references (links[*]) |
+
+**`getJiraProjectIssueTypesMetadata`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Access to Specific Projects | Request | Protects project metadata by ID/key |
+| Hide Custom Issue Types | Response | Filters sensitive issueTypes[*] from responses |
+
+**`getVisibleJiraProjects`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Specific Actions | Request | Blocks certain actions (permission queries) |
+| Limit Results | Request | Caps maxResults |
+| Filter Project List | Response | Hides sensitive projects from listing |
+| Hide Project Details | Response | Redacts project metadata |
+
+**`lookupJiraAccountId`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block User Lookups | Request | Prevents email/name enumeration via searchString |
+| Limit Search Scope | Request | Restricts searchString patterns |
+| Hide User Details | Response | Redacts results[*] account information |
+
+**`searchJiraIssuesUsingJql`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Sensitive JQL Queries | Request | Blocks JQL for confidential issues |
+| Block Project Searches | Request | Blocks JQL targeting specific projects |
+| Limit Search Results | Request | Caps maxResults |
+| Filter Search Results | Response | Hides sensitive issues[*] from results |
+| Hide Issue Fields | Response | Redacts issues[*].fields from JQL results |
+
+**`transitionJiraIssue`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Specific Transitions | Request | Prevents certain transitionId values |
+| Prevent Transitions on Protected Issues | Request | Blocks status changes by issueIdOrKey |
+| Require Transition Comments | Request | Enforces fields.comment must exist |
+
+### Confluence Guardrails
+
+**`createConfluencePage`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Page Creation in Spaces | Request | Prevents page creation in sensitive spaceId values |
+| Filter Page Creation Content | Request | Blocks pages with sensitive keywords in body |
+| Limit Page Content Size | Request | Caps body length |
+| Prevent Private Page Creation | Request | Blocks isPrivate = true |
+
+**`updateConfluencePage`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Updates to Pages | Request | Protects critical pages by pageId |
+| Filter Update Content | Request | Blocks sensitive keywords in page body updates |
+| Prevent Status Changes | Request | Blocks draft/current status transitions |
+| Prevent Page Moves | Request | Blocks spaceId/parentId changes |
+| Require Version Messages | Request | Enforces versionMessage must exist |
+
+**`getConfluencePage`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Specific Page IDs | Request | Protects sensitive pages by pageId |
+| Filter Pages from Spaces | Request | Blocks access from sensitive spaceId values |
+| Block Page on Sensitive Words | Response | Rejects entire page if sensitive keywords found in body |
+
+**`getPagesInConfluenceSpace`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Specific Space IDs | Request | Protects entire spaces by spaceId |
+| Filter Deleted/Trashed Pages | Request | Blocks status values like deleted/trashed |
+| Limit Pages Per Space Query | Request | Caps limit parameter |
+| Hide Draft/Archived Pages | Response | Filters results[*].status |
+| Redact Page Content | Response | Masks sensitive info in results[*].body |
+
+**`getConfluenceSpaces`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Specific Space Keys | Request | Denies access to sensitive spaces by keys |
+| Limit Space Results Per Page | Request | Caps limit |
+| Hide Archived Spaces | Response | Filters spaces by results[*].status |
+| Hide Space Descriptions | Response | Redacts results[*].description |
+
+**`searchConfluenceUsingCql`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Sensitive CQL Queries | Request | Blocks CQL for passwords/secrets |
+| Block CQL Wildcard Searches | Request | Prevents broad cql patterns |
+| Limit CQL Search Results | Request | Caps limit |
+| Filter CQL Search Results | Response | Hides sensitive pages from results[*] |
+
+**`createConfluenceFooterComment`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Footer Comment Creation | Request | Protects specific pages from footer comments |
+| Filter Footer Comment Content | Request | Blocks sensitive keywords in body |
+| Limit Footer Comment Length | Request | Caps body length |
+
+**`getConfluencePageFooterComments`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Footer Comments by Page | Request | Blocks access to footer comments by pageId |
+| Hide Footer Commenter Info | Response | Redacts results[*].author |
+| Redact Footer Comment Content | Response | Masks sensitive keywords in results[*].body |
+
+**`createConfluenceInlineComment`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Block Inline Comment Creation | Request | Protects sensitive pages from inline comments |
+| Filter Inline Comment Content | Request | Blocks sensitive keywords in body |
+| Prevent Comments on Text | Request | Blocks certain textSelection values |
+
+**`getConfluencePageInlineComments`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Filter Inline Comments by Status | Request | Blocks access to draft/other status comments |
+| Redact Inline Comment Content | Response | Masks sensitive info in results[*].body |
+
+**`getAccessibleAtlassianResources`**
+
+| Guardrail | Timing | Description |
+|-----------|--------|-------------|
+| Limit Accessible Resources | Response | Caps the number of Atlassian resources returned |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Atlassian server."
+</Tip>

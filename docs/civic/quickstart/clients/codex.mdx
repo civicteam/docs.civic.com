@@ -1,0 +1,87 @@
+---
+title: Codex Setup
+description: Connect Codex to Civic via HTTP
+sidebar_custom_props:
+  icon: "terminal"
+---
+
+Codex supports connecting to Civic directly over HTTP using the Streamable HTTP transport — no local proxy required.
+
+## Prerequisites
+
+- Codex installed and authenticated
+- Civic account at [app.civic.com](https://app.civic.com)
+
+## Quick Setup (CLI)
+
+**Step 1** — Register the remote MCP server:
+
+```bash
+codex mcp add civic --transport http https://app.civic.com/hub/mcp
+```
+
+**Step 2** — Launch Codex:
+
+```bash
+codex
+```
+
+**Step 3** — Run `/mcp`, select `civic`, and follow the browser sign-in flow to authorize.
+
+## Setup via Desktop App
+
+You can also register the MCP server via the Codex desktop app UI:
+
+1. Open **Settings → MCP Servers → Add Server → Streamable HTTP**
+2. Paste your `CIVIC_URL` — for example `https://app.civic.com/hub/mcp?profile=your-toolkit`
+3. Paste your `CIVIC_TOKEN` if using token authentication
+4. Save — you are ready to go.
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to find your MCP URL and generate a token
+</Card>
+
+## Verify the Connection
+
+- In Codex, run `/mcp` to check that `civic` shows as `connected`
+- Test a command such as "What tools do I have available?" to confirm the session is authorized
+
+## Troubleshooting
+
+- If the connection shows `failed`, re-run `codex --debug` to view detailed logs in your terminal
+- Ensure you have an active Civic session in your default browser; the MCP flow opens a new window for login
+- Delete and re-add the server with `codex mcp remove civic` followed by the setup command if you need to refresh credentials
+
+## Legacy: Hub Bridge (Local Proxy)
+
+<Note>
+The Hub Bridge is a legacy local proxy for environments that cannot make outbound HTTPS connections to remote MCP servers. Use the HTTP method above unless you specifically need offline capability or your environment blocks outbound HTTPS.
+</Note>
+
+If you require the Hub Bridge:
+
+**Prerequisites:** Node.js 18+
+
+```bash
+codex mcp add civic -- npx -y @civic/hub-bridge
+```
+
+Start Codex, run `/mcp`, select `civic`, and follow the browser sign-in flow.
+
+<Card title="Hub Bridge Guide" icon="bridge" href="/civic/quickstart/hub-bridge">
+  Full Hub Bridge configuration details
+</Card>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Client Compatibility" icon="table" href="/civic/reference/client-compatibility">
+    MCP support matrix for Codex
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
+    Common Codex connection fixes
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Ask setup questions in our developer Slack
+  </Card>
+</CardGroup>

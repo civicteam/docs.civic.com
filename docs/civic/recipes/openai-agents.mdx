@@ -1,0 +1,184 @@
+---
+title: OpenAI SDK (Agents)
+description: Use Civic with OpenAI Agents SDK using the hosted MCP tool approach
+sidebar_custom_props:
+  icon: "robot"
+---
+
+import NextjsAccessTokenSetup from '@site/docs/_snippets/_nextjs-access-token-setup.mdx'
+import CivicTokenSetup from '@site/docs/_snippets/_civic-token-env-setup.mdx'
+
+## Overview
+
+Integrate Civic with the OpenAI Agents SDK using `hostedMcpTool()` — the simplest way to use Civic with OpenAI. No manual tool looping or schema conversion required.
+
+<Note>
+For the older manual function calling approach, see [OpenAI SDK (Node.js)](/civic/recipes/openai-sdk).
+</Note>
+
+## Prerequisites
+
+- Civic account at [app.civic.com](https://app.civic.com) with at least one MCP server connected
+- OpenAI API key from [platform.openai.com](https://platform.openai.com)
+
+## Installation
+
+```bash
+npm install @openai/agents
+```
+
+The `openai` package is bundled as a dependency — no need to install it separately.
+
+## Authentication
+
+<Tabs>
+  <Tab label="Backend / Script (Civic Token)">
+    For autonomous agents and server-side scripts — use a Civic token directly.
+
+    <CivicTokenSetup />
+
+    ```bash
+    # .env
+    OPENAI_API_KEY=your_openai_api_key
+    CIVIC_TOKEN=your-civic-token-here
+    CIVIC_URL=https://app.civic.com/hub/mcp
+    ```
+  </Tab>
+  <Tab label="Next.js App (Civic Auth)">
+    For web apps where each user has their own Civic session.
+
+    Install the additional auth package:
+    ```bash
+    npm install @civic/auth
+    ```
+
+    <NextjsAccessTokenSetup />
+
+    ```bash
+    # .env.local
+    OPENAI_API_KEY=your_openai_api_key
+    CIVIC_AUTH_CLIENT_ID=your_client_id  # from auth.civic.com
+    ```
+  </Tab>
+</Tabs>
+
+## Basic Setup
+
+<Tabs>
+  <Tab label="Backend / Script">
+    ```typescript
+    import { Agent, hostedMcpTool, run } from '@openai/agents';
+
+    const agent = new Agent({
+      name: 'Civic Assistant',
+      model: 'gpt-4o-mini',
+      instructions: 'You are a helpful assistant with access to external tools through Civic.',
+      tools: [
+        hostedMcpTool({
+          serverLabel: 'civic',
+          serverUrl: process.env.CIVIC_URL!,
+          authorization: process.env.CIVIC_TOKEN!, // plain token string
+        }),
+      ],
+    });
+
+    async function main() {
+      const result = await run(agent, 'List my GitHub repositories');
+      console.log(result.finalOutput); // the agent's final text response
+    }
+
+    main().catch(console.error);
+    ```
+  </Tab>
+  <Tab label="Next.js API Route">
+    ```typescript
+    // app/api/agent/route.ts
+    import { NextRequest, NextResponse } from 'next/server';
+    import { Agent, hostedMcpTool, run } from '@openai/agents';
+    import { getTokens } from '@civic/auth/nextjs';
+
+    export async function POST(req: NextRequest) {
+      const { message } = await req.json();
+      const { accessToken } = await getTokens();
+      // getTokens() exchanges the user's Civic Auth session for a hub access token
+
+      if (!accessToken) {
+        return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+      }
+
+      const agent = new Agent({
+        name: 'Civic Assistant',
+        model: 'gpt-4o-mini',
+        instructions: 'You are a helpful assistant with access to external tools through Civic.',
+        tools: [
+          hostedMcpTool({
+            serverLabel: 'civic',
+            serverUrl: 'https://app.civic.com/hub/mcp',
+            authorization: accessToken, // plain token string
+          }),
+        ],
+      });
+
+      const result = await run(agent, message);
+      return NextResponse.json({ response: result.finalOutput });
+    }
+    ```
+  </Tab>
+</Tabs>
+
+The Agent automatically discovers available Civic tools, selects the right one, calls it, and returns the result.
+
+## Streaming
+
+```typescript
+const result = await run(agent, 'Your question here?', { stream: true });
+
+for await (const event of result) {
+  if (event.type === 'response.output_text.delta') {
+    process.stdout.write(event.delta);
+  }
+}
+
+console.log(`Final result: ${result.finalOutput}`);
+```
+
+## Tool Approval
+
+Control which tools require human approval before execution:
+
+```typescript
+hostedMcpTool({
+  serverLabel: 'civic',
+  serverUrl: process.env.CIVIC_URL!,
+  authorization: process.env.CIVIC_TOKEN!,
+  requireApproval: {
+    never: { toolNames: ['github__list_repos', 'slack__search_messages'] },
+    always: { toolNames: ['github__delete_repo'] },
+  }
+})
+```
+
+## Strict Mode
+
+<Warning>
+Not all Civic tool schemas are compatible with OpenAI's `strict: true` structured outputs. Set `strict` to `false` on the Responses API when using Civic tools.
+</Warning>
+
+## Comparison
+
+| Feature | OpenAI Agents SDK (hostedMcpTool) | OpenAI SDK (function calling) | Vercel AI SDK |
+|---------|-----------------------------------|------------------------------|---------------|
+| **Setup Complexity** | Low | Medium | Medium |
+| **Tool Looping** | No (automatic) | Yes (manual) | Yes (manual) |
+| **Tool Conversion** | No | Yes | Yes |
+| **Best For** | Agents and scripts | Full control | Next.js apps |
+| **Streaming** | Yes | Yes | Yes |
+
+<CardGroup cols={2}>
+  <Card title="OpenAI Agents SDK Docs" icon="robot" href="https://openai.github.io/openai-agents-js/guides/mcp/">
+    Official OpenAI Agents SDK MCP guide
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Developer Slack
+  </Card>
+</CardGroup>

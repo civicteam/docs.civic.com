@@ -1,0 +1,182 @@
+---
+title: Civic MCP Client (Python)
+description: Use `civic-mcp-client` to connect your Python apps to Civic MCP Hub
+sidebar_custom_props:
+  icon: "python"
+---
+
+import CivicTokenSetup from '@site/docs/_snippets/_civic-token-env-setup.mdx'
+
+## Overview
+
+`civic-mcp-client` is a Python MCP client for connecting to the Civic MCP Hub and exposing MCP tools to AI frameworks.
+
+It supports:
+- Direct Civic token authentication
+- RFC 8693 token exchange (server-side only)
+- Adapter-based integration with frameworks like LangChain, Pydantic AI, and FastMCP
+
+## Recommended (demo-first)
+
+Start with the reference implementation:
+
+- https://github.com/civicteam/demos/tree/main/apps/civic-auth-demo-python-backend
+
+That demo uses Civic Auth in the frontend and forwards the authenticated Civic access token to a Python backend, which then passes it into `CivicMCPClient(auth={"token": ...})`.
+
+## Install
+
+```bash
+pip install civic-mcp-client
+```
+
+Optional framework integrations:
+
+```bash
+pip install "civic-mcp-client[langchain,pydanticai,fastmcp]"
+```
+
+## Authentication
+
+### Civic Token (direct; manual token for local testing)
+
+<CivicTokenSetup />
+
+`CIVIC_TOKEN` (docs) is the same value as `access_token`. In the `python-civic-mcp-client` repo, this value is named `CIVIC_ACCESS_TOKEN`.
+
+```bash
+# .env
+CIVIC_TOKEN=your-civic-token-here
+
+# Optional: lock tool access to a specific profile id
+CIVIC_PROFILE_ID=optional-profile-id
+```
+
+```python
+from civic_mcp_client import CivicMCPClient
+
+client = CivicMCPClient(
+    # Use your token loading approach (env vars, secrets manager, etc.)
+    auth={"token": "your-civic-token-here"},
+    civic_profile="optional-profile-id",
+)
+```
+
+### Token Exchange (RFC 8693)
+
+Token exchange is **server-side only**. Your Civic client secret must never be shipped to a browser or untrusted environment.
+
+```bash
+# .env (server)
+CIVIC_CLIENT_ID=your_client_id
+CIVIC_CLIENT_SECRET=your_client_secret
+
+# Optional: lock tool access to a specific profile id
+CIVIC_PROFILE_ID=optional-profile-id
+```
+
+```python
+from civic_mcp_client import CivicMCPClient
+
+def get_external_access_token() -> str:
+    # Replace this with your IdP / external provider token fetch.
+    return "external-token"
+
+client = CivicMCPClient(
+    auth={
+        "token_exchange": {
+            # Token exchange credentials (server-side only)
+            "client_id": "your-client-id",
+            "client_secret": "your-client-secret",
+            "subject_token": get_external_access_token,
+            "expires_in": 3600,  # optional requested lifetime in seconds
+        }
+    },
+    civic_profile="optional-profile-id",
+)
+```
+
+## Quick Start (manual token)
+
+This quick start uses a manually generated Civic access token for local testing. For a production-like frontend + Python backend setup, use the demo app above.
+
+```python
+import asyncio
+from civic_mcp_client import CivicMCPClient
+
+
+async def main() -> None:
+    client = CivicMCPClient(
+        auth={"token": "your-civic-token-here"},
+        civic_profile="optional-profile-id",
+    )
+
+    # Discover available tools from your configured toolkit
+    tools = await client.get_tools()
+
+    # Call a specific tool directly
+    result = await client.call_tool(
+        name="tool-name",
+        args={"foo": "bar"},
+    )
+
+    print("Tools loaded:", len(tools))
+    print("Tool call result:", result)
+
+    await client.close()
+
+
+asyncio.run(main())
+```
+
+## Framework Adapters
+
+Use `await client.adapt_for(...)` with the adapter for your framework.
+
+Depending on the adapter, `adapt_for(...)` will either:
+- Return a new `CivicMCPClient` (backend adapters like FastMCP), or
+- Return adapter-native tool outputs (e.g. tool schemas / definitions)
+
+### LangChain / LangGraph
+
+```python
+from civic_mcp_client import CivicMCPClient
+from civic_mcp_client.adapters.langchain import execute_langchain_tool_call, langchain
+
+client = CivicMCPClient(auth={"token": "your-civic-access-token"})
+
+tool_schemas = await client.adapt_for(langchain())
+```
+
+### Pydantic AI
+
+```python
+from civic_mcp_client import CivicMCPClient
+from civic_mcp_client.adapters.pydanticai import pydanticai
+
+client = CivicMCPClient(auth={"token": "your-civic-access-token"})
+tool_definitions = await client.adapt_for(pydanticai())
+```
+
+### FastMCP
+
+```python
+from civic_mcp_client import CivicMCPClient
+from civic_mcp_client.adapters.fastmcp import fastmcp
+
+client = CivicMCPClient(auth={"token": "your-civic-access-token"})
+
+fastmcp_client = await client.adapt_for(fastmcp())
+tools = await fastmcp_client.get_tools()
+```
+
+## Next Steps
+
+### Deploy an agent (recommended)
+
+- See the agent deployment guide: profile locking, URL parameters, and best practices
+
+### Get help
+
+- Ask questions in our developer Slack
+

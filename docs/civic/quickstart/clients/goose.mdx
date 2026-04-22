@@ -1,0 +1,129 @@
+---
+title: Goose Setup
+description: Connect Goose autonomous developer agent to Civic
+sidebar_custom_props:
+  icon: "terminal"
+---
+
+import OnboardingSteps from '@site/docs/_snippets/_onboarding-what-happens.mdx'
+
+## Overview
+
+Goose (Block's autonomous developer agent) now supports direct remote HTTP endpoints for connecting to Civic MCP servers with full OAuth2 support.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Goose" icon="terminal" href="https://github.com/block/goose">
+    Install Goose autonomous developer agent
+  </Card>
+  <Card title="Civic Account" icon="user" href="https://app.civic.com">
+    Create a free account on app.civic.com
+  </Card>
+</CardGroup>
+
+## Setup with Remote HTTP Endpoint
+
+<Steps>
+  <Step title="Set up your Civic account">
+    If you haven't already, complete onboarding at app.civic.com:
+
+    <OnboardingSteps />
+  </Step>
+
+  <Step title="Configure Goose">
+    Add the Civic MCP server to your Goose configuration:
+
+    1. Open your Goose configuration file — typically `~/.config/goose/config.yaml` (global) or `.goose/config.yaml` in your project root
+    2. Add the following MCP server configuration:
+
+    ```yaml
+    mcp:
+      servers:
+        civic:
+          type: http
+          url: https://app.civic.com/hub/mcp
+          name: "Civic"
+    ```
+
+    <Note>
+      Goose supports HTTP endpoints directly, no local bridge required.
+    </Note>
+  </Step>
+
+  <Step title="Restart Goose">
+    Restart Goose to load the new configuration:
+    ```bash
+    goose restart
+    ```
+    Or if running as a service:
+    ```bash
+    goose stop
+    goose start
+    ```
+  </Step>
+
+  <Step title="Test Connection">
+    Verify the connection is working:
+    ```
+    "What MCP servers are available?"
+    "Show me my connected tools"
+    ```
+
+    Goose should respond with the list of available Civic tools.
+  </Step>
+
+  <Step title="Authenticate with Civic">
+    On the first tool call, Goose opens a browser window to app.civic.com. Sign in with your Civic account to authorize the session. This is a one-time OAuth flow — credentials are cached after the first login.
+
+    Individual services (GitHub, Slack, etc.) will each prompt for their own OAuth authorization the first time you use them.
+
+    <Note>
+      Your service credentials are never exposed to Goose or stored locally. Civic manages OAuth tokens on your behalf.
+    </Note>
+  </Step>
+</Steps>
+
+## Alternative: Hub Bridge Setup
+
+If you prefer to use the local Hub Bridge instead of direct HTTP endpoints:
+
+<Steps>
+  <Step title="Configure Hub Bridge">
+    Add this to your Goose configuration:
+
+    ```yaml
+    mcp:
+      servers:
+        civic:
+          type: stdio
+          command: npx
+          args: ["-y", "@civic/hub-bridge"]
+    ```
+  </Step>
+
+  <Step title="Install Node.js">
+    Make sure Node.js 18+ is installed for the Hub Bridge to work
+  </Step>
+
+  <Step title="Restart and Test">
+    Restart Goose and test with: "What MCP servers are available?"
+  </Step>
+</Steps>
+
+## Resources
+
+<CardGroup cols={2}>
+  <Card title="Client Compatibility" icon="table" href="/civic/reference/client-compatibility">
+    Goose MCP support details (Remote URL method)
+  </Card>
+  <Card title="Claude Desktop Guide" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
+    Similar Remote URL setup process
+  </Card>
+  <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
+    Common connection issues
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Join our developer community for Goose setup help
+  </Card>
+</CardGroup>

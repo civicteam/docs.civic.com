@@ -1,0 +1,79 @@
+---
+title: Windsurf Setup
+description: Connect Windsurf AI IDE to Civic
+sidebar_custom_props:
+  icon: "wind"
+---
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Windsurf" icon="wind" href="https://windsurf.com">
+    Download and install Windsurf by Codeium
+  </Card>
+  <Card title="Civic Account" icon="user" href="https://app.civic.com">
+    Create a free account and configure your tools at app.civic.com
+  </Card>
+</CardGroup>
+
+## Setup
+
+Windsurf supports remote MCP servers natively via Streamable HTTP — no local bridge required.
+
+<Steps>
+  <Step title="Open MCP config">
+    Open or create `~/.codeium/windsurf/mcp_config.json`
+  </Step>
+  <Step title="Add Civic as an MCP server">
+    ```json
+    {
+      "mcpServers": {
+        "civic": {
+          "serverUrl": "https://app.civic.com/hub/mcp"
+        }
+      }
+    }
+    ```
+  </Step>
+  <Step title="Restart Windsurf">
+    Restart Windsurf (or reload the window) to pick up the config change.
+  </Step>
+  <Step title="Authorize">
+    On first use, Cascade will prompt you to authenticate with Civic. Complete the OAuth flow in your browser, then return to Windsurf.
+  </Step>
+</Steps>
+
+## Test Your Connection
+
+Open Cascade and try:
+
+```
+"What MCP tools do I have available?"
+"List my GitHub repositories"
+"Check my Google Calendar for today"
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="MCP server not appearing in Cascade">
+    Check that the config file is valid JSON and saved at the correct path (`~/.codeium/windsurf/mcp_config.json`). Restart Windsurf after any config change.
+  </Accordion>
+  <Accordion title="Authentication fails">
+    Remove the server entry, restart Windsurf, re-add it, and retry the auth flow. Make sure your browser isn't blocking the Civic OAuth popup.
+  </Accordion>
+  <Accordion title="Tools not available after connecting">
+    Visit [app.civic.com](https://app.civic.com) to confirm your toolkit has MCP servers configured. An empty toolkit will result in no tools being available.
+  </Accordion>
+</AccordionGroup>
+
+## Need Help?
+
+<CardGroup cols={2}>
+  <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
+    Common connection issues and solutions
+  </Card>
+  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
+    Ask in our developer Slack
+  </Card>
+</CardGroup>

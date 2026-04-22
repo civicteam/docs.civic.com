@@ -1,0 +1,82 @@
+---
+title: Canva
+description: 'Create, manage, and export designs using the Canva design platform'
+sidebar_custom_props:
+  icon: "server"
+---
+
+## Overview
+
+The Canva server enables AI assistants to interact with [Canva](https://www.canva.com), allowing creation and management of designs, AI-powered generation, folder organization, asset uploads, and collaborative commenting.
+
+<Card title="Add to Civic" icon="plus" href="https://app.civic.com">
+  Connect Canva at app.civic.com
+</Card>
+
+## Available Tools (19)
+
+| Tool | Description |
+|------|-------------|
+| `mcp__civic__canva-comment-on-design` | Add a comment on a Canva design |
+| `mcp__civic__canva-create-design-from-candidate` | Create a new Canva design from an AI generation job candidate |
+| `mcp__civic__canva-create-folder` | Create a new folder in Canva |
+| `mcp__civic__canva-export-design` | Export a Canva design to various formats (PDF, JPG, PNG, PPTX, GIF, MP4) |
+| `mcp__civic__canva-fetch` | Get the content of a doc, presentation, whiteboard, or other Canva design by ID |
+| `mcp__civic__canva-generate-design` | Generate designs with AI |
+| `mcp__civic__canva-get-design` | Get detailed information about a Canva design (owner, title, URLs, thumbnail, page count) |
+| `mcp__civic__canva-get-design-content` | Get the text content of a Canva design (read-only) |
+| `mcp__civic__canva-get-design-pages` | Get a list of pages in a Canva design with thumbnails |
+| `mcp__civic__canva-get-export-formats` | Get the available export formats for a Canva design |
+| `mcp__civic__canva-import-design-from-url` | Import a file from a URL as a new Canva design |
+| `mcp__civic__canva-list-comments` | Get a list of comments for a particular Canva design |
+| `mcp__civic__canva-list-folder-items` | List items in a Canva folder (designs, folders, images) |
+| `mcp__civic__canva-list-replies` | Get a list of replies for a specific comment on a Canva design |
+| `mcp__civic__canva-move-item-to-folder` | Move items (designs, folders, images) to a specified Canva folder |
+| `mcp__civic__canva-reply-to-comment` | Reply to an existing comment on a Canva design |
+| `mcp__civic__canva-search` | Search docs, presentations, videos, whiteboards, sheets, and other designs in Canva |
+| `mcp__civic__canva-search-designs` | Search Canva designs with ownership and sort filters |
+| `mcp__civic__canva-upload-asset-from-url` | Upload an asset (image, video) from a URL into Canva |
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **27 server-specific guardrails** across 14 operations.
+
+<Note>
+Remarkably complete guardrail set — covering export control, SSRF protection on uploads/imports, content redaction from design text and comments, owner-based filtering, and folder access control.
+</Note>
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Limit Comment Length | `comment-on-design` | Request | Caps comment message length |
+| Block Folder Creation | `create-folder` | Request | Blocks creation in restricted parent folders |
+| Allowed Export Formats | `export-design` | Request | Allowlist for export formats |
+| Block Pro Export Quality | `export-design` | Request | Prevents high-quality "pro" exports |
+| Limit Export Pages | `export-design` | Request | Caps pages exported at once |
+| Redact Export URLs | `export-design` | Response | Redacts download URLs from export responses |
+| Block Fetch Design ID | `fetch` | Request | Blocklist for restricted design IDs |
+| Allowed Design Types | `generate-design` | Request | Allowlist for AI-generated design types |
+| Limit Generation Assets | `generate-design` | Request | Caps assets per AI generation request |
+| Redact Design Owner | `get-design` | Response | Redacts owner info from design metadata |
+| Redact Edit URLs | `get-design` | Response | Redacts edit URLs to prevent unauthorized editing |
+| Redact Sensitive Design Text | `get-design-content` | Response | Redacts API keys/passwords from design text |
+| Limit Design Pages | `get-design-pages` | Response | Truncates design pages returned |
+| Allowed Import Domains | `import-design-from-url` | Request | Only allows imports from approved domains |
+| Limit Comments Count | `list-comments` | Response | Truncates number of comments returned |
+| Redact Sensitive Comment Content | `list-comments` | Response | Redacts sensitive info from comments |
+| Allowed Folder IDs | `list-folder-items` | Request | Allowlist for accessible folders |
+| Limit Folder Items | `list-folder-items` | Response | Truncates folder items returned |
+| Redact Sensitive Reply Content | `list-replies` | Response | Redacts sensitive info from replies |
+| Block Move to Folder | `move-item-to-folder` | Request | Blocklist for restricted destination folders |
+| Limit Reply Length | `reply-to-comment` | Request | Caps reply message length |
+| Block Design Patterns | `search-designs` | Response | Filters designs matching sensitive title patterns |
+| Filter Designs by Owner | `search-designs` | Response | Only shows designs from approved owners |
+| Limit Search Results | `search-designs` | Response | Truncates search result count |
+| Allowed Asset Upload Domains | `upload-asset-from-url` | Request | Allowlist for asset upload domains (SSRF protection) |
+| Block Asset Upload Domains | `upload-asset-from-url` | Request | Blocklist for specific upload domains |
+| Allowed Design IDs | *(all operations)* | Request | Allowlist for accessible design IDs |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Canva server."
+</Tip>

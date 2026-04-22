@@ -1,0 +1,81 @@
+---
+title: Response Transforms
+description: >-
+  Reshape and compress tool responses to reduce token usage and improve AI
+  output quality
+sidebar_custom_props:
+  icon: "arrow-right-arrow-left"
+---
+
+Response transforms are applied to tool outputs after execution. They reshape or compress the data before it reaches the AI — reducing token usage, lowering cost, and improving response quality.
+
+## Available Transforms
+
+### JSON to CSV
+
+Converts JSON array responses to CSV format. JSON arrays are verbose; CSV is compact. For tools that return lists of records (CRM contacts, database rows, spreadsheet data), this can cut token usage significantly.
+
+**Example** — convert a Salesforce contact list to CSV:
+
+> "Add a JSON to CSV transform to my Salesforce list_contacts tool"
+
+Before:
+```json
+[
+  { "id": "001", "name": "Alice", "email": "alice@example.com" },
+  { "id": "002", "name": "Bob", "email": "bob@example.com" }
+]
+```
+
+After:
+```
+id,name,email
+001,Alice,alice@example.com
+002,Bob,bob@example.com
+```
+
+---
+
+### Remove Fields
+
+Strips specified fields from every response. Use this to cut noise — internal IDs, audit timestamps, system metadata — that the AI doesn't need and that waste tokens.
+
+**Example** — remove metadata from HubSpot responses:
+
+> "Remove the `created_at`, `updated_at`, `portal_id`, and `_links` fields from all HubSpot responses"
+
+```json
+{ "remove": ["created_at", "updated_at", "portal_id", "_links"] }
+```
+
+---
+
+### Retain Fields
+
+Keeps only the fields you specify, discarding everything else. More aggressive than Remove Fields — use this when a response is large and you only need a handful of fields.
+
+**Example** — keep only what matters from a Salesforce opportunity:
+
+> "Retain only `id`, `name`, `amount`, `stage`, and `close_date` from Salesforce opportunity responses"
+
+```json
+{ "retain": ["id", "name", "amount", "stage", "close_date"] }
+```
+
+Retain Fields is especially useful for wide objects (Salesforce, HubSpot, database rows) where responses can contain 50+ fields but the agent only needs 5.
+
+---
+
+## How to configure
+
+Ask the Configurator Agent:
+
+> "Add a JSON to CSV transform to my PostgreSQL query tool"
+
+> "Strip metadata fields from all Linear issue responses"
+
+> "Only keep name, email, and company from HubSpot contact responses"
+
+Or configure via the Civic UI: open your toolkit → select the MCP server → Guardrails → Response → Add Transform.
+
+Transforms can be stacked — for example, Retain Fields followed by JSON to CSV will first narrow the fields, then convert to CSV format.

@@ -1,0 +1,115 @@
+---
+title: Mastra
+description: Connect a Mastra agent to Civic's MCP Hub using streamable HTTP transport
+sidebar_custom_props:
+  icon: "square-js"
+---
+
+Connect a [Mastra](https://mastra.ai/docs) agent to Civic using `MCPClient` with Streamable HTTP transport. Mastra's MCP client exposes all discovered tools directly to a Mastra `Agent`.
+
+## Prerequisites
+
+- Node.js 20+
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
+- A Civic token and an Anthropic API key
+
+## Installation
+
+```bash
+pnpm add @mastra/mcp @mastra/core @ai-sdk/anthropic
+```
+
+## Environment Variables
+
+```bash
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-toolkit
+CIVIC_TOKEN=your-civic-token
+ANTHROPIC_API_KEY=your-anthropic-key
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Use `MCPClient` with the `servers` config, then call `listToolsets()` to get all tools:
+
+```typescript
+import { MCPClient } from "@mastra/mcp";
+import { Agent } from "@mastra/core/agent";
+import { anthropic } from "@ai-sdk/anthropic";
+
+const civicMcp = new MCPClient({
+  servers: {
+    civic: {
+      url: new URL(process.env.CIVIC_URL!),
+      requestInit: {
+        headers: { Authorization: `Bearer ${process.env.CIVIC_TOKEN}` },
+      },
+    },
+  },
+});
+
+// Use listToolsets() — not getTools()
+const toolsets = await civicMcp.listToolsets();
+const allTools = Object.values(toolsets).reduce(
+  (acc, ts) => ({ ...acc, ...ts }),
+  {}
+);
+console.log(`${Object.keys(allTools).length} tools loaded`);
+
+const agent = new Agent({
+  name: "Civic Assistant",
+  model: anthropic("claude-sonnet-4-6"),
+  instructions: "You are a helpful assistant with access to Civic tools.",
+  tools: allTools,
+});
+```
+
+<Note>
+Use `civicMcp.listToolsets()` — not `civicMcp.getTools()`. Merge the returned toolsets object with `Object.values(toolsets).reduce((acc, ts) => ({ ...acc, ...ts }), {})` before passing to the agent.
+</Note>
+
+## Running the Agent
+
+```typescript
+async function main() {
+  const response = await agent.generate("What events do I have today?");
+  console.log(response.text);
+  await civicMcp.disconnect();
+}
+
+main();
+```
+
+## Production Configuration
+
+For production agents, lock to a specific toolkit using the `profile` URL parameter:
+
+```bash
+CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-production-toolkit
+```
+
+## Reference Implementation
+
+<Card title="mastra-reference-implementation-civic" icon="github" href="https://github.com/civicteam/mastra-reference-implementation-civic">
+  Complete implementation with Fastify chat UI and deployment guide
+</Card>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>

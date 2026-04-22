@@ -1,0 +1,65 @@
+---
+title: ChatGPT
+description: ChatGPT MCP support — limited availability and known limitations
+sidebar_custom_props:
+  icon: "comment"
+---
+
+<Warning>
+  ChatGPT's MCP integration has significant limitations. Most users will get better results using [Civic Chat](https://app.civic.com) or a [supported client](/civic/reference/client-compatibility).
+</Warning>
+
+## Current Status
+
+ChatGPT supports MCP connectors in two narrow scenarios:
+
+- **Developer mode** — available to individual users with developer access enabled in ChatGPT settings
+- **Team/Enterprise admin accounts** — available to workspace admins managing connectors for their organization
+
+If you don't fall into one of these categories, MCP connectors are not accessible in your ChatGPT account.
+
+## Known Limitations
+
+Even when MCP is accessible, ChatGPT's tool-use behavior with external MCP servers produces inconsistent results:
+
+- Tool calls may not fire reliably on the first attempt
+- Multi-step tool workflows often require manual re-prompting
+- Authentication flows can interrupt conversations in ways that are hard to recover from
+- ChatGPT's tool selection logic doesn't always pick the right MCP tool for the task
+
+**We recommend using [Civic Chat](https://app.civic.com), Claude Desktop, or another [supported client](/civic/reference/client-compatibility) for a more reliable experience.**
+
+## Setup (Developer / Admin Only)
+
+If you have developer mode or team admin access and want to try it:
+
+<Steps>
+  <Step title="Enable MCP in ChatGPT">
+    In ChatGPT, go to **Settings** → **Connectors** (or **Integrations**, depending on your account type). This option only appears if you have developer mode or admin access enabled.
+  </Step>
+  <Step title="Add a custom connector">
+    Click **Add connector** and enter:
+    - **URL:** `https://app.civic.com/hub/mcp`
+    - **Name:** `Civic`
+  </Step>
+  <Step title="Authenticate">
+    Follow the OAuth flow to connect your Civic account.
+  </Step>
+</Steps>
+
+## Alternatives
+
+<CardGroup cols={2}>
+  <Card title="Civic Chat" icon="sparkles" href="https://app.civic.com">
+    The most reliable way to use Civic tools — no client setup needed
+  </Card>
+  <Card title="Claude Desktop" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
+    Best-in-class MCP support, 2-minute setup
+  </Card>
+  <Card title="Claude.ai" icon="globe" href="/civic/quickstart/clients/claude-web">
+    Web-based, no installation required
+  </Card>
+  <Card title="All supported clients" icon="table" href="/civic/reference/client-compatibility">
+    Full compatibility matrix
+  </Card>
+</CardGroup>

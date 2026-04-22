@@ -1,0 +1,253 @@
+---
+title: Dropbox Server
+description: Access and manage files in your Dropbox
+sidebar_custom_props:
+  icon: "server"
+---
+
+# Dropbox Server
+
+## Overview
+
+The Dropbox server provides essential file management capabilities for your Dropbox account. Built by [Dropbox](https://dropbox.com), this server enables AI assistants to search files, upload content, and access your cloud storage directly.
+
+## Getting Started
+
+<Steps>
+  <Step title="Connect to Dropbox">
+    Add the Dropbox server to your Civic environment through the server directory.
+  </Step>
+  <Step title="Authenticate with Dropbox">
+    Connect your Dropbox account using OAuth to access your files and folders.
+  </Step>
+  <Step title="Test Connection">
+    Start with a simple `search` command to verify access and explore your files.
+  </Step>
+</Steps>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="File Search" icon="magnifying-glass">
+    Search for files across your entire Dropbox or within specific folders
+  </Card>
+  <Card title="File Upload" icon="cloud-arrow-up">
+    Upload new files directly to your Dropbox with base64 encoded content
+  </Card>
+  <Card title="Folder Navigation" icon="folder-tree">
+    Search within specific folder paths for targeted file discovery
+  </Card>
+  <Card title="Content Management" icon="file">
+    Organize and access your cloud storage through AI assistant interactions
+  </Card>
+</CardGroup>
+
+## Use Cases
+
+<AccordionGroup>
+  <Accordion title="Document Management" icon="file-text">
+    - **File Discovery**: Find documents, spreadsheets, and presentations across your Dropbox
+    - **Content Search**: Search file names and metadata to locate specific resources
+    - **Organization**: Navigate folder structures and understand file organization
+    - **Quick Access**: Retrieve files without manually browsing through folders
+  </Accordion>
+
+  <Accordion title="Content Creation & Storage" icon="pen-to-square">
+    - **Document Upload**: Create and upload new files directly from AI conversations
+    - **Content Backup**: Store generated content, reports, and data files
+    - **Collaborative Storage**: Upload files for team access and sharing
+    - **Automated Archiving**: Store conversation outputs and generated materials
+  </Accordion>
+
+  <Accordion title="Research & Analysis" icon="chart-bar">
+    - **Data File Access**: Find and analyze CSV files, databases, and datasets
+    - **Report Storage**: Access existing reports and analysis documents
+    - **Reference Material**: Locate research papers, documentation, and resources
+    - **Version Control**: Find different versions of documents and compare changes
+  </Accordion>
+
+  <Accordion title="Project Management" icon="list-check">
+    - **Asset Discovery**: Find project files, images, and resources
+    - **Documentation Access**: Locate project documentation and specifications
+    - **File Sharing Preparation**: Search for files that need to be shared or distributed
+    - **Archive Management**: Access historical project files and documentation
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Available Tools (13)
+
+<AccordionGroup>
+  <Accordion title="list_files">
+    List files in a folder with optional path parameter (default: root)
+  </Accordion>
+
+  <Accordion title="upload_file">
+    Upload a file with path and base64 encoded content
+  </Accordion>
+
+  <Accordion title="download_file">
+    Download a file to local disk and return the file path. Files are saved to the "downloads" directory
+  </Accordion>
+
+  <Accordion title="safe_delete_item">
+    Safely delete a file or folder with recycle bin support, confirmation, and audit logging
+  </Accordion>
+
+  <Accordion title="delete_item">
+    Legacy delete operation (deprecated, use safe_delete_item instead)
+  </Accordion>
+
+  <Accordion title="create_folder">
+    Create a new folder at the specified path
+  </Accordion>
+
+  <Accordion title="copy_item">
+    Copy a file or folder to a new location
+  </Accordion>
+
+  <Accordion title="move_item">
+    Move or rename a file or folder
+  </Accordion>
+
+  <Accordion title="get_file_metadata">
+    Get metadata for a file or folder
+  </Accordion>
+
+  <Accordion title="search_file_db">
+    Advanced search for files and folders with filtering capabilities including file extensions, categories, date ranges, content matching, and sorting options
+  </Accordion>
+
+  <Accordion title="get_sharing_link">
+    Create a shared link for a file or folder
+  </Accordion>
+
+  <Accordion title="get_account_info">
+    Get information about the connected Dropbox account
+  </Accordion>
+
+  <Accordion title="get_file_content">
+    Get the content of a file from Dropbox
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Configuration Requirements
+
+### Authentication Setup
+The Dropbox server uses OAuth2 authentication with specific file access scopes:
+
+<AccordionGroup>
+  <Accordion title="OAuth Scopes" icon="key">
+    **Required Permissions:**
+    - **files.metadata.read**: Read file and folder metadata (for search operations)
+    - **files.content.read**: Read file content (for comprehensive access)
+    - **files.content.write**: Write and upload files (for upload operations)
+
+    **Tool-Specific Scopes:**
+    - `search` and `search_file_db`: files.metadata.read
+    - `upload_file`: files.content.read + files.content.write
+  </Accordion>
+
+  <Accordion title="Account Requirements" icon="building">
+    - **Dropbox Account**: Personal or business Dropbox account
+    - **Storage Space**: Sufficient storage for upload operations
+    - **API Access**: Dropbox API access enabled (typically available for all accounts)
+  </Accordion>
+</AccordionGroup>
+
+
+
+## Best Practices
+
+### File Search Strategies
+1. **Start Broad**: Use general terms first, then narrow down with specific keywords
+2. **Use Extensions**: Include file extensions (.pdf, .xlsx, .png) to filter by type
+3. **Folder-Specific**: Use `search_file_db` when you know the approximate location
+4. **Pagination**: Use max_results parameter to control search result volume
+
+### File Upload Guidelines
+1. **Path Planning**: Use clear, descriptive folder structures (e.g., "/projects/2024/reports/")
+2. **File Naming**: Use descriptive names with dates or version numbers
+3. **Encoding Verification**: Ensure proper base64 encoding before upload
+4. **Size Considerations**: Be aware of file size limits and account storage capacity
+
+### Organization & Management
+1. **Consistent Naming**: Use consistent file naming conventions for better searchability
+2. **Folder Structure**: Maintain organized folder hierarchies for efficient searching
+3. **Regular Cleanup**: Periodically search for and organize files to maintain structure
+4. **Backup Strategy**: Use uploads to create backups of important generated content
+
+### Integration Workflows
+1. **Document Generation**: Generate content and immediately upload to Dropbox for storage
+2. **Research Workflows**: Search for existing files before creating new documents
+3. **Collaboration**: Upload files to shared folders for team access
+4. **Archive Management**: Use search to maintain and organize historical files
+
+<Warning>
+Always verify file paths and ensure you have appropriate permissions before uploading files. Incorrect paths may create unintended folder structures.
+</Warning>
+
+<Tip>
+**Pro Tip**: Combine search operations with upload operations - search for existing files first to avoid duplicates, then upload new versions with updated names.
+</Tip>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **55 server-specific guardrails** across 9 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Copy Item - Allowed Source Folders Only | `copy_item` | Request | Restricts copying items from whitelisted source directories only |
+| Copy Item - Allowed Destination Folders Only | `copy_item` | Request | Restricts copying items to whitelisted destination directories only |
+| Create Folder - Allowed Parent Paths Only | `create_folder` | Request | Restricts folder creation to whitelisted parent directories |
+| Block Deprecated Delete Item Operation | `delete_item` | Request | Blocks the deprecated delete_item operation (use safe_delete_item instead) |
+| Download File - Allowed Folders Only | `download_file` | Response | Blocks downloading files from non-allowed directories |
+| Download File - Block Malicious Formats | `download_file` | Response | Blocks downloading files with potentially malicious extensions |
+| Download File - Email Domain Filter | `download_file` | Response | Blocks downloading files from paths with non-approved email domains |
+| Get File Content - Allowed Folders Only | `get_file_content` | Response | Blocks access to file content from non-allowed directories |
+| Get File Content - Block Malicious Formats | `get_file_content` | Response | Blocks access to files with potentially malicious extensions |
+| Get File Content - Email Domain Filter | `get_file_content` | Response | Blocks access to file content from paths with non-approved email domains |
+| Get File Metadata - Allowed Folders Only | `get_file_metadata` | Response | Blocks access to file metadata from non-allowed directories |
+| Get File Metadata - Email Domain Filter | `get_file_metadata` | Response | Blocks access to file metadata from paths with non-approved email domains |
+| List Files - Allowed Folders Only | `list_files` | Response | Redacts files/folders from non-allowed directories in list results |
+| List Files - Block Malicious Formats | `list_files` | Response | Redacts files with potentially malicious extensions |
+| List Files - Email Domain Filter | `list_files` | Response | Redacts files from paths containing non-approved email domains |
+| Move Item - Allowed Source Folders Only | `move_item` | Request | Restricts moving items from whitelisted source directories only |
+| Move Item - Allowed Destination Folders Only | `move_item` | Request | Restricts moving items to whitelisted destination directories only |
+| Safe Delete Item - Allowed Folders Only | `safe_delete_item` | Request | Restricts deletions to whitelisted directories only |
+| Block Regex Search Patterns | `search` | Request | Prevents searches containing regex patterns or wildcards |
+| Block Sensitive Search Terms | `search` | Request | Prevents searching for passwords, keys, credentials and other sensitive terms |
+| Filter Large Files | `search` | Response | Hides files above a certain size threshold |
+| Filter Sensitive Extensions | `search` | Response | Redacts files with sensitive extensions like .key, .pem, .env |
+| Filter Sensitive Folders | `search` | Response | Filters out files from specific sensitive folders in search results |
+| Redact Sensitive Paths | `search` | Response | Redacts file paths containing sensitive patterns |
+| Search Path Restrictions | `search` | Request | Limits search to specific folder paths or prefixes |
+| Block Sensitive File Patterns | `search_file_db` | Request | Prevents searches for sensitive file patterns |
+| Block System Folder Search | `search_file_db` | Request | Prevents searches in system or hidden folders |
+| Filter Shared Files | `search_file_db` | Response | Filters out shared or collaborative files from results |
+| Filter Unauthorized Folders | `search_file_db` | Response | Filters results from unauthorized folders |
+| Maximum Results Limit | `search_file_db` | Request | Limits maximum results to prevent data exfiltration |
+| Minimum Query Specificity | `search_file_db` | Request | Requires minimum query length to prevent broad searches |
+| Redact File Previews | `search_file_db` | Response | Redacts file preview content from search results |
+| Search DB Path Restrictions | `search_file_db` | Request | Restricts folder search to allowed directories |
+| Search File DB - Allowed Folders Only | `search_file_db` | Response | Redacts search results from non-allowed directories |
+| Search File DB - Block Malicious Formats | `search_file_db` | Response | Redacts search results with potentially malicious file extensions |
+| Search File DB - Email Domain Filter | `search_file_db` | Response | Redacts search results from paths with non-approved email domains |
+| Allowed File Types | `upload_file` | Request | Restricts uploads to specific file types only |
+| Block Root Directory Upload | `upload_file` | Request | Prevents uploading files directly to the root directory |
+| Block Sensitive Upload Extensions | `upload_file` | Request | Prevents uploads with sensitive file extensions |
+| File Naming Convention | `upload_file` | Request | Enforces specific file naming patterns for uploads |
+| Prevent File Overwrite | `upload_file` | Request | Blocks uploads that would overwrite existing files |
+| Upload File - Allowed Folders Only | `upload_file` | Request | Restricts file uploads to whitelisted directories only |
+| Upload File - Block Malicious Formats | `upload_file` | Request | Blocks uploading files with potentially malicious extensions |
+| Upload Path Restrictions | `upload_file` | Request | Restricts file uploads to specific allowed directories |
+| Upload Size Limit | `upload_file` | Request | Limits the size of uploaded files |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Dropbox server."
+</Tip>

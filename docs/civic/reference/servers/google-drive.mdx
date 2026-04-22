@@ -1,0 +1,138 @@
+---
+title: Google Drive
+description: Access and manage files and folders in Google Drive
+sidebar_custom_props:
+  icon: "server"
+---
+
+## Overview
+
+The Google Drive server enables AI assistants to interact with [Google Drive](https://drive.google.com), providing file storage, search, and management capabilities including support for shared drives through the Google Drive API.
+
+## How to Add Google Drive
+
+<Steps>
+  <Step title="Add Server">
+    Add the Google Drive server to your Civic environment through the server directory.
+  </Step>
+  <Step title="Authorize">
+    Simply log in with your Google account and approve the OAuth consent request. No admin approval needed.
+  </Step>
+  <Step title="Test Connection">
+    Try "List my Google Drive files" to verify the connection works.
+  </Step>
+</Steps>
+
+<Note>
+**Simple OAuth Consent:** Google Drive uses standard Google OAuth consent. Works with personal Google accounts and Google Workspace without special admin approval.
+</Note>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="File Search" icon="magnifying-glass">
+    Search files and folders with Drive query operators
+  </Card>
+  <Card title="File Access" icon="file">
+    Read content from Google Docs, Sheets, Office files, and more
+  </Card>
+  <Card title="File Organization" icon="folder-tree">
+    List and navigate folders in My Drive and shared drives
+  </Card>
+  <Card title="File Creation" icon="file-plus">
+    Create new files with content or from URLs
+  </Card>
+</CardGroup>
+
+## Available Tools (4)
+
+<Note>
+**Security note:** This server does not include file deletion tools. `create_drive_file` can write new files to any accessible folder including shared drives. For automated agents in shared drive environments, consider guardrails to restrict folder destinations. See [Guardrails](/civic/concepts/guardrails).
+</Note>
+
+<AccordionGroup>
+  <Accordion title="search_drive_files">
+    Search for files and folders using Google Drive search operators. Supports searching in My Drive, shared drives, and all accessible drives. Returns file details including ID, name, type, size, modified time, and Drive web link.
+  </Accordion>
+
+  <Accordion title="get_drive_file_content">
+    Retrieve content from files by ID. Automatically handles Google Docs, Sheets, Slides (exported as text/CSV), Office files (.docx, .xlsx, .pptx - parsed to extract text), and plain text files. Works with files in shared drives.
+  </Accordion>
+
+  <Accordion title="list_drive_items">
+    List files and folders in a specific location. Defaults to root folder but can list any folder including shared drive roots. Supports filtering to specific shared drives and configurable page sizes up to 100 items.
+  </Accordion>
+
+  <Accordion title="create_drive_file">
+    Create new files in Google Drive with direct content or by fetching from a URL. Supports custom MIME types and folder placement. Works in My Drive and shared drive folders.
+  </Accordion>
+</AccordionGroup>
+
+## Use Cases
+
+### File Search
+"Find all PDF files modified in the last week" - Use Drive search operators to locate specific files.
+
+### Content Reading
+"Read the content of the project proposal document" - Extract text from Google Docs, Office files, or plain text.
+
+### Shared Drive Access
+"List all files in the Marketing shared drive" - Access team drives and shared folders.
+
+### Folder Navigation
+"Show me what's in my Documents folder" - Browse folder contents programmatically.
+
+### File Creation
+"Create a new text file with meeting notes" - Generate files directly in Drive.
+
+### URL Import
+"Create a file from this web page content" - Fetch content from URLs and save to Drive.
+
+### Office File Parsing
+"Extract text from the budget spreadsheet" - Read content from .xlsx, .docx, .pptx files.
+
+<Note>
+**Search Operators:** Supports Google Drive query syntax including `name contains 'text'`, `mimeType = 'application/pdf'`, `modifiedTime > '2024-01-01'`.
+
+**File Types:** Native Google files (Docs, Sheets, Slides) export as text/CSV. Office files are parsed to extract readable text. Binary files attempt UTF-8 decode.
+
+**Shared Drives:** Use `drive_id` parameter to specify shared drives. Set `include_items_from_all_drives: true` to search across all accessible drives.
+</Note>
+
+---
+
+## Guardrails
+
+In addition to the [14 universal guardrails](/civic/concepts/guardrails), this server has **29 server-specific guardrails** across 4 operations.
+
+| Guardrail | Operation | Timing | Description |
+|-----------|-----------|--------|-------------|
+| Allowed Folders for File Creation | `create_drive_file` | Request | Restricts file creation to specific approved folders only |
+| Allowed MIME Types | `create_drive_file` | Request | Restricts file creation to safe text formats only |
+| Block Creating Dangerous Format Files | `create_drive_file` | Request | Prevents creating files with dangerous MIME types |
+| Block Executable File Creation | `create_drive_file` | Request | Prevents creation of executable file types |
+| Block File URL Parameter | `create_drive_file` | Request | Denies use of fileUrl parameter to prevent external file fetching |
+| Block Path Traversal in File Names | `create_drive_file` | Request | Prevents file names containing path traversal sequences |
+| Maximum File Content Size | `create_drive_file` | Request | Limits file content size to 1MB maximum |
+| Block Content Access for Dangerous Formats | `get_drive_file_content` | Response | Blocks accessing content of files with dangerous formats |
+| Blocked File IDs | `get_drive_file_content` | Request | Denies access to specific file IDs on a blocklist |
+| Mask PII in File Content | `get_drive_file_content` | Response | Masks SSN, credit card numbers, and email addresses in file content |
+| Maximum File Size for Content Access | `get_drive_file_content` | Response | Blocks access to files larger than 10MB |
+| Redact Credentials in File Content | `get_drive_file_content` | Response | Redacts API keys, passwords, and tokens from file content |
+| Allowed Folder IDs | `list_drive_items` | Request | Restricts listing to specific allowlisted folder IDs only |
+| Block Dangerous Formats in List | `list_drive_items` | Response | Redacts files with dangerous formats from list response |
+| Hide Files from Other Users | `list_drive_items` | Response | Hides files created by other users in shared folders |
+| Maximum List Page Size | `list_drive_items` | Request | Limits the number of items returned per list operation |
+| Allowed Search Corpora | `search_drive_files` | Request | Restricts search corpora to 'user' or specific approved drives |
+| Allowed Shared Drive IDs | `search_drive_files` | Request | Restricts operations to specific approved shared drives |
+| Block Dangerous Format Searches | `search_drive_files` | Request | Prevents searching for files with dangerous formats |
+| Blocked File Extensions in Search | `search_drive_files` | Request | Prevents searching for files with sensitive extensions |
+| Block System Files | `search_drive_files` | Request | Prevents searching for or accessing system and hidden files |
+| Block Trashed Items | `search_drive_files` | Request | Prevents searching for or accessing trashed/deleted items |
+| Block Wildcard Search Patterns | `search_drive_files` | Request | Prevents searching with wildcard patterns that could match all files |
+| Maximum Search Page Size | `search_drive_files` | Request | Limits the number of items returned per search |
+| Redact Dangerous Formats from Search | `search_drive_files` | Response | Redacts files with dangerous formats from search results |
+
+<Tip>
+Configure guardrails via the Civic UI or ask the Configurator Agent: "Add guardrails to my Google Drive server."
+</Tip>
