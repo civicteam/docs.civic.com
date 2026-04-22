@@ -120,7 +120,7 @@ const config: Config = {
       tagName: 'link',
       attributes: {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Cal+Sans&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap',
       },
     },
   ],

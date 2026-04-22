@@ -27,7 +27,7 @@
 :root {
   --ifm-font-family-base: 'Geist', system-ui, -apple-system,
     'Segoe UI', sans-serif;
-  --ifm-heading-font-family: 'Cal Sans', 'Geist', system-ui, sans-serif;
+  --ifm-heading-font-family: 'Geist', system-ui, sans-serif;
   --ifm-font-family-monospace: 'Geist Mono', ui-monospace, SFMono-Regular,
     Menlo, Consolas, 'Liberation Mono', monospace;
 

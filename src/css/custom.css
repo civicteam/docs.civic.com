@@ -2,8 +2,8 @@
  * Civic Docs theme.
  * - Primary brand: #7C3BED (Mintlify `colors.primary` / `light` / `dark`).
  * - Dark background: #030711 (Mintlify `background.color.dark`).
- * - Body + mono: Geist / Geist Mono. Headings: Cal Sans. All loaded from
- *   Google Fonts via headTags in docusaurus.config.ts.
+ * - Body / headings / mono: Geist and Geist Mono, loaded from Google Fonts
+ *   via headTags in docusaurus.config.ts.
  *
  * The Mintlify-alike visual overlay (navbar tabs, sidebar density, admonition
  * + code-block re-skin, etc.) lives in mintlify-theme.css. Keep brand tokens +
@@ -22,7 +22,7 @@
 
   --ifm-font-family-base: 'Geist', system-ui, -apple-system,
     'Segoe UI', sans-serif;
-  --ifm-heading-font-family: 'Cal Sans', 'Geist', system-ui, sans-serif;
+  --ifm-heading-font-family: 'Geist', system-ui, sans-serif;
   --ifm-heading-font-weight: 600;
 
   --ifm-code-font-size: 95%;
