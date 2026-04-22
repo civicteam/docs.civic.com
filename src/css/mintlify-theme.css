@@ -109,6 +109,21 @@ h1, h2, h3, h4 {
   cursor: pointer;
 }
 
+/* Center the DocSearch input inside the navbar. The container class name
+ * is hashed by Docusaurus (navbarSearchContainer_<hash>), so match by prefix. */
+.navbar__inner {
+  position: relative;
+}
+.navbar [class*='navbarSearchContainer'] {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.navbar .DocSearch-Button {
+  width: 400px;
+}
+
 .navbar__brand {
   font-weight: 600;
 }
