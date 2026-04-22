@@ -104,9 +104,6 @@ const config: Config = {
   ],
 
   headTags: [
-    // Geist via Google Fonts as a bridge until self-hosted CalSans/Aeonik land.
-    // Mintlify used family name "Geist" with Aeonik/CalSans woff2 files behind
-    // it — this keeps the body face close until legal review clears.
     {
       tagName: 'link',
       attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -123,34 +120,7 @@ const config: Config = {
       tagName: 'link',
       attributes: {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap',
-      },
-    },
-    // Self-hosted fonts (see static/fonts/README.md for legal review notes).
-    // @font-face lives in static/css/fonts.css so css-loader doesn't try to
-    // resolve the woff2 path during the webpack build.
-    {
-      tagName: 'link',
-      attributes: { rel: 'stylesheet', href: '/css/fonts.css' },
-    },
-    {
-      tagName: 'link',
-      attributes: {
-        rel: 'preload',
-        href: '/fonts/CalSans-SemiBold.woff2',
-        as: 'font',
-        type: 'font/woff2',
-        crossorigin: 'anonymous',
-      },
-    },
-    {
-      tagName: 'link',
-      attributes: {
-        rel: 'preload',
-        href: '/fonts/Aeonik-Regular.woff2',
-        as: 'font',
-        type: 'font/woff2',
-        crossorigin: 'anonymous',
+        href: 'https://fonts.googleapis.com/css2?family=Cal+Sans&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap',
       },
     },
   ],

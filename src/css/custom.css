@@ -2,18 +2,14 @@
  * Civic Docs theme.
  * - Primary brand: #7C3BED (Mintlify `colors.primary` / `light` / `dark`).
  * - Dark background: #030711 (Mintlify `background.color.dark`).
- * - Body font: Aeonik (self-hosted). Headings: CalSans-SemiBold (self-hosted).
- *   Both fonts require legal review before merging - see static/fonts/README.md.
+ * - Body + mono: Geist / Geist Mono. Headings: Cal Sans. All loaded from
+ *   Google Fonts via headTags in docusaurus.config.ts.
  *
  * The Mintlify-alike visual overlay (navbar tabs, sidebar density, admonition
  * + code-block re-skin, etc.) lives in mintlify-theme.css. Keep brand tokens +
  * ported utilities here, keep look/feel there.
  */
 @import './mintlify-theme.css';
-
-/* @font-face declarations live in static/css/fonts.css (loaded via headTags
- * in docusaurus.config.ts) so webpack's css-loader doesn't try to resolve
- * /fonts/*.woff2 at build time. */
 
 :root {
   --ifm-color-primary: #7c3bed;
@@ -24,9 +20,9 @@
   --ifm-color-primary-lighter: #9b67f1;
   --ifm-color-primary-lightest: #b891f5;
 
-  --ifm-font-family-base: 'Aeonik', 'Geist', system-ui, -apple-system,
+  --ifm-font-family-base: 'Geist', system-ui, -apple-system,
     'Segoe UI', sans-serif;
-  --ifm-heading-font-family: 'CalSans', 'Aeonik', 'Geist', system-ui, sans-serif;
+  --ifm-heading-font-family: 'Cal Sans', 'Geist', system-ui, sans-serif;
   --ifm-heading-font-weight: 600;
 
   --ifm-code-font-size: 95%;
