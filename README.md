@@ -1,8 +1,7 @@
 # Civic Documentation
 
-Source for [docs.civic.com](https://docs.civic.com/) — now built with
-[Docusaurus](https://docusaurus.io). Previously hosted on Mintlify; see
-`MIGRATION.md` for the cutover plan.
+Source for [docs.civic.com](https://docs.civic.com/) — built with
+[Docusaurus](https://docusaurus.io).
 
 ## Local development
 
@@ -12,7 +11,6 @@ pnpm start           # dev server on http://localhost:3217
 pnpm build           # production build into ./build
 pnpm serve           # preview the production build
 pnpm typecheck       # tsc --noEmit
-pnpm codemod         # re-run the Mintlify -> Docusaurus MDX codemod
 ```
 
 Requires Node 18+ and pnpm 9+. The pinned pnpm version lives in
@@ -44,13 +42,9 @@ src/
   theme/MDXComponents.tsx         injects those globally into every MDX file
   theme/DocSidebarItem/Category/  renders FontAwesome icon from customProps.icon
   css/custom.css                  brand colors + utility classes
-  clientModules/{fontawesome,kapa,gtm}.ts
-scripts/mintlify-to-docusaurus.mjs   one-time content codemod
+  clientModules/{fontawesome,gtm}.ts
 static/
-  fonts/                     self-hosted CalSans + Aeonik (see README there)
   images/, logo/, favicon.svg
-  css/fonts.css              @font-face declarations (served raw to avoid
-                             webpack url() resolution at build time)
   llms.txt, llms-full.txt    hand-maintained, copied as-is
 ```
 
@@ -113,14 +107,11 @@ every PR. The production variant runs against
 
 ## Fonts
 
-`CalSans-SemiBold.woff2` and `Aeonik-Regular.woff2` are self-hosted under
-`static/fonts/`. The binaries are absent from the initial migration commit
-pending legal review — see `static/fonts/README.md`. Without the files the
-browser falls back to the declared font stack (Geist -> system UI).
+Geist and Geist Mono are loaded from Google Fonts via a `<link>` tag declared
+in `docusaurus.config.ts#headTags`. No self-hosted font binaries are shipped.
 
 ## AI prompts
 
-Unchanged from the Mintlify era: the three-tier structure under `docs/`
-(`_snippets/` -> `prompts/` -> `ai-prompts/`) still works; snippet imports
-were rewritten by the codemod from `/snippets/...` to
-`@site/docs/_snippets/...`.
+Three-tier structure under `docs/`: `_snippets/` shared partials →
+`prompts/` full prompts → `ai-prompts/` per-framework pages. Snippets are
+imported as `@site/docs/_snippets/...`.

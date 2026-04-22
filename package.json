@@ -10,8 +10,7 @@
     "deploy": "docusaurus deploy",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
-    "typecheck": "tsc --noEmit",
-    "codemod": "node scripts/mintlify-to-docusaurus.mjs"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.0",
@@ -31,8 +30,6 @@
     "@docusaurus/types": "3.10.0",
     "@types/react": "^18.3.12",
     "dotenv-cli": "^11.0.0",
-    "globby": "^14.0.0",
-    "gray-matter": "^4.0.3",
     "typescript": "~5.6.3"
   },
   "browserslist": {
