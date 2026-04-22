@@ -94,16 +94,13 @@ Each renders a small HTML redirect file at the source path.
 ## Deployment
 
 `.github/workflows/deploy.yml` builds on every push to `main` and publishes to
-GitHub Pages. The CNAME in the artifact is currently `docs-next.civic.com` for
-side-by-side QA with the Mintlify production site — flip to `docs.civic.com`
-at DNS cutover.
+GitHub Pages at `docs.civic.com` (CNAME written into the artifact).
 
 ## Link checking
 
 `.github/workflows/link-check-branch.yml` builds the site and runs
 [`lychee`](https://github.com/lycheeverse/lychee) against `build/**/*.html` on
-every PR. The production variant runs against
-`https://docs-next.civic.com` daily.
+every PR. The production variant runs against `https://docs.civic.com` daily.
 
 ## Fonts
 
