@@ -83,5 +83,7 @@ cache = true
 # Include fragment checking (anchors)
 include_fragments = true
 
-# Fallback extensions for checking files without extensions
-fallback_extensions = ["mdx", "md"]
+# Fallback extensions for checking files without extensions.
+# Lychee runs against the built site (see .github/workflows/link-check-*.yml),
+# so Docusaurus-emitted `<slug>.html` files are the resolution target.
+fallback_extensions = ["html", "htm"]
