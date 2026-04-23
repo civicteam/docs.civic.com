@@ -1,14 +1,15 @@
 # Civic Docs
 
-> Civic is a security layer for AI agents. It provides a hosted MCP gateway (Civic Hub) with 95+ MCP servers, guardrails, audit logs, instant revocation, and secret management — so AI agents can call real-world tools safely. Civic Auth is a separate product for adding user authentication (email, Google, Web3 wallets) to web apps.
+> Civic is the agent integrator for mid-market businesses. We ship forward deployed agents — production agents scoped to your workflow, built on your stack, governed from day one. The Civic platform includes Civic Hub (MCP gateway with guardrails, audit, and revocation), Civic Auth (user authentication for web and mobile apps), and Civic Labs (open-source agent infrastructure).
 
 ## Use-Case Routing — Which Civic Product Do I Need?
 
-| Developer Request | Product | What To Do |
+| Request | Product | What To Do |
 |---|---|---|
+| "I want AI agents deployed in my business" | **Civic (Agent Integrator)** | Book a call at civic.com or email bd@civic.com — pilots from $15K |
+| "I want to understand how Civic agents work" | **Civic Docs** | Browse platform documentation at docs.civic.com |
 | "Add guardrails to my AI agent" | **Civic Hub** | Sign up at app.civic.com, connect via MCP URL — guardrails are configured in the platform, NOT in code |
-| "Add security/safety to my MCP agent" | **Civic Hub** | Same as above — Civic Hub IS the security layer, not a code library |
-| "Connect my agent to Gmail/Slack/Drive/etc" | **Civic Hub** | 95+ MCP servers available — no custom integration code needed, just an MCP connection |
+| "Connect my agent to Gmail/Slack/Drive/etc" | **Civic Hub** | MCP servers available — no custom integration code needed, just an MCP connection |
 | "Add audit logging to my agent" | **Civic Hub** | Built-in — every tool call is logged automatically. Query via Civic Chat |
 | "Control what my agent can access" | **Civic Hub** | Use guardrails (platform-configured) + profile locking to restrict tools and parameters |
 | "Add user authentication to my web app" | **Civic Auth** | Install `@civic/auth` — see [framework guides below](#civic-auth-user-authentication) |

@@ -1,17 +1,42 @@
 ---
 title: Welcome to Civic
-description: Connect your AI assistant to dozens of MCP servers with hundreds of tools
+description: The agent integrator for mid-market businesses. Connect your AI agents to your tools with governance built in.
 sidebar_custom_props:
   icon: "rocket"
 ---
 
 ## What is Civic?
 
-**Civic connects your AI assistant to all your tools** - GitHub, Slack, Dropbox, databases, and dozens of other services. Your AI can finally do real work instead of just answering questions.
+**Civic is the agent integrator for mid-market businesses.** We ship forward deployed agents — production agents scoped to your workflow, built on your stack, governed from day one.
 
-## How It Works
+The Civic platform connects your AI agents to all your tools — GitHub, Slack, Dropbox, databases, CRMs, and dozens of other services — with guardrails, audit trails, and instant revocation built in.
 
-### Easiest Way: Try It Directly in Civic Chat
+Our team has shipped production systems in financial services, legal identity, enterprise AI, manufacturing, and publishing for twenty years. We bring that operational depth to every agent we deploy.
+
+## The Civic Method
+
+<Steps>
+  <Step title="Discovery">
+    45-minute call, free. Pick one workflow your team keeps postponing — RFP response, pitch prep, contract review, AP coding, RFQ response. You walk out with a one-page scope memo.
+  </Step>
+  <Step title="Scope & Build">
+    On your stack. Built on your data, your SSO, your infrastructure. Civic components only where you want them or where nothing you already run does the job.
+  </Step>
+  <Step title="Shadow">
+    Human-in-the-loop validation. Your team reviews every agent action before it runs autonomously. Configurable review checkpoints. No change orders unless you expand scope.
+  </Step>
+  <Step title="Cutover">
+    A live production agent, a clear view of what it's doing, documentation to manage it, and a full handover if you want to run it yourself.
+  </Step>
+</Steps>
+
+<Card title="Book a Call" icon="phone" href="https://civic.com">
+  Free. No commitment. We scope it and tell you if it's a fit.
+</Card>
+
+## How the Platform Works
+
+### Start with Civic Chat
 
 <Steps>
   <Step title="Sign up at app.civic.com">
@@ -25,7 +50,7 @@ sidebar_custom_props:
     </Frame>
   </Step>
   <Step title="Click 'Chat' to test immediately">
-    Use the built-in chat interface - no setup required, start testing tools right away
+    Use the built-in chat interface — no setup required, start testing tools right away
     <Frame caption="Built-in Civic chat interface">
       <img
         className="rounded-lg"
@@ -45,7 +70,7 @@ sidebar_custom_props:
     </Frame>
   </Step>
   <Step title="Start working">
-    Your AI assistant can now access your tools - all within the Civic interface
+    Your AI assistant can now access your tools — all within the Civic interface
     <Frame caption="AI using your connected tools">
       <img
         className="rounded-lg"
@@ -56,9 +81,9 @@ sidebar_custom_props:
   </Step>
 </Steps>
 
-### Optional: Connect External AI Clients
+### Connect External AI Clients
 
-Once you've tested in Civic chat, you can connect external clients like Claude and development tools for convenience.
+Once you've tested in Civic Chat, you can connect external clients like Claude and development tools.
 
 <Note>
 **No server management, no API keys to juggle, no complex configurations.**
@@ -66,36 +91,45 @@ Once you've tested in Civic chat, you can connect external clients like Claude a
 
 <CardGroup cols={3}>
   <Card title="Claude Desktop" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
-    **2 minutes** - Most popular AI client
+    **2 minutes** — Most popular AI client
   </Card>
   <Card title="VS Code" icon="code" href="/civic/quickstart/clients/vscode">
-    **2 minutes** - Development IDE integration
+    **2 minutes** — Development IDE integration
   </Card>
-  <Card title="Cursor" icon="cursor-click" href="/civic/quickstart/clients/cursor">
-    **2 minutes** - AI-powered code editor
-  </Card>
-</CardGroup>
-
-## Ready to Get Started?
-
-<CardGroup cols={2}>
-  <Card title="Try Civic Chat Now" icon="sparkles" href="https://app.civic.com">
-    **Fastest way** - No setup required, start using tools immediately
-  </Card>
-  <Card title="Connect Your AI Client" icon="plug" href="/civic/quickstart">
-    **For convenience** - Use ChatGPT, Claude, or development tools
+  <Card title="Cursor" icon="arrow-pointer" href="/civic/quickstart/clients/cursor">
+    **2 minutes** — AI-powered code editor
   </Card>
 </CardGroup>
 
-<Note>
-**Start with Civic chat first** - Test all tools directly in our interface, then optionally connect external AI clients for convenience.
-</Note>
+## What Agents Can Do
 
-## What You Can Do
-
-Once connected, your AI can work with all your tools:
+Once connected, your agents can work across all your tools. Here's what that looks like by vertical:
 
 <Tabs>
+  <Tab label="Marketing & AdTech">
+    ```
+    "Prepare a competitive analysis for the pitch deck using HubSpot and Google Analytics data"
+    "Pull this month's campaign performance from ActiveCampaign and post a summary to #marketing in Slack"
+    "Generate co-op ad compliance report from partner submissions in Dropbox"
+    "Create client reporting deck from our PostgreSQL analytics data"
+    ```
+  </Tab>
+  <Tab label="Legal & Professional">
+    ```
+    "Review the uploaded contract against our standard terms in Notion"
+    "Run a conflicts check across our CRM contacts in HubSpot"
+    "Pull AP data and prepare this month's close summary"
+    "Generate a consolidated financial report from QuickBooks data"
+    ```
+  </Tab>
+  <Tab label="Manufacturing & Industrial">
+    ```
+    "Draft an RFQ response using specs from the Dropbox project folder"
+    "Create supplier onboarding checklist tickets in Linear"
+    "Pull quality documentation from our PostgreSQL system and generate the audit packet"
+    "Send dispatch schedule updates to #operations in Slack"
+    ```
+  </Tab>
   <Tab label="For Developers">
     ```
     "Check my open GitHub pull requests"
@@ -108,22 +142,6 @@ Once connected, your AI can work with all your tools:
     "Summarize today's Slack messages in #general"
     "Create a report from our PostgreSQL sales data"
     "Find all files updated in Dropbox this week"
-    ```
-  </Tab>
-  <Tab label="For Marketing">
-    ```
-    "Update our ActiveCampaign email list with new signups"
-    "Create HubSpot contact records from this lead sheet"
-    "Send campaign performance data to our Slack marketing channel"
-    "Generate a report of this month's Mailchimp engagement metrics"
-    ```
-  </Tab>
-  <Tab label="For RevOps">
-    ```
-    "Sync CRM data with our HubSpot revenue tracking"
-    "Create Linear tickets for sales process improvements"
-    "Update Airtable with quarterly pipeline metrics"
-    "Send weekly revenue summary to #revenue-ops Slack"
     ```
   </Tab>
 </Tabs>
@@ -149,53 +167,52 @@ Create focused groups of tools for specific workflows instead of overwhelming yo
   Create focused tool groups that help your AI work more effectively on specific tasks
 </Card>
 
-## Security
+## Governance & Security
+
+Every agent deployed through Civic runs inside a governance envelope: scoped access per task, tamper-evident audit trail, one-click kill switch, and SOC 2 Type 2-aligned controls.
 
 <Note>
-  Your data security is our top priority. Civic is designed for more secure infrastructure with encrypted credential management and proactive server security reviews.
+  Your data security is our top priority. Civic is designed for secure infrastructure with encrypted credential management and proactive server security reviews.
 </Note>
 
-🔒 **Secure by Design** - All tokens encrypted, automatic refresh, stringent infrastructure  
-⚡ **Full Control** - Revoke app access instantly, changes apply immediately  
-🛡️ **Encrypted Ease of Development** - Streamlined development with stringent security standards
-
-<Card title="Security Details" icon="shield-check" href="/civic/reference/security">
-  Learn about our security architecture, compliance, and best practices
-</Card>
+<CardGroup cols={2}>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Every tool call logged — tool name, parameters, response, timestamp, agent identity
+  </Card>
+  <Card title="Guardrails" icon="shield-halved" href="/civic/concepts/guardrails">
+    Block tools, enforce read-only access, preset parameters at tool, server, and toolkit level
+  </Card>
+  <Card title="Revocation" icon="power-off" href="/civic/concepts/revocation">
+    Instant revocation at any granularity — one tool, one server, or the entire toolkit
+  </Card>
+  <Card title="Security Architecture" icon="shield" href="/civic/reference/security">
+    Full security reference, compliance details, and threat model
+  </Card>
+</CardGroup>
 
 ## All Supported Clients
 
 ### Primary AI Assistants
 <CardGroup cols={3}>
   <Card title="Claude Desktop" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
-    **Available** • Direct connector • 2 mins
+    **Available** — Direct connector — 2 mins
   </Card>
   <Card title="Claude.ai" icon="globe" href="/civic/quickstart/clients/claude-web">
-    **Available** • Direct connector • 2 mins
+    **Available** — Direct connector — 2 mins
   </Card>
-  <Card title="Mistral LeChat" icon="sparkles" href="/civic/quickstart/clients/mistral-lechat">
-    **Available** • Direct connector • 2 mins
+  <Card title="Mistral LeChat" icon="wand-magic-sparkles" href="/civic/quickstart/clients/mistral-lechat">
+    **Available** — Direct connector — 2 mins
   </Card>
 </CardGroup>
 
 ### Development Tools
 <Card title="Code Editors & Coding Agents" icon="code" href="/civic/quickstart/clients/cursor">
-  **Cursor, VS Code, JetBrains IDEs, and more** - Setup guides for development environments
-</Card>
-
-## Get Started Right Now
-
-<Card title="Try Civic Chat Instantly" icon="rocket" href="https://app.civic.com">
-  **Zero setup required** - Sign up and start using hundreds of tools in our built-in chat interface
-</Card>
-
-<Card title="Or Connect External Clients" icon="plug" href="/civic/quickstart">
-  Step-by-step guides for ChatGPT, Claude, VS Code, and more
+  **Cursor, VS Code, JetBrains IDEs, and more** — Setup guides for development environments
 </Card>
 
 ## Available Tools & Services
 
-Connect to dozens of popular MCP servers with hundreds of tools:
+Connect to dozens of MCP servers with hundreds of tools:
 
 <CardGroup cols={2}>
   <Card title="GitHub" icon="server" href="/civic/reference/servers/github">
@@ -224,8 +241,7 @@ Connect to dozens of popular MCP servers with hundreds of tools:
   <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
     Common setup issues and solutions
   </Card>
-  <Card title="Contact Support" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Get help with your specific setup
+  <Card title="Contact Civic" icon="envelope" href="mailto:bd@civic.com">
+    Reach the team directly at bd@civic.com
   </Card>
 </CardGroup>
-

@@ -1,149 +1,117 @@
 ---
-title: Welcome to Civic
+title: Civic Documentation
 description: >-
-  The security layer for AI agents. Connect to 95+ MCP servers with guardrails,
-  audit logs, and instant revocation.
+  The agent integrator for mid-market businesses. Platform documentation for
+  Civic Hub, Civic Auth, and Civic Labs.
 sidebar_custom_props:
   icon: "octopus"
 ---
 
-Your agent can read every email. Can you prove it only read what it was supposed to?
+Civic is the agent integrator for mid-market businesses. We ship forward deployed agents — production agents scoped to your workflow, built on your stack, governed from day one.
 
-Civic is the security layer for AI agents — a control plane that makes tool-using agents safe, auditable, and compliant. Connect your agent to 95+ MCP servers and stay in control of every tool call.
+These docs cover the Civic platform: the infrastructure, tools, and open-source components that power every agent we deploy.
 
-<CardGroup cols={2}>
-  <Card title="Start in Civic Chat" icon="sparkles" href="https://app.civic.com">
-    Zero setup. Configure, audit, and revoke from your control plane.
+<CardGroup cols={3}>
+  <Card title="Civic Hub" icon="server" href="/civic/overview">
+    MCP gateway with guardrails, audit logs, secret management, and instant revocation. Connect agents to your tools securely.
   </Card>
-  <Card title="Integrate your agent" icon="plug" href="/civic/quickstart">
-    Connect via HTTP — LangChain, Vercel AI SDK, Anthropic SDK, and more.
+  <Card title="Civic Auth" icon="lock" href="/auth">
+    Authentication for web and mobile apps. Email, Google, and Web3 wallet sign-in with embedded wallets on Solana and EVM.
+  </Card>
+  <Card title="Civic Labs" icon="flask" href="/labs">
+    Open-source agent infrastructure. MCP Hub, Guardrail Proxy, Bodyguard, and more — the building blocks behind forward deployed agents.
   </Card>
 </CardGroup>
 
-## Four Pillars
+## The Civic Method
 
-Civic is built on four pillars: **Connectivity** to 95+ MCP servers, **Auditability** of every tool call, **Guardrails** through 1,000 guardrail rules, and **Revocability** via instant revocation at any granularity. Together they form a security layer that sits between your agent and the tools it uses — so you stay in control without slowing anything down.
+Every engagement follows the same disciplined process — whether you're a marketing agency, a law firm, or a manufacturer.
 
-<div style={{margin: '24px 0', borderRadius: '12px', overflow: 'hidden', border: '1px solid rgba(124, 59, 237, 0.25)'}}>
-  <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', padding: '16px 24px', background: 'rgba(124, 59, 237, 0.06)', borderBottom: '1px solid rgba(124, 59, 237, 0.15)'}}>
-    <span style={{padding: '6px 14px', borderRadius: '6px', background: 'rgba(124, 59, 237, 0.12)', fontSize: '13px', fontWeight: '600'}}>Your AI Agent</span>
-    <span style={{color: '#7C3BED', fontSize: '18px'}}>→</span>
-    <span style={{padding: '6px 14px', borderRadius: '6px', background: 'rgba(124, 59, 237, 0.28)', fontSize: '13px', fontWeight: '700', color: '#7C3BED'}}>Civic Hub</span>
-    <span style={{color: '#7C3BED', fontSize: '18px'}}>→</span>
-    <span style={{padding: '6px 14px', borderRadius: '6px', background: 'rgba(124, 59, 237, 0.12)', fontSize: '13px', fontWeight: '600'}}>95+ MCP Servers</span>
-  </div>
-  <div style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)'}}>
-    <div style={{padding: '20px', borderRight: '1px solid rgba(124, 59, 237, 0.15)', textAlign: 'center'}}>
-      <div style={{fontSize: '22px', marginBottom: '8px'}}>🔌</div>
-      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Connectivity</div>
-      <div style={{fontSize: '12px', opacity: 0.5}}>95+ MCP servers</div>
-    </div>
-    <div style={{padding: '20px', borderRight: '1px solid rgba(124, 59, 237, 0.15)', textAlign: 'center'}}>
-      <div style={{fontSize: '22px', marginBottom: '8px'}}>📊</div>
-      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Auditability</div>
-      <div style={{fontSize: '12px', opacity: 0.5}}>Every call logged</div>
-    </div>
-    <div style={{padding: '20px', borderRight: '1px solid rgba(124, 59, 237, 0.15)', textAlign: 'center'}}>
-      <div style={{fontSize: '22px', marginBottom: '8px'}}>🛡️</div>
-      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Guardrails</div>
-      <div style={{fontSize: '12px', opacity: 0.5}}>1,000 guardrail rules</div>
-    </div>
-    <div style={{padding: '20px', textAlign: 'center'}}>
-      <div style={{fontSize: '22px', marginBottom: '8px'}}>⚡</div>
-      <div style={{fontWeight: '600', fontSize: '13px', marginBottom: '4px'}}>Revocability</div>
-      <div style={{fontSize: '12px', opacity: 0.5}}>Instant revocation</div>
-    </div>
-  </div>
-</div>
+<Steps>
+  <Step title="Discovery">
+    45-minute call, free. Pick one workflow your team keeps postponing. You walk out with a one-page scope memo.
+  </Step>
+  <Step title="Scope & Build">
+    On your stack. Built on your data, your SSO, your infrastructure. Civic components only where you want them.
+  </Step>
+  <Step title="Shadow">
+    Human-in-the-loop validation. Your team reviews every agent action before it runs autonomously. Configurable checkpoints.
+  </Step>
+  <Step title="Cutover">
+    A live production agent, documentation to manage it, and a full handover if you want to run it yourself.
+  </Step>
+</Steps>
 
-### Connectivity
-
-Connect to **95+ MCP servers** — Google Workspace, Slack, GitHub, databases, CRMs, and more. Civic handles OAuth, secrets, and authentication so your agent never touches raw credentials.
-
-<Card title="Browse all 95+ MCP servers" icon="server" href="/civic/reference/servers">
-  Google Calendar, Gmail, Sheets, Drive, Docs, Slack, GitHub, PostgreSQL, HubSpot, and 76 more
+<Card title="Book a Call" icon="phone" href="https://civic.com">
+  Free. No commitment. Pick one workflow — we scope it and tell you if it's a fit.
 </Card>
 
-### Auditability
+## Governance by Default
 
-Every tool call is logged: tool name, parameters, response, timestamp, and agent identity. Query your audit log in plain English via Civic Chat.
-
-- **Aggregated summary**: "Show me what my agent did this week"
-- **Line-by-line detail**: "Show every tool call from yesterday with timestamps"
-- **CSV export**: Up to 5,000 lines per export
-
-### Guardrails
-
-With **1,000 guardrail rules**, set precise controls per tool, per server, or per toolkit. OAuth scope enforcement ensures agents get least-privilege access. Secrets — OAuth tokens, API keys, Bearer tokens — are stored in Civic and never exposed to the agent layer.
-
-<Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
-  Block specific tools, enforce read-only scopes, set parameter presets the agent cannot override
-</Card>
-
-### Revocability
-
-Revoke access instantly at any granularity — a single tool, a server connection, or an entire toolkit. Revocation is available via Civic Chat and the UI, not the API. An agent cannot revoke its own constraints.
-
-<Card title="Revocation" icon="x" href="/civic/concepts/revocation">
-  Kill switch at any level — from one tool to the entire toolkit
-</Card>
-
-## What Civic Protects
+Every agent Civic deploys ships inside a governance envelope. This is not an add-on — it's how we build.
 
 <CardGroup cols={2}>
-  <Card title="Secret Management" icon="key" href="/civic/concepts/secret-management">
-    OAuth tokens, API keys, and Bearer tokens stored in Civic. The agent never sees them — only the Hub can use them to make tool calls.
-  </Card>
   <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
-    Complete log of every tool call. Queryable via Civic Chat. CSV export up to 5,000 lines. Retained ~30 days.
+    Complete log of every tool call — tool name, parameters, response, timestamp, agent identity. Queryable via Civic Chat.
   </Card>
   <Card title="Guardrails" icon="shield-halved" href="/civic/concepts/guardrails">
-    Block tools, enforce read-only access, preset parameters. Works at the tool, server, and toolkit level.
+    Block tools, enforce read-only access, preset parameters. 14 built-in guardrails at the tool, server, and toolkit level.
   </Card>
-  <Card title="Prompt Injection Defense" icon="lock" href="/civic/concepts/prompt-injection">
-    Toolkit locking prevents a compromised agent from switching contexts or removing its own guardrails.
+  <Card title="Revocation & Kill Switch" icon="power-off" href="/civic/concepts/revocation">
+    Instant revocation at any granularity — a single tool, a server, or an entire toolkit. One click.
+  </Card>
+  <Card title="Secret Management" icon="key" href="/civic/concepts/secret-management">
+    OAuth tokens, API keys, and bearer tokens stored in Civic. The agent never sees raw credentials.
   </Card>
 </CardGroup>
 
-## Your Control Plane: Civic Chat
+## Deep AI Agent Expertise
 
-Civic Chat at [app.civic.com](https://app.civic.com) is not a demo interface — it's your control plane. Three agent modes:
+We deploy agents across every major framework, model provider, and business tool — and we've seen what works in production.
 
-- **Configurator Agent**: Set up toolkits, guardrails, and secrets via natural language
-- **Audit Agent**: Query logs, get summaries, export CSV
-- **Revocation Agent**: Instantly revoke access at any granularity
+### 20+ Agent Frameworks
 
-The endpoint is separated from the AI agent layer by design. Your production agents cannot call it.
+Civic has production integrations with Anthropic, OpenAI, LangChain, Vercel AI SDK, Google ADK, Pydantic AI, CrewAI, AutoGen, LlamaIndex, Semantic Kernel, Haystack, DSPy, Mastra, and more. We know which framework fits which workflow — a LangGraph orchestration for multi-step RFQ response is not the same architecture as a Pydantic AI agent doing contract review.
 
-<Card title="Civic Chat — Your Control Plane" icon="terminal" href="/civic/quickstart/civic-chat">
-  Configure, audit, and revoke without writing code
-</Card>
+<CardGroup cols={3}>
+  <Card title="Agent Frameworks" icon="code" href="/civic/quickstart">
+    23 framework integrations — from Anthropic SDK to Flowise
+  </Card>
+  <Card title="AI Clients" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
+    Claude, ChatGPT, Gemini, Mistral, Cursor, VS Code, and more
+  </Card>
+  <Card title="Browse All Integrations" icon="plug" href="/civic/quickstart">
+    Full compatibility matrix and setup guides
+  </Card>
+</CardGroup>
 
-## Integrate Your Agent
+### 80+ MCP Servers
 
-Connect any MCP-compatible agent or client to `https://app.civic.com/hub/mcp`.
+Your agents connect to the tools your business already runs — CRMs, databases, email, file storage, analytics, finance, project management, and communication platforms. No custom integration code. OAuth, secrets, and credentials are handled by Civic.
 
 <CardGroup cols={2}>
-  <Card title="LangChain / LangGraph" icon="code" href="/civic/recipes/langchain">
-    Python agents with streamable HTTP transport
+  <Card title="CRM & Sales" icon="handshake">
+    HubSpot, Salesforce, Pipedrive, ActiveCampaign, Intercom
   </Card>
-  <Card title="Vercel AI SDK" icon="code" href="/civic/recipes/vercel-ai-sdk">
-    TypeScript agents and Next.js apps
+  <Card title="Finance & Accounting" icon="building-columns">
+    QuickBooks, Stripe, PayPal, Square, Bill.com, AWS Billing
   </Card>
-  <Card title="Anthropic SDK" icon="code" href="/civic/recipes/anthropic">
-    Direct Anthropic SDK with MCP beta header
+  <Card title="Productivity & Project Management" icon="list-check">
+    Notion, Linear, Asana, Monday, ClickUp, Trello, Tempo
   </Card>
-  <Card title="Claude Desktop" icon="desktop" href="/civic/quickstart/clients/claude-desktop">
-    Interactive client, 2-minute setup
+  <Card title="Google Workspace & Microsoft 365" icon="envelope">
+    Gmail, Calendar, Drive, Docs, Sheets, Slides, BigQuery, MS365 Mail, Teams, SharePoint
+  </Card>
+  <Card title="Developer & Infrastructure" icon="code">
+    GitHub, PostgreSQL, MySQL, MongoDB, Elasticsearch, Sentry, Grafana, Redshift
+  </Card>
+  <Card title="Marketing & Analytics" icon="chart-bar">
+    Google Analytics, Google Ads, Meta Ads, Mixpanel, PostHog, Mailchimp, Canva
   </Card>
 </CardGroup>
 
-## Pricing
-
-Free trial: 10,000 credits, 14 days. Paid plans from $25/month.
-
-<Card title="Billing & Credits" icon="credit-card" href="/civic/billing">
-  Credits consumed by tool calls and Civic Chat (Configurator, Audit, Revocation)
+<Card title="Browse All 80+ MCP Servers" icon="server" href="/civic/reference/servers">
+  Complete directory with setup guides and available tools
 </Card>
 
 ## Need Help?
@@ -152,7 +120,7 @@ Free trial: 10,000 credits, 14 days. Paid plans from $25/month.
   <Card title="Troubleshooting" icon="wrench" href="/civic/troubleshooting">
     Common setup issues and solutions
   </Card>
-  <Card title="Developer Community" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Ask questions and get support
+  <Card title="Contact Civic" icon="envelope" href="mailto:bd@civic.com">
+    Reach the team directly at bd@civic.com
   </Card>
 </CardGroup>

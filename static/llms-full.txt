@@ -1,14 +1,14 @@
 # Civic Docs — Full Content for AI Agents
 
-> This file contains the essential content from docs.civic.com for AI-assisted integration of Civic (MCP security layer for agents), Civic Auth (user authentication), and Civic Labs (experimental projects). For a concise index of all pages, see llms.txt.
+> This file contains the essential content from docs.civic.com for AI-assisted integration of the Civic platform. Civic is the agent integrator for mid-market businesses — we ship forward deployed agents, governed from day one. The platform includes Civic Hub (MCP gateway), Civic Auth (user authentication), and Civic Labs (open-source agent infrastructure). For a concise index, see llms.txt.
 
 ---
 
-# PART 1: CIVIC — MCP SECURITY LAYER FOR AI AGENTS
+# PART 1: CIVIC HUB — MCP GATEWAY FOR AI AGENTS
 
-## What is Civic?
+## What is Civic Hub?
 
-Civic is a security layer for AI agents. It provides a hosted MCP gateway (Civic Hub) that sits between your AI agent and 85 real-world MCP servers.
+Civic Hub is a hosted MCP gateway that sits between your AI agent and 85+ real-world MCP servers. It provides the governance envelope — guardrails, audit trails, secret management, and instant revocation — that every forward deployed agent ships with.
 
 **Four pillars:**
 

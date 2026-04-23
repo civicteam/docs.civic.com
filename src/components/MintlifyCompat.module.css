@@ -9,7 +9,7 @@
   padding: 18px 20px;
   border: 1px solid var(--ifm-color-emphasis-200);
   border-radius: 12px;
-  background: var(--ifm-background-surface-color);
+  background: var(--ifm-background-color);
   transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
   align-items: flex-start;
   height: 100%;
@@ -119,7 +119,7 @@
   cursor: pointer;
   font-weight: 600;
   list-style: none;
-  background: var(--ifm-background-surface-color);
+  background: var(--ifm-background-color);
 }
 .accordionSummary::-webkit-details-marker {
   display: none;
@@ -219,7 +219,7 @@
 .updateDescription {
   font-size: 0.8rem;
   color: var(--ifm-color-emphasis-600);
-  background: var(--ifm-background-surface-color);
+  background: var(--ifm-background-color);
   padding: 2px 8px;
   border-radius: 4px;
 }

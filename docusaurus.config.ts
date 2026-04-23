@@ -13,7 +13,7 @@ const algoliaEnabled =
 const config: Config = {
   title: 'Civic Docs',
   tagline:
-    'The security layer for AI agents. Connect to 95+ MCP servers with guardrails, audit logs, and instant revocation.',
+    'The agent integrator for mid-market businesses. Platform documentation for Civic Hub, Civic Auth, and Civic Labs.',
   favicon: '/favicon.svg',
 
   url: 'https://docs.civic.com',
@@ -163,12 +163,12 @@ const config: Config = {
         },
         {
           label: 'Contact Us',
-          href: 'https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw',
+          href: 'mailto:bd@civic.com',
           position: 'right',
         },
         {
-          label: 'Try Civic',
-          href: 'https://app.civic.com?utm_source=docs&utm_medium=hero-nav',
+          label: 'Book a Call',
+          href: 'https://civic.com',
           position: 'right',
           className: 'navbar__cta',
         },
@@ -177,6 +177,13 @@ const config: Config = {
     footer: {
       style: 'dark',
       links: [
+        {
+          title: 'Civic',
+          items: [
+            { label: 'civic.com', href: 'https://civic.com' },
+            { label: 'bd@civic.com', href: 'mailto:bd@civic.com' },
+          ],
+        },
         {
           title: 'Follow',
           items: [
