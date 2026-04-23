@@ -12,8 +12,9 @@ max_concurrency = 10
 user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
 # Accept these status codes
+# 202 added for postmark signup/credential URLs that return 202 Accepted
 # 403 added for npmjs.com which returns this for bot detection
-accept = [200, 204, 206, 301, 302, 307, 308, 403, 429]
+accept = [200, 202, 204, 206, 301, 302, 307, 308, 403, 429]
 
 # Exclude these patterns
 exclude = [
@@ -54,6 +55,9 @@ exclude = [
 
   # caniuse.com (frequently times out in CI)
   '^https?://caniuse\.com',
+
+  # spec.modelcontextprotocol.io intermittently TLS-handshake-fails in CI
+  '^https?://spec\.modelcontextprotocol\.io',
 ]
 
 # Exclude all private IPs
