@@ -1,6 +1,13 @@
 name: Link Check (Production)
 
-# Runs against the deployed production site URL.
+# Runs lychee against the freshly built site to catch broken external links
+# (and stale internal references) on a daily cron, with Slack on failure.
+#
+# Resolves links against the build's filesystem (`--root-dir`) rather than
+# `--base https://docs.civic.com`, because `--base` collapses fragment-only
+# links like `<a href="#foo">` to `https://docs.civic.com/#foo` instead of
+# resolving them against the page they live on, producing thousands of false
+# "fragment not found" errors.
 
 on:
   push:
@@ -23,12 +30,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
 
-      - name: Link Checker (Deployed Site)
+      - name: Link Checker (Built HTML)
         uses: lycheeverse/lychee-action@v2
         with:
           args: >
             --config lychee.toml
-            --base 'https://docs.civic.com'
+            --root-dir ${{ github.workspace }}/build
             --no-progress
             'build/**/*.html'
           fail: true
