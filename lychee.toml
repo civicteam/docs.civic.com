@@ -18,6 +18,13 @@ accept = [200, 202, 204, 206, 301, 302, 307, 308, 403, 429]
 
 # Exclude these patterns
 exclude = [
+  # Self — every Docusaurus page emits absolute canonical/og:url tags pointing
+  # at docs.civic.com, which lychee otherwise network-fetches once per page.
+  # Internal link validity is already covered by --root-dir against build/, and
+  # site uptime is covered by the deploy workflow; checking ourselves over HTTP
+  # only adds 5xx flakiness.
+  '^https?://docs\.civic\.com',
+
   # Localhost
   '^https?://localhost',
   '^https?://127\.0\.0\.1',
