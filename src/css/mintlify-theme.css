@@ -121,7 +121,21 @@ h1, h2, h3, h4 {
   transform: translate(-50%, -50%);
 }
 .navbar .DocSearch-Button {
-  width: 400px;
+  width: clamp(180px, 32vw, 400px);
+}
+
+/* Below Docusaurus's 996px mobile breakpoint the left nav links collapse into
+ * a hamburger and the right-side CTA stays visible, so a 400px centered
+ * search bar overlaps both. Unpin it from the center and let Docusaurus fall
+ * back to its default icon-sized search button on the right. */
+@media (max-width: 996px) {
+  .navbar [class*='navbarSearchContainer'] {
+    position: static;
+    transform: none;
+  }
+  .navbar .DocSearch-Button {
+    width: auto;
+  }
 }
 
 .navbar__brand {
