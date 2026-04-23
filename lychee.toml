@@ -55,9 +55,6 @@ exclude = [
 
   # caniuse.com (frequently times out in CI)
   '^https?://caniuse\.com',
-
-  # spec.modelcontextprotocol.io intermittently TLS-handshake-fails in CI
-  '^https?://spec\.modelcontextprotocol\.io',
 ]
 
 # Exclude all private IPs
