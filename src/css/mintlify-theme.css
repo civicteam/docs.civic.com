@@ -110,25 +110,34 @@ h1, h2, h3, h4 {
 }
 
 /* Center the DocSearch input inside the navbar. The container class name
- * is hashed by Docusaurus (navbarSearchContainer_<hash>), so match by prefix. */
-.navbar__inner {
-  position: relative;
-}
-.navbar [class*='navbarSearchContainer'] {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-.navbar .DocSearch-Button {
-  width: 400px;
+ * is hashed by Docusaurus (navbarSearchContainer_<hash>), so match by prefix.
+ * Desktop only — below 997px Docusaurus collapses DocSearch to an icon
+ * button, and absolute centering + a 400px width would overflow the viewport
+ * and cover the hamburger / logo / CTA. */
+@media (min-width: 997px) {
+  .navbar__inner {
+    position: relative;
+  }
+  .navbar [class*='navbarSearchContainer'] {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .navbar .DocSearch-Button {
+    width: 400px;
+  }
 }
 
 .navbar__brand {
   font-weight: 600;
 }
+.navbar__logo {
+  height: 24px;
+}
 .navbar__logo img {
   height: 24px;
+  display: block;
 }
 .navbar__title {
   display: none; /* logo is enough; mirrors Mintlify */
@@ -170,6 +179,76 @@ h1, h2, h3, h4 {
 .navbar__cta:hover {
   background: var(--ifm-color-primary-dark) !important;
   transform: translateY(-1px);
+}
+
+/* Mobile slide-out sidebar header: render Contact Us / Book a Call as
+ * icon-only buttons next to the light/dark toggle, injected via the
+ * swizzled Navbar/MobileSidebar/Header component. Hide the same items
+ * from the duplicated nav list below the doc tree so they're not buried. */
+.navbar-sidebar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: 0 4px;
+  border-radius: 8px;
+  color: var(--ifm-color-emphasis-700);
+  flex: 0 0 36px;
+}
+.navbar-sidebar__icon + :not(.navbar-sidebar__icon) {
+  margin-left: 8px;
+}
+.navbar-sidebar__icon-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.navbar-sidebar__icon:hover {
+  background: var(--ifm-color-emphasis-200);
+  text-decoration: none;
+}
+.navbar-sidebar__icon::before {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 18px;
+  background-color: currentColor;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.navbar-sidebar__icon--contact::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M2 6.5A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5V7l-10 6L2 7v-.5z'/%3E%3Cpath d='M22 9.236V17.5A2.5 2.5 0 0 1 19.5 20h-15A2.5 2.5 0 0 1 2 17.5V9.236l9.485 5.69a1 1 0 0 0 1.03 0L22 9.236z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M2 6.5A2.5 2.5 0 0 1 4.5 4h15A2.5 2.5 0 0 1 22 6.5V7l-10 6L2 7v-.5z'/%3E%3Cpath d='M22 9.236V17.5A2.5 2.5 0 0 1 19.5 20h-15A2.5 2.5 0 0 1 2 17.5V9.236l9.485 5.69a1 1 0 0 0 1.03 0L22 9.236z'/%3E%3C/svg%3E");
+}
+.navbar-sidebar__icon--book {
+  background: var(--ifm-color-primary);
+  color: #fff;
+}
+.navbar-sidebar__icon--book:hover {
+  background: var(--ifm-color-primary-dark);
+}
+.navbar-sidebar__icon--book::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.05-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A18 18 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.05l-2.2 2.17z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.05-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A18 18 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.05l-2.2 2.17z'/%3E%3C/svg%3E");
+}
+
+/* Hide the duplicated Contact Us / Book a Call rows from the slide-out
+ * navbar items list — they're buried under the doc tree and now live in
+ * the sidebar header instead. */
+.navbar-sidebar .menu__list-item:has(> .navbar__contact),
+.navbar-sidebar .menu__list-item:has(> .navbar__cta) {
+  display: none;
 }
 
 /* ======================================================================

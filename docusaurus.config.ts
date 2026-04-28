@@ -165,6 +165,7 @@ const config: Config = {
           label: 'Contact Us',
           href: 'mailto:bd@civic.com',
           position: 'right',
+          className: 'navbar__contact',
         },
         {
           label: 'Book a Call',
