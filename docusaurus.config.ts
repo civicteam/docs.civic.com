@@ -10,6 +10,9 @@ const algoliaEnv = {
 const algoliaEnabled =
   !!algoliaEnv.appId && !!algoliaEnv.apiKey && !!algoliaEnv.indexName;
 
+const CONTACT_URL = 'mailto:bd@civic.com';
+const BOOK_CALL_URL = 'https://civic.com';
+
 const config: Config = {
   title: 'Civic Docs',
   tagline:
@@ -27,6 +30,11 @@ const config: Config = {
   onBrokenAnchors: 'warn',
 
   i18n: { defaultLocale: 'en', locales: ['en'] },
+
+  customFields: {
+    contactUrl: CONTACT_URL,
+    bookCallUrl: BOOK_CALL_URL,
+  },
 
   markdown: {
     mdx1Compat: { comments: false, admonitions: false, headingIds: false },
@@ -163,13 +171,13 @@ const config: Config = {
         },
         {
           label: 'Contact Us',
-          href: 'mailto:bd@civic.com',
+          href: CONTACT_URL,
           position: 'right',
           className: 'navbar__contact',
         },
         {
           label: 'Book a Call',
-          href: 'https://civic.com',
+          href: BOOK_CALL_URL,
           position: 'right',
           className: 'navbar__cta',
         },

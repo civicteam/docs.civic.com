@@ -1,4 +1,5 @@
 import React, {type ReactNode} from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import {useNavbarMobileSidebar} from '@docusaurus/theme-common/internal';
 import {translate} from '@docusaurus/Translate';
 import NavbarColorModeToggle from '@theme/Navbar/ColorModeToggle';
@@ -23,23 +24,26 @@ function CloseButton() {
 }
 
 export default function NavbarMobileSidebarHeader(): ReactNode {
+  const {siteConfig} = useDocusaurusContext();
+  const {contactUrl, bookCallUrl} = siteConfig.customFields as {
+    contactUrl: string;
+    bookCallUrl: string;
+  };
   return (
     <div className="navbar-sidebar__brand">
       <NavbarLogo />
       <a
-        href="mailto:bd@civic.com"
+        href={contactUrl}
         className="navbar-sidebar__icon navbar-sidebar__icon--contact"
-        aria-label="Contact Us">
-        <span className="navbar-sidebar__icon-label">Contact Us</span>
-      </a>
+        aria-label="Contact Us"
+      />
       <a
-        href="https://civic.com"
+        href={bookCallUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="navbar-sidebar__icon navbar-sidebar__icon--book"
-        aria-label="Book a Call">
-        <span className="navbar-sidebar__icon-label">Book a Call</span>
-      </a>
+        aria-label="Book a Call"
+      />
       <NavbarColorModeToggle className="margin-right--md" />
       <CloseButton />
     </div>
