@@ -40,9 +40,6 @@ exclude = [
   '^https?://(www\.)?notion\.so',
   '^https?://(www\.)?chat\.mistral\.ai',
 
-  # Mintlify dashboard (returns intermittent 500 errors)
-  '^https?://dashboard\.mintlify\.com',
-
   # Civic Auth dashboard (returns 500 to bot requests)
   '^https?://auth\.civic\.com',
 

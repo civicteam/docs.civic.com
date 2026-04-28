@@ -1,15 +1,15 @@
 /**
  * Civic Docs theme.
- * - Primary brand: #7C3BED (Mintlify `colors.primary` / `light` / `dark`).
- * - Dark background: #030711 (Mintlify `background.color.dark`).
+ * - Primary brand: #7C3BED.
+ * - Dark background: #030711.
  * - Body / headings / mono: Geist and Geist Mono, loaded from Google Fonts
  *   via headTags in docusaurus.config.ts.
  *
- * The Mintlify-alike visual overlay (navbar tabs, sidebar density, admonition
- * + code-block re-skin, etc.) lives in mintlify-theme.css. Keep brand tokens +
- * ported utilities here, keep look/feel there.
+ * The visual overlay (navbar tabs, sidebar density, admonition + code-block
+ * re-skin, etc.) lives in civic-theme.css. Keep brand tokens + utility
+ * classes here, keep look/feel there.
  */
-@import './mintlify-theme.css';
+@import './civic-theme.css';
 
 :root {
   /* Brand guide colors (2026-04-21) */
@@ -56,7 +56,7 @@
   --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.08);
 }
 
-/* Heading letter-spacing tweaks ported from custom.css */
+/* Heading letter-spacing tweaks. */
 h1,
 .heading-1 {
   letter-spacing: 0.02em;
@@ -75,7 +75,7 @@ h6 {
   letter-spacing: 0.005em;
 }
 
-/* Image utility classes (ported 1:1 from Mintlify custom.css) */
+/* Image utility classes. */
 .image-50 {
   width: 50%;
   max-width: 50%;

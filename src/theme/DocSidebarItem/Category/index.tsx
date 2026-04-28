@@ -1,7 +1,6 @@
 /**
  * Sidebar category override: prefixes the category label with a FontAwesome
- * icon when the sidebar entry sets customProps.icon = "rocket" (etc). This
- * reproduces the Mintlify docs.json `"icon": "rocket"` behavior.
+ * icon when the sidebar entry sets customProps.icon = "rocket" (etc).
  */
 import React from 'react';
 import Category from '@theme-original/DocSidebarItem/Category';

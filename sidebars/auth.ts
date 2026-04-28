@@ -4,8 +4,7 @@ type SidebarItemConfig = Extract<SidebarsConfig[string], readonly unknown[]>[num
 
 const icon = (name: string) => ({ icon: name });
 
-// See sidebars/civic.ts for the rationale — Mintlify renders top-level
-// groups as always-open section headers, not collapsible categories.
+// See sidebars/civic.ts: top-level groups are always-open section headers.
 const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
 
 const sidebar: SidebarItemConfig[] = [

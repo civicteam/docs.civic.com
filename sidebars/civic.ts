@@ -2,15 +2,13 @@ import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 type SidebarItemConfig = Extract<SidebarsConfig[string], readonly unknown[]>[number];
 
-// Mintlify `icon` lives on the category; Docusaurus surfaces it via
-// `customProps.icon`, read by our custom DocSidebarItemCategory theme override
-// to render FontAwesome.
+// `customProps.icon` is read by our DocSidebarItemCategory theme override
+// to render a FontAwesome icon next to the label.
 const icon = (name: string) => ({ icon: name });
 
-// Mintlify renders top-level sidebar groups as always-open, non-clickable
-// section headers. Replicate by marking each one `collapsible: false` —
-// nested sub-categories keep the default (collapsible: true) so long server
-// lists etc. can still fold.
+// Top-level sidebar groups render as always-open, non-clickable section
+// headers — `collapsible: false`. Nested sub-categories keep the default
+// (collapsible: true) so long server lists etc. can still fold.
 const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
 
 const sidebar: SidebarItemConfig[] = [

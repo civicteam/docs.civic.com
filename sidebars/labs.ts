@@ -2,8 +2,7 @@ import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 type SidebarItemConfig = Extract<SidebarsConfig[string], readonly unknown[]>[number];
 
-// See sidebars/civic.ts — top-level groups are always-open Mintlify-style
-// section headers.
+// See sidebars/civic.ts: top-level groups are always-open section headers.
 const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
 
 const sidebar: SidebarItemConfig[] = [

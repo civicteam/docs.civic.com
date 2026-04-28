@@ -1,9 +1,8 @@
 /**
- * Mintlify-look overlay.
+ * Civic Docs visual overlay.
  *
- * Layered on top of the Docusaurus `theme-classic` defaults to approximate
- * the look of the original docs.civic.com / Mintlify site. Nothing in here is
- * functionally required — it is purely visual. If a selector stops working
+ * Layered on top of the Docusaurus `theme-classic` defaults. Nothing in here
+ * is functionally required — it is purely visual. If a selector stops working
  * after a Docusaurus upgrade, the fallback is "looks like stock Docusaurus,"
  * not "site broken."
  *
@@ -14,7 +13,7 @@
  *   4. Main content (headings, paragraphs, hero)
  *   5. Admonitions
  *   6. Code blocks + inline code
- *   7. Cards / card groups (the MintlifyCompat component)
+ *   7. Cards / card groups (DocComponents)
  *   8. Table of contents (right rail)
  *   9. Footer
  *  10. Misc / breadcrumbs / buttons / scrollbar
@@ -140,10 +139,10 @@ h1, h2, h3, h4 {
   display: block;
 }
 .navbar__title {
-  display: none; /* logo is enough; mirrors Mintlify */
+  display: none; /* logo is enough */
 }
 
-/* Navbar tabs — Mintlify's three top tabs are pill-shaped, tight, and flat. */
+/* Navbar tabs — pill-shaped, tight, and flat. */
 .navbar__link {
   font-size: 0.9rem;
   font-weight: 500;
@@ -302,7 +301,7 @@ h1, h2, h3, h4 {
   opacity: 0.5;
 }
 
-/* Top-level groups (rendered as non-collapsible categories, Mintlify-style).
+/* Top-level groups (rendered as non-collapsible categories).
  * Because we set collapsible:false in the sidebar config, these categories
  * render as a plain heading instead of a button — we target the plain
  * heading class so the label reads as a section title rather than a link. */
@@ -367,7 +366,7 @@ article p {
   color: var(--ifm-color-emphasis-800);
 }
 
-/* Lead paragraph under an h1 (Mintlify style). */
+/* Lead paragraph under an h1. */
 article > header + p,
 article h1 + p {
   color: var(--ifm-color-emphasis-700);
@@ -376,7 +375,7 @@ article h1 + p {
   margin-top: -0.25rem;
 }
 
-/* Heading anchor links (#) fade until hover, matching Mintlify. */
+/* Heading anchor links (#) fade until hover. */
 .hash-link {
   opacity: 0;
   transition: opacity 0.15s ease;
@@ -531,11 +530,11 @@ pre {
 }
 
 /* ======================================================================
- * 7. Cards (MintlifyCompat.tsx + its CardGroup)
+ * 7. Cards (DocComponents.tsx + its CardGroup)
  * ==================================================================== */
 
 /* Tighten card density + soften borders. Primary styling lives in
- * MintlifyCompat.module.css; these are nudge-overrides. */
+ * DocComponents.module.css; these are nudge-overrides. */
 .main-wrapper a:has(> [class*='card_']) {
   text-decoration: none;
 }
@@ -611,7 +610,7 @@ pre {
  * 10. Misc
  * ==================================================================== */
 
-/* Breadcrumbs — disabled in docs.config (Mintlify doesn't show them). */
+/* Breadcrumbs — disabled in docs.config. */
 .theme-doc-breadcrumbs,
 .breadcrumbs {
   display: none !important;

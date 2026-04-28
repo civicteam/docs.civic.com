@@ -9,7 +9,7 @@ package-lock.json
 .docusaurus/
 build/
 
-# Legacy Next/Mintlify outputs (kept so downgrade is clean if needed)
+# Legacy build outputs
 .next/
 out/
 dist/
