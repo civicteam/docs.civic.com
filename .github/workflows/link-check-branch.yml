@@ -6,8 +6,6 @@ name: Link Check (Branch)
 # relative-path false negatives because paths changed under docs/.
 
 on:
-  push:
-    branches-ignore: [main]
   pull_request:
   workflow_dispatch:
 
@@ -24,12 +22,21 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
 
+      - name: Restore lychee cache
+        uses: actions/cache@v4
+        with:
+          path: .lycheecache
+          key: lychee-${{ github.sha }}
+          restore-keys: lychee-
+
       - name: Link Checker (Built HTML)
         uses: lycheeverse/lychee-action@v2
         with:
           args: >
             --config lychee.toml
             --root-dir ${{ github.workspace }}/build
+            --cache
+            --max-cache-age 1d
             --no-progress
             'build/**/*.html'
           fail: true
