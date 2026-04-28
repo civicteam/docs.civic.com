@@ -1,7 +1,6 @@
 /**
  * Sidebar leaf-link override: prefixes the link label with a FontAwesome
  * icon when the doc's frontmatter sets `sidebar_custom_props.icon: "terminal"`.
- * Reproduces Mintlify's per-page `icon:` frontmatter behavior.
  */
 import React from 'react';
 import Link from '@theme-original/DocSidebarItem/Link';

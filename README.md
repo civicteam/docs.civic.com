@@ -38,7 +38,7 @@ sidebars.ts                three sidebars (civic/auth/labs) wired to navbar tabs
 sidebars/{civic,auth,labs}.ts
 docusaurus.config.ts       site config (redirects, clientModules, fonts, etc.)
 src/
-  components/MintlifyCompat.tsx   Docusaurus-native <Note>, <Card>, <Steps>, etc.
+  components/DocComponents.tsx    <Note>, <Card>, <Steps>, etc. (MDX components)
   theme/MDXComponents.tsx         injects those globally into every MDX file
   theme/DocSidebarItem/Category/  renders FontAwesome icon from customProps.icon
   css/custom.css                  brand colors + utility classes
@@ -50,22 +50,22 @@ static/
 
 ## Editing content
 
-Authoring is GitHub PR only (no Mintlify web editor replacement). Add or edit
-MDX under `docs/`, push a branch, open a PR. The site deploys from `main` only
-— there are no per-branch previews.
+Authoring is GitHub PR only. Add or edit MDX under `docs/`, push a branch,
+open a PR. The site deploys from `main` only — there are no per-branch
+previews.
 
 ### Components available in MDX
 
-All Mintlify-style tags render through native Docusaurus components —
+These tags are available in every MDX file without a local import:
 `<Note>`, `<Tip>`, `<Warning>`, `<Info>`, `<Check>`, `<Callout>`, `<Card>`,
 `<CardGroup>`, `<Steps>`/`<Step>`, `<Accordion>`/`<AccordionGroup>`,
-`<Tabs>`/`<Tab>`, `<CodeGroup>`, `<Frame>`, `<Update>`. Implementations live in
-`src/components/MintlifyCompat.tsx`.
+`<Tabs>`/`<Tab>`, `<CodeGroup>`, `<Frame>`, `<Update>`. Implementations live
+in `src/components/DocComponents.tsx`.
 
 ### Images
 
 Served from `static/images/…`; in MDX reference them as `/images/…`. Utility
-classes for width and rounding are ported from the old `custom.css`:
+classes for width and rounding are defined in `src/css/custom.css`:
 
 ```mdx
 <img src="/images/example.png" className="image-70 image-rounded" alt="..." />

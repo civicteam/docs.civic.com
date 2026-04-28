@@ -10,6 +10,9 @@ const algoliaEnv = {
 const algoliaEnabled =
   !!algoliaEnv.appId && !!algoliaEnv.apiKey && !!algoliaEnv.indexName;
 
+const CONTACT_URL = 'mailto:bd@civic.com';
+const BOOK_CALL_URL = 'https://civic.com';
+
 const config: Config = {
   title: 'Civic Docs',
   tagline:
@@ -27,6 +30,11 @@ const config: Config = {
   onBrokenAnchors: 'warn',
 
   i18n: { defaultLocale: 'en', locales: ['en'] },
+
+  customFields: {
+    contactUrl: CONTACT_URL,
+    bookCallUrl: BOOK_CALL_URL,
+  },
 
   markdown: {
     mdx1Compat: { comments: false, admonitions: false, headingIds: false },
@@ -51,12 +59,12 @@ const config: Config = {
           editUrl:
             'https://github.com/civicteam/docs.civic.com/edit/main/',
           showLastUpdateTime: false,
-          // Mintlify doesn't render breadcrumbs above the H1; mirror that.
+          // No breadcrumbs above the H1.
           breadcrumbs: false,
           // Top-level groups are opt-in non-collapsible in each sidebar file
-          // (Mintlify renders them as always-open section headers). Nested
-          // groups stay collapsible so /civic/reference/servers/* etc. can
-          // fold away — keep the global default collapsible: true.
+          // (rendered as always-open section headers). Nested groups stay
+          // collapsible so /civic/reference/servers/* etc. can fold away —
+          // keep the global default collapsible: true.
         },
         blog: false,
         pages: { path: 'src/pages' },
@@ -126,9 +134,9 @@ const config: Config = {
 
   themeConfig: {
     image: 'logo/dark.png',
-    // Mintlify's docs.civic.com is dark always; match that. Users can still
-    // toggle via the navbar switch, but OS prefers-color-scheme: light no
-    // longer auto-flips the site.
+    // docs.civic.com is dark by default. Users can still toggle via the
+    // navbar switch, but OS prefers-color-scheme: light no longer
+    // auto-flips the site.
     colorMode: {
       defaultMode: 'dark',
       respectPrefersColorScheme: false,
@@ -163,12 +171,13 @@ const config: Config = {
         },
         {
           label: 'Contact Us',
-          href: 'mailto:bd@civic.com',
+          href: CONTACT_URL,
           position: 'right',
+          className: 'navbar__contact',
         },
         {
           label: 'Book a Call',
-          href: 'https://civic.com',
+          href: BOOK_CALL_URL,
           position: 'right',
           className: 'navbar__cta',
         },
@@ -203,8 +212,8 @@ const config: Config = {
     },
     prism: {
       theme: prismThemes.oneLight,
-      // nightOwl's palette is closer to Mintlify's dark Monokai-ish scheme
-      // than the default dracula (cooler blues, softer pink for keywords).
+      // nightOwl's palette: cooler blues, softer pink for keywords —
+      // a closer match to our dark Monokai-ish scheme than dracula.
       darkTheme: prismThemes.nightOwl,
       additionalLanguages: [
         'bash',

@@ -1,6 +1,5 @@
 /**
  * Google Tag Manager injection.
- * Mintlify previously loaded GTM-KRZHVRL via `integrations.gtm.tagId`.
  * Docusaurus' built-in gtag plugin only supports gtag.js (GA4), not full GTM,
  * so we load the GTM loader snippet directly.
  */

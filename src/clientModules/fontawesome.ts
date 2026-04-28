@@ -1,7 +1,6 @@
 /**
- * Loads FontAwesome Free from the CDN. Mintlify bundled FA icons out of the
- * box; on Docusaurus we render <i class="fa-solid fa-{name}"> via the sidebar
- * icon swizzle + Card component and rely on FA's CSS.
+ * Loads FontAwesome Free from the CDN. We render <i class="fa-solid fa-{name}">
+ * via the sidebar icon swizzle and the Card component, and rely on FA's CSS.
  */
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 
