@@ -7,7 +7,7 @@ sidebar_custom_props:
 
 import CivicTokenSetup from '@site/docs/_snippets/_civic-token-env-setup.mdx'
 
-Connect a [Pydantic AI](https://ai.pydantic.dev/) agent to Civic. For standalone scripts, use `civic-mcp-client` with the built-in Pydantic AI adapter. For web apps, use native `MCPServerStreamableHTTP` with per-user Civic Auth tokens.
+Connect a [Pydantic AI](https://ai.pydantic.dev/) agent to Civic. For standalone scripts, use Pydantic AI's native `MCPServerStreamableHTTP` with a Civic token. For web apps, use per-user Civic Auth tokens.
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ Connect a [Pydantic AI](https://ai.pydantic.dev/) agent to Civic. For standalone
 ## Installation
 
 ```bash
-pip install "civic-mcp-client[pydanticai]" pydantic-ai python-dotenv
+pip install pydantic-ai python-dotenv
 ```
 
 ## Authentication
@@ -38,21 +38,22 @@ pip install "civic-mcp-client[pydanticai]" pydantic-ai python-dotenv
     import os
     import asyncio
     from dotenv import load_dotenv
-    from civic_mcp_client import CivicMCPClient
-    from civic_mcp_client.adapters.pydanticai import pydanticai
     from pydantic_ai import Agent
+    from pydantic_ai.mcp import MCPServerStreamableHTTP
 
     load_dotenv()
 
+    server = MCPServerStreamableHTTP(
+        "https://app.civic.com/hub/mcp",
+        headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+    )
+
+    agent = Agent("anthropic:claude-sonnet-4-6", mcp_servers=[server])
+
     async def main():
-        client = CivicMCPClient(auth={"token": os.environ["CIVIC_TOKEN"]})
-        tools = await client.adapt_for(pydanticai())
-
-        agent = Agent("anthropic:claude-sonnet-4-6", tools=tools)
-        result = await agent.run("List open PRs in civicteam/ai-chatbot")
+        async with agent.run_mcp_servers():
+            result = await agent.run("List open PRs in civicteam/ai-chatbot")
         print(result.output)
-
-        await client.close()
 
     asyncio.run(main())
     ```
@@ -152,12 +153,12 @@ Use `mcp_servers=[server]` — not `toolsets=[server]`. The `mcp_servers` parame
 
 ## Production Configuration
 
-For production agents, scope to a specific toolkit:
+For production agents, lock to a specific toolkit by adding `profile` to the MCP URL:
 
 ```python
-client = CivicMCPClient(
-    auth={"token": os.environ["CIVIC_TOKEN"]},
-    civic_profile="your-production-profile-id",
+server = MCPServerStreamableHTTP(
+    f"https://app.civic.com/hub/mcp?profile={os.environ['CIVIC_PROFILE_ID']}",
+    headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
 )
 ```
 
