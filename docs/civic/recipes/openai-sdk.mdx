@@ -37,7 +37,6 @@ npm install openai @civic/mcp-client
     # .env
     OPENAI_API_KEY=your_openai_api_key
     CIVIC_TOKEN=your-civic-token-here
-    CIVIC_URL=https://app.civic.com/hub/mcp
     ```
   </Tab>
   <Tab label="Next.js App (Civic Auth)">
@@ -70,10 +69,6 @@ function createCivicClient(token: string) {
 ```
 
 ## Call with Tool Functions
-
-<Note>
-This example handles a single round of tool calling. Real agent loops need to iterate until the model stops requesting tools — see the multi-turn loop below.
-</Note>
 
 ```ts
 import OpenAI from 'openai';
