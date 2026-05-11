@@ -63,6 +63,7 @@ const sidebar: SidebarItemConfig[] = [
           'civic/recipes/openai-sdk',
           'civic/recipes/openai-agents',
           'civic/recipes/langchain',
+          'civic/recipes/langchain-js',
           'civic/recipes/pydantic-ai',
           'civic/recipes/civic-mcp-client-python',
           'civic/recipes/vercel-ai-sdk',

@@ -9,7 +9,7 @@ Connect a [LangGraph](https://langchain-ai.github.io/langgraphjs/) agent to Civi
 
 ## Prerequisites
 
-- Node.js 18+
+- Node.js 20+
 - A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
 - A Civic token and an LLM API key (e.g. Anthropic or OpenAI)
 
@@ -19,16 +19,17 @@ Connect a [LangGraph](https://langchain-ai.github.io/langgraphjs/) agent to Civi
 pnpm add @civic/mcp-client @langchain/core @langchain/anthropic @langchain/langgraph
 ```
 
-<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
-  How to generate a Civic token and configure toolkit URL parameters
-</Card>
-
 ## Environment Variables
 
 ```bash
 CIVIC_TOKEN=your-civic-token
 ANTHROPIC_API_KEY=your-anthropic-key
+CIVIC_PROFILE_ID=your-profile-id  # optional: lock agent to a specific toolkit
 ```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
 
 ## Connecting to Civic
 
@@ -114,6 +115,9 @@ const result = await agent.invoke(
   </Card>
   <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
     Constrain what tools your LangGraph agent can use
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
   </Card>
   <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
     Token generation and URL parameter reference

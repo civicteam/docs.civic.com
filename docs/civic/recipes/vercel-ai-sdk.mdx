@@ -44,21 +44,9 @@ pnpm dev
 ### Installation
 
 ```bash
-pnpm install ai @ai-sdk/openai @ai-sdk/anthropic @ai-sdk/react @modelcontextprotocol/sdk @civic/auth
+pnpm install ai @ai-sdk/openai @ai-sdk/anthropic @ai-sdk/react @civic/mcp-client @civic/auth
 ```
 
-<Note>
-**Vercel AI SDK version**: `experimental_createMCPClient` ships in the `ai` package for **AI SDK v5**. If you're on **v6+**, install `@ai-sdk/mcp` and import from there instead:
-```bash
-pnpm install @ai-sdk/mcp
-```
-```typescript
-// v6+
-import { experimental_createMCPClient } from '@ai-sdk/mcp';
-// v5
-import { experimental_createMCPClient } from 'ai';
-```
-</Note>
 
 ### Authentication
 
@@ -78,35 +66,20 @@ OPENAI_API_KEY=your_openai_key       # or ANTHROPIC_API_KEY
 
 ```typescript
 // lib/ai/tools/civic.ts
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import { CivicMcpClient } from "@civic/mcp-client";
+import { vercelAIAdapter } from "@civic/mcp-client/adapters/vercel-ai";
 import { getTokens } from "@civic/auth/nextjs";
-import { experimental_createMCPClient as createMCPClient } from "ai"; // use @ai-sdk/mcp for v6+
 
 export const getCivicTools = async () => {
   const { accessToken } = (await getTokens()) ?? {};
   // getTokens() exchanges the user's Civic Auth session for a hub access token
-  if (!accessToken) {
-    return {}; // Return empty tools if user isn't authenticated
-  }
+  if (!accessToken) return {};
 
-  try {
-    const transport = new StreamableHTTPClientTransport(
-      new URL('https://app.civic.com/hub/mcp'), {
-        requestInit: {
-          headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
-        }
-      }
-    );
-
-    const mcpClient = await createMCPClient({ transport });
-    return mcpClient.tools();
-  } catch (error) {
-    console.warn('Failed to load Civic tools, continuing without them:', error);
-    return {};
-  }
-}
+  const client = new CivicMcpClient({
+    auth: { token: accessToken },
+  });
+  return client.getTools(vercelAIAdapter());
+};
 ```
 
 ## App Router API Route

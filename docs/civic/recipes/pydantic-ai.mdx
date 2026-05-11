@@ -17,7 +17,7 @@ Connect a [Pydantic AI](https://ai.pydantic.dev/) agent to Civic using native MC
 ## Installation
 
 ```bash
-pip install pydantic-ai python-dotenv
+pip install "civic-mcp-client[pydanticai]" pydantic-ai python-dotenv
 ```
 
 ## Authentication
@@ -31,36 +31,31 @@ pip install pydantic-ai python-dotenv
     ```bash
     # .env
     CIVIC_TOKEN=your-civic-token-here
-    CIVIC_URL=https://app.civic.com/hub/mcp
+    ANTHROPIC_API_KEY=your-anthropic-key
     ```
 
     ```python
     import os
     import asyncio
     from dotenv import load_dotenv
+    from civic_mcp_client import CivicMCPClient
+    from civic_mcp_client.adapters.pydanticai import pydanticai
     from pydantic_ai import Agent
-    from pydantic_ai.mcp import MCPServerStreamableHTTP
 
     load_dotenv()
 
-    server = MCPServerStreamableHTTP(
-        os.environ["CIVIC_URL"],
-        headers={"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
-    )
-
-    agent = Agent("anthropic:claude-sonnet-4-6", mcp_servers=[server])
-
     async def main():
-        async with agent.run_mcp_servers():
-            result = await agent.run("List open PRs in civicteam/ai-chatbot")
+        client = CivicMCPClient(auth={"token": os.environ["CIVIC_TOKEN"]})
+        tools = await client.adapt_for(pydanticai())
+
+        agent = Agent("anthropic:claude-sonnet-4-6", tools=tools)
+        result = await agent.run("List open PRs in civicteam/ai-chatbot")
         print(result.output)
+
+        await client.close()
 
     asyncio.run(main())
     ```
-
-    <Tip>
-      You can customize tool names, arguments, and filtering. See [Pydantic AI MCP client docs](https://ai.pydantic.dev/mcp/client/#tool-call-customization).
-    </Tip>
   </Tab>
   <Tab label="Web App (Civic Auth)">
     For web apps where each user has their own Civic session — use the `civic-auth` Python library to get a per-user access token.
