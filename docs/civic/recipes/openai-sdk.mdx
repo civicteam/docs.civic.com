@@ -24,7 +24,7 @@ This recipe shows how to wire Civic MCP tools to the OpenAI Node SDK using manua
 ## Installation
 
 ```bash
-npm install openai @modelcontextprotocol/sdk
+pnpm add openai @civic/mcp-client
 ```
 
 ## Authentication
@@ -37,7 +37,6 @@ npm install openai @modelcontextprotocol/sdk
     # .env
     OPENAI_API_KEY=your_openai_api_key
     CIVIC_TOKEN=your-civic-token-here
-    CIVIC_URL=https://app.civic.com/hub/mcp
     ```
   </Tab>
   <Tab label="Next.js App (Civic Auth)">
@@ -45,7 +44,7 @@ npm install openai @modelcontextprotocol/sdk
 
     Install the additional auth package:
     ```bash
-    npm install @civic/auth
+    pnpm add @civic/auth
     ```
 
     <NextjsAccessTokenSetup />
@@ -58,61 +57,32 @@ npm install openai @modelcontextprotocol/sdk
   </Tab>
 </Tabs>
 
-## Create an MCP Client
+## Create a Civic Client
 
 ```ts
-import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
+import { CivicMcpClient } from '@civic/mcp-client';
+import { openAIAdapter } from '@civic/mcp-client/adapters/openai';
 
-async function createMCP(token: string) {
-  const transport = new StreamableHTTPClientTransport(
-    new URL(process.env.CIVIC_URL!),
-    {
-      requestInit: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      },
-    }
-  );
-  const client = new Client(
-    { name: 'my-app', version: '1.0.0' },
-    { capabilities: {} }
-  );
-  await client.connect(transport);
-  return client;
+function createCivicClient(token: string) {
+  return new CivicMcpClient({ auth: { token } });
 }
 ```
 
 ## Call with Tool Functions
-
-<Note>
-This example handles a single round of tool calling. Real agent loops need to iterate until the model stops requesting tools — see the multi-turn loop below.
-</Note>
 
 ```ts
 import OpenAI from 'openai';
 
 export async function chatWithTools(messages: any[], civicToken: string) {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
-  const mcp = await createMCP(civicToken);
-  const { tools } = await mcp.listTools();
-
-  const toolDefs = tools.map((t) => ({
-    type: 'function' as const,
-    function: {
-      name: t.name,
-      description: t.description,
-      parameters: t.inputSchema,
-    },
-  }));
+  const client = createCivicClient(civicToken);
+  const tools = await client.getTools(openAIAdapter());
 
   // Multi-turn tool loop — runs until the model stops requesting tools
   let response = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     messages,
-    tools: toolDefs,
+    tools,
     tool_choice: 'auto',
   });
 
@@ -121,7 +91,7 @@ export async function chatWithTools(messages: any[], civicToken: string) {
     const toolResults = await Promise.all(
       toolCalls.map(async (call) => {
         const args = JSON.parse(call.function.arguments || '{}');
-        const result = await mcp.callTool({ name: call.function.name, arguments: args });
+        const result = await client.callTool(call.function.name, args);
         return {
           role: 'tool' as const,
           tool_call_id: call.id,
@@ -139,11 +109,11 @@ export async function chatWithTools(messages: any[], civicToken: string) {
     response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages,
-      tools: toolDefs,
+      tools,
     });
   }
 
-  await mcp.close();
+  await client.close();
   return response;
 }
 ```
@@ -159,11 +129,19 @@ const result = await chatWithTools(
 console.log(result.choices[0].message.content);
 ```
 
+## Next Steps
+
 <CardGroup cols={2}>
   <Card title="OpenAI Agents SDK" icon="robot" href="/civic/recipes/openai-agents">
     Simpler approach — hostedMcpTool() handles the loop for you
   </Card>
-  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Developer Slack
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
   </Card>
 </CardGroup>

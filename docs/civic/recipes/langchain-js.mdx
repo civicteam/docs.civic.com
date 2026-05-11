@@ -1,0 +1,125 @@
+---
+title: LangChain.js / LangGraph
+description: Connect a LangGraph agent to Civic's MCP Hub using @civic/mcp-client
+sidebar_custom_props:
+  icon: "square-js"
+---
+
+Connect a [LangGraph](https://langchain-ai.github.io/langgraphjs/) agent to Civic using `@civic/mcp-client` with the built-in LangChain adapter. The adapter returns `DynamicStructuredTool` instances ready to drop into `createReactAgent`, the legacy `AgentExecutor`, or any custom LangGraph graph.
+
+## Prerequisites
+
+- Node.js 20+
+- A Civic account at [app.civic.com](https://app.civic.com) with a configured toolkit
+- A Civic token and an LLM API key (e.g. Anthropic or OpenAI)
+
+## Installation
+
+```bash
+pnpm add @civic/mcp-client @langchain/core @langchain/anthropic @langchain/langgraph
+```
+
+## Environment Variables
+
+```bash
+CIVIC_TOKEN=your-civic-token
+ANTHROPIC_API_KEY=your-anthropic-key
+CIVIC_PROFILE_ID=your-profile-id  # optional: lock agent to a specific toolkit
+```
+
+<Card title="Get Your Credentials" icon="key" href="/civic/quickstart/credentials">
+  How to generate a Civic token and configure toolkit URL parameters
+</Card>
+
+## Connecting to Civic
+
+Use `CivicMcpClient` with `langchainAdapter()` to get tools, then pass them to `createReactAgent`:
+
+```typescript
+import { CivicMcpClient } from "@civic/mcp-client";
+import { langchainAdapter } from "@civic/mcp-client/adapters/langchain";
+import { ChatAnthropic } from "@langchain/anthropic";
+import { createReactAgent } from "@langchain/langgraph/prebuilt";
+
+const client = new CivicMcpClient({
+  auth: { token: process.env.CIVIC_TOKEN! },
+});
+
+const tools = await client.getTools(langchainAdapter());
+
+const agent = createReactAgent({
+  llm: new ChatAnthropic({ model: "claude-sonnet-4-6" }),
+  tools,
+});
+```
+
+## Running the Agent
+
+```typescript
+async function main() {
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "What events do I have today?" }],
+  });
+
+  console.log(result.messages.at(-1)?.content);
+  await client.close();
+}
+
+main().catch(console.error);
+```
+
+## Production Configuration
+
+### Lock to a Toolkit
+
+For production agents, scope to a specific profile:
+
+```typescript
+const client = new CivicMcpClient({
+  auth: { token: process.env.CIVIC_TOKEN! },
+  civicProfile: process.env.CIVIC_PROFILE_ID,
+});
+```
+
+When a profile is specified, the session is locked by default — the agent cannot switch toolkits or modify its own guardrails. This prevents prompt injection attacks from escaping the defined tool scope.
+
+### Multi-Turn Conversations
+
+Pass a `checkpointer` to `createReactAgent` to retain conversation history across invocations:
+
+```typescript
+import { MemorySaver } from "@langchain/langgraph";
+
+const agent = createReactAgent({
+  llm: new ChatAnthropic({ model: "claude-sonnet-4-6" }),
+  tools,
+  checkpointer: new MemorySaver(),
+});
+
+const config = { configurable: { thread_id: "session-1" } };
+
+const result = await agent.invoke(
+  { messages: [{ role: "user", content: "What events do I have today?" }] },
+  config
+);
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="LangChain (Python)" icon="python" href="/civic/recipes/langchain">
+    Python LangGraph integration using civic-mcp-client
+  </Card>
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your LangGraph agent can use
+  </Card>
+  <Card title="Audit Trail" icon="list-check" href="/civic/concepts/audit">
+    Query what your agent did via Civic Chat
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
+  </Card>
+</CardGroup>
