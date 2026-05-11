@@ -1,11 +1,11 @@
 ---
 title: LangChain (Python)
-description: Connect a LangGraph agent to Civic's MCP Hub using civic-mcp-client
+description: Connect a LangChain agent to Civic's MCP Hub using civic-mcp-client
 sidebar_custom_props:
   icon: "python"
 ---
 
-Connect a [LangGraph](https://langchain-ai.github.io/langgraph/) agent to Civic using `civic-mcp-client` with the built-in LangChain adapter. The adapter returns `DynamicStructuredTool` instances ready to use with `create_react_agent`.
+Connect a [LangChain](https://python.langchain.com/) agent to Civic using `civic-mcp-client`. The `langchain()` adapter returns tool schemas ready to bind to any `ChatModel`, with a helper for executing tool calls.
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ Connect a [LangGraph](https://langchain-ai.github.io/langgraph/) agent to Civic 
 ## Installation
 
 ```bash
-pip install "civic-mcp-client[langchain]" langchain-anthropic langgraph python-dotenv
+pip install "civic-mcp-client[langchain]" langchain-anthropic python-dotenv
 ```
 
 ## Environment Variables
@@ -32,33 +32,42 @@ ANTHROPIC_API_KEY=your-anthropic-key
 
 ## Connecting to Civic
 
-Use `CivicMCPClient` with the `langchain()` adapter to get `DynamicStructuredTool` instances, then pass them to `create_react_agent`:
+Use `CivicMCPClient` with the `langchain()` adapter to get tool schemas, bind them to a model, then use `execute_langchain_tool_call` to execute tool calls from the model's response:
 
 ```python
 import asyncio
 import os
 from dotenv import load_dotenv
 from civic_mcp_client import CivicMCPClient
-from civic_mcp_client.adapters.langchain import langchain
+from civic_mcp_client.adapters.langchain import execute_langchain_tool_call, langchain
 from langchain_anthropic import ChatAnthropic
-from langgraph.prebuilt import create_react_agent
+from langchain_core.messages import HumanMessage, ToolMessage
 
 load_dotenv()
 
 async def main():
     client = CivicMCPClient(auth={"token": os.environ["CIVIC_TOKEN"]})
-    tools = await client.adapt_for(langchain())
+    tool_schemas = await client.adapt_for(langchain())
 
-    agent = create_react_agent(
-        model=ChatAnthropic(model="claude-sonnet-4-6"),
-        tools=tools,
-    )
+    model = ChatAnthropic(model="claude-sonnet-4-6").bind_tools(tool_schemas)
 
-    result = await agent.ainvoke(
-        {"messages": [{"role": "user", "content": "What events do I have today?"}]}
-    )
-    print(result["messages"][-1].content)
+    messages = [HumanMessage(content="What events do I have today?")]
 
+    while True:
+        response = await model.ainvoke(messages)
+        messages.append(response)
+
+        if not response.tool_calls:
+            break
+
+        for tool_call in response.tool_calls:
+            result = await execute_langchain_tool_call(client, tool_call)
+            messages.append(ToolMessage(
+                content=str(result),
+                tool_call_id=tool_call["id"],
+            ))
+
+    print(messages[-1].content)
     await client.close()
 
 asyncio.run(main())
@@ -73,32 +82,11 @@ For production agents, scope to a specific toolkit:
 ```python
 client = CivicMCPClient(
     auth={"token": os.environ["CIVIC_TOKEN"]},
-    civic_profile="your-production-profile-id",
+    civic_profile=os.environ.get("CIVIC_PROFILE_ID"),
 )
 ```
 
 When a profile is specified, the session is locked by default — the agent cannot switch toolkits or modify its own guardrails. This prevents prompt injection attacks from escaping the defined tool scope.
-
-### Multi-Turn Conversations
-
-Pass a `checkpointer` to `create_react_agent` to retain conversation history across invocations:
-
-```python
-from langgraph.checkpoint.memory import MemorySaver
-
-agent = create_react_agent(
-    model=ChatAnthropic(model="claude-sonnet-4-6"),
-    tools=tools,
-    checkpointer=MemorySaver(),
-)
-
-config = {"configurable": {"thread_id": "session-1"}}
-
-result = await agent.ainvoke(
-    {"messages": [{"role": "user", "content": "What events do I have today?"}]},
-    config,
-)
-```
 
 ## Reference Implementation
 

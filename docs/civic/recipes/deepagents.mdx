@@ -5,7 +5,7 @@ sidebar_custom_props:
   icon: "code"
 ---
 
-Connect a [DeepAgents](https://github.com/civicteam/deepagents-reference-implementation-civic) agent to Civic using `civic-mcp-client` with the built-in LangChain adapter, which exposes Civic's MCP tools as `DynamicStructuredTool` instances compatible with DeepAgents.
+Connect a [DeepAgents](https://github.com/civicteam/deepagents-reference-implementation-civic) agent to Civic using `langchain-mcp-adapters`, which bridges DeepAgents' tool interface with Civic's Streamable HTTP MCP transport.
 
 ## Prerequisites
 
@@ -19,13 +19,13 @@ Connect a [DeepAgents](https://github.com/civicteam/deepagents-reference-impleme
 Using [uv](https://docs.astral.sh/uv/) (recommended):
 
 ```bash
-uv add deepagents "civic-mcp-client[langchain]" langchain-anthropic fastapi uvicorn python-dotenv
+uv add deepagents langchain-mcp-adapters langchain-anthropic fastapi uvicorn python-dotenv
 ```
 
 Or with pip:
 
 ```bash
-pip install deepagents "civic-mcp-client[langchain]" langchain-anthropic fastapi uvicorn python-dotenv
+pip install deepagents langchain-mcp-adapters langchain-anthropic fastapi uvicorn python-dotenv
 ```
 
 ## Environment Variables
@@ -44,15 +44,14 @@ ANTHROPIC_API_KEY=your-anthropic-key   # or OPENAI_API_KEY, etc.
 
 ## Connecting to Civic
 
-Use `CivicMCPClient` with the `langchain()` adapter to get tools during app startup, then pass them to `create_deep_agent`:
+Use `MultiServerMCPClient` to connect to the Civic MCP Hub during app startup, then pass the discovered tools to `create_deep_agent`:
 
 ```python
 import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from deepagents import create_deep_agent
-from civic_mcp_client import CivicMCPClient
-from civic_mcp_client.adapters.langchain import langchain
+from langchain_mcp_adapters.client import MultiServerMCPClient
 
 mcp_client = None
 agent = None
@@ -61,8 +60,15 @@ agent = None
 async def lifespan(app: FastAPI):
     global mcp_client, agent
 
-    mcp_client = CivicMCPClient(auth={"token": os.environ["CIVIC_TOKEN"]})
-    tools = await mcp_client.adapt_for(langchain())
+    mcp_client = MultiServerMCPClient({
+        "civic-nexus": {
+            "transport": "streamable_http",
+            "url": "https://app.civic.com/hub/mcp",
+            "headers": {"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+        }
+    })
+
+    tools = await mcp_client.get_tools()
 
     agent = create_deep_agent(
         model="anthropic:claude-sonnet-4-6",  # or "openai:gpt-4o", etc.
@@ -72,7 +78,7 @@ async def lifespan(app: FastAPI):
 
     yield
 
-    await mcp_client.close()
+    await mcp_client.__aexit__(None, None, None)
 
 app = FastAPI(lifespan=lifespan)
 ```
@@ -106,13 +112,16 @@ uv run uvicorn main:app --reload
 
 ### Lock to a Toolkit
 
-For production agents, scope to a specific toolkit using the `civic_profile` parameter:
+For production agents, scope to a specific toolkit by adding `profile` to the MCP URL:
 
 ```python
-mcp_client = CivicMCPClient(
-    auth={"token": os.environ["CIVIC_TOKEN"]},
-    civic_profile="your-production-profile-id",
-)
+mcp_client = MultiServerMCPClient({
+    "civic-nexus": {
+        "transport": "streamable_http",
+        "url": f"https://app.civic.com/hub/mcp?profile={os.environ['CIVIC_PROFILE_ID']}",
+        "headers": {"Authorization": f"Bearer {os.environ['CIVIC_TOKEN']}"},
+    }
+})
 ```
 
 When a profile is specified, the session is locked by default — the agent cannot switch toolkits or modify its own guardrails. This prevents prompt injection attacks from escaping the defined tool scope.
