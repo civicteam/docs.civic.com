@@ -152,13 +152,16 @@ Use `mcp_servers=[server]` — not `toolsets=[server]`. The `mcp_servers` parame
 
 ## Production Configuration
 
-For production agents, lock to a specific toolkit using the `profile` URL parameter:
+For production agents, scope to a specific toolkit:
 
-```bash
-CIVIC_URL=https://app.civic.com/hub/mcp?profile=your-production-toolkit
+```python
+client = CivicMCPClient(
+    auth={"token": os.environ["CIVIC_TOKEN"]},
+    civic_profile="your-production-profile-id",
+)
 ```
 
-When a profile is specified, the session is locked by default — the agent cannot switch toolkits or modify its own guardrails.
+When a profile is specified, the session is locked by default — the agent cannot switch toolkits or modify its own guardrails. This prevents prompt injection attacks from escaping the defined tool scope.
 
 ## Reference Implementation
 

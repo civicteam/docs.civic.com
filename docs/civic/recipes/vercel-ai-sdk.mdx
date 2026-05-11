@@ -110,7 +110,7 @@ export async function POST(request: Request) {
 ```typescript
 import { anthropic } from '@ai-sdk/anthropic';
 const result = streamText({
-  model: anthropic('claude-sonnet-4-5-20250929'),
+  model: anthropic('claude-sonnet-4-6'),
   messages: coreMessages,
   tools: civicTools,
 });
@@ -138,7 +138,13 @@ const result = streamText({
   <Card title="Starter Template" icon="github" href="https://github.com/civicteam/ai-chatbot">
     Full Next.js + Vercel AI SDK example with Civic integration
   </Card>
-  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Developer Slack
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
   </Card>
 </CardGroup>

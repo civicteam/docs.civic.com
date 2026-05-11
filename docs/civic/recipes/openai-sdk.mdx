@@ -24,7 +24,7 @@ This recipe shows how to wire Civic MCP tools to the OpenAI Node SDK using manua
 ## Installation
 
 ```bash
-npm install openai @civic/mcp-client
+pnpm add openai @civic/mcp-client
 ```
 
 ## Authentication
@@ -44,7 +44,7 @@ npm install openai @civic/mcp-client
 
     Install the additional auth package:
     ```bash
-    npm install @civic/auth
+    pnpm add @civic/auth
     ```
 
     <NextjsAccessTokenSetup />
@@ -129,11 +129,19 @@ const result = await chatWithTools(
 console.log(result.choices[0].message.content);
 ```
 
+## Next Steps
+
 <CardGroup cols={2}>
   <Card title="OpenAI Agents SDK" icon="robot" href="/civic/recipes/openai-agents">
     Simpler approach — hostedMcpTool() handles the loop for you
   </Card>
-  <Card title="Get Help" icon="slack" href="https://join.slack.com/t/civic-developers/shared_invite/zt-37tv9fyo7-aDT43mUjOFQwdQFmfZLTRw">
-    Developer Slack
+  <Card title="Agent Deployment" icon="robot" href="/civic/quickstart/clients/agents">
+    Production deployment guide: profile locking, URL params, authentication
+  </Card>
+  <Card title="Guardrails" icon="shield" href="/civic/concepts/guardrails">
+    Constrain what tools your agent can call
+  </Card>
+  <Card title="Get Credentials" icon="key" href="/civic/quickstart/credentials">
+    Token generation and URL parameter reference
   </Card>
 </CardGroup>
