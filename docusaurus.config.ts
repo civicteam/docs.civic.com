@@ -110,6 +110,14 @@ const config: Config = {
     './src/clientModules/gtm.ts',
   ],
 
+  scripts: [
+    {
+      src: 'https://bryn-poc.civic.com/pixel.js',
+      'data-tenant': 'civic',
+      async: true,
+    },
+  ],
+
   headTags: [
     {
       tagName: 'link',
