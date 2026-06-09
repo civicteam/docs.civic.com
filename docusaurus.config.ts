@@ -1,6 +1,6 @@
-import type { Config } from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
-import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from "@docusaurus/types";
+import type * as Preset from "@docusaurus/preset-classic";
+import { themes as prismThemes } from "prism-react-renderer";
 
 const algoliaEnv = {
   appId: process.env.ALGOLIA_APP_ID,
@@ -10,26 +10,26 @@ const algoliaEnv = {
 const algoliaEnabled =
   !!algoliaEnv.appId && !!algoliaEnv.apiKey && !!algoliaEnv.indexName;
 
-const CONTACT_URL = 'mailto:bd@civic.com';
-const BOOK_CALL_URL = 'https://civic.com';
+const CONTACT_URL = "mailto:bd@civic.com";
+const BOOK_CALL_URL = "https://civic.com";
 
 const config: Config = {
-  title: 'Civic Docs',
+  title: "Civic Docs",
   tagline:
-    'The agent integrator for mid-market businesses. Platform documentation for Civic Hub, Civic Auth, and Civic Labs.',
-  favicon: '/favicon.svg',
+    "The agent integrator for mid-market businesses. Platform documentation for Civic Hub, Civic Auth, and Civic Labs.",
+  favicon: "/favicon.svg",
 
-  url: 'https://docs.civic.com',
-  baseUrl: '/',
+  url: "https://docs.civic.com",
+  baseUrl: "/",
   trailingSlash: false,
 
-  organizationName: 'civicteam',
-  projectName: 'docs.civic.com',
+  organizationName: "civicteam",
+  projectName: "docs.civic.com",
 
-  onBrokenLinks: 'warn',
-  onBrokenAnchors: 'warn',
+  onBrokenLinks: "warn",
+  onBrokenAnchors: "warn",
 
-  i18n: { defaultLocale: 'en', locales: ['en'] },
+  i18n: { defaultLocale: "en", locales: ["en"] },
 
   customFields: {
     contactUrl: CONTACT_URL,
@@ -39,25 +39,24 @@ const config: Config = {
   markdown: {
     mdx1Compat: { comments: false, admonitions: false, headingIds: false },
     // Allow .md and .mdx side by side; llms.txt stays in /static.
-    format: 'detect',
+    format: "detect",
     hooks: {
-      onBrokenMarkdownLinks: 'warn',
+      onBrokenMarkdownLinks: "warn",
     },
   },
 
   presets: [
     [
-      'classic',
+      "classic",
       {
         docs: {
-          path: 'docs',
-          routeBasePath: '/',
-          sidebarPath: './sidebars.ts',
+          path: "docs",
+          routeBasePath: "/",
+          sidebarPath: "./sidebars.ts",
           // Exclude snippet partials; they're imported by other MDX files but
           // should not generate their own routes.
-          exclude: ['_snippets/**'],
-          editUrl:
-            'https://github.com/civicteam/docs.civic.com/edit/main/',
+          exclude: ["_snippets/**"],
+          editUrl: "https://github.com/civicteam/docs.civic.com/edit/main/",
           showLastUpdateTime: false,
           // No breadcrumbs above the H1.
           breadcrumbs: false,
@@ -67,8 +66,8 @@ const config: Config = {
           // keep the global default collapsible: true.
         },
         blog: false,
-        pages: { path: 'src/pages' },
-        theme: { customCss: './src/css/custom.css' },
+        pages: { path: "src/pages" },
+        theme: { customCss: "./src/css/custom.css" },
         // GTM-KRZHVRL is loaded from src/clientModules/gtm.ts because the
         // built-in gtag plugin loads gtag.js (GA4), not full GTM.
       } satisfies Preset.Options,
@@ -77,27 +76,27 @@ const config: Config = {
 
   plugins: [
     [
-      '@docusaurus/plugin-client-redirects',
+      "@docusaurus/plugin-client-redirects",
       {
         redirects: [
           {
-            from: '/nexus/quickstart/nexus-chat',
-            to: '/civic/quickstart/civic-chat',
+            from: "/nexus/quickstart/nexus-chat",
+            to: "/civic/quickstart/civic-chat",
           },
           {
-            from: '/civic/quickstart/nexus-chat',
-            to: '/civic/quickstart/civic-chat',
+            from: "/civic/quickstart/nexus-chat",
+            to: "/civic/quickstart/civic-chat",
           },
           {
-            from: '/civic/recipes/python-pydantic',
-            to: '/civic/recipes/pydantic-ai',
+            from: "/civic/recipes/python-pydantic",
+            to: "/civic/recipes/pydantic-ai",
           },
         ],
         // Wildcard /nexus/:path* -> /civic/:path* : enumerate at build time
         // by listing current civic/* docs.
         createRedirects(existingPath) {
-          if (existingPath.startsWith('/civic/')) {
-            return [existingPath.replace(/^\/civic\//, '/nexus/')];
+          if (existingPath.startsWith("/civic/")) {
+            return [existingPath.replace(/^\/civic\//, "/nexus/")];
           }
           return undefined;
         },
@@ -106,112 +105,122 @@ const config: Config = {
   ],
 
   clientModules: [
-    './src/clientModules/fontawesome.ts',
-    './src/clientModules/gtm.ts',
+    "./src/clientModules/fontawesome.ts",
+    "./src/clientModules/gtm.ts",
   ],
 
   scripts: [
     {
-      src: 'https://bryn-poc.civic.com/pixel.js',
-      'data-tenant': 'civic',
+      src: "https://bryn-poc.civic.com/pixel.js",
+      "data-tenant": "civic",
+      async: true,
+    },
+    {
+      src: "https://bryn-preprod.civic.com/pixel/pixel.js",
+      "data-bryn-pixel-ref": "e8365759-b82e-4cf0-add6-2637a5d5bebc",
+      async: true,
+    },
+    {
+      src: "https://bryn-dev.civic.com/pixel/pixel.js",
+      "data-bryn-pixel-ref": "512c8cbe-56a4-40da-bcc7-714c3b7f4de0",
       async: true,
     },
   ],
 
   headTags: [
     {
-      tagName: 'link',
-      attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+      tagName: "link",
+      attributes: { rel: "preconnect", href: "https://fonts.googleapis.com" },
     },
     {
-      tagName: 'link',
+      tagName: "link",
       attributes: {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com',
-        crossorigin: 'anonymous',
+        rel: "preconnect",
+        href: "https://fonts.gstatic.com",
+        crossorigin: "anonymous",
       },
     },
     {
-      tagName: 'link',
+      tagName: "link",
       attributes: {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap',
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap",
       },
     },
   ],
 
   themeConfig: {
-    image: 'logo/dark.png',
+    image: "logo/dark.png",
     // docs.civic.com is dark by default. Users can still toggle via the
     // navbar switch, but OS prefers-color-scheme: light no longer
     // auto-flips the site.
     colorMode: {
-      defaultMode: 'dark',
+      defaultMode: "dark",
       respectPrefersColorScheme: false,
       disableSwitch: false,
     },
     navbar: {
-      title: 'Civic Docs',
+      title: "Civic Docs",
       logo: {
-        alt: 'Civic',
-        src: 'logo/light.png',
-        srcDark: 'logo/dark.png',
-        href: '/',
+        alt: "Civic",
+        src: "logo/light.png",
+        srcDark: "logo/dark.png",
+        href: "/",
       },
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'civic',
-          label: 'Civic',
-          position: 'left',
+          type: "docSidebar",
+          sidebarId: "civic",
+          label: "Civic",
+          position: "left",
         },
         {
-          type: 'docSidebar',
-          sidebarId: 'auth',
-          label: 'Auth',
-          position: 'left',
+          type: "docSidebar",
+          sidebarId: "auth",
+          label: "Auth",
+          position: "left",
         },
         {
-          type: 'docSidebar',
-          sidebarId: 'labs',
-          label: 'Labs',
-          position: 'left',
+          type: "docSidebar",
+          sidebarId: "labs",
+          label: "Labs",
+          position: "left",
         },
         {
-          label: 'Contact Us',
+          label: "Contact Us",
           href: CONTACT_URL,
-          position: 'right',
-          className: 'navbar__contact',
+          position: "right",
+          className: "navbar__contact",
         },
         {
-          label: 'Book a Call',
+          label: "Book a Call",
           href: BOOK_CALL_URL,
-          position: 'right',
-          className: 'navbar__cta',
+          position: "right",
+          className: "navbar__cta",
         },
       ],
     },
     footer: {
-      style: 'dark',
+      style: "dark",
       links: [
         {
-          title: 'Civic',
+          title: "Civic",
           items: [
-            { label: 'civic.com', href: 'https://civic.com' },
-            { label: 'bd@civic.com', href: 'mailto:bd@civic.com' },
+            { label: "civic.com", href: "https://civic.com" },
+            { label: "bd@civic.com", href: "mailto:bd@civic.com" },
           ],
         },
         {
-          title: 'Follow',
+          title: "Follow",
           items: [
-            { label: 'X', href: 'https://twitter.com/civickey' },
+            { label: "X", href: "https://twitter.com/civickey" },
             {
-              label: 'LinkedIn',
-              href: 'https://www.linkedin.com/company/civic-technologies',
+              label: "LinkedIn",
+              href: "https://www.linkedin.com/company/civic-technologies",
             },
             {
-              label: 'YouTube',
-              href: 'https://www.youtube.com/@CivicTechnologies',
+              label: "YouTube",
+              href: "https://www.youtube.com/@CivicTechnologies",
             },
           ],
         },
@@ -224,15 +233,15 @@ const config: Config = {
       // a closer match to our dark Monokai-ish scheme than dracula.
       darkTheme: prismThemes.nightOwl,
       additionalLanguages: [
-        'bash',
-        'diff',
-        'json',
-        'tsx',
-        'typescript',
-        'python',
-        'rust',
-        'toml',
-        'yaml',
+        "bash",
+        "diff",
+        "json",
+        "tsx",
+        "typescript",
+        "python",
+        "rust",
+        "toml",
+        "yaml",
       ],
     },
     ...(algoliaEnabled
