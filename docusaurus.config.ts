@@ -116,6 +116,11 @@ const config: Config = {
       async: true,
     },
     {
+      src: "https://bryn.civic.com/pixel/pixel.js",
+      "data-bryn-pixel-ref": "c03f1a34-5ecf-4071-aea6-3cde827e50a9",
+      async: true,
+    },
+    {
       src: "https://bryn-preprod.civic.com/pixel/pixel.js",
       "data-bryn-pixel-ref": "e8365759-b82e-4cf0-add6-2637a5d5bebc",
       async: true,
