@@ -1,0 +1,4905 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Bryn Control Plane API",
+    "version": "0.1.0",
+    "description": "Tenant-scoped REST API for the Bryn Control Plane, authenticated with Civic Auth bearer tokens.\n\nThe JWT identifies the caller, not the tenant. The API resolves the active tenant from the caller's memberships: with a single membership the tenant is implicit; with more than one, send an `X-Bryn-Tenant: <tenantId>` header naming one of them."
+  },
+  "security": [
+    {
+      "civicAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "civicAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "OnboardingResult": {
+        "type": "object",
+        "properties": {
+          "tenantId": {
+            "type": "string"
+          },
+          "pixelRef": {
+            "type": "string"
+          },
+          "pixelSnippet": {
+            "type": "string"
+          },
+          "webhookUrls": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "format": "uri"
+            }
+          }
+        },
+        "required": [
+          "tenantId",
+          "pixelRef",
+          "pixelSnippet",
+          "webhookUrls"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "OnboardingChecklist": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "completed": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "key",
+                "label",
+                "completed"
+              ]
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "OnboardingPixelInstall": {
+        "type": "object",
+        "properties": {
+          "pixelRef": {
+            "type": "string"
+          },
+          "pixelSnippet": {
+            "type": "string"
+          },
+          "pixelAllowedOrigins": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "pixelRef",
+          "pixelSnippet",
+          "pixelAllowedOrigins"
+        ]
+      },
+      "PostHogConfig": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "POST"
+            ]
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ]
+            }
+          },
+          "bodyTemplate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "method",
+          "headers",
+          "bodyTemplate"
+        ]
+      },
+      "OnboardingState": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "step": {
+                  "type": "string",
+                  "enum": [
+                    "workspace",
+                    "events_in",
+                    "icp",
+                    "signal_mapping",
+                    "outputs",
+                    "plays"
+                  ]
+                },
+                "completed": {
+                  "type": "boolean"
+                },
+                "completedAt": {
+                  "type": "string",
+                  "nullable": true,
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "step",
+                "completed",
+                "completedAt"
+              ]
+            }
+          },
+          "currentStep": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "workspace",
+              "events_in",
+              "icp",
+              "signal_mapping",
+              "outputs",
+              "plays"
+            ]
+          }
+        },
+        "required": [
+          "steps",
+          "currentStep"
+        ]
+      },
+      "CompleteStepRequest": {
+        "type": "object",
+        "properties": {
+          "analyticsStack": {
+            "type": "string"
+          }
+        }
+      },
+      "OnboardingSession": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "in_progress",
+              "committed",
+              "abandoned"
+            ]
+          },
+          "steps": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "draft": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "steps",
+          "draft",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "OnboardingSessionList": {
+        "type": "object",
+        "properties": {
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OnboardingSession"
+            }
+          }
+        },
+        "required": [
+          "sessions"
+        ]
+      },
+      "PlayCatalogueEntry": {
+        "type": "object",
+        "properties": {
+          "flowPath": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "flowPath",
+          "title",
+          "description"
+        ]
+      },
+      "PlayCatalogue": {
+        "type": "object",
+        "properties": {
+          "flows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayCatalogueEntry"
+            }
+          }
+        },
+        "required": [
+          "flows"
+        ]
+      },
+      "OnboardingDraft": {
+        "type": "object",
+        "properties": {
+          "workspaceDomain": {
+            "type": "string"
+          },
+          "analyticsStack": {
+            "type": "string",
+            "nullable": true
+          },
+          "icp": {
+            "type": "object",
+            "properties": {
+              "industries": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sizes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                    "E",
+                    "F",
+                    "G",
+                    "H",
+                    "I"
+                  ]
+                }
+              },
+              "companyTypes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "countries": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "regionGroups": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "stages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "mappedSignals": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "signalMapping": {
+            "type": "object",
+            "properties": {
+              "sources": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              },
+              "events": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "properties": {
+                    "signal": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "condition": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "signal"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "sessionWindowMinutes": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          },
+          "scoringConfig": {
+            "type": "object",
+            "properties": {
+              "weights": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "number"
+                }
+              },
+              "compositeWeights": {
+                "type": "object",
+                "properties": {
+                  "fit": {
+                    "type": "number"
+                  },
+                  "intent": {
+                    "type": "number"
+                  },
+                  "timing": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "activeWindowMinutes": {
+                "type": "integer"
+              },
+              "axisCap": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": false
+          },
+          "outputs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "integrationType": {
+                  "type": "string",
+                  "enum": [
+                    "slack",
+                    "dashboard",
+                    "webhook",
+                    "jira",
+                    "instantly",
+                    "salesforce",
+                    "hubspot",
+                    "linear",
+                    "resend",
+                    "teams",
+                    "discord",
+                    "ses"
+                  ]
+                },
+                "config": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "nullable": true
+                  }
+                }
+              },
+              "required": [
+                "integrationType",
+                "config"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "selectedPlays": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "flowPath": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "flowPath",
+                "title"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "Membership": {
+        "type": "object",
+        "properties": {
+          "tenantId": {
+            "type": "string"
+          },
+          "tenantName": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "operator"
+            ]
+          }
+        },
+        "required": [
+          "tenantId",
+          "tenantName",
+          "role"
+        ]
+      },
+      "Me": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "required": [
+              "id",
+              "email",
+              "name"
+            ]
+          },
+          "memberships": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Membership"
+            }
+          }
+        },
+        "required": [
+          "user",
+          "memberships"
+        ]
+      },
+      "AuditLogEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "ingest",
+              "identity_lookup",
+              "resolve",
+              "enrich",
+              "score",
+              "decide",
+              "execute",
+              "maintenance",
+              "erasure",
+              "onboarding"
+            ]
+          },
+          "who": {
+            "type": "string"
+          },
+          "what": {
+            "type": "string"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "admtDerived": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AuditLogPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuditLogEntry"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "CostReport": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "end": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "totals": {
+            "type": "object",
+            "properties": {
+              "inputTokens": {
+                "type": "integer"
+              },
+              "outputTokens": {
+                "type": "integer"
+              },
+              "estimatedCostUsd": {
+                "type": "string"
+              },
+              "callCount": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "inputTokens",
+              "outputTokens",
+              "estimatedCostUsd",
+              "callCount"
+            ]
+          },
+          "daily": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inputTokens": {
+                  "type": "integer"
+                },
+                "outputTokens": {
+                  "type": "integer"
+                },
+                "estimatedCostUsd": {
+                  "type": "string"
+                },
+                "callCount": {
+                  "type": "integer"
+                },
+                "date": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                }
+              },
+              "required": [
+                "inputTokens",
+                "outputTokens",
+                "estimatedCostUsd",
+                "callCount",
+                "date"
+              ]
+            }
+          },
+          "monthly": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "inputTokens": {
+                  "type": "integer"
+                },
+                "outputTokens": {
+                  "type": "integer"
+                },
+                "estimatedCostUsd": {
+                  "type": "string"
+                },
+                "callCount": {
+                  "type": "integer"
+                },
+                "month": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}$"
+                }
+              },
+              "required": [
+                "inputTokens",
+                "outputTokens",
+                "estimatedCostUsd",
+                "callCount",
+                "month"
+              ]
+            }
+          }
+        },
+        "required": [
+          "start",
+          "end",
+          "totals",
+          "daily",
+          "monthly"
+        ]
+      },
+      "ErasureAccepted": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "ErasureRequest": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "ccpa",
+              "gdpr",
+              "voluntary"
+            ]
+          }
+        },
+        "required": [
+          "identifier"
+        ]
+      },
+      "Play": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "externalSystemName": {
+            "type": "string"
+          },
+          "externalSystemWorkflowId": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "config": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "outputCapabilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "chat",
+                "email",
+                "sequence",
+                "crm",
+                "ticket"
+              ]
+            }
+          }
+        }
+      },
+      "PlayCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "externalSystemName": {
+            "type": "string"
+          },
+          "externalSystemWorkflowId": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "externalSystemName",
+          "externalSystemWorkflowId",
+          "config"
+        ]
+      },
+      "PlayExecution": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "playId": {
+            "type": "string"
+          },
+          "playName": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "held",
+              "queued",
+              "running",
+              "completed",
+              "killed",
+              "failed"
+            ]
+          },
+          "externalSystemRunId": {
+            "type": "string",
+            "nullable": true
+          },
+          "heldUntil": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "firedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "score": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "signalIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PlayExecutionPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlayExecution"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "PlayExecutionGraph": {
+        "type": "object",
+        "properties": {
+          "executionId": {
+            "type": "string"
+          },
+          "playName": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "running",
+              "success",
+              "failed",
+              "killed"
+            ]
+          },
+          "startedAt": {
+            "type": "string"
+          },
+          "completedAt": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "nodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "agent",
+                    "enroll",
+                    "alert",
+                    "hold",
+                    "branch",
+                    "loop",
+                    "step"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "pending",
+                    "running",
+                    "success",
+                    "failed",
+                    "skipped",
+                    "waiting"
+                  ]
+                },
+                "startedAt": {
+                  "type": "string"
+                },
+                "completedAt": {
+                  "type": "string"
+                },
+                "durationMs": {
+                  "type": "number"
+                },
+                "hasNestedSteps": {
+                  "type": "boolean"
+                },
+                "iterations": {
+                  "type": "number"
+                },
+                "error": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "label",
+                "kind",
+                "status"
+              ]
+            }
+          },
+          "edges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "from",
+                "to"
+              ]
+            }
+          }
+        },
+        "required": [
+          "executionId",
+          "playName",
+          "status",
+          "nodes",
+          "edges"
+        ]
+      },
+      "PlayExecutionStepTimings": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "startedAt": {
+                  "type": "string"
+                },
+                "completedAt": {
+                  "type": "string"
+                },
+                "durationMs": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "steps"
+        ]
+      },
+      "HoldReleaseResult": {
+        "type": "object",
+        "properties": {
+          "released": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "released"
+        ]
+      },
+      "Signal": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "signalType": {
+            "type": "string"
+          },
+          "occurrenceCount": {
+            "type": "integer"
+          },
+          "weight": {
+            "type": "integer",
+            "nullable": true
+          },
+          "lastFiredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "derivedFromEventIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "entityId",
+          "signalType",
+          "occurrenceCount",
+          "weight",
+          "lastFiredAt",
+          "derivedFromEventIds"
+        ]
+      },
+      "SignalPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Signal"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "ObservedEventTypeSample": {
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "lastSeenAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          }
+        },
+        "required": [
+          "eventType",
+          "source",
+          "count",
+          "lastSeenAt",
+          "properties"
+        ]
+      },
+      "ObservedEventSample": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "waiting"
+            ]
+          },
+          "distinctEventTypes": {
+            "type": "integer"
+          },
+          "samples": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ObservedEventTypeSample"
+            }
+          }
+        },
+        "required": [
+          "status",
+          "distinctEventTypes",
+          "samples"
+        ]
+      },
+      "KillSwitchActor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email"
+        ]
+      },
+      "KillSwitch": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "object",
+            "properties": {
+              "axis": {
+                "type": "string",
+                "enum": [
+                  "play",
+                  "segment",
+                  "region"
+                ]
+              },
+              "targetId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "axis",
+              "targetId"
+            ]
+          },
+          "engagedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "engagedBy": {
+            "$ref": "#/components/schemas/KillSwitchActor"
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "scope",
+          "engagedAt",
+          "engagedBy"
+        ]
+      },
+      "KillSwitchCreate": {
+        "type": "object",
+        "properties": {
+          "scope": {
+            "type": "object",
+            "properties": {
+              "axis": {
+                "type": "string",
+                "enum": [
+                  "play",
+                  "segment",
+                  "region"
+                ]
+              },
+              "targetId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "axis",
+              "targetId"
+            ]
+          }
+        },
+        "required": [
+          "scope"
+        ]
+      },
+      "DeadLetterJob": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "ingest",
+              "identity_lookup",
+              "resolve",
+              "enrich",
+              "score",
+              "decide",
+              "execute"
+            ]
+          },
+          "tenantId": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string"
+          },
+          "retryCount": {
+            "type": "integer"
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "payloadKeys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "stage",
+          "tenantId",
+          "state",
+          "retryCount",
+          "createdOn",
+          "payloadKeys"
+        ]
+      },
+      "DeadLetterList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeadLetterJob"
+            }
+          }
+        },
+        "required": [
+          "items"
+        ]
+      },
+      "Prompt": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "content": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string",
+            "nullable": true
+          },
+          "variantTag": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PromptCreate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "variantTag": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "content"
+        ]
+      },
+      "PromptUpdate": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "isActive"
+        ]
+      },
+      "Entity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "externalIds": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "firmographics": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "lastScore": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "fit": {
+                "type": "number"
+              },
+              "intent": {
+                "type": "number"
+              },
+              "timing": {
+                "type": "number"
+              },
+              "composite": {
+                "type": "number"
+              }
+            }
+          },
+          "lastScoredAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "tenantId",
+          "externalIds",
+          "firmographics",
+          "lastScore",
+          "lastScoredAt"
+        ]
+      },
+      "EntityPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Entity"
+            }
+          },
+          "nextCursor": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ]
+      },
+      "EntityDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Entity"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "recentSignalIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "recentSignalIds"
+            ]
+          }
+        ]
+      },
+      "Industry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "label": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "integer",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "parentId"
+        ]
+      },
+      "IndustryList": {
+        "type": "object",
+        "properties": {
+          "industries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Industry"
+            }
+          }
+        },
+        "required": [
+          "industries"
+        ]
+      },
+      "EventSourceStatus": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "posthog",
+              "pixel"
+            ]
+          },
+          "observed": {
+            "type": "boolean"
+          },
+          "firstEventAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "eventType": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "source",
+          "observed",
+          "firstEventAt",
+          "eventType"
+        ]
+      },
+      "SignalMapping": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "sources": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "events": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "sessionWindowMinutes": {
+            "type": "integer",
+            "nullable": true
+          }
+        }
+      },
+      "SignalMappingPut": {
+        "type": "object",
+        "properties": {
+          "sources": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "events": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "sessionWindowMinutes": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "sources",
+          "events"
+        ]
+      },
+      "ICP": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "predicate": {
+            "type": "string"
+          }
+        }
+      },
+      "ICPPut": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "predicate": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "predicate"
+        ]
+      },
+      "ScoringConfig": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "tenantId": {
+            "type": "string"
+          },
+          "weights": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "compositeWeights": {
+            "type": "object",
+            "properties": {
+              "fit": {
+                "type": "number"
+              },
+              "intent": {
+                "type": "number"
+              },
+              "timing": {
+                "type": "number"
+              }
+            }
+          },
+          "activeWindowMinutes": {
+            "type": "integer"
+          },
+          "axisCap": {
+            "type": "integer"
+          }
+        }
+      },
+      "ScoringConfigPut": {
+        "type": "object",
+        "properties": {
+          "weights": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "compositeWeights": {
+            "type": "object",
+            "properties": {
+              "fit": {
+                "type": "number"
+              },
+              "intent": {
+                "type": "number"
+              },
+              "timing": {
+                "type": "number"
+              }
+            }
+          },
+          "activeWindowMinutes": {
+            "type": "integer"
+          },
+          "axisCap": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "weights",
+          "compositeWeights"
+        ]
+      },
+      "Traits": {
+        "type": "object",
+        "properties": {
+          "traits": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "traits"
+        ]
+      },
+      "PixelOrigins": {
+        "type": "object",
+        "properties": {
+          "origins": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "origins"
+        ]
+      },
+      "PixelOriginsPut": {
+        "type": "object",
+        "properties": {
+          "origins": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 2048
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "origins"
+        ]
+      },
+      "WebhookSecretRotation": {
+        "type": "object",
+        "properties": {
+          "secretId": {
+            "type": "string"
+          },
+          "secret": {
+            "type": "string"
+          },
+          "rotatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "secretId",
+          "secret",
+          "rotatedAt"
+        ]
+      },
+      "OutputCatalogue": {
+        "type": "object",
+        "properties": {
+          "catalogue": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "connectionType": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "available",
+                    "coming_soon"
+                  ]
+                },
+                "order": {
+                  "type": "number"
+                },
+                "icon": {
+                  "type": "object",
+                  "properties": {
+                    "lib": {
+                      "type": "string",
+                      "enum": [
+                        "simple-icons",
+                        "lucide"
+                      ]
+                    },
+                    "slug": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "lib",
+                    "slug"
+                  ]
+                },
+                "connectKind": {
+                  "type": "string",
+                  "enum": [
+                    "oauth",
+                    "apiKey",
+                    "none"
+                  ]
+                },
+                "capabilities": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "chat",
+                      "email",
+                      "sequence",
+                      "crm",
+                      "ticket"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "connectionType",
+                "label",
+                "status",
+                "order",
+                "icon",
+                "connectKind",
+                "capabilities"
+              ]
+            }
+          }
+        },
+        "required": [
+          "catalogue"
+        ]
+      },
+      "SlackAuthorizeUrl": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "url"
+        ]
+      },
+      "SlackAuthorizeUrlRequest": {
+        "type": "object",
+        "properties": {
+          "returnTo": {
+            "type": "string",
+            "enum": [
+              "onboarding",
+              "integrations"
+            ]
+          },
+          "sessionId": {
+            "type": "string"
+          }
+        }
+      },
+      "SlackChannelList": {
+        "type": "object",
+        "properties": {
+          "channels": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name"
+              ]
+            }
+          }
+        },
+        "required": [
+          "channels"
+        ]
+      },
+      "OutputConnectionCreated": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "SlackConnectionCreate": {
+        "type": "object",
+        "properties": {
+          "teamId": {
+            "type": "string"
+          },
+          "teamName": {
+            "type": "string"
+          },
+          "channelId": {
+            "type": "string"
+          },
+          "channelName": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "teamId",
+          "channelId",
+          "channelName"
+        ]
+      },
+      "OutputConnection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "connectionType": {
+            "type": "string"
+          },
+          "externalId": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object",
+            "additionalProperties": {
+              "nullable": true
+            }
+          },
+          "verificationStatus": {
+            "type": "string"
+          },
+          "lastVerifiedAt": {
+            "type": "string",
+            "nullable": true,
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "connectedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "connectionType",
+          "externalId",
+          "config",
+          "verificationStatus",
+          "lastVerifiedAt",
+          "isActive",
+          "connectedAt"
+        ]
+      },
+      "OutputConnectionList": {
+        "type": "object",
+        "properties": {
+          "connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OutputConnection"
+            }
+          }
+        },
+        "required": [
+          "connections"
+        ]
+      },
+      "OutputConnectionCreate": {
+        "type": "object",
+        "properties": {
+          "connectionType": {
+            "type": "string"
+          },
+          "args": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "connectionType"
+        ]
+      },
+      "OutputConnectionVerifyResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "failed"
+            ]
+          },
+          "channel": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ]
+      }
+    },
+    "parameters": {}
+  },
+  "paths": {
+    "/onboarding": {
+      "post": {
+        "summary": "Provision the authenticated user's tenant",
+        "operationId": "onboard",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid bearer token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding-checklist": {
+      "get": {
+        "summary": "Onboarding checklist for the authenticated tenant",
+        "operationId": "getOnboardingChecklist",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingChecklist"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding Checklist"
+        ]
+      }
+    },
+    "/onboarding/pixel": {
+      "get": {
+        "summary": "Resumable pixel-install payload for the authenticated tenant",
+        "operationId": "getOnboardingPixelInstall",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingPixelInstall"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding/posthog/config": {
+      "post": {
+        "summary": "Provision (or re-read) the tenant's PostHog webhook destination config",
+        "operationId": "provisionOnboardingPosthogConfig",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PostHogConfig"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding/state": {
+      "get": {
+        "summary": "Onboarding step state for the authenticated tenant",
+        "operationId": "getOnboardingState",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingState"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding/steps/{step}/complete": {
+      "post": {
+        "summary": "Complete an onboarding step",
+        "operationId": "completeOnboardingStep",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "workspace",
+                "events_in",
+                "icp",
+                "signal_mapping",
+                "outputs",
+                "plays"
+              ]
+            },
+            "required": true,
+            "name": "step",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompleteStepRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated onboarding state (also returned idempotently on a repeat completion)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingState"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The step payload failed validation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller's role does not permit completing onboarding steps (owner-only)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Predecessor step incomplete (step_locked) or the live gate is unmet (gate_failed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding/sessions": {
+      "post": {
+        "summary": "Start a new isolated onboarding session",
+        "operationId": "createOnboardingSession",
+        "responses": {
+          "201": {
+            "description": "The newly created session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingSession"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      },
+      "get": {
+        "summary": "List the caller's onboarding sessions",
+        "operationId": "listOnboardingSessions",
+        "responses": {
+          "200": {
+            "description": "The caller's sessions, newest first",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingSessionList"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding/sessions/{id}": {
+      "get": {
+        "summary": "Resume an onboarding session",
+        "operationId": "getOnboardingSession",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingSession"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such session in the caller's tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding/play-catalogue": {
+      "get": {
+        "summary": "List the Windmill flows the Plays step offers as toggleable Plays",
+        "operationId": "getOnboardingPlayCatalogue",
+        "responses": {
+          "200": {
+            "description": "The available Plays catalogue (live Windmill flows under f/bryn_<env>)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayCatalogue"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The Plays catalogue source is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding/sessions/{id}/draft": {
+      "patch": {
+        "summary": "Merge a partial config draft into the session",
+        "operationId": "patchOnboardingSessionDraft",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnboardingDraft"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The session with the merged draft",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingSession"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The draft failed validation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such session in the caller's tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The session is committed/abandoned and no longer editable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding/sessions/{id}/steps/{step}/complete": {
+      "post": {
+        "summary": "Mark a session step complete and stage its payload",
+        "operationId": "completeOnboardingSessionStep",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "workspace",
+                "events_in",
+                "icp",
+                "signal_mapping",
+                "outputs",
+                "plays"
+              ]
+            },
+            "required": true,
+            "name": "step",
+            "in": "path"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OnboardingDraft"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The session with the step stamped and its payload staged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingSession"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The step payload failed validation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such session in the caller's tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The session is committed/abandoned and no longer editable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/onboarding/sessions/{id}/apply": {
+      "post": {
+        "summary": "Commit a session's draft to live config and go live",
+        "operationId": "applyOnboardingSession",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The committed session (also returned idempotently when the session is already committed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OnboardingSession"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The draft is missing required config (incomplete_draft)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller's role does not permit committing (owner-only)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such session in the caller's tenant",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The session cannot be committed (abandoned) or the firing-ready gate is unmet (gate_failed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/me": {
+      "get": {
+        "summary": "Current user and their tenant memberships",
+        "operationId": "getMe",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid bearer token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Me"
+        ]
+      }
+    },
+    "/audit": {
+      "get": {
+        "summary": "List audit log entries",
+        "operationId": "listAuditLog",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ingest",
+                "identity_lookup",
+                "resolve",
+                "enrich",
+                "score",
+                "decide",
+                "execute",
+                "maintenance",
+                "erasure",
+                "onboarding"
+              ]
+            },
+            "required": false,
+            "name": "stage",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "signalType",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "required": false,
+            "name": "from",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "required": false,
+            "name": "to",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditLogPage"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Audit"
+        ]
+      }
+    },
+    "/tenants/{id}/cost": {
+      "get": {
+        "summary": "Per-tenant LLM token spend rollup",
+        "operationId": "getTenantCost",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "required": false,
+            "name": "start",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "required": false,
+            "name": "end",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "playId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "promptId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid date range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Tenant mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Tenants"
+        ]
+      }
+    },
+    "/erasure": {
+      "post": {
+        "summary": "Submit an erasure request",
+        "operationId": "submitErasure",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ErasureRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted; processing queued (or a replay of an already-open request)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErasureAccepted"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A concurrent submit opened a request for this subject",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Erasure"
+        ]
+      }
+    },
+    "/plays": {
+      "get": {
+        "summary": "List Plays",
+        "operationId": "listPlays",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Play"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Plays"
+        ]
+      },
+      "post": {
+        "summary": "Create a Play",
+        "operationId": "createPlay",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlayCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Play"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Plays"
+        ]
+      }
+    },
+    "/plays/{playId}": {
+      "get": {
+        "summary": "Get a Play",
+        "operationId": "getPlay",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "playId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Play"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Plays"
+        ]
+      },
+      "patch": {
+        "summary": "Update a Play",
+        "operationId": "updatePlay",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "playId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Play"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Play"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Empty update",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Plays"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a Play",
+        "operationId": "deletePlay",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "playId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Play has dependent records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Plays"
+        ]
+      }
+    },
+    "/play-executions": {
+      "get": {
+        "summary": "List PlayExecutions",
+        "operationId": "listPlayExecutions",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "playId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "entityId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "held",
+                "queued",
+                "running",
+                "completed",
+                "killed",
+                "failed"
+              ]
+            },
+            "required": false,
+            "name": "status",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayExecutionPage"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Play Executions"
+        ]
+      }
+    },
+    "/play-executions/{executionId}/graph": {
+      "get": {
+        "summary": "Get a PlayExecution's live flow graph",
+        "operationId": "getPlayExecutionGraph",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "executionId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayExecutionGraph"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PlayExecution or workflow run not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Workflow run not started yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Workflow engine temporarily unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Play Executions"
+        ]
+      }
+    },
+    "/play-executions/{executionId}/step-timings": {
+      "get": {
+        "summary": "Get a PlayExecution's per-step wall-clock timing",
+        "operationId": "getPlayExecutionStepTimings",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "executionId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlayExecutionStepTimings"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PlayExecution or workflow run not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Workflow engine temporarily unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Play Executions"
+        ]
+      }
+    },
+    "/play-executions/{playExecutionId}/release-hold": {
+      "post": {
+        "summary": "Release a held PlayExecution early (operator hold-release)",
+        "operationId": "releasePlayExecutionHold",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "playExecutionId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Released early, or a safe no-op when the run was no longer held",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HoldReleaseResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "PlayExecution not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Hold has no stored resume URL — not releasable from the Control Plane",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The Workflow Engine could not be reached or rejected the release",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Play Executions"
+        ]
+      }
+    },
+    "/signals": {
+      "get": {
+        "summary": "List Signals",
+        "operationId": "listSignals",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "entityId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "signalType",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignalPage"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Signals"
+        ]
+      }
+    },
+    "/events/sample": {
+      "get": {
+        "summary": "Observed-event sample for the Signal Mapping step",
+        "operationId": "getObservedEventSample",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 43200
+            },
+            "required": false,
+            "name": "windowMinutes",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObservedEventSample"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid windowMinutes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/kill-switches": {
+      "get": {
+        "summary": "List currently engaged kill switches for the tenant",
+        "operationId": "listKillSwitches",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "play",
+                "segment",
+                "region"
+              ]
+            },
+            "required": false,
+            "name": "axis",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "required": false,
+            "name": "targetId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KillSwitch"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Kill Switches"
+        ]
+      },
+      "post": {
+        "summary": "Engage a kill switch",
+        "operationId": "engageKillSwitch",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KillSwitchCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Engaged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KillSwitch"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error (e.g. unsupported axis at v0)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "A kill switch for this scope is already engaged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Kill Switches"
+        ]
+      }
+    },
+    "/kill-switches/{killSwitchId}": {
+      "get": {
+        "summary": "Get a kill switch",
+        "operationId": "getKillSwitch",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "killSwitchId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KillSwitch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found (i.e. not currently engaged)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Kill Switches"
+        ]
+      },
+      "delete": {
+        "summary": "Release a kill switch",
+        "operationId": "releaseKillSwitch",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "killSwitchId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Released"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Kill Switches"
+        ]
+      }
+    },
+    "/admin/dlq/{stage}": {
+      "get": {
+        "summary": "Inspect a stage's dead-letter queue",
+        "operationId": "inspectDeadLetterQueue",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ingest",
+                "identity_lookup",
+                "resolve",
+                "enrich",
+                "score",
+                "decide",
+                "execute"
+              ]
+            },
+            "required": true,
+            "name": "stage",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeadLetterList"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Admin"
+        ]
+      }
+    },
+    "/prompts": {
+      "get": {
+        "summary": "List Prompts",
+        "operationId": "listPrompts",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Prompt"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Prompts"
+        ]
+      },
+      "post": {
+        "summary": "Create a Prompt",
+        "operationId": "createPrompt",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromptCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prompt"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Prompts"
+        ]
+      }
+    },
+    "/prompts/{promptId}": {
+      "patch": {
+        "summary": "Update a Prompt",
+        "operationId": "updatePrompt",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "promptId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PromptUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Prompt"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Prompts"
+        ]
+      }
+    },
+    "/entities": {
+      "get": {
+        "summary": "List Entities",
+        "operationId": "listEntities",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "cursor",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200
+            },
+            "required": false,
+            "name": "limit",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            },
+            "required": false,
+            "name": "scored",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid cursor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/entities/{entityId}": {
+      "get": {
+        "summary": "Get an Entity (with drill-through to recent Signals)",
+        "operationId": "getEntity",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "entityId",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EntityDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Entities"
+        ]
+      }
+    },
+    "/reference/industries": {
+      "get": {
+        "summary": "List the canonical industry vocabulary (LinkedIn Industry Codes V2)",
+        "operationId": "listIndustries",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndustryList"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Reference"
+        ]
+      }
+    },
+    "/onboarding/events-status": {
+      "get": {
+        "summary": "Onboarding event-source status",
+        "operationId": "getEventSourceStatus",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "posthog",
+                "pixel"
+              ]
+            },
+            "required": true,
+            "name": "source",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventSourceStatus"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Onboarding"
+        ]
+      }
+    },
+    "/signal-mapping": {
+      "get": {
+        "summary": "Get the tenant's signal mapping",
+        "operationId": "getSignalMapping",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignalMapping"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Signal Mapping"
+        ]
+      },
+      "put": {
+        "summary": "Replace the tenant's signal mapping",
+        "operationId": "putSignalMapping",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignalMappingPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignalMapping"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Signal Mapping"
+        ]
+      }
+    },
+    "/icp": {
+      "get": {
+        "summary": "Get the tenant's ICP",
+        "operationId": "getIcp",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICP"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Icp"
+        ]
+      },
+      "put": {
+        "summary": "Replace the tenant's ICP",
+        "operationId": "putIcp",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ICPPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ICP"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Icp"
+        ]
+      }
+    },
+    "/scoring-config": {
+      "get": {
+        "summary": "Get scoring configuration",
+        "operationId": "getScoringConfig",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScoringConfig"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Scoring Config"
+        ]
+      },
+      "put": {
+        "summary": "Update scoring configuration",
+        "operationId": "putScoringConfig",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScoringConfigPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScoringConfig"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Scoring Config"
+        ]
+      }
+    },
+    "/traits": {
+      "get": {
+        "summary": "Get the tenant's feature-flag traits",
+        "operationId": "getTraits",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Traits"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Traits"
+        ]
+      }
+    },
+    "/pixel-origins": {
+      "get": {
+        "summary": "Get the tenant's pixel-origin allowlist",
+        "operationId": "getPixelOrigins",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PixelOrigins"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Pixel Origins"
+        ]
+      },
+      "put": {
+        "summary": "Replace the tenant's pixel-origin allowlist",
+        "operationId": "putPixelOrigins",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PixelOriginsPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PixelOrigins"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid origin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Pixel Origins"
+        ]
+      },
+      "post": {
+        "summary": "Add origins to the tenant's pixel-origin allowlist (atomic union)",
+        "operationId": "addPixelOrigins",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PixelOriginsPut"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PixelOrigins"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid origin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Pixel Origins"
+        ]
+      }
+    },
+    "/webhook-secret/rotations": {
+      "post": {
+        "summary": "Rotate the tenant's webhook signing secret",
+        "operationId": "rotateWebhookSecret",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Rotated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookSecretRotation"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Webhook Secret"
+        ]
+      }
+    },
+    "/outputs/catalogue": {
+      "get": {
+        "summary": "List the output integrations available to connect",
+        "operationId": "getOutputCatalogue",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputCatalogue"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Outputs"
+        ]
+      }
+    },
+    "/integrations/slack/authorize-url": {
+      "post": {
+        "summary": "Mint the Slack consent URL for this tenant",
+        "operationId": "createSlackAuthorizeUrl",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SlackAuthorizeUrlRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SlackAuthorizeUrl"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Slack app not configured",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integrations"
+        ]
+      }
+    },
+    "/integrations/slack/channels": {
+      "get": {
+        "summary": "List the connected workspace's public channels",
+        "operationId": "listSlackChannels",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "teamId",
+            "in": "query"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SlackChannelList"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Slack app not configured",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integrations"
+        ]
+      }
+    },
+    "/integrations/slack/connections": {
+      "post": {
+        "summary": "Persist a chosen Slack channel as an output connection",
+        "operationId": "createSlackConnection",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SlackConnectionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputConnectionCreated"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Slack app not configured",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integrations"
+        ]
+      }
+    },
+    "/outputs/connections": {
+      "get": {
+        "summary": "List the tenant's output connections",
+        "operationId": "listOutputConnections",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputConnectionList"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Outputs"
+        ]
+      },
+      "post": {
+        "summary": "Create a credential-less output connection (e.g. dashboard)",
+        "operationId": "createOutputConnection",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OutputConnectionCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputConnectionCreated"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown connection type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Outputs"
+        ]
+      }
+    },
+    "/outputs/connections/{id}": {
+      "delete": {
+        "summary": "Disconnect an output connection",
+        "operationId": "deleteOutputConnection",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Disconnected"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Outputs"
+        ]
+      }
+    },
+    "/outputs/connections/{id}/verify": {
+      "post": {
+        "summary": "Verify an output connection by delivering a test message",
+        "operationId": "verifyOutputConnection",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "name": "id",
+            "in": "path"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "name": "x-bryn-tenant",
+            "in": "header"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verification outcome",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutputConnectionVerifyResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found or not verifiable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Outputs"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "https://bryn.civic.com/api",
+      "description": "Production"
+    },
+    {
+      "url": "https://bryn-preprod.civic.com/api",
+      "description": "Preprod"
+    },
+    {
+      "url": "https://bryn-dev.civic.com/api",
+      "description": "Development"
+    }
+  ]
+}
