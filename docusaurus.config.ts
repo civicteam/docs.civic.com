@@ -60,7 +60,7 @@ const config: Config = {
           docItemComponent: "@theme/ApiItem",
           // Exclude snippet partials; they're imported by other MDX files but
           // should not generate their own routes.
-          exclude: ["_snippets/**"],
+          exclude: ["_snippets/**", "superpowers/**"],
           editUrl: "https://github.com/civicteam/docs.civic.com/edit/main/",
           showLastUpdateTime: false,
           // No breadcrumbs above the H1.
