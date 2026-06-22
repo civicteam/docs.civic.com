@@ -15,13 +15,12 @@ https://bryn.civic.com/mcp
 
 ## Authentication
 
-The server is OAuth-protected. Clients with native remote-MCP OAuth support connect
-to the URL directly and complete a browser sign-in — the server publishes
-[RFC 9728](https://datatracker.ietf.org/doc/html/rfc9728) protected-resource
-metadata at `/.well-known/oauth-protected-resource/mcp`, which the client uses to
-discover the Civic Auth authorization server. Your tenant is resolved automatically
-from your Civic Auth membership, the same way the
-[REST API](/bryn/api/bryn-control-plane-api) resolves it.
+The server is secured with **Civic Auth** over OAuth. Clients that support OAuth will
+open the Bryn login page in your browser the first time you connect — sign in there,
+and the client is authorized automatically. There's no token or API key to copy.
+
+Your tenant is resolved automatically from your Civic Auth membership, the same way
+the [REST API](/bryn/api/bryn-control-plane-api) resolves it.
 
 ## Connecting
 
