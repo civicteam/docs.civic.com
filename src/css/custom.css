@@ -133,3 +133,18 @@ h6 {
 table thead {
   text-align: left;
 }
+
+/* ---------------------------------------------------------------------------
+   OpenAPI (Bryn) reference pages
+   Operation pages render a two-column layout (description + code/Try-it panel),
+   but two prose-oriented caps squeeze it onto narrow screens: the classic
+   preset caps `.container` at --ifm-container-width-xl (1320px) and the doc
+   `article` caps at the ~720px readable width. Both center their content,
+   stranding the API columns with large empty margins on wide screens. Scope
+   the removal to API pages (identified by the theme's left-panel container) so
+   prose docs keep their readable width.
+   --------------------------------------------------------------------------- */
+.container:has(.openapi-left-panel__container),
+article:has(.openapi-left-panel__container) {
+  max-width: none;
+}
