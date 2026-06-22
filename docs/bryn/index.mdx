@@ -1,0 +1,42 @@
+---
+title: Bryn
+description: 'The Bryn Control Plane API and MCP server'
+---
+
+Bryn is Civic's agent platform. Its **Control Plane API** is a tenant-scoped REST
+API for managing onboarding, plays, signals, entities, prompts, and more — and an
+**MCP server** exposes the same capabilities to AI clients.
+
+## Base URLs
+
+- **REST API:** `https://bryn.civic.com/api`
+- **MCP endpoint:** `https://bryn.civic.com/mcp`
+
+## Authentication
+
+The API is authenticated with **Civic Auth** bearer tokens (`Authorization: Bearer <jwt>`).
+
+The JWT identifies the caller, not the tenant. Bryn resolves the active tenant from
+the caller's memberships on every request:
+
+- One membership → that tenant is selected implicitly; no header needed.
+- More than one → send `X-Bryn-Tenant: <tenantId>` naming one of your tenants.
+- Multi-membership with the header missing → `403 ambiguous_tenant`.
+- A tenant you don't belong to → `403 tenant_forbidden`.
+
+<Note>
+The `X-Bryn-Tenant` header is a selector, not the source of truth: the tenant bound
+at the data layer is always taken from the matched membership.
+</Note>
+
+## Explore
+
+<CardGroup cols={2}>
+  <Card title="Control Plane API" icon="code" href="/bryn/api/bryn-control-plane-api">
+    Browse every REST endpoint with request/response schemas and an interactive
+    "Try it" console.
+  </Card>
+  <Card title="MCP Server" icon="plug" href="/bryn/mcp">
+    Connect an MCP client to Bryn over OAuth-secured streamable HTTP.
+  </Card>
+</CardGroup>

@@ -1,0 +1,83 @@
+---
+title: MCP Server
+description: 'Connect an MCP client to the Bryn MCP server'
+---
+
+Bryn exposes a [Model Context Protocol](https://modelcontextprotocol.io) server so
+AI clients can use the Control Plane's capabilities as tools. It speaks
+**streamable HTTP** and is secured with **Civic Auth** over OAuth.
+
+## Endpoint
+
+```
+https://bryn.civic.com/mcp
+```
+
+## Authentication
+
+The server is secured with **Civic Auth** over OAuth. Clients that support OAuth will
+open the Bryn login page in your browser the first time you connect — sign in there,
+and the client is authorized automatically. There's no token or API key to copy.
+
+Your tenant is resolved automatically from your Civic Auth membership, the same way
+the [REST API](/bryn/api/bryn-control-plane-api) resolves it.
+
+## Connecting
+
+Clients that don't yet support remote MCP servers with OAuth can bridge through
+[`mcp-remote`](https://www.npmjs.com/package/mcp-remote), which handles the OAuth
+flow locally.
+
+<Tabs>
+  <Tab title="Claude Desktop">
+Add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "bryn": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://bryn.civic.com/mcp"]
+    }
+  }
+}
+```
+
+Restart Claude Desktop, then complete the Civic Auth sign-in when prompted.
+  </Tab>
+  <Tab title="Cursor">
+Add to `~/.cursor/mcp.json` (or a project `.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "bryn": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://bryn.civic.com/mcp"]
+    }
+  }
+}
+```
+
+**Alternative:** Cursor Settings → Features → MCP → Add New MCP Server.
+  </Tab>
+  <Tab title="VS Code">
+Add to `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "bryn": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://bryn.civic.com/mcp"]
+    }
+  }
+}
+```
+  </Tab>
+</Tabs>
+
+<Note>
+Once connected, your client lists the tools Bryn provides — this page intentionally
+doesn't catalogue them. Discover the current set directly in your MCP client.
+</Note>
