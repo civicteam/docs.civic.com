@@ -9,6 +9,10 @@ package-lock.json
 .docusaurus/
 build/
 
+# Bryn OpenAPI: fetched spec + generated reference MDX (rebuilt every build)
+/static/bryn/openapi.json
+/docs/bryn/api/
+
 # Legacy build outputs
 .next/
 out/
