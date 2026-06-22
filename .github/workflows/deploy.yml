@@ -1,6 +1,9 @@
 name: Build & Deploy
 
-# Builds the Docusaurus site and publishes to GitHub Pages at docs.civic.com.
+# Builds the Docusaurus site and publishes it to the root of the `gh-pages`
+# branch, which GitHub Pages serves at docs.civic.com. PR previews live under
+# `pr-preview/` on the same branch (see pr-preview.yml); `clean-exclude` keeps a
+# production deploy from wiping active previews.
 
 on:
   push:
@@ -9,16 +12,14 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: pages-deploy
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,16 +36,10 @@ jobs:
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
           ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
       - run: echo "docs.civic.com" > build/CNAME
-      - uses: actions/upload-pages-artifact@v3
+      - uses: JamesIves/github-pages-deploy-action@v4
         with:
-          path: build
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/deploy-pages@v4
-        id: deployment
+          folder: build
+          branch: gh-pages
+          clean: true
+          clean-exclude: |
+            pr-preview/
