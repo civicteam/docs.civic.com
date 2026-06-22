@@ -13,6 +13,10 @@ const algoliaEnabled =
 const CONTACT_URL = "mailto:bd@civic.com";
 const BOOK_CALL_URL = "https://civic.com";
 
+// Set HIDE_BRYN=true (e.g. per Vercel environment) to drop the Bryn tab from the
+// navbar. The /bryn pages are still built and reachable by direct URL.
+const hideBryn = process.env.HIDE_BRYN === "true";
+
 const config: Config = {
   title: "Civic Docs",
   tagline:
@@ -208,12 +212,16 @@ const config: Config = {
           label: "Labs",
           position: "left",
         },
-        {
-          type: "docSidebar",
-          sidebarId: "bryn",
-          label: "Bryn",
-          position: "left",
-        },
+        ...(hideBryn
+          ? []
+          : [
+              {
+                type: "docSidebar" as const,
+                sidebarId: "bryn",
+                label: "Bryn",
+                position: "left" as const,
+              },
+            ]),
         {
           label: "Contact Us",
           href: CONTACT_URL,
