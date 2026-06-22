@@ -24,11 +24,7 @@ const config: Config = {
   favicon: "/favicon.svg",
 
   url: "https://docs.civic.com",
-  // Production serves from the domain root. PR previews are hosted on GitHub
-  // Pages under /pr-preview/pr-<N>/, so the preview workflow sets
-  // PREVIEW_BASE_URL to that subpath (Docusaurus bakes baseUrl into every
-  // asset/link at build time, so it must match where the site is served).
-  baseUrl: process.env.PREVIEW_BASE_URL ?? "/",
+  baseUrl: "/",
   trailingSlash: false,
 
   organizationName: "civicteam",

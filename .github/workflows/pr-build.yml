@@ -1,20 +1,19 @@
-name: Build & Deploy
+name: PR Build
 
-# Builds the Docusaurus site and publishes to GitHub Pages at docs.civic.com.
+# Builds the Docusaurus site for every pull request and uploads the result as a
+# downloadable artifact. GitHub Pages serves the live site only from main, so
+# this gives reviewers a way to preview a PR (download the artifact, then
+# `npx serve build`) and doubles as build CI — catching breakage, including the
+# build-time fetch of bryn.civic.com, before merge.
 
 on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
+  pull_request:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: pr-build-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
@@ -34,17 +33,8 @@ jobs:
           ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
           ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
           ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
-      - run: echo "docs.civic.com" > build/CNAME
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: site-preview-pr-${{ github.event.pull_request.number }}
           path: build
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/deploy-pages@v4
-        id: deployment
+          retention-days: 14
