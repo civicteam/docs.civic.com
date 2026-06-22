@@ -15,8 +15,6 @@ const OUTPUT_PATH = "static/bryn/openapi.json";
 
 const SERVERS = [
   { url: "https://bryn.civic.com/api", description: "Production" },
-  { url: "https://bryn-preprod.civic.com/api", description: "Preprod" },
-  { url: "https://bryn-dev.civic.com/api", description: "Development" },
 ];
 
 const DESCRIPTION = [
