@@ -40,4 +40,4 @@ jobs:
         with:
           source-dir: ./build
           umbrella-dir: pr-preview
-          custom-url: docs.civic.com
+          pages-base-url: docs.civic.com
