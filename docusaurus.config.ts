@@ -53,6 +53,7 @@ const config: Config = {
           path: "docs",
           routeBasePath: "/",
           sidebarPath: "./sidebars.ts",
+          docItemComponent: "@theme/ApiItem",
           // Exclude snippet partials; they're imported by other MDX files but
           // should not generate their own routes.
           exclude: ["_snippets/**"],
@@ -102,7 +103,23 @@ const config: Config = {
         },
       },
     ],
+    [
+      "docusaurus-plugin-openapi-docs",
+      {
+        id: "openapi",
+        docsPluginId: "classic",
+        config: {
+          bryn: {
+            specPath: "static/bryn/openapi.json",
+            outputDir: "docs/bryn/api",
+            sidebarOptions: { groupPathsBy: "tag" },
+          },
+        },
+      },
+    ],
   ],
+
+  themes: ["docusaurus-theme-openapi-docs"],
 
   clientModules: [
     "./src/clientModules/fontawesome.ts",
@@ -189,6 +206,12 @@ const config: Config = {
           type: "docSidebar",
           sidebarId: "labs",
           label: "Labs",
+          position: "left",
+        },
+        {
+          type: "docSidebar",
+          sidebarId: "bryn",
+          label: "Bryn",
           position: "left",
         },
         {
