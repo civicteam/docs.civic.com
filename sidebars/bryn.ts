@@ -11,6 +11,7 @@ const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
 const sidebar: SidebarItemConfig[] = [
   { type: 'doc', id: 'bryn/index', label: 'Overview' },
   { type: 'doc', id: 'bryn/mcp', label: 'MCP Server' },
+  { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization Recipes' },
   {
     type: 'category',
     label: 'Control Plane API',
