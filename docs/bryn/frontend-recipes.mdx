@@ -7,15 +7,15 @@ Copy-paste snippets for the team that manages a Bryn customer's website (often
 non-engineers). Each snippet is paste-ready: drop it in a `<script>` alongside the Bryn
 pixel snippet, or hand it to a developer.
 
-## How it works (the one thing to know)
+## How it works: Bryn announces, your code reacts
 
-When Bryn recognizes a visitor, it announces it on the page — your code listens and
-reacts. Bryn never changes your page for you; you decide what to show.
+When Bryn recognizes a visitor, it announces it on the page; your code listens and
+reacts. Bryn never changes your page for you: you decide what to show.
 
 It announces in three ways (use whichever suits you):
-1. A JavaScript event, `bryn:personalize` — **most flexible** (Recipes 1–4).
-2. A global, `window.bryn` — read the latest at any time (Recipe 6).
-3. `data-bryn-*` attributes — **no JavaScript needed** (Recipe 5).
+1. A JavaScript event, `bryn:personalize`: the most flexible option (Recipes 1 to 4).
+2. A global, `window.bryn`: read the latest at any time (Recipe 6).
+3. `data-bryn-*` attributes: **no JavaScript needed** (Recipe 5).
 
 ### What you get back
 
@@ -28,7 +28,7 @@ It announces in three ways (use whichever suits you):
     industry: "...", country: "...", employees: "...", stage: "...",
     signals: ["pricing-page-viewed", "high-intent"]   // what the company has done
   },
-  individual: {                 // the PERSON — or null if Bryn only knows the company
+  individual: {                 // the PERSON, or null if Bryn only knows the company
     firstName: "Alex",
     title: "VP Marketing",
     email: "...", lastName: "...", seniority: "...", linkedin: "...",
@@ -37,11 +37,11 @@ It announces in three ways (use whichever suits you):
 }
 ```
 
-Two simple rules:
+Two rules:
 - **`individual` is `null`** when Bryn knows the company but not the specific person. Always check for it.
-- **The score is never sent to your page** — you react to who they are (`entity` / `individual`) and what they've done (`signals`), not to a number.
+- **The score is never sent to your page.** You react to who they are (`entity` / `individual`) and what they've done (`signals`), not to a number.
 
-## Recipe 1 — Greet a returning person by name
+## Recipe 1: Greet a returning person by name
 
 Best when you want a personal touch and only when Bryn actually knows the person.
 
@@ -59,10 +59,10 @@ Best when you want a personal touch and only when Bryn actually knows the person
 </script>
 ```
 
-## Recipe 2 — Account-level greeting (company, no name)
+## Recipe 2: Account-level greeting (company, no name)
 
 Fires far more often than Recipe 1 (Bryn resolves the company for most visits). Keep the
-tone light — you inferred the company, the visitor didn't tell you who they are.
+tone light: you inferred the company, the visitor didn't tell you who they are.
 
 ```html
 <script>
@@ -77,7 +77,7 @@ tone light — you inferred the company, the visitor didn't tell you who they ar
 </script>
 ```
 
-## Recipe 3 — Person if known, otherwise company (the common combined pattern)
+## Recipe 3: Person if known, otherwise company (the common combined pattern)
 
 ```html
 <script>
@@ -88,17 +88,17 @@ tone light — you inferred the company, the visitor didn't tell you who they ar
     const banner = document.querySelector("#welcome-banner");
     banner.textContent = individual
       ? `Welcome back, ${individual.firstName}!`                      // we know the person
-      : `Someone from ${entity.companyName} is here — say hello.`;    // company only
+      : `Someone from ${entity.companyName} is here. Say hello.`;      // company only
     banner.style.display = "block";
   });
 </script>
 ```
 
-## Recipe 4 — Only react when there's buying intent
+## Recipe 4: Only react when there's buying intent
 
 Being recognized isn't the same as being interested. Gate on a **signal** so you only act
 on visitors doing something meaningful. Your active signals are the ones you configured in
-Bryn (e.g. `pricing-page-viewed`, `demo-requested`) — use your own names here.
+Bryn (e.g. `pricing-page-viewed`, `demo-requested`): use your own names here.
 
 ```html
 <script>
@@ -114,14 +114,14 @@ Bryn (e.g. `pricing-page-viewed`, `demo-requested`) — use your own names here.
 </script>
 ```
 
-## Recipe 5 — No JavaScript at all: the `data-bryn-*` attributes
+## Recipe 5: No JavaScript at all, the `data-bryn-*` attributes
 
-The most powerful option for non-engineers — personalize purely in your HTML, no script.
+Personalize purely in your HTML, with no script at all. Often the best fit for non-engineers.
 Every attribute takes a **bryn path** into the payload (`entity.companyName`,
 `individual.firstName`, `signals`, `status`, …; a bare `companyName` checks both sections,
 person first).
 
-**Fill in text** — `data-bryn-field` sets an element's text; your fallback stays if the
+**Fill in text.** `data-bryn-field` sets an element's text; your fallback stays if the
 field isn't known for this visitor:
 
 ```html
@@ -129,7 +129,7 @@ field isn't known for this visitor:
 <p>Nice to see you, <span data-bryn-field="individual.firstName"></span>.</p>
 ```
 
-**Show / hide** — `data-bryn-show` / `data-bryn-hide` reveal or hide an element on a
+**Show / hide.** `data-bryn-show` / `data-bryn-hide` reveal or hide an element on a
 condition (a path that's present/true, or `path=value`). Author the default state in
 your markup; Bryn toggles the standard `hidden` attribute once it resolves, so the page is
 never broken while cold:
@@ -147,7 +147,7 @@ never broken while cold:
 <div data-bryn-hide="status=resolved">Personalizing…</div>
 ```
 
-## Recipe 6 — Read the latest at any time (`window.bryn`)
+## Recipe 6: Read the latest at any time (`window.bryn`)
 
 If your code runs after Bryn has already resolved (e.g. on a button click), read the
 global instead of waiting for the event:
@@ -167,10 +167,10 @@ global instead of waiting for the event:
 ## Good habits
 
 - **Always keep a sensible default.** A cold or unknown visitor gets `status: "pending"`
-  and no data — your page must look right before Bryn does anything. Never hide content
+  and no data: your page must look right before Bryn does anything. Never hide content
   behind personalization.
 - **Check `individual` for `null`.** Company-only is the common case; don't assume a name.
 - **Personalize, don't startle.** For company-only (inferred from network, not self-identified),
   keep it helpful and low-key rather than "we know exactly who you are."
-- **Nothing sensitive reaches the page** — no scores, no internal IDs. Just safe display
+- **Nothing sensitive reaches the page.** No scores, no internal IDs, just safe display
   attributes and the signal labels you configured.
