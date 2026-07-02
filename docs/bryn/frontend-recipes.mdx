@@ -29,6 +29,7 @@ It announces in three ways (use whichever suits you):
     signals: ["pricing-page-viewed", "high-intent"]   // what the company has done
   },
   individual: {                 // the PERSON, or null if Bryn only knows the company
+    individualId: "5f2b8c1e-…", // a stable ID for this person (see Recipe 7)
     firstName: "Alex",
     title: "VP Marketing",
     email: "...", lastName: "...", seniority: "...", linkedin: "...",
@@ -40,6 +41,9 @@ It announces in three ways (use whichever suits you):
 Two rules:
 - **`individual` is `null`** when Bryn knows the company but not the specific person. Always check for it.
 - **The score is never sent to your page.** You react to who they are (`entity` / `individual`) and what they've done (`signals`), not to a number.
+
+`individualId` is a stable identifier for the resolved person. Hand it to your own analytics
+tool to connect this visit to your records (see Recipe 7). It's never shown to the visitor.
 
 ## Recipe 1: Greet a returning person by name
 
@@ -164,6 +168,28 @@ global instead of waiting for the event:
 </script>
 ```
 
+## Recipe 7: Pass the recognized person into your analytics
+
+Bryn gives each resolved person a stable identifier, `individual.individualId`. Hand it to
+your own analytics tool to tie this visit to your records, for example PostHog's
+`posthog.identify()`. Bryn doesn't call your analytics for you; you make the call, alongside
+your existing analytics snippet:
+
+```html
+<script>
+  window.addEventListener("bryn:personalize", (event) => {
+    const { status, individual } = event.detail;
+    if (status !== "resolved" || !individual) return;   // only when Bryn knows the person
+
+    // Hand the Bryn identifier to your analytics tool, e.g. PostHog:
+    posthog.identify(individual.individualId);
+  });
+</script>
+```
+
+Only act when there's a person: when `individual` is `null`, Bryn knows the company but not
+who the visitor is, so there's nothing to identify.
+
 ## Good habits
 
 - **Always keep a sensible default.** A cold or unknown visitor gets `status: "pending"`
@@ -172,5 +198,6 @@ global instead of waiting for the event:
 - **Check `individual` for `null`.** Company-only is the common case; don't assume a name.
 - **Personalize, don't startle.** For company-only (inferred from network, not self-identified),
   keep it helpful and low-key rather than "we know exactly who you are."
-- **Nothing sensitive reaches the page.** No scores, no internal IDs, just safe display
-  attributes and the signal labels you configured.
+- **Nothing sensitive reaches the page.** No scores, no internal company IDs, just safe
+  display attributes, the signal labels you configured, and the person's stable
+  `individualId` for connecting to your own analytics (Recipe 7).
