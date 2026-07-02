@@ -164,6 +164,48 @@ global instead of waiting for the event:
 </script>
 ```
 
+## Recipe 7: Follow up on an abandoned demo
+
+A worked example of one signal, end to end. When someone starts your product demo and
+leaves before finishing, you can offer to pick up where they left off on their next visit.
+
+**First, tell Bryn about the abandon.** Your analytics sends a "demo abandoned" event (for
+example `demo_abandoned`) to PostHog — deciding what counts as abandoned is up to your
+product. In Bryn, go to **Config → Signal mapping** and map it: *when `demo_abandoned`
+happens, raise `demo_abandonment`*. That event now becomes a `demo_abandonment` signal on
+the visitor, and it rides the pixel like any other signal.
+
+**Then react to it on your site.** Gate a call-out on the signal, just like Recipe 4:
+
+```html
+<script>
+  window.addEventListener("bryn:personalize", (event) => {
+    const { status, entity, individual } = event.detail;
+    if (status !== "resolved") return;
+    if (!entity.signals.includes("demo_abandonment")) return;   // only unfinished demos
+
+    const banner = document.querySelector("#pick-up-banner");
+    banner.textContent = individual
+      ? `Welcome back, ${individual.firstName} — want to finish the demo?`
+      : `Looks like your team started the demo. Want a hand finishing it?`;
+    banner.style.display = "block";
+  });
+</script>
+```
+
+Prefer no JavaScript? The `data-bryn-*` attributes work too — `data-bryn-show` accepts a
+`signals.<type>` membership check:
+
+```html
+<!-- shown only for visitors with an active demo_abandonment signal -->
+<div hidden data-bryn-show="signals.demo_abandonment">
+  Pick up where you left off in the demo →
+</div>
+```
+
+Bryn can also stage a reviewed follow-up email for these visitors — see the
+demo-abandonment Play on your Plays screen. Nothing sends until you turn it on and approve.
+
 ## Good habits
 
 - **Always keep a sensible default.** A cold or unknown visitor gets `status: "pending"`
