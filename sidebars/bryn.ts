@@ -18,6 +18,14 @@ const sidebar: SidebarItemConfig[] = [
     ...TOP_GROUP,
     items: brynApiSidebar as SidebarItemConfig[],
   },
+  // Collapsed by default: signing is an integration detail most readers don't need up front.
+  {
+    type: 'category',
+    label: 'Advanced',
+    collapsible: true,
+    collapsed: true,
+    items: [{ type: 'doc', id: 'bryn/signing', label: 'Signing requests' }],
+  },
 ];
 
 export default sidebar;
