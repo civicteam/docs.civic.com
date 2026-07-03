@@ -23,12 +23,14 @@ It announces in three ways (use whichever suits you):
 {
   status: "resolved",          // "pending" while Bryn is still working; "resolved" when it knows the visitor
   entity: {                     // the COMPANY (always present once resolved)
+    entityId: "39dbb553-...",   // stable id for this company — echo it back on server-side events
     companyName: "Acme Corp",
     domain: "acme.com",
     industry: "...", country: "...", employees: "...", stage: "...",
     signals: ["pricing-page-viewed", "high-intent"]   // what the company has done
   },
   individual: {                 // the PERSON, or null if Bryn only knows the company
+    individualId: "5f2b8c1e-...", // stable id for this person — echo it back on server-side events
     firstName: "Alex",
     title: "VP Marketing",
     email: "...", lastName: "...", seniority: "...", linkedin: "...",
@@ -37,9 +39,11 @@ It announces in three ways (use whichever suits you):
 }
 ```
 
-Two rules:
+Three rules:
 - **`individual` is `null`** when Bryn knows the company but not the specific person. Always check for it.
 - **The score is never sent to your page.** You react to who they are (`entity` / `individual`) and what they've done (`signals`), not to a number.
+- **`entityId` and `individualId` are stable identity keys.** Capture them and send them back on your
+  server-side events so both sources stitch to the same records — see [Signing requests](/bryn/signing).
 
 ## Recipe 1: Greet a returning person by name
 
