@@ -12,14 +12,14 @@ const sidebar: SidebarItemConfig[] = [
   { type: 'doc', id: 'bryn/index', label: 'Overview' },
   { type: 'doc', id: 'bryn/mcp', label: 'MCP Server' },
   { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization Recipes' },
-  // Collapsed by default: signing is an integration detail most readers don't need up front.
-  // Kept above the always-expanded Control Plane API list so it stays visible rather than
-  // buried beneath the full API reference.
+  // A static section header like the other top-level groups: this site's swizzled sidebar
+  // treats top-level categories as non-collapsible headers, so a collapsed top-level category
+  // renders but won't expand. Keeping it open leaves the "Signing requests" child link visible
+  // and clickable. Placed above the always-expanded Control Plane API list so it stays in view.
   {
     type: 'category',
     label: 'Advanced',
-    collapsible: true,
-    collapsed: true,
+    ...TOP_GROUP,
     items: [{ type: 'doc', id: 'bryn/signing', label: 'Signing requests' }],
   },
   {
