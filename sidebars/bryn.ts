@@ -12,6 +12,7 @@ const sidebar: SidebarItemConfig[] = [
   { type: 'doc', id: 'bryn/index', label: 'Overview' },
   { type: 'doc', id: 'bryn/mcp', label: 'MCP Server' },
   { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization Recipes' },
+  { type: 'doc', id: 'bryn/signing', label: 'Signing requests' },
   {
     type: 'category',
     label: 'Control Plane API',
