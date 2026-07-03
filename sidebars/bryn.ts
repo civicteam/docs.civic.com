@@ -12,19 +12,21 @@ const sidebar: SidebarItemConfig[] = [
   { type: 'doc', id: 'bryn/index', label: 'Overview' },
   { type: 'doc', id: 'bryn/mcp', label: 'MCP Server' },
   { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization Recipes' },
-  {
-    type: 'category',
-    label: 'Control Plane API',
-    ...TOP_GROUP,
-    items: brynApiSidebar as SidebarItemConfig[],
-  },
   // Collapsed by default: signing is an integration detail most readers don't need up front.
+  // Kept above the always-expanded Control Plane API list so it stays visible rather than
+  // buried beneath the full API reference.
   {
     type: 'category',
     label: 'Advanced',
     collapsible: true,
     collapsed: true,
     items: [{ type: 'doc', id: 'bryn/signing', label: 'Signing requests' }],
+  },
+  {
+    type: 'category',
+    label: 'Control Plane API',
+    ...TOP_GROUP,
+    items: brynApiSidebar as SidebarItemConfig[],
   },
 ];
 
