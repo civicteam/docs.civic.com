@@ -12,12 +12,19 @@ const sidebar: SidebarItemConfig[] = [
   { type: 'doc', id: 'bryn/index', label: 'Overview' },
   { type: 'doc', id: 'bryn/mcp', label: 'MCP Server' },
   { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization Recipes' },
-  { type: 'doc', id: 'bryn/signing', label: 'Signing requests' },
   {
     type: 'category',
     label: 'Control Plane API',
     ...TOP_GROUP,
     items: brynApiSidebar as SidebarItemConfig[],
+  },
+  // Collapsed by default: signing is an integration detail most readers don't need up front.
+  {
+    type: 'category',
+    label: 'Advanced',
+    collapsible: true,
+    collapsed: true,
+    items: [{ type: 'doc', id: 'bryn/signing', label: 'Signing requests' }],
   },
 ];
 
