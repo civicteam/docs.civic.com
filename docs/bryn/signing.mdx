@@ -96,6 +96,31 @@ await fetch(`https://bryn.civic.com/ingest/custom/${tenantId}`, {
   </Tab>
 </Tabs>
 
+## Linking to a known company or person
+
+By default Bryn resolves each event to a company — and to a person when you send an
+`email` — from the fields in the body. If you already know which Bryn record an event
+belongs to, name it directly with a `bryn` block in `properties`:
+
+```json
+{
+  "eventType": "demo.requested",
+  "properties": {
+    "bryn": { "entityId": "39dbb553-5940-41fd-ab43-479c9bceac37" },
+    "email": "alex@acme.com"
+  }
+}
+```
+
+- `entityId` attaches the event to that **company**.
+- `individualId` attaches it to a specific **person**.
+
+You get these ids from the **Bryn pixel**: when it recognizes a visitor, it exposes a
+stable `entity.entityId` and `individual.individualId` in its personalization payload.
+Capture them on your site and echo them back on your server-side events so both sources
+stitch to the same records. See [Personalization Recipes](/bryn/frontend-recipes) for
+how the pixel surfaces visitor data.
+
 ## What Bryn checks
 
 A request is accepted only when all of these hold:
