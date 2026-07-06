@@ -9,14 +9,15 @@ shows you how.
 
 ## Get your signing secret
 
-Your signing secret lives in the Control plane, under **Integrations → Ingest → Signing**.
+Your signing secret lives in the Control plane, under **Integrations → Ingest → Custom Webhook**.
 Reveal it there, copy it, and store it somewhere your server can read it (an environment
-variable or a secrets manager) — treat it like a password.
+variable or a secrets manager) — treat it like a password. The same page shows the endpoint
+URL to send events to.
 
 <Note>
 The signing secret is only ever used on your server. Never put it in a browser, a mobile
 app, or anything a visitor can view. If it's ever exposed, regenerate it from the same
-Signing page — the old value stops working once the changeover completes.
+Custom Webhook page — the old value stops working once the changeover completes.
 </Note>
 
 ## The signature header
@@ -52,7 +53,7 @@ POST the body to your tenant's ingest URL with the `X-Bryn-Signature` header. Se
   <Tab title="cURL">
 
 ```bash
-SECRET="whsec_your_signing_secret"   # Control plane → Integrations → Ingest → Signing
+SECRET="whsec_your_signing_secret"   # Control plane → Integrations → Ingest → Custom Webhook
 TENANT="your-tenant-id"
 BODY='{"eventType":"demo.requested","properties":{"email":"alex@acme.com"}}'
 
@@ -71,7 +72,7 @@ curl -X POST "https://bryn.civic.com/ingest/custom/$TENANT" \
 ```js
 import { createHmac } from "node:crypto";
 
-const secret = process.env.BRYN_SIGNING_SECRET; // Control plane → Integrations → Ingest → Signing
+const secret = process.env.BRYN_SIGNING_SECRET; // Control plane → Integrations → Ingest → Custom Webhook
 const tenantId = "your-tenant-id";
 
 // Serialize once and reuse the same string for both signing and sending.
@@ -134,6 +135,6 @@ request returns `204`.
 
 ## Rotating your secret
 
-Regenerate the signing secret from the same **Signing** page whenever you need to. Update
+Regenerate the signing secret from the same **Custom Webhook** page whenever you need to. Update
 your server to sign with the new value; the previous secret keeps working briefly during
 the changeover so in-flight requests aren't dropped.
