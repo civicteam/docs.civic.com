@@ -19,8 +19,22 @@ The server is secured with **Civic Auth** over OAuth. Clients that support OAuth
 open the Bryn login page in your browser the first time you connect — sign in there,
 and the client is authorized automatically. There's no token or API key to copy.
 
-Your tenant is resolved automatically from your Civic Auth membership, the same way
-the [REST API](/bryn/api/bryn-control-plane-api) resolves it.
+Your tenant is resolved from your Civic Auth membership, the same way the
+[REST API](/bryn/api/bryn-control-plane-api) resolves it:
+
+- One membership → that tenant is selected automatically; nothing to configure.
+- More than one → pin the tenant in the connector URL with the `tenant` query
+  parameter: `https://bryn.civic.com/mcp?tenant=<tenantId>`. Most MCP clients can't
+  set custom headers, so the query parameter is the practical selector — but the
+  `X-Bryn-Tenant: <tenantId>` header works too where a client can set one.
+- Multi-membership with neither selector → `403 ambiguous_tenant`.
+- A tenant you don't belong to → `403 tenant_forbidden`.
+
+<Note>
+The `tenant` query parameter and the `X-Bryn-Tenant` header are selectors, not the
+source of truth: the tenant bound at the data layer is always taken from the matched
+membership. Naming different tenants in the two is rejected.
+</Note>
 
 ## Connecting
 
