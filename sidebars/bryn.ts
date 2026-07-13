@@ -8,6 +8,10 @@ type SidebarItemConfig = Extract<SidebarsConfig[string], readonly unknown[]>[num
 // See sidebars/civic.ts: top-level groups are always-open section headers.
 const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
 
+// `customProps.icon` is read by the DocSidebarItem theme overrides to render
+// a FontAwesome icon next to the label (same convention as sidebars/civic.ts).
+const icon = (name: string) => ({ icon: name });
+
 // Customer-facing API groups (BRYN-1086). The generated sidebar groups endpoints
 // by OpenAPI tag; internal groups (Billing, Onboarding, Admin, Kill Switches,
 // Tenants, Traits, …) must not appear in customer nav. This is an ALLOWLIST so a
@@ -52,37 +56,40 @@ function filterApiSidebar(items: SidebarItemConfig[]): SidebarItemConfig[] {
 // Nav order mirrors the customer journey (BRYN-1086): orient, get live, deepen
 // each setup surface, then concepts; developer material sits under Advanced.
 const sidebar: SidebarItemConfig[] = [
-  { type: 'doc', id: 'bryn/index', label: 'Overview' },
-  { type: 'doc', id: 'bryn/getting-started', label: 'Get started' },
+  { type: 'doc', id: 'bryn/index', label: 'Overview', customProps: icon('book-open') },
+  { type: 'doc', id: 'bryn/getting-started', label: 'Get started', customProps: icon('rocket') },
   // Top-level categories render as non-collapsible section headers (see
   // sidebars/civic.ts); nested categories collapse normally.
   {
     type: 'category',
     label: 'Set up Bryn',
+    customProps: icon('sliders'),
     ...TOP_GROUP,
     items: [
-      { type: 'doc', id: 'bryn/pixel', label: 'Install the pixel' },
-      { type: 'doc', id: 'bryn/signal-mapping', label: 'Map your signals' },
-      { type: 'doc', id: 'bryn/icp-and-scoring', label: 'Define your ICP & scoring' },
-      { type: 'doc', id: 'bryn/outputs', label: 'Connect Slack & other outputs' },
-      { type: 'doc', id: 'bryn/plays', label: 'Turn on Plays' },
+      { type: 'doc', id: 'bryn/pixel', label: 'Install the pixel', customProps: icon('code') },
+      { type: 'doc', id: 'bryn/signal-mapping', label: 'Map your signals', customProps: icon('signal') },
+      { type: 'doc', id: 'bryn/icp-and-scoring', label: 'Define your ICP & scoring', customProps: icon('gauge-high') },
+      { type: 'doc', id: 'bryn/outputs', label: 'Connect Slack & other outputs', customProps: icon('share-nodes') },
+      { type: 'doc', id: 'bryn/plays', label: 'Turn on Plays', customProps: icon('play') },
     ],
   },
-  { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization recipes' },
-  { type: 'doc', id: 'bryn/how-bryn-works', label: 'How Bryn works' },
-  { type: 'doc', id: 'bryn/mcp', label: 'MCP server' },
+  { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization recipes', customProps: icon('paintbrush') },
+  { type: 'doc', id: 'bryn/how-bryn-works', label: 'How Bryn works', customProps: icon('mountain') },
+  { type: 'doc', id: 'bryn/mcp', label: 'MCP server', customProps: icon('plug') },
   {
     type: 'category',
     label: 'Advanced',
+    customProps: icon('code'),
     ...TOP_GROUP,
     items: [
-      { type: 'doc', id: 'bryn/api-overview', label: 'API overview & authentication' },
-      { type: 'doc', id: 'bryn/signing', label: 'Server-side events & signing' },
+      { type: 'doc', id: 'bryn/api-overview', label: 'API overview & authentication', customProps: icon('key') },
+      { type: 'doc', id: 'bryn/signing', label: 'Server-side events & signing', customProps: icon('signature') },
       // Nested (non-top-level) category, so it collapses normally: the filtered
       // API reference stays one click away without dominating the sidebar.
       {
         type: 'category',
         label: 'API reference',
+        customProps: icon('book'),
         collapsible: true,
         collapsed: true,
         items: filterApiSidebar(brynApiSidebar as SidebarItemConfig[]),
