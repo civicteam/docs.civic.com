@@ -19,6 +19,7 @@ const hideBryn = process.env.HIDE_BRYN === "true";
 
 const config: Config = {
   title: "Civic Docs",
+  customFields: { hideBryn },
   tagline:
     "The agent integrator for mid-market businesses. Platform documentation for Civic Hub, Civic Auth, and Civic Labs.",
   favicon: "/favicon.svg",
@@ -205,6 +206,18 @@ const config: Config = {
         href: "/",
       },
       items: [
+        // Bryn leads: it is the default landing tab (src/pages/index.tsx
+        // redirects / to /bryn unless HIDE_BRYN is set).
+        ...(hideBryn
+          ? []
+          : [
+              {
+                type: "docSidebar" as const,
+                sidebarId: "bryn",
+                label: "Bryn",
+                position: "left" as const,
+              },
+            ]),
         {
           type: "docSidebar",
           sidebarId: "civic",
@@ -223,16 +236,6 @@ const config: Config = {
           label: "Labs",
           position: "left",
         },
-        ...(hideBryn
-          ? []
-          : [
-              {
-                type: "docSidebar" as const,
-                sidebarId: "bryn",
-                label: "Bryn",
-                position: "left" as const,
-              },
-            ]),
         {
           label: "Contact Us",
           href: CONTACT_URL,
