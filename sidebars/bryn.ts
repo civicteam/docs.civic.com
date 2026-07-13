@@ -8,25 +8,86 @@ type SidebarItemConfig = Extract<SidebarsConfig[string], readonly unknown[]>[num
 // See sidebars/civic.ts: top-level groups are always-open section headers.
 const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
 
+// Customer-facing API groups (BRYN-1086). The generated sidebar groups endpoints
+// by OpenAPI tag; internal groups (Billing, Onboarding, Admin, Kill Switches,
+// Tenants, Traits, …) must not appear in customer nav. This is an ALLOWLIST so a
+// tag added upstream defaults to hidden until it's reviewed and added here.
+// NOTE: this filters navigation only — the generated pages still build and stay
+// URL-reachable. The upstream fix (x-internal tags / public spec) is a follow-on
+// Bryn-repo ticket.
+const PUBLIC_API_GROUPS = new Set([
+  'Me',
+  'Plays',
+  'Play Executions',
+  'Signals',
+  'Events',
+  'Signal Mapping',
+  'Icp',
+  'Value Proposition',
+  'Scoring Config',
+  'Entities',
+  'Prompts',
+  'Outputs',
+  'Integrations',
+  'Pixel Origins',
+  'Members',
+  'Webhook Secret',
+  'Audit',
+  'Reference',
+  'Erasure',
+]);
+
+// Keep non-category items (the API intro doc) and allowlisted tag groups.
+function filterApiSidebar(items: SidebarItemConfig[]): SidebarItemConfig[] {
+  return items.filter(
+    (item) =>
+      typeof item !== 'object' ||
+      item === null ||
+      !('type' in item) ||
+      item.type !== 'category' ||
+      ('label' in item && typeof item.label === 'string' && PUBLIC_API_GROUPS.has(item.label)),
+  );
+}
+
+// Nav order mirrors the customer journey (BRYN-1086): orient, get live, deepen
+// each setup surface, then concepts; developer material sits under Advanced.
 const sidebar: SidebarItemConfig[] = [
   { type: 'doc', id: 'bryn/index', label: 'Overview' },
-  { type: 'doc', id: 'bryn/mcp', label: 'MCP Server' },
-  { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization Recipes' },
-  // A static section header like the other top-level groups: this site's swizzled sidebar
-  // treats top-level categories as non-collapsible headers, so a collapsed top-level category
-  // renders but won't expand. Keeping it open leaves the "Signing requests" child link visible
-  // and clickable. Placed above the always-expanded Control Plane API list so it stays in view.
+  { type: 'doc', id: 'bryn/getting-started', label: 'Get started' },
+  // Top-level categories render as non-collapsible section headers (see
+  // sidebars/civic.ts); nested categories collapse normally.
+  {
+    type: 'category',
+    label: 'Set up Bryn',
+    ...TOP_GROUP,
+    items: [
+      { type: 'doc', id: 'bryn/pixel', label: 'Install the pixel' },
+      { type: 'doc', id: 'bryn/signal-mapping', label: 'Map your signals' },
+      { type: 'doc', id: 'bryn/icp-and-scoring', label: 'Define your ICP & scoring' },
+      { type: 'doc', id: 'bryn/outputs', label: 'Connect Slack & other outputs' },
+      { type: 'doc', id: 'bryn/plays', label: 'Turn on Plays' },
+    ],
+  },
+  { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization recipes' },
+  { type: 'doc', id: 'bryn/how-bryn-works', label: 'How Bryn works' },
   {
     type: 'category',
     label: 'Advanced',
     ...TOP_GROUP,
-    items: [{ type: 'doc', id: 'bryn/signing', label: 'Signing requests' }],
-  },
-  {
-    type: 'category',
-    label: 'Control Plane API',
-    ...TOP_GROUP,
-    items: brynApiSidebar as SidebarItemConfig[],
+    items: [
+      { type: 'doc', id: 'bryn/api-overview', label: 'API overview & authentication' },
+      { type: 'doc', id: 'bryn/signing', label: 'Server-side events & signing' },
+      { type: 'doc', id: 'bryn/mcp', label: 'MCP server' },
+      // Nested (non-top-level) category, so it collapses normally: the filtered
+      // API reference stays one click away without dominating the sidebar.
+      {
+        type: 'category',
+        label: 'API reference',
+        collapsible: true,
+        collapsed: true,
+        items: filterApiSidebar(brynApiSidebar as SidebarItemConfig[]),
+      },
+    ],
   },
 ];
 
