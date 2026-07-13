@@ -56,7 +56,7 @@ function filterApiSidebar(items: SidebarItemConfig[]): SidebarItemConfig[] {
 // Nav order mirrors the customer journey (BRYN-1086): orient, get live, deepen
 // each setup surface, then concepts; developer material sits under Advanced.
 const sidebar: SidebarItemConfig[] = [
-  { type: 'doc', id: 'bryn/index', label: 'Overview', customProps: icon('book-open') },
+  { type: 'doc', id: 'bryn/index', label: 'Overview', customProps: icon('bryn') },
   { type: 'doc', id: 'bryn/getting-started', label: 'Get started', customProps: icon('rocket') },
   // Top-level categories render as non-collapsible section headers (see
   // sidebars/civic.ts); nested categories collapse normally.
