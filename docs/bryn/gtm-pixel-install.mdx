@@ -1,0 +1,57 @@
+---
+title: Install with Google Tag Manager
+description: 'Install the Bryn pixel through a Google Tag Manager Custom HTML tag'
+---
+
+You can install the Bryn pixel through Google Tag Manager instead of editing your
+site's code. This suits teams who manage their tags in Google Tag Manager and would
+rather not touch the page source directly. Google Tag Manager uses its own snippet,
+below, rather than the standard install `<script>`.
+
+## Get your snippet
+
+Bryn fills your pixel reference into the snippet for you. Copy the **Google Tag Manager**
+snippet from the pixel install screen, during onboarding or later under **Integrations →
+Ingest → Pixel**, so your reference is already in place. It looks like this:
+
+```html
+<script>
+(function () {
+  window.__brynPixel = { ref: "YOUR_PIXEL_REF" };
+  var s = document.createElement('script');
+  s.src = "https://bryn.civic.com/pixel/pixel.js";
+  s.async = true;
+  s.setAttribute('data-bryn-pixel-ref', "YOUR_PIXEL_REF");
+  document.head.appendChild(s);
+})();
+</script>
+```
+
+## Add the tag
+
+1. In Google Tag Manager, open your container and go to **Tags → New**.
+2. Name the tag something you'll recognize, for example "Bryn pixel".
+3. Under **Tag Configuration**, choose **Custom HTML**.
+4. Paste the snippet Bryn gave you, with your reference already filled in.
+5. Under **Triggering**, choose **All Pages** (the Page View trigger), so the pixel loads
+   on every page.
+6. **Save** the tag.
+
+<Note>
+A Custom HTML tag does nothing until a trigger fires it, so the **All Pages** (Page View)
+trigger is what makes the pixel load on every page. Your Google Tag Manager container, the
+snippet already in your site's `<head>`, runs on page load by itself: you only add the
+trigger to the Bryn pixel tag inside it, not to the container.
+</Note>
+
+## Publish and check
+
+1. Use **Preview** in Google Tag Manager to load your site and confirm the tag fires on
+   page views.
+2. When it looks right, **Submit** to publish the container.
+3. Back on the pixel install screen, Bryn listens for the first hit and confirms once it
+   arrives. If Bryn sees hits from a web address you haven't listed yet, it flags that and
+   offers to add it, rather than count a broken install as done.
+
+Once you've installed the pixel, see the [personalization recipes](/bryn/frontend-recipes)
+for paste-ready ways to react to the visitors Bryn recognizes.
