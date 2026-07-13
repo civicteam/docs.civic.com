@@ -3,9 +3,13 @@ title: MCP Server
 description: 'Connect an MCP client to the Bryn MCP server'
 ---
 
-Bryn exposes a [Model Context Protocol](https://modelcontextprotocol.io) server so
-AI clients can use the Control Plane's capabilities as tools. It speaks
-**streamable HTTP** and is secured with **Civic Auth** over OAuth.
+Connect Claude or Cursor to Bryn and ask questions in plain language:
+"which accounts hit pricing this week?", "what did Bryn run yesterday?",
+with no API code required. Whatever the Control Plane API exposes, an MCP
+client can use as tools.
+
+Bryn exposes a [Model Context Protocol](https://modelcontextprotocol.io) server for
+this. It speaks **streamable HTTP** and is secured with **Civic Auth** over OAuth.
 
 ## Endpoint
 
@@ -16,7 +20,7 @@ https://bryn.civic.com/mcp
 ## Authentication
 
 The server is secured with **Civic Auth** over OAuth. Clients that support OAuth will
-open the Bryn login page in your browser the first time you connect — sign in there,
+open the Bryn login page in your browser the first time you connect: sign in there,
 and the client is authorized automatically. There's no token or API key to copy.
 
 Your tenant is resolved automatically from your Civic Auth membership, the same way
@@ -78,6 +82,6 @@ Add to `.vscode/mcp.json`:
 </Tabs>
 
 <Note>
-Once connected, your client lists the tools Bryn provides — this page intentionally
+Once connected, your client lists the tools Bryn provides; this page intentionally
 doesn't catalogue them. Discover the current set directly in your MCP client.
 </Note>
