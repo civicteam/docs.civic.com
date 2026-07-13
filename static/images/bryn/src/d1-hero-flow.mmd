@@ -1,0 +1,13 @@
+flowchart LR
+    V([Website visitor]) --> P[Pixel]
+    P --> ID[Identity resolution]
+    PH[Product analytics] --> ID
+    WH[Your systems<br/>webhook] --> ID
+    ID --> CO["Company + person<br/>(when known)"]
+    CO --> S[Signals]
+    S --> SC["Score<br/>Fit ⬩ Intent ⬩ Timing"]
+    SC --> PL[Plays]:::accent
+    PL --> O1[Slack alert]
+    PL --> O2[CRM update]
+    PL --> O3[On-page personalization]
+    classDef accent fill:#7C3AED,stroke:#7C3AED,color:#FFFFFF

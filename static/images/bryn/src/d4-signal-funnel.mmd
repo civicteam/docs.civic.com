@@ -1,0 +1,9 @@
+flowchart LR
+    E1[Pixel page views] --> M
+    E2[Product analytics events] --> M
+    E3[Custom webhook events] --> M
+    M{{"Signal Mapping<br/>your rules"}}:::accent --> S[Named signals]
+    S --> C1[Scoring]
+    S --> C2[Plays]
+    S --> C3[Personalization]
+    classDef accent fill:#7C3AED,stroke:#7C3AED,color:#FFFFFF
