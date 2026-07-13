@@ -1,0 +1,93 @@
+---
+title: Get started with Bryn
+description: 'Your first identified visitor in Slack in about 30 minutes'
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+Bryn's onboarding is a six-step wizard. Most teams finish it in about 30
+minutes, and at the end Bryn is live: watching your traffic, naming signals,
+and alerting your Slack channel when a qualified account shows up.
+
+## Before you start
+
+Check that you have:
+
+- A work email address to sign up with. Your workspace is created from it.
+- Edit access to your website's `<head>` or to your tag manager, or a
+  developer you can hand one snippet to.
+- A Slack workspace where you can approve app installs.
+
+## The six steps
+
+<ThemedImage
+  alt="Six steps to live, and how you know each one worked."
+  sources={{
+    light: '/images/bryn/d2-setup-journey-light.svg',
+    dark: '/images/bryn/d2-setup-journey-dark.svg',
+  }}
+/>
+
+<Steps>
+  <Step title="Create your workspace">
+    Sign up with your work email. Bryn creates a workspace for your company
+    and drops you into the wizard.
+
+    **You'll know it worked when** the wizard greets you inside your new
+    workspace.
+  </Step>
+  <Step title="Install the pixel">
+    One snippet, site-wide. Paste it into your site's `<head>`, add it
+    through Google Tag Manager, or send the instructions to your developer.
+    Nothing else in Bryn works without this step. Full walkthrough:
+    [Install the pixel](/bryn/pixel).
+
+    **You'll know it worked when** your own visit shows up in **Activity**
+    in the Bryn dashboard.
+  </Step>
+  <Step title="Confirm your ideal customer">
+    Bryn proposes an Ideal Customer Profile (ICP) from your website and
+    industry. Review it and adjust what's off. You are editing a draft, not
+    writing from scratch. Details: [Define your ICP & scoring](/bryn/icp-and-scoring).
+
+    **You'll know it worked when** the wizard shows your ICP as confirmed.
+  </Step>
+  <Step title="Map your signals">
+    Tell Bryn which of your events matter and what to call them, using the
+    sentence builder: when this event happens, raise this signal. Details:
+    [Map your signals](/bryn/signal-mapping).
+
+    **You'll know it worked when** a test event shows up as a named signal
+    on an account.
+  </Step>
+  <Step title="Connect Slack">
+    Authorize the Slack app and pick a channel. Bryn posts a test message on
+    connect, so verification is built in. Details:
+    [Connect Slack & other outputs](/bryn/outputs).
+
+    **You'll know it worked when** you see "Test message delivered" and the
+    message is in your channel.
+  </Step>
+  <Step title="Review and turn on your Plays">
+    Bryn ships with pre-built Plays: automated workflows that act on
+    qualified accounts. Review the ones proposed for you and switch your
+    first one on. Nothing runs until you do. Details:
+    [Turn on Plays](/bryn/plays).
+
+    **You'll know it worked when** the Play shows as active, and the first
+    matching account produces a Slack alert.
+  </Step>
+</Steps>
+
+## What happens next
+
+Bryn runs on its own from here. On day two, look at:
+
+- **Accounts**: companies from your traffic, scored and ranked by buying
+  intent.
+- **Activity**: every Play run and what triggered it.
+- Your Slack channel: alerts arrive as matching accounts show up.
+
+A good second win is on-page personalization: the pixel you already
+installed can also tailor your site for identified visitors. Start with the
+[Personalization recipes](/bryn/frontend-recipes).

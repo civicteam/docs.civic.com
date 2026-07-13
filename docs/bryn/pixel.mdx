@@ -1,0 +1,127 @@
+---
+title: Install the pixel
+description: 'Get the Bryn pixel live on every page of your site'
+---
+
+import ThemedImage from '@theme/ThemedImage';
+
+The pixel is how Bryn sees your website traffic. Without it, Bryn cannot
+identify anyone. Install it **site-wide**: identification improves with
+coverage, and a single-page install misses most of the visitors Bryn could
+have named for you.
+
+One snippet does two jobs: it reports visits to Bryn, and it receives the
+payload that lets your site personalize for identified visitors.
+
+<ThemedImage
+  alt="One snippet, two directions: the pixel reports visits and receives the personalization payload in under 500 ms."
+  sources={{
+    light: '/images/bryn/d3-bidirectional-pixel-light.svg',
+    dark: '/images/bryn/d3-bidirectional-pixel-dark.svg',
+  }}
+/>
+
+## Before you start
+
+- Your **pixel ref**: shown on the Pixel step of onboarding, and in your
+  Bryn dashboard.
+- Edit access to your site's `<head>` template or your tag manager. No
+  access? Skip to [hand it off](#hand-it-off).
+
+## Install it
+
+Pick your platform:
+
+<Tabs>
+  <Tab title="Google Tag Manager">
+    No code changes on your site. Bryn ships an official GTM tag template.
+
+    <Steps>
+      <Step title="Import the template">
+        In GTM, go to **Templates**, then **Search Gallery**, and search for
+        **Bryn Pixel** (published from the
+        [civicteam/bryn-google-tag-manager](https://github.com/civicteam/bryn-google-tag-manager)
+        repository).
+      </Step>
+      <Step title="Create the tag">
+        Add a new tag using the template and paste your pixel ref into the
+        **Pixel ref** field. Use the copy button in the Bryn dashboard so no
+        stray characters come along.
+      </Step>
+      <Step title="Trigger on all pages">
+        Set the trigger to **All Pages**, then publish the container.
+      </Step>
+    </Steps>
+  </Tab>
+  <Tab title="Any website (HTML)">
+    Paste this into your site-wide `<head>` template, replacing
+    `YOUR_PIXEL_REF` with your pixel ref:
+
+    ```html
+    <script
+      async
+      src="https://bryn.civic.com/pixel/pixel.js"
+      data-bryn-pixel-ref="YOUR_PIXEL_REF"
+    ></script>
+    ```
+
+    Put it in the shared layout or header template, not on a single page,
+    so every page reports.
+  </Tab>
+  <Tab title="Webflow">
+    In Webflow, go to **Site settings**, then **Custom code**, and paste the
+    snippet from the HTML tab into **Head code**. Publish the site.
+  </Tab>
+  <Tab title="WordPress">
+    Add the snippet from the HTML tab to your theme's site-wide header:
+    either through your theme's "header scripts" setting or with a
+    header/footer snippet plugin. Avoid pasting it into a single post or
+    page.
+  </Tab>
+</Tabs>
+
+## Hand it off
+
+Not the person who edits the website? Send your developer this page link
+and your pixel ref, with one line: "Please add this script tag to our
+site-wide head template so it loads on every page." The
+[verification step](#verify-its-working) below tells them (and you) that
+it worked.
+
+## Verify it's working
+
+Open your site in a normal browser tab, click around, then check
+**Activity** in the Bryn dashboard. Your visit arrives within moments of
+the pixel going live.
+
+<Note>
+You may not see yourself **identified**, and that is normal. The pixel
+reports every visit, but Bryn only resolves identities for business
+traffic it can match. Seeing the visit in Activity means the pixel works,
+even while your own visit stays anonymous.
+</Note>
+
+## For your IT and security team
+
+What the pixel does, in one screen:
+
+- **Sends**: page URL, referrer, and timestamp on each page view. Nothing
+  else is collected.
+- **Never touches**: form fields, keystrokes, cookies from other tools.
+- **Origin allowlist**: Bryn only accepts events from domains on your
+  workspace's allowlist, and rejects everything else.
+- **Personalization writes are inert by default**: the return leg only sets
+  text content and the standard `hidden` attribute on elements you mark,
+  which keeps it XSS-safe. If you never add markers, it changes nothing.
+- **Erasure**: deletion requests propagate through Bryn's stores. See
+  [How Bryn works](/bryn/how-bryn-works) for the identification model.
+
+## Going further
+
+- React to identified visitors on the page:
+  [Personalization recipes](/bryn/frontend-recipes)
+- Name the behaviour the pixel observes: [Map your signals](/bryn/signal-mapping)
+- Send events from your backend too:
+  [Server-side events & signing](/bryn/signing)
+- Manage the origin allowlist programmatically: Pixel Origins in the
+  [API reference](/bryn/api/bryn-control-plane-api)

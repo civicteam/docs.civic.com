@@ -121,6 +121,9 @@ const config: Config = {
         },
       },
     ],
+    // Click-to-expand on content images (medium-zoom); added for the Bryn
+    // diagrams, applies to all docs images.
+    "docusaurus-plugin-image-zoom",
   ],
 
   themes: ["docusaurus-theme-openapi-docs"],
@@ -177,6 +180,14 @@ const config: Config = {
 
   themeConfig: {
     image: "logo/dark.png",
+    // docusaurus-plugin-image-zoom: click any content image to expand.
+    zoom: {
+      selector: ".markdown img",
+      background: {
+        light: "rgba(255, 255, 255, 0.95)",
+        dark: "rgba(3, 7, 17, 0.95)",
+      },
+    },
     // docs.civic.com is dark by default. Users can still toggle via the
     // navbar switch, but OS prefers-color-scheme: light no longer
     // auto-flips the site.

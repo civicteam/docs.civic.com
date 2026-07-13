@@ -1,0 +1,9 @@
+flowchart LR
+    T["Trigger<br/>what the account did"]:::accent --> C["Conditions<br/>who it applies to"]
+    C --> H{{"Hold for review<br/>(optional)"}}
+    H --> A1[Alert Slack]
+    H --> A2[Draft outreach]
+    H --> A3[Update CRM]
+    G[/"Governance: audit log ⬩ kill switch ⬩ cooldowns"/] -.- T
+    G -.- A1
+    classDef accent fill:#7C3AED,stroke:#7C3AED,color:#FFFFFF
