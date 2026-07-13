@@ -1,42 +1,45 @@
 ---
 title: Bryn
-description: 'The Bryn Control Plane API and MCP server'
+description: 'Bryn is the Signal-Based GTM agent for Growth teams'
 ---
 
-Bryn is Civic's agent platform. Its **Control Plane API** is a tenant-scoped REST
-API for managing onboarding, plays, signals, entities, prompts, and more — and an
-**MCP server** exposes the same capabilities to AI clients.
+import ThemedImage from '@theme/ThemedImage';
 
-## Base URLs
+**Bryn is the Signal-Based GTM agent for Growth teams.**
 
-- **REST API:** `https://bryn.civic.com/api`
-- **MCP endpoint:** `https://bryn.civic.com/mcp`
+Bryn watches anonymous and known product, web, and intent signals, names the
+pattern, and runs the Play you approved, with the audit log attached.
 
-## Authentication
+In practice: Bryn tells you which companies are on your website, understands
+what they are doing there, and acts on it inside rules you set. A good-fit
+account keeps returning to your pricing page, and your sales channel hears
+about it in Slack with the evidence attached. The same identification can
+update your CRM or personalize the page the visitor is looking at.
 
-The API is authenticated with **Civic Auth** bearer tokens (`Authorization: Bearer <jwt>`).
+<ThemedImage
+  alt="From anonymous visit to action: how a page view becomes a Slack alert."
+  sources={{
+    light: '/images/bryn/d1-hero-flow-light.svg',
+    dark: '/images/bryn/d1-hero-flow-dark.svg',
+  }}
+/>
 
-The JWT identifies the caller, not the tenant. Bryn resolves the active tenant from
-the caller's memberships on every request:
+*From anonymous visit to action: how a page view becomes a Slack alert. The
+full walkthrough is on [How Bryn works](/bryn/how-bryn-works).*
 
-- One membership → that tenant is selected implicitly; no header needed.
-- More than one → send `X-Bryn-Tenant: <tenantId>` naming one of your tenants.
-- Multi-membership with the header missing → `403 ambiguous_tenant`.
-- A tenant you don't belong to → `403 tenant_forbidden`.
-
-<Note>
-The `X-Bryn-Tenant` header is a selector, not the source of truth: the tenant bound
-at the data layer is always taken from the matched membership.
-</Note>
-
-## Explore
+## Where to start
 
 <CardGroup cols={2}>
-  <Card title="Control Plane API" icon="code" href="/bryn/api/bryn-control-plane-api">
-    Browse every REST endpoint with request/response schemas and an interactive
-    "Try it" console.
+  <Card title="Get started" icon="rocket" href="/bryn/getting-started">
+    Your first identified visitor in Slack in about 30 minutes.
   </Card>
-  <Card title="MCP Server" icon="plug" href="/bryn/mcp">
-    Connect an MCP client to Bryn over OAuth-secured streamable HTTP.
+  <Card title="How Bryn works" icon="mountain" href="/bryn/how-bryn-works">
+    The whole loop in one picture: pixel, identity, signals, score, Plays.
+  </Card>
+  <Card title="Personalization recipes" icon="wand-magic-sparkles" href="/bryn/frontend-recipes">
+    Copy-paste snippets that personalize your site for identified visitors.
+  </Card>
+  <Card title="Advanced" icon="code" href="/bryn/api-overview">
+    The Control Plane API, request signing, and the MCP server.
   </Card>
 </CardGroup>

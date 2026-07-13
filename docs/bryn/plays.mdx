@@ -3,4 +3,99 @@ title: Turn on Plays
 description: 'Enable automated workflows that act on qualified accounts'
 ---
 
-Content lands with BRYN-1086. This page is a placeholder.
+import ThemedImage from '@theme/ThemedImage';
+
+Identification without action is a dashboard you will stop checking. Plays
+are how Bryn acts on what it sees: automated workflows that fire when an
+account does something that matters, inside rules you set once.
+
+## Anatomy of a Play
+
+<ThemedImage
+  alt="Every Play is a trigger, conditions, and actions, with a review gate before anything sends."
+  sources={{
+    light: '/images/bryn/d5-play-anatomy-light.svg',
+    dark: '/images/bryn/d5-play-anatomy-dark.svg',
+  }}
+/>
+
+- **Trigger**: what the account did. Signals and score thresholds, like
+  `pricing_page_viewed` plus a climbing intent score.
+- **Conditions**: who it applies to. Your ICP, trial state, account
+  attributes.
+- **Actions**: what happens. Alert Slack, draft outreach, update the CRM.
+  Outbound actions can hold for a human review first.
+
+## The pre-built library
+
+Bryn ships with Plays authored for the common moments. The first three are
+on for new workspaces; the rest wait for you:
+
+<CardGroup cols={2}>
+  <Card title="Slack alert for active accounts" icon="bell">
+    A qualified account is active on your site right now; the channel hears
+    about it with the evidence attached.
+  </Card>
+  <Card title="Outbound brief when intent climbs" icon="pen">
+    Intent keeps rising on a good-fit account, so Bryn drafts the outreach
+    note and holds it for a salesperson.
+  </Card>
+  <Card title="Trial wobble assist for your AEs" icon="life-ring">
+    A trial goes quiet before day 14; the owner gets a heads-up and a
+    suggested rescue.
+  </Card>
+  <Card title="ICP-match alert from website visitors" icon="filter">
+    A visitor resolves to a company matching your ICP; sales knows the same
+    day.
+  </Card>
+  <Card title="Account review with a recommended next step" icon="clipboard-check">
+    Bryn assembles what an account did and recommends what to do about it.
+  </Card>
+  <Card title="Follow up when a demo is left unfinished" icon="rotate-left">
+    Someone starts a demo and bails; Bryn flags it so the thread does not
+    go cold.
+  </Card>
+</CardGroup>
+
+## Enable your first Play
+
+<Steps>
+  <Step title="Open Plays">
+    In the Bryn dashboard, go to **Plays**. Each Play shows its trigger and
+    what it will do.
+  </Step>
+  <Step title="Review the rules">
+    Check the trigger and conditions read the way you want. The signals it
+    references come from [your mapping](/bryn/signal-mapping).
+  </Step>
+  <Step title="Switch it on">
+    Flip the toggle. A Play starts or stops right away, and nothing runs
+    while it is off.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the Play shows as active, and the first
+matching account produces its action: watch **Activity** for the run and
+your Slack channel for the alert.
+
+## Stay in control
+
+Autonomy inside bounds is the whole design. Every control is a feature you
+can point your reviewers at:
+
+- **Nothing sends without you.** Plays with outbound actions hold the run
+  for review: the held run shows in **Activity** with an **Unhold** button,
+  or an approval link in Slack.
+- **The kill switch is a single click.** **Pause this Play** stops one;
+  **Pause all Plays** stops everything at once, and resuming is just as
+  fast.
+- **Every action is on the record.** The **Audit log** captures every
+  signal, score, match, and execution: your work record, and the same
+  trail your CFO and DPO inherit.
+- **Cooldowns** stop the same Play re-firing on the same account, a week
+  by default.
+
+## Going further
+
+- Play management and run history: Plays and Play Executions in the
+  [API reference](/bryn/api/bryn-control-plane-api).

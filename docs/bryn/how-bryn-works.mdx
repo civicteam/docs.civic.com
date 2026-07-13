@@ -3,4 +3,82 @@ title: How Bryn works
 description: 'From anonymous visit to action: the whole loop'
 ---
 
-Content lands with BRYN-1086. This page is a placeholder.
+import ThemedImage from '@theme/ThemedImage';
+
+Bryn watches. You decide the Play. Bryn runs it.
+
+This page is the mental model behind that sentence: five stages, one
+diagram, and a glossary for when you meet the API's names for things.
+
+<ThemedImage
+  alt="From anonymous visit to action: how a page view becomes a Slack alert."
+  sources={{
+    light: '/images/bryn/d1-hero-flow-light.svg',
+    dark: '/images/bryn/d1-hero-flow-dark.svg',
+  }}
+/>
+
+## Identification
+
+The [pixel](/bryn/pixel) reports each visit. Bryn works with identity
+providers to resolve the visitor's company, and where possible the person.
+Honesty about the shape of this: **company-level identification is the
+common case**. Knowing the person is the bonus, not the default, which is
+why everything downstream works at the account level first.
+
+Identities from other sources stitch to the same records: a PostHog event
+or a webhook event carrying a known email joins the same account the pixel
+saw.
+
+**Privacy**: identification targets business traffic. Erasure requests
+propagate through Bryn's stores, suppression is enforced before anything
+is served to a page, and the pixel's origin allowlist rejects events from
+domains you have not approved.
+
+## Signals
+
+Bryn turns raw events into named signals using
+[the mapping you define](/bryn/signal-mapping). A signal is a judgement
+with a name: `pricing_page_viewed`, `demo_abandonment`, `trial_wobble`.
+Signals, not raw events, are what scoring, Plays, and personalization
+consume.
+
+## Scoring
+
+Every account gets a transparent score:
+[Fit, Intent, Timing, and their Composite](/bryn/icp-and-scoring). Scores
+rank the **Accounts** list and gate Play triggers. For any account you can
+see exactly which signals produced the number. The score is never sent to
+your website.
+
+## Plays
+
+When a trigger matches, the [Play](/bryn/plays) runs: alert, draft,
+route, CRM update. Governance is built into the runtime, not bolted on:
+holds for review, a one-click kill switch, cooldowns, and an append-only
+audit log that records every signal, score, match, and execution.
+
+## The return leg
+
+The same pixel that reports visits receives a personalization payload,
+usually in well under a second. Your page reacts with a few lines of
+JavaScript or with declarative attributes and no JavaScript at all. The
+[Personalization recipes](/bryn/frontend-recipes) are the copy-paste
+starting point.
+
+## Glossary
+
+The docs use customer words; the API and payloads use the engine's nouns.
+The mapping:
+
+| Docs say | The API says | Meaning |
+|---|---|---|
+| account (or company) | `entity` | The company Bryn identified and scores |
+| person | `individual` | The specific human, when known |
+| signal | `signal` | A named interpretation of behaviour |
+| Play | `play` | Trigger, conditions, and actions, run by Bryn |
+| pixel | `pixel` | The one script on your site, both directions |
+| Bryn dashboard | Control Plane | The web app at your workspace URL |
+
+Programmatic access to all of it: the
+[API overview](/bryn/api-overview).

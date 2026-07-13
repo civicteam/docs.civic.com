@@ -3,4 +3,85 @@ title: Map your signals
 description: 'Turn raw events into the named signals Bryn acts on'
 ---
 
-Content lands with BRYN-1086. This page is a placeholder.
+import ThemedImage from '@theme/ThemedImage';
+
+Raw events are noise. Signals are the vocabulary everything else in Bryn
+speaks: scoring reads signals, Plays trigger on signals, and on-page
+personalization reacts to signals. An event you never map does nothing.
+
+<ThemedImage
+  alt="Raw events in, named signals out: everything downstream speaks signals."
+  sources={{
+    light: '/images/bryn/d4-signal-funnel-light.svg',
+    dark: '/images/bryn/d4-signal-funnel-dark.svg',
+  }}
+/>
+
+## Where events come from
+
+- **The pixel**: page views arrive automatically once the pixel is
+  [installed](/bryn/pixel).
+- **Product analytics**: events from your PostHog project, if connected.
+- **Your own systems**: anything you send to the custom webhook. See
+  [Server-side events & signing](/bryn/signing).
+
+You map; Bryn listens. Mapping lives in **Configuration**, then
+**Signal Mapping**, in the Bryn dashboard.
+
+## Map a signal
+
+The sentence builder reads the way you would say it out loud: **when**
+this event happens, **raise** this signal.
+
+<Steps>
+  <Step title="Pick the event">
+    Choose from events Bryn has already observed, or use
+    **An event I haven't seen yet** to map one before it first arrives.
+  </Step>
+  <Step title="Narrow it if needed">
+    Add a **where** clause to match on an event property, for example
+    where `path` contains `/pricing`. Skip this when the event name alone
+    says enough.
+  </Step>
+  <Step title="Name the signal">
+    Pick an existing signal or **Create new signal**. Names normalize to
+    snake_case, like `demo_abandonment` or `pricing_page_viewed`.
+  </Step>
+  <Step title="Save the rule">
+    Click **Save rule**. The rule reads back as a sentence: when
+    `demo_abandoned` happens, raise `demo_abandonment`.
+  </Step>
+</Steps>
+
+**Worked example**: your demo form fires a `demo_abandoned` event when
+someone starts but does not finish. Map it to a `demo_abandonment` signal,
+and it becomes usable everywhere at once: a Play can alert sales, and the
+[demo follow-up recipe](/bryn/frontend-recipes) can greet the visitor when
+they return.
+
+## Naming signals well
+
+Signal names become the words in your Plays and your page snippets, so
+pick names you want to read in an alert:
+
+- Name the meaning, not the mechanism: `pricing_interest`, not
+  `clicked_div_47`.
+- Keep them stable. Renaming a signal later breaks the Plays and snippets
+  that reference it.
+- Short is fine. Two or three words in snake_case is the norm.
+
+## Verify it's working
+
+Trigger the event yourself (visit the page, abandon the test form), then
+open the matching account and look for the signal on it. New signals also
+show up as the trigger in **Activity** the first time a Play fires on
+them.
+
+## Going further
+
+- Some signals work without any mapping: Bryn derives defaults, like
+  repeat visits, from pixel traffic on its own.
+- See what's arriving before you map it: Bryn samples observed events so
+  you map real names, not guesses.
+- Bulk edits and automation: Signal Mapping in the
+  [API reference](/bryn/api/bryn-control-plane-api).

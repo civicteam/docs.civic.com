@@ -3,4 +3,48 @@ title: API overview and authentication
 description: 'Base URLs, auth, and tenant selection for the Control Plane API'
 ---
 
-Content lands with BRYN-1086. This page is a placeholder.
+You do not need the API to use Bryn: the dashboard covers setup and
+day-to-day operation. Reach for the API when you want to script
+configuration, pull data into your own systems, or build on top of what
+Bryn knows. The same capabilities are exposed to AI clients through the
+[MCP server](/bryn/mcp).
+
+## Base URLs
+
+- **REST API:** `https://bryn.civic.com/api`
+- **MCP endpoint:** `https://bryn.civic.com/mcp`
+
+## Authentication
+
+The API is authenticated with **Civic Auth** bearer tokens
+(`Authorization: Bearer <jwt>`).
+
+The JWT identifies the caller, not the tenant. Bryn resolves the active
+tenant from the caller's memberships on every request:
+
+- One membership: that tenant is selected implicitly; no header needed.
+- More than one: send `X-Bryn-Tenant: <tenantId>` naming one of your
+  tenants.
+- Multi-membership with the header missing: `403 ambiguous_tenant`.
+- A tenant you don't belong to: `403 tenant_forbidden`.
+
+<Note>
+The `X-Bryn-Tenant` header is a selector, not the source of truth: the
+tenant bound at the data layer is always taken from the matched
+membership.
+</Note>
+
+## Explore
+
+<CardGroup cols={2}>
+  <Card title="API reference" icon="code" href="/bryn/api/bryn-control-plane-api">
+    Browse the customer-facing REST endpoints with request/response schemas
+    and an interactive "Try it" console.
+  </Card>
+  <Card title="MCP server" icon="plug" href="/bryn/mcp">
+    Connect an MCP client to Bryn over OAuth-secured streamable HTTP.
+  </Card>
+  <Card title="Server-side events & signing" icon="signature" href="/bryn/signing">
+    Send signed events from your backend and link them to known accounts.
+  </Card>
+</CardGroup>

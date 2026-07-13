@@ -3,4 +3,60 @@ title: Define your ICP and scoring
 description: 'What the score means and when to tune it'
 ---
 
-Content lands with BRYN-1086. This page is a placeholder.
+The score decides which accounts Bryn bothers you about. A wrong Ideal
+Customer Profile (ICP) means alerts about companies you would never sell
+to; a good one means your Slack channel stays worth reading.
+
+## Confirm your ICP
+
+During onboarding, Bryn proposes an ICP from your website and industry.
+You review and adjust rather than write from scratch. After onboarding it
+lives in **Configuration**, then **ICP**, in the Bryn dashboard.
+
+The ICP describes the company you sell to: industry, size, region, stage.
+Bryn compares every identified account against it, so edit the fields that
+are wrong and leave the rest alone.
+
+**You'll know it worked when** the wizard shows your ICP as confirmed, and
+the **Accounts** list starts ranking companies you recognize as good fits
+near the top.
+
+## How scoring works
+
+Bryn scores every account on three axes and blends them:
+
+| Axis | The question it answers |
+|---|---|
+| **Fit** | Does this company look like your ICP? |
+| **Intent** | Is it behaving like a buyer: pricing visits, repeat sessions, high-intent signals? |
+| **Timing** | Is it happening now, or was that last month? |
+| **Composite** | The blend of the three. Plays usually trigger on this one. |
+
+Scores are explainable: for any account you can see which signals and
+attributes produced the number. The score is never sent to your website;
+on-page personalization reacts to who the visitor is and what they did,
+not to a number.
+
+## Your value proposition
+
+One short paragraph, in your voice, describing what you offer and to whom.
+Bryn uses it when drafting outreach text, so write it the way you would
+want a prospect to read it. It lives alongside the ICP in Configuration.
+
+## Leave the defaults alone (at first)
+
+The default scoring weights are good. Change them after you have watched a
+week of real traffic, not before. When you do review, look for two things:
+
+- Accounts scored high that your team would ignore. Usually a Fit problem:
+  tighten the ICP.
+- Accounts your team chased that Bryn scored low. Usually an Intent
+  problem: check whether the behaviour that convinced your team is mapped
+  as a [signal](/bryn/signal-mapping) at all.
+
+Weights live in **Configuration**, then **Scoring Weights**.
+
+## Going further
+
+- Programmatic access: Icp, Scoring Config, and Value Proposition in the
+  [API reference](/bryn/api/bryn-control-plane-api).
