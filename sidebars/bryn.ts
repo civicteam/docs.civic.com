@@ -70,6 +70,7 @@ const sidebar: SidebarItemConfig[] = [
   },
   { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization recipes' },
   { type: 'doc', id: 'bryn/how-bryn-works', label: 'How Bryn works' },
+  { type: 'doc', id: 'bryn/mcp', label: 'MCP server' },
   {
     type: 'category',
     label: 'Advanced',
@@ -77,7 +78,6 @@ const sidebar: SidebarItemConfig[] = [
     items: [
       { type: 'doc', id: 'bryn/api-overview', label: 'API overview & authentication' },
       { type: 'doc', id: 'bryn/signing', label: 'Server-side events & signing' },
-      { type: 'doc', id: 'bryn/mcp', label: 'MCP server' },
       // Nested (non-top-level) category, so it collapses normally: the filtered
       // API reference stays one click away without dominating the sidebar.
       {
