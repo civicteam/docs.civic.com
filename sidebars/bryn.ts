@@ -12,7 +12,7 @@ const TOP_GROUP = { collapsible: false as const, collapsed: false as const };
 // by OpenAPI tag; internal groups (Billing, Onboarding, Admin, Kill Switches,
 // Tenants, Traits, …) must not appear in customer nav. This is an ALLOWLIST so a
 // tag added upstream defaults to hidden until it's reviewed and added here.
-// NOTE: this filters navigation only — the generated pages still build and stay
+// NOTE: this filters navigation only; the generated pages still build and stay
 // URL-reachable. The upstream fix (x-internal tags / public spec) is a follow-on
 // Bryn-repo ticket.
 const PUBLIC_API_GROUPS = new Set([
