@@ -2,9 +2,9 @@ flowchart TB
     V([Website visitor]) --> P
     subgraph NS ["Noise to signal"]
         direction TB
-        P[Pixel] --> ID[Identity resolution]
-        PH[Product analytics] --> ID
-        WH[Your systems<br/>webhook] --> ID
+        P[Pixel] -->|"page views ⬩ clicks"| ID[Identity resolution]
+        PH[Product analytics] -->|"product events"| ID
+        WH[Your systems<br/>webhook] -->|"your events"| ID
         ID --> CO["Company + person<br/>(when known)"]
         CO --> S[Signals]
         S --> SC["Score<br/>Fit&nbsp;⬩&nbsp;Intent&nbsp;⬩&nbsp;Timing"]
@@ -15,5 +15,5 @@ flowchart TB
         PL --> O2[CRM update]
         PL --> O3[On-page<br/>personalization]
     end
-    SC --> PL
+    SC --->|"a scored signal triggers a Play"| PL
     classDef accent fill:#7C3AED,stroke:#7C3AED,color:#FFFFFF
