@@ -11,9 +11,9 @@ flowchart TB
     end
     subgraph PE ["Play agent engine"]
         direction TB
-        PL[Plays]:::accent --> O1[Slack alert]
-        PL --> O2[CRM update]
+        PL[Plays]:::accent --> O1["Alerts<br/>Slack&nbsp;⬩&nbsp;Teams&nbsp;⬩&nbsp;Discord"]
+        PL --> O2["Tool updates<br/>CRM&nbsp;⬩&nbsp;sequences&nbsp;⬩&nbsp;webhooks"]
         PL --> O3[On-page<br/>personalization]
     end
-    SC --->|"a scored signal triggers a Play"| PL
+    SC --->|"scored signals trigger Plays"| PL
     classDef accent fill:#7C3AED,stroke:#7C3AED,color:#FFFFFF
