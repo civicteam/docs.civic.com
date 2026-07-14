@@ -2,8 +2,8 @@ flowchart TB
     V([Website visitor]) --> P
     subgraph NS ["Noise to signal"]
         direction TB
-        P[Pixel] -->|"page views ⬩ clicks"| ID[Identity resolution]
-        PH[Product analytics] -->|"product events"| ID
+        PH[Product analytics] -->|"product events"| ID[Identity resolution]
+        P[Pixel] -->|"page views ⬩ clicks"| ID
         WH[Your systems<br/>webhook] -->|"your events"| ID
         ID --> CO["Company + person<br/>(when known)"]
         CO --> S[Signals]
