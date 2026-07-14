@@ -16,5 +16,7 @@ flowchart TB
         PL --> O3["On-page personalization"]
     end
     SC --->|"scored signals trigger Plays"| PL
-    O3 -.->|"personalized content and outreach"| V
+    O2 -.- W((" ")):::ghost
+    W -.->|"personalized content and outreach"| V
+    classDef ghost fill:none,stroke:none,color:transparent
     classDef accent fill:#7C3AED,stroke:#7C3AED,color:#FFFFFF
