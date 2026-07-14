@@ -1,13 +1,19 @@
 flowchart TB
-    V([Website visitor]) --> P[Pixel]
-    P --> ID[Identity resolution]
-    PH[Product analytics] --> ID
-    WH[Your systems<br/>webhook] --> ID
-    ID --> CO["Company + person<br/>(when known)"]
-    CO --> S[Signals]
-    S --> SC["Score<br/>Fit&nbsp;⬩&nbsp;Intent&nbsp;⬩&nbsp;Timing"]
-    SC --> PL[Plays]:::accent
-    PL --> O1[Slack alert]
-    PL --> O2[CRM update]
-    PL --> O3[On-page<br/>personalization]
+    V([Website visitor]) --> P
+    subgraph NS ["Noise to signal"]
+        direction TB
+        P[Pixel] --> ID[Identity resolution]
+        PH[Product analytics] --> ID
+        WH[Your systems<br/>webhook] --> ID
+        ID --> CO["Company + person<br/>(when known)"]
+        CO --> S[Signals]
+        S --> SC["Score<br/>Fit&nbsp;⬩&nbsp;Intent&nbsp;⬩&nbsp;Timing"]
+    end
+    subgraph PE ["Play agent engine"]
+        direction TB
+        PL[Plays]:::accent --> O1[Slack alert]
+        PL --> O2[CRM update]
+        PL --> O3[On-page<br/>personalization]
+    end
+    SC --> PL
     classDef accent fill:#7C3AED,stroke:#7C3AED,color:#FFFFFF
