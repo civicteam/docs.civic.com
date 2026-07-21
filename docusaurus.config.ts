@@ -13,13 +13,21 @@ const algoliaEnabled =
 const CONTACT_URL = "mailto:bd@civic.com";
 const BOOK_CALL_URL = "https://civic.com";
 
+// PostHog product analytics (src/clientModules/posthog.ts). The project key is a
+// publishable client-side key (it ships in the browser bundle, like the GTM id) but
+// is env-driven so it can vary per Vercel environment; PostHog init is skipped when
+// POSTHOG_KEY is absent. POSTHOG_HOST is optional (defaults to PostHog US cloud).
+const posthogConfig = {
+  key: process.env.POSTHOG_KEY,
+  host: process.env.POSTHOG_HOST,
+};
+
 // Set HIDE_BRYN=true (e.g. per Vercel environment) to drop the Bryn tab from the
 // navbar. The /bryn pages are still built and reachable by direct URL.
 const hideBryn = process.env.HIDE_BRYN === "true";
 
 const config: Config = {
   title: "Civic Docs",
-  customFields: { hideBryn },
   tagline:
     "The agent integrator for mid-market businesses. Platform documentation for Civic Hub, Civic Auth, and Civic Labs.",
   favicon: "/favicon.svg",
@@ -37,8 +45,10 @@ const config: Config = {
   i18n: { defaultLocale: "en", locales: ["en"] },
 
   customFields: {
+    hideBryn,
     contactUrl: CONTACT_URL,
     bookCallUrl: BOOK_CALL_URL,
+    posthog: posthogConfig,
   },
 
   markdown: {
@@ -132,6 +142,7 @@ const config: Config = {
   clientModules: [
     "./src/clientModules/fontawesome.ts",
     "./src/clientModules/gtm.ts",
+    "./src/clientModules/posthog.ts",
   ],
 
   scripts: [
