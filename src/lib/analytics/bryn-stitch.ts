@@ -33,14 +33,7 @@ type BrynEntity = {
 };
 
 /** Person section of the serve payload; `null` on a company-only resolution. */
-type BrynIndividual = {
-  individualId?: unknown;
-  email?: unknown;
-  firstName?: unknown;
-  lastName?: unknown;
-  title?: unknown;
-  seniority?: unknown;
-};
+type BrynIndividual = { individualId?: unknown };
 
 /**
  * The stitch actions derived from a resolved Bryn payload — a plain data
@@ -54,8 +47,11 @@ export type BrynStitch = {
   readonly groupProps: Record<string, string>;
   /** Super properties registered on every event, so server-side events carry them. */
   readonly superProps: Record<string, string>;
-  /** Person identity, present only when Bryn resolved the individual. */
-  readonly identify: { readonly distinctId: string; readonly props: Record<string, string> } | null;
+  /**
+   * Person identity, present only when Bryn resolved the individual. `props` carries the
+   * full resolved payload under a single `bryn` key (see {@link computeBrynStitch}).
+   */
+  readonly identify: { readonly distinctId: string; readonly props: Record<string, unknown> } | null;
 };
 
 /** Coerce a render-safe scalar to a non-empty string, or `undefined`. */
@@ -113,14 +109,11 @@ export const computeBrynStitch = (detail: unknown): BrynStitch | null => {
 
   let identify: BrynStitch["identify"] = null;
   if (individual && individualId) {
-    const props: Record<string, string> = { bryn_entity_id: entityId, bryn_individual_id: individualId };
-    put(props, "email", individual.email);
-    put(props, "firstName", individual.firstName);
-    put(props, "lastName", individual.lastName);
-    put(props, "title", individual.title);
-    put(props, "seniority", individual.seniority);
-    if (entity) put(props, "company_name", entity.companyName);
-    identify = { distinctId: individualId, props };
+    // Store the full resolved payload under a single `bryn` person property (matching the
+    // control-plane-ui dogfood). A PostHog Action/webhook resolves the docs-depth event back
+    // to this Bryn Entity via person.properties.bryn.entity.entityId. Nesting under one key
+    // keeps Bryn's inferred data clear of PostHog's real person fields (email / name).
+    identify = { distinctId: individualId, props: { bryn: payload } };
   }
 
   return { entityId, groupProps, superProps, identify };
