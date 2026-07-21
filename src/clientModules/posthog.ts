@@ -29,6 +29,11 @@ const DEFAULT_API_HOST = 'https://us.i.posthog.com';
 // tracking cookies, so it runs only once the visitor accepts the "analytics" category.
 const CONSENT_CATEGORY = 'analytics';
 
+// Registered as a super property on every event so the origin is explicit: the docs-depth
+// Action can target docs.civic.com events, and events stay distinguishable if this project
+// is ever shared with other Civic properties.
+const EVENT_SOURCE = 'docs.civic.com';
+
 const readConfig = (): PostHogClientConfig => {
   const custom = (siteConfig.customFields ?? {}) as { posthog?: PostHogClientConfig };
   return custom.posthog ?? {};
@@ -89,6 +94,9 @@ const syncConsent = (): void => {
   const optedIn = posthog.has_opted_in_capturing();
   if (consented && !optedIn) {
     posthog.opt_in_capturing(); // enables capture + persistence
+    // Tag every event with its origin. Registered post-opt-in so no super-property
+    // persistence is written before consent.
+    posthog.register({ source: EVENT_SOURCE });
     posthog.capture('$pageview'); // count the page the visitor consented on
     if (pendingStitch !== undefined) {
       applyBrynStitch(pendingStitch);
