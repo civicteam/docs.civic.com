@@ -1,0 +1,140 @@
+---
+title: Server-side events & signing
+description: 'Send events from your backend, signed so Bryn knows they came from you'
+---
+
+When you send events to the Bryn custom ingest webhook, you sign each request with a
+short HMAC signature so Bryn can confirm the request really came from you. This page
+shows you how.
+
+## Get your signing secret
+
+Your signing secret lives in the Bryn dashboard, under **Integrations → Ingest → Custom Webhook**.
+Reveal it there, copy it, and store it somewhere your server can read it (an environment
+variable or a secrets manager), and treat it like a password. The same page shows the endpoint
+URL to send events to.
+
+<Note>
+The signing secret is only ever used on your server. Never put it in a browser, a mobile
+app, or anything a visitor can view. If it's ever exposed, regenerate it from the same
+Custom Webhook page; the old value stops working once the changeover completes.
+</Note>
+
+## The signature header
+
+Every signed request carries an `X-Bryn-Signature` header:
+
+```
+X-Bryn-Signature: t=<unix-seconds>,v1=<hex-digest>
+```
+
+- `t` is the current time in whole seconds since the Unix epoch.
+- `v1` is a hex-encoded **HMAC-SHA256** digest of the string `<t>.<body>` (the timestamp,
+  a literal dot, then the exact request body), keyed with your signing secret.
+
+## Sign a request
+
+<Steps>
+<Step title="Build the request body">
+Serialize your event once, and keep that exact string. You sign and send the **same bytes**:
+re-serializing the JSON afterwards can reorder keys or change whitespace and break the signature.
+</Step>
+<Step title="Compute the signature">
+Take the current Unix time as `t`, join it to the body as `<t>.<body>`, and compute the
+HMAC-SHA256 digest of that string with your signing secret.
+</Step>
+<Step title="Send the request">
+POST the body to your tenant's ingest URL with the `X-Bryn-Signature` header. Send within
+**five minutes** of the timestamp you signed; Bryn rejects signatures outside that window.
+</Step>
+</Steps>
+
+<Tabs>
+  <Tab title="cURL">
+
+```bash
+SECRET="whsec_your_signing_secret"   # Bryn dashboard → Integrations → Ingest → Custom Webhook
+TENANT="your-tenant-id"
+BODY='{"eventType":"demo.requested","properties":{"email":"alex@acme.com"}}'
+
+TS=$(date +%s)
+SIG=$(printf '%s.%s' "$TS" "$BODY" | openssl dgst -sha256 -hmac "$SECRET" -hex | sed 's/^.* //')
+
+curl -X POST "https://bryn.civic.com/ingest/custom/$TENANT" \
+  -H "Content-Type: application/json" \
+  -H "X-Bryn-Signature: t=$TS,v1=$SIG" \
+  --data-raw "$BODY"
+```
+
+  </Tab>
+  <Tab title="JavaScript">
+
+```js
+import { createHmac } from "node:crypto";
+
+const secret = process.env.BRYN_SIGNING_SECRET; // Bryn dashboard → Integrations → Ingest → Custom Webhook
+const tenantId = "your-tenant-id";
+
+// Serialize once and reuse the same string for both signing and sending.
+const body = JSON.stringify({
+  eventType: "demo.requested",
+  properties: { email: "alex@acme.com" },
+});
+
+const t = Math.floor(Date.now() / 1000);
+const v1 = createHmac("sha256", secret).update(`${t}.${body}`).digest("hex");
+
+await fetch(`https://bryn.civic.com/ingest/custom/${tenantId}`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "X-Bryn-Signature": `t=${t},v1=${v1}`,
+  },
+  body,
+});
+```
+
+  </Tab>
+</Tabs>
+
+## Linking to a known company or person
+
+By default Bryn resolves each event to a company (and to a person when you send an
+`email`) from the fields in the body. If you already know which Bryn record an event
+belongs to, name it directly with a `bryn` block in `properties`:
+
+```json
+{
+  "eventType": "demo.requested",
+  "properties": {
+    "bryn": { "entityId": "39dbb553-5940-41fd-ab43-479c9bceac37" },
+    "email": "alex@acme.com"
+  }
+}
+```
+
+- `entityId` attaches the event to that **company**.
+- `individualId` attaches it to a specific **person**.
+
+You get these ids from the **Bryn pixel**: when it recognizes a visitor, it exposes a
+stable `entity.entityId` and `individual.individualId` in its personalization payload.
+Capture them on your site and echo them back on your server-side events so both sources
+stitch to the same records. See [Personalization Recipes](/bryn/frontend-recipes) for
+how the pixel surfaces visitor data.
+
+## What Bryn checks
+
+A request is accepted only when all of these hold:
+
+- The `X-Bryn-Signature` header is present and well-formed.
+- The timestamp is within five minutes of Bryn's clock.
+- The `v1` digest matches Bryn's own HMAC of `<t>.<body>` using your signing secret.
+
+If any check fails, Bryn responds with `401` and the event is not recorded. A successful
+request returns `204`.
+
+## Rotating your secret
+
+Regenerate the signing secret from the same **Custom Webhook** page whenever you need to. Update
+your server to sign with the new value; the previous secret keeps working briefly during
+the changeover so in-flight requests aren't dropped.

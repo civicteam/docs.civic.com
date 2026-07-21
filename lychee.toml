@@ -85,8 +85,9 @@ max_redirects = 10
 # Cache results for 1 day
 cache = true
 
-# Include fragment checking (anchors)
-include_fragments = true
+# Include fragment checking (anchors). lychee 0.19+ changed this from a boolean
+# to a string enum ("full" = check all fragments, the former `true`).
+include_fragments = "full"
 
 # Fallback extensions for checking files without extensions.
 # Lychee runs against the built site (see .github/workflows/link-check-*.yml),

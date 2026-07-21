@@ -3,9 +3,14 @@ title: Website Personalization Recipes
 description: 'Copy-paste snippets to personalize your site with the Bryn pixel'
 ---
 
+import ThemedImage from '@theme/ThemedImage';
+
 Copy-paste snippets for the team that manages a Bryn customer's website (often
 non-engineers). Each snippet is paste-ready: drop it in a `<script>` alongside the Bryn
 pixel snippet, or hand it to a developer.
+
+**Before you start:** the pixel must be live on your site. See
+[Install the pixel](/bryn/pixel).
 
 ## How it works: Bryn announces, your code reacts
 
@@ -23,24 +28,28 @@ It announces in three ways (use whichever suits you):
 {
   status: "resolved",          // "pending" while Bryn is still working; "resolved" when it knows the visitor
   entity: {                     // the COMPANY (always present once resolved)
+    entityId: "39dbb553-...",   // stable id for this company: echo it back on server-side events
     companyName: "Acme Corp",
     domain: "acme.com",
     industry: "...", country: "...", employees: "...", stage: "...",
-    signals: ["pricing-page-viewed", "high-intent"]   // what the company has done
+    signals: ["pricing_page_viewed", "high_intent"]   // what the company has done
   },
   individual: {                 // the PERSON, or null if Bryn only knows the company
-    individualId: "5f2b8c1e-…", // a stable ID for this person (see Recipe 7)
+    individualId: "5f2b8c1e-...", // stable id for this person: echo it back on server-side events (see Recipe 7)
     firstName: "Alex",
     title: "VP Marketing",
     email: "...", lastName: "...", seniority: "...", linkedin: "...",
-    signals: ["demo-requested"]                        // what this person has done
+    signals: ["demo_requested"]                        // what this person has done
   }
 }
 ```
 
-Two rules:
+Three rules:
 - **`individual` is `null`** when Bryn knows the company but not the specific person. Always check for it.
 - **The score is never sent to your page.** You react to who they are (`entity` / `individual`) and what they've done (`signals`), not to a number.
+- **`entityId` and `individualId` are stable identity keys.** Capture them and send them back on your
+  server-side events so both sources stitch to the same records: see
+  [Server-side events & signing](/bryn/signing).
 
 `individualId` is a stable identifier for the resolved person. Hand it to your own analytics
 tool to connect this visit to your records (see Recipe 7). It's never shown to the visitor.
@@ -101,8 +110,17 @@ tone light: you inferred the company, the visitor didn't tell you who they are.
 ## Recipe 4: Only react when there's buying intent
 
 Being recognized isn't the same as being interested. Gate on a **signal** so you only act
-on visitors doing something meaningful. Your active signals are the ones you configured in
-Bryn (e.g. `pricing-page-viewed`, `demo-requested`): use your own names here.
+on visitors doing something meaningful. Your active signals are the ones you
+[configured in Bryn](/bryn/signal-mapping) (e.g. `pricing_page_viewed`, `demo_requested`):
+use your own names here.
+
+<ThemedImage
+  alt="Show the sales nudge only to companies with pricing intent."
+  sources={{
+    light: '/images/bryn/d6a-recipe-intent-light.svg',
+    dark: '/images/bryn/d6a-recipe-intent-dark.svg',
+  }}
+/>
 
 ```html
 <script>
@@ -111,7 +129,7 @@ Bryn (e.g. `pricing-page-viewed`, `demo-requested`): use your own names here.
     if (status !== "resolved") return;
 
     // Show a "Talk to sales" nudge only if the company has shown pricing intent
-    if (entity.signals.includes("pricing-page-viewed")) {
+    if (entity.signals.includes("pricing_page_viewed")) {
       document.querySelector("#talk-to-sales").style.display = "block";
     }
   });
@@ -145,7 +163,7 @@ never broken while cold:
 </div>
 
 <!-- show a pricing CTA only when the company viewed pricing (use your own signal names) -->
-<div hidden data-bryn-show="signals.pricing-page-viewed">Talk to sales about pricing →</div>
+<div hidden data-bryn-show="signals.pricing_page_viewed">Talk to sales about pricing →</div>
 
 <!-- a loading line that disappears once resolved -->
 <div data-bryn-hide="status=resolved">Personalizing…</div>
@@ -189,6 +207,58 @@ your existing analytics snippet:
 
 Only act when there's a person: when `individual` is `null`, Bryn knows the company but not
 who the visitor is, so there's nothing to identify.
+
+## Recipe 8: Follow up on an abandoned demo
+
+A worked example of one signal, end to end. When someone starts your product demo and
+leaves before finishing, you can offer to pick up where they left off on their next visit.
+
+<ThemedImage
+  alt="Follow up on the page when a demo was started but not finished."
+  sources={{
+    light: '/images/bryn/d6b-recipe-demo-light.svg',
+    dark: '/images/bryn/d6b-recipe-demo-dark.svg',
+  }}
+/>
+
+**First, tell Bryn about the abandon.** Your analytics sends a "demo abandoned" event (for
+example `demo_abandoned`) to PostHog; deciding what counts as abandoned is up to your
+product. In Bryn, go to **Configuration**, then **Signal Mapping**, and
+[map it](/bryn/signal-mapping): *when `demo_abandoned` happens, raise `demo_abandonment`*.
+That event now becomes a `demo_abandonment` signal on the visitor, and it rides the pixel
+like any other signal.
+
+**Then react to it on your site.** Gate a call-out on the signal, just like Recipe 4:
+
+```html
+<script>
+  window.addEventListener("bryn:personalize", (event) => {
+    const { status, entity, individual } = event.detail;
+    if (status !== "resolved") return;
+    if (!entity.signals.includes("demo_abandonment")) return;   // only unfinished demos
+
+    const banner = document.querySelector("#pick-up-banner");
+    banner.textContent = individual
+      ? `Welcome back, ${individual.firstName}. Want to finish the demo?`
+      : `Looks like your team started the demo. Want a hand finishing it?`;
+    banner.style.display = "block";
+  });
+</script>
+```
+
+Prefer no JavaScript? The `data-bryn-*` attributes work too: `data-bryn-show` accepts a
+`signals.<type>` membership check:
+
+```html
+<!-- shown only for visitors with an active demo_abandonment signal -->
+<div hidden data-bryn-show="signals.demo_abandonment">
+  Pick up where you left off in the demo →
+</div>
+```
+
+Bryn can also stage a reviewed follow-up for these visitors: the
+"Follow up when a demo is left unfinished" Play on your
+[Plays screen](/bryn/plays). Nothing sends until you turn it on and approve.
 
 ## Good habits
 

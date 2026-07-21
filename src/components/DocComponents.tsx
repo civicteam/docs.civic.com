@@ -9,6 +9,7 @@ import Link from '@docusaurus/Link';
 import Admonition from '@theme/Admonition';
 import clsx from 'clsx';
 import styles from './DocComponents.module.css';
+import BrynMark from './BrynMark';
 
 type Props = { children?: React.ReactNode };
 
@@ -72,7 +73,7 @@ export const Card: React.FC<CardProps> = ({
     <div className={clsx(styles.card, horizontal && styles.cardHorizontal, className)}>
       {icon && (
         <span className={styles.cardIcon} aria-hidden>
-          <i className={`fa-solid fa-${icon}`} />
+          {icon === 'bryn' ? <BrynMark /> : <i className={`fa-solid fa-${icon}`} />}
         </span>
       )}
       <div className={styles.cardBody}>

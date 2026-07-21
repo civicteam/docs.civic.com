@@ -19,6 +19,7 @@ const hideBryn = process.env.HIDE_BRYN === "true";
 
 const config: Config = {
   title: "Civic Docs",
+  customFields: { hideBryn },
   tagline:
     "The agent integrator for mid-market businesses. Platform documentation for Civic Hub, Civic Auth, and Civic Labs.",
   favicon: "/favicon.svg",
@@ -121,6 +122,9 @@ const config: Config = {
         },
       },
     ],
+    // Click-to-expand on content images (medium-zoom); added for the Bryn
+    // diagrams, applies to all docs images.
+    "docusaurus-plugin-image-zoom",
   ],
 
   themes: ["docusaurus-theme-openapi-docs"],
@@ -177,6 +181,14 @@ const config: Config = {
 
   themeConfig: {
     image: "logo/dark.png",
+    // docusaurus-plugin-image-zoom: click any content image to expand.
+    zoom: {
+      selector: ".markdown img",
+      background: {
+        light: "rgba(255, 255, 255, 0.95)",
+        dark: "rgba(3, 7, 17, 0.95)",
+      },
+    },
     // docs.civic.com is dark by default. Users can still toggle via the
     // navbar switch, but OS prefers-color-scheme: light no longer
     // auto-flips the site.
@@ -194,6 +206,18 @@ const config: Config = {
         href: "/",
       },
       items: [
+        // Bryn leads: it is the default landing tab (src/pages/index.tsx
+        // redirects / to /bryn unless HIDE_BRYN is set).
+        ...(hideBryn
+          ? []
+          : [
+              {
+                type: "docSidebar" as const,
+                sidebarId: "bryn",
+                label: "Bryn",
+                position: "left" as const,
+              },
+            ]),
         {
           type: "docSidebar",
           sidebarId: "civic",
@@ -212,16 +236,6 @@ const config: Config = {
           label: "Labs",
           position: "left",
         },
-        ...(hideBryn
-          ? []
-          : [
-              {
-                type: "docSidebar" as const,
-                sidebarId: "bryn",
-                label: "Bryn",
-                position: "left" as const,
-              },
-            ]),
         {
           label: "Contact Us",
           href: CONTACT_URL,

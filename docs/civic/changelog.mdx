@@ -5,6 +5,18 @@ sidebar_custom_props:
   icon: "pen"
 ---
 
+<Update label="July 09, 2026" description="v0.1.154">
+
+**Features**
+- Credential resolution now supports multiple backing stores with per-account configuration
+- Credentials can now be served directly from any configured store, simplifying how credential references are handled
+
+**Bug fixes**
+- Fixed an issue where credential lookups could return stale results or fail silently on empty credentials
+- Fixed an issue where orphaned credential references could leave accounts in an inconsistent state
+
+</Update>
+
 <Update label="June 05, 2026" description="v0.1.152">
 
 **Features**
