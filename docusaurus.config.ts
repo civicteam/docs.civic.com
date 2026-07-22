@@ -267,11 +267,11 @@ const config: Config = {
           title: "Legal",
           items: [
             {
-              label: "Privacy Policy",
+              label: "Privacy policy",
               href: "https://www.civic.com/legal/privacy-policy",
             },
             {
-              html: '<button type="button" id="cookie-consent-removal-link" class="footer__link-item cky-banner-element cookie-consent-removal-link">Do Not Sell or Share My Personal Information</button>',
+              html: '<button type="button" id="cookie-consent-removal-link" class="footer__link-item cky-banner-element cookie-consent-removal-link">Do not sell or share my personal information</button>',
             },
           ],
         },
