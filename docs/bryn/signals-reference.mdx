@@ -1,0 +1,67 @@
+---
+title: Signals reference
+description: 'Canonical reference for Bryn signal names and their shipping status'
+---
+
+This page is the canonical reference for Bryn signal names and their current
+shipping status. Signal names are shown without the `signal.` trigger prefix. For
+example, the `high_intent` signal appears in a Play trigger as `signal.high_intent`.
+
+## Status legend
+
+| Status | Meaning |
+| --- | --- |
+| Current | The signal can be mapped, raised, scored, or used by a shipped Play today. |
+| Limited preview | The signal is implemented, but the related Play is available only to selected tenants. |
+| Planned | The name is reserved for roadmap work and should not be described as available yet. |
+
+## How signals work
+
+Bryn accepts events from connected sources, maps those events into signal names, and
+keeps the resulting signals on the account or person that generated them. Signals
+then contribute to scoring and can trigger Plays.
+
+Signal names use lower snake case, such as `trial_wobble`. Custom tenant-defined
+signals can use the same shape when a team needs a signal outside the core catalogue.
+
+## Current signals
+
+| Signal | Status | What it means | Common source | Used by |
+| --- | --- | --- | --- | --- |
+| `identified_account` | Current | A previously anonymous visitor or event has been resolved to a known account or person. | Website identity resolution, product analytics, or another mapped identity event. | Attribution and account history. The outbound attribution Play is planned. |
+| `aha_event` | Current | A user reached the product's first clear value moment. | A tenant-defined product event, such as first project created or first message sent. | Scoring and tenant-specific Plays. No starter Play consumes it directly today. |
+| `high_intent` | Current | An account is showing buying or evaluation intent. | Pricing, plans, billing, docs, account settings, or equivalent tenant-defined events. | Outbound brief when intent climbs. |
+| `trial_wobble` | Current | A trial account is showing risk, friction, or falling engagement. | Product analytics, lifecycle automation, or a tenant-defined trial event. | Trial wobble assist for your AEs. |
+| `demo_abandonment` | Current | Someone started a demo or tour but left before finishing. | Demo, tour, or product-led motion events. | Follow up when a demo is left unfinished. |
+| `gtm_review` | Limited preview | An account is due for a go-to-market review and a recommended next step. | Any tenant-defined event that should send the account for review. | Account review with a recommended next step. |
+| `account_converted` | Current | A tracked account became a paying customer. | Subscription, billing, or lifecycle events mapped by the tenant. | Slack alert when an account converts to paid. |
+| `competitor_comparison` | Current | A website visitor viewed configured competitor-comparison content. | Website pixel URL rules configured by the tenant. | Scoring and future competitive Plays. The current ICP-match Play uses fit score rather than this signal. |
+
+## Planned signals
+
+These names describe planned or roadmap signal categories. They are useful for
+content planning, but they should not be presented as generally available until
+their status moves to Current.
+
+| Signal | Status | Planned meaning |
+| --- | --- | --- |
+| `pricing_repeat` | Planned | Pricing or plan pages viewed repeatedly within a recent account window. |
+| `docs_research` | Planned | Deep documentation or API research in one account session. |
+| `repeat_visit` | Planned | Multiple recent visits from the same account. |
+| `demo_no_fill` | Planned | A demo page was visited but no form or demo-start event followed. |
+| `signup_abandon` | Planned | Sign-up started but did not complete. |
+| `teammate_invite` | Planned | A product user invited teammates, especially more than once in a session. |
+| `multi_user_domain` | Planned | Multiple users from the same domain are active in a trial or workspace. |
+| `usage_limit` | Planned | An account hit or approached a product usage limit. |
+| `bombora_surge` | Planned | A third-party intent provider reports topic surge. |
+| `g2_intent` | Planned | A third-party intent provider reports review or comparison intent. |
+| `job_change` | Planned | A known champion or buyer changes roles. |
+
+## What to say publicly
+
+Use "signals" for the normalized account facts Bryn derives from events. Use "events"
+for the raw things a connected source sends. Use "Plays" for the actions Bryn takes
+when signals, scores, and account facts match a trigger.
+
+When a signal is Planned, describe it as a roadmap area. Do not imply that a planned
+signal can trigger a production Play today.

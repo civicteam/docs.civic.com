@@ -78,6 +78,16 @@ const sidebar: SidebarItemConfig[] = [
   { type: 'doc', id: 'bryn/mcp', label: 'MCP server', customProps: icon('message') },
   {
     type: 'category',
+    label: 'Reference',
+    customProps: icon('book'),
+    ...TOP_GROUP,
+    items: [
+      { type: 'doc', id: 'bryn/signals-reference', label: 'Signals', customProps: icon('signal') },
+      { type: 'doc', id: 'bryn/plays-and-actions-reference', label: 'Plays & actions', customProps: icon('circle-play') },
+    ],
+  },
+  {
+    type: 'category',
     label: 'Advanced',
     customProps: icon('code'),
     ...TOP_GROUP,

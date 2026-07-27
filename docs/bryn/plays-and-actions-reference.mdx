@@ -1,0 +1,92 @@
+---
+title: Plays and actions reference
+description: 'Canonical reference for Bryn Plays, actions, and connector capabilities'
+---
+
+This page is the canonical reference for Bryn Plays and the action words used
+to describe what a Play can do. A Play is a reusable workflow that fires when an
+account's signals, scores, and account facts match its trigger.
+
+## Status legend
+
+| Status | Meaning |
+| --- | --- |
+| Current | The Play or action exists in the shipped system today. |
+| Limited preview | The Play or action exists, but is available only to selected tenants. |
+| Planned | The Play or action is part of the roadmap and should not be described as shipped. |
+
+## Current action words
+
+These are the customer-facing action words for what a Play can do today.
+
+| Action | Status | What it does | Current destinations or dependencies |
+| --- | --- | --- | --- |
+| `draft` | Current | Creates a short human-readable brief, note, or follow-up from account context. | Account context and Play content. |
+| `alert` | Current | Posts a message to the team's selected destination. | Chat-capable connectors such as Slack, Teams, Discord, or webhook, when enabled. |
+| `hold` | Current | Pauses a Play so a human can approve, step in, or let the Play continue after the window. | Approval links and Play status tracking. |
+| `enroll` | Current | Adds a contact to an outbound sequence after review. | Instantly sequence connection. |
+| `review` | Limited preview | Reviews an account's recent activity and recommends a next step. | Account review and chat delivery. |
+
+## Connector capabilities
+
+Connectors provide capabilities. A capability is broader than a vendor: for example,
+`chat` can be served by Slack, Teams, Discord, or a webhook.
+
+| Capability | Status | Example connector types |
+| --- | --- | --- |
+| `chat` | Current | Slack, Teams, Discord, webhook |
+| `email` | Current | Resend, SES |
+| `sequence` | Current | Instantly |
+| `crm` | Current | HubSpot, Salesforce |
+| `ticket` | Current | Jira, Linear |
+
+A connector capability being available does not mean every shipped Play uses that
+capability yet. Plays are published one workflow at a time.
+
+## Current Plays
+
+| Play | Status | When it fires | Actions |
+| --- | --- | --- | --- |
+| Slack alert for active accounts | Current | An active scored account matches the starter trigger. | `alert` |
+| Outbound brief when intent climbs | Current | `high_intent` is active and the account has a contactable person. | `draft`, `alert`, `hold`, `enroll` |
+| Trial wobble assist for your AEs | Current | `trial_wobble` is active. | `draft`, `alert`, `hold` |
+| ICP-match alert from website visitors | Current | A website visitor resolves to an account whose fit score meets the ICP threshold. | `alert` |
+| Follow up when a demo is left unfinished | Current | `demo_abandonment` is active and the account has a contactable person. | `draft`, `alert`, `hold`, `enroll` |
+| Slack alert when an account converts to paid | Current | `account_converted` is active. | `alert` |
+| Account review with a recommended next step | Limited preview | `gtm_review` is active. | `review`, `alert` |
+
+## Planned actions
+
+| Action | Status | Planned effect |
+| --- | --- | --- |
+| `push` | Planned | Send a structured record to a configured attribution or reverse-ETL destination. |
+| `route` | Planned | Assign or escalate an account to the right owner. |
+| `append` | Planned | Add a note, flag, or field update to a system of record without overwriting existing customer data. |
+| `serve` | Planned | Return account-aware website content in the request path. |
+| `task` | Planned | Create a follow-up task for a human owner. |
+| `grant` | Planned | Grant access, credit, or an entitlement in response to account behavior. |
+| `record` | Planned | Write a normalized business event for downstream systems. |
+| `tag` | Planned | Add or remove a segment or status tag. |
+| `enrich` | Planned | Request or refresh third-party enrichment. |
+| `handoff` | Planned | Move an account from one owner or team to another with context. |
+
+## Planned Plays
+
+| Play | Status | Planned motion |
+| --- | --- | --- |
+| Attribution emit | Planned | Send a structured attribution record when an account is identified or an attribution-worthy milestone happens. |
+| Competitive evaluation route | Planned | Route an account that is actively comparing competitors to the right owner. |
+| Teammate-invite expansion | Planned | Alert or route expansion motion when product collaboration grows inside an account. |
+| Docs-depth developer alert | Planned | Alert a technical owner when an account shows deep documentation or API research. |
+| Trial usage-limit upgrade | Planned | Alert, append, or push when a trial approaches or hits a usage limit. |
+| Third-party intent surge | Planned | Alert or route when external intent rises for target topics. |
+| Multi-user domain activation | Planned | Alert or route when several people from one account become active. |
+| Champion job-change re-engage | Planned | Draft and queue outreach when a known champion moves to a new company. |
+| On-visit personalization | Planned | Serve account-aware page content from a precomputed content set. |
+
+## What to say publicly
+
+Use "actions" or "verbs" for the reusable effects a Play can take. Use vendor names
+only for examples of where an action can land. For example, say "Bryn posts an alert
+to your team's chat destination" before saying "Slack," because the action is `alert`
+and Slack is one possible connector.
