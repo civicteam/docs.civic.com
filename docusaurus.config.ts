@@ -142,8 +142,25 @@ const config: Config = {
   clientModules: [
     "./src/clientModules/fontawesome.ts",
     "./src/clientModules/gtm.ts",
-    "./src/clientModules/brynPixel.ts",
     "./src/clientModules/posthog.ts",
+  ],
+
+  scripts: [
+    {
+      src: "https://bryn.civic.com/pixel/pixel.js",
+      "data-bryn-pixel-ref": "c03f1a34-5ecf-4071-aea6-3cde827e50a9",
+      async: true,
+    },
+    {
+      src: "https://bryn-preprod.civic.com/pixel/pixel.js",
+      "data-bryn-pixel-ref": "e8365759-b82e-4cf0-add6-2637a5d5bebc",
+      async: true,
+    },
+    {
+      src: "https://bryn-dev.civic.com/pixel/pixel.js",
+      "data-bryn-pixel-ref": "512c8cbe-56a4-40da-bcc7-714c3b7f4de0",
+      async: true,
+    },
   ],
 
   headTags: [
