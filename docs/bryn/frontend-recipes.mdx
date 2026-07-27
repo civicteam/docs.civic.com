@@ -199,8 +199,8 @@ your existing analytics snippet:
     const { status, individual } = event.detail;
     if (status !== "resolved" || !individual) return;   // only when Bryn knows the person
 
-    // Hand the Bryn identifier to your analytics tool, e.g. PostHog:
-    posthog.identify(individual.individualId);
+    // Hand the Bryn identifier and the full payload to your analytics tool, e.g. PostHog:
+    posthog.identify(individual.individualId, { bryn: event.detail });
   });
 </script>
 ```
