@@ -147,11 +147,6 @@ const config: Config = {
 
   scripts: [
     {
-      src: "https://bryn-poc.civic.com/pixel.js",
-      "data-tenant": "civic",
-      async: true,
-    },
-    {
       src: "https://bryn.civic.com/pixel/pixel.js",
       "data-bryn-pixel-ref": "c03f1a34-5ecf-4071-aea6-3cde827e50a9",
       async: true,
@@ -282,6 +277,18 @@ const config: Config = {
             {
               label: "YouTube",
               href: "https://www.youtube.com/@CivicTechnologies",
+            },
+          ],
+        },
+        {
+          title: "Legal",
+          items: [
+            {
+              label: "Privacy policy",
+              href: "https://www.civic.com/legal/privacy-policy",
+            },
+            {
+              html: '<button type="button" id="cookie-consent-removal-link" class="footer__link-item cky-banner-element cookie-consent-removal-link">Do not sell or share my personal information</button>',
             },
           ],
         },
