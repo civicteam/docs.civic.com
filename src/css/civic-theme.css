@@ -324,6 +324,13 @@ h1, h2, h3, h4 {
   background: transparent;
   color: var(--ifm-color-emphasis-600);
 }
+/* The collapsible wrapper carries its own 10px horizontal padding on top of
+ * the inner link's 10px, which pushed top-level section headers 10px deeper
+ * than top-level doc links. Zero the wrapper so both align at the same edge. */
+.menu > .menu__list > .menu__list-item > .menu__list-item-collapsible {
+  padding-left: 0;
+  padding-right: 0;
+}
 /* Make sure our FA icon from the Category swizzle gets rendered inline with
  * these section headers. */
 .menu > .menu__list > .menu__list-item > .menu__link > i.fa-solid,

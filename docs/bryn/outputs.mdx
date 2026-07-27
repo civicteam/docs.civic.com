@@ -1,0 +1,61 @@
+---
+title: Connect Slack and other outputs
+description: 'Send what Bryn finds to where your team works'
+---
+
+Bryn's work is invisible until it lands somewhere your team already looks.
+Outputs are the destinations Plays deliver to. Slack is the fastest first
+output; CRM and webhooks follow once alerts are flowing.
+
+Outputs live under **Integrations** in the Bryn dashboard, and the
+onboarding wizard walks you through the first one.
+
+## Connect Slack
+
+<Steps>
+  <Step title="Authorize">
+    Click **Connect to Slack** and approve the app in your Slack
+    workspace.
+  </Step>
+  <Step title="Pick a channel">
+    A dedicated channel like `#intent` keeps alerts easy to follow and
+    easy to mute-proof. You can add more connections to other channels
+    later.
+  </Step>
+  <Step title="Watch the test message arrive">
+    Bryn verifies the connection by posting a test message as soon as you
+    connect. No extra step.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the dashboard shows "Test message delivered
+to #your-channel" and the message is sitting in Slack. If it failed, fix
+the channel choice and click **Retry test**; a **Re-test** button stays
+available on healthy connections too.
+
+## Other destinations
+
+- **CRM**: Bryn writes additively. It fills empty fields and adds notes and
+  flags; it never overwrites data your team entered. Conflicting values go
+  to a review queue instead of clobbering the record.
+- **Outbound webhooks**: receive structured records in your own systems.
+  The request contract and verification steps are in
+  [Server-side events & signing](/bryn/signing).
+
+## Keeping it quiet
+
+Alerts you mute are worse than no alerts, so Bryn rate-limits itself:
+
+- **Cooldowns** stop the same Play re-firing on the same account for a
+  configurable window (a week by default).
+- **Workspace caps** keep total alert volume bounded even during a traffic
+  spike.
+
+If a channel feels noisy, tighten the Play's trigger or your
+[Ideal Customer Profile (ICP)](/bryn/icp-and-scoring) rather than muting
+the channel.
+
+## Going further
+
+- Manage connections programmatically: Outputs and Integrations in the
+  [API reference](/bryn/api/bryn-control-plane-api).

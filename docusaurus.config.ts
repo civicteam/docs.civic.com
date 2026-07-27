@@ -13,6 +13,15 @@ const algoliaEnabled =
 const CONTACT_URL = "mailto:bd@civic.com";
 const BOOK_CALL_URL = "https://civic.com";
 
+// PostHog product analytics (src/clientModules/posthog.ts). The project key is a
+// publishable client-side key (it ships in the browser bundle, like the GTM id) but
+// is env-driven so it can vary per Vercel environment; PostHog init is skipped when
+// POSTHOG_KEY is absent. POSTHOG_HOST is optional (defaults to PostHog US cloud).
+const posthogConfig = {
+  key: process.env.POSTHOG_KEY,
+  host: process.env.POSTHOG_HOST,
+};
+
 // Set HIDE_BRYN=true (e.g. per Vercel environment) to drop the Bryn tab from the
 // navbar. The /bryn pages are still built and reachable by direct URL.
 const hideBryn = process.env.HIDE_BRYN === "true";
@@ -36,8 +45,10 @@ const config: Config = {
   i18n: { defaultLocale: "en", locales: ["en"] },
 
   customFields: {
+    hideBryn,
     contactUrl: CONTACT_URL,
     bookCallUrl: BOOK_CALL_URL,
+    posthog: posthogConfig,
   },
 
   markdown: {
@@ -121,6 +132,9 @@ const config: Config = {
         },
       },
     ],
+    // Click-to-expand on content images (medium-zoom); added for the Bryn
+    // diagrams, applies to all docs images.
+    "docusaurus-plugin-image-zoom",
   ],
 
   themes: ["docusaurus-theme-openapi-docs"],
@@ -128,6 +142,7 @@ const config: Config = {
   clientModules: [
     "./src/clientModules/fontawesome.ts",
     "./src/clientModules/gtm.ts",
+    "./src/clientModules/posthog.ts",
   ],
 
   scripts: [
@@ -177,6 +192,14 @@ const config: Config = {
 
   themeConfig: {
     image: "logo/dark.png",
+    // docusaurus-plugin-image-zoom: click any content image to expand.
+    zoom: {
+      selector: ".markdown img",
+      background: {
+        light: "rgba(255, 255, 255, 0.95)",
+        dark: "rgba(3, 7, 17, 0.95)",
+      },
+    },
     // docs.civic.com is dark by default. Users can still toggle via the
     // navbar switch, but OS prefers-color-scheme: light no longer
     // auto-flips the site.
@@ -194,6 +217,18 @@ const config: Config = {
         href: "/",
       },
       items: [
+        // Bryn leads: it is the default landing tab (src/pages/index.tsx
+        // redirects / to /bryn unless HIDE_BRYN is set).
+        ...(hideBryn
+          ? []
+          : [
+              {
+                type: "docSidebar" as const,
+                sidebarId: "bryn",
+                label: "Bryn",
+                position: "left" as const,
+              },
+            ]),
         {
           type: "docSidebar",
           sidebarId: "civic",
@@ -212,16 +247,6 @@ const config: Config = {
           label: "Labs",
           position: "left",
         },
-        ...(hideBryn
-          ? []
-          : [
-              {
-                type: "docSidebar" as const,
-                sidebarId: "bryn",
-                label: "Bryn",
-                position: "left" as const,
-              },
-            ]),
         {
           label: "Contact Us",
           href: CONTACT_URL,
