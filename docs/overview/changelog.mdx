@@ -5,6 +5,20 @@ sidebar_custom_props:
   icon: "pen"
 ---
 
+<Update label="August 17, 2026" description="auth-server-1.2.40">
+
+**Improvements**
+- Enhanced security for authentication endpoints
+
+**Bug fixes**
+- Fixed an error that could occur when connecting a second Civic-protected MCP server in the same browser session
+- Fixed an issue where logout pages could fail to load in certain configurations
+
+**Breaking changes**
+- If you integrate with Civic Auth using a custom OIDC implementation (not the Civic SDK), single sign-on (SSO) across applications is no longer supported. Requests using `prompt=none` will now return a `login_required` error. SDK-based integrations and MCP clients using refresh tokens are not affected.
+
+</Update>
+
 <Update label="April 23, 2026" description="apps-0.2.99">
 
 Internal improvements and maintenance updates.
