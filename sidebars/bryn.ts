@@ -76,6 +76,9 @@ const sidebar: SidebarItemConfig[] = [
   { type: 'doc', id: 'bryn/frontend-recipes', label: 'Personalization recipes', customProps: icon('paintbrush') },
   { type: 'doc', id: 'bryn/how-bryn-works', label: 'How Bryn works', customProps: icon('mountain') },
   { type: 'doc', id: 'bryn/mcp', label: 'MCP server', customProps: icon('message') },
+  // Appended to by the Bryn repo's release-notes automation, which opens a PR
+  // here adding one entry per production release.
+  { type: 'doc', id: 'bryn/changelog', label: 'Changelog', customProps: icon('pen') },
   {
     type: 'category',
     label: 'Advanced',
