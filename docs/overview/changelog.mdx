@@ -5,6 +5,12 @@ sidebar_custom_props:
   icon: "pen"
 ---
 
+<Update label="August 20, 2026" description="auth-server-1.2.41">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
 <Update label="August 17, 2026" description="auth-server-1.2.40">
 
 **Improvements**
@@ -16,6 +22,114 @@ sidebar_custom_props:
 
 **Breaking changes**
 - If you integrate with Civic Auth using a custom OIDC implementation (not the Civic SDK), single sign-on (SSO) across applications is no longer supported. Requests using `prompt=none` will now return a `login_required` error. SDK-based integrations and MCP clients using refresh tokens are not affected.
+
+</Update>
+
+<Update label="August 14, 2026" description="auth-server-1.2.39">
+
+**Bug fixes**
+- Fixed an issue where the issuer identifier in authorization responses did not match the tenant-specific issuer from the discovery endpoint
+- Fixed an issue where tenant context could be lost during the login flow, potentially causing errors after authentication
+
+</Update>
+
+<Update label="August 14, 2026" description="apps-0.2.106">
+
+**Features**
+- Added flexible issuer validation support in token verification, enabling multi-tenant and scoped issuer configurations
+
+**Improvements**
+- Updated dependencies to address known security vulnerabilities
+
+</Update>
+
+<Update label="July 10, 2026" description="apps-0.2.105">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="July 02, 2026" description="auth-server-1.2.37">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="June 29, 2026" description="apps-0.2.104">
+
+**Bug fixes**
+- Fixed an issue where native desktop applications using localhost redirect URIs could fail to authenticate when the operating system assigned a different port
+
+</Update>
+
+<Update label="June 26, 2026" description="auth-server-1.2.36">
+
+**Bug fixes**
+- Fixed an issue where authentication tokens could fail validation in multi-tenant environments
+
+</Update>
+
+<Update label="June 26, 2026" description="auth-server-1.2.35">
+
+**Improvements**
+- Updated dependencies to address known security vulnerabilities
+
+**Bug fixes**
+- Fixed an issue where some OAuth clients could be incorrectly denied access when connecting without specifying explicit permissions
+
+</Update>
+
+<Update label="June 25, 2026" description="apps-0.2.103">
+
+**Features**
+- Sub-clients created through Dynamic Client Registration, such as development tools, can now use localhost redirect URIs without adding them to the parent application's domain list
+
+</Update>
+
+<Update label="June 22, 2026" description="apps-0.2.102">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="June 19, 2026" description="apps-0.2.101">
+
+**Features**
+- Added support for Client ID Metadata Document (CIMD) authentication, enabling integration with MCP-compatible clients
+
+**Improvements**
+- Applied security patches across dependencies
+
+**Bug fixes**
+- Fixed an issue where the save button in dashboard settings could occasionally become unresponsive
+
+</Update>
+
+<Update label="June 15, 2026" description="auth-server-1.2.33">
+
+**Features**
+- MCP clients can now start login flows using an HTTPS metadata URL as their client ID, without needing to register in advance
+
+</Update>
+
+<Update label="June 12, 2026" description="auth-server-1.2.32">
+
+**Improvements**
+- Updated core dependencies to address multiple security vulnerabilities
+
+**Bug fixes**
+- Fixed authentication failures in multi-tenant configurations where login could be rejected by resource servers
+- Fixed "client ID is not valid" errors when logging in with public clients
+
+</Update>
+
+<Update label="June 12, 2026" description="apps-0.2.100">
+
+**Bug fixes**
+- Fixed an issue where public client applications could fail to authenticate during login
+
+**Improvements**
+- Resolved security vulnerabilities in underlying dependencies
 
 </Update>
 
@@ -388,3 +502,4 @@ Fixed the errors that were happening when setting up production applications. Sh
 Added dashboard and email alerts when you're approaching your plan limits. No more surprise overages.
 
 </Update>
+
