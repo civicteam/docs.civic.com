@@ -3,6 +3,21 @@ title: Changelog
 description: 'Bryn product updates and release notes'
 ---
 
+<Update label="September 03, 2026" description="v0.1.82">
+
+**Features**
+- You can now configure the JSON path a webhook uses to read the event type, fixing issues with misclassified events
+
+**Improvements**
+- HubSpot industry enrichment now matches at a more granular level, improving the accuracy of ICP fit scoring
+- Scoring configuration now accepts negative per-signal weights, letting you suppress a signal's contribution to Intent scores
+- The HubSpot connection form now shows which credential type and scopes are required, making setup easier
+
+**Bug fixes**
+- Fixed an error that rejected valid scoring configurations containing negative signal weights
+
+</Update>
+
 <Update label="September 01, 2026" description="v0.1.80">
 
 **Features**
