@@ -3,6 +3,19 @@ title: Changelog
 description: 'Bryn product updates and release notes'
 ---
 
+<Update label="September 04, 2026" description="v0.1.83">
+
+**Improvements**
+- Named webhooks now store the original payload as sent, so event-type suggestions and evidence in the account-matching panel reflect exactly what was received
+- Custom signals already saved on a signal mapping now appear in the picker for reuse
+
+**Bug fixes**
+- Fixed an issue where the ICP-match Play could fire for accounts identified without an actual website visit
+- Fixed signal-mapping picker so mapped events stay under their correct source heading instead of appearing in the wrong group
+- Fixed a size limit that could cause large webhook payloads to be rejected during ingest
+
+</Update>
+
 <Update label="September 03, 2026" description="v0.1.82">
 
 **Features**
