@@ -3,6 +3,17 @@ title: Changelog
 description: 'Bryn product updates and release notes'
 ---
 
+<Update label="September 08, 2026" description="v0.1.86">
+
+**Features**
+- The pixel beacon now maps to the "site visited" signal instead of "identified account", better reflecting what a page-view event actually reports. Onboarding, starter plays, and signal vocabulary have been updated to match. Existing mappings are migrated automatically and intent scoring weights carry over, so no action is needed.
+
+**Bug fixes**
+- Fixed an issue where changing the entity kind on a mapping was silently dropped on save, causing the change to revert.
+- Webhook credentials now display labels that match each auth mode and vendor setup dialog, making it easier to configure integrations correctly.
+
+</Update>
+
 <Update label="September 08, 2026" description="v0.1.85">
 
 **Features**
