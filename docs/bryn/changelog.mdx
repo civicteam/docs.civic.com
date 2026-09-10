@@ -3,6 +3,19 @@ title: Changelog
 description: 'Bryn product updates and release notes'
 ---
 
+<Update label="September 10, 2026" description="v0.1.89">
+
+**Features**
+- HeyReach is now available as an output connector for all workspaces
+- View the source event behind any audit log entry to see exactly what data came in and how it was mapped
+- Map LinkedIn URL, seniority and functional area from ingest payloads onto individual records
+
+**Improvements**
+- Leads whose company URL contains a shortened link are no longer incorrectly matched to the link-shortener domain, preventing bad company associations
+- Enrichment from HubSpot and Pipedrive now writes person-level fields such as job title, owner and lifecycle stage to the individual record rather than the account
+
+</Update>
+
 <Update label="September 10, 2026" description="v0.1.88">
 
 **Features**
