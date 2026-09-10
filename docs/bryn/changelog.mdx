@@ -3,6 +3,22 @@ title: Changelog
 description: 'Bryn product updates and release notes'
 ---
 
+<Update label="September 10, 2026" description="v0.1.88">
+
+**Features**
+- HeyReach output connector -- connect an API key, pick a campaign, and add leads to LinkedIn sequences directly from any Play
+- Filter internal and suppressed traffic on the Accounts list and Audit log
+- Events with a company URL but no email address are now matched to existing accounts by domain, so LinkedIn-sourced leads reach the right account automatically
+- Recognized website visitors are now automatically correlated to your PostHog person profiles, with a new toggle on pixel settings to opt out
+
+**Improvements**
+- Company names from enrichment are now ranked more accurately, preventing taglines from being used as the company name
+
+**Bug fixes**
+- Fixed an issue where enriched company names could display a tagline instead of the actual company name
+
+</Update>
+
 <Update label="September 09, 2026" description="v0.1.87">
 
 **Features**
