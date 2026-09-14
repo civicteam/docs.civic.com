@@ -3,6 +3,25 @@ title: Changelog
 description: 'Bryn product updates and release notes'
 ---
 
+<Update label="September 14, 2026" description="v0.1.92">
+
+**Features**
+- Plays can now send email notifications using a built-in email output, available alongside existing connectors in the Play configuration
+- Email recipients are automatically restricted to your workspace team members for security
+- New "Hide internal" and "Hide ignored" toggles in the Audit log filter panel let you suppress noise from internal accounts and ignored accounts without removing them from the record
+- New website-traffic section on the home dashboard showing a visitor funnel, pixel health per origin, top ICP pages, and recent accounts
+
+**Improvements**
+- Account-matching hint text is now consolidated to a single line at the top of each section, reducing visual clutter
+- Per-field explanations in the account-matching panel now appear on hover instead of being shown permanently
+- Setup screens for PostHog, HeyReach, and HubSpot now lead with what to paste, with step-by-step instructions collapsed behind expandable sections
+- Configured sources with no events now show a clear waiting message
+
+**Bug fixes**
+- Fixed an issue where identified account counts could be inconsistent on the workspace review screen
+
+</Update>
+
 <Update label="September 11, 2026" description="v0.1.91">
 
 **Features**
