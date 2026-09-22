@@ -58,11 +58,16 @@ Pick your platform:
     `YOUR_PIXEL_REF` with your pixel ref:
 
     ```html
-    <script
-      async
-      src="https://bryn.civic.com/pixel/pixel.js"
-      data-bryn-pixel-ref="YOUR_PIXEL_REF"
-    ></script>
+    <script>
+    (function () {
+      window.__brynPixel = { ref: "YOUR_PIXEL_REF" };
+      var s = document.createElement('script');
+      s.src = "https://bryn.civic.com/pixel/pixel.js";
+      s.async = true;
+      s.setAttribute('data-bryn-pixel-ref', "YOUR_PIXEL_REF");
+      document.head.appendChild(s);
+    })();
+    </script>
     ```
 
     Put it in the shared layout or header template, not on a single page,
