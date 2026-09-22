@@ -179,6 +179,10 @@ h1, h2, h3, h4 {
   background: var(--ifm-color-primary-dark) !important;
   transform: translateY(-1px);
 }
+/* Breathing room between the CTA and the color-mode toggle that follows it. */
+.navbar__items--right .navbar__cta {
+  margin-right: 8px;
+}
 
 /* Mobile slide-out sidebar header: render Book a Demo as an icon-only
  * button next to the light/dark toggle, injected via the swizzled
@@ -196,7 +200,7 @@ h1, h2, h3, h4 {
   flex: 0 0 36px;
 }
 .navbar-sidebar__icon + :not(.navbar-sidebar__icon) {
-  margin-left: 8px;
+  margin-left: 16px;
 }
 .navbar-sidebar__icon:hover {
   background: var(--ifm-color-emphasis-200);
