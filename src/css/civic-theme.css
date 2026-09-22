@@ -164,6 +164,16 @@ h1, h2, h3, h4 {
   /* Kill default underline, we use bg pill instead */
   display: none;
 }
+/* Dark mode: a translucent purple pill with purple text is too low-contrast
+ * on the near-black navbar, so the active tab goes solid purple with white text. */
+[data-theme='dark'] .navbar__link--active {
+  background: var(--ifm-color-primary);
+  color: #fff;
+}
+[data-theme='dark'] .navbar__link--active:hover {
+  background: var(--ifm-color-primary-dark);
+  color: #fff;
+}
 
 /* Navbar CTA button. */
 .navbar__cta {
@@ -282,6 +292,14 @@ h1, h2, h3, h4 {
 }
 .menu__link--active:hover {
   background: rgba(124, 59, 237, 0.2) !important;
+}
+/* Dark mode: same treatment as the navbar tab — solid purple, white text. */
+[data-theme='dark'] .menu__link--active {
+  background: var(--ifm-color-primary) !important;
+  color: #fff !important;
+}
+[data-theme='dark'] .menu__link--active:hover {
+  background: var(--ifm-color-primary-dark) !important;
 }
 .menu__caret {
   padding: 0 4px;
