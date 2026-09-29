@@ -17,6 +17,17 @@ description: 'Bryn product updates and release notes'
 
 </Update>
 
+<Update label="September 29, 2026" description="v0.1.109">
+
+**Features**
+- Plays are now automatically paused for workspaces with a paused or canceled subscription. Identification and signals continue as normal, and withheld Plays are still recorded in your audit trail.
+- The agent-guided onboarding flow now requires your readiness confirmation before providing the pixel snippet, matching the setup wizard experience.
+
+**Improvements**
+- The tracking pixel is now more resilient when running in restrictive browser environments, gracefully handling unsupported host features without errors.
+
+</Update>
+
 <Update label="September 28, 2026" description="v0.1.108">
 
 **Features**
@@ -84,6 +95,24 @@ Internal improvements and maintenance updates.
 
 </Update>
 
+<Update label="September 22, 2026" description="v0.1.101">
+
+**Features**
+- Completing the Plays step in onboarding now automatically activates your workspace in one action, replacing the separate review-and-confirm screen with a summary of what was set up
+- Bryn can now invite, list, and revoke workspace members on your behalf during conversations
+
+**Improvements**
+- Free-mail addresses such as gmail.com are no longer accepted as a workspace domain or pixel origin, preventing accidental misconfiguration with a clear error message
+
+</Update>
+
+<Update label="September 21, 2026" description="v0.1.100">
+
+**Features**
+- Owners and admins can now add new plays directly from the Plays page using the restored "Add play" button
+
+</Update>
+
 <Update label="September 19, 2026" description="v0.1.99">
 
 **Features**
@@ -137,6 +166,13 @@ Internal improvements and maintenance updates.
 
 </Update>
 
+<Update label="September 16, 2026" description="v0.1.96">
+
+**Features**
+- Company data captured from your webhook sources is automatically written to the account as firmographic details
+
+</Update>
+
 <Update label="September 15, 2026" description="v0.1.95">
 
 **Features**
@@ -165,6 +201,25 @@ Internal improvements and maintenance updates.
 
 **Bug fixes**
 - Fixed the home dashboard traffic section so rows display consistently and both account lists show five entries
+
+</Update>
+
+<Update label="September 14, 2026" description="v0.1.92">
+
+**Features**
+- Plays can now send email notifications using a built-in email output, available alongside existing connectors in the Play configuration
+- Email recipients are automatically restricted to your workspace team members for security
+- New "Hide internal" and "Hide ignored" toggles in the Audit log filter panel let you suppress noise from internal accounts and ignored accounts without removing them from the record
+- New website-traffic section on the home dashboard showing a visitor funnel, pixel health per origin, top ICP pages, and recent accounts
+
+**Improvements**
+- Account-matching hint text is now consolidated to a single line at the top of each section, reducing visual clutter
+- Per-field explanations in the account-matching panel now appear on hover instead of being shown permanently
+- Setup screens for PostHog, HeyReach, and HubSpot now lead with what to paste, with step-by-step instructions collapsed behind expandable sections
+- Configured sources with no events now show a clear waiting message
+
+**Bug fixes**
+- Fixed an issue where identified account counts could be inconsistent on the workspace review screen
 
 </Update>
 
@@ -261,6 +316,21 @@ Internal improvements and maintenance updates.
 
 </Update>
 
+<Update label="September 07, 2026" description="v0.1.84">
+
+**Features**
+- Plays can now deliver messages to Slack with customizable templates, and you can see delivery results for each play execution
+- Create, test, edit and delete plays directly from the Plays page
+- Mark accounts as internal to suppress plays for your own team's traffic while still seeing the full personalized experience during demos
+- Suppression rules can now be managed from the API to control which accounts are excluded from plays
+- HubSpot is now available as an event source, with guided setup for contact and company workflows
+- Accounts can be marked as internal from the account page with a visible badge
+
+**Improvements**
+- Webhook provider type is now locked after creation to prevent misconfiguration
+
+</Update>
+
 <Update label="September 04, 2026" description="v0.1.83">
 
 **Improvements**
@@ -286,6 +356,26 @@ Internal improvements and maintenance updates.
 
 **Bug fixes**
 - Fixed an error that rejected valid scoring configurations containing negative signal weights
+
+</Update>
+
+<Update label="September 02, 2026" description="v0.1.81">
+
+**Features**
+- Browse and manage your connected data sources with per-vendor record-type selection
+- HubSpot enrichment now pulls contact and company data into your accounts when a HubSpot connection is active
+- Slack alerts now display a richer card layout with account name, score tier, ICP fit, and action buttons
+- Data tables and filters adapt to narrower screens, so columns and controls remain usable on laptops and smaller windows
+
+**Improvements**
+- Scores now reflect your workspace's actual scoring cap instead of showing a fixed denominator
+- HubSpot-enriched headcount and country data now feed into ICP Fit scoring
+- Loading indicators added across Activity, Audit, Accounts, and Plays screens
+
+**Bug fixes**
+- Fixed an issue where browser or password-manager autofill could cover account picker suggestions
+- Account-matching preview now correctly reports matches for numeric identifiers
+- Organization webhooks now resolve to their existing account instead of creating duplicates
 
 </Update>
 
