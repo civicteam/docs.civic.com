@@ -3,6 +3,22 @@ title: Changelog
 description: 'Bryn product updates and release notes'
 ---
 
+<Update label="September 30, 2026" description="v0.1.111">
+
+**Features**
+- Outgoing webhook connector -- you can now add named webhooks with a custom URL, method, headers, and JSON payload as play output destinations
+- Ingestion sources are now available on every tier and pause automatically when a trial or subscription lapses, with a banner explaining how to resume
+- Pixel delivery diagnostics -- you can now view beacon delivery status, host-unload events, and idle-ceiling stop reasons to help troubleshoot pixel behavior
+
+**Improvements**
+- Pixel is now served as a versioned bundle behind a short-lived loader for faster page loads and better caching
+
+**Bug fixes**
+- Fixed an issue where placing two pixel references on the same page could cause only one to fire
+- Fixed the sidebar not highlighting the correct menu item when viewing the Connectors page
+
+</Update>
+
 <Update label="September 29, 2026" description="v0.1.110">
 
 **Features**
