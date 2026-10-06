@@ -3,6 +3,26 @@ title: Changelog
 description: 'Bryn product updates and release notes'
 ---
 
+<Update label="October 06, 2026" description="v0.1.120">
+
+**Features**
+- The Home screen heading is now a time-range menu, letting you switch your dashboard between today, this week, or this month
+- Play output templates can now reference an execution ID as an idempotency key
+- Slack outputs now include a per-entry unfurl toggle to control link and media previews
+- The REST API now accepts partial Play updates, so you can merge changes to triggers or parameters without resending the full configuration
+- The Help entry in the sidebar now expands to show links to documentation and support
+- MCP tools now include titles and annotations indicating whether actions are read-only or destructive
+
+**Improvements**
+- Signal chains are now sorted by most recent firing
+- Company fields are now only populated from confirmed sources, not inferred data
+
+**Bug fixes**
+- Fixed event-type previews not showing warnings when an attribute resolves to an object, disagrees with stored types, or is missing on typed events
+- Removed ICP version numbers and scope labels from account cards, headers, and scoring screens
+
+</Update>
+
 <Update label="October 02, 2026" description="v0.1.116">
 
 **Features**
