@@ -72,6 +72,22 @@ Pick your platform:
 
     Put it in the shared layout or header template, not on a single page,
     so every page reports.
+
+    **Options.** Two attributes on the script tag tune the pixel:
+    `data-bryn-personalize="off"` reports visits and skips the
+    personalization leg entirely (no polling, no `bryn:personalize`), and
+    `data-bryn-debug="true"` logs each delivery step to `console.debug`.
+    Tag managers set the same options on the config global instead:
+
+    ```js
+    window.__brynPixel = { ref: "YOUR_PIXEL_REF", personalize: false, debug: true };
+    ```
+
+    `__brynPixel` also accepts `endpoint` for a custom collection origin. A
+    CSP `nonce` on your script tag is forwarded to the bundle it loads, so
+    strict-CSP sites work with a nonced tag. The pixel initializes once per
+    pixel ref: a tag-manager install alongside a leftover manual snippet
+    reports each visit once.
   </Tab>
   <Tab title="Webflow">
     In Webflow, go to **Site settings**, then **Custom code**, and paste the
@@ -106,18 +122,48 @@ traffic it can match. Seeing the visit in Activity means the pixel works,
 even while your own visit stays anonymous.
 </Note>
 
+### Check it in the browser
+
+Open the console on any page with the pixel and read
+`window.__brynPixelDiagnostics`:
+
+```js
+{
+  publish: { state: "sent-beacon" },   // sent-beacon | sent-fetch | failed | unavailable
+  serve: {
+    lastOutcome: "ok",
+    consecutiveFailures: 0,
+    loopState: "polling",              // polling | paused | stopped
+    stopReason: undefined              // set when stopped, e.g. "suppressed", "collection-only", "idle-ceiling"
+  }
+}
+```
+
+`publish.state` confirms the visit left the browser. `serve` describes the
+personalization leg: it polls for the payload, pauses while the tab is in
+the background, and stops 30 minutes after the last payload change once the
+visitor is resolved. Every change fires a `bryn:delivery` event with the same
+snapshot in `event.detail`, so a status chip or a QA script can follow it
+live.
+
 ## For your IT and security team
 
 What the pixel does, in one screen:
 
-- **Sends**: page URL, referrer, and timestamp on each page view. Nothing
-  else is collected.
+- **Sends**: five fields on each page view: `url`, `referrer`, `ts`, plus
+  `firstUrl` and `firstReferrer`, the first page and referrer of the browser
+  session. The pixel keeps that first touch in `sessionStorage` under
+  `bryn:first-touch`, so it clears when the tab closes.
 - **Never touches**: form fields, keystrokes, cookies from other tools.
 - **Origin allowlist**: Bryn only accepts events from domains on your
   workspace's allowlist, and rejects everything else.
 - **Personalization writes are inert by default**: the return leg only sets
   text content and the standard `hidden` attribute on elements you mark,
   which keeps it XSS-safe. If you never add markers, it changes nothing.
+  `data-bryn-personalize="off"` turns the return leg off altogether.
+- **Polite polling**: the return leg pauses in background tabs and stops
+  after 30 idle minutes once the visitor is resolved.
+- **CSP**: a `nonce` on the script tag carries through to the loaded bundle.
 - **Erasure**: deletion requests propagate through Bryn's stores. See
   [How Bryn works](/bryn/how-bryn-works) for the identification model.
 
