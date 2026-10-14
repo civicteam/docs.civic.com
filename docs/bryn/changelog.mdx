@@ -3,6 +3,31 @@ title: Changelog
 description: 'Bryn product updates and release notes'
 ---
 
+<Update label="October 14, 2026" description="v0.1.134">
+
+**Features**
+- Bryn branding and legal links now appear on the billing portal
+- Explore trial users without a payment method are now prompted to add one to continue using Explore
+- New People page with an accounts sidebar, shared filters, and deep links from the Home funnel
+- Slack Block Kit layouts are now available on Play outputs, with a per-entry toggle
+- You can now choose which company and person fields the pixel returns to visitors, with unused fields filtered before they reach the browser
+- Findymail is now available as an enrichment connector, providing email and phone data for people
+
+**Improvements**
+- Plan details now show renewal dates only when a renewal will actually occur
+- Annual plans now display the current usage month, name the proration credit, and explain how to switch to monthly billing
+
+**Bug fixes**
+- Clay enrichment now picks the correct company for a domain, or declines rather than guessing
+- When Clay returns no record, previously enriched account data is now retracted
+- Workspaces with an existing paid plan can now change their plan in-app
+- Enriched names that follow a specific source now update correctly when that source changes
+- Trial extensions no longer consume promo codes
+- Zero-total invoices are no longer shown on the billing page
+- People page no longer stays dimmed after selecting an account filter
+
+</Update>
+
 <Update label="October 14, 2026" description="v0.1.133">
 
 **Features**
