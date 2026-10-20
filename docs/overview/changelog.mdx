@@ -5,6 +5,19 @@ sidebar_custom_props:
   icon: "pen"
 ---
 
+<Update label="October 20, 2026" description="auth-server-1.2.43">
+
+**Improvements**
+- Logout now properly redirects you back to your application after signing out
+- Improved logout reliability so that sessions and tokens are fully cleaned up on sign-out
+- Better error messages when logout encounters an issue, instead of failing silently
+
+**Bug fixes**
+- Fixed an issue where logging out could fail with an error instead of completing successfully
+- Fixed an issue where active sessions were not fully revoked during logout, potentially leaving stale sessions behind
+
+</Update>
+
 <Update label="October 02, 2026" description="auth-server-1.2.42">
 
 **Features**
