@@ -18,9 +18,28 @@ When Bryn recognizes a visitor, it announces it on the page; your code listens a
 reacts. Bryn never changes your page for you: you decide what to show.
 
 It announces in three ways (use whichever suits you):
-1. A JavaScript event, `bryn:personalize`: the most flexible option (Recipes 1 to 4).
+1. A JavaScript event, `bryn:updated`: the most flexible option (Recipes 1 to 4).
 2. A global, `window.bryn`: read the latest at any time (Recipe 6).
 3. `data-bryn-*` attributes: **no JavaScript needed** (Recipe 5).
+
+`bryn:updated` hands you the payload and the list of fields that changed:
+
+```js
+window.addEventListener("bryn:updated", (event) => {
+  const { payload, changedKeys } = event.detail;
+  // payload:     the latest payload, the same object as window.bryn
+  // changedKeys: the fields that changed, e.g. ["entity.fitLabel"] when a score lands
+});
+```
+
+It fires every time the payload changes, not only the first time: Bryn keeps checking
+while the visitor is on the page, so a field that arrives later (a score, an enrichment
+field, the person's name) fires it again. On the first payload, `changedKeys` lists every
+field present. A poll that brings nothing new fires nothing.
+
+**Already using `bryn:personalize`?** It still works and fires at the same moments, just
+before `bryn:updated`. Its `event.detail` is the payload itself, with no list of changes.
+Keep it on pages that already use it; reach for `bryn:updated` in new code.
 
 ### What you get back
 
@@ -35,6 +54,9 @@ It announces in three ways (use whichever suits you):
     employees: "38",            // exact headcount
     employeeRange: "21-50",     // headcount bucket: the one to show visitors
     stage: "$10M - $20M",       // revenue band
+    website: "acme.com",        // enrichment field (see the table below)
+    fitLabel: "strong",         // score fields (see the table below)
+    fitScore: "92", intentScore: "71", timingScore: "64", compositeScore: "80",
     signals: ["identified_account", "your_signal_name"]   // what the company has done
   },
   individual: {                 // the PERSON, or null if Bryn only knows the company
@@ -48,13 +70,17 @@ It announces in three ways (use whichever suits you):
 }
 ```
 
-Every payload field is a string. `identified_account` is the one signal
+You choose which fields come back (see [below](#choose-what-comes-back)), so your payload
+may carry fewer or more of them than this example. Every payload field is a string,
+scores included (`"92"`, not `92`). `identified_account` is the one signal
 every resolved visitor carries; the rest are the names you
 [configured in Bryn](/bryn/signal-mapping). The examples on this page
 (`pricing_page_viewed`, `demo_abandonment`) stand in for yours.
 
 `status` is one of three values:
-- **`pending`**: Bryn is still working. Show the page as shipped.
+- **`pending`**: Bryn is still working. Show the page as shipped. A pending payload can
+  already carry some company fields, such as the domain, enrichment fields or scores, but
+  don't treat it as a recognized visitor yet.
 - **`resolved`**: Bryn knows the visitor. `entity` is filled in; `individual` is filled in or `null`.
 - **`suppressed`**: this visitor matches one of your workspace's
   [suppression rules](/bryn/api/list-suppression-rules). It is terminal for the visit: the pixel
@@ -64,7 +90,8 @@ every resolved visitor carries; the rest are the names you
 
 Three rules:
 - **`individual` is `null`** when Bryn knows the company but not the specific person. Always check for it.
-- **The score is never sent to your page.** You react to who they are (`entity` / `individual`) and what they've done (`signals`), not to a number.
+- **Any field can be missing.** A field comes back only when your workspace returns it and
+  Bryn has a value for this visitor. Check before you use it, and keep your default.
 - **`entityId` and `individualId` are stable identity keys.** Capture them and send them back on your
   server-side events so both sources stitch to the same records: see
   [Server-side events & signing](/bryn/signing).
@@ -72,14 +99,65 @@ Three rules:
 `individualId` is a stable identifier for the resolved person. Hand it to your own analytics
 tool to connect this visit to your records (see Recipe 7). It's never shown to the visitor.
 
+### Enrichment and score fields
+
+On top of the company and person basics, the pixel can return what Bryn learned about the
+company from its enrichment sources, and how Bryn scores the account
+([Fit, Intent, Timing, and their Composite](/bryn/icp-and-scoring)). All of them sit under
+`entity`:
+
+| Field | What it holds |
+|---|---|
+| `website` | The company's website, as a bare host such as `acme.com`. |
+| `description` | A short description of what the company does. |
+| `logoUrl` | An https link to the company's logo image. |
+| `companyLinkedin` | The company's LinkedIn page URL. |
+| `companyType` | The kind of organization, such as `Privately held` or `Public company`. |
+| `countryCode` | The two-letter code of the company's country, such as `US`. `country` stays the full name. |
+| `fitLabel` | How well the company matches your ICP: `strong`, `moderate`, `weak`, `out_of_icp` or `unknown`. |
+| `fitScore` | Fit, as a whole number from 0 to 100. |
+| `intentScore` | Intent, as a whole number from 0 to 100. |
+| `timingScore` | Timing, as a whole number from 0 to 100. |
+| `compositeScore` | The overall score blending fit, intent and timing, from 0 to 100. |
+
+How they behave:
+- **They often arrive after the first payload.** Enrichment and scoring run after Bryn first
+  recognizes the company, so these fields usually land on a later check. `bryn:updated`
+  fires again when they do, with the new fields in `changedKeys` (Recipe 10).
+- **An account Bryn hasn't scored yet has no score fields**, and an enrichment field is
+  present only when a source found a value for it. `fitLabel` is `unknown` when Bryn had no
+  usable data to grade fit; `fitScore` is then missing.
+- **They can ride a `pending` payload**, but they never make a visitor `resolved` on their own.
+
+### Choose what comes back
+
+Your workspace decides which fields the pixel returns. Pick them in the Bryn app under
+**Integrations**, then **Pixel**, then **Returned fields**: one checkbox per field, grouped
+into company, person and scores, with a sample payload that follows your choice. Owners and
+admins can change the list; everyone else sees it read-only. You can also read and set it
+through the API (`GET` and `PATCH /pixel-settings`, see
+[Get pixel settings](/bryn/api/get-pixel-settings)) or from an AI assistant with the MCP
+tools `get_pixel_settings` and `set_pixel_serve_fields`.
+
+- **Always returned:** `status`, `entity.entityId`, `entity.domain`, `individual.individualId`
+  and both `signals` lists. They aren't settings.
+- **Starting list:** new workspaces start with the company and person basics, plus `website`
+  and the five score fields. Workspaces created before website and scores joined the
+  defaults kept the fields they already returned. Fields Bryn adds later start off until you
+  turn them on. Check **Returned fields** to see yours.
+- **A field you turn off never leaves Bryn.** It isn't in `window.bryn`, the events, the
+  `data-bryn-*` attributes or your PostHog. Changes reach visitors on their next check.
+- **Anything you turn on is readable by the visitor** in their own browser, scores included.
+  Only return what you're comfortable showing.
+
 ## Recipe 1: Greet a returning person by name
 
 Best when you want a personal touch and only when Bryn actually knows the person.
 
 ```html
 <script>
-  window.addEventListener("bryn:personalize", (event) => {
-    const { status, individual } = event.detail;
+  window.addEventListener("bryn:updated", (event) => {
+    const { status, individual } = event.detail.payload;
     if (status !== "resolved" || !individual) return;   // not resolved, or company-only
 
     // Example: show a banner element you already have on the page
@@ -97,8 +175,8 @@ tone light: you inferred the company, the visitor didn't tell you who they are.
 
 ```html
 <script>
-  window.addEventListener("bryn:personalize", (event) => {
-    const { status, entity, individual } = event.detail;
+  window.addEventListener("bryn:updated", (event) => {
+    const { status, entity, individual } = event.detail.payload;
     if (status !== "resolved" || individual) return;    // handle the company-ONLY case here
 
     const banner = document.querySelector("#welcome-banner");
@@ -112,8 +190,8 @@ tone light: you inferred the company, the visitor didn't tell you who they are.
 
 ```html
 <script>
-  window.addEventListener("bryn:personalize", (event) => {
-    const { status, entity, individual } = event.detail;
+  window.addEventListener("bryn:updated", (event) => {
+    const { status, entity, individual } = event.detail.payload;
     if (status !== "resolved") return;
 
     const banner = document.querySelector("#welcome-banner");
@@ -142,8 +220,8 @@ use your own names here.
 
 ```html
 <script>
-  window.addEventListener("bryn:personalize", (event) => {
-    const { status, entity } = event.detail;
+  window.addEventListener("bryn:updated", (event) => {
+    const { status, entity } = event.detail.payload;
     if (status !== "resolved") return;
 
     // Show a "Talk to sales" nudge only if the company has shown pricing intent
@@ -206,22 +284,30 @@ global instead of waiting for the event:
 
 ## Recipe 7: Pass the recognized person into your analytics
 
-Bryn gives each resolved person a stable identifier, `individual.individualId`. Hand it to
-your own analytics tool to tie this visit to your records, for example PostHog's
-`posthog.identify()`. Bryn doesn't call your analytics for you; you make the call, alongside
-your existing analytics snippet:
+**PostHog users: Bryn already does this.** If PostHog runs on your page and **PostHog sync**
+is on (**Integrations**, then **Pixel**, then **Setup**; on by default), the pixel writes
+the payload onto the visitor's PostHog person itself, under a single `bryn` property. It
+attaches to whoever PostHog already thinks the visitor is and never changes their identity.
+Only the fields your workspace returns are written.
+
+Write code only when you want more than that: to identify the person in PostHog by Bryn's
+stable identifier, `individual.individualId`, or to send the payload to another analytics
+tool. Add it alongside your existing analytics snippet:
 
 ```html
 <script>
-  window.addEventListener("bryn:personalize", (event) => {
-    const { status, individual } = event.detail;
+  window.addEventListener("bryn:updated", (event) => {
+    const { status, individual } = event.detail.payload;
     if (status !== "resolved" || !individual) return;   // only when Bryn knows the person
 
     // Hand the Bryn identifier and the full payload to your analytics tool, e.g. PostHog:
-    posthog.identify(individual.individualId, { bryn: event.detail });
+    posthog.identify(individual.individualId, { bryn: event.detail.payload });
   });
 </script>
 ```
+
+Your listener runs before the pixel's own PostHog write, so that write lands on the person
+you just identified.
 
 Only act when there's a person: when `individual` is `null`, Bryn knows the company but not
 who the visitor is, so there's nothing to identify.
@@ -250,8 +336,8 @@ like any other signal.
 
 ```html
 <script>
-  window.addEventListener("bryn:personalize", (event) => {
-    const { status, entity, individual } = event.detail;
+  window.addEventListener("bryn:updated", (event) => {
+    const { status, entity, individual } = event.detail.payload;
     if (status !== "resolved") return;
     if (!entity.signals.includes("demo_abandonment")) return;   // only unfinished demos
 
@@ -280,7 +366,7 @@ Bryn can also stage a reviewed follow-up for these visitors: the
 
 ## Recipe 9: Read delivery status
 
-`bryn:personalize` tells you about the visitor; `bryn:delivery` tells you about the pixel
+`bryn:updated` tells you about the visitor; `bryn:delivery` tells you about the pixel
 itself. Listen to it (or read `window.__brynPixelDiagnostics`) to confirm the beacon left
 the browser and to watch the personalization leg poll, pause and stop:
 
@@ -295,14 +381,47 @@ the browser and to watch the personalization leg poll, pause and stop:
 
 Field values are listed in [Check it in the browser](/bryn/pixel#check-it-in-the-browser).
 
+## Recipe 10: React when a score or enrichment field lands
+
+Scores and enrichment fields often arrive a little after the visitor is recognized (see
+[Enrichment and score fields](#enrichment-and-score-fields)). Use `changedKeys` to act at
+the moment they land. Turn on **Fit grade** in [Returned fields](#choose-what-comes-back)
+first.
+
+```html
+<script>
+  window.addEventListener("bryn:updated", (event) => {
+    const { payload, changedKeys } = event.detail;
+    if (!changedKeys.includes("entity.fitLabel")) return;   // only when the fit grade changes
+
+    // Show the enterprise call-out only to strong-fit companies
+    const callout = document.querySelector("#enterprise-callout");
+    callout.style.display = payload.entity?.fitLabel === "strong" ? "block" : "none";
+  });
+</script>
+```
+
+The no-JavaScript version, with the same `data-bryn-show` condition as Recipe 5:
+
+```html
+<!-- shown only when Bryn grades the company a strong fit -->
+<div hidden data-bryn-show="entity.fitLabel=strong">
+  Talk to us about an enterprise plan →
+</div>
+```
+
+The visitor can read their own fit grade and scores in the browser, so use them to choose
+what to show, not as text on the page.
+
 ## Good habits
 
-- **Always keep a sensible default.** A cold or unknown visitor gets `status: "pending"`
-  and no data, and a suppressed one gets `status: "suppressed"`: your page must look right
+- **Always keep a sensible default.** A cold or unknown visitor gets `status: "pending"`,
+  and a suppressed one gets `status: "suppressed"`: your page must look right
   before Bryn does anything. Never hide content behind personalization.
 - **Check `individual` for `null`.** Company-only is the common case; don't assume a name.
 - **Personalize, don't startle.** For company-only (inferred from network, not self-identified),
   keep it helpful and low-key rather than "we know exactly who you are."
-- **Nothing sensitive reaches the page.** No scores, no internal company IDs, just safe
-  display attributes, the signal labels you configured, and the person's stable
-  `individualId` for connecting to your own analytics (Recipe 7).
+- **Return only what you use.** Every field your workspace returns, scores included, is
+  readable by the visitor in their own browser, and written to their PostHog person while
+  PostHog sync is on. Turn off what your pages don't need in
+  [Returned fields](#choose-what-comes-back).
