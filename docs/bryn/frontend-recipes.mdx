@@ -18,28 +18,26 @@ When Bryn recognizes a visitor, it announces it on the page; your code listens a
 reacts. Bryn never changes your page for you: you decide what to show.
 
 It announces in three ways (use whichever suits you):
-1. A JavaScript event, `bryn:updated`: the most flexible option (Recipes 1 to 4).
+1. A JavaScript event, `bryn:personalize`: the most flexible option (Recipes 1 to 4).
 2. A global, `window.bryn`: read the latest at any time (Recipe 6).
 3. `data-bryn-*` attributes: **no JavaScript needed** (Recipe 5).
 
-`bryn:updated` hands you the payload and the list of fields that changed:
+**Also available: `bryn:updated`.** It fires at the same moments as `bryn:personalize`,
+just after it, and also tells you which fields changed:
 
 ```js
 window.addEventListener("bryn:updated", (event) => {
   const { payload, changedKeys } = event.detail;
-  // payload:     the latest payload, the same object as window.bryn
+  // payload:     the latest payload, the same object as window.bryn (and bryn:personalize's event.detail)
   // changedKeys: the fields that changed, e.g. ["entity.fitLabel"] when a score lands
 });
 ```
 
-It fires every time the payload changes, not only the first time: Bryn keeps checking
-while the visitor is on the page, so a field that arrives later (a score, an enrichment
-field, the person's name) fires it again. On the first payload, `changedKeys` lists every
-field present. A poll that brings nothing new fires nothing.
-
-**Already using `bryn:personalize`?** It still works and fires at the same moments, just
-before `bryn:updated`. Its `event.detail` is the payload itself, with no list of changes.
-Keep it on pages that already use it; reach for `bryn:updated` in new code.
+Both events fire every time the payload changes, not only the first time: Bryn keeps
+checking while the visitor is on the page, so a field that arrives later (a score, an
+enrichment field, the person's name) fires them again. On the first payload, `changedKeys`
+lists every field present. A check that brings nothing new fires neither. Use
+`bryn:updated` when you care about what changed (Recipe 10).
 
 ### What you get back
 
@@ -122,8 +120,8 @@ company from its enrichment sources, and how Bryn scores the account
 
 How they behave:
 - **They often arrive after the first payload.** Enrichment and scoring run after Bryn first
-  recognizes the company, so these fields usually land on a later check. `bryn:updated`
-  fires again when they do, with the new fields in `changedKeys` (Recipe 10).
+  recognizes the company, so these fields usually land on a later check. Both events fire
+  again when they do, and `bryn:updated` lists the new fields in `changedKeys` (Recipe 10).
 - **An account Bryn hasn't scored yet has no score fields**, and an enrichment field is
   present only when a source found a value for it. `fitLabel` is `unknown` when Bryn had no
   usable data to grade fit; `fitScore` is then missing.
@@ -156,8 +154,8 @@ Best when you want a personal touch and only when Bryn actually knows the person
 
 ```html
 <script>
-  window.addEventListener("bryn:updated", (event) => {
-    const { status, individual } = event.detail.payload;
+  window.addEventListener("bryn:personalize", (event) => {
+    const { status, individual } = event.detail;
     if (status !== "resolved" || !individual) return;   // not resolved, or company-only
 
     // Example: show a banner element you already have on the page
@@ -175,8 +173,8 @@ tone light: you inferred the company, the visitor didn't tell you who they are.
 
 ```html
 <script>
-  window.addEventListener("bryn:updated", (event) => {
-    const { status, entity, individual } = event.detail.payload;
+  window.addEventListener("bryn:personalize", (event) => {
+    const { status, entity, individual } = event.detail;
     if (status !== "resolved" || individual) return;    // handle the company-ONLY case here
 
     const banner = document.querySelector("#welcome-banner");
@@ -190,8 +188,8 @@ tone light: you inferred the company, the visitor didn't tell you who they are.
 
 ```html
 <script>
-  window.addEventListener("bryn:updated", (event) => {
-    const { status, entity, individual } = event.detail.payload;
+  window.addEventListener("bryn:personalize", (event) => {
+    const { status, entity, individual } = event.detail;
     if (status !== "resolved") return;
 
     const banner = document.querySelector("#welcome-banner");
@@ -220,8 +218,8 @@ use your own names here.
 
 ```html
 <script>
-  window.addEventListener("bryn:updated", (event) => {
-    const { status, entity } = event.detail.payload;
+  window.addEventListener("bryn:personalize", (event) => {
+    const { status, entity } = event.detail;
     if (status !== "resolved") return;
 
     // Show a "Talk to sales" nudge only if the company has shown pricing intent
@@ -296,12 +294,12 @@ tool. Add it alongside your existing analytics snippet:
 
 ```html
 <script>
-  window.addEventListener("bryn:updated", (event) => {
-    const { status, individual } = event.detail.payload;
+  window.addEventListener("bryn:personalize", (event) => {
+    const { status, individual } = event.detail;
     if (status !== "resolved" || !individual) return;   // only when Bryn knows the person
 
     // Hand the Bryn identifier and the full payload to your analytics tool, e.g. PostHog:
-    posthog.identify(individual.individualId, { bryn: event.detail.payload });
+    posthog.identify(individual.individualId, { bryn: event.detail });
   });
 </script>
 ```
@@ -336,8 +334,8 @@ like any other signal.
 
 ```html
 <script>
-  window.addEventListener("bryn:updated", (event) => {
-    const { status, entity, individual } = event.detail.payload;
+  window.addEventListener("bryn:personalize", (event) => {
+    const { status, entity, individual } = event.detail;
     if (status !== "resolved") return;
     if (!entity.signals.includes("demo_abandonment")) return;   // only unfinished demos
 
@@ -366,7 +364,7 @@ Bryn can also stage a reviewed follow-up for these visitors: the
 
 ## Recipe 9: Read delivery status
 
-`bryn:updated` tells you about the visitor; `bryn:delivery` tells you about the pixel
+`bryn:personalize` tells you about the visitor; `bryn:delivery` tells you about the pixel
 itself. Listen to it (or read `window.__brynPixelDiagnostics`) to confirm the beacon left
 the browser and to watch the personalization leg poll, pause and stop:
 
