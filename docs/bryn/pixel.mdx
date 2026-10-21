@@ -75,7 +75,8 @@ Pick your platform:
 
     **Options.** Two attributes on the script tag tune the pixel:
     `data-bryn-personalize="off"` reports visits and skips the
-    personalization leg entirely (no polling, no `bryn:personalize`), and
+    personalization leg entirely (no polling, no `bryn:updated` or
+    `bryn:personalize`, no PostHog write), and
     `data-bryn-debug="true"` logs each delivery step to `console.debug`.
     Tag managers set the same options on the config global instead:
 
@@ -154,6 +155,16 @@ What the pixel does, in one screen:
   `firstUrl` and `firstReferrer`, the first page and referrer of the browser
   session. The pixel keeps that first touch in `sessionStorage` under
   `bryn:first-touch`, so it clears when the tab closes.
+- **Returns**: only the visitor fields your workspace chooses under
+  **Integrations**, then **Pixel**, then **Returned fields**. Bryn filters
+  them on its servers, so a field that's turned off never reaches the
+  browser. Anything returned, scores included, is readable by the visitor
+  in their own browser.
+- **Writes to your PostHog**: when PostHog runs on your page and **PostHog
+  sync** is on (the default), the pixel writes the returned fields onto
+  the visitor's PostHog person, under a single `bryn` property. It never
+  changes who PostHog thinks the visitor is. Turn it off under
+  **Integrations**, then **Pixel**, then **Setup**.
 - **Never touches**: form fields, keystrokes, cookies from other tools.
 - **Origin allowlist**: Bryn only accepts events from domains on your
   workspace's allowlist, and rejects everything else.
@@ -171,6 +182,8 @@ What the pixel does, in one screen:
 
 - React to identified visitors on the page:
   [Personalization recipes](/bryn/frontend-recipes)
+- Choose which fields, enrichment and scores the pixel returns:
+  [Choose what comes back](/bryn/frontend-recipes#choose-what-comes-back)
 - Name the behaviour the pixel observes: [Map your signals](/bryn/signal-mapping)
 - Send events from your backend too:
   [Server-side events & signing](/bryn/signing)
