@@ -5,6 +5,18 @@ sidebar_custom_props:
   icon: "pen"
 ---
 
+<Update label="October 21, 2026" description="apps-0.2.108">
+
+**Improvements**
+- Improved logout reliability, ensuring sessions and tokens are fully revoked when users sign out
+- Updated security dependencies to address known vulnerabilities
+
+**Bug fixes**
+- Fixed an issue where logout was not completing successfully, which could leave sessions active after signing out
+- Fixed authentication failures on iOS browsers (Safari, Chrome, and Firefox) and iPadOS devices
+
+</Update>
+
 <Update label="October 20, 2026" description="auth-server-1.2.43">
 
 **Improvements**
