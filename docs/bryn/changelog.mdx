@@ -151,6 +151,15 @@ Internal improvements and maintenance updates.
 
 </Update>
 
+<Update label="October 15, 2026" description="v0.1.135">
+
+**Features**
+- You can now choose which fields the Pixel returns in each response, such as company name, email, and country, using the Pixel settings API
+- Five new company fields are available in Pixel responses: website, company description, logo, LinkedIn page, and company type — all off by default, so your existing setup is unchanged
+- Company logos now appear even when a website does not publish a favicon, using an automatic fallback to a brand logo service
+
+</Update>
+
 <Update label="October 14, 2026" description="v0.1.134">
 
 **Features**
@@ -206,6 +215,23 @@ Internal improvements and maintenance updates.
 - Global search palette in the top bar — search across accounts, people, and Plays from any page
 - People list across your entire workspace, with time-range filters you can click through from funnel figures
 - When editing a mapping rule, you can now type a new signal name and select it directly from the suggestions
+
+</Update>
+
+<Update label="October 13, 2026" description="v0.1.130">
+
+**Features**
+- You can now pause and resume an output connection without disconnecting it
+- The scoring weights screen shows every signal in your workspace and includes an "Add signal weight" picker
+
+**Improvements**
+- The rule editor disables Save and Discard until you make a change, preventing accidental empty saves
+- Saving a signal mapping rule now completes in a single step and confirms success with a notification
+- The play trigger builder now only offers signals that your mapping can actually raise, reducing clutter from irrelevant signals
+
+**Bug fixes**
+- Fixed an issue where revealing a webhook signing secret could fail silently — the error reason is now shown
+- Fixed an issue where Stripe branding validation could block checkout
 
 </Update>
 
@@ -325,6 +351,64 @@ Internal improvements and maintenance updates.
 
 </Update>
 
+<Update label="October 06, 2026" description="v0.1.120">
+
+**Features**
+- The Home screen heading is now a time-range menu, letting you switch your dashboard between today, this week, or this month
+- Play output templates can now reference an execution ID as an idempotency key
+- Slack outputs now include a per-entry unfurl toggle to control link and media previews
+- The REST API now accepts partial Play updates, so you can merge changes to triggers or parameters without resending the full configuration
+- The Help entry in the sidebar now expands to show links to documentation and support
+- MCP tools now include titles and annotations indicating whether actions are read-only or destructive
+
+**Improvements**
+- Signal chains are now sorted by most recent firing
+- Company fields are now only populated from confirmed sources, not inferred data
+
+**Bug fixes**
+- Fixed event-type previews not showing warnings when an attribute resolves to an object, disagrees with stored types, or is missing on typed events
+- Removed ICP version numbers and scope labels from account cards, headers, and scoring screens
+
+</Update>
+
+<Update label="October 06, 2026" description="v0.1.119">
+
+**Features**
+- Click homepage play rows to show run details, including outcome status and messages delivered
+- The sidebar can be collapsed into an icon rail with a hover flyout, giving you more workspace
+- Every onboarding step after workspace creation can now be skipped
+
+</Update>
+
+<Update label="October 05, 2026" description="v0.1.118">
+
+**Features**
+- Configuration editing is now available on every plan, including ICP and enrichment provider settings, with no plan-tier restrictions
+- You can now retrieve a single output connection by its ID through the API
+
+**Improvements**
+- Workspace membership is now validated on every API request, and error messages more clearly explain when access is denied due to missing workspace membership
+
+</Update>
+
+<Update label="October 05, 2026" description="v0.1.117">
+
+**Features**
+- You can now preview your pixel on a hosted demo page during onboarding before installing it on your own site
+- The pixel onboarding step now shows the snippet, developer hand-off, and agent options inline instead of a separate chooser
+
+**Improvements**
+- Plays that trigger on campaign membership now correctly name the attributing campaigns, even when the data was cached from a recent check
+- New signups through the MCP connector are now placed on the Explore trial plan
+- The MCP setup URL has been simplified across onboarding and showcase screens
+
+**Bug fixes**
+- Fixed the onboarding demo page returning an error when visited
+- Fixed Play messages sometimes showing incorrect account names or domains
+- The MCP connector setup no longer asks for credentials when the connector must be connected in the browser
+
+</Update>
+
 <Update label="October 02, 2026" description="v0.1.116">
 
 **Features**
@@ -344,6 +428,21 @@ Internal improvements and maintenance updates.
 - Best-fit rows now correctly open their associated account.
 - Removed a non-functional chip from the Accounts header.
 - Fixed an issue where the page could scroll unexpectedly in certain views.
+
+</Update>
+
+<Update label="October 02, 2026" description="v0.1.115">
+
+**Features**
+- New unified Connectors page brings inputs, enrichment, and outputs into a single view
+- Redesigned Home screen built on the Outcomes framework with usability refinements
+- New notification center with a bell icon in the top bar and a dedicated alerts page
+- MCP clients can now connect without specifying a workspace, with automatic provisioning on first use
+- Person flags now appear on identity lookup audit rows, with new identification stats available
+- Onboarding now takes you directly to the Home screen after going live
+
+**Bug fixes**
+- Fixed an issue where duplicate subscriptions could be created during checkout
 
 </Update>
 
