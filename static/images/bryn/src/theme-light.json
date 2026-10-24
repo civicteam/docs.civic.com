@@ -10,12 +10,18 @@
     "secondaryColor": "#F8FAFC",
     "tertiaryColor": "#F8FAFC",
     "edgeLabelBackground": "#FFFFFF",
-    "clusterBkg": "transparent"
+    "clusterBkg": "transparent",
+    "clusterBorder": "#94A3B8",
+    "titleColor": "#1F2937"
   },
   "flowchart": {
     "curve": "basis",
     "htmlLabels": true,
     "nodeSpacing": 30,
-    "rankSpacing": 40
+    "rankSpacing": 40,
+    "subGraphTitleMargin": {
+      "top": 8,
+      "bottom": 24
+    }
   }
 }
