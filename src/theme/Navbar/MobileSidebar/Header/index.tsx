@@ -25,24 +25,18 @@ function CloseButton() {
 
 export default function NavbarMobileSidebarHeader(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
-  const {contactUrl, bookCallUrl} = siteConfig.customFields as {
-    contactUrl: string;
-    bookCallUrl: string;
+  const {bookDemoUrl} = siteConfig.customFields as {
+    bookDemoUrl: string;
   };
   return (
     <div className="navbar-sidebar__brand">
       <NavbarLogo />
       <a
-        href={contactUrl}
-        className="navbar-sidebar__icon navbar-sidebar__icon--contact"
-        aria-label="Contact Us"
-      />
-      <a
-        href={bookCallUrl}
+        href={bookDemoUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="navbar-sidebar__icon navbar-sidebar__icon--book"
-        aria-label="Book a Call"
+        aria-label="Book a Demo"
       />
       <NavbarColorModeToggle className="margin-right--md" />
       <CloseButton />
