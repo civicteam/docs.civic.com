@@ -15,8 +15,8 @@ outputs, and Bryn writes nothing to your Clay workspace.
 
 ## How Bryn integrates Clay
 
-You connect Clay with a Clay API key under **Integrations** in the Bryn
-dashboard. The key is the only thing Bryn needs: there are no Clay tables,
+You connect Clay with a Clay API key under [**Integrations**](https://bryn.civic.com/web/integrations) in the
+Bryn dashboard. The key is the only thing Bryn needs: there are no Clay tables,
 columns or webhooks to set up, because Bryn calls Clay's company search
 directly and reads the answer back in the same request.
 
@@ -33,10 +33,12 @@ connection only counts as verified once Clay accepts the key. Bryn keeps
 the key in encrypted storage; it is never shown again, logged, or passed
 to Plays.
 
-Connecting and enriching are two separate switches. Once the key is
-verified, turn on **Clay enrichment** on the Clay card under
-**Integrations** so Bryn starts using it. To stop, turn the switch off,
-or disconnect Clay to remove the key altogether.
+The connect form also asks whether to **Use Clay for enrichment**. The
+switch is on by default, and Bryn starts looking accounts up once the key
+is verified. If you turn it off, the connection is saved but no lookups
+run until you turn on **Clay enrichment** on the
+[Clay card](https://bryn.civic.com/web/integrations?connector=provider%3Aclay). To stop later, turn that switch off, or disconnect Clay
+to remove the key altogether.
 
 To keep spend predictable, Bryn looks each account up at most once every
 30 days, including lookups where Clay found nothing.
@@ -97,9 +99,9 @@ fields it filled show on the account. Enrichment activity from Clay is
 also in the audit log, where you can filter by the Clay source.
 
 **When Clay refuses.** If Clay rejects the key (for example because it
-was revoked), Bryn marks the connection as needing attention under
-**Integrations**; reconnect with a working key to resume. If your Clay
-workspace runs out of credits, lookups fail and are retried later, so
+was revoked), Bryn marks the connection as needing attention on the
+[Clay card](https://bryn.civic.com/web/integrations?connector=provider%3Aclay);
+reconnect with a working key to resume. If your Clay workspace runs out of credits, lookups fail and are retried later, so
 accounts fill in once you top up. Clay rate limits and brief outages are
 retried automatically.
 
@@ -112,12 +114,10 @@ retried automatically.
     credits available.
   </Step>
   <Step title="Connect Clay in the Bryn dashboard">
-    Go to **Integrations**, choose **Clay**, paste the key and connect.
-    Bryn checks the key with Clay before saving the connection.
-  </Step>
-  <Step title="Turn on Clay enrichment">
-    On the Clay card, turn on **Clay enrichment**. Connecting alone does
-    not start lookups.
+    [Open the Clay connect form](https://bryn.civic.com/web/integrations?connect=clay) (or go to
+    **Integrations** and choose **Clay**), paste the key, leave **Use
+    Clay for enrichment** on, and connect. Bryn checks the key with Clay
+    before saving the connection.
   </Step>
   <Step title="Check that it worked">
     Wait for a new signal on an account that has a domain, then open the
