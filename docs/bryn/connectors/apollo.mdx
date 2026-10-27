@@ -1,6 +1,159 @@
 ---
 title: Apollo
-description: 'How Bryn connects to Apollo'
+description: 'Look accounts and people up in Apollo and enrol the people your Plays pick into Apollo sequences'
 ---
 
-Apollo connects to Bryn in these modes: Enrichment, Output. The full page is in progress.
+Apollo is a sales intelligence and engagement platform: a B2B contact and
+company database with built-in email sequences. Bryn works with Apollo in
+two modes on one API key: **Enrichment**, where Bryn looks up the
+companies and people it sees, and **Output**, where a
+[Play](/bryn/plays) enrols a person into one of your Apollo sequences.
+
+Bryn uses your own Apollo account, so every lookup and every enrolment
+runs on your Apollo credits and plan.
+
+## How Bryn integrates Apollo
+
+You connect Apollo with an API key under **Integrations** in the Bryn
+dashboard. One connection serves both modes: the enricher reads person
+and account facts with the key, and Plays use the same key to add people
+to sequences.
+
+<Warning>
+**The kind of API key decides what Bryn can do.** A standard Apollo API
+key works for enrichment only. To enrol contacts into sequences, Bryn
+needs a **master API key**, or a key scoped to sequences, email accounts
+and contacts. If you connect a standard key, enrichment works, but Plays
+cannot add anyone to a sequence until you reconnect with a key that has
+that access.
+</Warning>
+
+When you enter the key, Bryn checks it straight away:
+
+- **A rejected key** shows an error beside the field and you cannot
+  connect it.
+- **A key without sequence access** shows a note that it still works for
+  enrichment. You can connect it for enrichment on its own.
+- **A key with sequence access** loads your Apollo sequences and the
+  mailboxes you can send from, so you can pick the connection's defaults.
+
+Verifying the connection uses Apollo's account health check, which spends
+no credits. Bryn keeps the key in encrypted storage; it is never shown
+again, logged, or passed to Plays.
+
+The default sequence and sending mailbox are stored on the connection.
+To change them, reconnect Apollo, which checks the key again and offers
+both pickers.
+
+## Enrichment
+
+Bryn looks Apollo up at two levels, each shown as its own source in the
+Bryn dashboard:
+
+- **Account level (Apollo)**: Bryn looks the company up by its domain and
+  only keeps the record when Apollo's primary domain for it matches. It
+  reads the company name, description, industry, employee count, annual
+  revenue, total funding, founding year, country and location, number of
+  retail locations, website, logo, and LinkedIn, X (Twitter) and Facebook
+  URLs. Employee count, revenue, funding, country, industry and website
+  feed the account's main fields, including its size band, which
+  [scoring](/bryn/icp-and-scoring) uses.
+- **Person level (Apollo (people))**: Bryn matches one person per lookup,
+  using the strongest key it has: a LinkedIn profile URL first, then an
+  email address, then a first and last name together with the company's
+  domain. A first name alone is never sent, so Apollo cannot match a
+  namesake. Bryn reads job title, first and last name, seniority (for
+  example `VP` or `Director`), job function, LinkedIn URL, phone number,
+  email address and its Apollo status, and employer.
+
+Enrichment only fills gaps. Person details from Apollo fill empty fields
+and never replace what a form, your team or a higher-priority source
+already set. Bryn only takes an email address from Apollo when Apollo
+marks it as verified and the person has none yet; guessed addresses, and
+the placeholder Apollo returns when your plan cannot reveal an email, are
+never stored as the person's email.
+
+**When it runs.** Bryn looks an account up as soon as it has a domain,
+and a person as soon as one of the keys above is known. A person with only
+a name waits until the company domain arrives. Results are reused for 30
+days before Bryn asks Apollo again.
+
+**When Apollo refuses.** If Apollo rejects the key, Bryn flags the
+connection so you can fix it under **Integrations**. If your plan does not
+include an endpoint or you run out of credits, Bryn retries within the
+hour, so accounts are filled in once you fix the plan.
+
+## Output
+
+A Play can add the person it acts on to an Apollo sequence. Apollo
+enrols contacts, so each delivery happens in two steps:
+
+1. Bryn creates the person as an Apollo contact, or finds the existing
+   one. Apollo's duplicate check means a repeat delivery never creates a
+   second contact or overwrites the one your team already has.
+2. Bryn adds that contact to the sequence, sending from the chosen
+   mailbox.
+
+Bryn sends the person's email address (required, since sequences email
+the contact), and where known their first and last name, job title,
+company name, company website and LinkedIn URL.
+
+### Set it up
+
+<Steps>
+  <Step title="Create a master API key in Apollo">
+    In Apollo's API settings, create a new key and turn on **Set as
+    master key**, or give it access to the sequences, email accounts and
+    contacts endpoints. Make sure the Apollo account has at least one
+    active mailbox and one sequence.
+  </Step>
+  <Step title="Connect Apollo in the Bryn dashboard">
+    Go to **Integrations**, choose **Apollo** and paste the key. Pick a
+    **Default sequence** (optional) and the mailbox to **Send from**.
+    Apollo's own default mailbox is preselected.
+  </Step>
+  <Step title="Add Apollo to a Play">
+    In the Play's outputs, add Apollo and pick the connection. Leave the
+    sequence and mailbox empty to use the connection's defaults, or pick
+    others for this Play. Turn on **Include unverified emails** only if
+    you want Apollo to enrol people whose email it has not verified;
+    Apollo skips them by default to protect your sending reputation.
+  </Step>
+  <Step title="Test the entry">
+    Click **Test** on the Apollo entry. Bryn checks that the sequence
+    still exists and the mailbox is active, without enrolling anyone. If
+    the key cannot reach sequences, the test says so and asks for a
+    master key.
+  </Step>
+</Steps>
+
+A connection only counts as an Apollo destination once it is verified and
+has a sending mailbox. A connection made with a standard key is
+enrichment only, and Plays cannot deliver to it.
+
+**You'll know it worked when** the person appears as a contact in your
+Apollo sequence, sending from the mailbox you picked. A person who is
+already in that sequence counts as delivered, and is not added twice.
+
+Apollo can also decline a person, for example because they are active in
+another sequence or have no verified email. Bryn records that as a
+skipped delivery with Apollo's reason, not as a failure. If the mailbox
+has since been deactivated in Apollo, the delivery fails; link an active
+mailbox in Apollo, then reconnect or pick it in the Play.
+
+## Apollo documentation
+
+- [Create an API key](https://docs.apollo.io/docs/create-api-key), including master keys and scoped keys
+- [Authentication](https://docs.apollo.io/reference/authentication)
+- [People enrichment](https://docs.apollo.io/reference/people-enrichment)
+- [Organization enrichment](https://docs.apollo.io/reference/organization-enrichment)
+- [Search for sequences](https://docs.apollo.io/reference/search-for-sequences)
+- [Add contacts to a sequence](https://docs.apollo.io/reference/add-contacts-to-sequence)
+- [Get a list of email accounts](https://docs.apollo.io/reference/get-a-list-of-email-accounts)
+- [Rate limits](https://docs.apollo.io/reference/rate-limits)
+
+## Going further
+
+- Build the Play that enrols people: [Plays](/bryn/plays).
+- See how enrichment feeds fit and scoring: [ICP and scoring](/bryn/icp-and-scoring).
+- Compare with other connectors: [Connectors](/bryn/connectors).
