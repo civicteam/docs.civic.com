@@ -1,6 +1,139 @@
 ---
 title: Chat webhook
-description: 'How Bryn connects to Chat webhook'
+description: 'Post Bryn alerts as plain text to any chat tool that accepts an incoming webhook URL'
 ---
 
-Chat webhook connects to Bryn in these modes: Output. The full page is in progress.
+The Chat webhook connector is a generic chat destination: one incoming
+webhook URL that accepts a small JSON message. It is not tied to a single
+vendor. Bryn posts Play alerts to that URL as plain text.
+
+Chat webhook supports **Output** only. It is the simplest way to get Bryn
+alerts into a chat tool that has no dedicated Bryn connector.
+
+## How Bryn integrates Chat webhook
+
+There is no OAuth app and no API key. You give Bryn a single **Webhook
+URL** under **Integrations** in the Bryn dashboard, and that URL is the
+whole connection: it says where to post and, for most chat tools, it also
+carries the token that authorises the post.
+
+- **The URL is treated as a secret.** Many incoming webhook URLs embed a
+  token, so Bryn stores the URL securely and never shows it again in the
+  Bryn dashboard, in API responses, or in error messages.
+- **HTTPS only.** Bryn rejects any URL that does not start with
+  `https://`.
+- **Bryn verifies by sending.** As soon as you connect, Bryn posts a real
+  test message to the URL. Any successful (2xx) response marks the
+  connection verified.
+- **One URL, one connection.** Connecting the same URL again replaces the
+  existing connection and resets it to unverified, so Bryn tests it again.
+- **Changing the URL** means deleting the webhook and adding it again.
+  Deleting it stops all posts to that URL straight away.
+
+### The message format
+
+Every post is an HTTP `POST` with a `Content-Type` of
+`application/json; charset=utf-8` and this body:
+
+```json
+{ "text": "Bryn is connected to this webhook." }
+```
+
+That is the test message Bryn sends when you connect. Play alerts use the
+same shape, with the alert as the `text` value. There are no other fields,
+no custom headers, and no request signature. Use this connector with a chat
+tool whose incoming webhook accepts a JSON body with a top-level `text`
+field; check your tool's documentation for its incoming webhook format
+before you connect.
+
+Bryn waits up to 5 seconds for a response. A non-2xx response or a timeout
+counts as a failed delivery.
+
+### How it differs from the other chat and webhook connectors
+
+| Connector | What lands | Use it when |
+|---|---|---|
+| [Slack](/bryn/connectors/slack) | A formatted alert in the channel you pick, with action buttons | Your team works in Slack |
+| [Microsoft Teams](/bryn/connectors/microsoft-teams) | An adaptive card in Teams | Your team works in Teams |
+| [Discord](/bryn/connectors/discord) | A message in Discord | Your team works in Discord |
+| Chat webhook | A plain `{ "text": ... }` message | Your chat tool is none of the above but accepts a `text` webhook |
+| [Outgoing webhook](/bryn/connectors/outgoing-webhook) | A request to an endpoint you choose, with your own method, headers, and payload | You want data in your own systems, not a chat message |
+
+If your team uses Slack, Microsoft Teams, or Discord, connect the dedicated
+connector instead: it formats alerts properly for that tool, and Bryn
+prefers it over the Chat webhook.
+
+## Output
+
+Chat webhook provides Bryn's **chat** capability: posting an alert where
+your team will see it. When a Play posts an alert, Bryn picks one chat
+destination from your verified connections, in this order:
+
+1. Slack
+2. Microsoft Teams
+3. Discord
+4. Chat webhook
+
+So the Chat webhook only receives alerts when you have no verified Slack,
+Microsoft Teams, or Discord connection. Each alert goes to one destination,
+not to all of them. If no chat destination is verified, the Play still
+runs and its result stays visible in the Bryn dashboard.
+
+What lands in your chat tool is the alert text only. The rich parts of a
+Slack alert (header, score fields, buttons, and any custom layout a Play
+defines) are not sent to a Chat webhook.
+
+The Chat webhook is not one of the destinations you pick in a Play's own
+output list. If you want a Play to call a URL you choose with structured
+data, use the [Outgoing webhook](/bryn/connectors/outgoing-webhook).
+
+### Connect a chat webhook
+
+<Steps>
+  <Step title="Create an incoming webhook in your chat tool">
+    In the channel or room that should receive alerts, create an incoming
+    webhook and copy its URL. It must start with `https://`.
+  </Step>
+  <Step title="Add it in Bryn">
+    In the Bryn dashboard, open **Integrations**, choose **Chat webhook**,
+    paste the URL into **Webhook URL**, and connect.
+  </Step>
+  <Step title="Check the test message">
+    Bryn posts "Bryn is connected to this webhook." to the URL straight
+    away. No extra step.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the Bryn dashboard confirms the connection
+is verified and the test message is sitting in your channel. If the test
+fails, the dashboard says "The test message could not be delivered." Check
+that the URL is correct and still active in your chat tool, that it
+accepts a JSON body with a `text` field, then click **Reverify** on the
+connection.
+
+<Note>
+  Bryn only delivers to verified connections. A Chat webhook that failed
+  its test receives no alerts until it passes.
+</Note>
+
+## Chat webhook documentation
+
+The Chat webhook works with any chat tool whose incoming webhook accepts
+the format above, so there is no single vendor reference. For your chat
+tool, look up its own incoming webhook documentation. In the Bryn docs:
+
+- [Connectors overview](/bryn/connectors): every connector and the modes
+  it supports.
+- [Connect Slack and other outputs](/bryn/outputs): how outputs work and
+  how Bryn keeps alerts quiet.
+- [Plays](/bryn/plays): what triggers an alert.
+- [Outgoing webhook](/bryn/connectors/outgoing-webhook): if you need
+  structured data in your own systems instead of a chat message.
+
+## Going further
+
+- Choose a dedicated chat connector: [Slack](/bryn/connectors/slack),
+  [Microsoft Teams](/bryn/connectors/microsoft-teams), or
+  [Discord](/bryn/connectors/discord).
+- Manage connections programmatically: Outputs and Integrations in the
+  [API reference](/bryn/api/bryn-control-plane-api).
