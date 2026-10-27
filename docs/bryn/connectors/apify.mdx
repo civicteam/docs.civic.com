@@ -1,6 +1,162 @@
 ---
 title: Apify
-description: 'How Bryn connects to Apify'
+description: 'Run Apify actors to enrich accounts, and turn your own scheduled actor runs into events in Bryn'
 ---
 
-Apify connects to Bryn in these modes: Input, Enrichment. The full page is in progress.
+Apify is a platform for running web scrapers and automations, called actors,
+in the cloud. Bryn uses your Apify account in two modes:
+
+- **Enrichment**: Bryn runs a contact scraper over each account's website and
+  stores the company's social profiles, published role mailboxes and phone
+  numbers.
+- **Input**: any actor or saved task you run in Apify (job boards, review
+  sites, directory listings, page monitors) sends its results to Bryn when a
+  run succeeds, one event per result.
+
+## How Bryn integrates Apify
+
+You connect Apify once, with your own Apify API token, under **Integrations**
+in the Bryn dashboard. You find the token in Apify Console under
+**Settings**, then **API & Integrations**. That one connection serves both
+modes: Bryn uses it to start enrichment runs, and to read the results of the
+runs your Input sources report.
+
+- **Your account, your credits.** Apify bills compute and actor usage to the
+  account that owns the token, so there is no shared Civic key. Every run Bryn
+  starts, and every run you schedule, uses your Apify credits.
+- **Verified without spending anything.** When you connect, Bryn checks the
+  token by reading your Apify user profile. That starts no actor and costs
+  nothing. A token Apify rejects is reported straight away.
+- **A rejected token stops work.** If Apify later rejects the token, Bryn marks
+  the connection as failed and stops using it until you reconnect.
+
+## Enrichment
+
+Bryn runs the Apify Store actor
+[Contact Details Scraper](https://apify.com/vdrmota/contact-info-scraper) over
+an account's website. It is an account-level lookup: it needs the account's
+domain, and it never looks up individual people.
+
+**What Bryn reads.** The scraper crawls the homepage and the pages one link
+away (about, contact, team and similar), up to 10 pages. From what it finds,
+Bryn keeps:
+
+| Fact | What Bryn keeps |
+|---|---|
+| Social profiles | The company's own profile on LinkedIn (a company page), X, Facebook, Instagram and YouTube. Personal profiles and share links are ignored. |
+| Email addresses | Up to three role mailboxes such as `info@`, `sales@` or `support@`, on the account's own domain. Addresses with a person's name in them are never stored. |
+| Phone numbers | Up to three numbers the site links as phone links. |
+
+**When it runs.** Switch Apify on under **Configuration**, then
+**Enrichment**. From then on, each account with a domain gets one Apify pass
+when Bryn enriches it, and at most one every 30 days after that.
+
+**What it costs.** Each run is capped at 10 pages, a short time limit and a
+hard spending ceiling, so a typical pass costs a few cents of Apify credit. See
+the actor's page in the Apify Store for its current pricing. If a slow site
+hits the time limit, Bryn still keeps what the scraper found on the pages it
+finished. A site that serves nothing in time is not retried until the next
+pass, so it does not keep costing you runs.
+
+**Where results appear.** On the account's company view, the values show
+under **Company details** as links (a profile, an email or a phone number),
+marked as coming from Apify. **Enrichment sources** lists which facts Apify
+filled.
+
+<Note>
+If your Apify account runs out of credits, Bryn retries the pass within the
+hour. Top up or raise your usage limit in Apify and enrichment resumes on its
+own.
+</Note>
+
+## Input
+
+An Apify Input source turns every succeeded run of one actor or saved task
+into events in Bryn. Apify's run webhook says which run finished but does not
+carry its results, so Bryn reads the results itself with your Apify
+connection.
+
+**What arrives.** Each result (each item in the run's dataset) becomes one
+`item` event under the source's name, for example `apify.item`, with the
+result's fields stored exactly as Apify Console shows them. Bryn reads up to
+100 results per run and skips any single result over 32 KB. Failed, aborted
+and timed out runs add nothing.
+
+**How it stays safe.** Bryn only takes the run's ID from the webhook. It then
+asks Apify for that run, confirms it succeeded and reads that run's own
+results, so nobody can point Bryn at someone else's data. Apify retries a
+failed delivery for about two days; Bryn skips results it has already stored,
+so a retry never creates duplicates.
+
+**How results map to accounts.** Every actor returns its own fields, so you
+choose which field holds the company's website. A new source matches on a
+`domain` field, which Contact Details Scraper returns. For other actors,
+change it under account matching on the source, for example to
+`companyWebsite` on a jobs actor. Matching only finds accounts Bryn already
+has; it never creates one.
+
+**How results become signals.** Results arrive straight away but raise
+nothing until you map them. Map the source's `item` event to a signal under
+**Configuration**, optionally with a condition on any field the actor returns.
+See [signal mapping](/bryn/signal-mapping).
+
+### Set up an Apify source
+
+<Steps>
+  <Step title="Connect Apify first">
+    Add your API token under **Integrations** as described above. Without the
+    connection, Bryn cannot read run results and the source stores nothing.
+  </Step>
+  <Step title="Add the source in Bryn">
+    Under **Integrations**, add an Apify input. Use one source per actor or
+    task, so each one's fields can be matched on their own. Bryn shows you an
+    endpoint URL and a secret.
+  </Step>
+  <Step title="Add a webhook in Apify Console">
+    Open the actor or saved task, go to **Integrations** and add an HTTP
+    webhook. Choose **Run succeeded** as the event type and paste the endpoint
+    URL into **URL**.
+  </Step>
+  <Step title="Add the secret as a header">
+    In **Headers template**, add the value Bryn shows you as JSON:
+    `{"Authorization": "Bearer <your source secret>"}`. Copy the full value
+    Bryn shows, including `Bearer`. Apify does not sign its
+    webhooks, so this header is how Bryn knows the call is yours.
+  </Step>
+  <Step title="Keep the default payload and save">
+    Leave **Payload template** as it is. Bryn reads the run from Apify's
+    default payload.
+  </Step>
+  <Step title="Point matching and mapping at the actor's fields">
+    On the source, set account matching to the field holding the company's
+    website, then map `item` events to a signal.
+  </Step>
+</Steps>
+
+To run it regularly, use [Apify Schedules](https://docs.apify.com/platform/schedules).
+A scheduled actor or task calls the source after every run, so there is
+nothing to schedule in Bryn.
+
+**You'll know it worked when** the next succeeded run's results appear as
+`item` events on the source, attached to the matching accounts. If nothing
+arrives, check that the header holds the full value Bryn showed you and that
+the Apify connection is verified. If events arrive but match no account, the
+matching field names something the actor does not return; results stored
+before you fix it stay unmatched.
+
+## Apify documentation
+
+- [API and integrations (API token)](https://docs.apify.com/platform/integrations/api)
+- [Console settings](https://docs.apify.com/platform/console/settings)
+- [Actors](https://docs.apify.com/platform/actors) and [saved tasks](https://docs.apify.com/platform/actors/running/tasks)
+- [Webhooks](https://docs.apify.com/platform/integrations/webhooks) and [webhook actions and payload template](https://docs.apify.com/platform/integrations/webhooks/actions)
+- [Datasets](https://docs.apify.com/platform/storage/dataset)
+- [Schedules](https://docs.apify.com/platform/schedules)
+- [Contact Details Scraper](https://apify.com/vdrmota/contact-info-scraper)
+
+## Going further
+
+- Turn events into signals: [Signal mapping](/bryn/signal-mapping).
+- See how enrichment feeds scoring: [ICP and scoring](/bryn/icp-and-scoring).
+- Act on signals: [Plays](/bryn/plays).
+- All connectors: [Connectors](/bryn/connectors).
