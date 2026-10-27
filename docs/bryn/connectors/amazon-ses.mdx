@@ -21,7 +21,8 @@ SES supports one mode in Bryn: Output, for email.
 ## How Bryn integrates Amazon SES
 
 The connection uses an AWS access key pair, not OAuth. You set it up under
-**Integrations** in the Bryn dashboard, in a form with five fields:
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard, in a form with five fields:
 
 | Field | What to enter |
 |---|---|
@@ -36,7 +37,9 @@ To address as ordinary settings. The Bryn dashboard lists the connection by
 its From address, with the To address and region underneath.
 
 Each connection is one route: one region, one From address, one To address.
-To send to a second inbox, add a second connection. Saving the same region,
+The Bryn dashboard holds one Amazon SES connection at a time: once it is
+connected, Amazon SES no longer appears in the list of connectors to add.
+To change the route, disconnect it and connect again. Saving the same region,
 From and To again replaces the stored key on the existing connection
 instead of creating a duplicate, and sets it back to unverified until it
 is checked again. Disconnecting a connection removes the stored key once no
@@ -103,9 +106,10 @@ account first:
     key for it. Copy the secret access key now: AWS only shows it once.
   </Step>
   <Step title="Connect in Bryn">
-    Under **Integrations** in the Bryn dashboard, add **Amazon SES** and
-    fill in the access key ID, secret access key, region, From address and
-    To address.
+    [Open the Amazon SES connect form](https://bryn.civic.com/web/integrations?connect=ses)
+    in the Bryn dashboard and fill in the access key ID, secret access key,
+    region, From address and To address. If you already have an SES
+    connection, the link opens **Integrations** without the form.
   </Step>
   <Step title="Check the result">
     Bryn checks the key as soon as you connect. Once the dashboard shows
