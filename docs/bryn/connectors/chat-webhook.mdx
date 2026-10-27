@@ -13,7 +13,8 @@ alerts into a chat tool that has no dedicated Bryn connector.
 ## How Bryn integrates Chat webhook
 
 There is no OAuth app and no API key. You give Bryn a single **Webhook
-URL** under **Integrations** in the Bryn dashboard, and that URL is the
+URL** under [**Integrations**](https://bryn.civic.com/web/integrations) in
+the Bryn dashboard, and that URL is the
 whole connection: it says where to post and, for most chat tools, it also
 carries the token that authorises the post.
 
@@ -25,8 +26,8 @@ carries the token that authorises the post.
 - **Bryn verifies by sending.** As soon as you connect, Bryn posts a real
   test message to the URL. Any successful (2xx) response marks the
   connection verified.
-- **One URL, one connection.** Connecting the same URL again replaces the
-  existing connection and resets it to unverified, so Bryn tests it again.
+- **One Chat webhook at a time.** Once you have a Chat webhook connected,
+  the Bryn dashboard does not offer to add a second one.
 - **Changing the URL** means deleting the webhook and adding it again.
   Deleting it stops all posts to that URL straight away.
 
@@ -95,8 +96,11 @@ data, use the [Outgoing webhook](/bryn/connectors/outgoing-webhook).
     webhook and copy its URL. It must start with `https://`.
   </Step>
   <Step title="Add it in Bryn">
-    In the Bryn dashboard, open **Integrations**, choose **Chat webhook**,
-    paste the URL into **Webhook URL**, and connect.
+    [Open the Chat webhook form](https://bryn.civic.com/web/integrations?connect=chat_webhook)
+    in the Bryn dashboard (or open **Integrations** and choose **Chat
+    webhook**), paste the URL into **Webhook URL**, and connect. If you
+    already have a Chat webhook, the link opens **Integrations** without the
+    form; to replace it, delete the existing one first.
   </Step>
   <Step title="Check the test message">
     Bryn posts "Bryn is connected to this webhook." to the URL straight
