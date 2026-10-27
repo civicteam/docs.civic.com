@@ -21,10 +21,10 @@ columns or webhooks to set up, because Bryn calls Clay's company search
 directly and reads the answer back in the same request.
 
 <Note>
-**Clay runs on your own key and your own Clay plan.** Clay charges per
-lookup, so Bryn never lends a shared Clay key. Connecting Clay is the only
-way to enrich with it, and every lookup counts against your Clay
-workspace's search quota and credits.
+**Lookups are billed to your Clay account.** Bryn uses the API key you
+connect, and only that key, so every company lookup uses your Clay
+workspace's credits. Bryn looks each account up at most once every 30
+days to keep that spend predictable.
 </Note>
 
 When you connect, Bryn checks the key by asking Clay who it belongs to.
@@ -39,9 +39,6 @@ is verified. If you turn it off, the connection is saved but no lookups
 run until you turn on **Clay enrichment** on the
 [Clay card](https://bryn.civic.com/web/integrations?connector=provider%3Aclay). To stop later, turn that switch off, or disconnect Clay
 to remove the key altogether.
-
-To keep spend predictable, Bryn looks each account up at most once every
-30 days, including lookups where Clay found nothing.
 
 ## Enrichment
 
