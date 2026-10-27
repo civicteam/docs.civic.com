@@ -13,9 +13,10 @@ Calendly works with Bryn in one mode: **Input**.
 ## How Bryn integrates Calendly
 
 Calendly sends events to Bryn through a Calendly webhook subscription.
-You set it up under **Integrations** in the Bryn dashboard, where adding
-Calendly creates a Calendly source in your Inputs with its own endpoint
-URL and signing secret.
+You set it up under [**Integrations**](https://bryn.civic.com/web/integrations)
+in the Bryn dashboard, where adding Calendly creates a Calendly source in
+your [Inputs](https://bryn.civic.com/web/integrations?view=inputs) with its
+own endpoint URL and signing secret.
 
 Calendly has no screen for creating webhooks; a subscription can only be
 created through its API with a personal access token. Bryn makes that call
@@ -85,7 +86,8 @@ account's [score](/bryn/icp-and-scoring) and can trigger
     admin if you want everyone's bookings.
   </Step>
   <Step title="Add Calendly in the Bryn dashboard">
-    Go to **Integrations**, add **Calendly**, paste the token and click
+    Go to [**Integrations**](https://bryn.civic.com/web/integrations?view=inputs),
+    add **Calendly**, paste the token and click
     **Connect Calendly**. Bryn checks the token first, so a mistyped token
     or one missing `users:read` creates nothing.
   </Step>
