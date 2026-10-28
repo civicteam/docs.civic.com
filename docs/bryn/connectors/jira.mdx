@@ -1,7 +1,144 @@
 ---
 title: Jira
-unlisted: true
-description: 'How Bryn connects to Jira'
+description: 'Connect a Jira Cloud project as a ticket output for Bryn'
 ---
 
-Jira connects to Bryn in these modes: Output. The full page is in progress.
+Jira is Atlassian's issue and project tracker. Bryn connects to Jira Cloud
+as an **Output** connector for tickets: you give Bryn your Jira site, an
+Atlassian account email and API token, and the project new issues should
+land in, and Bryn creates issues there with your own account.
+
+Jira supports one mode in Bryn: Output, for tickets.
+
+<Note>
+  Plays don't create Jira issues yet. You can connect and verify a Jira
+  project today, but no Play step delivers to it. This page covers what the
+  Jira connection stores, how Bryn checks it, and what an issue from Bryn
+  will look like.
+</Note>
+
+## How Bryn integrates Jira
+
+The connection uses an Atlassian API token, not OAuth. You set it up under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard, in a form with five fields:
+
+| Field | What to enter |
+|---|---|
+| **Site** | Your Jira Cloud address, for example `your-org.atlassian.net`. Enter the host only, without `https://` or a trailing slash |
+| **Email** | The email address of the Atlassian account that owns the API token |
+| **API token** | An API token created for that account |
+| **Project key** | The key of the project issues are created in, for example `ENG` |
+| **Issue type** | Optional. The name of the issue type to create, for example `Task` or `Bug`. Defaults to `Task` |
+
+Bryn only accepts Jira Cloud sites, whose address ends in `.atlassian.net`.
+Jira Data Center, Jira Server and custom domains aren't supported, and the
+form rejects them with **Invalid site.**
+
+Bryn stores the email and API token together as a secret and keeps the site,
+project key and issue type as ordinary settings. The token is never shown
+again in the Bryn dashboard. The connection is listed by its project key,
+with the site and issue type underneath.
+
+Each connection points at one project on one site. The Bryn dashboard holds
+one Jira connection at a time: once it is connected, Jira no longer appears
+in the list of connectors to add. To point Bryn at a different project,
+disconnect it and connect again. Saving the same site and project key again
+replaces the stored token on the existing connection instead of creating a
+duplicate, and sets it back to unverified until it is checked again.
+
+### What the API token needs
+
+Bryn sends every request to your site address with the email and API token
+as the sign-in, so the token acts as that Atlassian account:
+
+- **Use a token without scopes.** In your Atlassian account, choose
+  **Create API token**, not **Create API token with scopes**. Atlassian
+  only accepts scoped tokens through its own API gateway, not on your site
+  address, so a scoped token fails Bryn's check.
+- **Pick the right account.** Issues are created as the account the token
+  belongs to, and that account needs permission to browse the project and
+  create issues in it. A dedicated Atlassian account for Bryn keeps the
+  activity easy to spot and the token easy to revoke.
+- **Watch the expiry date.** Atlassian API tokens expire after at most one
+  year. When the token expires, create a new one and connect again with it.
+
+### How Bryn verifies the connection
+
+Right after you connect, Bryn asks your Jira site who the token belongs to.
+This is a read-only check: it creates no issue. If Jira accepts the email
+and token, the Bryn dashboard shows **Connection verified**. If not, it
+shows **The connection could not be verified.** and you can correct the
+details and check again.
+
+<Warning>
+  The check confirms that the email and token sign in to your site. It
+  does not confirm that the project key exists, that the issue type is
+  available in that project, or that the account can create issues there.
+  Check those in Jira yourself before relying on the connection.
+</Warning>
+
+## Output
+
+When Bryn creates a Jira issue through this connection, the issue is:
+
+- **In the project** set on the connection, with the **issue type** set on
+  the connection.
+- **Titled** with a one line summary, which Bryn also uses as the issue
+  description.
+- **Reported by** the Atlassian account that owns the API token.
+
+Bryn sets only those fields. If your project makes other fields required
+(a component, a priority, a custom field), Jira rejects the issue, so keep
+the target project's required fields to the ones above, or pick an issue
+type that doesn't add more.
+
+### Set up the connection
+
+<Steps>
+  <Step title="Choose the project and issue type">
+    In Jira, open the project you want issues in and note its key (shown in
+    the project settings and at the start of every issue key, such as `ENG`
+    in `ENG-42`). Check that the issue type you want, for example `Task`, is
+    available in that project.
+  </Step>
+  <Step title="Create an API token">
+    Signed in as the account Bryn should act as, go to
+    [API tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+    in your Atlassian account and choose **Create API token** (without
+    scopes). Give it a name and an expiry date, then copy it: Atlassian
+    only shows it once.
+  </Step>
+  <Step title="Connect in Bryn">
+    [Open the Jira connect form](https://bryn.civic.com/web/integrations?connect=jira)
+    in the Bryn dashboard and fill in the site, email, API token, project
+    key and, if it isn't `Task`, the issue type. If you already have a Jira
+    connection, the link opens **Integrations** without the form.
+  </Step>
+  <Step title="Check the result">
+    Bryn checks the email and token as soon as you connect. Once the
+    dashboard shows **Connection verified**, the connection is ready.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the connection is listed under
+**Integrations** with your project key, site and issue type, and shows as
+verified. If verification fails, check that the site is your
+`.atlassian.net` address, that the email matches the account that created
+the token, and that the token has no scopes and hasn't expired or been
+revoked.
+
+## Jira documentation
+
+- [Manage API tokens for your Atlassian account](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)
+- [Basic auth for REST APIs](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/)
+- [Jira Cloud REST API: issues](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/)
+- [Jira Cloud REST API: myself](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-myself/)
+- [What are issue types?](https://support.atlassian.com/jira-cloud-administration/docs/what-are-issue-types/)
+- [Manage project permissions](https://support.atlassian.com/jira-cloud-administration/docs/manage-project-permissions/)
+
+## Going further
+
+- How Plays decide what to deliver and where: [Plays](/bryn/plays).
+- Other destinations and how to keep alerts quiet: [Connect Slack and other outputs](/bryn/outputs).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
