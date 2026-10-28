@@ -1,7 +1,125 @@
 ---
 title: Linear
-unlisted: true
-description: 'How Bryn connects to Linear'
+description: 'Connect a Linear team so Bryn can create issues in it'
 ---
 
-Linear connects to Bryn in these modes: Output. The full page is in progress.
+Linear is an issue tracker for product and engineering teams. Bryn connects
+to Linear as an **Output** connector: you give Bryn a Linear API key and the
+team you want issues created in, and Bryn can open an issue in that team
+when an account needs follow-up.
+
+Linear supports one mode in Bryn: Output, for tickets.
+
+<Note>
+  Plays don't create Linear issues yet. You can connect and verify a Linear
+  team today, and Bryn checks that the key can reach it, but no Play step
+  delivers to Linear at the moment. This page covers what the connection
+  stores, how Bryn checks it, and what an issue from Bryn looks like.
+</Note>
+
+## How Bryn integrates Linear
+
+The connection uses a Linear personal API key, not OAuth. You set it up under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard, in a form with two fields:
+
+| Field | What to enter |
+|---|---|
+| **API key** | A personal API key from your Linear workspace. The field is masked |
+| **Team ID** | The ID (UUID) of the Linear team that receives issues |
+
+Bryn stores the API key as a secret and keeps the team ID as an ordinary
+setting. Because a team ID is a machine identifier, the Bryn dashboard lists
+the connection under the Linear heading with its status, without a team
+name.
+
+Each connection points at one team. The Bryn dashboard holds one Linear
+connection at a time: once it is connected, Linear no longer appears in the
+list of connectors to add. To send issues to a different team, disconnect
+and connect again. Saving the same team again replaces the stored key on
+the existing connection instead of creating a duplicate, and sets it back
+to unverified until it is checked again. Disconnecting removes the stored
+key once no other connection uses it.
+
+### What the API key needs
+
+A personal API key acts as the Linear user who created it, so issues Bryn
+creates show that user as their creator. The key needs to:
+
+- read its own user and the team you entered, to check the connection.
+- create issues in that team.
+
+If your workspace restricts who can create API keys, a Linear admin may
+need to allow it first. Creating the key from a dedicated Linear user for
+Bryn makes Bryn's issues easy to spot, and lets you revoke the key without
+affecting anyone else.
+
+### How Bryn verifies the connection
+
+Right after you connect, Bryn runs a read-only query against Linear's API:
+it asks who the key belongs to and looks up the team ID you entered. This
+check creates no issue. Both parts must succeed: a valid key with a team ID
+it cannot see fails the check.
+
+If the check passes, the Bryn dashboard shows **Connection verified**. If
+not, it shows **The connection could not be verified.** and you can
+correct the details and check again.
+
+## Output
+
+Linear provides the ticket capability in Bryn: creating a tracker issue
+for an account. When Bryn creates an issue through a Linear connection,
+the issue is:
+
+- **In the team** on the connection, and only that team.
+- **Titled** with the title the Play provides, or **Work this account**
+  when none is given.
+- **Described** with an optional Markdown body.
+
+Bryn sets no assignee, labels, priority, project or cycle, so the issue
+starts in your team's default state for someone to pick up.
+
+### Set up the connection
+
+<Steps>
+  <Step title="Create a personal API key">
+    In Linear, open **Settings**, then **Account**, then **Security &
+    Access**, and create a personal API key. Copy it now: Linear only shows
+    it once.
+  </Step>
+  <Step title="Copy the team ID">
+    Open the team in Linear, press `Cmd+K` (or `Ctrl+K`) and run **Copy
+    model UUID**. You can also query `teams { nodes { id name } }` in
+    Linear's GraphQL API and copy the `id` of the team you want.
+  </Step>
+  <Step title="Connect in Bryn">
+    [Open the Linear connect form](https://bryn.civic.com/web/integrations?connect=linear)
+    in the Bryn dashboard and paste the API key and team ID. If you already
+    have a Linear connection, the link opens **Integrations** without the
+    form.
+  </Step>
+  <Step title="Check the result">
+    Bryn checks the key and team as soon as you connect. Once the dashboard
+    shows **Connection verified**, the connection is ready.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the connection is listed under
+**Integrations** as verified. If verification fails, check that the key
+has not been revoked, that the team ID is the UUID you copied rather than
+the team's name, and that the user who owns the key can see that team.
+
+## Linear documentation
+
+- [Linear API and webhooks](https://linear.app/docs/api-and-webhooks)
+- [Linear GraphQL API: getting started and authentication](https://linear.app/developers/graphql)
+- [Creating issues with the Linear API](https://linear.app/developers/create-issues-using-linear-new)
+- [Teams in Linear](https://linear.app/docs/teams)
+- [Security and access settings](https://linear.app/docs/security-and-access)
+- [Linear API rate limiting](https://linear.app/developers/rate-limiting)
+
+## Going further
+
+- How Plays decide what to deliver and where: [Plays](/bryn/plays).
+- Other destinations and how to keep alerts quiet: [Connect Slack and other outputs](/bryn/outputs).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
