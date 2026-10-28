@@ -1,7 +1,144 @@
 ---
 title: Discord
-unlisted: true
-description: 'How Bryn connects to Discord'
+description: 'Post Play alerts into a Discord channel through a channel webhook'
 ---
 
-Discord connects to Bryn in these modes: Output. The full page is in progress.
+Discord is a chat app built around servers and channels. Bryn connects to
+Discord as an **Output** connector: when a [Play](/bryn/plays) fires an
+alert, Bryn can post it as a message into a Discord channel your team
+already watches.
+
+Discord supports one mode in Bryn: Output, for chat alerts.
+
+## How Bryn integrates Discord
+
+The connection uses a Discord **channel webhook**, not a bot and not
+OAuth. You create the webhook in Discord, copy its URL, and paste it into
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard. The form has one field, **Discord webhook URL**.
+
+The webhook URL is the whole credential: it names the channel and carries
+the token that lets anyone holding it post there. Bryn stores the URL as a
+secret and never shows it back to you. For the same reason, the Bryn
+dashboard lists the connection as **Discord** with its verification status
+and no channel name underneath.
+
+Bryn only accepts a URL that is a Discord webhook:
+
+- it starts with `https://`
+- its host is `discord.com` or `discordapp.com` (the `canary.` and `ptb.`
+  hosts work too)
+- its path is `/api/webhooks/<id>/<token>`
+- it has no query string (such as `?wait=true` or `?thread_id=`) and no
+  `#` fragment
+
+Anything else is rejected with **The Discord webhook URL is not valid.**
+and nothing is stored. Paste the URL exactly as Discord's **Copy Webhook
+URL** button gives it to you.
+
+The Bryn dashboard holds one Discord connection at a time: once it is
+connected, Discord no longer appears in the list of connectors to add. To
+post to a different channel, disconnect it and connect again with that
+channel's webhook. Connecting the same URL again updates the existing
+connection instead of creating a duplicate, and sets it back to unverified
+until it is checked again. Disconnecting removes the stored URL.
+
+### How Bryn verifies the connection
+
+Right after you connect, Bryn asks Discord whether the webhook exists. This
+is a read-only check: it posts nothing into the channel, so don't wait for
+a test message in Discord. If Discord recognises the webhook, the
+connection shows as verified. If it does not (for example because the
+webhook was deleted, or the URL was copied incompletely), the Bryn
+dashboard shows **The Discord webhook could not be verified.** and you can
+connect again with a fresh URL.
+
+Plays only deliver to a verified connection. A Discord connection that has
+not passed this check receives nothing.
+
+## Output
+
+A Discord connection gives Plays one action: **post an alert** to the
+channel the webhook belongs to.
+
+### Which chat tool gets the alert
+
+Slack, Microsoft Teams and Discord all provide the same "post an alert"
+action, and a Play sends each alert to one of them. Bryn picks the first
+verified connection in this order:
+
+1. Slack
+2. Microsoft Teams
+3. Discord
+
+So Discord receives alerts when it is your only verified chat connection.
+If you also have a verified Slack or Microsoft Teams connection, alerts go
+there instead. If you have no verified chat connection at all, the Play
+still runs and its result is kept in the Bryn dashboard.
+
+### What lands in Discord
+
+Each alert is one message in the channel:
+
+- **Text only.** The message carries the alert text Bryn composed for the
+  Play. The buttons and laid-out sections that Slack alerts show are not
+  part of Discord messages.
+- **Posted as the webhook.** The message appears under the name and avatar
+  you gave the webhook in Discord, so name it something your team will
+  recognise, such as "Bryn".
+- **No pings.** Bryn turns mentions off for every message. If the alert
+  text contains `@everyone`, `@here`, or a user or role mention, it shows
+  as text and notifies nobody.
+
+If Discord rejects a message (for example because the webhook has since
+been deleted), the delivery fails and no message is posted. Connect again
+with a new webhook URL to resume alerts.
+
+### Set up the connection
+
+<Steps>
+  <Step title="Pick or create a channel">
+    A dedicated channel such as `#intent` keeps Bryn's alerts easy to
+    follow and easy to mute separately from team conversation.
+  </Step>
+  <Step title="Create a webhook in Discord">
+    You need the **Manage Webhooks** permission on the server. Open the
+    channel's settings (or **Server Settings**), go to **Integrations**,
+    then **Webhooks**, and click **New Webhook**. Choose the channel, give
+    the webhook a name and avatar, and save.
+  </Step>
+  <Step title="Copy the webhook URL">
+    Click **Copy Webhook URL**. Treat it like a password: anyone with the
+    URL can post into the channel.
+  </Step>
+  <Step title="Connect in Bryn">
+    [Open the Discord connect form](https://bryn.civic.com/web/integrations?connect=discord)
+    in the Bryn dashboard, paste the URL into **Discord webhook URL**, and
+    connect. If you already have a Discord connection, the link opens
+    **Integrations** without the form.
+  </Step>
+  <Step title="Check the result">
+    Bryn checks the webhook with Discord as soon as you connect. Once the
+    connection shows as verified, it is ready for Plays.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the Discord connection is listed under
+**Integrations** as verified, and the next alert from a Play appears in
+the channel under your webhook's name. Each run's record under
+**Activity** in the Bryn dashboard also lists the Discord message it sent.
+If no alert arrives, check that you don't also have a verified Slack or
+Microsoft Teams connection (those take priority), and that the webhook
+still exists in Discord.
+
+## Discord documentation
+
+- [Intro to webhooks](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
+- [Setting up permissions](https://support.discord.com/hc/en-us/articles/206029707-Setting-Up-Permissions-FAQ)
+- [Webhook resource (Discord developer docs)](https://discord.com/developers/docs/resources/webhook)
+
+## Going further
+
+- How Plays decide what to deliver and where: [Plays](/bryn/plays).
+- Other destinations and how to keep alerts quiet: [Connect Slack and other outputs](/bryn/outputs).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
