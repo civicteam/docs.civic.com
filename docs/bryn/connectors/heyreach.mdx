@@ -1,7 +1,198 @@
 ---
 title: HeyReach
-unlisted: true
-description: 'How Bryn connects to HeyReach'
+description: 'Turn HeyReach replies into signals and add the people your Plays pick to HeyReach LinkedIn campaigns'
 ---
 
-HeyReach connects to Bryn in these modes: Input, Output. The full page is in progress.
+HeyReach is a LinkedIn outreach tool: it runs connection requests and
+message sequences from your team's LinkedIn accounts. Bryn works with
+HeyReach in two modes: **Input**, where HeyReach tells Bryn when a lead
+replies or accepts a connection request, and **Output**, where a
+[Play](/bryn/plays) adds a person to one of your HeyReach campaigns.
+
+## How Bryn integrates HeyReach
+
+The two modes are set up separately under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard, and each uses its own credential:
+
+- **Input** uses a HeyReach webhook. Adding HeyReach as an input creates
+  a HeyReach source with its own endpoint URL and secret. HeyReach sends
+  the secret on every delivery as an `Authorization: Bearer` header, and
+  Bryn refuses any request without it.
+- **Output** uses a HeyReach API key, which Bryn uses to list your
+  campaigns and add people to them. Bryn keeps the key in encrypted
+  storage; it is never shown again, logged, or passed to Plays.
+
+You can use either mode on its own.
+
+When you enter the API key, Bryn checks it straight away by loading the
+campaigns it can see:
+
+- **A rejected key** shows an error beside the field and you cannot
+  connect it.
+- **A valid key** loads your HeyReach campaigns, so you pick the
+  connection's **Default campaign** from a list instead of pasting an id.
+- **If HeyReach cannot be reached**, you can type the campaign id instead
+  (the number in the campaign's URL in HeyReach), so an outage does not
+  block you.
+
+Verifying the connection reads the default campaign with the key. It adds
+nobody; it confirms the key works and the campaign exists.
+
+The Bryn dashboard holds one HeyReach output connection at a time: once
+it is connected, HeyReach no longer appears in the list of connectors to
+add. To use a different key or default campaign, disconnect it and
+connect again. Your Plays can still add people to any campaign in that
+HeyReach account. Connecting needs owner access to your Bryn workspace.
+
+## Input
+
+### What arrives
+
+Each HeyReach webhook carries one event type, read from the event's
+`event_type` field. Bryn records each event under your source's name, so
+with the default name `heyreach` a reply arrives as
+`heyreach.message_reply_received`.
+
+| HeyReach event | Bryn signal |
+|---|---|
+| `message_reply_received` | `high_intent`, set up for you when you add the source |
+| `connection_request_accepted` | none until you map it |
+| Any other event type | none until you map it |
+
+A reply is the strongest signal HeyReach produces, so Bryn maps it to
+`high_intent` as soon as the source exists. An accepted connection
+request is often just politeness, so Bryn leaves it unmapped; map it
+yourself under **Configuration** if you want it to count. See
+[Signal mapping](/bryn/signal-mapping).
+
+### How events match accounts and people
+
+Every HeyReach event describes the lead it is about:
+
+- **Person**: matched by the lead's email address. Bryn also records
+  their first and last name, their LinkedIn headline as their title, and
+  their LinkedIn profile URL.
+- **Account**: found from the email's domain. When the lead has no email
+  address, Bryn uses the lead's company website instead. Either way, Bryn
+  fills in the company name HeyReach sends.
+
+LinkedIn sequences often run without an email address, so expect many
+HeyReach events to carry none. Those events can still reach an account,
+but only one you already have in Bryn: Bryn never creates an account from
+a company website alone. An event with no email address never reaches a
+person.
+
+From there the signals behave like any other: they count towards the
+account's [score](/bryn/icp-and-scoring) and can trigger
+[Plays](/bryn/plays).
+
+### Connect HeyReach as an input
+
+<Steps>
+  <Step title="Add HeyReach in the Bryn dashboard">
+    Go to [**Integrations**](https://bryn.civic.com/web/integrations?view=inputs)
+    and add **HeyReach** as an input. Bryn creates the source and shows
+    its endpoint URL, the header name (`Authorization`) and the header
+    value (`Bearer` followed by the secret). The secret is shown once,
+    but you can reveal it again from the source's page.
+  </Step>
+  <Step title="Create a webhook in HeyReach">
+    In HeyReach, go to **Integrations**, then **Webhooks**, then **View
+    and create**. Paste the endpoint URL into **Webhook Url**.
+  </Step>
+  <Step title="Choose an event type">
+    Pick one event type. Replies and connection accepts are the ones
+    worth acting on. Leave **Campaign** on all campaigns.
+  </Step>
+  <Step title="Add the header">
+    Open **Advanced**, choose **Add Header**, and paste the header name
+    and value from the Bryn dashboard.
+  </Step>
+  <Step title="Press Create Webhook">
+    **Create Webhook** saves the header along with the webhook. The
+    **Save changes** button beside the header stays grayed out until the
+    webhook exists, so it is not the one to press.
+  </Step>
+</Steps>
+
+### Keeping it working
+
+- **One webhook per event type.** HeyReach sends one event type per
+  webhook. To receive replies and connection accepts, create a second
+  webhook with the same URL and header. Both arrive in Bryn as one source.
+- **Map the events you want to act on.** Only replies raise a signal on
+  their own. Other events arrive straight away but raise nothing until
+  you map them.
+- **Failed deliveries are retried.** HeyReach retries a failed delivery
+  up to five times over 24 hours, then stops.
+
+## Output
+
+A Play can add the person it acts on to a HeyReach campaign. HeyReach
+identifies people by their LinkedIn profile, so Bryn sends the person's
+LinkedIn profile URL, and where known their first and last name, job
+title, company name and email address. HeyReach picks which of the
+campaign's LinkedIn accounts reaches out.
+
+A person Bryn has no LinkedIn profile for is skipped, not sent.
+
+### Set it up
+
+<Steps>
+  <Step title="Create an API key in HeyReach">
+    In HeyReach, go to **Settings**, then **Integrations**, then **API
+    keys**, and create a key. Make sure the account has at least one
+    campaign, running with a LinkedIn account assigned.
+  </Step>
+  <Step title="Connect HeyReach in the Bryn dashboard">
+    Go to [**Integrations**](https://bryn.civic.com/web/integrations?connect=heyreach),
+    choose **HeyReach** and paste the key. Pick the **Default campaign**
+    once your campaigns load, then connect.
+  </Step>
+  <Step title="Add HeyReach to a Play">
+    In the Play's outputs, add HeyReach and pick the connection. Leave the
+    campaign empty to use the connection's default, or pick another
+    campaign from the same HeyReach account. Bryn checks the campaign
+    exists when you save the Play.
+  </Step>
+  <Step title="Decide what happens to finished and paused campaigns">
+    **Restart a finished campaign** is on by default. A HeyReach campaign
+    finishes on its own whenever it runs out of people, so leave this on
+    unless you release people yourself. **Restart a paused campaign** is
+    off by default, so a campaign you paused stays paused and the person
+    waits in it until you resume it.
+  </Step>
+  <Step title="Test the entry">
+    Click **Test** on the HeyReach entry. Bryn reads the campaign with the
+    connection's key and adds nobody, so a mistyped campaign shows up
+    before the first real delivery.
+  </Step>
+</Steps>
+
+<Warning>
+With **Restart a finished campaign** turned off, HeyReach still accepts
+the person into a finished campaign but never starts them. They wait as
+pending until the campaign runs again.
+</Warning>
+
+**You'll know it worked when** the person appears as a lead in your
+HeyReach campaign. A person who is already in that campaign counts as
+delivered, and the Play run notes that they were already there; HeyReach
+does not add them twice. If HeyReach refuses the person, for example
+because the profile URL is malformed or the profile is excluded, the
+delivery fails.
+
+## HeyReach documentation
+
+- [HeyReach API](https://documenter.getpostman.com/view/23808049/2sA2xb5F75), including API keys and adding leads to a campaign
+- [Webhooks](https://help.heyreach.io/en/articles/9877965-webhooks)
+- [How to pause or resume a campaign](https://help.heyreach.io/en/articles/10493626-how-to-pause-resume-my-campaign)
+- [Lead statuses in a campaign](https://help.heyreach.io/en/articles/9935919-why-are-my-leads-in-progress-not-enrolled-yet-finished-paused-pending-failed-excluded), including pending and finished
+- [Integrations and API help](https://help.heyreach.io/en/collections/10421873-integrations-api)
+
+## Going further
+
+- How events become signals: [Signal mapping](/bryn/signal-mapping)
+- Build the Play that adds people to campaigns: [Plays](/bryn/plays)
+- Other tools Bryn connects to: [Connectors](/bryn/connectors)
