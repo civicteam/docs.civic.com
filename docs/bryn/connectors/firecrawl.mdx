@@ -1,7 +1,214 @@
 ---
 title: Firecrawl
-unlisted: true
-description: 'How Bryn connects to Firecrawl'
+description: 'Read each account''s own website with Firecrawl, and watch your best-fit accounts for meaningful changes'
 ---
 
-Firecrawl connects to Bryn in these modes: Input, Enrichment. The full page is in progress.
+Firecrawl is a web scraping API that turns websites into clean, structured
+data. Bryn uses your Firecrawl account to read the companies in your
+pipeline from their own websites.
+
+Firecrawl works in two modes in Bryn:
+
+- **Enrichment**: Bryn reads each account's homepage and site map, and
+  keeps a short description, the page title, the favicon, and the
+  addresses of its pricing, careers, changelog and news pages.
+- **Input**: if you switch it on, Bryn creates a Firecrawl page monitor
+  for each of your best-fit accounts. When a watched page changes in a way
+  that matters to a salesperson, Firecrawl tells Bryn, and Bryn raises a
+  `website_change` [signal](/bryn/signal-mapping) on the account.
+
+Firecrawl is never a delivery destination: it does not appear in any
+Play's outputs.
+
+## How Bryn integrates Firecrawl
+
+You connect Firecrawl with a Firecrawl API key under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard. One connection covers both modes: the enricher and the page
+monitors use the same key. The Bryn dashboard holds one Firecrawl
+connection at a time: once it is connected, Firecrawl no longer appears in
+the list of connectors to add.
+
+<Note>
+**Everything runs on your Firecrawl credits.** Bryn has no shared
+Firecrawl key, so every scrape, map and monitor check is billed to the
+Firecrawl team that owns the key you connect. Firecrawl keys belong to a
+team, so create the key in the team whose credits you want Bryn to spend.
+</Note>
+
+When you connect, Bryn checks the key by reading your team's credit usage
+from Firecrawl. That check scrapes nothing, so it costs no credits. The
+connection only counts as verified once Firecrawl accepts the key, and you
+can check it again at any time with **Verify** in the Firecrawl drawer.
+Bryn keeps the key in encrypted storage; it is never shown again, logged,
+or passed to Plays.
+
+The connect form has one more switch, **Watch your best-fit accounts'
+websites**, which turns on the Input mode. It is off by default, because
+every watched account spends credits every day. You can change it later in
+the **Settings** section of the Firecrawl drawer, without reconnecting.
+
+**Disconnecting** deletes every page monitor Bryn created in your
+Firecrawl account, switches off the Firecrawl input source, and removes
+the key. The same clean-up runs when you switch monitoring off, or when
+you reconnect to change keys. If Firecrawl can't be reached for some of
+those deletes, Bryn refuses the change and keeps the key, because only
+that key can remove the remaining monitors. Try again a few minutes later.
+
+## Enrichment
+
+Firecrawl enrichment is **account level only**. It reads a company's own
+website, so it learns nothing about people.
+
+**What Bryn reads.** For an account with a domain, Bryn makes two calls:
+
+- A **scrape** of the homepage, asking Firecrawl for a summary of the
+  page. Bryn keeps the summary as the account's description (up to 300
+  characters), the page title, and the site's favicon. If the site
+  answered with an error page or a bot challenge, Bryn keeps nothing from
+  the scrape, so that page never becomes the company's description.
+- A **map** of the site, which lists its links. From those, Bryn picks the
+  account's **pricing**, **careers**, **changelog** and **news** pages,
+  where the site has them. Only links on the company's own site count (an
+  off-site job board is ignored), and the shortest match wins, so
+  `/pricing` beats `/pricing/enterprise`.
+
+Either call alone still counts: a site whose scrape failed but whose map
+worked keeps its pages. Each call costs one credit, so an account costs
+about 2 credits per lookup.
+
+**Where results appear.** Open an account in the Bryn dashboard: Firecrawl
+is listed under **Enrichment sources** with what it found and when. The
+description and favicon also compete for the account's main description
+and logo. Firecrawl only fills a description that no other source has
+set, so it never overwrites one. Firecrawl does not set the company name,
+industry, size, location or revenue; [Clay](/bryn/connectors/clay) and
+[Tavily](/bryn/connectors/tavily) cover those.
+
+**When it runs.** Bryn looks an account up when it produces a new signal,
+or when a mapped source first creates it, and then at most once every 30
+days. An account without a domain is skipped until a domain arrives.
+
+**When Firecrawl refuses.** If Firecrawl rejects the key, Bryn marks the
+connection as failed; reconnect with a working key to resume. If your
+Firecrawl team runs out of credits, lookups fail and are retried within
+the hour, so accounts fill in once you top up. Rate limits, timeouts and
+brief outages are retried automatically.
+
+The pages the enricher finds are also what the page monitors watch.
+Without Firecrawl enrichment switched on, a monitor watches the homepage
+only.
+
+## Input
+
+With **Watch your best-fit accounts' websites** on, Bryn uses Firecrawl's
+page monitoring to watch the websites of the accounts that matter most
+to you, and turns meaningful changes into signals.
+
+**Which accounts are watched.** Bryn creates a monitor the next time it
+scores an account that:
+
+- has a domain;
+- has a Fit score at or above **Lowest Fit score to watch** (75 by
+  default; you can set 50 to 100);
+- hasn't converted;
+- fits under **Most accounts to watch at once** (25 by default, up to
+  200).
+
+Nothing is created at connect time. Bryn pauses an account's monitor when
+its Fit score drops below your bar or it converts, and resumes it if the
+Fit score reaches the bar again. A new bar or ceiling applies as accounts
+are next scored.
+
+**What a monitor watches.** Each monitor covers the account's homepage
+plus the pricing, careers, changelog and news pages the enricher found. It
+checks daily at 06:00 UTC. Firecrawl judges each change against a goal
+Bryn sets: pricing, plans or packaging; hiring and open roles; product
+launches and releases; leadership; funding, acquisitions and other company
+news. Cosmetic, navigation, layout, cookie banner and timestamp changes
+are ignored. You'll see the monitors in your Firecrawl dashboard, each
+named `Bryn:` followed by the account's domain.
+
+**How events reach Bryn.** When monitoring is on, Bryn sets up a
+**Firecrawl** source in the Inputs lane of Integrations for you. It reads
+"Set up by your Firecrawl connection" and has no switch of its own: the
+Firecrawl connection turns it on and off. Every monitor posts a
+`monitor.page` webhook to that source for each page it checks, carrying
+the account's domain, so the event always lands on the account the
+monitor was created for, whichever page changed. A webhook for a domain
+Bryn doesn't already have never creates an account.
+
+**What becomes a signal.** Bryn raises `website_change` on the account
+only when Firecrawl's judge calls the change meaningful. The first check
+records each page as it is, so nothing is raised until a later check finds
+a change. Trivial or unchanged pages arrive as events with no signal. The
+event behind each `website_change` carries Firecrawl's reasoning, each
+meaningful change with its before and after, and the diff. A
+[Play](/bryn/plays) that triggers on `website_change` acts on it.
+
+**Cost.** Each page check costs about one credit, plus one when a changed
+page is judged: roughly 150 to 200 credits per watched account per month.
+With the default ceiling of 25 accounts, that is up to about 5,000
+credits a month.
+
+<Tip>
+You don't need to set anything up in Firecrawl for the Input mode. Bryn
+creates the monitors with your key, points them at your Firecrawl source,
+and keeps their webhook secret up to date when you rotate it.
+</Tip>
+
+## Set it up
+
+<Steps>
+  <Step title="Create a Firecrawl API key">
+    In the Firecrawl dashboard, pick the team whose credits Bryn should
+    spend in the team switcher, open **API Keys**, and create a key.
+  </Step>
+  <Step title="Connect Firecrawl in the Bryn dashboard">
+    [Open the Firecrawl connect form](https://bryn.civic.com/web/integrations?connect=firecrawl)
+    (or go to **Integrations** and choose **Firecrawl**) and paste the
+    key. To use the Input mode, switch on **Watch your best-fit accounts'
+    websites** and set the lowest Fit score and the most accounts to
+    watch. Bryn checks the key with Firecrawl before saving the
+    connection.
+  </Step>
+  <Step title="Switch on Firecrawl enrichment">
+    On the [Firecrawl card](https://bryn.civic.com/web/integrations?connector=provider%3Afirecrawl)
+    in the Enrichment lane, turn on **Firecrawl enrichment**. A connection
+    on its own enriches nothing, and without enrichment the monitors
+    watch homepages only.
+  </Step>
+  <Step title="Check that it worked">
+    Wait for a new signal on an account that has a domain, then open the
+    account: Firecrawl should be listed under **Enrichment sources**. If
+    monitoring is on, a qualifying account's monitor appears in your
+    Firecrawl dashboard the next time the account is scored, and
+    `website_change` signals follow once a later check finds a meaningful
+    change.
+  </Step>
+</Steps>
+
+## Firecrawl documentation
+
+- [Firecrawl introduction](https://docs.firecrawl.dev/introduction): an
+  overview of the API and how to authenticate with an API key.
+- [API keys](https://www.firecrawl.dev/app/api-keys): where you create
+  and manage keys in the Firecrawl dashboard.
+- [Scrape](https://docs.firecrawl.dev/features/scrape): the endpoint Bryn
+  uses to read and summarise an account's homepage.
+- [Map](https://docs.firecrawl.dev/features/map): the endpoint Bryn uses
+  to find an account's key pages.
+- [Monitoring](https://docs.firecrawl.dev/features/monitoring): how page
+  monitors, schedules and change judgments work.
+- [Webhooks](https://docs.firecrawl.dev/webhooks/overview) and
+  [webhook events](https://docs.firecrawl.dev/webhooks/events): the
+  `monitor.page` delivery Bryn receives.
+- [Billing](https://docs.firecrawl.dev/billing): how Firecrawl bills
+  credits to your team.
+
+## Going further
+
+- How accounts are scored against your ICP: [ICP and scoring](/bryn/icp-and-scoring).
+- How events become signals: [Signal mapping](/bryn/signal-mapping).
+- Act on a `website_change` signal: [Turn on Plays](/bryn/plays).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
