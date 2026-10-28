@@ -1,0 +1,1025 @@
+---
+title: Changelog
+description: 'Bryn product updates and release notes'
+---
+
+<Update label="October 27, 2026" description="v0.1.155">
+
+**Features**
+- Buying-committee Play template that discovers decision-makers at accounts visiting your site and sends them to Slack or webhooks
+- Anonymous website visitors are now tracked as individuals and automatically merged into a known person once they are identified
+- Zoho CRM connector shows setup progress while its connection is being configured
+- Tasks view in the Notification center shows your full to-do list organized by status
+- Account pages now show visited-page paths in a readable format, broken out by person
+
+**Bug fixes**
+- Play outputs with no connected connector now link directly to connect one instead of showing a disabled button
+- Fixed an issue where newly created records could briefly show stale data
+
+</Update>
+
+<Update label="October 27, 2026" description="v0.1.154">
+
+**Features**
+- Pipedrive and HubSpot CRM contacts can now trigger Plays automatically when a new contact is created
+- Zoho CRM now has a single setup screen that lets you connect your account and enable contact syncing in one step
+
+**Bug fixes**
+- Installing a Play now asks for confirmation before discarding unsaved changes, and opens the installed Play when complete
+- The Apollo connection form now clarifies that a scoped API key can also be used to enroll contacts into sequences
+
+</Update>
+
+<Update label="October 26, 2026" description="v0.1.152">
+
+**Features**
+- When Bryn cannot draft an ideal-customer profile during onboarding, the step now explains what went wrong and lets you retry, fill in the fields manually, or skip ahead
+- Zoho CRM is now available as a data source for importing new leads and contacts
+
+**Improvements**
+- The Apollo connector card now shows both lookups in a single view
+
+**Bug fixes**
+- The Home panel now explains why the nightly review is not running when your workspace does not have an active plan
+- Re-engagement email buttons now link to the correct pages
+- Account names and badges no longer clip, and the roster source now displays the provider name correctly
+- Fixed slow page loads in the scoring feed for workspaces with a large number of scored accounts
+
+</Update>
+
+<Update label="October 23, 2026" description="v0.1.151">
+
+**Features**
+- The time-window picker on the Home page now sits in the heading and controls all panels at once
+- Heating up and activity feed windows can now look back up to 30 days
+- Plays can now discover an account's people on demand during enrichment
+- Accounts and People pages now share the same time-window presets as the Home page (Today, This week, This month, All time)
+
+**Bug fixes**
+- Named people no longer incorrectly display an anonymous account label
+- The Recent panel on the Home page now counts website visits only
+- The "Discovered by Bryn" hint now opens directly from the chip
+- Switching the time window now correctly returns each Home panel to its own natural range
+
+</Update>
+
+<Update label="October 23, 2026" description="v0.1.150">
+
+**Features**
+- Plays can now enrol a contact into an Apollo sequence, with sequence and mailbox selection during setup
+- Zoho CRM is now available as an output connector
+- Company details now show revenue and total funding from Apollo enrichment
+- Apify source page shows results from the first run and lets you match a new source from it
+- Discover people toggle added to MoltSets, enabled by default
+
+**Improvements**
+- Connectors that share a sign-in across enrichment and outputs now show a single unified settings pane, with a connect button when nothing is connected yet
+
+</Update>
+
+<Update label="October 23, 2026" description="v0.1.149">
+
+**Features**
+- Zoho CRM is now available as a connector. Link your Zoho CRM account, enrich your people and accounts with Zoho data, and add Plays that create or update leads and contacts in Zoho CRM.
+- Guided onboarding over MCP now walks you through setup step by step, previews starter Plays, and finishes configuration in one flow.
+- The Home screen has been redesigned with a names-first layout, showing recent activity, heating-up accounts, what changed today, and suggested next steps.
+- On smaller screens the sidebar now opens as a sliding drawer instead of being hidden.
+- Connecting a new source or output now shows a confirmation and briefly highlights the new card so you can spot it immediately.
+- The Discovered by Bryn filter on the People page now includes a hover hint explaining what counts as discovered.
+
+**Improvements**
+- The MCP account analysis tool now returns richer review data and suggested to-dos.
+
+**Bug fixes**
+- Fixed an issue where the Home feed could scroll past the intended stopping point and the funnel view could appear behind other elements.
+
+</Update>
+
+<Update label="October 22, 2026" description="v0.1.148">
+
+**Features**
+- People on the People list and account pages now show how they were found, with a source label and a "discovered" tag for prospects
+- A new Discovered filter on the People list lets you narrow results to discovered people only
+- Workspace owners can now turn default lifecycle emails on or off for each member
+
+</Update>
+
+<Update label="October 22, 2026" description="v0.1.147">
+
+**Features**
+- Apollo and Apify enrichment connectors are now generally available and can be connected directly from your enrichment settings.
+- Apollo company enrichment now returns additional data including description, revenue, and funding fields.
+
+**Bug fixes**
+- Fixed an issue where Apollo could return incomplete person records with missing names or job titles as matches.
+- Apify enrichment runs that time out now keep the pages they successfully completed instead of discarding all results.
+- Connectors that were previously in preview now correctly show a connect option on their enrichment card.
+
+</Update>
+
+<Update label="October 22, 2026" description="v0.1.146">
+
+**Features**
+- Bryn's nightly review now generates a to-do list of recommended actions for your workspace, and you can complete, dismiss or reopen each item
+- The audit log now lets you filter by enrichment provider, search providers and toggle a changed-fields-only view
+
+**Improvements**
+- The traffic card now shows unique visitors, total visits and page views
+
+</Update>
+
+<Update label="October 21, 2026" description="v0.1.145">
+
+**Features**
+- Integration connector icons now display each vendor's official logo throughout the dashboard
+
+</Update>
+
+<Update label="October 21, 2026" description="v0.1.144">
+
+**Features**
+- The audit log sidebar now supports scrolling, progressive loading, and search when your workspace has many accounts
+- Play triggers can now gate on people counts -- known, discovered, and recently discovered people at an account
+- Plays now receive each person's full profile including name, title, seniority, email, lead source, and CRM details
+- Apollo is now available as a bring-your-own-key enrichment connector for company and people data
+- The audit log now includes a Who filter so you can filter entries by actor
+- Apify is now available in preview as an ingest source and enrichment connector for contact details
+
+**Improvements**
+- The Pixel console now loads identified accounts in a single batch, making it noticeably faster
+- Account score and decision lookups are now significantly faster
+
+**Bug fixes**
+- Play review prompts no longer misattribute the trigger signal as account activity
+
+</Update>
+
+<Update label="October 20, 2026" description="v0.1.143">
+
+**Features**
+- MoltSets enrichment is now available as a bring-your-own-key connector, letting you enrich accounts and people with emails and company details directly from your MoltSets plan
+- Connect your MoltSets account in the Outputs panel by entering and verifying your API key
+- Enrichment rosters now automatically create discovered individuals, with built-in controls for opt-in, erasure, and data retention
+- Audit log now supports filtering by source and actor
+- Empty panels now explain why they are empty and guide you to the relevant setup step
+- Invitation rows now show who sent each invite
+
+**Bug fixes**
+- A connector whose key failed verification is now correctly shown as disconnected
+- Fixed inconsistent typeahead behavior and account matching during onboarding
+
+</Update>
+
+<Update label="October 20, 2026" description="v0.1.142">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="October 19, 2026" description="v0.1.141">
+
+**Features**
+- The Bryn pixel now fires an update event that includes which fields changed, so your page can react instantly when a visitor's profile is personalized
+- The audit log now has a search box that lets you filter entries by source, event type, actor, or account
+- Calendly can now be connected with a simplified quick-setup flow that creates the source and subscription in one step
+
+</Update>
+
+<Update label="October 19, 2026" description="v0.1.140">
+
+**Features**
+- Firecrawl is now a single connector — connect once and manage monitoring settings like fit threshold and ceiling directly from its settings drawer, instead of configuring the data source separately
+- Send emails using your own Postmark templates as a Play output, with variable mapping and recipient validation
+
+**Improvements**
+- Enrichment-only vendors like Firecrawl and Tavily now show a single settings drawer and toggle instead of separate provider and connection cards
+- The Play form now shows only the outputs a Play can actually deliver through
+
+**Bug fixes**
+- The built-in Bryn email output now displays its own envelope icon in the Play form instead of incorrectly showing the Postmark icon
+
+</Update>
+
+<Update label="October 16, 2026" description="v0.1.139">
+
+**Features**
+- Choose which fields the pixel returns, with a live sample payload preview
+- Switch from annual to monthly billing at renewal, with the option to undo
+
+**Bug fixes**
+- Fixed an issue where a contact's greeting could be lost when the full segment matched a domain name
+- Fixed enrichment scoring so the correct organisation is selected when scores are tied
+- Enrichment-only connections now appear correctly in the Enrichment lane
+- Fixed Postmark connector naming, verification, and test email delivery
+- Signal mapping now correctly groups observed events by webhook name
+- Fixed the accounts view so that the full history loads correctly and individual selections only show their own data
+
+</Update>
+
+<Update label="October 16, 2026" description="v0.1.138">
+
+**Features**
+- Firecrawl is now available as an enrichment connector — bring your own API key to enrich accounts with website data
+- All timestamps throughout Bryn now display in your local time zone
+
+**Bug fixes**
+- Fixed an issue where an ambiguous enrichment result from Clay could incorrectly deactivate the account owner
+- Fixed name extraction so greeting prefixes such as titles are no longer mistakenly captured as part of a person's name
+- Fixed an issue where some enrichment data was not correctly linked to its source, which could cause incomplete results
+
+</Update>
+
+<Update label="October 15, 2026" description="v0.1.137">
+
+**Features**
+- Pixel payloads can now include fit grade, fit score, intent, timing, and composite scores as opt-in fields
+- The Slack output editor now lets you choose between a message template or Block Kit layout, showing only the relevant editor
+- Findymail is now available as an enrichment provider
+
+</Update>
+
+<Update label="October 15, 2026" description="v0.1.136">
+
+**Features**
+- Connect your own Postmark server token to send emails directly from your workspace
+- Ingest Findymail Signals monitor webhooks as a new data source
+- Use fallback values in Play message templates so empty fields display a default instead of blank text
+- Company details now show which source originally identified the account
+- Pixel responses now include a country code (ISO alpha-2) alongside the country name
+
+**Improvements**
+- Clarified documentation for Play params around Slack block layouts
+
+</Update>
+
+<Update label="October 15, 2026" description="v0.1.135">
+
+**Features**
+- You can now choose which fields the Pixel returns in each response, such as company name, email, and country, using the Pixel settings API
+- Five new company fields are available in Pixel responses: website, company description, logo, LinkedIn page, and company type — all off by default, so your existing setup is unchanged
+- Company logos now appear even when a website does not publish a favicon, using an automatic fallback to a brand logo service
+
+</Update>
+
+<Update label="October 14, 2026" description="v0.1.134">
+
+**Features**
+- Bryn branding and legal links now appear on the billing portal
+- Explore trial users without a payment method are now prompted to add one to continue using Explore
+- New People page with an accounts sidebar, shared filters, and deep links from the Home funnel
+- Slack Block Kit layouts are now available on Play outputs, with a per-entry toggle
+- You can now choose which company and person fields the pixel returns to visitors, with unused fields filtered before they reach the browser
+- Findymail is now available as an enrichment connector, providing email and phone data for people
+
+**Improvements**
+- Plan details now show renewal dates only when a renewal will actually occur
+- Annual plans now display the current usage month, name the proration credit, and explain how to switch to monthly billing
+
+**Bug fixes**
+- Clay enrichment now picks the correct company for a domain, or declines rather than guessing
+- When Clay returns no record, previously enriched account data is now retracted
+- Workspaces with an existing paid plan can now change their plan in-app
+- Enriched names that follow a specific source now update correctly when that source changes
+- Trial extensions no longer consume promo codes
+- Zero-total invoices are no longer shown on the billing page
+- People page no longer stays dimmed after selecting an account filter
+
+</Update>
+
+<Update label="October 14, 2026" description="v0.1.133">
+
+**Features**
+- Plays can now trigger on the specific event that raised a Signal, rather than firing on every subsequent event in the active window
+- The billing page and plan dialog now use a single unified code field for trial extensions, discounts, and plan changes
+
+**Improvements**
+- Workspace search is now faster and more responsive
+
+**Bug fixes**
+- Fixed an issue where Signal mapping paths could be incorrectly rejected depending on how the root path was entered
+
+</Update>
+
+<Update label="October 13, 2026" description="v0.1.132">
+
+**Features**
+- New workspaces now include a sample account on the dashboard immediately after going live, complete with example visitors and scoring, so you can explore Bryn right away
+
+**Improvements**
+- Sample data is automatically excluded from your activity, traffic, and event metrics so it never inflates your real numbers
+
+</Update>
+
+<Update label="October 13, 2026" description="v0.1.131">
+
+**Features**
+- Global search palette in the top bar — search across accounts, people, and Plays from any page
+- People list across your entire workspace, with time-range filters you can click through from funnel figures
+- When editing a mapping rule, you can now type a new signal name and select it directly from the suggestions
+
+</Update>
+
+<Update label="October 13, 2026" description="v0.1.130">
+
+**Features**
+- You can now pause and resume an output connection without disconnecting it
+- The scoring weights screen shows every signal in your workspace and includes an "Add signal weight" picker
+
+**Improvements**
+- The rule editor disables Save and Discard until you make a change, preventing accidental empty saves
+- Saving a signal mapping rule now completes in a single step and confirms success with a notification
+- The play trigger builder now only offers signals that your mapping can actually raise, reducing clutter from irrelevant signals
+
+**Bug fixes**
+- Fixed an issue where revealing a webhook signing secret could fail silently — the error reason is now shown
+- Fixed an issue where Stripe branding validation could block checkout
+
+</Update>
+
+<Update label="October 12, 2026" description="v0.1.129">
+
+**Features**
+- Per-Play run limits -- set a cooldown window and choose whether to include your own team, visible in the Play editor and detail view
+- Removing an output connection now shows a confirmation dialog naming the affected Plays
+
+**Bug fixes**
+- Billing page now shows your updated plan immediately after completing the card step
+- Trial users without a card on file can preview plan changes; the card step is now properly branded
+- Changing your plan no longer interrupts a running trial
+- Stale billing prompts are cleared when no active subscription is found
+- Scoring configuration now confirms when changes are saved; improved labeling in typeahead results
+- Your account name is now consistent across Slack messages, template previews, and the account page
+- Disabled toggles and incomplete setup states now show tooltips explaining why they cannot be changed
+
+</Update>
+
+<Update label="October 12, 2026" description="v0.1.128">
+
+**Features**
+- Searchable typeahead pickers are now used across the product, including ICP editors, output connector forms, onboarding sentence builder, signal-mapping rule editor, and Talk to Bryn, giving you consistent keyboard navigation, filtering, and empty-state messaging everywhere
+- MCP protocol revision 2026-07-28 is now supported alongside earlier protocol versions
+- Checkout sessions now display Bryn branding instead of generic branding
+
+**Improvements**
+- On narrower screens, side panels and rails now stack below cards instead of clipping or collapsing, long tags truncate with an ellipsis, and horizontal lists scroll sideways so nothing is hidden
+- Billing-exempt workspaces no longer see checkout or plan-selection prompts they cannot use
+
+**Bug fixes**
+- Browser autofill no longer appears beside typeahead pickers, and rule editor pickers now retain their selected value
+- Webhook configuration no longer flickers or jumps when you select a field
+- Checkout failures now explain the actual reason instead of showing a generic error message
+
+</Update>
+
+<Update label="October 09, 2026" description="v0.1.127">
+
+**Features**
+- You can now preview and change your billing plan directly from the billing page
+- RB2B is now available as an enrichment source, with enrichment providers and their connection dates listed in your account settings
+
+**Improvements**
+- Improved search and selection experience when choosing connections in the play editor
+- Improved search and selection experience when picking attributes in the connectors panel
+
+**Bug fixes**
+- Fixed an issue where third-party data could override your own form submissions for name, title, seniority, and functional area
+
+</Update>
+
+<Update label="October 09, 2026" description="v0.1.125">
+
+**Features**
+- Completed onboarding steps now display a Completed badge and a Next button so you can see your progress at a glance
+- The People view now shows which enrichment source supplied each value on a person's profile
+- The personalize example on the pixel Config view has moved into its own dedicated panel for clarity
+- The sidebar automatically collapses to an icon rail on screens narrower than 1280 px, giving you more room for content
+- Code blocks, snippets, and prompts now show a copy button on hover so you can copy them with a single click
+
+**Bug fixes**
+- The Pause and Resume button on a Play now correctly reflects the current state when a play is paused or resumed
+- Signal mapping panels no longer get squeezed at intermediate widths and instead switch gracefully between side-by-side and stacked layouts
+- Removed an outdated Sign-in section from the Members panel
+- The per-event steering warning on Sources matching forms is now correctly displayed again
+
+</Update>
+
+<Update label="October 08, 2026" description="v0.1.123">
+
+**Features**
+- Choosing "pixel only" during onboarding now continues straight away without an extra analytics-tool question
+
+**Improvements**
+- The personalize-your-site code example has moved from onboarding to the Pixel config screen under Integrations, where it is always available
+
+**Bug fixes**
+- Trigger builder suggestions are no longer clipped and no longer show signals or facts already used in the expression
+
+</Update>
+
+<Update label="October 07, 2026" description="v0.1.122">
+
+**Features**
+- Redesigned configuration screens with sidebar tabs, scoring weights as sliders with save and discard controls, and a drawer-based mapping editor
+- Person and company field mappings are now available directly on source forms
+- Billing page now automatically syncs your subscription state so it always reflects your current plan
+- Slack link previews now offer a three-option selector in connector settings
+- Onboarding now auto-collapses completed steps and focuses the next action
+- Signal-mapping rules now support flexible path expressions and boolean matching
+- Onboarding progress banner now appears on every screen, showing your remaining setup steps with the ability to skip optional ones
+- New billing state clearly shows when a trial has not yet started after an incomplete checkout
+- Clay enrichment integration added, with enriched data now preferred when viewing account and contact details
+- Context panel now appears inline on the page for a cleaner layout
+
+**Improvements**
+- Pipeline view now uses a consistent 24-hour window with accurate event counts
+
+**Bug fixes**
+- Fixed an issue where editing a connector could overwrite its saved configuration
+
+</Update>
+
+<Update label="October 07, 2026" description="v0.1.121">
+
+**Features**
+- Connector details now open in a side panel next to the pipeline map, so you can inspect a connector without losing sight of the full map
+- Audit log entries now open row details and account information in a context panel with visual highlighting of the selected item
+- Onboarding steps now apply configuration changes immediately instead of saving them as a draft
+
+**Bug fixes**
+- Fixed an issue where Plays triggered by campaign signups could fail to fire under certain timing conditions
+- Fixed duplicate billing records being created in some cases during account provisioning
+- Paused Explore trials now resume automatically when you add a valid payment method
+
+</Update>
+
+<Update label="October 06, 2026" description="v0.1.120">
+
+**Features**
+- The Home screen heading is now a time-range menu, letting you switch your dashboard between today, this week, or this month
+- Play output templates can now reference an execution ID as an idempotency key
+- Slack outputs now include a per-entry unfurl toggle to control link and media previews
+- The REST API now accepts partial Play updates, so you can merge changes to triggers or parameters without resending the full configuration
+- The Help entry in the sidebar now expands to show links to documentation and support
+- MCP tools now include titles and annotations indicating whether actions are read-only or destructive
+
+**Improvements**
+- Signal chains are now sorted by most recent firing
+- Company fields are now only populated from confirmed sources, not inferred data
+
+**Bug fixes**
+- Fixed event-type previews not showing warnings when an attribute resolves to an object, disagrees with stored types, or is missing on typed events
+- Removed ICP version numbers and scope labels from account cards, headers, and scoring screens
+
+</Update>
+
+<Update label="October 06, 2026" description="v0.1.119">
+
+**Features**
+- Click homepage play rows to show run details, including outcome status and messages delivered
+- The sidebar can be collapsed into an icon rail with a hover flyout, giving you more workspace
+- Every onboarding step after workspace creation can now be skipped
+
+</Update>
+
+<Update label="October 05, 2026" description="v0.1.118">
+
+**Features**
+- Configuration editing is now available on every plan, including ICP and enrichment provider settings, with no plan-tier restrictions
+- You can now retrieve a single output connection by its ID through the API
+
+**Improvements**
+- Workspace membership is now validated on every API request, and error messages more clearly explain when access is denied due to missing workspace membership
+
+</Update>
+
+<Update label="October 05, 2026" description="v0.1.117">
+
+**Features**
+- You can now preview your pixel on a hosted demo page during onboarding before installing it on your own site
+- The pixel onboarding step now shows the snippet, developer hand-off, and agent options inline instead of a separate chooser
+
+**Improvements**
+- Plays that trigger on campaign membership now correctly name the attributing campaigns, even when the data was cached from a recent check
+- New signups through the MCP connector are now placed on the Explore trial plan
+- The MCP setup URL has been simplified across onboarding and showcase screens
+
+**Bug fixes**
+- Fixed the onboarding demo page returning an error when visited
+- Fixed Play messages sometimes showing incorrect account names or domains
+- The MCP connector setup no longer asks for credentials when the connector must be connected in the browser
+
+</Update>
+
+<Update label="October 02, 2026" description="v0.1.116">
+
+**Features**
+- Campaign membership now appears as a durable attribute on each person, so Plays can use it as a condition. When a membership ends, it is automatically removed.
+- Pixel origins can now be set to allowed, blocked, or undecided, giving you more control over which sources send data.
+- Accounts can now be sorted by timing.
+- Runs now use day-based navigation, matching the Audit log experience.
+- Single-workspace members can connect to MCP with a simpler URL that does not require specifying a workspace.
+- The pipeline map now collapses gracefully on smaller screens.
+
+**Bug fixes**
+- Fixed an issue where MCP first-connect setup could fail to validate the request or resolve the correct user profile.
+- Fixed the missing Add button when adding a new origin on the Pixel screen.
+- Fixed a display issue where the Pixel configuration view could expose a signing secret.
+- Fixed row and page headers overflowing on narrow screens.
+- LinkedIn icons now appear correctly on person profile links.
+- Best-fit rows now correctly open their associated account.
+- Removed a non-functional chip from the Accounts header.
+- Fixed an issue where the page could scroll unexpectedly in certain views.
+
+</Update>
+
+<Update label="October 02, 2026" description="v0.1.115">
+
+**Features**
+- New unified Connectors page brings inputs, enrichment, and outputs into a single view
+- Redesigned Home screen built on the Outcomes framework with usability refinements
+- New notification center with a bell icon in the top bar and a dedicated alerts page
+- MCP clients can now connect without specifying a workspace, with automatic provisioning on first use
+- Person flags now appear on identity lookup audit rows, with new identification stats available
+- Onboarding now takes you directly to the Home screen after going live
+
+**Bug fixes**
+- Fixed an issue where duplicate subscriptions could be created during checkout
+
+</Update>
+
+<Update label="October 01, 2026" description="v0.1.114">
+
+**Features**
+- Workspace owners whose trial has ended now receive re-engagement emails encouraging them to return, with a direct link to billing settings
+- The onboarding wizard now shows your ideal customer profile step before the pixel installation step
+- Play triggers can now evaluate attributes of the individual person who triggered the pass, allowing more granular audience targeting
+
+**Bug fixes**
+- Mapped person fields now correctly update when a form is re-submitted with a matching email, instead of keeping the original values
+
+</Update>
+
+<Update label="October 01, 2026" description="v0.1.113">
+
+**Improvements**
+- The add-webhook dialog now fits long URLs and secrets without overflowing.
+
+**Bug fixes**
+- The add-webhook dialog now shows a clear error message when webhook creation is refused, such as when the name is already taken. Previously, errors were silently ignored.
+
+</Update>
+
+<Update label="September 30, 2026" description="v0.1.112">
+
+**Features**
+- When signing up with a free email address, the onboarding workspace step now auto-fills your website from your Bryn pixel, so you no longer have to type it manually
+
+</Update>
+
+<Update label="September 30, 2026" description="v0.1.111">
+
+**Features**
+- Outgoing webhook connector -- you can now add named webhooks with a custom URL, method, headers, and JSON payload as play output destinations
+- Ingestion sources are now available on every tier and pause automatically when a trial or subscription lapses, with a banner explaining how to resume
+- Pixel delivery diagnostics -- you can now view beacon delivery status, host-unload events, and idle-ceiling stop reasons to help troubleshoot pixel behavior
+
+**Improvements**
+- Pixel is now served as a versioned bundle behind a short-lived loader for faster page loads and better caching
+
+**Bug fixes**
+- Fixed an issue where placing two pixel references on the same page could cause only one to fire
+- Fixed the sidebar not highlighting the correct menu item when viewing the Connectors page
+
+</Update>
+
+<Update label="September 29, 2026" description="v0.1.110">
+
+**Features**
+- Collection-only pixel mode lets you collect visitor data without serving personalization, configurable via the snippet or your workspace settings
+
+**Improvements**
+- The pixel now pauses polling when the page is hidden and stops after repeated failures or inactivity, reducing unnecessary network requests
+
+**Bug fixes**
+- IPv6 visitors are no longer split into duplicate profiles when their address changes
+- Installing the pixel snippet more than once on the same page no longer creates duplicate requests
+
+</Update>
+
+<Update label="September 29, 2026" description="v0.1.109">
+
+**Features**
+- Plays are now automatically paused for workspaces with a paused or canceled subscription. Identification and signals continue as normal, and withheld Plays are still recorded in your audit trail.
+- The agent-guided onboarding flow now requires your readiness confirmation before providing the pixel snippet, matching the setup wizard experience.
+
+**Improvements**
+- The tracking pixel is now more resilient when running in restrictive browser environments, gracefully handling unsupported host features without errors.
+
+</Update>
+
+<Update label="September 28, 2026" description="v0.1.108">
+
+**Features**
+- When you add a HeyReach, HubSpot, or Pipedrive source, Bryn now automatically suggests signal-mapping rules so your events generate signals without manual setup.
+
+**Improvements**
+- The entire Bryn interface has been redesigned with a refreshed, consistent look and feel across all screens.
+- Configuration now appears as a top-level item in the sidebar with its tabs displayed directly on-screen, making navigation simpler.
+- The workspace ID has been removed from the sidebar and workspace switcher for a cleaner layout.
+
+</Update>
+
+<Update label="September 28, 2026" description="v0.1.107">
+
+**Features**
+- New trial workspaces now receive a guided email series during the first week, covering scoring, accounts, plays, personalization, and MCP to help you get started quickly.
+
+**Improvements**
+- Account fields that came from an enrichment source are now automatically removed when that source no longer provides them, keeping your data clean and up to date.
+
+</Update>
+
+<Update label="September 24, 2026" description="v0.1.106">
+
+**Features**
+- Onboarding now offers an AI agent setup path so you can get started with Bryn's AI agent from the very first step
+- Your workspace enforces a single-seat limit on the Explore plan, with an upgrade prompt when you try to invite additional members
+- When you update your rules, Bryn now automatically re-evaluates existing accounts so changes apply retroactively
+
+**Improvements**
+- Audit log retention has been extended from 30 days to 365 days
+
+**Bug fixes**
+- Fixed an issue where duplicate entries could appear in an account's activity history when multiple data sources agreed on the same value
+- Upgrade and billing prompts across the product now correctly route to the Billing page instead of the Pricing page
+
+</Update>
+
+<Update label="September 23, 2026" description="v0.1.105">
+
+**Features**
+- Account pages now show which enrichment source supplied each field, along with a full decision history
+
+**Bug fixes**
+- Onboarding no longer blocks you from going live when all starter Plays are switched off; it now shows a warning instead
+
+</Update>
+
+<Update label="September 23, 2026" description="v0.1.104">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="September 22, 2026" description="v0.1.103">
+
+**Improvements**
+- Failed steps in the activity graph now display a distinct failure icon, making it easier to tell them apart from dismissed steps.
+
+</Update>
+
+<Update label="September 22, 2026" description="v0.1.102">
+
+Internal improvements and maintenance updates.
+
+</Update>
+
+<Update label="September 22, 2026" description="v0.1.101">
+
+**Features**
+- Completing the Plays step in onboarding now automatically activates your workspace in one action, replacing the separate review-and-confirm screen with a summary of what was set up
+- Bryn can now invite, list, and revoke workspace members on your behalf during conversations
+
+**Improvements**
+- Free-mail addresses such as gmail.com are no longer accepted as a workspace domain or pixel origin, preventing accidental misconfiguration with a clear error message
+
+</Update>
+
+<Update label="September 21, 2026" description="v0.1.100">
+
+**Features**
+- Owners and admins can now add new plays directly from the Plays page using the restored "Add play" button
+
+</Update>
+
+<Update label="September 19, 2026" description="v0.1.99">
+
+**Features**
+- Workspace invitations now have a dedicated accept page where invited users can preview and join a workspace with a single click
+- New Members settings page lets you invite teammates by email, resend or revoke pending invitations, and remove members from your workspace
+- Email subject lines in Play email outputs now support template variables, so you can personalise subjects per account just like the email body
+
+**Improvements**
+- Play-triggered emails sent through the platform credential are now delivered with updated branding and contextual links
+- Toggling the Internal or Ignored filters on the audit log now hides all entries for those accounts, not just the summary row
+- Company enrichment data now surfaces faster after an event is received
+
+**Bug fixes**
+- Invitation links can now only be accepted by the email address they were sent to, preventing forwarded or misdelivered links from granting access to the wrong person
+- Users who join a workspace that is still being set up now see a clear status screen instead of a broken redirect
+
+</Update>
+
+<Update label="September 17, 2026" description="v0.1.98">
+
+**Features**
+- Map company fields such as name, website, industry, employee count, and more from any source's configuration panel
+- During onboarding, the Plays step now shows where your starter Plays will deliver, such as a Slack channel or email
+- Invite team members to your workspace with shareable invite links
+- Invited team members now receive an invite email automatically
+- ICP discovery now tells you when your website could not be reached, instead of showing a generic error
+- HeyReach Plays now include campaign resume controls
+- The weekly digest now shows tracked-account figures that match your dashboard
+
+**Improvements**
+- When you connect the same enrichment provider more than once, each connection is now refreshed independently
+
+**Bug fixes**
+- Fixed a blank screen that could appear briefly after signing in or during onboarding
+- Fixed the onboarding Plays step to correctly follow the starter template setup
+- Fixed invite emails so the footer link renders correctly
+
+</Update>
+
+<Update label="September 16, 2026" description="v0.1.97">
+
+**Features**
+- Bryn can now walk you through the full onboarding flow, including completing setup steps, configuring your workspace website, and confirming that events are arriving
+- During onboarding, you can now preview suggested starter Plays and toggle each one on or off before going live
+- A new admin role is available between owner and operator, giving workspace configuration access without billing or member management permissions
+- Account detail now shows score breakdowns for fit, intent, and timing, along with which Play each account matched
+- When setting up a data import, Bryn now suggests the fields your vendor supports so you can map them faster
+
+**Bug fixes**
+- Fixed an issue where connecting Slack could attempt to list too many channels, causing slowdowns
+
+</Update>
+
+<Update label="September 16, 2026" description="v0.1.96">
+
+**Features**
+- Company data captured from your webhook sources is automatically written to the account as firmographic details
+
+</Update>
+
+<Update label="September 15, 2026" description="v0.1.95">
+
+**Features**
+- The built-in email output now shows its fixed recipient as read-only text instead of an editable field, making it clear where the email will be sent
+- The Activity run detail page now opens with Bryn's own record of the run, including what triggered it, what was sent, and the linked account, with the step-by-step engine view available in a collapsed section below
+
+**Bug fixes**
+- Fixed inaccurate wording on workspace review limits and identity counts
+
+</Update>
+
+<Update label="September 15, 2026" description="v0.1.94">
+
+**Improvements**
+- The Plays card on the Home page now groups runs by Completed or Failed status, making it easier to understand how your plays performed. Hint tooltips explain each figure, and a "messages delivered" footnote shows delivery counts where available.
+
+**Bug fixes**
+- Fixed an issue where the timestamp column on the Top accounts table could overlap the account name.
+
+</Update>
+
+<Update label="September 14, 2026" description="v0.1.93">
+
+**Features**
+- Built-in email output card on the Outputs page and onboarding flow, with email deliveries now visible in the Activity detail view
+
+**Bug fixes**
+- Fixed the home dashboard traffic section so rows display consistently and both account lists show five entries
+
+</Update>
+
+<Update label="September 14, 2026" description="v0.1.92">
+
+**Features**
+- Plays can now send email notifications using a built-in email output, available alongside existing connectors in the Play configuration
+- Email recipients are automatically restricted to your workspace team members for security
+- New "Hide internal" and "Hide ignored" toggles in the Audit log filter panel let you suppress noise from internal accounts and ignored accounts without removing them from the record
+- New website-traffic section on the home dashboard showing a visitor funnel, pixel health per origin, top ICP pages, and recent accounts
+
+**Improvements**
+- Account-matching hint text is now consolidated to a single line at the top of each section, reducing visual clutter
+- Per-field explanations in the account-matching panel now appear on hover instead of being shown permanently
+- Setup screens for PostHog, HeyReach, and HubSpot now lead with what to paste, with step-by-step instructions collapsed behind expandable sections
+- Configured sources with no events now show a clear waiting message
+
+**Bug fixes**
+- Fixed an issue where identified account counts could be inconsistent on the workspace review screen
+
+</Update>
+
+<Update label="September 11, 2026" description="v0.1.91">
+
+**Features**
+- Map person fields such as name, title, seniority, and LinkedIn from the source configuration screen
+- Built-in email output is now available to every workspace without connecting an external email provider
+- Agents can now start, read, and stage onboarding runs via MCP
+
+**Bug fixes**
+- Workspace review digests now separate entries with a blank line for improved readability
+
+</Update>
+
+<Update label="September 11, 2026" description="v0.1.90">
+
+**Features**
+- Pixel onboarding now starts with a clear choice screen so you can pick your preferred path (install, hand off to a developer, learn more, or skip) before seeing installation details
+
+**Improvements**
+- The status deck now counts every visitor toward your app-reach metric, not just anonymous first touches
+
+**Bug fixes**
+- The attention banner on an account page now correctly indicates when a misconfigured Play affects all accounts, not just the one you are viewing
+- Fixed an issue where visitors resolved to the wrong company could not be corrected; identity correction now works as expected for pending visitors
+
+</Update>
+
+<Update label="September 10, 2026" description="v0.1.89">
+
+**Features**
+- HeyReach is now available as an output connector for all workspaces
+- View the source event behind any audit log entry to see exactly what data came in and how it was mapped
+- Map LinkedIn URL, seniority and functional area from ingest payloads onto individual records
+
+**Improvements**
+- Leads whose company URL contains a shortened link are no longer incorrectly matched to the link-shortener domain, preventing bad company associations
+- Enrichment from HubSpot and Pipedrive now writes person-level fields such as job title, owner and lifecycle stage to the individual record rather than the account
+
+</Update>
+
+<Update label="September 10, 2026" description="v0.1.88">
+
+**Features**
+- HeyReach output connector -- connect an API key, pick a campaign, and add leads to LinkedIn sequences directly from any Play
+- Filter internal and suppressed traffic on the Accounts list and Audit log
+- Events with a company URL but no email address are now matched to existing accounts by domain, so LinkedIn-sourced leads reach the right account automatically
+- Recognized website visitors are now automatically correlated to your PostHog person profiles, with a new toggle on pixel settings to opt out
+
+**Improvements**
+- Company names from enrichment are now ranked more accurately, preventing taglines from being used as the company name
+
+**Bug fixes**
+- Fixed an issue where enriched company names could display a tagline instead of the actual company name
+
+</Update>
+
+<Update label="September 09, 2026" description="v0.1.87">
+
+**Features**
+- You can now pick an Instantly campaign from a searchable dropdown when configuring an output play, instead of entering a campaign ID manually.
+
+**Improvements**
+- HubSpot setup instructions are now displayed as step-by-step lists instead of dense paragraphs, making them easier to follow.
+- The test-output action now clearly distinguishes between connectors that send live data and those that only verify connectivity.
+
+</Update>
+
+<Update label="September 08, 2026" description="v0.1.86">
+
+**Features**
+- The pixel beacon now maps to the "site visited" signal instead of "identified account", better reflecting what a page-view event actually reports. Onboarding, starter plays, and signal vocabulary have been updated to match. Existing mappings are migrated automatically and intent scoring weights carry over, so no action is needed.
+
+**Bug fixes**
+- Fixed an issue where changing the entity kind on a mapping was silently dropped on save, causing the change to revert.
+- Webhook credentials now display labels that match each auth mode and vendor setup dialog, making it easier to configure integrations correctly.
+
+</Update>
+
+<Update label="September 08, 2026" description="v0.1.85">
+
+**Features**
+- Anonymous website visitors who arrive through a paid campaign now show UTM attribution on the account page immediately, without waiting for the visitor to identify themselves
+- UTM parameters are now preserved across page navigations, so campaign attribution is no longer lost after the landing page
+- HeyReach is now available as a data source with guided setup in the integrations catalogue
+- You can now trigger Plays based on whether an account matched a specific UTM campaign
+
+**Improvements**
+- Pipedrive enrichment now works for accounts that have an organization link but no email address, so webhook-created accounts enrich automatically
+
+**Bug fixes**
+- Fixed an issue where the MCP connector setup page displayed an incorrect server URL, which caused connection failures for some MCP clients
+
+</Update>
+
+<Update label="September 07, 2026" description="v0.1.84">
+
+**Features**
+- Plays can now deliver messages to Slack with customizable templates, and you can see delivery results for each play execution
+- Create, test, edit and delete plays directly from the Plays page
+- Mark accounts as internal to suppress plays for your own team's traffic while still seeing the full personalized experience during demos
+- Suppression rules can now be managed from the API to control which accounts are excluded from plays
+- HubSpot is now available as an event source, with guided setup for contact and company workflows
+- Accounts can be marked as internal from the account page with a visible badge
+
+**Improvements**
+- Webhook provider type is now locked after creation to prevent misconfiguration
+
+</Update>
+
+<Update label="September 04, 2026" description="v0.1.83">
+
+**Improvements**
+- Named webhooks now store the original payload as sent, so event-type suggestions and evidence in the account-matching panel reflect exactly what was received
+- Custom signals already saved on a signal mapping now appear in the picker for reuse
+
+**Bug fixes**
+- Fixed an issue where the ICP-match Play could fire for accounts identified without an actual website visit
+- Fixed signal-mapping picker so mapped events stay under their correct source heading instead of appearing in the wrong group
+- Fixed a size limit that could cause large webhook payloads to be rejected during ingest
+
+</Update>
+
+<Update label="September 03, 2026" description="v0.1.82">
+
+**Features**
+- You can now configure the JSON path a webhook uses to read the event type, fixing issues with misclassified events
+
+**Improvements**
+- HubSpot industry enrichment now matches at a more granular level, improving the accuracy of ICP fit scoring
+- Scoring configuration now accepts negative per-signal weights, letting you suppress a signal's contribution to Intent scores
+- The HubSpot connection form now shows which credential type and scopes are required, making setup easier
+
+**Bug fixes**
+- Fixed an error that rejected valid scoring configurations containing negative signal weights
+
+</Update>
+
+<Update label="September 02, 2026" description="v0.1.81">
+
+**Features**
+- Browse and manage your connected data sources with per-vendor record-type selection
+- HubSpot enrichment now pulls contact and company data into your accounts when a HubSpot connection is active
+- Slack alerts now display a richer card layout with account name, score tier, ICP fit, and action buttons
+- Data tables and filters adapt to narrower screens, so columns and controls remain usable on laptops and smaller windows
+
+**Improvements**
+- Scores now reflect your workspace's actual scoring cap instead of showing a fixed denominator
+- HubSpot-enriched headcount and country data now feed into ICP Fit scoring
+- Loading indicators added across Activity, Audit, Accounts, and Plays screens
+
+**Bug fixes**
+- Fixed an issue where browser or password-manager autofill could cover account picker suggestions
+- Account-matching preview now correctly reports matches for numeric identifiers
+- Organization webhooks now resolve to their existing account instead of creating duplicates
+
+</Update>
+
+<Update label="September 01, 2026" description="v0.1.80">
+
+**Features**
+- The audit log and activity feed now use "Load more" pagination, replacing numbered page controls for faster browsing on large logs
+- Pipedrive is now available as an ingest source with guided setup, account matching, and organization ID support
+- Audit log and activity feed can now be filtered by date range using presets or a custom calendar picker, and your selection is saved in the URL for easy sharing
+- The run detail page now links directly to the account that triggered the run, so you can navigate to account details in one click
+
+**Improvements**
+- Moved the filters panel trigger into the search row alongside the date filter for a cleaner layout
+
+**Bug fixes**
+- Fixed an issue where accounts with numeric record IDs (such as those from Pipedrive) were not being identified correctly
+
+</Update>
+
+<Update label="August 31, 2026" description="v0.1.79">
+
+**Features**
+- The audit log now includes an Account column, letting you see which account each event belongs to, filter by account name, and click through to account details
+- Each webhook in the Integrations tab now has its own account-matching configuration, so you can set up identifier mapping per webhook instead of applying one setting to all webhooks
+
+**Improvements**
+- The PWA splash screen now uses a light background, matching the default light-mode theme on most devices
+
+</Update>
+
+<Update label="August 27, 2026" description="v0.1.78">
+
+**Features**
+- When connecting a connector that supports enrichment, Bryn now asks whether to enable enrichment during setup, with enrichment turned on by default
+- You can now create, view, and manage named ingest webhooks directly from the Integrations screen
+- Accounts and individuals can now be marked as ignored, hiding them from lists, stats, and automated processing while still keeping their data so the action is fully reversible
+
+</Update>
+
+<Update label="August 24, 2026" description="v0.1.77">
+
+**Features**
+- Events sent to named webhooks now automatically match to accounts and trigger signals, with no extra configuration needed.
+
+**Improvements**
+- Transactional emails (welcome, onboarding reminders, review digest, and more) have been refreshed with updated colors, spacing, typography, and button styling.
+
+</Update>
+
+<Update label="August 21, 2026" description="v0.1.74">
+
+**Features**
+- Audit log entries now show the account they concern, with a link to open that account directly from the expanded entry
+
+**Improvements**
+- Activity, Audit and Accounts now share the same filter controls, with keyboard navigation and a one-click reset to clear every filter at once
+
+</Update>
