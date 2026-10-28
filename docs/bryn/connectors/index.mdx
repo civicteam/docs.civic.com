@@ -1,0 +1,62 @@
+---
+title: Connectors
+description: 'The third-party tools Bryn reads from, learns from, and delivers to'
+---
+
+A connector links Bryn to a tool your team already uses. Every connector
+works in one or more of three modes, in the order data moves through Bryn:
+
+- **Input**: the tool sends events into Bryn. Bryn turns them into
+  [signals](/bryn/signal-mapping) and stitches them to the same accounts
+  and people the [pixel](/bryn/pixel) sees.
+- **Enrichment**: Bryn looks accounts and people up in the tool to fill in
+  what it knows about them. Enrichment feeds [scoring](/bryn/icp-and-scoring)
+  and gives Plays more to work with. It never delivers anything.
+- **Output**: a [Play](/bryn/plays) delivers to the tool: an alert in a
+  chat channel, a contact in a CRM, a person enrolled in a sequence, a
+  ticket, an email, or a webhook call.
+
+You connect each one under **Integrations** in the Bryn dashboard. Each
+connector's page covers what Bryn does with it in every mode it supports,
+how to connect it, and where to find the vendor's own documentation.
+
+## Available connectors
+
+| Connector | Input | Enrichment | Output |
+|---|:-:|:-:|:-:|
+| Amazon SES |  |  | ✓ |
+| [Apify](/bryn/connectors/apify) | ✓ | ✓ |  |
+| [Apollo](/bryn/connectors/apollo) |  | ✓ | ✓ |
+| [Calendly](/bryn/connectors/calendly) | ✓ |  |  |
+| [Clay](/bryn/connectors/clay) |  | ✓ |  |
+| Discord |  |  | ✓ |
+| Findymail | ✓ | ✓ |  |
+| Firecrawl | ✓ | ✓ |  |
+| HeyReach | ✓ |  | ✓ |
+| HubSpot | ✓ | ✓ | ✓ |
+| Instantly |  | ✓ | ✓ |
+| Jira |  |  | ✓ |
+| Linear |  |  | ✓ |
+| Microsoft Teams |  |  | ✓ |
+| MoltSets |  | ✓ |  |
+| Outgoing webhook |  |  | ✓ |
+| Pipedrive | ✓ | ✓ | ✓ |
+| Postmark |  |  | ✓ |
+| Resend |  |  | ✓ |
+| Slack |  |  | ✓ |
+| Tavily |  | ✓ |  |
+| Zoho CRM | ✓ | ✓ | ✓ |
+
+Connectors without a link are available in the Bryn dashboard today; their
+pages here are on the way.
+
+Enrichment here includes tools that also take deliveries: a CRM or
+sequencing tool connected for output is also a place Bryn can look people
+and accounts up.
+
+## Going further
+
+- Start with the fastest first output: [Connect Slack and other outputs](/bryn/outputs).
+- Send events from your own backend: [Server-side events and signing](/bryn/signing).
+- Manage connections programmatically: Outputs and Integrations in the
+  [API reference](/bryn/api/bryn-control-plane-api).

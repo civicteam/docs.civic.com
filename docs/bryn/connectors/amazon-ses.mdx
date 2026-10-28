@@ -1,0 +1,141 @@
+---
+title: Amazon SES
+description: 'Connect your own Amazon SES account as an email output for Bryn'
+---
+
+Amazon Simple Email Service (SES) is the AWS service for sending email from
+your own domain. Bryn connects to SES as an **Output** connector: you give
+Bryn an AWS access key, the region your sender lives in, a verified From
+address, and a To address, and Bryn sends through your SES account rather
+than its own.
+
+SES supports one mode in Bryn: Output, for email.
+
+<Note>
+  Plays don't send email through Amazon SES yet. You can connect and
+  verify an SES account today, but the email step in a Play delivers
+  through Bryn's built-in email output instead. This page covers what the
+  SES connection stores, how Bryn checks it, and what a send looks like.
+</Note>
+
+## How Bryn integrates Amazon SES
+
+The connection uses an AWS access key pair, not OAuth. You set it up under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard, in a form with five fields:
+
+| Field | What to enter |
+|---|---|
+| **Access key ID** | The access key ID of an IAM user or role in the AWS account that owns your SES identities |
+| **Secret access key** | The matching secret access key |
+| **Region** | The AWS region where your sender identity is verified, for example `us-east-1` |
+| **From address** | The address mail is sent from. It must be a verified identity in SES in that region |
+| **To address** | The single address this connection delivers to, for example a team inbox |
+
+Bryn stores the key pair as a secret and keeps the region, From address and
+To address as ordinary settings. The Bryn dashboard lists the connection by
+its From address, with the To address and region underneath.
+
+Each connection is one route: one region, one From address, one To address.
+The Bryn dashboard holds one Amazon SES connection at a time: once it is
+connected, Amazon SES no longer appears in the list of connectors to add.
+To change the route, disconnect it and connect again. Saving the same region,
+From and To again replaces the stored key on the existing connection
+instead of creating a duplicate, and sets it back to unverified until it
+is checked again. Disconnecting a connection removes the stored key once no
+other connection uses it.
+
+### What the access key needs
+
+Bryn makes two SES calls with your key:
+
+- `ses:GetSendQuota`, to check the connection.
+- `ses:SendEmail`, to send a message.
+
+Give the key a policy that allows those two actions and nothing else. A
+dedicated IAM user for Bryn keeps it easy to rotate or revoke without
+affecting anything else in your AWS account.
+
+### How Bryn verifies the connection
+
+Right after you connect, Bryn reads your account's sending quota in the
+region you entered. This is a read-only check: it sends no email. If AWS
+accepts the key, the Bryn dashboard shows **Connection verified**. If not,
+it shows **The connection could not be verified.** and you can correct the
+details and check again.
+
+<Warning>
+  The check confirms that your key works in that region. It does not
+  confirm that your From address is verified in SES, or that your account
+  is out of the SES sandbox. A connection can show as verified and still
+  have its sends rejected by SES until both are in place.
+</Warning>
+
+## Output
+
+When Bryn sends through an SES connection, the message is:
+
+- **From** the From address on the connection.
+- **To** the To address on the connection, and only that address.
+- **Plain text**, with a subject line and a text body.
+
+SES enforces its own rules on every send, so get these right in your AWS
+account first:
+
+- **Verified sender.** SES only sends from an email address or domain you
+  have verified as an identity, in the same region you give Bryn. Verifying
+  the whole domain lets you use any address on it.
+- **Sandbox.** New SES accounts start in the sandbox, where you can only
+  send to verified addresses and at a low daily volume. Either verify the
+  To address as well, or request production access so SES will deliver to
+  any recipient.
+- **Sending limits.** Your account's daily quota and per-second rate apply
+  to everything you send through SES, Bryn included.
+
+### Set up the connection
+
+<Steps>
+  <Step title="Verify your sender in SES">
+    In the SES console, pick the region you want to send from and create a
+    verified identity for your domain or From address. While your account
+    is in the sandbox, verify the To address too.
+  </Step>
+  <Step title="Create an access key">
+    In IAM, create a user (or use an existing one) with a policy that
+    allows `ses:GetSendQuota` and `ses:SendEmail`, then create an access
+    key for it. Copy the secret access key now: AWS only shows it once.
+  </Step>
+  <Step title="Connect in Bryn">
+    [Open the Amazon SES connect form](https://bryn.civic.com/web/integrations?connect=ses)
+    in the Bryn dashboard and fill in the access key ID, secret access key,
+    region, From address and To address. If you already have an SES
+    connection, the link opens **Integrations** without the form.
+  </Step>
+  <Step title="Check the result">
+    Bryn checks the key as soon as you connect. Once the dashboard shows
+    **Connection verified**, the connection is ready.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the connection is listed under
+**Integrations** with your From address, To address and region, and shows
+as verified. If verification fails, check that the access key is active,
+that its policy allows `ses:GetSendQuota`, and that the region matches the
+one your identity is verified in.
+
+## Amazon SES documentation
+
+- [What is Amazon SES?](https://docs.aws.amazon.com/ses/latest/dg/Welcome.html)
+- [Setting up Amazon SES](https://docs.aws.amazon.com/ses/latest/dg/setting-up.html)
+- [Creating and verifying identities](https://docs.aws.amazon.com/ses/latest/dg/creating-identities.html)
+- [Request production access (moving out of the sandbox)](https://docs.aws.amazon.com/ses/latest/dg/request-production-access.html)
+- [Managing your sending quotas](https://docs.aws.amazon.com/ses/latest/dg/manage-sending-quotas.html)
+- [Controlling access to Amazon SES with IAM](https://docs.aws.amazon.com/ses/latest/dg/control-user-access.html)
+- [Managing access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)
+- [Amazon SES endpoints and regions](https://docs.aws.amazon.com/general/latest/gr/ses.html)
+
+## Going further
+
+- How Plays decide what to deliver and where: [Plays](/bryn/plays).
+- Other destinations and how to keep alerts quiet: [Connect Slack and other outputs](/bryn/outputs).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
