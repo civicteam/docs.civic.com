@@ -43,10 +43,16 @@ can check it again at any time with **Verify** in the Firecrawl drawer.
 Bryn keeps the key in encrypted storage; it is never shown again, logged,
 or passed to Plays.
 
-The connect form has one more switch, **Watch your best-fit accounts'
-websites**, which turns on the Input mode. It is off by default, because
-every watched account spends credits every day. You can change it later in
-the **Settings** section of the Firecrawl drawer, without reconnecting.
+The connect form has two switches:
+
+- **Use Firecrawl for enrichment** turns on the Enrichment mode. It is on
+  by default. If you turn it off, the connection is saved but no lookups
+  run until you turn on **Firecrawl enrichment** on the
+  [Firecrawl card](https://bryn.civic.com/web/integrations?connector=provider%3Afirecrawl).
+- **Watch your best-fit accounts' websites** turns on the Input mode. It
+  is off by default, because every watched account spends credits every
+  day. You can change it later in the **Settings** section of the
+  Firecrawl drawer, without reconnecting.
 
 **Disconnecting** deletes every page monitor Bryn created in your
 Firecrawl account, switches off the Firecrawl input source, and removes
@@ -167,16 +173,10 @@ and keeps their webhook secret up to date when you rotate it.
   <Step title="Connect Firecrawl in the Bryn dashboard">
     [Open the Firecrawl connect form](https://bryn.civic.com/web/integrations?connect=firecrawl)
     (or go to **Integrations** and choose **Firecrawl**) and paste the
-    key. To use the Input mode, switch on **Watch your best-fit accounts'
-    websites** and set the lowest Fit score and the most accounts to
-    watch. Bryn checks the key with Firecrawl before saving the
-    connection.
-  </Step>
-  <Step title="Switch on Firecrawl enrichment">
-    On the [Firecrawl card](https://bryn.civic.com/web/integrations?connector=provider%3Afirecrawl)
-    in the Enrichment lane, turn on **Firecrawl enrichment**. A connection
-    on its own enriches nothing, and without enrichment the monitors
-    watch homepages only.
+    key. Leave **Use Firecrawl for enrichment** on. To use the Input mode,
+    switch on **Watch your best-fit accounts' websites** and set the
+    lowest Fit score and the most accounts to watch. Bryn checks the key
+    with Firecrawl before saving the connection.
   </Step>
   <Step title="Check that it worked">
     Wait for a new signal on an account that has a domain, then open the
