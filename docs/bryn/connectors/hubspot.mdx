@@ -1,7 +1,262 @@
 ---
 title: HubSpot
-unlisted: true
-description: 'How Bryn connects to HubSpot'
+description: 'Bring HubSpot workflow events into Bryn, read your HubSpot companies, contacts and open deals, and let Bryn act in your HubSpot'
 ---
 
-HubSpot connects to Bryn in these modes: Input, Enrichment, Output. The full page is in progress.
+HubSpot is a CRM and marketing platform: the contacts, companies and deals
+your team works on live there. Bryn works with HubSpot in three modes:
+**Input**, where a HubSpot workflow sends Bryn an event when a contact or
+company meets its trigger, **Enrichment**, where Bryn reads your HubSpot to
+learn which company, owner and open deals sit behind an account, and
+**Output**, where Bryn uses the same connection to act in your HubSpot.
+
+Bryn uses your own HubSpot portal and your own token, so every read and
+write counts against your HubSpot API limits.
+
+## How Bryn integrates HubSpot
+
+You connect HubSpot with an access token under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard. One connection serves Enrichment and Output. Input is set up
+separately, as a HubSpot source with its own endpoint URL and secret.
+
+Bryn accepts two kinds of HubSpot token, both of which reach your CRM data:
+
+- a **service key** (in HubSpot: **Development**, **Keys**, **Service keys**), or
+- a **private app** access token (in HubSpot: **Development**, **Legacy apps**).
+
+A developer API key or a personal access key does not work: they reach
+HubSpot's developer tools, not your portal's CRM data, and HubSpot rejects
+them as if the token were mistyped. Creating a private app needs a super
+admin in HubSpot; a service key needs a super admin or the Developer tools
+permission.
+
+<Warning>
+**Give the token its CRM scopes.** When you connect, Bryn checks the token
+against your HubSpot account details, which needs no CRM scope at all. A
+token without the scopes below still connects as verified, but enrichment
+finds nothing and Bryn cannot write. Add these scopes when you create it:
+
+- `crm.objects.contacts.read` and `crm.objects.contacts.write`
+- `crm.objects.companies.read`
+- `crm.objects.deals.read`
+- `crm.objects.owners.read` (optional: without it Bryn leaves out the
+  owner's name, and every other field still lands)
+</Warning>
+
+Bryn keeps the token in encrypted storage; it is never shown again or
+logged. You can have one HubSpot connection at a time, since the token
+covers your whole portal. To use a different token or portal, disconnect
+HubSpot and connect again.
+
+If HubSpot later rejects the token during enrichment (for example because it
+was revoked or a scope was removed), Bryn marks the connection as failed so
+you can reconnect it under **Integrations**.
+
+## Input
+
+### What arrives
+
+HubSpot sends events to Bryn through a workflow's **Send a webhook** action.
+Each workflow enrols one record type, so each one becomes its own Bryn
+source:
+
+| Source | Enrols | How Bryn finds the account | How Bryn finds the person |
+|---|---|---|---|
+| **Contact** | Contacts | The contact's primary company | The contact's email |
+| **Company** | Companies | The company's own record, joined to a known account by its domain | No person |
+
+Most teams only need a contact source: a contact already carries the company
+it belongs to. Add a company source if you also want events about companies
+with no contact involved, such as a company becoming a customer.
+
+<Note>
+The **Send a webhook** action needs **Data Hub Professional or Enterprise**.
+On other HubSpot plans the action shows a padlock.
+</Note>
+
+You choose what the event is called by typing a fixed `event` value in the
+workflow, so one workflow sends one kind of event. When you create a source,
+Bryn proposes two signal rules for it:
+
+| `event` value | Bryn signal | When it fires |
+|---|---|---|
+| `created` | `crm_contact_created` | The body carries the contact's email |
+| `became_customer` | `account_signup` | The body carries the company's domain |
+
+Any other value (for example `became_mql` or `demo_requested`) arrives and is
+stored, but raises no signal until you map it under
+[Signal mapping](/bryn/signal-mapping). Name the trigger on its own:
+`became_mql`, not `contact.became_mql`, since the source name already says
+it is a contact.
+
+Bryn also reads the person's first name, last name and job title from a
+contact source, and the company's name, industry and number of employees
+from a company source. HubSpot's industry values feed
+[ICP fit scoring](/bryn/icp-and-scoring). A LinkedIn URL, if you send one, is
+kept on the person but not used to work out who they are.
+
+The first event for a HubSpot company Bryn has not linked yet creates a new
+account. Once [enrichment](#enrichment) has read that company, later events
+join the account Bryn already knows.
+
+### Connect HubSpot as a source
+
+<Steps>
+  <Step title="Add a HubSpot source in the Bryn dashboard">
+    Go to [**Integrations**](https://bryn.civic.com/web/integrations?view=inputs),
+    add **HubSpot** and pick **Contact** or **Company**. Bryn shows the
+    endpoint URL and secret for the new source beside the steps below.
+  </Step>
+  <Step title="Create the workflow in HubSpot">
+    Go to **Automation**, **Workflows**, **Create workflow**, **From
+    scratch**. Pick the same record type you chose in Bryn (it cannot be
+    changed later) and set an enrolment trigger. **Create date is known**
+    covers every record, including new ones. A workflow with no trigger
+    sends nothing, and nothing warns you.
+  </Step>
+  <Step title="Add the Send a webhook action">
+    You find it under **Data ops**. Set the method to `POST` and paste the
+    endpoint URL.
+  </Step>
+  <Step title="Set the action's authentication">
+    Set **Authentication type** to **API key**, with the key in the request
+    header. Create a HubSpot secret named exactly `Authorization` and paste
+    the secret value from Bryn into it exactly as shown. HubSpot takes the
+    header name from the secret's name, so with any other name Bryn sees no
+    credential and refuses every event.
+  </Step>
+  <Step title="Choose Customize request body and add the keys Bryn reads">
+    For a **contact** source:
+
+    - `email`: the contact's **Email**
+    - `companyid`: **Record ID** under **Company: Primary** (not **Company:
+      Most recently updated**, which changes as records change)
+    - `event`: a static value naming the trigger, such as `created`
+    - `firstname`, `lastname` and `jobtitle`: **First name**, **Last name**
+      and **Job title**
+    - `linkedin`: their LinkedIn URL, if you keep one (optional)
+
+    For a **company** source:
+
+    - `companyid`: the company's own **Record ID**
+    - `event`: a static value, such as `became_customer`
+    - `domain`: **Company Domain Name**, which joins the company to the
+      account Bryn already knows
+    - `name`: **Name**
+    - `industry` and `numberofemployees`: **Industry** and **Number of
+      Employees** (both optional)
+
+    Type the keys exactly as shown, in lower case: a key spelled differently
+    is silently ignored.
+  </Step>
+  <Step title="Turn the workflow on">
+    Enrol one record by hand to see an event arrive straight away.
+  </Step>
+</Steps>
+
+<Warning>
+Do not choose **Include all properties** for the request body. HubSpot then
+sends a much larger body in a different shape, with nothing naming the
+event, so Bryn cannot type the event or match it to an account.
+</Warning>
+
+**You'll know it worked when** the event shows on the source in the Bryn
+dashboard as the source name and your `event` value, for example
+`hubspot-contact.created`. An event typed `unmapped` means the `event` key
+never arrived: check its spelling in the request body.
+
+### Keeping it working
+
+- **Your own writes can come back.** If Bryn creates or updates a HubSpot
+  contact, a workflow triggered on **Create date is known** can enrol it and
+  send the change back to Bryn. Keep that in mind before you map such events
+  broadly.
+- **Re-enrolling raises the signal again.** Enrolling an existing contact by
+  hand, to test, raises `crm_contact_created` for a contact that isn't new.
+- **Lifecycle stages arrive as HubSpot's internal values** (`lead`, not
+  **Lead**), so match those values in your signal rules.
+
+## Enrichment
+
+Bryn looks each person up in your HubSpot by their email address, using an
+exact match so a colleague's record is never mistaken for theirs. One lookup
+answers at two levels:
+
+- **Account level**: the contact's primary company. Bryn reads its name,
+  domain, industry, number of employees, annual revenue, lifecycle stage,
+  country and owner, plus the account's open deals: how many there are, and
+  the ten most recently updated, each with its name, stage, pipeline, amount,
+  close date and owner. A deal counts as open when it is neither closed won
+  nor closed lost. Number of employees, country and industry feed
+  [ICP fit scoring](/bryn/icp-and-scoring); when you also run Clay, Clay's
+  industry wins.
+- **Person level**: whether the person is a contact in your HubSpot at all,
+  and their job title, contact owner, lifecycle stage and lead status. The
+  contact's lifecycle stage is kept apart from the company's, since a lead
+  can sit at an account that is already a customer.
+
+Enrichment only fills gaps on the person: a HubSpot job title fills an empty
+title and never replaces one from a form or your team. If the person is
+removed from HubSpot, Bryn drops their HubSpot details on its next lookup.
+When part of HubSpot cannot be read (for example the deal read is refused),
+Bryn leaves those fields out rather than reporting zero open deals.
+
+Plays can use these facts, for example whether the person is already in
+your CRM, their contact owner, or their lifecycle stage.
+
+**Turn it on.** Connecting HubSpot does not start enrichment by itself. Open
+the HubSpot connection under **Integrations** and switch on **Enrichment**.
+
+**When it runs.** Bryn looks HubSpot up when a signal brings an account
+forward and the person's email address is known. Accounts Bryn tracked
+before you turned enrichment on are read on their next signal. Results are
+reused for a day before Bryn asks HubSpot again, and a failed lookup is
+retried after an hour.
+
+## Output
+
+The same connection lets Bryn act in your HubSpot. When you connect, your
+HubSpot is added to the tools Bryn can use on your behalf, with your token,
+so Bryn can work with your HubSpot records, such as creating or updating a
+contact. Bryn can only do what the token's scopes allow: leave out
+`crm.objects.contacts.write` if you want Bryn to read only.
+
+### Set it up
+
+<Steps>
+  <Step title="Create a token in HubSpot">
+    Create a service key, or a private app under **Development**, **Legacy
+    apps**, and give it the scopes listed above.
+  </Step>
+  <Step title="Connect HubSpot in the Bryn dashboard">
+    Go to [**Integrations**](https://bryn.civic.com/web/integrations?connect=hubspot),
+    choose **HubSpot** and paste the token into **Access token**.
+  </Step>
+  <Step title="Check the connection">
+    Bryn verifies the token straight away. If it shows as failed, the token
+    was mistyped or revoked, or it is a developer API key or personal access
+    key rather than a service key or private app token.
+  </Step>
+</Steps>
+
+## HubSpot documentation
+
+- [Service keys](https://developers.hubspot.com/docs/apps/developer-platform/build-apps/authentication/account-service-keys)
+- [Private apps](https://developers.hubspot.com/docs/apps/legacy-apps/private-apps/overview)
+- [Scopes](https://developers.hubspot.com/docs/apps/legacy-apps/authentication/scopes)
+- [Use webhooks with HubSpot workflows](https://knowledge.hubspot.com/workflows/how-do-i-use-webhooks-with-hubspot-workflows)
+  and [create workflows](https://knowledge.hubspot.com/workflows/create-workflows)
+- [Data Hub](https://www.hubspot.com/products/data), the plan the Send a
+  webhook action needs
+- CRM API guides for [contacts](https://developers.hubspot.com/docs/api-reference/legacy/crm/objects/contacts/guide),
+  [companies](https://developers.hubspot.com/docs/api-reference/legacy/crm/objects/companies/guide)
+  and [deals](https://developers.hubspot.com/docs/api-reference/legacy/crm/objects/deals/guide)
+- [API usage guidelines and limits](https://developers.hubspot.com/docs/developer-tooling/platform/usage-guidelines)
+
+## Going further
+
+- How events become signals: [Signal mapping](/bryn/signal-mapping)
+- How HubSpot facts feed fit: [ICP and scoring](/bryn/icp-and-scoring)
+- Act on HubSpot events: [Plays](/bryn/plays)
+- Other tools Bryn connects to: [Connectors](/bryn/connectors)
