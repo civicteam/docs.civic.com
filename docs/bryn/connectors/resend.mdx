@@ -1,7 +1,144 @@
 ---
 title: Resend
-unlisted: true
-description: 'How Bryn connects to Resend'
+description: 'Connect your own Resend account as an email output for Bryn'
 ---
 
-Resend connects to Bryn in these modes: Output. The full page is in progress.
+Resend is an email API for sending mail from your own domain. Bryn connects
+to Resend as an **Output** connector: you give Bryn a Resend API key and a
+From address on a domain you have verified in Resend, and Bryn can send
+through your Resend account rather than its own.
+
+Resend supports one mode in Bryn: Output, for email.
+
+<Note>
+  Plays don't send email through Resend yet. You can connect and verify a
+  Resend account today, but the email step in a Play delivers through
+  Bryn's built-in email output instead. This page covers what the Resend
+  connection stores, how Bryn checks it, and what Resend needs from you
+  before mail can go out.
+</Note>
+
+## How Bryn integrates Resend
+
+The connection uses a Resend API key, not OAuth. You set it up under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard, in a form with three fields:
+
+| Field | What to enter |
+|---|---|
+| **API key** | A Resend API key, starting `re_`. The field is masked |
+| **From address** | The address mail is sent from, with an optional display name, for example `Acme <hello@acme.com>`. Its domain must be verified in Resend |
+| **Audience ID** | Optional. The ID of a Resend audience. Bryn stores it with the connection but does not use it when sending today |
+
+Bryn stores the API key as a secret and keeps the From address and audience
+ID as ordinary settings. The Bryn dashboard lists the connection by its From
+address. The audience ID is not shown.
+
+The Bryn dashboard holds one Resend connection at a time: once it is
+connected, Resend no longer appears in the list of connectors to add. To
+change the From address, disconnect it and connect again. Saving the same
+From address and audience ID again replaces the stored key on the existing
+connection instead of creating a duplicate, and sets it back to unverified
+until it is checked again. Disconnecting a connection removes the stored key
+once no other connection uses it.
+
+### What the API key needs
+
+Resend offers two permission levels for API keys: **Full access** and
+**Sending access**. Bryn checks the connection by listing the domains on your
+Resend account, which a sending-only key is not allowed to do. Use a key with
+**Full access**, or the connection will not verify.
+
+A dedicated key for Bryn, named so you can recognise it in Resend, makes it
+easy to rotate or revoke without affecting anything else that sends through
+your account.
+
+### How Bryn verifies the connection
+
+Right after you connect, Bryn asks Resend for the first domain on your
+account. This is a read-only check: it sends no email. If Resend accepts the
+key, the Bryn dashboard shows **Connection verified.** If not, it shows
+**The Resend API key could not be verified.** and you can correct the
+details and check again.
+
+<Warning>
+  The check confirms that your API key works. It does not confirm that the
+  domain in your From address is verified in Resend. A connection can show
+  as verified and still have its sends rejected by Resend until the domain
+  is verified.
+</Warning>
+
+## Output
+
+When Bryn sends through a Resend connection, each message has:
+
+- **From** the From address on the connection, including its display name.
+- **To** a single recipient address.
+- A **subject** line and a body in plain text, HTML, or both.
+
+Bryn checks that a message has a sender, a recipient, a subject and a body
+before calling Resend, so an incomplete message is never sent. Resend
+returns an email ID for every message it accepts, and the message appears in
+the **Emails** view of your Resend dashboard.
+
+Resend enforces its own rules on every send, so get these right in your
+Resend account first:
+
+- **Verified domain.** Resend only sends from domains you have added and
+  verified with the DNS records it gives you. Once the domain is verified,
+  any address on it can be the From address.
+- **Testing without a domain.** After you connect, the Bryn dashboard
+  suggests `onboarding@resend.dev` as a From address for testing before
+  your own domain is verified. Resend limits who that shared address can
+  deliver to, so switch to your own domain before relying on it.
+- **Sending limits.** Your Resend plan's rate limit and quota apply to
+  everything you send through Resend, Bryn included.
+
+### Set up the connection
+
+<Steps>
+  <Step title="Verify your domain in Resend">
+    In the Resend dashboard, open **Domains**, add the domain you want to
+    send from, and add the DNS records Resend shows you at your DNS
+    provider. Wait until Resend shows the domain as verified.
+  </Step>
+  <Step title="Create an API key">
+    In **API Keys**, create a key with **Full access**. Copy it now: Resend
+    only shows the full key once.
+  </Step>
+  <Step title="Connect in Bryn">
+    [Open the Resend connect form](https://bryn.civic.com/web/integrations?connect=resend)
+    in the Bryn dashboard and fill in the API key and a From address on
+    your verified domain. Leave **Audience ID** empty unless you want it
+    recorded with the connection. If you already have a Resend connection,
+    the link opens **Integrations** without the form.
+  </Step>
+  <Step title="Check the result">
+    Bryn checks the key as soon as you connect. Once the dashboard shows
+    **Connection verified.**, the connection is ready.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the connection is listed under
+**Integrations** with your From address and shows as verified. If
+verification fails, check that the API key has not been deleted in Resend
+and that it has **Full access** rather than **Sending access**.
+
+## Resend documentation
+
+- [Introduction to Resend](https://resend.com/docs/introduction)
+- [API keys](https://resend.com/docs/dashboard/api-keys/introduction)
+- [Create API key (permission levels)](https://resend.com/docs/api-reference/api-keys/create-api-key)
+- [Managing domains](https://resend.com/docs/dashboard/domains/introduction)
+- [Send email (API reference)](https://resend.com/docs/api-reference/emails/send-email)
+- [List domains (API reference)](https://resend.com/docs/api-reference/domains/list-domains)
+- [Send test emails](https://resend.com/docs/dashboard/emails/send-test-emails)
+- [Account quotas and limits](https://resend.com/docs/knowledge-base/account-quotas-and-limits)
+- [Audiences](https://resend.com/docs/dashboard/audiences/introduction)
+
+## Going further
+
+- How Plays decide what to deliver and where: [Plays](/bryn/plays).
+- Other destinations and how to keep alerts quiet: [Connect Slack and other outputs](/bryn/outputs).
+- Another email output you can connect: [Amazon SES](/bryn/connectors/amazon-ses).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
