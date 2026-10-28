@@ -1,7 +1,137 @@
 ---
 title: Microsoft Teams
-unlisted: true
-description: 'How Bryn connects to Microsoft Teams'
+description: 'Post Bryn alerts to a Microsoft Teams channel through a Workflows webhook'
 ---
 
-Microsoft Teams connects to Bryn in these modes: Output. The full page is in progress.
+Microsoft Teams is Microsoft's chat and meetings app for work. Bryn connects
+to Teams as an **Output** connector: you give Bryn the URL of a Teams
+Workflows webhook, and Bryn posts its alerts into the channel that workflow
+delivers to, as a simple card.
+
+Teams supports one mode in Bryn: Output, for chat alerts.
+
+## How Bryn integrates Microsoft Teams
+
+There is no OAuth app and no API key. In Teams you create a workflow that
+posts to a channel whenever it receives a webhook request, and Teams gives
+you a URL for it. That URL is the whole connection: whoever holds it can post
+to the channel, so Bryn treats it as a secret.
+
+You set it up under [**Integrations**](https://bryn.civic.com/web/integrations)
+in the Bryn dashboard, in a form with one field, **Workflow webhook URL**.
+Bryn stores the URL as a secret and keeps no other settings for the
+connection. The dashboard never shows the URL again, so the connection is
+listed as Microsoft Teams with its status, without a channel name.
+
+Bryn only accepts a URL that:
+
+- uses `https`, and
+- lives on a Microsoft webhook host: `*.logic.azure.com` (a Teams Workflows
+  or Power Automate webhook) or `*.webhook.office.com` (a classic Teams
+  incoming webhook).
+
+Any other address is rejected with **The Teams webhook URL is not valid.**
+before anything is saved.
+
+The Bryn dashboard holds one Microsoft Teams connection at a time: once it is
+connected, Microsoft Teams no longer appears in the list of connectors to add.
+To post to a different channel, disconnect it and connect again with the new
+workflow's URL. Saving the same URL again updates the existing connection
+instead of creating a duplicate, and sets it back to unverified until it is
+checked again. Disconnecting removes the stored URL.
+
+### Workflows and classic incoming webhooks
+
+Microsoft is retiring the classic Office 365 connectors in Teams, including
+the original **Incoming Webhook** connector, in favour of webhooks created
+with the Workflows app. Use a Workflows webhook for new connections. Bryn
+still accepts a classic incoming webhook URL if you already have one, but
+plan to replace it before Microsoft switches it off.
+
+Bryn sends the same card to both kinds of URL, so nothing else changes when
+you switch.
+
+### How Bryn verifies the connection
+
+Teams webhooks have no read-only check, so Bryn verifies the connection by
+posting a real test card to your channel right after you connect. The card
+reads "Bryn is connected to Microsoft Teams."
+
+If Teams accepts it, the Bryn dashboard shows **Test message delivered.** If
+not, it shows **The Teams webhook could not be verified.** and you can fix the
+workflow and test again. Bryn waits up to five seconds for Teams to answer,
+so a workflow that is turned off, deleted or very slow fails the check.
+
+Only a verified connection receives alerts.
+
+## Output
+
+Teams is a chat destination. When a Play's alert step fires, for example
+when a website visitor matches your Ideal Customer Profile (ICP), Bryn posts
+one message about it to your Teams channel through the workflow.
+
+What lands in Teams:
+
+- **One card per alert**, in the channel your workflow posts to. The card is
+  an [Adaptive Card](https://adaptivecards.io/) with a single block of
+  wrapped text.
+- **Plain text only.** The Slack alert layout, with its header, score fields
+  and buttons back to the Bryn dashboard, is not sent to Teams. You get the
+  same alert sentence without the extras.
+- **Posted by the workflow**, so Teams shows it under the identity your
+  workflow posts as, not as a Bryn user.
+
+Bryn sends each alert to one chat destination only. If you have more than one
+chat connector connected and verified, Bryn picks them in this order: Slack,
+then Microsoft Teams, then Discord. So alerts reach Teams when it is your
+only verified chat connection, or when you have no verified Slack
+connection.
+
+<Note>
+  Teams receives alerts from the Play alert step. The newer Play steps that
+  let you pick a specific connection per Play (for example a Slack channel
+  per Play) don't list Microsoft Teams yet.
+</Note>
+
+Cooldowns and workspace caps apply to Teams alerts as they do to Slack; see
+[Keeping it quiet](/bryn/outputs#keeping-it-quiet).
+
+### Set up the connection
+
+<Steps>
+  <Step title="Create a Workflows webhook in Teams">
+    In Teams, open **Workflows** and pick the template that posts to a
+    channel when a webhook request is received. Choose the team and
+    channel, finish the workflow, and copy the URL Teams shows you. A
+    dedicated channel keeps alerts easy to follow.
+  </Step>
+  <Step title="Connect in Bryn">
+    [Open the Microsoft Teams connect form](https://bryn.civic.com/web/integrations?connect=teams)
+    in the Bryn dashboard and paste the URL into **Workflow webhook URL**.
+    If you already have a Teams connection, the link opens
+    **Integrations** without the form.
+  </Step>
+  <Step title="Watch the test card arrive">
+    Bryn posts the test card as soon as you connect. No extra step.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the dashboard shows **Test message
+delivered.** and the "Bryn is connected to Microsoft Teams." card is in your
+channel. If it failed, check that you copied the whole URL and that the
+workflow is turned on, then test again.
+
+## Microsoft Teams documentation
+
+- [Create incoming webhooks with Workflows for Microsoft Teams](https://support.microsoft.com/en-us/office/create-incoming-webhooks-with-workflows-for-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498)
+- [Webhooks and connectors in Teams](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/what-are-webhooks-and-connectors)
+- [Create an incoming webhook (classic)](https://learn.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook)
+- [Retirement of Office 365 connectors within Microsoft Teams](https://devblogs.microsoft.com/microsoft365dev/retirement-of-office-365-connectors-within-microsoft-teams/)
+- [Power Automate for Microsoft Teams](https://learn.microsoft.com/en-us/power-automate/teams/overview)
+- [Adaptive Cards overview](https://learn.microsoft.com/en-us/adaptive-cards/)
+
+## Going further
+
+- How Plays decide what to deliver and where: [Plays](/bryn/plays).
+- Other destinations and how to keep alerts quiet: [Connect Slack and other outputs](/bryn/outputs).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
