@@ -1,7 +1,215 @@
 ---
 title: Findymail
-unlisted: true
-description: 'How Bryn connects to Findymail'
+description: 'Find work emails and phone numbers for the people Bryn meets, and turn Findymail Signals into events in Bryn'
 ---
 
-Findymail connects to Bryn in these modes: Input, Enrichment. The full page is in progress.
+Findymail finds and verifies B2B email addresses and phone numbers, and
+watches LinkedIn for buying signals. Bryn uses Findymail in two modes:
+
+- **Enrichment**: when Bryn knows a person but not their email address, it
+  asks Findymail for their verified work email, from their LinkedIn profile
+  or their name at the company's domain. You can also have Bryn look up
+  phone numbers.
+- **Input**: your Findymail Signals monitors (post engagement, keyword
+  mentions, new hires, job changes, company hiring) send each signal they
+  find to Bryn, where it becomes a [signal](/bryn/signal-mapping) on the
+  matching account and person.
+
+Findymail is never a delivery destination. It does not appear in any Play's
+outputs, and Bryn writes nothing to your Findymail account.
+
+## How Bryn integrates Findymail
+
+The two modes are set up separately, under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard:
+
+- **Enrichment** uses your Findymail API key. You connect it once; Bryn
+  holds one Findymail connection per workspace, and connecting again
+  replaces the key.
+- **Input** uses a webhook URL that Bryn gives you, which you paste into
+  your Findymail monitors. It needs no API key, so you can use Signals
+  without turning on enrichment, and the other way round.
+
+<Note>
+**Lookups are billed to your Findymail account.** Bryn uses the API key you
+connect, and only that key, so every lookup uses your Findymail credits.
+Findymail charges only when it finds something, and Bryn looks each person
+up at most once every 30 days.
+</Note>
+
+When you connect the key, Bryn checks it by reading your Findymail credit
+balance. That check spends nothing, and the connection only counts as
+verified once Findymail accepts the key. Bryn keeps the key in encrypted
+storage; it is never shown again, logged, or passed to Plays.
+
+## Enrichment
+
+Findymail enrichment is **person level**. Bryn asks Findymail about
+individual people at your accounts, never about the company itself, so it
+fills nothing on the account record.
+
+Bryn offers two Findymail lookups. Each has its own card in the Enrichment
+section of **Integrations**, with its own switch: the
+[Findymail card](https://bryn.civic.com/web/integrations?connector=provider%3Afindymail)
+for emails and the
+[Findymail phone card](https://bryn.civic.com/web/integrations?connector=provider%3Afindymail_phone)
+for phone numbers. Connecting the key can turn on the email lookup for you
+(see below); the phone lookup stays off until you turn it on yourself.
+
+| Lookup | Who it runs for | What Bryn asks | What it costs |
+|---|---|---|---|
+| **Findymail** (email) | A person with no email address yet, whose LinkedIn profile, or first and last name, Bryn knows. Looking up by name also needs the account's domain. | The LinkedIn profile first. If that finds nothing, the person's full name at the account's domain. | One finder credit per email found |
+| **Findymail phone** | A person whose LinkedIn profile or email address Bryn knows | The person's LinkedIn profile. If Bryn only has their email, it first asks Findymail for the matching profile. | Ten finder credits per number found, plus one for a profile found from an email |
+
+**What Bryn keeps.** The email lookup keeps the verified work email, and
+whether it was found from the LinkedIn profile or from the name. The phone
+lookup keeps the number, its line type when Findymail reports one, and the
+LinkedIn profile if Bryn had to look it up.
+
+**Filling the person's email.** When Findymail finds an address, Bryn
+uses it as the person's email, but only if the person has none. Bryn never
+overwrites an address the person gave you or that another source supplied.
+Once a person has an email, the lookups that work from an email address
+(such as other enrichment connectors) can run for them on their next pass.
+
+**When it runs.** Bryn enriches a person when their account produces a new
+[signal](/bryn/signal-mapping). People Bryn already knew before you turned
+Findymail on are looked up on their next signal, not all at once. A person
+who does not yet have what a lookup needs (a LinkedIn profile, a full name
+and domain, or an email) is skipped until it arrives, and then the lookup
+runs.
+
+Each person is looked up once per 30 days. A lookup that found nothing also
+waits 30 days before Bryn asks again; it cost you nothing. A lookup that
+failed waits an hour before Bryn retries.
+
+**When Findymail refuses.** If Findymail rejects the key (for example
+because it was deleted), Bryn marks the connection as needing attention;
+reconnect with a working key to resume. If your account runs out of credits
+or your subscription is paused, lookups fail and are retried within the
+hour, so people fill in once you top up. Findymail rate limits and brief
+outages are retried automatically.
+
+### Set up enrichment
+
+<Steps>
+  <Step title="Copy your Findymail API key">
+    In the Findymail app, open the **API** page and copy your API key. Make
+    sure the account has finder credits.
+  </Step>
+  <Step title="Connect Findymail in the Bryn dashboard">
+    [Open the Findymail connect form](https://bryn.civic.com/web/integrations?connect=findymail)
+    (or go to **Integrations** and choose **Findymail**), paste the key,
+    leave **Use Findymail for enrichment** on, and connect. Bryn checks the
+    key with Findymail and shows whether it was verified. Leaving the switch
+    on turns on the email lookup.
+  </Step>
+  <Step title="Turn on phone numbers if you want them">
+    The phone lookup is off by default because each number costs ten
+    credits. To use it, turn on the switch on the
+    [Findymail phone card](https://bryn.civic.com/web/integrations?connector=provider%3Afindymail_phone).
+    To stop either lookup later, turn its card's switch off, or disconnect
+    Findymail to remove the key altogether.
+  </Step>
+  <Step title="Check that it worked">
+    Wait for a new signal on an account with a person who has a LinkedIn
+    profile but no email. Open the person: their email should be filled
+    in, with Findymail listed as an enrichment source.
+  </Step>
+</Steps>
+
+## Input
+
+Findymail Signals monitors watch LinkedIn for people and companies you care
+about. Each monitor can send what it finds to a webhook URL, and Bryn gives
+you that URL.
+
+### What arrives
+
+Every monitor posts one signal at a time. Bryn reads the signal type from
+each delivery, so one Findymail source in Bryn covers all your monitors:
+
+| Findymail signal type | Bryn signal | What it means |
+|---|---|---|
+| `post_engagement` | `content_engagement` | Someone liked or commented on a post the monitor watches |
+| `keyword_mention` | `topic_mention` | Someone posted publicly about a topic you track |
+| `new_hire` | `key_hire` | A tracked company hired into a relevant role |
+| `job_change` | `job_change` | A tracked person moved company |
+| `company_hiring` | `company_hiring` | A company is recruiting in an area you serve |
+
+`content_engagement` means engagement with your own content only when the
+monitor watches your own posts or company page, so point post engagement
+monitors there.
+
+These are trigger signals: reasons to reach out that a
+[Play](/bryn/plays) can act on. They count towards an account's Timing like
+any active signal, but add nothing to Intent until you give them a weight
+in [scoring](/bryn/icp-and-scoring). Each signal is recorded once, so a
+signal Findymail delivers twice raises nothing twice. To change which
+signal a type raises, see [signal mapping](/bryn/signal-mapping).
+
+### How signals match accounts and people
+
+- **With a contact email**: the person is matched or created by their
+  email, and the account by the email's domain. Their first and last name,
+  job title and LinkedIn profile come with them, and so do the company's
+  name, industry and size band.
+- **Without an email**: Bryn matches the company's domain to an account you
+  already have, and never creates one. There is no person. A signal about a
+  company Bryn does not know is kept on the source as unmatched.
+
+That is why the setup asks you to choose **email** as the monitor's
+enrichment level: without it, Findymail sends the company but not the
+person's address.
+
+### Set up a Findymail source
+
+<Steps>
+  <Step title="Add the source in Bryn">
+    Go to [**Integrations**](https://bryn.civic.com/web/integrations?view=inputs)
+    and add a **Findymail** input. Bryn shows you a webhook URL with the
+    credentials already in it.
+  </Step>
+  <Step title="Open Signals in Findymail">
+    Create a monitor, or edit an existing one. Any signal type works. Pick
+    **email** as the enrichment level so Bryn can find the person, not just
+    the company.
+  </Step>
+  <Step title="Paste the URL with credentials">
+    Paste the URL Bryn showed you into the monitor's webhook URL. Use the
+    URL with credentials, not the plain endpoint: Findymail cannot send a
+    header, so the credentials travel in the URL.
+  </Step>
+  <Step title="Save the monitor">
+    Use the same URL for every other monitor you want in Bryn.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the monitor's next signal appears as an
+event on the source, attached to the matching account. There is no test
+button, and monitors run on Findymail's own schedule, so the first signal
+may take a few hours.
+
+<Warning>
+**The URL is the credential.** If you regenerate the source's secret in
+Bryn, the URL changes. Paste the new URL into every monitor that uses it,
+or their signals are refused.
+</Warning>
+
+## Findymail documentation
+
+- [Findymail API reference](https://app.findymail.com/docs/): authentication,
+  credit costs and rate limits, and the email finder, phone finder and
+  reverse email endpoints Bryn uses for enrichment.
+- [Signals](https://app.findymail.com/docs/#signals): monitors, signal
+  types and the monitor webhook URL.
+- [Findymail API overview](https://www.findymail.com/api/): what the API
+  offers and how to get access.
+
+## Going further
+
+- Turn events into signals: [Signal mapping](/bryn/signal-mapping).
+- See how signals and enrichment feed scoring: [ICP and scoring](/bryn/icp-and-scoring).
+- Act on signals: [Plays](/bryn/plays).
+- All connectors: [Connectors](/bryn/connectors).
