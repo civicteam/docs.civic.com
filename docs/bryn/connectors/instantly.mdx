@@ -1,7 +1,152 @@
 ---
 title: Instantly
-unlisted: true
-description: 'How Bryn connects to Instantly'
+description: 'Enrol the people your Plays pick into Instantly campaigns and check whether a person is already in one'
 ---
 
-Instantly connects to Bryn in these modes: Enrichment, Output. The full page is in progress.
+Instantly is a cold email platform that sends multi-step outreach campaigns
+from your own mailboxes. Bryn works with Instantly in two modes on one API
+key: **Output**, where a [Play](/bryn/plays) adds a person to one of your
+Instantly campaigns as a lead, and **Enrichment**, where Bryn checks whether
+a person is already enrolled in any of your campaigns.
+
+Bryn uses your own Instantly workspace, so every lead Bryn adds and every
+lookup it makes runs on your Instantly plan and API limits.
+
+## How Bryn integrates Instantly
+
+You connect Instantly with an API key under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard. One connection serves both modes: Plays use the key to add leads
+to campaigns, and the enricher uses the same key to read which campaigns a
+person is in.
+
+<Warning>
+**Create the key with the `leads:all` and `campaigns:read` scopes.** Bryn
+needs `leads:all` to add leads and look them up, and `campaigns:read` to list
+your campaigns and check the one a Play targets. Don't use an `all:all` key:
+Bryn does not need that much access.
+</Warning>
+
+When you enter the key, Bryn checks it straight away by listing your
+campaigns:
+
+- **A rejected key** shows an error beside the field and you cannot connect it.
+- **A key without `campaigns:read`** shows an error asking for a key with the
+  `campaigns:read` and `leads:all` scopes.
+- **A workspace without an active paid plan** shows an error, since
+  Instantly's API is not available on it.
+- **A valid key** loads your campaigns so you can pick the connection's
+  **Default campaign**. If the workspace has no campaigns yet, create one in
+  Instantly first, then enter the key again.
+
+If Instantly itself cannot be reached at that moment, the form lets you paste
+the default campaign's id instead, so an Instantly outage does not block you.
+
+After you connect, Bryn verifies the connection by reading the default
+campaign from Instantly. This needs a valid key and a campaign that exists, so
+a mistyped campaign id fails here rather than on the first delivery. Verifying
+adds no lead and changes nothing in the campaign. Bryn keeps the key in
+encrypted storage; it is never shown again, logged, or passed to Plays.
+
+The Bryn dashboard holds one Instantly connection at a time: once it is
+connected, Instantly no longer appears in the list of connectors to add. To
+change the key or the default campaign, disconnect Instantly and connect
+again.
+
+## Enrichment
+
+Bryn checks, person by person, whether someone is already a lead in one of
+your Instantly campaigns. This is a read only lookup: enrichment never adds,
+changes or removes anything in Instantly.
+
+- **What Bryn looks up**: the person's own email address. A person without
+  an email is skipped, and checked as soon as an email arrives. Bryn never
+  uses a colleague's address from the same account.
+- **What Bryn reads**: every campaign the email is enrolled in, across all
+  your campaigns, not only the connection's default. For each campaign Bryn
+  reads its name, the lead's status in it (Active, Paused, Completed,
+  Bounced, Unsubscribed or Skipped), open and reply counts, when the lead was
+  added and when it was last contacted. A lead that sits in an Instantly
+  list but not in a campaign does not count.
+- **How it is used**: the result sets the person's **In an outreach
+  campaign** state, which a Play trigger can test under **Person**. It stays
+  true between checks and clears when the person leaves every campaign. Use it
+  to act on a signup from someone your outbound team is already emailing, or
+  to keep a Play away from people who are already in a campaign.
+
+**When it runs.** Bryn checks a person when an event about them arrives, at
+most once every five minutes per person, so a membership change in Instantly
+shows up in Bryn within a few minutes.
+
+**Turning it on and off.** The connect form asks whether to **Use Instantly
+for enrichment**. The switch is on by default. You can change it later in
+**Configuration**, under **Enrichment**, without disconnecting Instantly, so
+Plays keep delivering either way.
+
+**When Instantly refuses.** If Instantly rejects the key during a lookup,
+Bryn marks the connection as failed so you can fix it under **Integrations**.
+If Instantly is busy or unreachable, Bryn retries the lookup.
+
+## Output
+
+A Play can add the person it acts on to an Instantly campaign as a lead.
+Instantly then emails them on the campaign's own schedule and steps, from the
+mailboxes the campaign uses.
+
+Bryn sends the person's email address (required, since Instantly leads are
+keyed by email), and where known their first name, last name and company
+name. A person with no email address is recorded as a skipped delivery.
+
+Bryn asks Instantly to skip anyone who is already in that campaign, so a
+repeat delivery never adds the person twice. It still counts as delivered,
+because the person is in the campaign either way.
+
+### Set it up
+
+<Steps>
+  <Step title="Create an API key in Instantly">
+    In your Instantly workspace settings, create an API key with the
+    `leads:all` and `campaigns:read` scopes. Make sure the workspace is on a
+    paid plan and has at least one campaign.
+  </Step>
+  <Step title="Connect Instantly in the Bryn dashboard">
+    [Open the Instantly connect form](https://bryn.civic.com/web/integrations?connect=instantly)
+    (or go to **Integrations** and choose **Instantly**) and paste the key.
+    Pick the **Default campaign** new leads go to unless a Play names
+    another one. Leave **Use Instantly for enrichment** on if you want the
+    campaign check described above.
+  </Step>
+  <Step title="Add Instantly to a Play">
+    In the Play's outputs, add Instantly and pick the connection. Leave the
+    campaign empty to use the connection's default, or pick another of your
+    campaigns for this Play.
+  </Step>
+  <Step title="Test the entry">
+    Click **Test** on the Instantly entry. Bryn checks that the key works
+    and the campaign is reachable, without adding anyone to it.
+  </Step>
+</Steps>
+
+A Play only delivers to Instantly once the connection is verified. If it is
+not, or no campaign is set, the delivery is recorded as skipped rather than
+failed.
+
+**You'll know it worked when** the person appears as a lead in the Instantly
+campaign, with their name and company filled in where Bryn knew them.
+
+## Instantly documentation
+
+- [Quickstart](https://developer.instantly.ai/quickstart): create an API key and make a first API v2 request
+- [Authorization](https://developer.instantly.ai/getting-started/authorization), including API key scopes
+- [API v2](https://help.instantly.ai/en/articles/10432807-api-v2) in the Instantly help center
+- [Create lead](https://developer.instantly.ai/api-reference/lead/create-lead)
+- [List leads](https://developer.instantly.ai/api-reference/lead/list-leads)
+- [List campaigns](https://developer.instantly.ai/api-reference/campaign/list-campaign)
+- [Get campaign](https://developer.instantly.ai/api-reference/campaign/get-campaign)
+- [Rate limits](https://developer.instantly.ai/getting-started/rate-limit)
+
+## Going further
+
+- Build the Play that enrols people: [Plays](/bryn/plays).
+- See how a Play's output is delivered and recorded: [Outputs](/bryn/outputs).
+- Compare with other connectors: [Connectors](/bryn/connectors).
