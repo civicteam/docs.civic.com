@@ -1,7 +1,299 @@
 ---
 title: Pipedrive
-unlisted: true
-description: 'How Bryn connects to Pipedrive'
+description: 'Turn Pipedrive record changes into signals and enrich accounts and people from your own Pipedrive CRM'
 ---
 
-Pipedrive connects to Bryn in these modes: Input, Enrichment, Output. The full page is in progress.
+Pipedrive is a sales CRM built around deals moving through a pipeline. Bryn
+works with your own Pipedrive company in three modes: **Input**, where
+Pipedrive webhooks tell Bryn when a person, deal or organization changes;
+**Enrichment**, where Bryn reads the organization, owner and open deals
+behind an account, and each person's CRM title and owner; and **Output**,
+where a Pipedrive connection is ready for Plays to write people into your
+CRM.
+
+Everything Bryn reads or writes goes through your own Pipedrive account and
+counts against your Pipedrive API budget.
+
+## How Bryn integrates Pipedrive
+
+Pipedrive uses two separate links to Bryn, both set up under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard:
+
+- **A Pipedrive connection** (API token and company domain) for Enrichment
+  and Output. Bryn calls Pipedrive with it.
+- **One or more Pipedrive sources** (webhook URL, username and password) for
+  Input. Pipedrive calls Bryn with them.
+
+You can use either on its own. The connection never creates webhooks in
+Pipedrive for you, so Input is always set up in Pipedrive by hand.
+
+### The connection
+
+The connect form asks for two things:
+
+| Field | What to enter |
+|---|---|
+| **API token** | A personal API token, from **Settings**, then **Personal preferences**, then **API** in Pipedrive |
+| **Company domain** | The domain you sign in to, for example `acme.pipedrive.com` |
+
+A Pipedrive API token belongs to one user in one company, so keep these in
+mind:
+
+- **The token has its user's permissions.** Bryn sees and writes only what
+  that user can. Use an account that can read and write people, and that
+  can see the organizations and deals you want Bryn to read.
+- **The domain must match the token.** A token only works against its own
+  company's domain. Bryn accepts only `https` addresses on
+  `pipedrive.com` and sends the token nowhere else. You can leave out
+  `https://`; Bryn adds it.
+
+When you connect, Bryn checks the token with a read-only call to Pipedrive
+that asks which user it belongs to. If that call fails, the connection is
+marked as failed with the message "The Pipedrive API token could not be
+verified." Check the token and the domain, then connect again; connecting
+again replaces the stored token and checks it afresh. Bryn keeps the token
+in encrypted storage and never shows it again.
+
+The Bryn dashboard holds one Pipedrive connection at a time: once it is
+connected, the Pipedrive connection no longer appears in the list of
+connectors to add. To point Bryn at another Pipedrive company, disconnect
+and connect again.
+
+### Your Pipedrive API budget
+
+Pipedrive gives each company a shared daily budget of API tokens, used by
+every integration on that company, Bryn included. Bryn keeps its share
+small: each account and each person is looked up at most once a day, and
+when Pipedrive reports the budget is spent, Bryn stops asking for the rest
+of that lookup instead of retrying into it. See Pipedrive's
+[rate limiting](https://pipedrive.readme.io/docs/core-api-concepts-rate-limiting)
+page for how the budget is sized for your plan.
+
+## Input
+
+### What arrives
+
+Pipedrive sends a webhook each time a record changes. Each Bryn source
+receives one kind of Pipedrive record, so you create one source per record
+type you want:
+
+| Source | Default name | Events | Signal raised by default |
+|---|---|---|---|
+| Person | `pipedrive-person` | `pipedrive-person.change`, `pipedrive-person.create` | `gtm_review` on a change, `crm_contact_created` on a new person |
+| Deal | `pipedrive-deal` | `pipedrive-deal.change` | `gtm_review` |
+| Organization | `pipedrive-org` | `pipedrive-org.change` | `gtm_review` |
+
+The event name is the source's name plus Pipedrive's action, so if you
+rename a source when you create it, its events carry that name instead.
+
+- **`gtm_review`** is raised for any change to a record, and Bryn also
+  tracks it for silence: an account whose Pipedrive activity stops can be
+  noticed too.
+- **`crm_contact_created`** is raised once per new Pipedrive person, even
+  if Pipedrive delivers the webhook more than once. It needs the second,
+  Create webhook described in the setup steps below.
+
+Any other event is stored but raises nothing until you map it. A common
+example is a deal reaching a stage: map `pipedrive-deal.change` with two
+conditions, `previous.stage_id` exists and `data.stage_id` equals your
+stage's id. Pipedrive's `previous` only lists the fields that changed, so
+the first condition makes the rule fire when the deal moves into the stage,
+not on every later edit while it sits there. See
+[Signal mapping](/bryn/signal-mapping).
+
+### How events match accounts and people
+
+| Source | Account matched on | Person | Account details read |
+|---|---|---|---|
+| Person | The person's organization | Primary email address, first and last name | None |
+| Deal | The deal's organization | None (a deal carries no email) | None |
+| Organization | The organization itself | None | Name, employee count, website |
+
+Bryn always uses the email Pipedrive marks as primary, never simply the
+first one in the list, so a secondary or personal address is not taken as
+the person's identity.
+
+Accounts are matched by Pipedrive organization id. When
+[Enrichment](#enrichment) has already found an account's Pipedrive
+organization, webhooks for that organization land on that account. An
+organization Bryn has not seen before becomes a new account, which fills
+in on its next enrichment.
+
+### Connect Pipedrive webhooks
+
+Repeat these steps for each record type you want.
+
+<Steps>
+  <Step title="Add a Pipedrive source in the Bryn dashboard">
+    Go to [**Integrations**](https://bryn.civic.com/web/integrations), add
+    the **Pipedrive** input and choose the record type: **Person**,
+    **Deal** or **Organization**. Bryn creates the source with its endpoint
+    URL, an id and a secret, and fills in account matching and the default
+    signals for that type. The secret is shown once; you can reveal it again
+    from the source later.
+  </Step>
+  <Step title="Create a webhook in Pipedrive">
+    In Pipedrive, go to **Settings**, then **Tools and apps**, then
+    **Webhooks**, and create a new webhook. Set the event action to
+    **Change** and the event object to the same record type as the Bryn
+    source. Leave the other objects unticked.
+  </Step>
+  <Step title="Fill in the URL and HTTP auth">
+    Paste the source's endpoint URL. For the HTTP auth username, use the
+    source's **id**, not the name you gave it. For the password, use the
+    source's secret.
+  </Step>
+  <Step title="For new people, add a second webhook">
+    On a Person source only, create one more webhook in Pipedrive with the
+    same object, URL, username and password, and the event action set to
+    **Create**. This is what raises `crm_contact_created`. Deal and
+    Organization sources don't need it.
+  </Step>
+  <Step title="Make a change and check it arrived">
+    Edit a record of that type in Pipedrive, then open the source in the
+    Bryn dashboard. An event named like `pipedrive-person.change` means it
+    works. An event named `pipedrive-person.unmapped` means Bryn could not
+    read the event type, usually because the webhook is an old version 1
+    subscription; create it again as a version 2 webhook.
+  </Step>
+</Steps>
+
+<Warning>
+  Pipedrive's form lets one webhook cover persons, deals and organizations
+  together. Don't: each kind of record matches its account differently, so
+  a source receiving all three matches at most one of them correctly and
+  quietly drops the rest. Use one webhook (and one Bryn source) per record
+  type. Avoid the `*` event action too, which also sends deletions.
+</Warning>
+
+Pipedrive webhooks have no request signature, only the HTTP username and
+password, which Bryn checks on every delivery.
+
+### Keeping it working
+
+- **Pipedrive deletes a failing webhook.** After three days of failed
+  deliveries Pipedrive removes the subscription without telling Bryn.
+  Turning the source back on in Bryn is not enough; create the webhook in
+  Pipedrive again.
+- **Writes through the API come back as events.** Anything that changes a
+  record through Pipedrive's API, including other integrations, fires a
+  webhook just as an edit in the app does. In the event,
+  `meta.change_source` is `api` for API writes and `app` for edits in
+  Pipedrive, which you can use in a mapping condition. A new person created
+  through the API still raises `crm_contact_created`.
+- **Linking records touches their neighbours.** Linking a person to an
+  organization fires a change on the organization that nobody made, whose
+  `previous` holds only `update_time`. Expect more organization events than
+  real edits.
+- **A slow delivery can arrive twice.** Pipedrive retries a delivery it did
+  not see succeed in time, with the same `meta.id`. Only new people are
+  deduplicated by default; add deduplication on `meta.id` to a mapping if
+  repeats matter to you.
+- **Changing account matching on a live source.** To match a source on a
+  different field, create a new source instead of editing the live one, so
+  accounts already matched stay as they are.
+
+## Enrichment
+
+Bryn reads your Pipedrive at two levels, each shown as its own source in
+the Bryn dashboard. Enrichment is read only: it never writes to Pipedrive
+and never raises signals.
+
+- **Account level**: the account's Pipedrive organization (id and name),
+  the organization's owner, and its open deals. Bryn reads up to 100 open
+  deals and keeps the newest 10, each with its title, stage name, pipeline,
+  value, currency, owner and last update. The open deal count covers all of
+  them, and shows as "at least 100" when there are more. When Pipedrive
+  refuses the deal read, the deal fields are left empty rather than shown
+  as zero, so "no open deals" always means there are none.
+- **Person level**: whether the person is in your Pipedrive at all, their
+  job title, and the person's own owner in Pipedrive. Pipedrive only
+  returns a job title when your company uses contact sync. A title from
+  Pipedrive fills Bryn's title for the person only when it is empty, so it
+  never replaces one from a form or your team.
+
+**How Bryn finds the record.** Bryn looks the person up by exact email
+match, so a similar address never pulls in a colleague's record. Once an
+account's Pipedrive organization is known, from an earlier lookup or from a
+webhook, Bryn reads the organization directly and skips the email search.
+If a person is later deleted from Pipedrive, the next lookup removes their
+Pipedrive details from Bryn.
+
+These facts are available to [Plays](/bryn/plays), for example to route a
+lead to the account's owner or to hold back when a deal is already open.
+They don't change the account's [fit score](/bryn/icp-and-scoring).
+
+**When it runs.** Enrichment starts when a signal arrives for an account
+and Bryn has a person's email or a known Pipedrive organization for it.
+Each account, and each person, is looked up at most once a day. Accounts
+seen before you turned Pipedrive on are looked up on their next signal.
+
+### Turn it on
+
+<Steps>
+  <Step title="Find your API token in Pipedrive">
+    In Pipedrive, open **Settings**, then **Personal preferences**, then
+    **API**, and copy your personal API token. Use an account that can see
+    the organizations, people and deals you want Bryn to read.
+  </Step>
+  <Step title="Connect Pipedrive in the Bryn dashboard">
+    Open [the Pipedrive connect form](https://bryn.civic.com/web/integrations?connect=pipedrive),
+    paste the token and enter your company domain.
+  </Step>
+  <Step title="Keep enrichment on">
+    Leave **Use Pipedrive for enrichment** switched on (it is on by
+    default). You can change it later in **Configuration**, under
+    **Enrichment**. Connecting without it gives Bryn a working connection
+    but no lookups.
+  </Step>
+</Steps>
+
+## Output
+
+<Note>
+  Plays don't write to Pipedrive yet. You can connect and verify a
+  Pipedrive connection today, and it is used for enrichment, but no Play
+  step delivers to it. This section describes how a write is designed to
+  behave.
+</Note>
+
+A Play write to Pipedrive adds or updates one person:
+
+- Bryn searches for a Pipedrive person with the same email (exact match).
+  If one exists, Bryn updates it; otherwise it creates one.
+- **A new person** gets the name (or the email, if Bryn has no name), the
+  email as primary, the phone number if known, and a link to the
+  organization.
+- **An existing person** only gets additions: a name if Bryn has one, and
+  the organization link. Bryn never replaces their email addresses or phone
+  numbers, so a contact your team curated keeps its details. If there is
+  nothing to add, Bryn makes no change.
+- **The organization** is the account's Pipedrive organization when
+  Enrichment has found it. Otherwise Bryn looks for an organization with
+  exactly the account's name, and creates one if none exists.
+
+Pipedrive has no way to create a person only if missing, so two writes for
+the same new email at the same moment can create two people; merge them in
+Pipedrive if that happens. A write also comes back to any Person source as
+a webhook, as described under [Keeping it working](#keeping-it-working).
+
+## Pipedrive documentation
+
+- [How to find your personal API token](https://support.pipedrive.com/en/article/how-can-i-find-my-personal-api-key)
+- [Authentication](https://pipedrive.readme.io/docs/core-api-concepts-authentication)
+  and [how to get the company domain](https://pipedrive.readme.io/docs/how-to-get-the-company-domain)
+- [Rate limiting](https://pipedrive.readme.io/docs/core-api-concepts-rate-limiting),
+  including the daily token budget
+- [Guide for webhooks v2](https://pipedrive.readme.io/docs/guide-for-webhooks-v2)
+  and the [Webhooks API reference](https://developers.pipedrive.com/docs/api/v1/Webhooks)
+- API reference for [Persons](https://developers.pipedrive.com/docs/api/v1/Persons),
+  [Organizations](https://developers.pipedrive.com/docs/api/v1/Organizations)
+  and [Deals](https://developers.pipedrive.com/docs/api/v1/Deals)
+
+## Going further
+
+- How events become signals: [Signal mapping](/bryn/signal-mapping)
+- Act on a signal: [Plays](/bryn/plays)
+- How enrichment feeds fit and scoring: [ICP and scoring](/bryn/icp-and-scoring)
+- Other tools Bryn connects to: [Connectors](/bryn/connectors)
