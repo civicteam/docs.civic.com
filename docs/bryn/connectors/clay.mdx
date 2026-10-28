@@ -1,6 +1,143 @@
 ---
 title: Clay
-description: 'How Bryn connects to Clay'
+description: 'Look up company size, industry, and location in Clay to fill in the accounts Bryn sees'
 ---
 
-Clay connects to Bryn in these modes: Enrichment. The full page is in progress.
+Clay is a go-to-market data platform with a large database of companies
+and people. Bryn uses Clay in one mode, **Enrichment**: when Bryn knows an
+account's domain, it looks the company up in Clay and fills in its
+firmographics (size, industry, type, country, location, revenue and
+funding), which [scoring](/bryn/icp-and-scoring) and your
+[Plays](/bryn/plays) then use.
+
+Clay is never a delivery destination. It does not appear in any Play's
+outputs, and Bryn writes nothing to your Clay workspace.
+
+## How Bryn integrates Clay
+
+You connect Clay with a Clay API key under [**Integrations**](https://bryn.civic.com/web/integrations) in the
+Bryn dashboard. The key is the only thing Bryn needs: there are no Clay tables,
+columns or webhooks to set up, because Bryn calls Clay's company search
+directly and reads the answer back in the same request.
+
+<Note>
+**Lookups are billed to your Clay account.** Bryn uses the API key you
+connect, and only that key, so every company lookup uses your Clay
+workspace's credits. Bryn looks each account up at most once every 30
+days to keep that spend predictable.
+</Note>
+
+When you connect, Bryn checks the key by asking Clay who it belongs to.
+That check is an identity read, not a search, so it costs nothing. The
+connection only counts as verified once Clay accepts the key. Bryn keeps
+the key in encrypted storage; it is never shown again, logged, or passed
+to Plays.
+
+The connect form also asks whether to **Use Clay for enrichment**. The
+switch is on by default, and Bryn starts looking accounts up once the key
+is verified. If you turn it off, the connection is saved but no lookups
+run until you turn on **Clay enrichment** on the
+[Clay card](https://bryn.civic.com/web/integrations?connector=provider%3Aclay). To stop later, turn that switch off, or disconnect Clay
+to remove the key altogether.
+
+## Enrichment
+
+Clay enrichment is **account level only**. Bryn asks Clay about the
+company behind a domain; it never sends or requests anything about
+individual people.
+
+**What Bryn reads.** For a matched company, Bryn keeps the company name,
+domain, description, company type, employee size band, country,
+location, industry, annual revenue, total funding range, and LinkedIn
+URL. Bryn puts these into the account's main fields:
+
+- **Size, type and country** become the account's size band, company type
+  and country, which [scoring](/bryn/icp-and-scoring) matches your ICP
+  against.
+- **Industry** comes from Clay as a LinkedIn industry name, which Bryn
+  maps to its standard industry list, so it drives the industry part of
+  your Fit score too. Because Clay's industries are more specific than
+  most sources, Clay's industry wins when another source (such as your
+  CRM or visitor identification) suggests a broader one. A few companies
+  still carry an older LinkedIn industry name; Bryn maps those to the
+  current one, and drops any it cannot map rather than guess.
+- **Revenue and funding** are kept as Clay reports them, alongside the
+  other Clay facts.
+
+**Picking the right company.** A domain is often listed by companies that
+do not own it: a business whose careers page runs on a hiring platform
+lists that platform's domain, and a contractor may list a client's. So
+Bryn does not trust Clay's first result. It asks for a few candidates and
+only keeps a company whose own website is the domain Bryn asked about (or
+the main site of that domain). When several remain, Bryn prefers the
+exact match, then the company whose name matches the domain, then one
+clearly larger than the rest. If none of these rules settles it, Bryn
+keeps no answer rather than pick the wrong company.
+
+When a lookup completes and Clay has no company Bryn will accept, Bryn
+removes any earlier Clay answer for that account, so a wrong match does
+not linger. When the result is ambiguous, the earlier answer stays as it
+is.
+
+**When it runs.** Bryn looks an account up in Clay when the account
+produces a new [signal](/bryn/signal-mapping), or when a mapped source
+first creates the account. Accounts that existed before you turned Clay
+on are enriched on their next signal, not all at once. An account without
+a domain is skipped until a domain arrives, and then Clay runs straight
+away.
+
+Each account is looked up once per 30 days. A lookup that found nothing
+also waits 30 days before Bryn asks again. A lookup that failed waits an
+hour before Bryn retries.
+
+**Where results appear.** Open an account in the Bryn dashboard: Clay is
+listed under **Enrichment sources** with what it filled and when, and the
+fields it filled show on the account. Enrichment activity from Clay is
+also in the audit log, where you can filter by the Clay source.
+
+**When Clay refuses.** If Clay rejects the key (for example because it
+was revoked), Bryn marks the connection as needing attention on the
+[Clay card](https://bryn.civic.com/web/integrations?connector=provider%3Aclay);
+reconnect with a working key to resume. If your Clay workspace runs out of credits, lookups fail and are retried later, so
+accounts fill in once you top up. Clay rate limits and brief outages are
+retried automatically.
+
+### Set it up
+
+<Steps>
+  <Step title="Create a Clay API key">
+    In Clay, open your workspace settings, go to **API and CLI**, then
+    **API keys**, and create a key. Make sure the workspace has search
+    credits available.
+  </Step>
+  <Step title="Connect Clay in the Bryn dashboard">
+    [Open the Clay connect form](https://bryn.civic.com/web/integrations?connect=clay) (or go to
+    **Integrations** and choose **Clay**), paste the key, leave **Use
+    Clay for enrichment** on, and connect. Bryn checks the key with Clay
+    before saving the connection.
+  </Step>
+  <Step title="Check that it worked">
+    Wait for a new signal on an account that has a domain, then open the
+    account. Clay should be listed under **Enrichment sources**, with the
+    company's size, industry and country filled in.
+  </Step>
+</Steps>
+
+## Clay documentation
+
+- [Clay developer documentation](https://developers.clay.com/): overview
+  of the Clay Public API that Bryn calls.
+- [Authentication](https://developers.clay.com/public-api/authentication):
+  how Clay API keys work and where to create one.
+- [Searches](https://developers.clay.com/searches): the company search
+  Bryn uses to look accounts up by domain.
+- [Rate limits](https://developers.clay.com/public-api/rate-limits): how
+  Clay throttles API requests.
+- [Credits](https://university.clay.com/docs/credits): how Clay bills
+  usage against your workspace.
+
+## Going further
+
+- How accounts are scored against your ICP: [ICP and scoring](/bryn/icp-and-scoring).
+- How events become signals: [Signal mapping](/bryn/signal-mapping).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
