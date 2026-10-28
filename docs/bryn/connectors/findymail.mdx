@@ -50,8 +50,12 @@ individual people at your accounts, never about the company itself, so it
 fills nothing on the account record.
 
 Bryn offers two Findymail lookups. Each has its own card in the Enrichment
-section of **Integrations**, with its own switch, and both are off until you
-turn them on.
+section of **Integrations**, with its own switch: the
+[Findymail card](https://bryn.civic.com/web/integrations?connector=provider%3Afindymail)
+for emails and the
+[Findymail phone card](https://bryn.civic.com/web/integrations?connector=provider%3Afindymail_phone)
+for phone numbers. Connecting the key can turn on the email lookup for you
+(see below); the phone lookup stays off until you turn it on yourself.
 
 | Lookup | Who it runs for | What Bryn asks | What it costs |
 |---|---|---|---|
@@ -96,14 +100,17 @@ outages are retried automatically.
   </Step>
   <Step title="Connect Findymail in the Bryn dashboard">
     [Open the Findymail connect form](https://bryn.civic.com/web/integrations?connect=findymail)
-    (or go to **Integrations** and choose **Findymail**), paste the key and
-    connect. Bryn checks the key with Findymail and shows whether it was
-    verified.
+    (or go to **Integrations** and choose **Findymail**), paste the key,
+    leave **Use Findymail for enrichment** on, and connect. Bryn checks the
+    key with Findymail and shows whether it was verified. Leaving the switch
+    on turns on the email lookup.
   </Step>
-  <Step title="Turn on the lookups you want">
-    In the Enrichment section of **Integrations**, turn on the
-    **Findymail** card for work emails. Turn on **Findymail phone** too if
-    you want phone numbers, keeping in mind each number costs ten credits.
+  <Step title="Turn on phone numbers if you want them">
+    The phone lookup is off by default because each number costs ten
+    credits. To use it, turn on the switch on the
+    [Findymail phone card](https://bryn.civic.com/web/integrations?connector=provider%3Afindymail_phone).
+    To stop either lookup later, turn its card's switch off, or disconnect
+    Findymail to remove the key altogether.
   </Step>
   <Step title="Check that it worked">
     Wait for a new signal on an account with a person who has a LinkedIn
