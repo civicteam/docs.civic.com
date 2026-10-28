@@ -1,7 +1,241 @@
 ---
 title: Outgoing webhook
-unlisted: true
-description: 'How Bryn connects to Outgoing webhook'
+description: 'Post a JSON payload from a Bryn Play to an endpoint you control'
 ---
 
-Outgoing webhook connects to Bryn in these modes: Output. The full page is in progress.
+An outgoing webhook lets a [Play](/bryn/plays) send a JSON payload to any
+HTTPS endpoint you run or use: your own backend, an automation tool, or a
+vendor API that Bryn has no dedicated connector for. You choose the
+address, the method, the headers and the payload, and Bryn fills in the
+account, person and signal details each time the Play fires.
+
+Outgoing webhook supports one mode in Bryn: Output.
+
+## How Bryn integrates outgoing webhooks
+
+There is no third party to authorise. You set up each webhook under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard, in a form with five fields:
+
+| Field | What to enter |
+|---|---|
+| **Name** | A label for the webhook, up to 80 characters. It is how you pick the webhook when you add it to a Play |
+| **Endpoint** | The full `https://` address Bryn sends to |
+| **Method** | `POST` (the default), `PUT` or `PATCH` |
+| **Headers** | Optional. Up to 20 name and value pairs sent with every request, for example `Authorization: Bearer ...` |
+| **Default payload** | A JSON object sent when a Play doesn't set a payload of its own. Leave it as `{}` if every Play will set its own |
+
+You can hold as many outgoing webhooks as you like, one per endpoint.
+Connecting an endpoint you already have updates that webhook instead of
+adding a second one: its name, method, headers and default payload are
+replaced with what you just entered.
+
+### What the endpoint must look like
+
+Bryn only sends to public HTTPS addresses. The form refuses an endpoint
+that:
+
+- uses `http://` or any scheme other than `https://`;
+- names an IP address, `localhost`, a single-word host name, or an
+  internal name ending in `.internal`, `.local` or `.svc`;
+- carries a username or password in the URL.
+
+Bryn does not follow redirects. A `3xx` answer from your endpoint counts as
+a failed delivery, so give Bryn the final address.
+
+### Headers and secrets
+
+Headers are where any secret your endpoint needs belongs: an API key, a
+bearer token, a shared secret you check on your side. Bryn stores header
+values as secrets. The form masks them as you type, and the Bryn dashboard
+never shows them again after you connect.
+
+Bryn sets `Content-Type: application/json; charset=utf-8` on every request
+itself, so you can't add your own `Content-Type`; `Content-Length`,
+`Host`, `Connection` and `Transfer-Encoding` are reserved too. Header names
+must be unique, ignoring case.
+
+<Note>
+  Bryn does not sign outgoing webhook requests. To make sure a request
+  came from Bryn, check a header value only you and Bryn know, such as an
+  `Authorization` token or a custom header like `X-Bryn-Secret`. The
+  signing secret in [Server-side events and signing](/bryn/signing) is for
+  events you send into Bryn, not for requests Bryn sends to you.
+</Note>
+
+### How Bryn verifies the connection
+
+Bryn doesn't know what your endpoint expects, so it makes no request when
+you connect: a new webhook shows as verified straight away. To check it
+for real, open the webhook under **Integrations** and click **Send test**.
+Bryn posts the default payload to your endpoint with your method and
+headers, and shows either **Test delivered.** or the status code your
+endpoint answered with, for example **The receiver answered 401.**
+**Send test** is only available once the webhook has a default payload
+other than `{}`.
+
+To change a webhook's settings, delete it (**Delete webhook** under
+**Integrations**) and add it again. Deleting removes the stored headers
+and stops every Play that posts to it; the confirm names those Plays first.
+
+## Output
+
+A Play with an outgoing webhook output sends one request to that webhook
+each time it fires for an account. A single Play can post to several
+webhooks, each with its own payload, alongside its other outputs.
+
+For each webhook in a Play you set:
+
+- **The webhook**: one of your outgoing webhooks, picked by name.
+- **The payload** (optional): the JSON to send. It starts as the webhook's
+  default payload for you to adapt. Leave it empty to send the default
+  payload as it is.
+
+The endpoint, method and headers always come from the webhook itself; a
+Play can't override them.
+
+### Writing the payload
+
+The payload is a JSON object, up to 16,000 characters, with `{{variable}}`
+placeholders inside its string values. Bryn fills them in when the Play
+fires:
+
+```json
+{
+  "event": "bryn.play_fired",
+  "idempotencyKey": "{{play.executionId}}",
+  "play": "{{play.name}}",
+  "account": {
+    "name": "{{entity.name}}",
+    "domain": "{{entity.domain}}"
+  },
+  "person": {
+    "name": "{{individual.name}}",
+    "email": "{{individual.email}}",
+    "title": "{{individual.title | "Unknown"}}"
+  },
+  "signal": "{{signal.type}}",
+  "signals": "{{signal.types}}",
+  "fitScore": "{{score.fit}}",
+  "intentScore": "{{score.intent}}"
+}
+```
+
+For a run where Ada Lovelace, VP Engineering at Acme, triggered the Play,
+Bryn sends:
+
+```json
+{
+  "event": "bryn.play_fired",
+  "idempotencyKey": "3f2b9c1e-7d4a-4f0b-9a61-2c8e5d7b1a90",
+  "play": "Pricing page visitors",
+  "account": {
+    "name": "Acme",
+    "domain": "acme.example"
+  },
+  "person": {
+    "name": "Ada Lovelace",
+    "email": "ada@acme.example",
+    "title": "VP Engineering"
+  },
+  "signal": "icp_match",
+  "signals": "pricing_view, icp_match",
+  "fitScore": "82",
+  "intentScore": "47"
+}
+```
+
+What to know about placeholders:
+
+- **They go inside quoted strings.** Every value is inserted as text and
+  escaped for JSON, so a name with a quote mark in it can't break the
+  payload. Numbers and `true` or `false` arrive as strings too, for
+  example `"fitScore": "82"`.
+- **Missing values are empty.** If the person has no email,
+  `{{individual.email}}` becomes `""`. Add a fallback after a `|` to send
+  something else, as `{{individual.title | "Unknown"}}` does above. Write
+  the fallback's quotes as plain quotes, even inside a JSON string: the
+  whole placeholder is replaced, so the payload is valid JSON once Bryn
+  fills it in.
+- **Mistakes fail on save.** Bryn checks every placeholder against its
+  list of variables, and checks that the filled-in payload is a JSON
+  object, when you save the Play. A typo shows up then rather than at
+  delivery.
+- **The default payload is sent as written.** Placeholders only work in a
+  Play's payload. The webhook's default payload can't contain `{{`.
+
+Use `{{play.executionId}}` as an idempotency key: it is unique to each run
+of a Play. Bryn sends each run to each webhook at most once and never
+re-sends a run that was already attempted, but a key lets your endpoint
+ignore duplicates on its side too.
+
+The variables you can use:
+
+| Variable | What it holds |
+|---|---|
+| `individual.name`, `individual.firstName`, `individual.lastName` | The person's name |
+| `individual.email`, `individual.title`, `individual.linkedin`, `individual.seniority` | The person's email, job title, LinkedIn URL and seniority |
+| `individual.inCrm` | `true` when your connected CRM knows the person |
+| `individual.crm.title`, `individual.crm.owner` | The person's job title and contact owner in your CRM |
+| `individual.crm.lifecycleStage`, `individual.crm.leadStatus` | The contact's lifecycle stage and lead status in HubSpot |
+| `entity.name`, `entity.company`, `entity.domain`, `entity.email` | The account's name, company name, domain and identifying email |
+| `signal.type` | The most recent signal in the chain that fired the Play |
+| `signal.types`, `signal.count` | Every signal in the chain, comma separated, and how many there are |
+| `score.fit`, `score.intent`, `score.composite` | The account's scores |
+| `play.name`, `play.executionId` | The Play's name and this run's unique id |
+| `run.firstSignal` | `true` when this run raised the account's first signal |
+
+### What your endpoint should do
+
+- **Answer with a `2xx` status** to accept the delivery. Any other status
+  counts as failed. A `429` is recorded as rate limited, so you can tell
+  throttling apart from other failures.
+- **Answer within 10 seconds.** Bryn gives up on a request after that and
+  records the delivery as failed.
+- **Don't rely on retries.** A failed delivery is recorded, not retried.
+
+### Set up an outgoing webhook
+
+<Steps>
+  <Step title="Prepare your endpoint">
+    Make sure it is reachable on a public `https://` address, accepts JSON
+    with the method you plan to use, and checks a header for a secret.
+  </Step>
+  <Step title="Add the webhook in Bryn">
+    [Open the outgoing webhook connect form](https://bryn.civic.com/web/integrations?connect=webhook)
+    in the Bryn dashboard. Enter a name, the endpoint, the method, any
+    headers, and a default payload, then connect.
+  </Step>
+  <Step title="Send a test">
+    Open the webhook under **Integrations** and click **Send test**. Bryn
+    posts the default payload to your endpoint and shows what it answered.
+  </Step>
+  <Step title="Add it to a Play">
+    In a Play's outputs, add the webhook by name and adapt the payload with
+    the placeholders you need. Save the Play.
+  </Step>
+</Steps>
+
+**You'll know it worked when** your endpoint receives the payload with the
+placeholders filled in, and the webhook's panel under **Integrations**
+lists the Play and today's deliveries. If a test or delivery fails, check
+the status code Bryn shows: `401` or `403` usually means a missing or wrong
+header, `404` a wrong path, and a timeout an endpoint that took longer than
+10 seconds.
+
+## Related Bryn documentation
+
+Outgoing webhooks have no vendor documentation of their own. These Bryn
+pages cover the parts they connect to:
+
+- [Plays](/bryn/plays): how Plays decide when to fire and what to deliver.
+- [Signal mapping](/bryn/signal-mapping): where the signal names in `signal.type` come from.
+- [ICP and scoring](/bryn/icp-and-scoring): what the fit, intent and composite scores mean.
+- [Server-side events and signing](/bryn/signing): the opposite direction, sending events from your systems into Bryn.
+
+## Going further
+
+- Other destinations and how to keep alerts quiet: [Connect Slack and other outputs](/bryn/outputs).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
+- Manage connections programmatically: Outputs and Integrations in the
+  [API reference](/bryn/api/bryn-control-plane-api).
