@@ -1,7 +1,148 @@
 ---
 title: Tavily
-unlisted: true
-description: 'How Bryn connects to Tavily'
+description: 'Read each account''s own website through Tavily to fill in its company name, description and logo'
 ---
 
-Tavily connects to Bryn in these modes: Enrichment. The full page is in progress.
+Tavily is a web search and extraction API built for software agents. Bryn
+uses Tavily in one mode, **Enrichment**: when Bryn knows an account's
+domain, it has Tavily read that company's homepage and fills in the
+account's name, a one-line description, and its logo.
+
+Tavily is never a delivery destination. It does not appear in any Play's
+outputs, and Bryn sends nothing to Tavily except the address of the
+homepage to read.
+
+## How Bryn integrates Tavily
+
+You connect Tavily with a Tavily API key under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard. The key is the only thing Bryn needs: there is nothing to set
+up inside Tavily, because Bryn calls Tavily's extract endpoint directly and
+reads the answer back in the same request.
+
+<Note>
+**Lookups are billed to the Tavily account behind the key.** When Bryn
+runs on your key, every homepage read uses your Tavily credits. A basic
+extract of one page costs a fifth of a credit, and Bryn reads each
+account at most once every 30 days, so the spend stays small and
+predictable.
+</Note>
+
+When you connect, Bryn checks the key by reading your Tavily usage. That
+check is an account read, not an extract, so it costs no credits. The
+connection only counts as verified once Tavily accepts the key. Bryn keeps
+the key in encrypted storage; it is never shown again, logged, or passed
+to Plays.
+
+The Bryn dashboard holds one Tavily connection at a time: once it is
+connected, Tavily no longer appears in the list of connectors to add. To
+use a different key, connect again from the
+[Tavily card](https://bryn.civic.com/web/integrations?connector=provider%3Atavily);
+the new key replaces the old one and is checked again.
+
+The connect form also asks whether to **Use Tavily for enrichment**. The
+switch is on by default, and Bryn starts reading homepages once the key is
+verified. If you turn it off, the connection is saved but no lookups run
+until you turn on the switch on the Tavily card. To stop later,
+turn that switch off, or disconnect Tavily to remove the key altogether.
+
+**Bryn's own credential.** Unlike vendors that bill per lookup, Tavily can
+also run on a credential Bryn provides. When that credential is available
+to your workspace, you can switch Tavily enrichment on without connecting
+a Tavily account, and the Tavily card shows **Bryn's credential**. Once you
+connect your own key, Bryn uses it first, and the card lets you choose
+between **Your Tavily connection** and **Bryn's credential**.
+
+## Enrichment
+
+Tavily enrichment is **account level only**. Bryn asks Tavily for the
+homepage at the account's domain; it never sends or requests anything
+about individual people.
+
+**What Bryn reads.** From the extracted homepage, Bryn takes three things:
+
+- **Company name**, from the page title. Titles usually pair a name with a
+  tagline ("Acme | Payments for every business"), so Bryn keeps the part
+  that matches the domain, and drops page names such as "Home" and
+  greetings such as "Welcome to". If no part of the title reads clearly as
+  the company's name, Bryn keeps no name rather than store a tagline.
+- **Description**, from the first paragraph of real prose under the page's
+  first heading, shortened to about 300 characters. Navigation, banners
+  and lists are skipped.
+- **Logo**, from the site's own icon (usually its app icon), when the site
+  serves one over HTTPS.
+
+Bryn only reads what is on the page. It does not ask a model to infer
+anything, so Tavily never fills in industry, size or location. Use a
+company data source such as [Clay](/bryn/connectors/clay) for those.
+
+**How it fits with other sources.** Tavily fills gaps; it does not
+overwrite. A name, description or logo already on the account stays as it
+is, and a name from a company record (your CRM, visitor identification or
+a company database) outranks the name Bryn parses from a page title.
+Tavily's logo, which comes from the company's own site, is preferred over
+a generic logo service.
+
+**When it runs.** Bryn reads an account's homepage when the account
+produces a new [signal](/bryn/signal-mapping), or when a mapped source
+first creates the account. Accounts that existed before you turned Tavily
+on are enriched on their next signal, not all at once. An account without
+a domain is skipped until a domain arrives.
+
+Each account is read once per 30 days. A read that found nothing usable
+(the page could not be fetched, or had no title, prose or icon Bryn could
+use) also waits 30 days. A read that failed waits an hour before Bryn
+retries. Some marketing sites are slow to load, so Bryn gives Tavily up to
+30 seconds per page before treating the read as failed.
+
+**Where results appear.** Open an account in the Bryn dashboard: Tavily is
+listed under **Enrichment sources** with what it filled and when, and the
+name, description and logo show on the account.
+
+**When Tavily refuses.** If Tavily rejects your key (for example because
+it was revoked), Bryn marks the connection as needing attention on the
+[Tavily card](https://bryn.civic.com/web/integrations?connector=provider%3Atavily);
+reconnect with a working key to resume. Tavily rate limits, brief outages
+and timeouts are retried automatically.
+
+### Set it up
+
+<Steps>
+  <Step title="Create a Tavily API key">
+    Sign in to the [Tavily dashboard](https://app.tavily.com/) and copy an
+    API key (Tavily keys start with `tvly-`). Make sure the account has
+    credits available.
+  </Step>
+  <Step title="Connect Tavily in the Bryn dashboard">
+    [Open the Tavily connect form](https://bryn.civic.com/web/integrations?connect=tavily)
+    (or go to **Integrations** and choose **Tavily**), paste the key,
+    leave **Use Tavily for enrichment** on, and connect. Bryn checks the
+    key with Tavily before saving the connection.
+  </Step>
+  <Step title="Check that it worked">
+    Wait for a new signal on an account that has a domain, then open the
+    account. Tavily should be listed under **Enrichment sources**, with
+    the company's name, description or logo filled in.
+  </Step>
+</Steps>
+
+## Tavily documentation
+
+- [Tavily documentation](https://docs.tavily.com/): overview of the
+  Tavily API.
+- [Quickstart](https://docs.tavily.com/documentation/quickstart): how to
+  get a Tavily API key.
+- [Extract](https://docs.tavily.com/documentation/api-reference/endpoint/extract):
+  the endpoint Bryn uses to read an account's homepage.
+- [Usage](https://docs.tavily.com/documentation/api-reference/endpoint/usage):
+  the free account read Bryn uses to check your key.
+- [API credits](https://docs.tavily.com/documentation/api-credits): how
+  Tavily bills extract requests against your account.
+- [Rate limits](https://docs.tavily.com/documentation/rate-limits): how
+  Tavily throttles API requests.
+
+## Going further
+
+- How accounts are scored against your ICP: [ICP and scoring](/bryn/icp-and-scoring).
+- How events become signals: [Signal mapping](/bryn/signal-mapping).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
