@@ -1,7 +1,178 @@
 ---
 title: Slack
-unlisted: true
-description: 'How Bryn connects to Slack'
+description: 'Send Play alerts from Bryn to a Slack channel in your workspace'
 ---
 
-Slack connects to Bryn in these modes: Output. The full page is in progress.
+Slack is the messaging app most teams already watch all day. Bryn connects
+to Slack as an **Output** connector: when a [Play](/bryn/plays) fires, Bryn
+posts an alert to a channel in your Slack workspace, with the account, the
+reason it fired, and links back to the Bryn dashboard.
+
+Slack supports one mode in Bryn: Output, for chat alerts. It is the fastest
+first output to set up, and the short version is in
+[Connect Slack and other outputs](/bryn/outputs#connect-slack). This page
+covers what the connection allows, what lands in Slack, and how to check it.
+
+## How Bryn integrates Slack
+
+The connection uses Slack's OAuth install flow, so there is no token to copy
+or paste. You start it under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard, approve the Bryn app on Slack's consent screen, then come back to
+Bryn and choose a channel.
+
+When you approve, Slack gives the Bryn app a bot token for your workspace
+with three scopes:
+
+| Scope | What Bryn uses it for |
+|---|---|
+| `chat:write` | Posting alert messages |
+| `chat:write.public` | Posting to public channels without first inviting the app to each one |
+| `channels:read` | Listing your public channels, so you can pick one when you connect and when you set up a Play |
+
+That is the whole list. Bryn cannot read the messages in your channels,
+cannot see private channels or direct messages, and cannot post as you.
+Bryn keeps the token on its servers: it never reaches your browser and is
+not shown anywhere in the Bryn dashboard.
+
+### One Slack workspace per Bryn workspace
+
+The Bryn dashboard holds one Slack connection at a time: once it is
+connected, Slack no longer appears in the list of connectors to add. The
+channel you pick when connecting is where the test message goes. Each Play
+then chooses its own channel from the same Slack workspace, so one
+connection is enough to send different Plays to different channels.
+
+Connecting Slack again (for example after removing the app in Slack)
+replaces the stored token and sets the connection back to unverified until
+its test message is delivered again.
+
+### How Bryn verifies the connection
+
+As soon as you choose a channel, Bryn posts a test message to it:
+
+> Bryn is connected to this channel.
+
+Bryn sends the test through the same path Plays use, so a verified
+connection is one that has already delivered a real message. If the
+message arrives, the dashboard confirms **Slack connected and verified.**
+If it does not, the connection shows **The test message could not be
+delivered.** and a **Reverify** button to run the check again once the
+problem is fixed.
+
+A Play can only be saved with a Slack connection that is verified.
+
+## Output
+
+A Play delivers to Slack as a message in the channel you choose for it.
+Bryn posts it as the Bryn app, inside a fixed frame:
+
+- **Above the message**: a context line naming the Play, then a header with
+  the account's name.
+- **The message**: your text, or your Block Kit layout if you chose one.
+- **Below the message**: the account's score, with its
+  [ICP](/bryn/icp-and-scoring) fit when Bryn knows it, then two buttons:
+  **View account** opens the account in the Bryn dashboard, and **Why this
+  fired** opens the run that sent the message.
+
+The buttons are plain links, so they work without any extra Slack
+permissions.
+
+### What you configure in a Play
+
+Each Slack entry in a Play has these settings:
+
+- **Connection**: your Slack connection.
+- **Channel**: any public, unarchived channel in the connected workspace.
+  When you save, Bryn checks that the workspace still lists the channel.
+- **Message**: up to 4,000 characters. Slack's own formatting (`*bold*`,
+  `<https://example.com|label>`, `<@user>`) and Markdown (`**bold**`,
+  `[label](https://example.com)`) both work, and you can fill in
+  `{{variable}}` fields such as `{{entity.name}}`. Values Bryn fills in are
+  escaped, so an account or person name can't turn into a mention or a
+  link.
+- **Link previews**: always show Slack's preview cards, never show them, or
+  leave Slack's default (previews for media links, none for plain web
+  links).
+- **Message format**: a **Message template** (the message above) or a
+  **Block Kit layout**.
+
+A Block Kit layout is a JSON array of up to 46 Slack blocks, with the same
+`{{variable}}` fields inside its strings. Leave out the account header,
+the score and links back to Bryn: the frame already adds them. With a
+layout, the message text is still required and becomes the **Notification
+text**, which Slack shows in notifications and to screen readers.
+
+A Play can post to more than one channel: add an entry per channel. Some
+built-in Plays, such as the buying committee Play, write their own message
+and only ask you which Slack channels to post it to.
+
+### Set up the connection
+
+<Steps>
+  <Step title="Start the connection">
+    [Open the Slack connect form](https://bryn.civic.com/web/integrations?connect=slack)
+    in the Bryn dashboard and click **Connect to Slack**. If Slack is already
+    connected, the link opens **Integrations** without the form.
+  </Step>
+  <Step title="Approve the app in Slack">
+    Slack shows the workspace and the permissions Bryn asks for. Check you
+    are in the right workspace, then approve. If your workspace requires
+    app approval, a Slack admin may need to approve the app first. Finish
+    within 10 minutes: after that the authorization link expires and you
+    start again.
+  </Step>
+  <Step title="Choose a channel">
+    Back in Bryn, you see **Slack authorized. Choose a channel to deliver
+    to.** Pick a public channel (the newest channels are listed first). A
+    dedicated channel such as `#intent` keeps alerts easy to follow.
+  </Step>
+  <Step title="Deliver the test message">
+    Click **Deliver test message**. Bryn posts the test to the channel and
+    marks the connection verified when it arrives.
+  </Step>
+</Steps>
+
+**You'll know it worked when** "Bryn is connected to this channel." is
+sitting in the channel and Slack shows as connected and verified under
+**Integrations**. Then add a Slack output to a Play and click **Test** on
+it: Bryn posts the message, filled in with sample values, to the channel
+you chose.
+
+### Troubleshooting
+
+- **"Slack authorization was cancelled."** The consent screen was declined.
+  Nothing was changed; start again.
+- **"The Slack authorization link expired or was invalid."** More than 10
+  minutes passed, or the link was reused. Start the connection again.
+- **No channels to choose from.** Bryn lists public channels only. Create
+  a public channel, or make sure the one you want is not archived, then
+  connect again.
+- **The test message could not be delivered.** Check the app is still
+  installed in your workspace and the channel still exists, then click
+  **Reverify**. If you removed the app in Slack, connect again.
+- **Alerts stop arriving.** Removing the Bryn app from your Slack workspace
+  revokes its token, so Plays can no longer post. Connect again to restore
+  delivery.
+
+To stop delivering to Slack, disconnect it from **Integrations**. The
+confirmation names the Plays that deliver through the connection, and Bryn
+deletes the stored token. Remove the app in Slack as well if you want it
+gone from the workspace.
+
+## Slack documentation
+
+- [Add apps to your Slack workspace](https://slack.com/help/articles/202035138-Add-apps-to-your-Slack-workspace)
+- [Manage app approval for your workspace](https://slack.com/help/articles/222386767-Manage-app-installation-settings-for-your-workspace)
+- [Remove apps and custom integrations from your workspace](https://slack.com/help/articles/360003125231-Remove-apps-and-custom-integrations-from-your-workspace)
+- [Installing with OAuth](https://docs.slack.dev/authentication/installing-with-oauth)
+- Scopes Bryn requests: [`chat:write`](https://docs.slack.dev/reference/scopes/chat.write), [`chat:write.public`](https://docs.slack.dev/reference/scopes/chat.write.public), [`channels:read`](https://docs.slack.dev/reference/scopes/channels.read)
+- [Formatting message text](https://docs.slack.dev/messaging/formatting-message-text)
+- [Block Kit](https://docs.slack.dev/block-kit/)
+- [Unfurling links in messages](https://docs.slack.dev/messaging/unfurling-links-in-messages)
+
+## Going further
+
+- How Plays decide what to deliver and where: [Plays](/bryn/plays).
+- Cooldowns, workspace caps and other destinations: [Connect Slack and other outputs](/bryn/outputs).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
