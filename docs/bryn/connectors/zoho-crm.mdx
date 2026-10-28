@@ -1,7 +1,258 @@
 ---
 title: Zoho CRM
-unlisted: true
-description: 'How Bryn connects to Zoho CRM'
+description: 'Bring new Zoho CRM leads and contacts into Bryn, look people up in your CRM, and let Plays add them to it'
 ---
 
-Zoho CRM connects to Bryn in these modes: Input, Enrichment, Output. The full page is in progress.
+Zoho CRM is Zoho's customer relationship manager, where your team keeps
+leads, contacts, accounts and deals. Bryn connects to your Zoho CRM org
+with one sign-in and uses it three ways.
+
+Zoho CRM works with Bryn in three modes: **Input** (new leads and contacts
+arrive as signals), **Enrichment** (Bryn looks people and their accounts up
+in your CRM) and **Output** (a Play adds the person to your CRM as a lead or
+a contact).
+
+## How Bryn integrates Zoho CRM
+
+You connect Zoho CRM with OAuth: there is no API key to paste. Under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard, choose **Zoho CRM**. Bryn sends you to Zoho to approve access,
+then brings you back and checks it can reach your CRM. On that connect
+form you also choose:
+
+- **Use Zoho CRM for enrichment.** On by default. Each lookup spends API
+  credits from your Zoho CRM org's daily allowance. You can change this
+  later in **Configuration**, under **Enrichment**.
+- **Also send me new leads and contacts.** Tick this and Bryn sets up the
+  Input side for you as soon as the connection is made (see
+  [Input](#input)).
+
+Plays can add people to your Zoho CRM as soon as the connection is
+verified; there is nothing else to switch on for Output.
+
+A few things to know about the connection:
+
+- **Sign in as an administrator if you want Input.** Bryn asks for read
+  access to leads, contacts, accounts and deals, write access to leads and
+  contacts, and permission to manage webhooks and workflow rules. Only a
+  Zoho CRM user who can manage workflow rules can let Bryn set up the
+  Input side.
+- **Your data centre is detected for you.** A Zoho org lives in one data
+  centre (US, EU, India, Australia, Japan, UK, Canada, Saudi Arabia, UAE
+  or Singapore). Zoho tells Bryn which one when you approve access, and
+  Bryn only ever sends your token to that data centre's Zoho addresses.
+  Zoho's China data centre isn't supported. The Bryn dashboard shows the
+  connection under your org's name, with its data centre beside it.
+- **One connection at a time.** The Bryn dashboard holds one Zoho CRM
+  connection at a time: once it is connected, Zoho CRM no longer appears
+  in the list of connectors to add. Connecting the same org again replaces
+  the stored grant and revokes the old one in Zoho, so reconnecting
+  never piles up tokens against Zoho's limit of 20 per user.
+- **Bryn keeps only the refresh token.** Short-lived access tokens are
+  minted when needed and never stored.
+
+### How Bryn verifies the connection
+
+Right after you approve access, Bryn reads the connecting user's own
+profile from Zoho CRM. This writes nothing. If Zoho answers, the connection
+shows as verified. If not, the Bryn dashboard shows **I couldn't reach your
+Zoho CRM. Try connecting it again.**
+
+### Disconnecting
+
+When you disconnect Zoho CRM, Bryn first removes the webhooks and workflow
+rules it created for your Zoho CRM sources (while it still has access),
+then revokes its token in Zoho and deletes the stored credential.
+
+## Input
+
+### What arrives
+
+A Zoho CRM source in your
+[Inputs](https://bryn.civic.com/web/integrations?view=inputs) receives
+every new lead and contact that has an email address:
+
+| Zoho CRM event | Bryn signal | When |
+|---|---|---|
+| `lead.created` | `crm_lead_created` | A lead is created in Zoho CRM |
+| `contact.created` | `crm_contact_created` | A contact is created in Zoho CRM |
+
+Records without an email are not sent. Zoho retries a failed delivery once,
+after 15 minutes, and Bryn uses the record's ID so the retry is never
+counted twice.
+
+These are recorded as CRM events, not as a visitor identifying themselves:
+a new CRM record is often a rep's entry or an import.
+
+### How records match accounts and people
+
+- **Person**: matched by email, with first name, last name and title
+  (a lead's **Designation**, a contact's **Title**).
+- **Account**: a lead is placed using its **Website** and **Company**,
+  falling back to the email's domain. A contact carries no company in the
+  webhook, so its account comes from the email's domain.
+
+From there the signals count towards the account's
+[score](/bryn/icp-and-scoring) and can trigger [Plays](/bryn/plays). To
+change which signal an event raises, see
+[Signal mapping](/bryn/signal-mapping).
+
+### Set up with your connection (quick setup)
+
+Zoho CRM sends records to Bryn through a webhook that a workflow rule runs
+when a record is created. Bryn can create these in your Zoho CRM for you.
+
+<Steps>
+  <Step title="Connect Zoho CRM">
+    Connect from [**Integrations**](https://bryn.civic.com/web/integrations?connect=zoho_crm)
+    and tick **Also send me new leads and contacts**, signing in as a Zoho
+    CRM administrator. If Zoho CRM is already connected, go to
+    [**Inputs**](https://bryn.civic.com/web/integrations?view=inputs),
+    add **Zoho CRM** and choose **Set up with Zoho CRM**.
+  </Step>
+  <Step title="Check what Bryn created">
+    Bryn adds a Zoho CRM source to your Inputs and, in Zoho CRM, a webhook
+    and a workflow rule for leads and another pair for contacts. They are
+    named after the source, so you can find them in Zoho CRM under
+    **Setup**, **Automation**.
+  </Step>
+  <Step title="Create a test lead">
+    Create a lead with an email address in Zoho CRM. It shows up in Bryn
+    within a minute.
+  </Step>
+</Steps>
+
+If Zoho refuses the setup, Bryn keeps the source and tells you why. The
+common reasons:
+
+- **Webhooks need Zoho CRM Professional or above**, and each edition has
+  a daily webhook limit.
+- **The connecting user can't manage workflow rules.** Reconnect as an
+  administrator.
+- **The connection predates Input.** A connection made before Bryn asked
+  for webhook and workflow permissions must be reconnected first.
+
+You can run quick setup again at any time from the source's drawer
+(**Set up or replace the Zoho CRM webhooks**). Running it again replaces
+the webhooks and workflow rules: Bryn creates the new ones before deleting
+the old, so nothing is missed in between.
+
+### Set it up yourself
+
+Choose **I'd rather set it up myself** when adding Zoho CRM, or **Set it up
+yourself** on the new source. The dashboard shows the steps with your
+endpoint URL, credential and request bodies filled in. For each of
+**Leads** and **Contacts**:
+
+1. In Zoho CRM, go to **Setup**, **Automation**, **Actions**, **Webhooks**
+   and configure a webhook: method **POST**, your endpoint URL, the module,
+   and authorization type **General**.
+2. Under **Headers**, add a custom parameter named `Authorization` with the
+   value shown in the Bryn dashboard. Zoho also needs one module
+   parameter before it saves custom headers: add `X-Zoho-Record-Id`
+   holding the record's ID.
+3. Under **Body**, choose **Raw**, then **JSON**, and paste the body the
+   dashboard shows for that module.
+4. Go to **Setup**, **Automation**, **Workflow Rules**, create a rule for
+   the module that runs on **Create**, with the condition **Email is not
+   empty** and your webhook as its instant action.
+
+Then create a lead with an email address and check it arrives.
+
+### Keeping it working
+
+- **Keep the people your Plays add from counting twice.** A Play that adds
+  someone to Zoho CRM creates a lead or contact, which then comes back in
+  as a signal. Set that Play's lead source to `Bryn` (see
+  [Output](#output)) and the source skips those records.
+- **After you rotate the source's key**, Bryn replaces the webhooks it set
+  up with ones carrying the new key. If you set them up by hand, update the
+  `Authorization` header in both webhooks.
+- **Deleting the source removes its webhooks and workflow rules** from
+  Zoho CRM.
+
+## Enrichment
+
+With enrichment on, Bryn looks people up in your Zoho CRM by email: first
+among contacts, then among leads. A lookup is reused for a day before Bryn
+asks Zoho again.
+
+**About the person**, when your CRM knows them:
+
+- whether they are a **contact** or a **lead**
+- their title, the Zoho CRM user who owns the record, the lead status and
+  the lead source
+
+**About the account**, when the person is a contact linked to a Zoho CRM
+account:
+
+- the account's name, website, industry, employee count, annual revenue
+  and billing country
+- the account owner
+- the number of open deals, with up to 10 of them
+
+A lead has no account in Zoho CRM, so a match on a lead only fills in the
+person. Results appear under **Zoho CRM** on the account and the person in
+Bryn, and Plays can use them. Employee count, country and website also
+feed the account's main details. Zoho's search index isn't real time, so a
+record created moments ago may not be found until the next lookup.
+
+## Output
+
+A Play can add the person it fired for to your Zoho CRM. In the Play's
+Zoho CRM step, pick your connection and choose:
+
+- **Lead or contact.** By default Bryn adds the person as a lead. Turn on
+  the contact option to add them as a contact instead.
+- **Lead source** (optional): the value to record, for example `Bryn`.
+  It supports `{{variable}}` substitution. Leave it empty to leave the
+  field unset.
+
+What lands in Zoho CRM:
+
+- **As a lead**: email, first and last name, company, title
+  (**Designation**), website and lead source. When Bryn doesn't know the
+  company's name, it uses the company's domain, because Zoho's default
+  lead layout requires a company.
+- **As a contact**: email, first and last name, title and lead source.
+  Bryn doesn't create or link Zoho CRM accounts.
+
+Writes are careful with the data you already have:
+
+- **Matched on email.** If the person is already there, Bryn updates that
+  record instead of creating a second one.
+- **Blanks never overwrite.** Empty fields are left out of the write.
+- **No duplicate leads for customers.** When adding a lead, Bryn first
+  checks whether the person is already a contact, and leaves them alone if
+  so.
+- **No placeholders.** A person without an email or a last name is skipped
+  rather than written with made-up details.
+- **Your workflow rules still run** on the records Bryn creates or updates.
+
+### How to tell it worked
+
+The Play's test button checks that Zoho CRM is reachable and adds nothing:
+it reports **Zoho CRM is reachable, nothing was added**. Each run shows its
+outcome in the Play's activity: **Added the person to your CRM**,
+**Updated the person in your CRM**, **Already a contact in your CRM, so I
+didn't add a lead**, or **Couldn't add the person to your CRM**.
+
+## Zoho CRM documentation
+
+- [OAuth overview](https://www.zoho.com/crm/developer/docs/api/v8/oauth-overview.html)
+  and [scopes](https://www.zoho.com/crm/developer/docs/api/v8/scopes.html)
+- [Multiple data centres](https://www.zoho.com/crm/developer/docs/api/v8/multi-dc.html)
+- [Token limits](https://www.zoho.com/crm/developer/docs/api/v8/token-validity.html)
+- [Webhooks](https://help.zoho.com/portal/en/kb/crm/automate-business-processes/actions/articles/webhooks-workflow),
+  including the daily limits per edition
+- [Configuring workflow rules](https://help.zoho.com/portal/en/kb/crm/automate-business-processes/workflow-management/articles/configuring-workflow-rules)
+- [Upsert records](https://www.zoho.com/crm/developer/docs/api/v8/upsert-records.html)
+  and [search records](https://www.zoho.com/crm/developer/docs/api/v8/search-records.html)
+- [API limits](https://www.zoho.com/crm/developer/docs/api/v8/api-limits.html)
+- [Zoho CRM editions](https://www.zoho.com/crm/comparison.html)
+
+## Going further
+
+- How events become signals: [Signal mapping](/bryn/signal-mapping)
+- Act on a new lead: [Plays](/bryn/plays)
+- Other tools Bryn connects to: [Connectors](/bryn/connectors)
