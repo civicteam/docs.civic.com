@@ -1,7 +1,176 @@
 ---
 title: MoltSets
-unlisted: true
-description: 'How Bryn connects to MoltSets'
+description: 'Use your own MoltSets account to fill in the people and companies Bryn sees'
 ---
 
-MoltSets connects to Bryn in these modes: Enrichment. The full page is in progress.
+MoltSets is a contact and company data platform with an API built for
+agents. Bryn uses MoltSets in one mode, **Enrichment**: with your own
+MoltSets API key, Bryn looks up the business profile behind a person's
+email address and the company behind an account's domain, and can
+discover key people at an account. [Scoring](/bryn/icp-and-scoring) and
+your [Plays](/bryn/plays) then use what it finds.
+
+MoltSets is never a delivery destination. It does not appear in any
+Play's outputs, and Bryn writes nothing to your MoltSets account.
+
+## How Bryn integrates MoltSets
+
+You connect MoltSets with a MoltSets API key (it starts with `ms_`) under
+[**Integrations**](https://bryn.civic.com/web/integrations) in the Bryn
+dashboard. The key is the only thing Bryn needs. Bryn has no MoltSets key
+of its own, so connecting your account is the only way to enrich with
+MoltSets. You can have one MoltSets connection at a time.
+
+<Note>
+**Lookups count toward your MoltSets plan.** Every lookup Bryn makes uses
+your key and draws on your plan's fair use limits. Bryn looks each person
+and each account up at most once every 30 days, and pauses when your
+allowance for the current window runs out, so it does not keep spending
+requests MoltSets will refuse.
+</Note>
+
+When you connect, Bryn checks the key by reading your MoltSets account
+details. That check is free and uses none of your allowance. The
+connection only counts as verified when MoltSets accepts the key **and**
+reports the account as active. If the key is valid but the account is not
+active, Bryn asks you to check your plan in MoltSets and verify again.
+Bryn keeps the key in encrypted storage; it is never shown again, logged,
+or passed to Plays.
+
+The connect form asks two questions, both on by default:
+
+- **Use MoltSets for enrichment.** Bryn starts looking people and
+  accounts up once the key is verified. If you turn it off, the
+  connection is saved but no lookups run until you turn it on.
+- **Discover people.** When Bryn enriches an account, it also looks up
+  key people who work there (see [Key contacts](#key-contacts) below).
+  This switch is only offered while enrichment is on.
+
+You can change both later on the
+[MoltSets card](https://bryn.civic.com/web/integrations?connector=provider%3Amoltsets)
+in **Integrations**, or under **Configuration**, in **Enrichment**.
+Disconnect MoltSets to remove the key altogether.
+
+## Enrichment
+
+MoltSets enrichment works at two levels, and Bryn looks each one up on
+its own.
+
+**People.** When Bryn knows a person's own email address, it asks
+MoltSets for the business profile behind it. Bryn keeps the person's
+first and last name, job title, seniority, functional area, LinkedIn URL,
+country, company name and domain, and their confirmed business email with
+its risk score and validation date. The job title becomes the person's
+title in Bryn. Personal email addresses are never kept.
+
+The risk score is a send safety grade from MoltSets, not a check that the
+address belongs to the person: A means validated deliverable, B means
+known engagement, C means a catch-all domain, D means negative evidence
+(such as a spam trap or complaint), and F means no signal.
+
+**Accounts.** When Bryn knows an account's domain, it asks MoltSets for
+the company with that domain. Bryn keeps the company name, domain, size
+band, employee count, country, city and state, LinkedIn URL, revenue
+range, NAICS codes, and logo. The industry comes from MoltSets as a
+LinkedIn industry name, which Bryn maps to its standard industry list, so
+it feeds the industry part of your Fit score. Bryn only keeps a company
+whose domain matches the one it asked about.
+
+When a lookup completes and MoltSets has no match, Bryn removes any
+earlier MoltSets answer for that person or account, so a stale answer
+stops counting.
+
+**When it runs.** MoltSets runs as part of Bryn's normal enrichment when
+an account or person produces a new [signal](/bryn/signal-mapping). A
+person without an email address, or an account without a domain, is
+skipped for that half of the lookup. Each person and each account is
+looked up at most once per 30 days, including lookups that found nothing.
+
+**Where results appear.** Open an account in the Bryn dashboard: MoltSets
+is listed under **Enrichment sources** with what it filled and when, and
+the fields it filled show on the account and its people.
+
+### Key contacts
+
+With **Discover people** on, Bryn also asks MoltSets for key people at
+the account's domain when it enriches the account. By default Bryn adds
+up to 10 people. It skips anyone without a business email, and the
+person the signal was already about.
+
+Each key contact is added under the account as a discovered person:
+someone who has not interacted with you yet. Discovered people are not
+treated as contactable by default, and Bryn skips discovery for accounts
+and people in the EU. A discovered person who never interacts with you is
+removed 90 days after Bryn last found them; one who later identifies
+themselves (for example by filling in a form) becomes an ordinary person
+in Bryn. Deleting or suppressing a person in Bryn covers discovered
+people too. Bryn asks for an account's key contacts at most once per 30
+days.
+
+Key contact searches draw on your MoltSets search allowance, which is
+usually the smallest part of a plan. Turn **Discover people** off if you
+want to keep that allowance for your own use.
+
+### Plans, limits and errors
+
+MoltSets meters plans in records and requests over rolling 5 hour and
+weekly windows, with separate allowances for email lookups and for
+searches. Bryn reads the remaining allowance from every answer:
+
+- **Allowance used up.** When a window runs out, Bryn pauses that kind of
+  lookup until the window resets. People and accounts that were due are
+  looked up on their next pass after the reset; nothing is marked as done
+  in the meantime.
+- **Not on your plan.** If MoltSets says your plan does not cover a
+  lookup (or your free search trial is used up), Bryn stops asking for
+  that kind of lookup for 6 hours. The connection stays verified, because
+  the key itself is fine.
+- **Key rejected or account inactive.** Bryn marks the connection as
+  needing attention on the
+  [MoltSets card](https://bryn.civic.com/web/integrations?connector=provider%3Amoltsets).
+  Reconnect with a working key, or reactivate your MoltSets account and
+  verify again, to resume.
+- **Rate limits and brief outages** are retried automatically.
+
+### Set it up
+
+<Steps>
+  <Step title="Create a MoltSets API key">
+    In the [MoltSets app](https://app.moltsets.com), create an API key. It
+    starts with `ms_`. Make sure your MoltSets account is active.
+  </Step>
+  <Step title="Connect MoltSets in the Bryn dashboard">
+    [Open the MoltSets connect form](https://bryn.civic.com/web/integrations?connect=moltsets)
+    (or go to **Integrations** and choose **MoltSets**), paste the key,
+    leave **Use MoltSets for enrichment** on, choose whether to
+    **Discover people**, and connect. Bryn checks the key with MoltSets
+    before saving the connection.
+  </Step>
+  <Step title="Check that it worked">
+    Wait for a new signal on an account that has a domain, then open the
+    account. MoltSets should be listed under **Enrichment sources**, with
+    the company's size, industry and country filled in.
+  </Step>
+</Steps>
+
+## MoltSets documentation
+
+- [MoltSets developer documentation](https://developer.moltsets.com/getting-started/overview):
+  overview of the MoltSets API and how to read its answers.
+- [Authentication](https://developer.moltsets.com/getting-started/authentication):
+  the `ms_` key format and how to create and revoke keys.
+- [Rate limits](https://developer.moltsets.com/getting-started/rate-limits):
+  per plan limits and the rolling 5 hour and weekly windows.
+- [Reverse email lookup](https://developer.moltsets.com/api-reference/reverse-lookups/reverse-email-lookup):
+  the person lookup Bryn uses.
+- [Search for companies](https://developer.moltsets.com/api-reference/search/search-for-companies)
+  and [Search for people](https://developer.moltsets.com/api-reference/search/search-for-people):
+  the account lookup and the key contact search.
+- [Email risk scores](https://developer.moltsets.com/moltsets-data/email-risk-scores):
+  what each A to F grade means.
+
+## Going further
+
+- How accounts are scored against your ICP: [ICP and scoring](/bryn/icp-and-scoring).
+- How events become signals: [Signal mapping](/bryn/signal-mapping).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
