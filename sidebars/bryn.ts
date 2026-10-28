@@ -79,7 +79,9 @@ const sidebar: SidebarItemConfig[] = [
   // match the catalogue's own order. Pages still being written set
   // `unlisted: true` in frontmatter, which drops them from the sidebar in
   // production builds; a finished page drops the flag and appears here with
-  // no sidebar edit.
+  // no sidebar edit. Chat webhook is deliberately left out: it is only a
+  // last-resort fallback for legacy catalogue Plays and can't be picked in the
+  // Play builder.
   {
     type: 'category',
     label: 'Connectors',
@@ -91,7 +93,6 @@ const sidebar: SidebarItemConfig[] = [
       { type: 'doc', id: 'bryn/connectors/apify', label: 'Apify' },
       { type: 'doc', id: 'bryn/connectors/apollo', label: 'Apollo' },
       { type: 'doc', id: 'bryn/connectors/calendly', label: 'Calendly' },
-      { type: 'doc', id: 'bryn/connectors/chat-webhook', label: 'Chat webhook' },
       { type: 'doc', id: 'bryn/connectors/clay', label: 'Clay' },
       { type: 'doc', id: 'bryn/connectors/discord', label: 'Discord' },
       { type: 'doc', id: 'bryn/connectors/findymail', label: 'Findymail' },
