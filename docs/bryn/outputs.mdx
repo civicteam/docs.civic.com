@@ -19,28 +19,28 @@ onboarding wizard walks you through the first one.
   </Step>
   <Step title="Pick a channel">
     A dedicated channel like `#intent` keeps alerts easy to follow and
-    easy to mute-proof. You can add more connections to other channels
-    later.
+    easy to mute-proof. The Bryn dashboard holds one Slack connection;
+    each Play then picks its own channel in the same workspace.
   </Step>
-  <Step title="Watch the test message arrive">
-    Bryn verifies the connection by posting a test message as soon as you
-    connect. No extra step.
+  <Step title="Deliver the test message">
+    Click **Deliver test message**. Bryn posts "Bryn is connected to this
+    channel." and marks the connection verified when it arrives.
   </Step>
 </Steps>
 
-**You'll know it worked when** the dashboard shows "Test message delivered
-to #your-channel" and the message is sitting in Slack. If it failed, fix
-the channel choice and click **Retry test**; a **Re-test** button stays
-available on healthy connections too.
+**You'll know it worked when** the test message is sitting in the channel
+and the dashboard shows **Slack connected and verified.** If it failed,
+check the app is still in your Slack workspace and click **Reverify**. The
+[Slack connector page](/bryn/connectors/slack) has the full detail.
 
 ## Other destinations
 
-- **CRM**: Bryn writes additively. It fills empty fields and adds notes and
-  flags; it never overwrites data your team entered. Conflicting values go
-  to a review queue instead of clobbering the record.
-- **Outbound webhooks**: receive structured records in your own systems.
-  The request contract and verification steps are in
-  [Server-side events & signing](/bryn/signing).
+- **CRM**: a Play adds the person to your CRM, matched on their email. How
+  a write treats fields your team already filled in depends on the CRM, so
+  check its page under [Connectors](/bryn/connectors).
+- **Outgoing webhooks**: receive structured records in your own systems.
+  The request format, headers and test steps are on the
+  [Outgoing webhook](/bryn/connectors/outgoing-webhook) page.
 
 ## Keeping it quiet
 
@@ -57,5 +57,6 @@ the channel.
 
 ## Going further
 
+- Every tool Bryn connects to, mode by mode: [Connectors](/bryn/connectors).
 - Manage connections programmatically: Outputs and Integrations in the
   [API reference](/bryn/api/bryn-control-plane-api).
