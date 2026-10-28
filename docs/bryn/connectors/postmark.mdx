@@ -1,7 +1,154 @@
 ---
 title: Postmark
-unlisted: true
-description: 'How Bryn connects to Postmark'
+description: 'Connect your own Postmark server so Plays send your Postmark templates from your own domain'
 ---
 
-Postmark connects to Bryn in these modes: Output. The full page is in progress.
+Postmark is a transactional email service. Bryn connects to your own
+Postmark server as an **Output** connector: you give Bryn a server token and
+a sender address, and a Play can then send one of the templates on that
+server, filled in with the person, account and signal it fired for, to the
+person the Play runs for or to someone on your team.
+
+Postmark supports one mode in Bryn: Output, for email.
+
+<Note>
+  Bryn also has a built-in email output, **Bryn email**, which sends from
+  Bryn to people on your team and needs no setup. Connecting Postmark is
+  different: mail goes out from your own Postmark server, under your own
+  sender and domain, using your own templates.
+</Note>
+
+## How Bryn integrates Postmark
+
+The connection uses a Postmark **Server API token**, not OAuth. You set it
+up under [**Integrations**](https://bryn.civic.com/web/integrations) in the
+Bryn dashboard, in a form with three fields:
+
+| Field | What to enter |
+|---|---|
+| **Server token** | The Server API token of the Postmark server you want Bryn to send through. The token decides which server Bryn uses |
+| **From address** | The sender, for example `Sales <sales@example.com>`. It must be a confirmed sender signature, or an address on a verified domain, on that server |
+| **Default recipient** | Optional. The address test emails go to |
+
+Use a **server** token, found in Postmark under **Servers**, then your
+server, then **API Tokens**. An account API token won't work here.
+
+Bryn stores the server token as a secret and keeps the From address and
+default recipient as ordinary settings. You can connect more than one
+Postmark server, for example one per sending domain: each connection is
+identified by its From address, and Postmark stays in the list of
+connectors to add after the first one. Connecting again with the same From
+address replaces the stored token on the existing connection instead of
+creating a duplicate, and sets it back to unverified until it is checked
+again. Disconnecting removes the stored token once no other connection uses
+it.
+
+### How Bryn verifies the connection
+
+Right after you connect, Bryn asks Postmark which server the token belongs
+to. This is a read-only check: it sends no email. If Postmark accepts the
+token, the connection shows as verified. If not, Bryn reports
+**The Postmark server token could not be verified.** and you can correct the
+token and check again.
+
+<Warning>
+  The check confirms that the server token works. It does not confirm that
+  your From address is a confirmed sender signature or on a verified domain
+  for that server. Use **Send test** (below) to prove a real send.
+</Warning>
+
+## Output
+
+A Play's output step can include one email per Postmark connection. For
+each one you choose:
+
+- **Template.** One of the active templates on your Postmark server. Bryn
+  lists your standard templates (not layouts) by name, with the alias when
+  a template has one. When you save the Play, Bryn checks the template
+  exists on the server.
+- **Fields.** Bryn reads the template's variables, such as
+  `{{first_name}}` or `{{company.name}}`, and you fill each one with a Bryn
+  field (the person, account, signal or Play) or with fixed text. A
+  variable you leave unmapped is left empty in the email. Repeating
+  sections (`{{#each ...}}`) list several items, which a single Bryn value
+  can't fill, so they are left empty too.
+- **Recipient.** Either **The person this Play runs for**, or someone on
+  your team.
+
+When the Play fires, Bryn sends the template through your Postmark server:
+
+- **From** the From address on the connection.
+- **To** the recipient you chose, one address per email.
+- On the server's default transactional message stream.
+- Rendered by Postmark from your template, with your own layout and
+  branding. Bryn adds nothing of its own to the message.
+
+A few rules apply at send time:
+
+- **The person must have an email address.** If the Play emails the person
+  it runs for and Bryn has no address for them, the delivery fails. The
+  Play form warns you about this: require a contactable person in the
+  Play's trigger to avoid it.
+- **Team recipients must still be on your team.** A team member's address
+  is checked when you save the Play and again at each send. If they have
+  left your Bryn workspace since, the email is skipped.
+- **Postmark's suppressions apply.** If Postmark has marked the address
+  inactive (for example after a hard bounce or a spam complaint), Bryn
+  records the email as skipped rather than failed.
+- **The template must still exist.** If you delete the template on your
+  server after saving the Play, the send fails with a template not found
+  error until you pick another one.
+
+Your Postmark account's own limits, and any approval Postmark requires
+before you can send to outside recipients, apply to everything Bryn sends.
+
+### Set up the connection
+
+<Steps>
+  <Step title="Prepare your Postmark server">
+    In Postmark, choose the server you want Bryn to send through. Add a
+    sender signature for your From address, or verify the domain it is on.
+    Create the templates you want Plays to send.
+  </Step>
+  <Step title="Copy the server token">
+    Open the server, go to **API Tokens**, and copy a Server API token.
+  </Step>
+  <Step title="Connect in Bryn">
+    [Open the Postmark connect form](https://bryn.civic.com/web/integrations?connect=postmark)
+    in the Bryn dashboard and enter the server token, the From address and,
+    if you want to send test emails, a default recipient.
+  </Step>
+  <Step title="Send a test">
+    Bryn checks the token as soon as you connect. Once the connection shows
+    as verified, open it under **Integrations** and click **Send test**.
+    Bryn sends a short plain-text email to the default recipient through
+    your server and shows the result next to the button.
+  </Step>
+  <Step title="Add it to a Play">
+    In a Play's output step, add your Postmark connection, pick a template,
+    map its fields and choose the recipient.
+  </Step>
+</Steps>
+
+**You'll know it worked when** the test email arrives at your default
+recipient, and the connection's panel under **Integrations** lists the Plays
+that use it and today's deliveries. If the test fails, check that the From
+address is a confirmed sender signature or on a verified domain for the
+same server the token belongs to. Postmark's activity view for the server
+shows every message Bryn sent and what happened to it.
+
+## Postmark documentation
+
+- [Getting started with Postmark](https://postmarkapp.com/support/article/1002-getting-started-with-postmark)
+- [Account and server API tokens](https://postmarkapp.com/support/article/1008-what-are-the-account-and-server-api-tokens)
+- [Managing sender signatures](https://postmarkapp.com/developer/user-guide/managing-your-account/managing-sender-signatures)
+- [How do I verify a domain?](https://postmarkapp.com/support/article/how-do-i-verify-a-domain)
+- [Message streams](https://postmarkapp.com/message-streams)
+- [Email API](https://postmarkapp.com/developer/api/email-api)
+- [Templates API](https://postmarkapp.com/developer/api/templates-api)
+
+## Going further
+
+- How Plays decide what to deliver and where: [Plays](/bryn/plays).
+- Other destinations and how to keep alerts quiet: [Connect Slack and other outputs](/bryn/outputs).
+- Every connector and the modes it supports: [Connectors](/bryn/connectors).
