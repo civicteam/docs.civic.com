@@ -10,8 +10,7 @@ const algoliaEnv = {
 const algoliaEnabled =
   !!algoliaEnv.appId && !!algoliaEnv.apiKey && !!algoliaEnv.indexName;
 
-const CONTACT_URL = "mailto:bd@civic.com";
-const BOOK_CALL_URL = "https://civic.com";
+const BOOK_DEMO_URL = "https://www.civic.com/demo";
 
 // PostHog product analytics (src/clientModules/posthog.ts). The project key is a
 // publishable client-side key (it ships in the browser bundle, like the GTM id) but
@@ -46,8 +45,7 @@ const config: Config = {
 
   customFields: {
     hideBryn,
-    contactUrl: CONTACT_URL,
-    bookCallUrl: BOOK_CALL_URL,
+    bookDemoUrl: BOOK_DEMO_URL,
     posthog: posthogConfig,
   },
 
@@ -243,14 +241,8 @@ const config: Config = {
           position: "left",
         },
         {
-          label: "Contact Us",
-          href: CONTACT_URL,
-          position: "right",
-          className: "navbar__contact",
-        },
-        {
-          label: "Book a Call",
-          href: BOOK_CALL_URL,
+          label: "Book a Demo",
+          href: BOOK_DEMO_URL,
           position: "right",
           className: "navbar__cta",
         },
