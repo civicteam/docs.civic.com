@@ -5,6 +5,48 @@ sidebar_custom_props:
   icon: "pen"
 ---
 
+<Update label="October 21, 2026" description="apps-0.2.108">
+
+**Improvements**
+- Improved logout reliability, ensuring sessions and tokens are fully revoked when users sign out
+- Updated security dependencies to address known vulnerabilities
+
+**Bug fixes**
+- Fixed an issue where logout was not completing successfully, which could leave sessions active after signing out
+- Fixed authentication failures on iOS browsers (Safari, Chrome, and Firefox) and iPadOS devices
+
+</Update>
+
+<Update label="October 21, 2026" description="auth-server-1.2.44">
+
+**Bug fixes**
+- Fixed authentication failures on iOS browsers (Safari, Chrome, Firefox on iPhone and iPad) by switching to a compatible login flow for those devices
+
+</Update>
+
+<Update label="October 20, 2026" description="auth-server-1.2.43">
+
+**Improvements**
+- Logout now properly redirects you back to your application after signing out
+- Improved logout reliability so that sessions and tokens are fully cleaned up on sign-out
+- Better error messages when logout encounters an issue, instead of failing silently
+
+**Bug fixes**
+- Fixed an issue where logging out could fail with an error instead of completing successfully
+- Fixed an issue where active sessions were not fully revoked during logout, potentially leaving stale sessions behind
+
+</Update>
+
+<Update label="October 02, 2026" description="auth-server-1.2.42">
+
+**Features**
+- The account creation API now supports tenant-scoped tokens, enabling more granular access control when managing accounts within specific tenants
+
+**Improvements**
+- Updated documentation for programmatic account and app management
+
+</Update>
+
 <Update label="August 20, 2026" description="auth-server-1.2.41">
 
 Internal improvements and maintenance updates.

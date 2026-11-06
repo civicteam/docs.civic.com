@@ -1,0 +1,177 @@
+---
+title: Calendly
+description: 'Turn Calendly bookings and cancellations into signals on the accounts and people Bryn tracks'
+---
+
+Calendly is a scheduling tool: people pick a slot on one of your event
+types and the meeting lands in your calendar. When someone books or
+cancels, Calendly tells Bryn, and Bryn records it as a signal on that
+person and their company.
+
+Calendly works with Bryn in one mode: **Input**.
+
+## How Bryn integrates Calendly
+
+Calendly sends events to Bryn through a Calendly webhook subscription.
+You set it up under [**Integrations**](https://bryn.civic.com/web/integrations)
+in the Bryn dashboard, where adding Calendly creates a Calendly source in
+your [Inputs](https://bryn.civic.com/web/integrations?view=inputs) with its
+own endpoint URL and signing secret.
+
+Calendly has no screen for creating webhooks; a subscription can only be
+created through its API with a personal access token. Bryn makes that call
+for you if you paste a token (quick setup), or you can make it yourself
+(manual setup). Either way, keep these in mind:
+
+- **Webhooks need a paid Calendly plan.** The account the subscription is
+  created for must be on the Standard, Teams or Enterprise plan.
+- **Use an owner or admin token for everyone's bookings.** A token from an
+  owner or admin of your Calendly organization can create an
+  organization-wide subscription. A team member's token can only cover
+  that member's own bookings.
+- **Scopes.** Give the token `users:read`, `webhooks:read` and
+  `webhooks:write`. (Manual setup only needs `users:read` and
+  `webhooks:write`.)
+- **Bryn doesn't keep your token.** Quick setup uses it for that one
+  request and then discards it, so you can revoke it in Calendly straight
+  after.
+
+Every delivery is signed. Calendly signs each request with your source's
+signing secret, and Bryn checks that signature before accepting anything.
+A subscription created without the secret sends unsigned requests, and
+Bryn refuses all of them.
+
+## Input
+
+### What arrives
+
+One subscription carries two Calendly events:
+
+| Calendly event | Bryn signal | When |
+|---|---|---|
+| `invitee.created` | `meeting_booked` | Someone books a meeting with you |
+| `invitee.canceled` | `meeting_canceled` | Someone cancels a meeting they booked |
+
+A reschedule arrives from Calendly as a cancellation of the old slot plus
+a new booking. Bryn treats it as a booking: the new slot raises
+`meeting_booked`, and the cancellation half raises nothing, so a
+rescheduled meeting never shows up as `meeting_canceled`.
+
+### How events match accounts and people
+
+Calendly's booking events carry the invitee's details but no company, so
+Bryn works from the invitee's email address:
+
+- **Person**: the invitee is matched by email, and their name comes from
+  the booking (the full name, plus first and last name when your event
+  type asks for them separately).
+- **Account**: the company is found from the email's domain, so a booking
+  from `jane@acme.com` lands on Acme.
+- **Personal addresses**: a booking from a free mail address (such as
+  Gmail) still records the person, but can't place them at a company.
+
+From there the signals behave like any other: they count towards the
+account's [score](/bryn/icp-and-scoring) and can trigger
+[Plays](/bryn/plays). To change which signal an event raises, see
+[Signal mapping](/bryn/signal-mapping).
+
+### Connect Calendly
+
+<Steps>
+  <Step title="Create a personal access token in Calendly">
+    On Calendly's [API and Webhooks page](https://calendly.com/integrations/api_webhooks)
+    (**Integrations**, then **API & Webhooks**), choose **Get a token
+    now** (or **Generate new token**) and give it the `users:read`,
+    `webhooks:read` and `webhooks:write` scopes. Create it as an owner or
+    admin if you want everyone's bookings.
+  </Step>
+  <Step title="Add Calendly in the Bryn dashboard">
+    Go to [**Integrations**](https://bryn.civic.com/web/integrations?view=inputs),
+    add **Calendly**, paste the token and click
+    **Connect Calendly**. Bryn checks the token first, so a mistyped token
+    or one missing `users:read` creates nothing.
+  </Step>
+  <Step title="Check the scope Bryn reports">
+    Bryn creates the source and the Calendly subscription together. It
+    asks Calendly for an organization-wide subscription first, and if the
+    token's owner isn't an owner or admin, it falls back to that person's
+    own bookings. The finished screen tells you which one you got.
+  </Step>
+  <Step title="Book a test meeting">
+    Book a slot on one of your own event types. The booking shows up in
+    Bryn within a few seconds.
+  </Step>
+</Steps>
+
+If Calendly refuses the subscription after the source is created (most
+often a plan without webhooks, or a missing scope), Bryn keeps the source
+and shows you the reason, with quick setup ready to try again.
+
+### Set it up yourself
+
+Choose **I'd rather set it up myself** when adding Calendly, or
+**Set it up yourself** in the source's drawer. The dashboard shows the
+steps with your endpoint URL and signing secret filled in:
+
+1. Create a personal access token with the `users:read` and
+   `webhooks:write` scopes.
+2. Call `GET https://api.calendly.com/users/me` with the header
+   `Authorization: Bearer <your token>`, and copy `current_organization`
+   from the response.
+3. Send `POST https://api.calendly.com/webhook_subscriptions` with the same
+   header and a JSON body with:
+   - `url`: your source's endpoint URL
+   - `signing_key`: your source's signing secret
+   - `events`: `["invitee.created", "invitee.canceled"]`
+   - `organization`: your organization URI
+   - `scope`: `"organization"` for everyone's bookings, or `"user"` for
+     only yours (then also add `user`, your own user URI from the same
+     lookup)
+4. Book a test meeting and check it arrives.
+
+<Warning>
+  Leave out `signing_key` and Calendly sends unsigned requests, which Bryn
+  refuses. Calendly cannot add a signing key to an existing subscription,
+  so you would need to delete it and create it again.
+</Warning>
+
+### Keeping it working
+
+- **Calendly gives up on a failing subscription.** If deliveries keep
+  failing for 24 hours, Calendly disables the subscription and it has to
+  be created again. If your test booking doesn't arrive, check the URL
+  and the signing key.
+- **Running quick setup again replaces the subscription.** Do this after
+  you rotate the source's signing secret (the old subscription still signs
+  with the old one) or after Calendly disables it. You'll need a fresh
+  token, and the source must be turned on.
+- **Both events share one subscription.** To receive only bookings or only
+  cancellations, create the subscription yourself with just that event.
+- **Deleting the source doesn't delete the Calendly subscription.** Bryn
+  keeps no token, so it can't reach Calendly. Bryn refuses the
+  subscription's deliveries from then on and Calendly disables it after a
+  day, or you can delete it in Calendly yourself.
+- **Organization subscriptions outlive their creator.** One created with
+  an admin's token keeps working if that admin leaves your Calendly
+  organization. A user-scoped one stops when its user leaves.
+
+## Calendly documentation
+
+- [Create a webhook subscription](https://developer.calendly.com/docs/api-guides/receive-data-from-scheduled-events-in-real-time-with-webhook-subscriptions):
+  Calendly's guide, including organization and user scope
+- [Personal access tokens](https://developer.calendly.com/docs/authentication/how-to-authenticate-with-personal-access-tokens)
+  and [authorization scopes](https://developer.calendly.com/docs/authentication/scopes)
+- [Find your organization or user URI](https://developer.calendly.com/docs/api-guides/how-to-find-the-organization-or-user-uri)
+- [Create Webhook Subscription API reference](https://developer.calendly.com/api-docs/calendly-api/webhooks/create-webhook-subscription)
+- [Webhook signatures](https://developer.calendly.com/api-docs/overview/webhooks/webhook-signatures)
+  and [webhook errors and retries](https://developer.calendly.com/api-docs/overview/webhooks/webhook-errors)
+- [Webhook payloads for rescheduled events](https://developer.calendly.com/docs/api-guides/see-how-webhook-payloads-change-when-invitees-reschedule-events)
+- [Developer FAQ](https://developer.calendly.com/docs/getting-started/frequently-asked-questions),
+  which lists the plans that include webhooks, and
+  [Calendly pricing](https://calendly.com/pricing)
+
+## Going further
+
+- How events become signals: [Signal mapping](/bryn/signal-mapping)
+- Act on a booking: [Plays](/bryn/plays)
+- Other tools Bryn connects to: [Connectors](/bryn/connectors)

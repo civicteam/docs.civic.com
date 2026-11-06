@@ -13,22 +13,40 @@ this. It speaks **streamable HTTP** and is secured with **Civic Auth** over OAut
 
 ## Endpoint
 
-The MCP URL is tenant-specific: it names the Bryn workspace the connection
-operates on via the `tenant` query parameter.
+```
+https://bryn.civic.com/mcp
+```
+
+That is the whole address. Bryn works out which workspace you belong to
+from your Civic Auth sign-in, so there is nothing to fill in. You can also
+copy it from the Bryn dashboard under
+[Integrations → MCP](https://bryn.civic.com/web/integrations/mcp).
+
+<Note>
+Opening the URL in a browser shows an error page. It is an MCP endpoint
+for your client to connect to, not a page to visit.
+</Note>
+
+### More than one workspace
+
+If you belong to several Bryn workspaces, the plain URL connects to one of
+them by default: the workspace you own, or the most recent one. To connect
+to a specific workspace, add its ID as a `tenant` query parameter:
 
 ```
 https://bryn.civic.com/mcp?tenant=<tenantId>
 ```
 
-Copy your ready-made URL — with your tenant ID filled in — from the Bryn
-dashboard under
-[Integrations → MCP](https://bryn.civic.com/web/integrations/mcp).
+[Integrations → MCP](https://bryn.civic.com/web/integrations/mcp) shows the
+URL for the workspace you are currently viewing, so switch workspace in the
+dashboard to get the URL for another one. Clients that can send custom
+headers may pass `X-Bryn-Tenant: <tenantId>` instead of the query parameter.
 
-<Note>
-Clients that can send custom headers may pass `X-Bryn-Tenant: <tenantId>`
-instead of the query parameter. Most MCP clients can't set headers, so the
-query parameter is the primary form.
-</Note>
+### No workspace yet
+
+If you sign in and have no Bryn workspace, connecting creates one for you
+and the agent walks you through onboarding inside the chat. You do not need
+to visit the dashboard first.
 
 ## Authentication
 
@@ -37,10 +55,10 @@ open the Bryn login page in your browser the first time you connect: sign in the
 and the client is authorized automatically. There's no token or API key to copy.
 
 Access is governed by your Civic Auth membership, the same way the
-[REST API](/bryn/api/bryn-control-plane-api) resolves it: the `tenant`
-parameter is a selector validated against your memberships, and the tenant
-bound at the data layer is always taken from the matched membership. Naming
-a tenant you don't belong to is rejected with `403 tenant_forbidden`.
+[REST API](/bryn/api/bryn-control-plane-api) resolves it: the workspace is
+always taken from one of your own memberships. A `tenant` selector, if you
+give one, is validated against them, and naming a workspace you don't
+belong to is rejected with `403 tenant_forbidden`.
 
 ## Connecting
 
@@ -48,9 +66,8 @@ Clients that don't yet support remote MCP servers with OAuth can bridge through
 [`mcp-remote`](https://www.npmjs.com/package/mcp-remote), which handles the OAuth
 flow locally.
 
-In the snippets below, replace the URL with the one you copied from
-[Integrations → MCP](https://bryn.civic.com/web/integrations/mcp) (or swap in
-your tenant ID for `<tenantId>`).
+The snippets below use the plain URL. If you belong to several workspaces
+and want a specific one, append `?tenant=<tenantId>` as described above.
 
 <Tabs>
   <Tab title="Claude Desktop">
@@ -61,7 +78,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "bryn": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://bryn.civic.com/mcp?tenant=<tenantId>"]
+      "args": ["-y", "mcp-remote", "https://bryn.civic.com/mcp"]
     }
   }
 }
@@ -77,7 +94,7 @@ Add to `~/.cursor/mcp.json` (or a project `.cursor/mcp.json`):
   "mcpServers": {
     "bryn": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://bryn.civic.com/mcp?tenant=<tenantId>"]
+      "args": ["-y", "mcp-remote", "https://bryn.civic.com/mcp"]
     }
   }
 }
@@ -93,7 +110,7 @@ Add to `.vscode/mcp.json`:
   "servers": {
     "bryn": {
       "command": "npx",
-      "args": ["-y", "mcp-remote", "https://bryn.civic.com/mcp?tenant=<tenantId>"]
+      "args": ["-y", "mcp-remote", "https://bryn.civic.com/mcp"]
     }
   }
 }
