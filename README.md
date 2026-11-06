@@ -43,9 +43,9 @@ src/
   theme/DocSidebarItem/Category/  renders FontAwesome icon from customProps.icon
   css/custom.css                  brand colors + utility classes
   clientModules/{fontawesome,gtm}.ts
+  plugins/llms-txt.ts         builds llms.txt + llms-full.txt from the Bryn sidebar
 static/
   images/, logo/, favicon.svg
-  llms.txt, llms-full.txt    hand-maintained, copied as-is
 ```
 
 ## Editing content
