@@ -18,8 +18,8 @@ Bryn knows. The same capabilities are exposed to AI clients through the
 
 ## Authentication
 
-The API is authenticated with **Civic Auth** bearer tokens
-(`Authorization: Bearer <jwt>`).
+The API is authenticated with OAuth bearer tokens issued when you sign in
+to Bryn (`Authorization: Bearer <jwt>`).
 
 The JWT identifies the caller, not the tenant. Bryn resolves the active
 tenant from the caller's memberships on every request:

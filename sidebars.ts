@@ -4,7 +4,8 @@ import auth from './sidebars/auth';
 import labs from './sidebars/labs';
 import bryn from './sidebars/bryn';
 
-// Four-tab navigation: each navbar tab (docSidebar) selects one of these.
+// Bryn is the only navbar tab. The civic, auth and labs sidebars still render
+// on their pages when reached by direct URL.
 const sidebars: SidebarsConfig = { civic, auth, labs, bryn };
 
 export default sidebars;

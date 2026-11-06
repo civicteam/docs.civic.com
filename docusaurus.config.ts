@@ -225,24 +225,6 @@ const config: Config = {
               },
             ]),
         {
-          type: "docSidebar",
-          sidebarId: "civic",
-          label: "Civic",
-          position: "left",
-        },
-        {
-          type: "docSidebar",
-          sidebarId: "auth",
-          label: "Auth",
-          position: "left",
-        },
-        {
-          type: "docSidebar",
-          sidebarId: "labs",
-          label: "Labs",
-          position: "left",
-        },
-        {
           label: "Contact Us",
           href: CONTACT_URL,
           position: "right",
