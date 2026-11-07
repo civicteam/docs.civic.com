@@ -1,6 +1,7 @@
 import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 import { themes as prismThemes } from "prism-react-renderer";
+import llmsTxtPlugin, { type LlmsTxtOptions } from "./src/plugins/llms-txt";
 
 const algoliaEnv = {
   appId: process.env.ALGOLIA_APP_ID,
@@ -135,6 +136,23 @@ const config: Config = {
     // Click-to-expand on content images (medium-zoom); added for the Bryn
     // diagrams, applies to all docs images.
     "docusaurus-plugin-image-zoom",
+    // Generates build/llms.txt and build/llms-full.txt from the Bryn sidebar.
+    [
+      llmsTxtPlugin,
+      {
+        sidebarId: "bryn",
+        title: "Bryn by Civic",
+        summary:
+          "Bryn is the Signal-Based GTM agent for Growth teams. Bryn watches anonymous and known product, web, and intent signals, names the pattern, and runs the Play you approved, with the audit log attached.",
+        details:
+          "Bryn identifies the companies on your website, scores them against your ICP, and acts on them through Plays: Slack alerts, CRM updates, outreach, and on-page personalization. Setup is a pixel on your site and a few dashboard steps at https://bryn.civic.com.",
+        optional: ["bryn/changelog"],
+        descriptions: {
+          "bryn/api/bryn-control-plane-api":
+            "Endpoint reference for the Bryn Control Plane API",
+        },
+      } satisfies LlmsTxtOptions,
+    ],
   ],
 
   themes: ["docusaurus-theme-openapi-docs"],
@@ -224,24 +242,6 @@ const config: Config = {
                 position: "left" as const,
               },
             ]),
-        {
-          type: "docSidebar",
-          sidebarId: "civic",
-          label: "Civic",
-          position: "left",
-        },
-        {
-          type: "docSidebar",
-          sidebarId: "auth",
-          label: "Auth",
-          position: "left",
-        },
-        {
-          type: "docSidebar",
-          sidebarId: "labs",
-          label: "Labs",
-          position: "left",
-        },
         {
           label: "Contact Us",
           href: CONTACT_URL,

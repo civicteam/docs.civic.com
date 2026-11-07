@@ -9,7 +9,7 @@ with no API code required. Whatever the Control Plane API exposes, an MCP
 client can use as tools.
 
 Bryn exposes a [Model Context Protocol](https://modelcontextprotocol.io) server for
-this. It speaks **streamable HTTP** and is secured with **Civic Auth** over OAuth.
+this. It speaks **streamable HTTP** and is secured with **OAuth**.
 
 ## Endpoint
 
@@ -18,7 +18,7 @@ https://bryn.civic.com/mcp
 ```
 
 That is the whole address. Bryn works out which workspace you belong to
-from your Civic Auth sign-in, so there is nothing to fill in. You can also
+from your Bryn sign-in, so there is nothing to fill in. You can also
 copy it from the Bryn dashboard under
 [Integrations → MCP](https://bryn.civic.com/web/integrations/mcp).
 
@@ -50,11 +50,11 @@ to visit the dashboard first.
 
 ## Authentication
 
-The server is secured with **Civic Auth** over OAuth. Clients that support OAuth will
+The server is secured with **OAuth**. Clients that support OAuth will
 open the Bryn login page in your browser the first time you connect: sign in there,
 and the client is authorized automatically. There's no token or API key to copy.
 
-Access is governed by your Civic Auth membership, the same way the
+Access is governed by your Bryn workspace membership, the same way the
 [REST API](/bryn/api/bryn-control-plane-api) resolves it: the workspace is
 always taken from one of your own memberships. A `tenant` selector, if you
 give one, is validated against them, and naming a workspace you don't
@@ -84,7 +84,7 @@ Add to your `claude_desktop_config.json`:
 }
 ```
 
-Restart Claude Desktop, then complete the Civic Auth sign-in when prompted.
+Restart Claude Desktop, then complete the Bryn sign-in when prompted.
   </Tab>
   <Tab title="Cursor">
 Add to `~/.cursor/mcp.json` (or a project `.cursor/mcp.json`):
